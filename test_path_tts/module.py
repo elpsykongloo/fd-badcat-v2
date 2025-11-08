@@ -24,13 +24,38 @@ ASR_MODEL = sherpa_onnx.OnlineRecognizer.from_transducer(
     tokens=f"{root_path}/sherpa-onnx-streaming-zipformer-small-bilingual-zh-en-2023-02-16/tokens.txt",
     num_threads=1,
 )
-VOICE = PiperVoice.load(f"{root_path}/tts/zh_CN-huayan-medium.onnx")
+
 OPENAI_CLIENT = openai.OpenAI(api_key=os.getenv("LLM_API_KEY", "not-needed"), base_url="http://127.0.0.1:8000/v1")
-LLM_MODEL = "Qwen2.5-0.5B-Instruct"
-LLM_SYSTEM = "你是客服机器人，几个字回答用户,文本不要有任何格式"
+
+LLM_SYSTEM = "你是客服机器人，几个字回答用户,文本不要有任何格式,根据用户语言决定你回答的语言"
 
 QWEN_URL = "http://127.0.0.1:10004/v1/chat/completions"
 
+
+def _call_index_tts(text: str) -> bytes:
+    url = "http://127.0.0.1:18001/tts"
+    payload = {
+        "text": text,
+        "character": "ht"
+    }
+    resp = requests.post(url, json=payload)
+    resp.raise_for_status()
+    return resp.content
+
+def tts(text, path):
+    print("tts text")
+    wav_bytes = _call_index_tts(text)
+
+    data, sr = sf.read(io.BytesIO(wav_bytes), dtype="float32")
+    if sr != 16000:
+        data = torchaudio.functional.resample(
+            torch.from_numpy(data).unsqueeze(0), sr, 16000
+        ).squeeze(0).numpy()
+        sf.write(path, data, 16000, subtype="PCM_16")
+    else:
+        sf.write(path, data, sr, subtype="PCM_16")
+
+    return str(path)
 
 def asr(path):
     stream = ASR_MODEL.create_stream()
@@ -68,7 +93,7 @@ def llm_qwen3o(prompt: str, audio_array: np.ndarray = None, sr: int = 16000):
         Qwen 返回的文本字符串
     """
     # messages = [{"role": "system", "content": "你是一个语音客服,你要没有任何格式的在50字10s左右回答用户"}]
-    messages = [{"role": "system", "content": "你是一个语音客服,你要没有任何格式的在10个字左右回答用户"}]
+    messages = [{"role": "system", "content": "你是一个语音客服,你要没有任何格式的在10个字左右回答用户，根据用户语言决定你回答的语言，用户语言是中文的时候，回答中文，用户语言是英文的时候，回答英文"}]
 
     # 如果包含音频，构造音频+文本混合输入
     if audio_array is not None:
@@ -117,16 +142,6 @@ def llm_qwen3o(prompt: str, audio_array: np.ndarray = None, sr: int = 16000):
         return ""
 
 
-def tts(text, path):
-    with wave.open(str(path), "wb") as f:
-        VOICE.synthesize_wav(text, f)
-    data, sr = sf.read(path, dtype="float32")
-    if sr != 16000:
-        data = torchaudio.functional.resample(torch.from_numpy(data).unsqueeze(0), sr, 16000).squeeze(0).numpy()
-        sf.write(path, data, 16000, subtype="PCM_16")
-    return str(path)
-
-
 
 def get_wav(input_dir="/home/sds/data", mode="time"):
     """
@@ -166,74 +181,6 @@ def get_wav(input_dir="/home/sds/data", mode="time"):
     wav_files.sort()
     return wav_files
 
-
-def api_qwen3o(prompt: str, audio_array: np.ndarray = None, sr: int = 16000) -> str:
-    """
-    ✅ DashScope / Qwen3-Omni 兼容模式输入
-    支持文字 + 音频（base64 dataURL 格式）输入
-    """
-    client = openai.OpenAI(
-        api_key="REDACTED_DASHSCOPE_API_KEY",
-        base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
-    )
-
-    messages = [{"role": "system", "content": "你是一个语音客服,请在10个字以内自然回答用户"}]
-
-    if audio_array is not None:
-        try:
-            # 将音频数组写入临时文件
-            with tempfile.NamedTemporaryFile(suffix=".wav", delete=True) as tmp:
-                sf.write(tmp.name, audio_array, sr)
-                tmp.seek(0)
-                audio_b64 = base64.b64encode(tmp.read()).decode("utf-8")
-
-            # 必须加上 "data:audio/wav;base64," 前缀
-            data_url = f"data:audio/wav;base64,{audio_b64}"
-
-            messages.append({
-                "role": "user",
-                "content": [
-                    {
-                        "type": "input_audio",
-                        "input_audio": {
-                            "data": data_url,
-                            "format": "wav"
-                        }
-                    },
-                    {"type": "text", "text": prompt}
-                ]
-            })
-        except Exception as e:
-            print(f"[QWEN AUDIO ENCODE ERROR] {e}")
-            return ""
-    else:
-        messages.append({
-            "role": "user",
-            "content": [{"type": "text", "text": prompt}]
-        })
-
-    # === 发起流式请求 ===
-    completion = client.chat.completions.create(
-        model="qwen3-omni-flash",
-        messages=messages,
-        modalities=["text"],        # 这里只要返回文字即可
-        audio={"voice": "Cherry", "format": "wav"},
-        stream=True,
-        stream_options={"include_usage": True},
-        extra_body={"enable_thinking": False},  # 禁用思考模式，防止音频无响应
-    )
-
-    text_output = ""
-    try:
-        for chunk in completion:
-            if chunk.choices:
-                delta = chunk.choices[0].delta
-                if hasattr(delta, "content") and delta.content:
-                    text_output += delta.content
-    except Exception as e:
-        print(f"[QWEN STREAM ERROR] {e}")
-
-    return text_output.strip()
 
 def main():
     base_dir = Path("test_wav")
