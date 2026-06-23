@@ -1,0 +1,23 @@
+# Qwen3-Omni deployment for fd-badcat on one RTX PRO 6000 Blackwell.
+#
+# fd-badcat only needs Qwen3-Omni's multimodal understanding/text response.
+# Speech synthesis is handled by the separate Index-TTS service, so this mode
+# filters the vllm-omni pipeline down to stage 0 (thinker) and leaves GPU
+# memory available for Index-TTS.
+async_chunk: false
+
+modes:
+  - mode: text-to-image
+    stages: [0]
+
+stages:
+  - stage_id: 0
+    max_num_batched_tokens: 32768
+    max_num_seqs: 8
+    gpu_memory_utilization: 0.78
+    trust_remote_code: true
+    enable_prefix_caching: false
+    devices: "0"
+    default_sampling_params:
+      temperature: 0.0
+      max_tokens: 2048

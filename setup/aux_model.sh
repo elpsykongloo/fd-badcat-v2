@@ -1,42 +1,52 @@
-#!/bin/bash
-set -e
+#!/usr/bin/env bash
+set -euo pipefail
 
-SCRIPT_DIR=$(cd $(dirname "$0") && pwd)
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 ROOT_DIR=$(dirname "$SCRIPT_DIR")
-ASR_DIR="$ROOT_DIR/model/sherpa-onnx-paraformer-zh-2024-03-09"
 
-ASR_URL="https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-paraformer-zh-2024-03-09.tar.bz2"
-ASR_TAR="$ROOT_DIR/model/sherpa-onnx-paraformer-zh-2024-03-09.tar.bz2"
+export CONDA_ENVS_PATH="${CONDA_ENVS_PATH:-/root/autodl-tmp/conda-envs}"
+export CONDA_PKGS_DIRS="${CONDA_PKGS_DIRS:-/root/autodl-tmp/conda-pkgs}"
+export UV_CACHE_DIR="${UV_CACHE_DIR:-$ROOT_DIR/.cache/uv}"
+export UV_LINK_MODE="${UV_LINK_MODE:-copy}"
+mkdir -p "$CONDA_ENVS_PATH" "$CONDA_PKGS_DIRS" "$UV_CACHE_DIR"
 
 eval "$(conda shell.bash hook)"
-source ~/.bashrc
 
-conda env list | grep -q fd-sds || conda create -n fd-sds python=3.10 -y
-conda activate fd-sds
-pip install -r "$ROOT_DIR/requirements.txt"
+ENV_NAME="${FDSDS_ENV_NAME:-fd-sds}"
+PYTHON_VERSION="${FDSDS_PYTHON_VERSION:-3.10}"
 
-echo "下载并解压 ASR 模型"
-mkdir -p "$ROOT_DIR/model"
-cd "$ROOT_DIR/model"
-
-if [ ! -d "sherpa-onnx-paraformer-zh-2024-03-09" ]; then
-    echo "开始下载 ASR 模型"
-    wget "$ASR_URL" -O "$ASR_TAR"
-    echo "解压中..."
-    tar xf "$ASR_TAR"
-    rm "$ASR_TAR"
-else
-    echo "ASR 模型已存在 跳过下载"
+if ! conda env list | awk '{print $1}' | grep -qx "$ENV_NAME"; then
+    env -u http_proxy -u https_proxy -u HTTP_PROXY -u HTTPS_PROXY -u ALL_PROXY -u all_proxy \
+        conda create --override-channels \
+        -c https://repo.anaconda.com/pkgs/main \
+        -c https://repo.anaconda.com/pkgs/r \
+        -n "$ENV_NAME" "python=$PYTHON_VERSION" -y
 fi
 
-cd "$ROOT_DIR"
+conda activate "$ENV_NAME"
+python -m pip install --upgrade pip uv
 
-echo "检查模型状态"
+TORCH_VERSION="${FDSDS_TORCH_VERSION:-2.9.1+cu128}"
+TORCHAUDIO_VERSION="${FDSDS_TORCHAUDIO_VERSION:-2.9.1+cu128}"
+TORCH_INDEX_URL="${FDSDS_TORCH_INDEX_URL:-https://download.pytorch.org/whl/cu128}"
+PYPI_INDEX_URL="${PYPI_INDEX_URL:-http://mirrors.aliyun.com/pypi/simple}"
 
-if [ -d "$ASR_DIR" ]; then
-    echo "ASR 模型存在"
+env -u http_proxy -u https_proxy -u HTTP_PROXY -u HTTPS_PROXY -u ALL_PROXY -u all_proxy \
+    uv pip install \
+    --index-url "$TORCH_INDEX_URL" \
+    "torch==$TORCH_VERSION" \
+    "torchaudio==$TORCHAUDIO_VERSION"
+env -u http_proxy -u https_proxy -u HTTP_PROXY -u HTTPS_PROXY -u ALL_PROXY -u all_proxy \
+    uv pip install \
+    --index-url "$PYPI_INDEX_URL" \
+    -r "$ROOT_DIR/requirements.txt"
+
+bash "$ROOT_DIR/setup/download_assets.sh" asr
+
+ASR_DIR="$ROOT_DIR/model/sherpa-onnx-paraformer-zh-2024-03-09"
+if [[ -d "$ASR_DIR" ]]; then
+    echo "ASR model ready: $ASR_DIR"
 else
-    echo "ASR 模型缺失"
+    echo "ASR model missing: $ASR_DIR" >&2
     exit 1
 fi
-

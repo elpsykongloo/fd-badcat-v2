@@ -3,6 +3,9 @@ set -e
 
 eval "$(conda shell.bash hook)"
 source ~/.bashrc
+LOCAL_NO_PROXY="127.0.0.1,localhost,0.0.0.0"
+export NO_PROXY="${NO_PROXY:+$NO_PROXY,}$LOCAL_NO_PROXY"
+export no_proxy="${no_proxy:+$no_proxy,}$LOCAL_NO_PROXY"
 conda activate fd-sds
 check_port() {
     local PORT_HEX=$(printf "%04X" "$1")
@@ -16,6 +19,7 @@ check_port() {
 echo "检查服务端口"
 check_port 19000
 check_port 10003
+check_port 10004
 
 echo "检测完成"
 
