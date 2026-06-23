@@ -124,21 +124,30 @@ def process_example(folder: Path, provider: str, llm_call, mode: str,
     track = make_act_track(mode)
 
     t0 = time.time()
-    decision = decide_and_apply(
-        tx, reg.executor, llm_call, state="LISTEN",
-        user_text=None, audio=audio,            # feed the disfluent audio directly
-        history=history, t=0.0,
-        blocking=(mode == "blocking"),
-        async_launcher=(track if mode == "async" else None),
-    )
-    # in async mode, flush the act track and commit whatever finished
     if mode == "async":
-        async def _flush():
+        async def _run_async_decision():
+            decision = decide_and_apply(
+                tx, reg.executor, llm_call, state="LISTEN",
+                user_text=None, audio=audio,            # feed the disfluent audio directly
+                history=history, t=0.0,
+                blocking=False,
+                async_launcher=track,
+            )
             await track.drain()
             for op in track.ready_ops():
                 if op.op_id in tx.pending:
                     tx.commit(op.op_id, reg.executor, t=time.time() - t0)
-        asyncio.run(_flush())
+            return decision
+
+        decision = asyncio.run(_run_async_decision())
+    else:
+        decision = decide_and_apply(
+            tx, reg.executor, llm_call, state="LISTEN",
+            user_text=None, audio=audio,            # feed the disfluent audio directly
+            history=history, t=0.0,
+            blocking=True,
+            async_launcher=None,
+        )
     model_compute_s = round(time.time() - t0, 3)
 
     result = {
