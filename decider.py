@@ -35,7 +35,7 @@ import numpy as np
 import soundfile as sf
 
 from .tools import TOOL_CATALOG, REVERSIBILITY
-from .transaction import Transaction, Reversibility
+from .transaction import Transaction, Reversibility, OpStatus
 
 
 # ---------------------------------------------------------------------------
@@ -63,7 +63,7 @@ CRITICAL RULES:
 2. SELF-CORRECTION: If the PENDING OPS list already contains an op whose argument the user just changed (e.g. they first said New York then "actually Boston"), DO NOT launch a new op — emit a `patch` on that op_id with only the changed fields. If the user abandons a request entirely, emit `cancel`.
 3. MULTI-STEP: A turn may need several tools in order. Emit them in order. To use the result of an earlier op as an argument, write the literal value if you know it, otherwise the string "$RESULT_<op_id>.<field>".
 4. Use the exact tool and argument names shown above. Do not invent tools or arguments.
-5. Keep `say` short and natural for speech; it may be empty when you are only acting.
+5. Keep `say` short and natural for speech. When you launch or commit any tool, `say` must be non-empty and should briefly state that you are handling or have handled the request.
 
 Return only the JSON object."""
 
@@ -192,6 +192,12 @@ def decide_and_apply(tx: Transaction, executor: Callable[[str, dict], dict],
         elif typ == "commit":
             op_id = _resolve_op_id(tx, op)
             if op_id is not None and op_id in tx.pending:
+                pending = tx.pending[op_id]
+                if not blocking and pending.status == OpStatus.IN_FLIGHT:
+                    # Async mode surfaces the result when the action track marks
+                    # the op ready. Committing here would duplicate the tool call
+                    # and reintroduce blocking latency.
+                    continue
                 tx.commit(op_id, executor, t=t)
         # noop: nothing
     return decision
