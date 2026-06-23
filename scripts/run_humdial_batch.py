@@ -187,7 +187,12 @@ async def run_one(
         async def receiver() -> None:
             nonlocal last_message_at, mixed, tts_count
             while True:
-                if sender_done.is_set() and time.perf_counter() - last_message_at >= post_send_wait:
+                pending_tts = len(tts_texts) > tts_count
+                if (
+                    sender_done.is_set()
+                    and not pending_tts
+                    and time.perf_counter() - last_message_at >= post_send_wait
+                ):
                     return
                 timeout = 1.0
                 try:
