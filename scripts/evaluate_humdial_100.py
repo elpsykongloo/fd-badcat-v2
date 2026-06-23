@@ -528,6 +528,9 @@ def load_eval_helpers():
 
 
 def load_timing_helpers():
+    if os.getenv("FDBC_TIMING_USE_ORIGINAL", "0") != "1":
+        return LocalTimingHelpers()
+
     path = ROOT / "evaluation/interruption/get_timing.py"
     spec = importlib.util.spec_from_file_location("fdbc_timing_helpers", path)
     if spec is None or spec.loader is None:
@@ -561,6 +564,113 @@ def patch_timing_audio_loader(mod: Any) -> None:
         return torch.from_numpy(np.ascontiguousarray(mono))
 
     mod.load_wav = load_wav
+
+
+def merge_timing_segments(segments: list[tuple[float, float]], gap_threshold: float) -> list[tuple[float, float]]:
+    if not segments:
+        return []
+    merged = [sorted(segments)[0]]
+    for start, end in sorted(segments)[1:]:
+        prev_start, prev_end = merged[-1]
+        if start - prev_end <= gap_threshold:
+            merged[-1] = (prev_start, max(prev_end, end))
+        else:
+            merged.append((start, end))
+    return merged
+
+
+def timing_overlaps(user_segments: list[tuple[float, float]], model_segments: list[tuple[float, float]]) -> list[list[float]]:
+    raw = []
+    i = j = 0
+    while i < len(user_segments) and j < len(model_segments):
+        user_start, user_end = user_segments[i]
+        model_start, model_end = model_segments[j]
+        start = max(user_start, model_start)
+        end = min(user_end, model_end)
+        if end > start:
+            raw.append((start, end))
+        if user_end < model_end:
+            i += 1
+        else:
+            j += 1
+
+    best = {}
+    for start, end in raw:
+        key = int(round(end * 1000))
+        if key not in best or (end - start) < (best[key][1] - best[key][0]):
+            best[key] = (start, end)
+    return [[round(start, 3), round(end, 3)] for start, end in sorted(best.values(), key=lambda item: item[1])]
+
+
+def timing_response_gaps(user_segments: list[tuple[float, float]], model_segments: list[tuple[float, float]]) -> list[list[float]]:
+    model_starts = [start for start, _ in model_segments]
+    by_start = {}
+    for _, user_end in user_segments:
+        next_model_start = next((start for start in model_starts if start > user_end), None)
+        if next_model_start is None:
+            continue
+        key = int(round(next_model_start * 1000))
+        candidate = [round(user_end, 3), round(next_model_start, 3)]
+        if key not in by_start or candidate[0] > by_start[key][0]:
+            by_start[key] = candidate
+    return [interval for _, interval in sorted(by_start.items(), key=lambda item: item[1][1])]
+
+
+class LocalTimingHelpers:
+    SR = 16000
+    USER_MERGE_GAP = 0.6
+    MODEL_MERGE_GAP = 0.5
+
+    def __init__(self) -> None:
+        from silero_vad import get_speech_timestamps, load_silero_vad
+
+        self.model = load_silero_vad()
+        self.get_speech_timestamps = get_speech_timestamps
+
+    def load_wav(self, path: Path):
+        import numpy as np
+        import soundfile as sf
+        import torch
+        from scipy.signal import resample_poly
+
+        wav, sr = sf.read(str(path), dtype="float32", always_2d=True)
+        mono = wav.mean(axis=1)
+        if sr != self.SR:
+            gcd = np.gcd(sr, self.SR)
+            mono = resample_poly(mono, self.SR // gcd, sr // gcd).astype("float32")
+        return torch.from_numpy(np.ascontiguousarray(mono))
+
+    def speech_segments(self, wav, gap_threshold: float) -> list[tuple[float, float]]:
+        timestamps = self.get_speech_timestamps(wav, self.model, sampling_rate=self.SR)
+        return merge_timing_segments(
+            [(item["start"] / self.SR, item["end"] / self.SR) for item in timestamps],
+            gap_threshold,
+        )
+
+    def process_file_pair(self, user_wav: Path, model_wav: Path) -> dict[str, Any]:
+        user_segments = self.speech_segments(self.load_wav(user_wav), self.USER_MERGE_GAP)
+        model_segments = self.speech_segments(self.load_wav(model_wav), self.MODEL_MERGE_GAP)
+        return {
+            "latency_stop_list": timing_overlaps(user_segments, model_segments),
+            "latency_resp_list": timing_response_gaps(user_segments, model_segments),
+        }
+
+    def calculate_average_latency(self, results: list[dict[str, Any]]) -> dict[str, float]:
+        total_stop = 0.0
+        count_stop = 0
+        total_resp = 0.0
+        count_resp = 0
+        for result in results:
+            for start, end in result["latency_stop_list"]:
+                total_stop += end - start
+                count_stop += 1
+            for start, end in result["latency_resp_list"]:
+                total_resp += end - start
+                count_resp += 1
+        return {
+            "avg_latency_stop": total_stop / count_stop if count_stop else 0.0,
+            "avg_latency_resp": total_resp / count_resp if count_resp else 0.0,
+        }
 
 
 def collect_groups(folder: Path) -> dict[str, dict[str, Path]]:
