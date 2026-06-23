@@ -65,7 +65,7 @@ class ConversationEngine:
                 messages.append({
                     "role": "user",
                     "content": [
-                        {"type": "input_audio", "input_audio": {"data": f"data:audio/wav;base64,{audio_base64}", "format": "wav"}}
+                        {"type": "audio_url", "audio_url": {"url": f"data:audio/wav;base64,{audio_base64}"}}
                     ]
                 })
             return messages
@@ -89,7 +89,7 @@ class ConversationEngine:
             messages.append({
                 "role": "user",
                 "content": [
-                    {"type": "input_audio", "input_audio": {"data": f"data:audio/wav;base64,{audio_base64}", "format": "wav"}}
+                    {"type": "audio_url", "audio_url": {"url": f"data:audio/wav;base64,{audio_base64}"}}
                 ]
             })
         return messages
@@ -162,8 +162,8 @@ class ConversationEngine:
             content = msg.get("content")
             if isinstance(content, list):
                 for block in content:
-                    if block.get("type") == "input_audio":
-                        block["input_audio"]["data"] = "<AUDIO_BASE64_OMITTED>"
+                    if block.get("type") == "audio_url":
+                        block["audio_url"]["url"] = "<AUDIO_BASE64_OMITTED>"
 
         await self.send_control("llm_done", {
             "timestamp": round(time.time() - self.start_wall, 3),

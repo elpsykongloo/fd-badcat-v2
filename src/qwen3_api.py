@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import os
 import requests
 from fastapi import FastAPI, Request
 import uvicorn
@@ -8,7 +9,11 @@ import uvicorn
 # =========================
 # 配置
 # =========================
-VLLM_URL = "http://127.0.0.1:10003/v1/chat/completions"
+VLLM_URL = os.getenv("FDBC_VLLM_URL", "http://127.0.0.1:10003/v1/chat/completions")
+QWEN_MODEL = os.getenv("FDBC_QWEN_MODEL", "Qwen3-Omni-30B-A3B-Instruct")
+REQUEST_TIMEOUT = int(os.getenv("FDBC_PROXY_TIMEOUT", "300"))
+LOCAL_HTTP = requests.Session()
+LOCAL_HTTP.trust_env = False
 
 # =========================
 # FastAPI 应用
@@ -19,8 +24,8 @@ app = FastAPI(title="Simple vLLM Direct Proxy")
 async def chat_proxy(request: Request):
     try:
         payload = await request.json()
-        response = requests.post(VLLM_URL, json=payload, timeout=180)
-        payload.setdefault("model", "/data/ptmodels/Qwen3-Omni-30B-A3B-Instruct")
+        payload.setdefault("model", QWEN_MODEL)
+        response = LOCAL_HTTP.post(VLLM_URL, json=payload, timeout=REQUEST_TIMEOUT)
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
