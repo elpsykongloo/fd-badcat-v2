@@ -117,6 +117,7 @@ async def main() -> int:
     parser.add_argument("--post-send-wait", type=float, default=8.0)
     parser.add_argument("--sample-timeout", type=float, default=240.0)
     parser.add_argument("--clean-sample-timeout", type=float, default=300.0)
+    parser.add_argument("--tts-wait-timeout", type=float, default=float(os.getenv("FDBC_BATCH_TTS_WAIT_TIMEOUT", "120")))
     parser.add_argument("--gen-workers", type=int, default=int(os.getenv("FDBC_GEN_WORKERS", "2")))
     parser.add_argument("--clean-workers", type=int, default=int(os.getenv("FDBC_CLEAN_WORKERS", "2")))
     parser.add_argument("--asr-workers", type=int, default=int(os.getenv("ASR_WORKERS", "8")))
@@ -175,6 +176,7 @@ async def main() -> int:
                 trailing_silence=args.trailing_silence,
                 post_send_wait=args.post_send_wait,
                 sample_timeout=args.sample_timeout,
+                tts_wait_timeout=args.tts_wait_timeout,
                 resume=args.resume,
                 workers=1,
             )
@@ -188,6 +190,7 @@ async def main() -> int:
                 trailing_silence=args.trailing_silence,
                 post_send_wait=args.post_send_wait,
                 sample_timeout=args.clean_sample_timeout,
+                tts_wait_timeout=args.tts_wait_timeout,
                 resume=args.resume,
                 workers=1,
             )
@@ -208,6 +211,7 @@ async def main() -> int:
                 trailing_silence=args.trailing_silence,
                 post_send_wait=args.post_send_wait,
                 sample_timeout=args.sample_timeout,
+                tts_wait_timeout=args.tts_wait_timeout,
                 resume=args.resume,
                 workers=args.gen_workers,
             )
@@ -223,6 +227,7 @@ async def main() -> int:
                 trailing_silence=args.trailing_silence,
                 post_send_wait=args.post_send_wait,
                 sample_timeout=args.clean_sample_timeout,
+                tts_wait_timeout=args.tts_wait_timeout,
                 resume=args.resume,
                 workers=args.clean_workers,
             )

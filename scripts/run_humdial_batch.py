@@ -24,6 +24,14 @@ import yaml
 
 SAMPLE_RATE = 16000
 CHUNK_SAMPLES = 256
+RESPONSE_PROMPT_MARKERS = (
+    "你是一个自然聊天的语音助手",
+    "只回复15个字",
+)
+RESPONSE_PROMPT_HINTS = (
+    "根据用户音频进行回应",
+    "重复助手上一轮的回答",
+)
 
 
 @dataclass(frozen=True)
@@ -139,6 +147,27 @@ def mix_segment(base: np.ndarray, segment: np.ndarray, start_sample: int) -> np.
     return base
 
 
+def llm_event_expects_tts(data: dict[str, object]) -> bool:
+    """Batch-side classifier for backend LLM events that spawn TTS.
+
+    The backend emits the same llm_done event for control prompts and response
+    prompts. Do not infer TTS from the generated text; infer it from the system
+    prompt that caused the LLM call.
+    """
+    prompt = data.get("prompt")
+    if not isinstance(prompt, list) or not prompt:
+        return False
+    first = prompt[0]
+    if not isinstance(first, dict):
+        return False
+    system_prompt = first.get("content")
+    if not isinstance(system_prompt, str):
+        return False
+    return all(marker in system_prompt for marker in RESPONSE_PROMPT_MARKERS) and any(
+        hint in system_prompt for hint in RESPONSE_PROMPT_HINTS
+    )
+
+
 async def run_one(
     sample: Sample,
     ws_url: str,
@@ -148,6 +177,7 @@ async def run_one(
     trailing_silence: float,
     post_send_wait: float,
     sample_timeout: float,
+    tts_wait_timeout: float,
 ) -> dict[str, object]:
     audio = read_mono_16k(sample.path)
     original_duration = len(audio) / SAMPLE_RATE
@@ -164,6 +194,8 @@ async def run_one(
     events: list[dict[str, object]] = []
     tts_timestamps: list[float] = []
     tts_texts: list[str] = []
+    expected_tts_count = 0
+    tts_wait_started_at: float | None = None
     asr_texts: list[str] = []
     tts_count = 0
     mixed = np.zeros(len(send_audio), dtype=np.float32)
@@ -185,9 +217,37 @@ async def run_one(
             sender_done.set()
 
         async def receiver() -> None:
-            nonlocal last_message_at, mixed, tts_count
+            nonlocal expected_tts_count, last_message_at, mixed, tts_count, tts_wait_started_at
             while True:
-                pending_tts = len(tts_texts) > tts_count
+                now = time.perf_counter()
+                pending_tts = expected_tts_count > tts_count or bool(tts_timestamps)
+                if pending_tts and tts_wait_started_at is None:
+                    tts_wait_started_at = now
+                elif not pending_tts:
+                    tts_wait_started_at = None
+
+                if (
+                    pending_tts
+                    and sender_done.is_set()
+                    and tts_wait_timeout > 0
+                    and tts_wait_started_at is not None
+                    and now - tts_wait_started_at >= tts_wait_timeout
+                ):
+                    events.append(
+                        {
+                            "event": "batch_tts_wait_timeout",
+                            "waited": round(now - tts_wait_started_at, 3),
+                            "expected_tts_count": expected_tts_count,
+                            "tts_count": tts_count,
+                            "pending_tts_done": len(tts_timestamps),
+                        }
+                    )
+                    expected_tts_count = tts_count
+                    tts_timestamps.clear()
+                    tts_wait_started_at = None
+                    last_message_at = now
+                    continue
+
                 if (
                     sender_done.is_set()
                     and not pending_tts
@@ -209,6 +269,7 @@ async def run_one(
                     if data.ndim == 2:
                         data = data.mean(axis=1)
                     tts_count += 1
+                    expected_tts_count = max(expected_tts_count, tts_count)
                     tts_path = tts_dir / f"tts_{tts_count:02d}.wav"
                     sf.write(str(tts_path), data, SAMPLE_RATE, subtype="PCM_16")
                     mixed = mix_segment(mixed, data, int(timestamp * SAMPLE_RATE))
@@ -228,9 +289,11 @@ async def run_one(
                 data = obj.get("data", {})
                 if event == "tts_done":
                     tts_timestamps.append(float(data.get("timestamp", 0.0)))
+                    expected_tts_count = max(expected_tts_count, tts_count + len(tts_timestamps))
                 elif event == "llm_done":
                     content = str(data.get("content", ""))
-                    if content and content.lower() not in {"switch", "continue", "yes", "no"}:
+                    if content and llm_event_expects_tts(data):
+                        expected_tts_count += 1
                         tts_texts.append(content)
                 elif event == "asr_done":
                     asr_texts.append(str(data.get("content", "")))
@@ -338,6 +401,7 @@ async def run_samples(
     trailing_silence: float,
     post_send_wait: float,
     sample_timeout: float,
+    tts_wait_timeout: float = float(os.getenv("FDBC_BATCH_TTS_WAIT_TIMEOUT", "120")),
     resume: bool,
     workers: int,
     on_row: Callable[[dict[str, object]], Awaitable[None] | None] | None = None,
@@ -372,6 +436,7 @@ async def run_samples(
                     trailing_silence=trailing_silence,
                     post_send_wait=post_send_wait,
                     sample_timeout=sample_timeout,
+                    tts_wait_timeout=tts_wait_timeout,
                 )
             except Exception as exc:
                 row = error_row(sample, exc)
@@ -409,6 +474,7 @@ async def main() -> int:
     parser.add_argument("--trailing-silence", type=float, default=2.0)
     parser.add_argument("--post-send-wait", type=float, default=8.0)
     parser.add_argument("--sample-timeout", type=float, default=240.0)
+    parser.add_argument("--tts-wait-timeout", type=float, default=float(os.getenv("FDBC_BATCH_TTS_WAIT_TIMEOUT", "120")))
     parser.add_argument("--no-balanced", action="store_true")
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--workers", type=int, default=int(os.getenv("FDBC_BATCH_WORKERS", "1")))
@@ -439,6 +505,7 @@ async def main() -> int:
         trailing_silence=args.trailing_silence,
         post_send_wait=args.post_send_wait,
         sample_timeout=args.sample_timeout,
+        tts_wait_timeout=args.tts_wait_timeout,
         resume=args.resume,
         workers=args.workers,
     )
