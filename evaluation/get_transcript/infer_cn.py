@@ -36,10 +36,10 @@ def get_time_aligned_transcription(data_path, gpu_id=0):
 
     # 加载 FunASR 模型
     model = AutoModel(
-        model="paraformer-zh",
-        model_revision="v2.0.4",
-        vad_model="fsmn-vad",
-        vad_model_revision="v2.0.4",
+        model=os.getenv("FDBC_FUNASR_MODEL", "paraformer-zh"),
+        model_revision=os.getenv("FDBC_FUNASR_MODEL_REVISION", "v2.0.4"),
+        vad_model=os.getenv("FDBC_FUNASR_VAD_MODEL", "fsmn-vad"),
+        vad_model_revision=os.getenv("FDBC_FUNASR_VAD_MODEL_REVISION", "v2.0.4"),
         disable_update=True
     )
 

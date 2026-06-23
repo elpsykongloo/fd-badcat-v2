@@ -6,10 +6,22 @@ from collections import Counter
 from typing import Dict, Any, Union, List, Tuple
 from openai import OpenAI
 from pathlib import Path
-# 设置DeepSeek API
-DEEPSEEK_API_KEY = "REDACTED_DASHSCOPE_API_KEY"
-DEEPSEEK_BASE_URL = "https://api.deepseek.com"
-MODEL_NAME = "deepseek-chat"
+# 设置 DeepSeek API. Keep the original judge model by default, but require the
+# API key to come from the environment instead of being committed in source.
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "").strip()
+DEEPSEEK_BASE_URL = os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com").strip()
+MODEL_NAME = os.getenv("DEEPSEEK_MODEL", "deepseek-chat").strip()
+DEEPSEEK_TIMEOUT = float(os.getenv("DEEPSEEK_TIMEOUT", "120"))
+
+
+def create_deepseek_client():
+    if not DEEPSEEK_API_KEY:
+        raise RuntimeError("Set DEEPSEEK_API_KEY before running DeepSeek judge evaluation.")
+    return OpenAI(
+        api_key=DEEPSEEK_API_KEY,
+        base_url=DEEPSEEK_BASE_URL,
+        timeout=DEEPSEEK_TIMEOUT,
+    )
 
 def json_dict_to_compact_text(json_list):
     """
@@ -237,7 +249,7 @@ def check_overlap(list_a: List[Dict], list_b: List[Dict]) -> int:
 import argparse
 if __name__ == "__main__":
     # 初始化DeepSeek客户端
-    client = OpenAI(api_key=DEEPSEEK_API_KEY, base_url=DEEPSEEK_BASE_URL)
+    client = create_deepseek_client()
     parser = argparse.ArgumentParser(
         description="Run DeepSeek behavior evaluation on a dataset directory."
     )

@@ -34,9 +34,16 @@ def get_time_aligned_transcription(data_path, gpu_id=0):
         return
 
     # 加载 NeMo ASR 模型并移动到指定GPU
-    asr_model = nemo_asr.models.ASRModel.restore_from(
-        restore_path=str("model/parakeet-tdt-0.6b-v2/parakeet-tdt-0.6b-v2.nemo")
-    ).to(device)
+    nemo_path = os.getenv(
+        "FDBC_PARAKEET_NEMO",
+        "model/parakeet-tdt-0.6b-v2/parakeet-tdt-0.6b-v2.nemo",
+    )
+    if os.path.exists(nemo_path):
+        asr_model = nemo_asr.models.ASRModel.restore_from(restore_path=str(nemo_path)).to(device)
+    else:
+        asr_model = nemo_asr.models.ASRModel.from_pretrained(
+            model_name=os.getenv("FDBC_PARAKEET_MODEL", "nvidia/parakeet-tdt-0.6b-v2")
+        ).to(device)
 
     for audio_path in tqdm(audio_paths):
         print(f"[INFO] Processing {audio_path}")
