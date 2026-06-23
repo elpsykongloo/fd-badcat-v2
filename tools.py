@@ -167,12 +167,12 @@ Finance & Billing:
   get_exchange_rate(amount, from_currency, to_currency)
   modify_autopay(bill_type, source_account)
 Housing & Location:
-  search_apartments(city, bedrooms, max_price, pets_allowed)
+  search_apartments(city, bedrooms, max_price, pets_allowed optional)
   calculate_commute(origin_address, destination_address, mode)
   update_search_filter(filter_name, value)
 E-Commerce:
   track_order(order_id)
-  search_products(query, max_price, category)
+  search_products(query, max_price optional, category optional)
   add_to_cart(product_id, quantity)"""
 
 

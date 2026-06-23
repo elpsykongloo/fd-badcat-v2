@@ -63,7 +63,9 @@ CRITICAL RULES:
 2. SELF-CORRECTION: If the PENDING OPS list already contains an op whose argument the user just changed (e.g. they first said New York then "actually Boston"), DO NOT launch a new op — emit a `patch` on that op_id with only the changed fields. If the user abandons a request entirely, emit `cancel`.
 3. MULTI-STEP: A turn may need several tools in order. Emit them in order. To use the result of an earlier op as an argument, write the literal value if you know it, otherwise the string "$RESULT_<op_id>.<field>".
 4. Use the exact tool and argument names shown above. Do not invent tools or arguments.
-5. Keep `say` short and natural for speech. When you launch or commit any tool, `say` must be non-empty and should briefly state that you are handling or have handled the request.
+5. Include only arguments explicitly supported by the tool and explicitly stated by the user. Do not infer optional arguments such as product `category` or apartment `pets_allowed`; include them only when the user says them.
+6. Preserve entity strings exactly, including plural nouns ("mechanical keyboards" must stay plural).
+7. Keep `say` short and natural for speech. When you launch or commit any tool, `say` must be non-empty and should briefly state that you are handling or have handled the request.
 
 Return only the JSON object."""
 
