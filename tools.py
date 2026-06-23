@@ -124,14 +124,17 @@ class ToolRegistry:
 
     def call(self, fn: str, **kwargs) -> dict:
         """Execute a tool. Latency is injected to emulate real backends."""
-        if self._official is not None:
-            return self._official.call(fn, **kwargs)
-        if self._lat is not None:
-            self._lat.inject(fn)
-        func = _INLINE.get(fn)
-        if func is None:
-            return {"status": "error", "message": f"unknown tool {fn}"}
-        return func(**kwargs)
+        try:
+            if self._official is not None:
+                return self._official.call(fn, **kwargs)
+            if self._lat is not None:
+                self._lat.inject(fn)
+            func = _INLINE.get(fn)
+            if func is None:
+                return {"status": "error", "message": f"unknown tool {fn}"}
+            return func(**kwargs)
+        except Exception as exc:
+            return {"status": "error", "message": str(exc), "function": fn, "args": kwargs}
 
     # --- the executor signature the Transaction expects: executor(fn, args) -> dict ---
     def executor(self, fn: str, args: dict) -> dict:
