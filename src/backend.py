@@ -52,15 +52,33 @@ class ConversationEngine:
         self.assistant_history = []
         self.user_history = []
 
+    RESPONSE_TRANSCRIPT_SCHEMA = {
+        "type": "json_schema",
+        "json_schema": {
+            "name": "response_with_transcript",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "transcript": {"type": "string"},
+                    "answer": {"type": "string"},
+                },
+                "required": ["transcript", "answer"],
+                "additionalProperties": False,
+            },
+            "strict": True,
+        },
+    }
+
     @staticmethod
     def default_response_with_transcript_prompt(response_prompt: str) -> str:
         return (
-            response_prompt.rstrip()
-            + "\n\n你还需要完成一个内部转写任务：先转写当前用户音频，然后给出回复。\n"
-            "只输出一个 JSON 对象，不要输出 Markdown、解释或代码块。\n"
-            "JSON 格式必须是：{\"transcript\":\"当前用户音频逐字转写\",\"answer\":\"给用户朗读的最终回复\"}\n"
-            "transcript 只包含当前用户音频内容，不要包含历史对话或助手回复。\n"
-            "answer 必须严格遵守上面的回复规则，保持简短自然；后续 TTS 只会朗读 answer。\n"
+            "你必须只输出一个 JSON 对象。不要输出普通文本、Markdown、解释、代码块或 JSON 以外的任何字符。\n"
+            "JSON 必须严格包含两个字段：{\"transcript\":\"当前用户音频逐字转写\",\"answer\":\"给用户朗读的最终回复\"}\n"
+            "transcript 只写当前这一次用户音频的逐字转写，不要写历史对话或助手回复。\n"
+            "answer 是给用户朗读的最终回复，所有回答都必须放进 answer 字段，绝不能直接写在 JSON 外面。\n\n"
+            "answer 字段的规则：\n"
+            + response_prompt.rstrip()
+            + "\nanswer 必须严格遵守上面的回复规则，保持简短自然；后续 TTS 只会朗读 answer。\n"
             "如果音频听不清，transcript 填空字符串，但 answer 仍需根据可理解内容回复。"
         )
 
@@ -154,6 +172,35 @@ class ConversationEngine:
                         block["audio_url"]["url"] = "<AUDIO_BASE64_OMITTED>"
         return messages_clean
 
+    def build_response_messages(self, user_audio):
+        content = []
+        history_lines = [
+            "历史对话仅供 answer 判断是否需要重复或承接；transcript 不得包含历史。"
+        ]
+        rounds = min(len(self.user_history), len(self.assistant_history))
+        for i in range(rounds):
+            user_text = self.user_history[i] or "[上一轮用户音频转写为空]"
+            assistant_text = self.assistant_history[i]
+            history_lines.append(f"用户：{user_text}")
+            history_lines.append(f"助手：{assistant_text}")
+        history_lines.append("当前用户音频如下。请只输出 JSON。")
+        content.append({"type": "text", "text": "\n".join(history_lines)})
+
+        if user_audio is not None:
+            wav_buffer = io.BytesIO()
+            sf.write(wav_buffer, user_audio, self.SAMPLE_RATE, format='WAV', subtype='PCM_16')
+            wav_buffer.seek(0)
+            audio_base64 = base64.b64encode(wav_buffer.read()).decode("utf-8")
+            content.append({
+                "type": "audio_url",
+                "audio_url": {"url": f"data:audio/wav;base64,{audio_base64}"}
+            })
+
+        return [
+            {"role": "system", "content": self.RESPONSE_WITH_TRANSCRIPT_PROMPT},
+            {"role": "user", "content": content},
+        ]
+
     @staticmethod
     def parse_response_with_transcript(raw: str) -> tuple[str, str]:
         text = str(raw or "").strip()
@@ -207,16 +254,18 @@ class ConversationEngine:
         return decision
 
     async def async_response(self, user_audio, turn_id):
-        messages = self.build_messages(
-            system_prompt=self.RESPONSE_WITH_TRANSCRIPT_PROMPT,
-            user_history=self.user_history,
-            assistant_history=self.assistant_history,
-            user_audio=user_audio,
-            use_history=True,
-            shift_history=False,
-        )
+        input_path = None
+        if self.output_dir is not None:
+            input_path = self.output_dir / f"stream_turn{turn_id}_input.wav"
+            sf.write(input_path, user_audio, self.SAMPLE_RATE)
+
+        messages = self.build_response_messages(user_audio)
         start_t = time.perf_counter()
-        raw = await asyncio.to_thread(llm_qwen3o, messages)
+        raw = await asyncio.to_thread(
+            llm_qwen3o,
+            messages,
+            response_format=self.RESPONSE_TRANSCRIPT_SCHEMA,
+        )
         infer_time = round(time.perf_counter() - start_t, 3)
         transcript, answer = self.parse_response_with_transcript(raw)
 
@@ -230,6 +279,8 @@ class ConversationEngine:
             "turn": turn_id,
             "state": self.STATE,
             "response_mode": "transcript_answer",
+            "structured_output": "json_schema",
+            "input_path": str(input_path) if input_path else None,
         })
         await self.send_control("asr_done", {
             "timestamp": round(time.time() - self.start_wall, 3),

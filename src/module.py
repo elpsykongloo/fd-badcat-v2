@@ -141,7 +141,7 @@ def asr(path):
     return str(stream.result.text).strip()
 
 
-def llm_qwen3o(messages: list):
+def llm_qwen3o(messages: list, response_format: dict | None = None):
     payload = {
         "model": QWEN_MODEL,
         "temperature": float(os.getenv("FDBC_QWEN_TEMPERATURE", "0")),
@@ -154,6 +154,8 @@ def llm_qwen3o(messages: list):
         "modalities": ["text"],
         "messages": messages,
     }
+    if response_format is not None:
+        payload["response_format"] = response_format
     try:
         response = _LOCAL_HTTP.post(
             QWEN_URL,
