@@ -13,11 +13,12 @@
 
 ## 环境事实
 
-- 工作目录 `/root/autodl-tmp/fd-badcat`；FDBench 在 `/root/autodl-tmp/FDBench_v3`（v1_v1.5/v2/v3 三代，用 v3）。
-- **conda 环境**：`fd-sds`（`/root/miniconda3/envs/fd-sds`，backend 运行环境：soundfile/silero_vad/fastapi/torch 全有）；`/root/autodl-tmp/conda-envs/` 下有 `fdb_v3`、`fdbc-qwen3o-vllm`（vLLM 服务）、`index-tts-vllm`。直接用绝对路径 `/root/miniconda3/envs/fd-sds/bin/python` 最稳。
-- **GPU 常常不在位**（省钱策略：白天租卡）。无 GPU 时：写代码、mock 测试、CPU 级验证；一切需要 vLLM/真模型的验证列入「GPU 快速启动清单」（见 `docs/w1_report.md`）。
-- 服务拓扑（GPU 在位时）：vLLM Qwen3-Omni-30B-A3B :10003 → 代理 `src/qwen3_api.py` :10004 → backend :18000。TTS 默认走 **Omni 原生**（`FDBC_TTS_PROVIDER=omni`，走同一个 vLLM），Index-TTS(:19000) 是可选回退。启动脚本在 `setup/`。
-- 网络：本机代理环境变量存在，`_LOCAL_HTTP.trust_env=False` 与 `NO_PROXY=127.0.0.1` 是既定约定，新代码访问本地服务必须沿用。
+- 工作目录 `/root/autodl-tmp/fd-badcat`；FDBench 在 `/root/autodl-tmp/FDBench_v3`（v1_v1.5/v2/v3 三代，用 v3）；**TACT 原型包在 `/root/autodl-tmp/tact/`**（独立 git 仓库，6/23 构建：事务代数/工具注册/decider/offline_runner，decider 走文本路=现成消融基线；INTEGRATION.md 是集成指南）。
+- **conda 环境**：`fd-sds`（`/root/miniconda3/envs/fd-sds`，backend 运行环境）；`/root/autodl-tmp/conda-envs/` 下有 `fdb_v3`、`fdbc-qwen3o-vllm`（vLLM 服务）、`index-tts-vllm`。直接用绝对路径 `/root/miniconda3/envs/fd-sds/bin/python` 最稳。
+- **容器规格随租卡变化**：无 GPU 时 1 核/2GB（torch 进程会 OOM——用 `scripts/extract_vad_events.py` 预抽 VAD + `install_light_stubs()` 轻进程路；预压分配 trick 见该脚本）；GPU 日为 RTX PRO 6000 Blackwell 96GB + 208 核/118GB。
+- 服务拓扑（GPU 在位时）：vLLM Qwen3-Omni-30B-A3B :10003（`setup/start_qwen3omni_audio.sh`，音频管线 max_num_seqs=1 确定性优先；文本配置 `qwen3_omni_text_only.yaml` 可高并发）→ 代理 `src/qwen3_api.py` :10004（`setup/start_qwen3_proxy.sh`）→ backend :18000。TTS 默认 **Omni 原生**。实测 Blackwell 上音频判定单次 ~0.26s。
+- 网络：本机代理环境变量存在，本地服务必须 `trust_env=False`/`NO_PROXY`。**shell 里不要 export OMP_NUM_THREADS=空值**（libgomp 报 Invalid value）。
+- DeepSeek judge key 未配置（`configs/eval.env.example` 模板在，`DEEPSEEK_API_KEY` 缺）——HumDial judge 打分需用户提供。
 
 ## 仓库拓扑与分叉事实（重要）
 
@@ -52,14 +53,15 @@
 
 ## 当前状态（W1）
 
-- [x] D0: `tact` 分支 + `golden-base` tag + `backend_legacy.py` 冻结 + `llm.audio_block` 开关（commit 8dc0876）
-- [ ] D1–D3: `src/engine.py` actor 化（事件模型/音频钟/决策分叉/陈旧性协议）
-- [ ] 单测 S2 十项 + trace_diff + 回放框架 + 冻结测量
-- [ ] D4: ASR 工厂（sensevoice 双语，flag 后，默认 paraformer_zh 不动）
-- [ ] D5: FDBench_v3 深审计 → `docs/fdbv3_memo.md`（Q1 判分语义 = 全文最大单点风险）
-- [ ] D6: FDB adapter + agent_blocking 稻草人基线
-- [ ] 真 LLM 金标录制与等价性复验（**需 GPU**，见快速启动清单）
+- [x] D0: `tact` 分支 + `golden-base` tag + `backend_legacy.py` 冻结 + `llm.audio_block` 开关（8dc0876）
+- [x] D1–D3: `src/engine.py` actor 化（92f3561 + 06ca5c6）；单测 11/11
+- [x] D2: trace_diff + 回放框架 + mock 等价性（序列 8/8，L1 6/8+2 归因）→ `docs/w1_equivalence.md`
+- [x] D3.4: 冻结测量（legacy max 2417ms/停摆4s vs actor 70.8ms/0）→ `docs/w1_freeze_data.json`
+- [x] D4: ASR 工厂（sensevoice flag 后，默认 paraformer 不动）+ prompts_en/prompts_agent + thread-local Session
+- [x] D5: FDBench_v3 深审计 → `docs/fdbv3_memo.md`（**Q1 实锤：严格 scorer 罚补偿/多余调用**；离线契约=result_{provider}.json；既有 tact 分数 blocking 0.73/async 0.71/live 0.65）
+- [x] D6 adapter：已存在（`FDBench_v3/v3/tact_livekit_agent.py` + `/root/autodl-tmp/tact/offline_runner.py`），无需新写
+- [~] GPU 日实验：金标录制/等价复验/HumDial 回归/FDB 冒烟——见 `docs/w1_report.md`
 
 ## GPU 到位后的快速启动
 
-见 `docs/w1_report.md` 的「GPU 快速启动」节（W1 收口时写就）。核心顺序：起 vLLM → 起代理 → 录金标 trace（旧引擎）→ 新旧引擎等价性复验 → HumDial 回归 → FDB 冒烟。
+见 `docs/w1_report.md` 的「GPU 快速启动」节。核心顺序：起 vLLM（audio 配置）→ 起代理 → 冒烟 → 金标 trace（旧引擎）→ 新旧等价复验 → HumDial 回归（`run_humdial_100_pipeline.py --seed 42`，同种子=同样本集可与 6/23 产物逐样本对齐）→ FDB 冒烟（tact.offline_runner --limit 5）。

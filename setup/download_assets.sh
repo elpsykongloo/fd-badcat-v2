@@ -108,6 +108,33 @@ download_asr() {
     rm -f "$asr_tar"
 }
 
+download_sensevoice() {
+    local sv_dir="$ROOT_DIR/model/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17"
+    local sv_tar="$sv_dir.tar.bz2"
+    local sv_url="https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17.tar.bz2"
+
+    mkdir -p "$ROOT_DIR/model"
+    if [[ ( -f "$sv_dir/model.int8.onnx" || -f "$sv_dir/model.onnx" ) && -f "$sv_dir/tokens.txt" ]]; then
+        echo "SenseVoice model already exists: $sv_dir"
+        return
+    fi
+
+    unset all_proxy ALL_PROXY
+    aria2c \
+        --continue=true \
+        --max-connection-per-server="${ASR_ARIA2_X:-4}" \
+        --split="${ASR_ARIA2_S:-4}" \
+        --min-split-size="${ARIA2_K:-1M}" \
+        --file-allocation=none \
+        --console-log-level=warn \
+        --summary-interval=60 \
+        --dir="$ROOT_DIR/model" \
+        --out="$(basename "$sv_tar")" \
+        "$sv_url"
+    tar xf "$sv_tar" -C "$ROOT_DIR/model"
+    rm -f "$sv_tar"
+}
+
 download_data() {
     local data_dir="$ROOT_DIR/data/HumDial-FDBench"
     local input_file="$ROOT_DIR/.aria2/humdial-fdbench.txt"
@@ -195,6 +222,9 @@ main() {
     fi
     if want_target asr "${targets[@]}"; then
         download_asr
+    fi
+    if want_target sensevoice "${targets[@]}"; then
+        download_sensevoice
     fi
     if want_target index-tts-repo "${targets[@]}"; then
         prepare_index_tts_repo
