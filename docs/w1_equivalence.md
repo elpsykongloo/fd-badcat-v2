@@ -1,8 +1,7 @@
-# W1 等价性报告（mock 版 · CPU · 2026-07-03 夜间）
+# W1 等价性报告（2026-07-03 · mock 版 + 真 LLM 版）
 
-> 裁判：`scripts/trace_diff.py`（归一化事件序列 + 0.25s 软时间容差）
-> 数据：`docs/w1_equivalence_data.json`；trace 原件在 `traces/mock_eq/`
-> 真 LLM 金标复验待 GPU 日执行（见 w1_report.md 快速启动清单）
+> 裁判：`scripts/trace_diff.py`（归一化事件序列 + 并发事件无序集 + 软时间容差）
+> 数据：`docs/w1_equivalence_data.json`；trace 原件在 `traces/`
 
 ## 方法
 
@@ -43,3 +42,28 @@
 3. reset 后到达的迟到 TTS/ASR/LLM 结果被代际门丢弃（旧码会在 reset 后继续 send_bytes——竞态产物）。
 4. 决策硬超时 15s + 保守回退（新增，代替旧 300s 挂死；trace 有 `llm_timeout` 事件可审计，HumDial 回归中应为 0 次）。
 5. SPEAK 段在途判定期间抑制长打断计时（`_seg_closed`）；在途期间用户续说则以续说时刻重锚 1.5s 窗（旧码因冻结不可能进入该组合态；语义 = 排空后新段起算，见 engine.py 注释）。
+
+---
+
+# 真 LLM 版（GPU 日 · vLLM Qwen3-Omni-30B-A3B · T=0/seed=42 · 金标集 20 条）
+
+## 结果
+
+| 对比 | 结果 |
+|---|---|
+| legacy(真模型) vs actor(真模型) — L1 | 9/20 |
+| legacy vs actor — **分类决策序列一致**（judge/interrupt/shift 分类词 + 打断类型 + 段结构） | **19/20** |
+| **legacy vs legacy 自复现**（抽测 3 条） | **2/3**（`ask_0001_0004` 自分叉于同一位置） |
+| injected 回放 vs 金标（决策注入保真度） | **L1 20/20**，20 条共 7.5s（≈60× 实时） |
+
+## 归因
+
+**L1 未达对比的主导噪声源是 legacy 自身的墙钟抖动，不是新引擎的行为偏差：**
+
+1. **机理**：legacy 的 END_HOLD 判定走墙钟（受 VAD 计算耗时/调度抖动影响），段边界在帧级不可复现（实测同 clip 两遍 legacy 段边界差 1 帧）。段末多/少 16ms 静音 → 音频 base64 不同 → T=0 下 response 自由文本**中途分叉**（例：`ask_0001_0004` 两侧 response 前 18 字逐字相同，结尾"别急着开盖。"vs"焖一会儿再取出哦。"）。分类决策（单词输出）对此鲁棒——19/20 一致。
+2. **唯一分类翻转**：`deny_0001_0001` 第二段 interrupt 判定 continue↔switch——deny 类目语音本就位于 backchannel/打断的决策边界，帧级输入差即可翻转；属输入敏感性而非控制流差异（mock 版控制流 8/8 一致为证）。
+3. **含义**：新引擎的音频钟段边界是**确定的**（同输入必同段），旧引擎不是。"等价性"在 response 文本层面的理论上限即 legacy 自噪声地板。最终兜底 = HumDial 回归的分数层面对比（分布性指标对帧级抖动鲁棒）。
+
+## FDB-v3 冒烟（E5）
+
+blocking 模式 × 6 场景（ecommerce），本地 vLLM 决策，官方 `evaluate_pass_rate.py`（精确匹配模式）：**6/6 PASS（pass rate 1.0）**。管道契约验证通过。

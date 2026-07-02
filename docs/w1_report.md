@@ -49,7 +49,20 @@
 
 ## 真 LLM 实验（GPU 日执行记录）
 
-<!-- FILL:GPU_RESULTS -->
+环境：RTX PRO 6000 Blackwell 96GB；vLLM Qwen3-Omni-30B-A3B（音频管线，`max_num_seqs:1`）；实测单次音频判定 ~0.26s、文本决策 ~0.21s。
+
+| 实验 | 结果 |
+|---|---|
+| 金标录制（legacy + 真模型，20 条/10 类目） | ✅ `traces/golden/` |
+| actor 同集录制 | ✅ `traces/golden_actor/` |
+| **真 LLM 等价性：分类决策序列一致** | **19/20**（唯一翻转在 deny 决策边界；legacy 自复现抽测 2/3，自噪声地板即帧级抖动） |
+| injected 回放保真度 vs 金标 | **L1 20/20**；全集回放 **7.5s ≈ 60× 实时**（E7 判据 <5min） |
+| FDB-v3 blocking 冒烟（官方 scorer） | **6/6 PASS** |
+| HumDial 100 回归（--seed 42，样本名与 6/23 逐一对齐） | 运行中 → 完成后见 `logs/humdial_regression_*.log` 与本节回填 |
+
+<!-- FILL:HUMDIAL_REGRESSION -->
+
+详细归因见 `docs/w1_equivalence.md` 真 LLM 节。
 
 ## GPU 快速启动（复现实验用）
 
