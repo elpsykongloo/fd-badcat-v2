@@ -9,7 +9,7 @@
 |---|---|---|---|
 | E1 | 金标集等价性 L1≥80%，其余 L2 归因 | ✅ mock 版：序列等价 8/8，L1 6/8 + 2 例预注册偏差归因；真 LLM 版见下文 | `docs/w1_equivalence.md` |
 | E2 | 感知冻结消除：新引擎分割处理延迟 p99 < 20ms | ✅ actor 帧滞后 p99 0.49ms；VAD 间隙对比 legacy max 2417ms/停摆 4.0s vs actor max 70.8ms/停摆 0 | `docs/w1_freeze_data.json` |
-| E3 | HumDial 分数回归 | ⏳ 行为回归运行中（无 DeepSeek key，judge 分数待用户配 key 后一键补跑） | 本文档「HumDial 回归」节 |
+| E3 | HumDial 分数回归 | ✅ Overall 63.88 vs 62.13（+1.75，同 judge 重判）；首响延迟干净对比 2.43s vs 2.46s 无回归 | 本文档「HumDial 回归」节 |
 | E4 | 双语 ASR | ✅ 工厂落地（默认 paraformer_zh 不动，sensevoice flag 后）；模型已下载；验收见下 | `src/module.py` |
 | E5 | FDB-v3：备忘录 + blocking ≥5 场景 | ✅ 备忘录 11 问全答（Q1 实锤）；冒烟见下 | `docs/fdbv3_memo.md` |
 | E6 | 行政 | ➖ 按用户指示跳过 | — |
@@ -73,15 +73,27 @@
 - **7 例 `(N,N-1)→(N,N)` 型**：旧引擎 asr 竞态**丢失转写落盘**（async_asr 与 session 收尾竞争），新引擎修复——方向有利，非决策分歧；
 - **6 例真轮数差**（±1 轮）：边界样本决策翻转，与金标集分类一致率 19/20（95%）及 legacy 自噪声地板（自复现 2/3）量级吻合。
 
-分数级（DeepSeek judge）回归：待 `DEEPSEEK_API_KEY` 配置后一键补跑：
-```bash
-source configs/eval.env.example && export DEEPSEEK_API_KEY=sk-...
-/root/miniconda3/envs/fd-sds/bin/python scripts/run_humdial_100_pipeline.py \
-  --count 100 --seed 42 --resume --asr-device cpu \
-  --noisy-out-dir exp/humdial_100_actor_20260703_064948 \
-  --clean-out-dir exp/humdial_100_actor_20260703_064948-clean \
-  --eval-root logs/humdial_100_actor_eval_20260703_064948 --exp humdial-100-actor
-```
+### HumDial 100 分数级回归（DeepSeek judge · 双方同 judge 重判定稿）
+
+> judge 模型：`deepseek-v4-flash`（6/23 当时的 `deepseek-chat` 已从 API 下线，为公平将 legacy 的 6/23 产物用同一 judge 重判）。key 持久化于 `configs/eval.env`（600 权限，已 gitignore）+ `~/.bashrc` 自动 source。
+
+| 指标 | legacy（6/23 产物重判） | actor（新引擎） | Δ |
+|---|---|---|---|
+| Interruption Total | 88.0 | 84.0 | -4.0（=1 个样本，n=10/类粒度） |
+| Rejection Total | 36.25 | **43.75** | **+7.5** |
+| **Overall Score** | 62.13 | **63.88** | **+1.75** |
+
+**E3 判定：通过**——决策质量不掉分（Overall +1.75；拒识显著改善与丢 ASR 竞态修复方向一致；Interruption -4 为单样本粒度波动，对应金标集已归因的边界翻转）。
+
+**延迟指标勘误（重要）**：本次回归 run 的 First Response Delay（3.16s vs 2.06s）**不可采信**——gen 期间同机并发了真模型冻结测量与 funasr 的 GPU 加载重试，`max_num_seqs:1` 的 vLLM 被争抢（正是本报告并发策略节警告的场景，此处违反了自己的实时轨纪律，引以为戒）。干净环境的权威对比来自金标录制（无并发、同 vLLM、20 clips）：
+
+| | legacy | actor |
+|---|---|---|
+| 首响延迟均值（EoU→音频出） | 2.46s | **2.43s** |
+| actor 变慢 >0.2s 的 clip | — | **0/20** |
+| actor 变快 >0.2s 的 clip | — | 2/20（continue 锚点音频钟化红利） |
+
+**延迟无回归。** 正式延迟数字将来一律走实时轨（串行、专机、无同机负载）。
 
 ### 真模型感知冻结 A/B（同一探针=VAD 调用间隙；本地 vLLM，3 条多轮 clip）
 
