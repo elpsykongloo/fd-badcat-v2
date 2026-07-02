@@ -51,16 +51,18 @@
 - **实时轨**（测延迟指标）：串行、`realtime` 模式，只在最终出数时跑。
 - 隔离要点：module.py 的共享 `requests.Session` 与 sherpa 模型是并发下的坑（thread-safety），并发 runner 需 per-worker 实例化。
 
-## 当前状态（W1）
+## 当前状态（W1 —— 已收口，2026-07-03 GPU 日）
 
-- [x] D0: `tact` 分支 + `golden-base` tag + `backend_legacy.py` 冻结 + `llm.audio_block` 开关（8dc0876）
-- [x] D1–D3: `src/engine.py` actor 化（92f3561 + 06ca5c6）；单测 11/11
-- [x] D2: trace_diff + 回放框架 + mock 等价性（序列 8/8，L1 6/8+2 归因）→ `docs/w1_equivalence.md`
-- [x] D3.4: 冻结测量（legacy max 2417ms/停摆4s vs actor 70.8ms/0）→ `docs/w1_freeze_data.json`
-- [x] D4: ASR 工厂（sensevoice flag 后，默认 paraformer 不动）+ prompts_en/prompts_agent + thread-local Session
-- [x] D5: FDBench_v3 深审计 → `docs/fdbv3_memo.md`（**Q1 实锤：严格 scorer 罚补偿/多余调用**；离线契约=result_{provider}.json；既有 tact 分数 blocking 0.73/async 0.71/live 0.65）
-- [x] D6 adapter：已存在（`FDBench_v3/v3/tact_livekit_agent.py` + `/root/autodl-tmp/tact/offline_runner.py`），无需新写
-- [~] GPU 日实验：金标录制/等价复验/HumDial 回归/FDB 冒烟——见 `docs/w1_report.md`
+**G0 达成**：感知冻结消灭 + 音频钟迁移 + 行为保持验证 + FDB 跑通。详见 `docs/w1_report.md`。
+
+- [x] 全部 D0–D6 交付（引擎/工具/审计/双语/并发，提交历史 8dc0876..HEAD）
+- [x] 真 LLM 等价性：分类决策 19/20 一致；legacy 自复现地板 2/3（墙钟抖动×T=0）；injected 回放保真 L1 20/20 @ 60× 实时
+- [x] 冻结测量（真模型）：legacy 每 clip 停摆 0.5–0.9s vs actor 0（`docs/w1_freeze_real.json`）
+- [x] HumDial 100 回归（seed 42 对齐 6/23）：TTS 轮数 94/100 一致；7 例为旧引擎丢 ASR 竞态（新引擎修复）；`llm_timeout` 0 触发。**分数级 judge 待 DEEPSEEK_API_KEY**
+- [x] FDB-v3 blocking 冒烟 6/6 PASS（官方 scorer）；决策延迟基线：分类 p50 0.10s / response 0.15s / TTS 0.66s
+- [x] 并发轨验证：24 会话 @ 并发 8 = 14s（mock）；SenseVoice 双语 ASR 验收（RTF 0.021, EN 带标点）
+
+**W2 入口弹药**（蓝图 §4.2–4.3）：决策延迟基线已测；guided_json 可用性待查（vLLM 版本支持 structured output 大概率 ok，W2 Day1 确认）；PendingSet 原型已在 `/root/autodl-tmp/tact/transaction.py`；FDB 离线契约已验证。
 
 ## GPU 到位后的快速启动
 

@@ -60,7 +60,28 @@
 | FDB-v3 blocking 冒烟（官方 scorer） | **6/6 PASS** |
 | HumDial 100 回归（--seed 42，样本名与 6/23 逐一对齐） | 运行中 → 完成后见 `logs/humdial_regression_*.log` 与本节回填 |
 
-<!-- FILL:HUMDIAL_REGRESSION -->
+### HumDial 100 回归（--seed 42，逐样本对齐 6/23 legacy 运行）
+
+| 指标 | 结果 |
+|---|---|
+| 生成完成 | noisy 100/100 + clean 80/80，0 失败 |
+| **TTS 轮数逐样本一致** | **94/100** |
+| 完整 (tts, input) 产物结构一致 | 87/100 |
+| `llm_timeout` 触发 | 0（决策超时新行为从未触发 ✓） |
+
+分歧归因（13 例）：
+- **7 例 `(N,N-1)→(N,N)` 型**：旧引擎 asr 竞态**丢失转写落盘**（async_asr 与 session 收尾竞争），新引擎修复——方向有利，非决策分歧；
+- **6 例真轮数差**（±1 轮）：边界样本决策翻转，与金标集分类一致率 19/20（95%）及 legacy 自噪声地板（自复现 2/3）量级吻合。
+
+分数级（DeepSeek judge）回归：待 `DEEPSEEK_API_KEY` 配置后一键补跑：
+```bash
+source configs/eval.env.example && export DEEPSEEK_API_KEY=sk-...
+/root/miniconda3/envs/fd-sds/bin/python scripts/run_humdial_100_pipeline.py \
+  --count 100 --seed 42 --resume --asr-device cpu \
+  --noisy-out-dir exp/humdial_100_actor_20260703_064948 \
+  --clean-out-dir exp/humdial_100_actor_20260703_064948-clean \
+  --eval-root logs/humdial_100_actor_eval_20260703_064948 --exp humdial-100-actor
+```
 
 ### 真模型感知冻结 A/B（同一探针=VAD 调用间隙；本地 vLLM，3 条多轮 clip）
 
