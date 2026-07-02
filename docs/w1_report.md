@@ -62,6 +62,16 @@
 
 <!-- FILL:HUMDIAL_REGRESSION -->
 
+### 真模型感知冻结 A/B（同一探针=VAD 调用间隙；本地 vLLM，3 条多轮 clip）
+
+| clip | legacy max gap | legacy 累计停摆 | actor max gap | actor 停摆 |
+|---|---|---|---|---|
+| ask_0001_0004 | 673ms | 941.8ms | 28ms | 0 |
+| deny_0001_0001 | 309ms | 518.0ms | 25ms | 0 |
+| shift_0001_0001 | 336ms | 543.7ms | 27ms | 0 |
+
+真模型下 legacy 的停摆≈决策链延迟之和（本地 Blackwell 已是延迟下界；云 API/小卡场景按比例放大到秒级——mock 0.8s 版给出的 2417ms/4.0s 即该场景的直接模拟）。数据：`docs/w1_freeze_real.json`（真模型）与 `docs/w1_freeze_data.json`（mock 0.8s）。
+
 ### 决策延迟基线（D7.3，W2 Phase-B 预算分母；金标集 n=99 次调用实测）
 
 | 调用 | p50 | p95 | max |
