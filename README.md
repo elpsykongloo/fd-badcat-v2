@@ -35,8 +35,16 @@ Then, in the terminal, run the following scripts in order:
 
 ```
 bash setup/qwen3omni_env.sh
-bash setup/indextts_env.sh
 bash setup/aux_model.sh
+
+```
+
+Index-TTS is no longer required for the default runtime. The backend now uses
+Qwen3-Omni's native audio generation as the default TTS path. If you want to
+compare against the old Index-TTS fallback, install it separately:
+
+```
+bash setup/indextts_env.sh
 
 ```
 
@@ -48,8 +56,14 @@ After completing the installation via Docker or scripts, use `conda env list` to
 
 ```
 fd-sds                   /root/miniconda3/envs/fd-sds (System runtime environment)
-index-tts-vllm           /root/miniconda3/envs/index-tts-vllm (Index service environment)
 fdbc-qwen3o-vllm         /root/miniconda3/envs/vllm (Qwen3Omni environment)
+
+```
+
+If you enabled the optional Index-TTS fallback, you should also see:
+
+```
+index-tts-vllm           /root/miniconda3/envs/index-tts-vllm (optional Index service environment)
 
 ```
 
@@ -58,10 +72,17 @@ Once prepared, the correct directory structure for the `model` subfolder is:
 ```
 model/
 ├── Qwen3-Omni-30B-A3B-Instruct/
-├── index-tts-vllm/
-│   └── checkpoints/
-│       └── Index-TTS-1.5-vLLM/
 └── sherpa-onnx-paraformer-zh-2024-03-09/
+
+```
+
+The optional Index-TTS fallback adds:
+
+```
+model/
+└── index-tts-vllm/
+    └── checkpoints/
+        └── Index-TTS-1.5-vLLM/
 
 ```
 
@@ -92,15 +113,44 @@ exp/
 
 ##### 1. API Startup
 
-Our repository is primarily based on calling the `qwen3omni` API and the `indextts-1.5` API for experiments.
+Our repository is primarily based on calling the `qwen3omni` API for dialogue
+generation and Qwen3-Omni native audio generation for TTS.
 
-The logic of our project is relatively simple. If the two APIs are configured correctly, the environment dependencies of the experiment itself will not cause issues, as it only relies on basic frontend and backend tools.
+By default, the backend uses:
+
+```
+FDBC_TTS_PROVIDER=omni
+FDBC_QWEN_URL=http://127.0.0.1:10004/v1/chat/completions
+FDBC_OMNI_TTS_URL=$FDBC_QWEN_URL
+
+```
+
+You can bypass the local proxy for TTS and call vLLM-Omni directly:
+
+```
+export FDBC_OMNI_TTS_URL=http://127.0.0.1:10003/v1/chat/completions
+
+```
+
+To use the old Index-TTS fallback, start the Index-TTS service and run the
+backend with:
+
+```
+export FDBC_TTS_PROVIDER=index
+export FDBC_INDEX_TTS_URL=http://127.0.0.1:19000/tts
+
+```
+
+The logic of our project is relatively simple. In the default setup, if the
+Qwen3-Omni/vLLM-Omni API and local proxy are configured correctly, the
+experiment runtime itself only relies on basic frontend and backend tools.
 
 Our experiment adopts a frontend-backend mode that simulates real-time duration. This means that the length of the raw data ≈ the duration of the experiment run. Therefore, `screen` or `tmux` is required for continuous concurrent operation across multiple terminals.
 
 However, if the experiment is short enough, simple multi-terminal execution is also acceptable. Based on our testing, manually starting in multiple terminals is convenient and reliable (thanks to vLLM's concurrency optimization).
 
-**The experiment must be run with all five terminals successfully started.**
+**The default Omni TTS setup requires Qwen3-Omni/vLLM-Omni, the local Qwen
+proxy, and the backend/frontend session. Index-TTS is optional.**
 
 In **Terminal 1**, run the following command:
 
@@ -122,7 +172,8 @@ python src/qwen3_api.py
 
 If started correctly, you will see `running on http://0.0.0.0:10004`. Please keep this terminal open.
 
-In **Terminal 3**, run the following command:
+Optional: if you set `FDBC_TTS_PROVIDER=index`, start Index-TTS in another
+terminal:
 
 ```
 conda activate index-tts-vllm
@@ -189,4 +240,3 @@ for d in exp/exp-1/HD-Track2/*; do echo "$(basename "$d"): $(find "$d" -maxdepth
 ```
 
 Verify if the number of files matches the input file count to validate correctness.
-

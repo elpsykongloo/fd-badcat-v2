@@ -23,7 +23,7 @@ ASR_NUM_THREADS = int(os.getenv("FDBC_ASR_NUM_THREADS", "2"))
 
 INDEX_TTS_URL = os.getenv("FDBC_INDEX_TTS_URL", "http://127.0.0.1:19000/tts")
 INDEX_TTS_CHARACTER = os.getenv("FDBC_INDEX_TTS_CHARACTER", "jay_klee")
-TTS_PROVIDER = os.getenv("FDBC_TTS_PROVIDER", "index").strip().lower()
+TTS_PROVIDER = os.getenv("FDBC_TTS_PROVIDER", "omni").strip().lower()
 
 QWEN_URL = os.getenv("FDBC_QWEN_URL", "http://127.0.0.1:10004/v1/chat/completions")
 QWEN_MODEL = os.getenv("FDBC_QWEN_MODEL", "Qwen3-Omni-30B-A3B-Instruct")

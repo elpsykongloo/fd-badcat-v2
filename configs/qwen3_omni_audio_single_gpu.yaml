@@ -45,9 +45,9 @@ stages:
     output_connectors:
       to_stage_2: connector_of_shared_memory
     default_sampling_params:
-      temperature: 0.9
-      top_k: 50
-      max_tokens: 2048
+      temperature: 0.5
+      top_k: 20
+      max_tokens: 512
       seed: 42
       repetition_penalty: 1.05
 
@@ -68,6 +68,6 @@ stages:
       temperature: 0.0
       top_p: 1.0
       top_k: -1
-      max_tokens: 65536
+      max_tokens: 16384
       seed: 42
       repetition_penalty: 1.1
