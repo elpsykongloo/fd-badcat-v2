@@ -62,6 +62,16 @@
 
 <!-- FILL:HUMDIAL_REGRESSION -->
 
+### 决策延迟基线（D7.3，W2 Phase-B 预算分母；金标集 n=99 次调用实测）
+
+| 调用 | p50 | p95 | max |
+|---|---|---|---|
+| 分类决策 judge/interrupt/shift（audio→单词） | **0.10s** | 0.12s | 0.13s |
+| response（audio→自由文本） | 0.15s | 0.21s | 0.21s |
+| Omni TTS 整句合成 | 0.66s | 1.18s | 1.33s |
+
+注：Blackwell 96GB 本地 vLLM 数字，比蓝图预估（数百 ms–秒级）低一个量级；legacy 每 EoU 的感知冻结 = 决策链串行和（最坏 judge+shift+response ≈ 0.35s），部署到更小卡/云 API 时按比例放大。TTS 不在冻结路径（create_task）但决定首响延迟——W3 增量 TTS 的收益即砍 0.66–1.33s 的整句合成为首句合成。
+
 详细归因见 `docs/w1_equivalence.md` 真 LLM 节。
 
 ## GPU 快速启动（复现实验用）
