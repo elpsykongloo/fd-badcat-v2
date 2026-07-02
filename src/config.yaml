@@ -12,6 +12,21 @@ client:
   exp: "exp-1"
   lang: "tc" #'zh' 'en' 'zhen' "test" "clean" "tc"
 
+# ---- engine/llm knobs (defaults reproduce legacy behavior exactly) ----
+mode: humdial            # humdial | agent_blocking | agent (agent = W2+)
+engine:
+  arch: actor            # actor | legacy (src/backend_legacy.py inline engine)
+  playback_autoend: false     # true: SPEAK auto-returns to LISTEN at playback end (agent mode)
+  cancellable_response: false # W3+: cancel in-flight response on user speech
+llm:
+  audio_block: audio_url # audio_url | input_audio | input_audio_datauri (cloud f4ff2b1 dialect)
+  decision_timeout_s: 15 # per-decision hard timeout; on expiry fall back to the conservative
+                         # action (judge->continue, interrupt->continue, shift->no,
+                         # response-> retry once then apology line)
+asr:
+  backend: paraformer_zh # paraformer_zh | sensevoice | zipformer_bi
+  provider: cpu          # cuda | cpu
+
 prompts:
   response: |
     你是一个自然聊天的语音助手，要像朋友一样回答用户的问题，只回复15个字

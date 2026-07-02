@@ -3,7 +3,6 @@ from pathlib import Path
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from silero_vad import load_silero_vad, VADIterator
 from module import asr, llm_qwen3o, tts
-from messages import build_audio_content, scrub_audio_blocks
 import argparse
 import uvicorn
 import yaml
@@ -13,7 +12,7 @@ import copy
 # ============================================================
 
 class ConversationEngine:
-    def __init__(self, websocket: WebSocket = None, prompts: dict = None, delay: dict = None, llm_cfg: dict = None):
+    def __init__(self, websocket: WebSocket = None, prompts: dict = None, delay: dict = None):
         self.SAMPLE_RATE = 16000
         self.WINDOW_SIZE = 256
         self.FRAME_SEC = 256 / 16000
@@ -37,8 +36,6 @@ class ConversationEngine:
         # yaml
         self.prompts = prompts
         self.delay = delay
-        self.llm_cfg = llm_cfg or {}
-        self.AUDIO_BLOCK = self.llm_cfg.get("audio_block", "audio_url")
         self.END_HOLD_FRAMES = float(delay["end_hold_frame"])
         self.AFTER_CONTINUE_TIMEOUT_FRAMES = float(delay["after_continue_time"])
         self.JUDGE_PROMPT = prompts.get("judge", "")
@@ -60,9 +57,16 @@ class ConversationEngine:
         # ---------------------------------------------
         if not shift_history and ((len(user_history) == 0 and len(assistant_history) == 0) or not use_history):
             if user_audio is not None:
+                # 将音频转为 base64 data URI 格式
+                wav_buffer = io.BytesIO()
+                sf.write(wav_buffer, user_audio, self.SAMPLE_RATE, format='WAV', subtype='PCM_16')
+                wav_buffer.seek(0)
+                audio_base64 = base64.b64encode(wav_buffer.read()).decode("utf-8")
                 messages.append({
                     "role": "user",
-                    "content": [build_audio_content(user_audio, self.SAMPLE_RATE, self.AUDIO_BLOCK)]
+                    "content": [
+                        {"type": "audio_url", "audio_url": {"url": f"data:audio/wav;base64,{audio_base64}"}}
+                    ]
                 })
             return messages
         # with user history
@@ -77,9 +81,16 @@ class ConversationEngine:
                 "content": assistant_history[i]
             })
         if user_audio is not None:
+            # 将音频转为 base64 data URI 格式
+            wav_buffer = io.BytesIO()
+            sf.write(wav_buffer, user_audio, self.SAMPLE_RATE, format='WAV', subtype='PCM_16')
+            wav_buffer.seek(0)
+            audio_base64 = base64.b64encode(wav_buffer.read()).decode("utf-8")
             messages.append({
                 "role": "user",
-                "content": [build_audio_content(user_audio, self.SAMPLE_RATE, self.AUDIO_BLOCK)]
+                "content": [
+                    {"type": "audio_url", "audio_url": {"url": f"data:audio/wav;base64,{audio_base64}"}}
+                ]
             })
         return messages
 
@@ -146,7 +157,13 @@ class ConversationEngine:
         decision = await asyncio.to_thread(llm_qwen3o, messages)
         infer_time = round(time.perf_counter() - start_t, 3)
         # ============  send_control ============
-        messages_clean = scrub_audio_blocks(messages)
+        messages_clean = copy.deepcopy(messages)
+        for msg in messages_clean:
+            content = msg.get("content")
+            if isinstance(content, list):
+                for block in content:
+                    if block.get("type") == "audio_url":
+                        block["audio_url"]["url"] = "<AUDIO_BASE64_OMITTED>"
 
         await self.send_control("llm_done", {
             "timestamp": round(time.time() - self.start_wall, 3),
@@ -420,7 +437,7 @@ class ConversationEngine:
             print("end")
 
 # FastAPI
-def create_app(prompts, delay, llm_cfg=None) -> FastAPI:
+def create_app(prompts, delay) -> FastAPI:
     app = FastAPI()
     @app.websocket("/realtime")
     async def realtime_ws(websocket: WebSocket):
@@ -430,7 +447,7 @@ def create_app(prompts, delay, llm_cfg=None) -> FastAPI:
         data = msg.get("data", {})
         exp = data.get("exp", {})
         lang = data.get("lang", {})
-        engine = ConversationEngine(websocket=websocket, prompts=prompts, delay=delay, llm_cfg=llm_cfg)
+        engine = ConversationEngine(websocket=websocket, prompts=prompts, delay=delay)
         engine.output_dir = Path("exp") / exp / f"realtimeout_{lang}"
         engine.output_dir.mkdir(parents=True, exist_ok=True)
         await engine.run_realtime(websocket)
@@ -449,12 +466,11 @@ def main():
     prompts_cfg = cfg.get("prompts", {})
     delay_cfg = cfg.get("time", {})
     server_cfg = cfg.get("server", {})
-    llm_cfg = cfg.get("llm", {})
 
     host = server_cfg.get("host", {})
     port = server_cfg.get("port", {})
 
-    app = create_app(prompts_cfg, delay_cfg, llm_cfg)
+    app = create_app(prompts_cfg, delay_cfg)
     uvicorn.run(app, host=host, port=port)
 
 
