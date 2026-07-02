@@ -252,15 +252,25 @@ class RecordedScript:
 
     def __init__(self, golden_events, tts_dur_default=0.5):
         self.q = {}
+        last_llm_ts = None
         for ev in golden_events:
             data = ev.get("data", {})
+            ts = data.get("timestamp")
             if ev.get("event") == "llm_done":
                 kind = data.get("kind")  # present in new-engine traces
                 self.q.setdefault(kind or "_llm", []).append(
                     {"text": data.get("content", ""), "infer": data.get("infer_time", 0.0)})
+                last_llm_ts = ts
             elif ev.get("event") == "asr_done":
+                # legacy traces carry no infer_time for asr; reconstruct the real
+                # duration from the trace timeline (dispatch ≈ the llm_done that
+                # triggered the answer chain) so concurrent completion ORDER is
+                # faithfully reproduced in injected replay
+                infer = data.get("infer_time")
+                if infer is None and ts is not None and last_llm_ts is not None:
+                    infer = max(0.05, round(ts - last_llm_ts, 3))
                 self.q.setdefault("asr", []).append(
-                    {"text": data.get("content", ""), "infer": data.get("infer_time", 0.1)})
+                    {"text": data.get("content", ""), "infer": infer if infer is not None else 0.1})
             elif ev.get("event") == "tts_done":
                 self.q.setdefault("tts", []).append(
                     {"infer": data.get("infer_time", 0.2),

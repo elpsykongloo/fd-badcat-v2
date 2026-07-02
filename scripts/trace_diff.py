@@ -24,6 +24,11 @@ from pathlib import Path
 
 NEW_ENGINE_ONLY = {"llm_stale_dropped", "llm_timeout", "playback_end", "session_reset"}
 
+# events produced by concurrent worker tasks whose completion ORDER relative to
+# the main decision chain is nondeterministic in BOTH engines (e.g. asr runs
+# alongside response+tts): compared as a multiset, not by position
+UNORDERED_KINDS = {"asr_done"}
+
 
 def load_trace(path):
     events = []
@@ -45,19 +50,25 @@ def content_key(ev):
 
 
 def normalize(events, ignore=()):
-    out = []
+    ordered, unordered = [], []
     for ev in events:
         kind = ev.get("event")
         if kind in NEW_ENGINE_ONLY or kind in ignore:
             continue
         data = ev.get("data", {})
         t = data.get("t_audio", data.get("timestamp"))
-        out.append({
+        item = {
             "key": (kind, data.get("turn"), data.get("state"), content_key(ev)),
             "t": None if t is None else float(t),
             "raw": ev,
-        })
-    return out
+        }
+        if kind in UNORDERED_KINDS:
+            # state is timing-dependent for concurrent tasks; compare kind/turn/content
+            item["key"] = (kind, data.get("turn"), None, content_key(ev))
+            unordered.append(item)
+        else:
+            ordered.append(item)
+    return ordered, unordered
 
 
 def fmt(item):
@@ -67,8 +78,8 @@ def fmt(item):
 
 
 def diff_traces(a_events, b_events, tol=0.25, ignore=()):
-    a = normalize(a_events, ignore)
-    b = normalize(b_events, ignore)
+    a, a_un = normalize(a_events, ignore)
+    b, b_un = normalize(b_events, ignore)
     n = min(len(a), len(b))
     first_div = None
     soft = []
@@ -83,6 +94,11 @@ def diff_traces(a_events, b_events, tol=0.25, ignore=()):
     if first_div is None and len(a) != len(b):
         first_div = n
 
+    # unordered kinds: multiset comparison on (kind, turn, content)
+    a_ms = sorted(str(x["key"]) for x in a_un)
+    b_ms = sorted(str(x["key"]) for x in b_un)
+    unordered_equal = a_ms == b_ms
+
     info_counts = {}
     for evs in (a_events, b_events):
         for ev in evs:
@@ -93,8 +109,10 @@ def diff_traces(a_events, b_events, tol=0.25, ignore=()):
         "a_len": len(a), "b_len": len(b),
         "first_divergence": first_div,
         "soft_time_mismatches": soft,
-        "l1": first_div is None and not soft,
-        "sequence_equal": first_div is None,
+        "unordered_equal": unordered_equal,
+        "unordered_a": a_ms, "unordered_b": b_ms,
+        "l1": first_div is None and not soft and unordered_equal,
+        "sequence_equal": first_div is None and unordered_equal,
         "info_counts": info_counts,
         "a": a, "b": b,
     }
@@ -104,6 +122,10 @@ def print_report(res, a_name="A", b_name="B"):
     print(f"{a_name}: {res['a_len']} events | {b_name}: {res['b_len']} events")
     if res["info_counts"]:
         print(f"informational (excluded): {res['info_counts']}")
+    if not res["unordered_equal"]:
+        print("UNORDERED-SET MISMATCH (asr_done etc.):")
+        print(f"  A: {res['unordered_a']}")
+        print(f"  B: {res['unordered_b']}")
     if res["l1"]:
         print("VERDICT: L1 STRICT EQUIVALENT")
         return
@@ -113,6 +135,9 @@ def print_report(res, a_name="A", b_name="B"):
             print(f"  #{i} dt={dt:.3f}s  {fmt(res['a'][i])}")
         return
     i = res["first_divergence"]
+    if i is None:
+        print("VERDICT: L2 — unordered-set mismatch only")
+        return
     print(f"VERDICT: L2 — first divergence at event #{i}")
     lo = max(0, i - 3)
     for j in range(lo, min(i + 4, max(res["a_len"], res["b_len"]))):
