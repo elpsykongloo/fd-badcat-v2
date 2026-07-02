@@ -459,6 +459,13 @@ def main():
     llm_cfg = cfg.get("llm", {})
     engine_cfg = cfg.get("engine", {})
 
+    # bridge yaml asr section -> module.py env config (explicit env wins)
+    asr_cfg = cfg.get("asr", {})
+    if asr_cfg.get("backend"):
+        os.environ.setdefault("FDBC_ASR_BACKEND", str(asr_cfg["backend"]))
+    if asr_cfg.get("provider"):
+        os.environ.setdefault("FDBC_ASR_PROVIDER", str(asr_cfg["provider"]))
+
     host = server_cfg.get("host", {})
     port = server_cfg.get("port", {})
 

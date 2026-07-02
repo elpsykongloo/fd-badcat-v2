@@ -52,7 +52,6 @@ import numpy as np
 import torch
 from silero_vad import load_silero_vad, VADIterator
 
-import module as _module
 from messages import build_audio_content, scrub_audio_blocks
 
 SAMPLE_RATE = 16000
@@ -114,9 +113,16 @@ class ActorEngine:
         self.q: asyncio.Queue = asyncio.Queue()
 
         # ---- injectable model functions (tests / mocks) ----
-        self.llm_fn = llm_fn or _module.llm_qwen3o
-        self.asr_fn = asr_fn or _module.asr
-        self.tts_fn = tts_fn or _module.tts
+        # module.py is imported lazily: it pulls sherpa_onnx/torchaudio/requests,
+        # which matters on the 1-core/2GB no-GPU dev container (see AGENTS.md)
+        if llm_fn is None or asr_fn is None or tts_fn is None:
+            import module as _module
+            llm_fn = llm_fn or _module.llm_qwen3o
+            asr_fn = asr_fn or _module.asr
+            tts_fn = tts_fn or _module.tts
+        self.llm_fn = llm_fn
+        self.asr_fn = asr_fn
+        self.tts_fn = tts_fn
 
         # ---- config ----
         self.prompts = prompts or {}
@@ -571,6 +577,7 @@ class ActorEngine:
             "prompt": ev.prompt_snapshot,
             "turn": ev.turn,
             "state": self.STATE,
+            "kind": ev.kind,
         })
         if ev.timed_out:
             await self.send_control("llm_timeout", {
@@ -767,9 +774,16 @@ class ActorEngine:
         frames = list(frame_iter)
 
         async def producer():
+            t0 = time.perf_counter()
+            base = frames[0].t_audio - len(frames[0].pcm) / SAMPLE_RATE if frames else 0.0
             for ev in frames:
                 if paced:
-                    await asyncio.sleep(len(ev.pcm) / SAMPLE_RATE)
+                    # absolute schedule (no cumulative sleep-overhead drift):
+                    # deliver each frame at its true arrival time
+                    target = t0 + (ev.t_audio - base)
+                    delay = target - time.perf_counter()
+                    if delay > 0:
+                        await asyncio.sleep(delay)
                     ev.t_wall = time.perf_counter()  # arrival stamp = put time
                 self.q.put_nowait(ev)
 

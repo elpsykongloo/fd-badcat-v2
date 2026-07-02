@@ -1,0 +1,204 @@
+[
+  {
+    "tag": "test-000001__jswitch_icontinue_sno",
+    "events_legacy": 20,
+    "events_actor": 20,
+    "l1": true,
+    "sequence_equal": true,
+    "first_divergence": null,
+    "soft_time_mismatches": [],
+    "info_counts": {},
+    "actor_freeze": {
+      "n": 1690,
+      "p50_ms": 0.14548562467098236,
+      "p95_ms": 0.16991794109344482,
+      "p99_ms": 0.37564337253570557,
+      "max_ms": 0.708412379026413,
+      "max_queue_depth": 3
+    }
+  },
+  {
+    "tag": "test-000001__jcontinue_icontinue_sno",
+    "events_legacy": 20,
+    "events_actor": 20,
+    "l1": false,
+    "sequence_equal": true,
+    "first_divergence": null,
+    "soft_time_mismatches": [
+      [
+        5,
+        0.306
+      ],
+      [
+        6,
+        0.307
+      ],
+      [
+        7,
+        0.304
+      ],
+      [
+        16,
+        0.324
+      ],
+      [
+        17,
+        0.324
+      ],
+      [
+        18,
+        0.325
+      ],
+      [
+        19,
+        0.323
+      ]
+    ],
+    "info_counts": {},
+    "actor_freeze": {
+      "n": 1690,
+      "p50_ms": 0.14086812734603882,
+      "p95_ms": 0.14433078467845917,
+      "p99_ms": 0.14804303646087646,
+      "max_ms": 0.5126185715198517,
+      "max_queue_depth": 2
+    }
+  },
+  {
+    "tag": "test-000001__jswitch_iswitch_sno",
+    "events_legacy": 20,
+    "events_actor": 20,
+    "l1": true,
+    "sequence_equal": true,
+    "first_divergence": null,
+    "soft_time_mismatches": [],
+    "info_counts": {},
+    "actor_freeze": {
+      "n": 1690,
+      "p50_ms": 0.1410171389579773,
+      "p95_ms": 0.16306154429912567,
+      "p99_ms": 0.168701633810997,
+      "max_ms": 0.5833525210618973,
+      "max_queue_depth": 3
+    }
+  },
+  {
+    "tag": "test-000001__jswitch_icontinue_syes",
+    "events_legacy": 19,
+    "events_actor": 19,
+    "l1": true,
+    "sequence_equal": true,
+    "first_divergence": null,
+    "soft_time_mismatches": [],
+    "info_counts": {},
+    "actor_freeze": {
+      "n": 1690,
+      "p50_ms": 0.14057941734790802,
+      "p95_ms": 0.1437608152627945,
+      "p99_ms": 0.1466795802116394,
+      "max_ms": 0.24588406085968018,
+      "max_queue_depth": 1
+    }
+  },
+  {
+    "tag": "0001_0004__jswitch_icontinue_sno",
+    "events_legacy": 16,
+    "events_actor": 16,
+    "l1": true,
+    "sequence_equal": true,
+    "first_divergence": null,
+    "soft_time_mismatches": [],
+    "info_counts": {},
+    "actor_freeze": {
+      "n": 1340,
+      "p50_ms": 0.14074519276618958,
+      "p95_ms": 0.14497153460979462,
+      "p99_ms": 0.1520402729511261,
+      "max_ms": 0.32735615968704224,
+      "max_queue_depth": 1
+    }
+  },
+  {
+    "tag": "0001_0004__jcontinue_icontinue_sno",
+    "events_legacy": 16,
+    "events_actor": 16,
+    "l1": false,
+    "sequence_equal": true,
+    "first_divergence": null,
+    "soft_time_mismatches": [
+      [
+        4,
+        0.304
+      ],
+      [
+        5,
+        0.306
+      ],
+      [
+        6,
+        0.303
+      ],
+      [
+        12,
+        0.306
+      ],
+      [
+        13,
+        0.321
+      ],
+      [
+        14,
+        0.307
+      ],
+      [
+        15,
+        0.32
+      ]
+    ],
+    "info_counts": {},
+    "actor_freeze": {
+      "n": 1340,
+      "p50_ms": 0.14086998999118805,
+      "p95_ms": 0.14444440603256226,
+      "p99_ms": 0.15255995094776154,
+      "max_ms": 0.5977004766464233,
+      "max_queue_depth": 2
+    }
+  },
+  {
+    "tag": "0001_0004__jswitch_iswitch_sno",
+    "events_legacy": 16,
+    "events_actor": 16,
+    "l1": true,
+    "sequence_equal": true,
+    "first_divergence": null,
+    "soft_time_mismatches": [],
+    "info_counts": {},
+    "actor_freeze": {
+      "n": 1340,
+      "p50_ms": 0.14089979231357574,
+      "p95_ms": 0.1452714204788208,
+      "p99_ms": 0.15925243496894836,
+      "max_ms": 0.358017161488533,
+      "max_queue_depth": 1
+    }
+  },
+  {
+    "tag": "0001_0004__jswitch_icontinue_syes",
+    "events_legacy": 15,
+    "events_actor": 15,
+    "l1": true,
+    "sequence_equal": true,
+    "first_divergence": null,
+    "soft_time_mismatches": [],
+    "info_counts": {},
+    "actor_freeze": {
+      "n": 1340,
+      "p50_ms": 0.1406688243150711,
+      "p95_ms": 0.145619735121727,
+      "p99_ms": 0.4449114203453064,
+      "max_ms": 0.5839057266712189,
+      "max_queue_depth": 3
+    }
+  }
+]

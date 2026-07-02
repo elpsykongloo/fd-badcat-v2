@@ -1,0 +1,142 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""W1 D2.1 trace-diff: the judge for old-engine vs new-engine equivalence.
+
+Normalization: each trace event becomes (event, turn, state, content_key);
+wall timestamps are dropped; a time axis is kept separately for soft checks
+(legacy traces only have wall "timestamp", which equals audio time under paced
+realtime replay; actor traces carry an explicit t_audio).
+
+Levels:
+  L1 strict  — normalized sequences identical AND every |Δt| <= --tol.
+  L2         — sequence divergence; the tool prints the first divergence with
+               ±3 events of context for manual attribution
+               (docs/w1_equivalence.md).
+
+New-engine-only informational events (llm_stale_dropped, llm_timeout,
+playback_end) are filtered out before comparison; their counts are reported.
+"""
+import argparse
+import hashlib
+import json
+import sys
+from pathlib import Path
+
+NEW_ENGINE_ONLY = {"llm_stale_dropped", "llm_timeout", "playback_end", "session_reset"}
+
+
+def load_trace(path):
+    events = []
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                events.append(json.loads(line))
+    return events
+
+
+def content_key(ev):
+    data = ev.get("data", {})
+    kind = ev.get("event")
+    if kind in ("llm_done", "asr_done"):
+        content = str(data.get("content", ""))
+        return hashlib.md5(content.encode("utf-8")).hexdigest()[:10]
+    return ""
+
+
+def normalize(events, ignore=()):
+    out = []
+    for ev in events:
+        kind = ev.get("event")
+        if kind in NEW_ENGINE_ONLY or kind in ignore:
+            continue
+        data = ev.get("data", {})
+        t = data.get("t_audio", data.get("timestamp"))
+        out.append({
+            "key": (kind, data.get("turn"), data.get("state"), content_key(ev)),
+            "t": None if t is None else float(t),
+            "raw": ev,
+        })
+    return out
+
+
+def fmt(item):
+    kind, turn, state, ch = item["key"]
+    t = "-" if item["t"] is None else f"{item['t']:.3f}"
+    return f"t={t:>8}  {kind:<18} turn={turn} state={state} content={ch or '-'}"
+
+
+def diff_traces(a_events, b_events, tol=0.25, ignore=()):
+    a = normalize(a_events, ignore)
+    b = normalize(b_events, ignore)
+    n = min(len(a), len(b))
+    first_div = None
+    soft = []
+    for i in range(n):
+        if a[i]["key"] != b[i]["key"]:
+            first_div = i
+            break
+        if a[i]["t"] is not None and b[i]["t"] is not None:
+            dt = abs(a[i]["t"] - b[i]["t"])
+            if dt > tol:
+                soft.append((i, dt))
+    if first_div is None and len(a) != len(b):
+        first_div = n
+
+    info_counts = {}
+    for evs in (a_events, b_events):
+        for ev in evs:
+            if ev.get("event") in NEW_ENGINE_ONLY:
+                info_counts[ev["event"]] = info_counts.get(ev["event"], 0) + 1
+
+    return {
+        "a_len": len(a), "b_len": len(b),
+        "first_divergence": first_div,
+        "soft_time_mismatches": soft,
+        "l1": first_div is None and not soft,
+        "sequence_equal": first_div is None,
+        "info_counts": info_counts,
+        "a": a, "b": b,
+    }
+
+
+def print_report(res, a_name="A", b_name="B"):
+    print(f"{a_name}: {res['a_len']} events | {b_name}: {res['b_len']} events")
+    if res["info_counts"]:
+        print(f"informational (excluded): {res['info_counts']}")
+    if res["l1"]:
+        print("VERDICT: L1 STRICT EQUIVALENT")
+        return
+    if res["sequence_equal"]:
+        print(f"VERDICT: sequence equal; {len(res['soft_time_mismatches'])} soft time mismatches (> tol)")
+        for i, dt in res["soft_time_mismatches"][:10]:
+            print(f"  #{i} dt={dt:.3f}s  {fmt(res['a'][i])}")
+        return
+    i = res["first_divergence"]
+    print(f"VERDICT: L2 — first divergence at event #{i}")
+    lo = max(0, i - 3)
+    for j in range(lo, min(i + 4, max(res["a_len"], res["b_len"]))):
+        av = fmt(res["a"][j]) if j < res["a_len"] else "<missing>"
+        bv = fmt(res["b"][j]) if j < res["b_len"] else "<missing>"
+        marker = ">>" if j == i else "  "
+        print(f"{marker} A#{j} {av}")
+        print(f"{marker} B#{j} {bv}")
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("trace_a")
+    ap.add_argument("trace_b")
+    ap.add_argument("--tol", type=float, default=0.25,
+                    help="soft time tolerance in seconds (audio clock vs paced wall)")
+    ap.add_argument("--ignore", default="", help="comma-separated event kinds to ignore")
+    args = ap.parse_args()
+    ignore = tuple(x for x in args.ignore.split(",") if x)
+    res = diff_traces(load_trace(args.trace_a), load_trace(args.trace_b),
+                      tol=args.tol, ignore=ignore)
+    print_report(res, Path(args.trace_a).name, Path(args.trace_b).name)
+    sys.exit(0 if res["l1"] else (2 if res["sequence_equal"] else 1))
+
+
+if __name__ == "__main__":
+    main()

@@ -290,6 +290,41 @@ def test_t10b_oracle_zero_latency():
     assert abs(done[0]["data"]["t_audio"] - 1.664) < 0.034  # same tick as dispatch
 
 
+# ---------------------------------------------------------------------------
+# T9: trace_diff locates a known divergence (and passes identical traces)
+# ---------------------------------------------------------------------------
+def test_t9_trace_diff_locates_divergence():
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+    from trace_diff import diff_traces
+
+    def ev(kind, turn, state, t, content=None):
+        d = {"turn": turn, "state": state, "t_audio": t}
+        if content is not None:
+            d["content"] = content
+        return {"event": kind, "data": d}
+
+    a = [ev("vad_start", 0, "LISTEN", 1.0), ev("vad_done", 0, "LISTEN", 2.0),
+         ev("llm_done", 0, "LISTEN", 2.7, "switch"), ev("tts_done", 0, "LISTEN", 3.4)]
+    # identical -> L1
+    res = diff_traces(a, [dict(x) for x in a])
+    assert res["l1"] and res["first_divergence"] is None
+    # different llm content -> divergence at index 2
+    b = [ev("vad_start", 0, "LISTEN", 1.0), ev("vad_done", 0, "LISTEN", 2.0),
+         ev("llm_done", 0, "LISTEN", 2.7, "continue"), ev("tts_done", 0, "LISTEN", 3.4)]
+    res = diff_traces(a, b)
+    assert not res["sequence_equal"] and res["first_divergence"] == 2
+    # time skew beyond tol -> sequence equal but not L1
+    c = [ev("vad_start", 0, "LISTEN", 1.0), ev("vad_done", 0, "LISTEN", 2.6),
+         ev("llm_done", 0, "LISTEN", 2.7, "switch"), ev("tts_done", 0, "LISTEN", 3.4)]
+    res = diff_traces(a, c, tol=0.25)
+    assert res["sequence_equal"] and not res["l1"]
+    assert res["soft_time_mismatches"] and res["soft_time_mismatches"][0][0] == 1
+    # new-engine-only events are excluded from comparison
+    d = a[:2] + [{"event": "llm_stale_dropped", "data": {"turn": 0, "t_audio": 2.5}}] + a[2:]
+    res = diff_traces(a, d)
+    assert res["l1"] and res["info_counts"].get("llm_stale_dropped") == 1
+
+
 if __name__ == "__main__":
     import traceback
     fns = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
