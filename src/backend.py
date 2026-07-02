@@ -420,8 +420,10 @@ class ConversationEngine:
             print("end")
 
 # FastAPI
-def create_app(prompts, delay, llm_cfg=None) -> FastAPI:
+def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
     app = FastAPI()
+    arch = (engine_cfg or {}).get("arch", "actor")
+
     @app.websocket("/realtime")
     async def realtime_ws(websocket: WebSocket):
         await websocket.accept()
@@ -430,7 +432,12 @@ def create_app(prompts, delay, llm_cfg=None) -> FastAPI:
         data = msg.get("data", {})
         exp = data.get("exp", {})
         lang = data.get("lang", {})
-        engine = ConversationEngine(websocket=websocket, prompts=prompts, delay=delay, llm_cfg=llm_cfg)
+        if arch == "legacy":
+            engine = ConversationEngine(websocket=websocket, prompts=prompts, delay=delay, llm_cfg=llm_cfg)
+        else:
+            from engine import ActorEngine
+            engine = ActorEngine(websocket=websocket, prompts=prompts, delay=delay,
+                                 llm_cfg=llm_cfg, engine_cfg=engine_cfg)
         engine.output_dir = Path("exp") / exp / f"realtimeout_{lang}"
         engine.output_dir.mkdir(parents=True, exist_ok=True)
         await engine.run_realtime(websocket)
@@ -450,11 +457,12 @@ def main():
     delay_cfg = cfg.get("time", {})
     server_cfg = cfg.get("server", {})
     llm_cfg = cfg.get("llm", {})
+    engine_cfg = cfg.get("engine", {})
 
     host = server_cfg.get("host", {})
     port = server_cfg.get("port", {})
 
-    app = create_app(prompts_cfg, delay_cfg, llm_cfg)
+    app = create_app(prompts_cfg, delay_cfg, llm_cfg, engine_cfg)
     uvicorn.run(app, host=host, port=port)
 
 
