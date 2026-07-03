@@ -61,17 +61,21 @@
 
 ## 当前状态（W2 —— 重跑收口，2026-07-03）
 
-**警示**：W2 首轮（17 代理并发，13:45–14:25）交付的实验结论**全部无效**（oracle 抄答案 / mock 数据 / 对照臂损坏），相关文档与伪造评测产物已**彻底删除**（fdbc_*_w2 等假 result 文件、mock 曲线、live 差距误诊报告等；勿再引用任何当日 13:56–14:23 时间窗的 docs）。**有效结论只看 `docs/w2_rerun_report.md` 与 `手工文档/神谕/04_W2 执行汇报.md`**（真模型单线程重跑）。
+**警示**：W2 首轮（17 代理并发，13:45–14:25）交付的实验结论**全部无效**（oracle 抄答案 / mock 数据 / 对照臂损坏），全部无效文档、伪 result 文件、mock 产物与失效脚本已**物理删除**（docs/ 只留 w1_*、fdbv3_memo、w2_rerun_report）。**有效结论只看 `docs/w2_rerun_report.md`（技术版）与 `手工文档/神谕/04_W2 执行汇报.md`（对神谕）。** 教训固化：多代理只用于写代码；实验结论必须单线程产出、逐数字对原始产物核验。
 
-- G1'：P1 ✅（TACT exact 0.560 vs blocking 0.570，judge 双双 0.690）；P2 ⚠️（judge 轨 76.5% ✓ / 状态轨 64.7% < 85% ✗）；P3 ❌（沙箱工具 p50 仅 0.315s，无重叠空间=R9 实现，走双档评测预案）；P4 ✅（HumDial 64.0 vs 63.88）；P5 ✅（新缓存双跑 100/100 逐位一致；解析末态失败 0）。
-- δ 扫描（rollback 17 夹）：δ*=1.5s，exact 0.647 **反超** sblock 0.588；eager δ=0 垫底 0.529（脏轨迹被 precision 处决）。D2 直方图：14/17 更正与意图同 VAD 段（EoU 粒度天然不暴露），暴露间隙 p50 1.12s——δ* 与其吻合，理论闭环第一圈成立。
-- **0.71<0.73 结案**（同 judge 重判 0.670 vs 0.690）：全部差距=2 场景——finance_14 同名调用顺序互换被按位对齐双杀（evaluator 生态问题）+ travel_16 实体逐字（Vegas/Las Vegas）。"急切调用被处决"假设证伪（0 例）。
-- **R12 结案**：judge-pass 轨工具选择仍是二元 precision=1（严苛）；只有 evaluate_tool_calls 的 F1 是渐变（宽恕）。双轨叙事按此分层。
-- 状态轨判分器校准：blocking 上与 exact 完全一致（TF=FT=0），TACT 上 TF=2 恰为脏轨迹终态正确案例。
-- 关键实现事实（W3 要继承）：流式 harness 在 `scripts/w2r_stream_replay.py`（EoU=VAD 段尾+0.64s hold；异议窗音频钟计时、用户语音暂停倒计时；快照必须含已执行集否则模型跨 EoU 重复 launch；launch 幂等去重；参数 schema 矫正；salvage 解析器。决策 p50≈1.0s 是首响地板，W3 主靶）。
-- rollback 21 中 6 场景无音频（released 数据只有 100 夹）；"回滚 21"物理上=15 场景/17 夹。
+- G1'：P1 ✅（TACT@δ* exact 0.560 vs blocking 0.570；judge 0.693±0.015 vs 0.700）；P2 ⚠️（judge 轨 76.5% ✓ / 状态轨 70.6% < 85% ✗）；P3 ❌ 结构性（沙箱工具 p50 0.315s 无重叠空间=R9 兑现，双档评测预案待神谕裁断）；P4 ✅（HumDial 64.0 vs 63.88）；P5 ✅（三路缓存独立跑 100/100 工具序列逐位一致；解析末态失败 0，首试失败 1.6% 全部一次修复回收）。
+- δ 扫描（rollback 17 夹，nominal infer）：δ*=1.5s，exact 0.706 **反超** sblock 0.588；eager δ=0 垫底 0.529（脏轨迹被 precision=1 处决）；**首响与 δ 解耦**（ack 占锚，平坦 1.64s），代价全在完成锚 ≈ +δ 线性。D2 直方图（VAD 段×SenseVoice token 真实对齐）：14/17 更正与意图同 VAD 段（EoU 粒度天然不暴露），跨段暴露间隙 0.42/1.12/1.16s——δ* 与间隙+决策延迟吻合，理论闭环第一圈成立。
+- 全量 100（串行 live，独占）：TACT 首响 p50 1.141s / 完成 2.943s vs 流式 blocking 1.452 / 1.452。**决策延迟修正：整段工具决策 p50=0.444s**（此前 ~1.0s 是与 HumDial 管线共抢 vLLM 的污染值——延迟纪律教训第二次兑现）。首响物理地板 = 0.64 hold + 0.444 ≈ 1.08s；P3 要 ≤0.73s ⇒ 决策须 ≤0.09s ⇒ W3 增量决策/4B 头是唯一路径。
+- **0.71<0.73 结案**（同 judge 重判 0.670 vs 0.690）：差距=2 场景——finance_14 同名调用顺序互换被官方按位置 pop(0) 对齐双杀（生态问题，提交时排序即修复）+ travel_16 实体逐字（Vegas/Las Vegas）。"急切调用被处决"证伪（0 例）。
+- **R12 结案**：judge-pass 轨工具选择仍是二元 precision=1（严苛）；只有 evaluate_tool_calls 的 F1 渐变（宽恕，且带 turn_take_success=转写非空门）。双轨叙事按此分层。
+- 状态轨判分器校准：blocking 上 TF=FT=0（≡exact，无虚增）；TACT 上 TF=1（ecommerce_15 先错后对=脏轨迹终态正确实例）。参数比较逐字沿用官方 exact_match_args。
+- **judge 噪声带**：同文件三次重判 ±2pt（provider 侧非确定）。判读纪律：≤2pt judge 差不构成证据。
+- ack-v0 实测（干净 provenance）：整句 TTS 0.933s → ack 0.429s，首音频提前 53.8%。
+- 关键实现事实（W3 继承）：评测 harness=`scripts/w2r_stream_replay.py`（EoU=VAD 段尾+0.64s hold；异议窗音频钟、用户语音暂停倒计时、patch 重启窗；快照必须含已执行集否则跨 EoU 重复 launch；launch 幂等去重；参数 schema 矫正；salvage 解析器；**快照 op_id 必须局部编号**——全局计数器在并发下会使 prompt 漂移）。判分 `scripts/w2r_score_grid.py`；状态轨 `scripts/w2r_state_track.py`；直方图 `scripts/w2r_delta_hist.py`。
+- rollback 21 中 6 场景无音频（released 只有 100 夹）；"回滚 21"物理上=15 场景/17 夹。
+- **评测效率基建**（准确度回归轨；出数/确定性验证回 A 档串行）：harness `--workers 12` 全量 100 从 ~25min → 98s（thread-local VAD/HTTP、缓存加锁、nominal-infer 推进音频钟）；DeepSeek judge `FDB_LLM_WORKERS=100`（100 场景 ≈40s，run_fdb_with_deepseek.sh 已固化）；决策缓存跨 δ 网格复用（6 点 ≈1 点开销）。
 
-**W3 入口弹药**：δ*-完成延迟曲线 + 双延迟档评测（R9 预案）；增量决策降首响地板；live 差距重查（首轮报告作废，假设清单 H6→H1→H2→H5→H3→H4）；状态轨 85% 缺口归因（TACT 的 state 0.580——主要输在与 blocking 共通的 ASR/实体逐字错误，非事务机制）。
+**W3 入口弹药**：双档延迟评测裁断（R9）；增量决策/4B 头压首响地板（0.09s 目标）；live 差距重查（H6→H1→H2→H5→H3→H4）；状态轨 85% 缺口主体=与 blocking 共通的 ASR/实体逐字错误（非事务机制），实体规范化是否立项待裁断；patch 质量迭代（housing_17 打错字段，这次守 30 条子集纪律）；上游 PR 候选（latency_injector per-instance RNG、同名调用对齐语义）。
 
 ## 历史状态（W1 —— 已收口，2026-07-03 GPU 日）
 

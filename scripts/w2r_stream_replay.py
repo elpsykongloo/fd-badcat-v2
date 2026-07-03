@@ -32,13 +32,17 @@ import argparse
 import glob
 import hashlib
 import json
+import os
 import random
 import re
 import sys
+import threading
 import time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import numpy as np
+import requests
 import soundfile as sf
 
 sys.path.insert(0, "/root/autodl-tmp/tact")
@@ -48,7 +52,6 @@ from tact.transaction import Transaction, Reversibility  # noqa: E402
 from tact.tools import ToolRegistry, REVERSIBILITY        # noqa: E402
 import tact.decider as _decider                           # noqa: E402
 from tact.decider import build_decider_messages, parse_decision  # noqa: E402
-from tact.module_adapter import llm_text                  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Prompt v2 (W2 rerun): two documented addenda over tact/decider.py SYSTEM_PROMPT.
@@ -78,14 +81,26 @@ _orig_snapshot = Transaction.snapshot_for_prompt
 
 
 def _snapshot_v2(self):
+    # Renumber pending ops with LOCAL ids (1..N by insertion order) so the prompt
+    # is independent of tact's GLOBAL op_id counter (itertools.count). Without this,
+    # concurrent examples interleave global-id draws => the "id=N" text in the
+    # snapshot varies with scheduling => different cache key => non-reproducible
+    # decisions under --workers>1. localmap lets patch-by-id resolve back.
+    self._localmap = {}
     parts = []
     if self.committed:
         parts.append("ALREADY EXECUTED (do NOT launch these again):")
         for op in self.committed:
             parts.append(f"  - fn={op.fn} args={json.dumps(op.args, ensure_ascii=False)}")
-    pend = _orig_snapshot(self)
     parts.append("PENDING (not yet executed, patch/cancel by id):")
-    parts.append(pend if pend != "(none)" else "  (none)")
+    if not self.pending:
+        parts.append("  (none)")
+    else:
+        for local_id, op in enumerate(self.pending.values(), 1):
+            self._localmap[local_id] = op.op_id
+            parts.append(f"  - id={local_id} fn={op.fn} "
+                         f"args={json.dumps(op.args, ensure_ascii=False)} "
+                         f"status={op.status.value}")
     return "\n".join(parts)
 
 
@@ -151,17 +166,46 @@ def load_16k(path):
     return a
 
 
-_VAD_MODEL = None
+_TLS = threading.local()
 
 
 def vad_segments(audio):
-    global _VAD_MODEL
     from silero_vad import load_silero_vad, get_speech_timestamps
-    if _VAD_MODEL is None:
-        _VAD_MODEL = load_silero_vad()
-    ts = get_speech_timestamps(audio, _VAD_MODEL, sampling_rate=SR,
+    if getattr(_TLS, "vad", None) is None:      # per-thread model: silero is stateful
+        _TLS.vad = load_silero_vad()
+    ts = get_speech_timestamps(audio, _TLS.vad, sampling_rate=SR,
                                min_silence_duration_ms=400, speech_pad_ms=30)
     return [(t["start"] / SR, t["end"] / SR) for t in ts]
+
+
+def _llm_call(messages):
+    """Thread-safe replica of module.llm_qwen3o (identical payload, incl. max_tokens
+    256), with a per-thread requests.Session — module.py's shared session is the
+    documented concurrency trap. T=0/seed fixed => same outputs, same cache keys."""
+    if getattr(_TLS, "http", None) is None:
+        s = requests.Session()
+        s.trust_env = False
+        _TLS.http = s
+    payload = {
+        "model": os.getenv("FDBC_QWEN_MODEL", "Qwen3-Omni-30B-A3B-Instruct"),
+        "temperature": float(os.getenv("FDBC_QWEN_TEMPERATURE", "0")),
+        "top_p": float(os.getenv("FDBC_QWEN_TOP_P", "0.7")),
+        "top_k": int(os.getenv("FDBC_QWEN_TOP_K", "40")),
+        "presence_penalty": float(os.getenv("FDBC_QWEN_PRESENCE_PENALTY", "1.2")),
+        "frequency_penalty": float(os.getenv("FDBC_QWEN_FREQUENCY_PENALTY", "0.8")),
+        "max_tokens": int(os.getenv("FDBC_QWEN_MAX_TOKENS", "256")),
+        "seed": int(os.getenv("FDBC_QWEN_SEED", "42")),
+        "modalities": ["text"],
+        "messages": messages,
+    }
+    r = _TLS.http.post(
+        os.getenv("FDBC_QWEN_URL", "http://127.0.0.1:10004/v1/chat/completions"),
+        headers={"Content-Type": "application/json"},
+        data=json.dumps(payload),
+        timeout=int(os.getenv("FDBC_QWEN_TIMEOUT", "300")),
+    )
+    r.raise_for_status()
+    return r.json()["choices"][0]["message"]["content"]
 
 
 class DecisionCache:
@@ -171,26 +215,30 @@ class DecisionCache:
         if self.path.exists():
             self.data = json.loads(self.path.read_text())
         self.hits = self.misses = 0
+        self._lock = threading.Lock()
 
     def key(self, msgs):
         return hashlib.sha256(json.dumps(msgs, sort_keys=True).encode()).hexdigest()
 
     def call(self, msgs):
         k = self.key(msgs)
-        if k in self.data:
-            self.hits += 1
-            e = self.data[k]
-            return e["raw"], e["infer"]
+        with self._lock:
+            if k in self.data:
+                self.hits += 1
+                e = self.data[k]
+                return e["raw"], e["infer"]
         t0 = time.time()
-        raw = llm_text(msgs)
+        raw = _llm_call(msgs)                    # network outside the lock
         infer = round(time.time() - t0, 3)
-        self.misses += 1
-        self.data[k] = {"raw": raw, "infer": infer}
+        with self._lock:
+            self.misses += 1
+            self.data[k] = {"raw": raw, "infer": infer}
         return raw, infer
 
     def save(self):
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        self.path.write_text(json.dumps(self.data))
+        with self._lock:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            self.path.write_text(json.dumps(self.data))
 
 
 def _salvage(raw):
@@ -268,7 +316,8 @@ def silent_deadline(t_open, delta, segs):
             return s
 
 
-def run_example(folder, provider, delta, cache, mode="tact", force=False):
+def run_example(folder, provider, delta, cache, mode="tact", force=False,
+                infer_nominal=None):
     m = _FOLDER_RE.match(folder.name)
     if not m:
         return None
@@ -323,8 +372,12 @@ def run_example(folder, provider, delta, cache, mode="tact", force=False):
             if dl <= t_eou:
                 do_commit(op_id, dl)
         prefix = audio[: int(segs[seg_idx][1] * SR)]
-        dec, infer = decide(cache, tx, prefix)
-        t_dec = t_eou + infer                # decision lands after real infer time
+        dec, infer_live = decide(cache, tx, prefix)
+        # Audio-clock advance: live wall infer (latency track, serial only) or a
+        # fixed nominal (throughput track — makes the sim independent of server
+        # contention, so concurrent runs are bit-reproducible).
+        infer = infer_nominal if infer_nominal is not None else infer_live
+        t_dec = t_eou + infer                # decision lands after infer time
         say = dec.get("say", "")
         launched_fns = [op.get("fn", "") for op in dec.get("ops", [])
                         if op.get("type") == "launch"]
@@ -415,7 +468,8 @@ def run_example(folder, provider, delta, cache, mode="tact", force=False):
         "latency": {"first_response_s": first_response_s,
                     "ack_emitted": ack_emitted,
                     "task_completion_s": task_completion_s,
-                    "n_eou": len(eous)},
+                    "n_eou": len(eous),
+                    "infer_mode": ("nominal" if infer_nominal is not None else "live")},
         "tx_log": tx.log, "trace": trace, "status": "completed",
     }
     out_p.write_text(json.dumps(result, indent=1, ensure_ascii=False))
@@ -425,9 +479,14 @@ def run_example(folder, provider, delta, cache, mode="tact", force=False):
 def _resolve(tx, op):
     if op.get("op_id") is not None:
         try:
-            return int(op["op_id"])
+            lid = int(op["op_id"])
         except Exception:
             return None
+        # the model echoes the LOCAL id it saw in the snapshot; translate back
+        localmap = getattr(tx, "_localmap", {})
+        if lid in localmap:
+            return localmap[lid]
+        return lid if lid in tx.pending else None
     if "fn" in op:
         p = tx.find_pending_by_fn(op["fn"])
         return p.op_id if p else None
@@ -443,6 +502,14 @@ def main():
     ap.add_argument("--only-rollback", action="store_true")
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--force", action="store_true")
+    ap.add_argument("--workers", type=int, default=1,
+                    help="Thread-pool size for throughput runs. Forces nominal infer "
+                         "(see --infer-nominal) so results are bit-reproducible. "
+                         "Latency numbers from concurrent runs are NOT authoritative; "
+                         "use --workers 1 (A-profile, live infer) for paper numbers.")
+    ap.add_argument("--infer-nominal", type=float, default=None,
+                    help="Advance the audio clock by this fixed decision time instead "
+                         "of measured wall time. Auto-set to 1.0 when --workers>1.")
     ap.add_argument("--cache", default="/root/autodl-tmp/fd-badcat/exp/w2_rerun/decision_cache.json")
     args = ap.parse_args()
 
@@ -458,22 +525,44 @@ def main():
         folders = folders[: args.limit]
 
     cache = DecisionCache(args.cache)
+    infer_nominal = args.infer_nominal
+    if args.workers > 1 and infer_nominal is None:
+        infer_nominal = 1.0
+        print("NOTE: --workers>1 forces nominal infer=1.0s (throughput track; "
+              "latency fields not authoritative)")
     print(f"streaming replay | provider={args.provider} mode={args.mode} "
-          f"delta={args.delta} | {len(folders)} examples")
-    for i, f in enumerate(folders, 1):
+          f"delta={args.delta} workers={args.workers} "
+          f"infer={'nominal %.2f' % infer_nominal if infer_nominal is not None else 'live'} "
+          f"| {len(folders)} examples")
+
+    done_count = [0]
+    count_lock = threading.Lock()
+
+    def _one(f):
         try:
             r = run_example(f, args.provider, args.delta, cache,
-                            mode=args.mode, force=args.force)
+                            mode=args.mode, force=args.force,
+                            infer_nominal=infer_nominal)
+            with count_lock:
+                done_count[0] += 1
+                i = done_count[0]
             if r:
                 lat = r["latency"]
                 print(f"[{i}/{len(folders)}] {f.name}: "
                       f"{len(r['actual_tool_calls'])} calls, "
                       f"resp={lat.get('first_response_s')} done={lat['task_completion_s']} "
                       f"eou={lat['n_eou']}")
+            if i % 10 == 0:
+                cache.save()
         except Exception as e:
-            print(f"[{i}/{len(folders)}] {f.name}: ERROR {type(e).__name__} {e}")
-        if i % 10 == 0:
-            cache.save()
+            print(f"{f.name}: ERROR {type(e).__name__} {e}")
+
+    if args.workers > 1:
+        with ThreadPoolExecutor(max_workers=args.workers) as pool:
+            list(pool.map(_one, folders))
+    else:
+        for f in folders:
+            _one(f)
     cache.save()
     print(f"cache: {cache.hits} hits / {cache.misses} misses")
 

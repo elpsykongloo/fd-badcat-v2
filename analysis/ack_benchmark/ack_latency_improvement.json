@@ -1,0 +1,76 @@
+{
+  "total_cases": 5,
+  "successful_cases": 5,
+  "failed_cases": 0,
+  "avg_baseline_latency_s": 0.9334,
+  "avg_ack_latency_s": 0.4286,
+  "avg_first_response_improvement_s": 0.5048,
+  "avg_first_response_improvement_pct": 53.75,
+  "results": [
+    {
+      "case_id": "search_flights",
+      "say_text": "I've searched for flights to New York on July 15th and found several options available.",
+      "baseline_latency": 1.1339,
+      "ack_latency": 0.4232,
+      "main_latency": 1.0019,
+      "total_latency": 1.4251,
+      "first_response_improvement_s": 0.7107,
+      "first_response_improvement_pct": 62.68,
+      "baseline_path": "analysis/ack_benchmark/search_flights/turn0_baseline.wav",
+      "ack_path": "analysis/ack_benchmark/search_flights/turn1_ack.wav",
+      "main_path": "analysis/ack_benchmark/search_flights/turn1_main.wav"
+    },
+    {
+      "case_id": "book_flight",
+      "say_text": "I've booked the flight for you under the name John Smith and sent the confirmation to your email.",
+      "baseline_latency": 0.9424,
+      "ack_latency": 0.5419,
+      "main_latency": 1.0167,
+      "total_latency": 1.5586,
+      "first_response_improvement_s": 0.4005,
+      "first_response_improvement_pct": 42.5,
+      "baseline_path": "analysis/ack_benchmark/book_flight/turn0_baseline.wav",
+      "ack_path": "analysis/ack_benchmark/book_flight/turn1_ack.wav",
+      "main_path": "analysis/ack_benchmark/book_flight/turn1_main.wav"
+    },
+    {
+      "case_id": "search_apartments",
+      "say_text": "I found twelve apartments in Boston with two bedrooms under three thousand dollars per month.",
+      "baseline_latency": 0.9135,
+      "ack_latency": 0.4111,
+      "main_latency": 1.0751,
+      "total_latency": 1.4863,
+      "first_response_improvement_s": 0.5024,
+      "first_response_improvement_pct": 55.0,
+      "baseline_path": "analysis/ack_benchmark/search_apartments/turn0_baseline.wav",
+      "ack_path": "analysis/ack_benchmark/search_apartments/turn1_ack.wav",
+      "main_path": "analysis/ack_benchmark/search_apartments/turn1_main.wav"
+    },
+    {
+      "case_id": "update_filter",
+      "say_text": "I've updated the search filter to show only pet-friendly apartments now.",
+      "baseline_latency": 0.8448,
+      "ack_latency": 0.4105,
+      "main_latency": 0.7748,
+      "total_latency": 1.1853,
+      "first_response_improvement_s": 0.4343,
+      "first_response_improvement_pct": 51.41,
+      "baseline_path": "analysis/ack_benchmark/update_filter/turn0_baseline.wav",
+      "ack_path": "analysis/ack_benchmark/update_filter/turn1_ack.wav",
+      "main_path": "analysis/ack_benchmark/update_filter/turn1_main.wav"
+    },
+    {
+      "case_id": "track_order",
+      "say_text": "Your order is currently in transit and should arrive by Friday afternoon.",
+      "baseline_latency": 0.8325,
+      "ack_latency": 0.3565,
+      "main_latency": 0.7895,
+      "total_latency": 1.146,
+      "first_response_improvement_s": 0.476,
+      "first_response_improvement_pct": 57.17,
+      "baseline_path": "analysis/ack_benchmark/track_order/turn0_baseline.wav",
+      "ack_path": "analysis/ack_benchmark/track_order/turn1_ack.wav",
+      "main_path": "analysis/ack_benchmark/track_order/turn1_main.wav"
+    }
+  ]
+}
