@@ -1,0 +1,502 @@
+{
+ "summary": {
+  "n_rollback_bench": 21,
+  "n_with_audio": 15,
+  "n_ok": 17,
+  "n_exposed_at_eou": 3,
+  "delta_t_all": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.42,
+   1.124,
+   1.156
+  ],
+  "delta_t_exposed": [
+   0.42,
+   1.124,
+   1.156
+  ],
+  "quantiles_exposed": {
+   "p25": 0.42,
+   "p50": 1.124,
+   "p75": 1.156,
+   "p90": 1.156
+  }
+ },
+ "rows": [
+  {
+   "id": "travel_09",
+   "status": "no_audio"
+  },
+  {
+   "id": "travel_10",
+   "folder": "travel_10_5f4a4da1575d605c43bef871",
+   "status": "ok",
+   "cue": "wait",
+   "cue_t": 7.02,
+   "n_segs": 3,
+   "segs": [
+    [
+     2.66,
+     5.47
+    ],
+    [
+     6.59,
+     7.39
+    ],
+    [
+     10.66,
+     16.99
+    ]
+   ],
+   "cue_seg": 1,
+   "exposed_at_eou": true,
+   "delta_t": 1.124,
+   "asr_text": "Looking at flights to Miami on October 5th, wait, my schedule just changed, my meeting got moved, so actually make it October 7th instead."
+  },
+  {
+   "id": "travel_12",
+   "status": "no_audio"
+  },
+  {
+   "id": "travel_19",
+   "folder": "travel_19_695bd157114f0d2317f88617",
+   "status": "ok",
+   "cue": "nowait",
+   "cue_t": 4.32,
+   "n_segs": 5,
+   "segs": [
+    [
+     1.03,
+     3.65
+    ],
+    [
+     4.42,
+     7.52
+    ],
+    [
+     8.71,
+     10.49
+    ],
+    [
+     11.43,
+     15.55
+    ],
+    [
+     16.29,
+     17.25
+    ]
+   ],
+   "cue_seg": null,
+   "exposed_at_eou": false,
+   "delta_t": 0.0,
+   "asr_text": "Okay, I want to look for flights to Rome, no wait I changed my mind let's do Millan instead and I was thinking June 1s well wait, but actually June 3rd works better for me, sorry about that."
+  },
+  {
+   "id": "travel_22",
+   "status": "no_audio"
+  },
+  {
+   "id": "finance_09",
+   "status": "no_audio"
+  },
+  {
+   "id": "finance_12",
+   "folder": "finance_12_65e8cf8f4c7424fa062e54a3",
+   "status": "ok",
+   "cue": "wait",
+   "cue_t": 5.34,
+   "n_segs": 1,
+   "segs": [
+    [
+     0.77,
+     13.12
+    ]
+   ],
+   "cue_seg": 0,
+   "exposed_at_eou": false,
+   "delta_t": 0.0,
+   "asr_text": "Well, I want to calculate how much 100 euros would be in US dollars Oh wait I was looking at the wrong invoice, it's actually 150 euros, not 100, so 150 euros to US dollars."
+  },
+  {
+   "id": "finance_12",
+   "folder": "finance_12_69a9cf80f4d7668d5c815038",
+   "status": "ok",
+   "cue": "wait",
+   "cue_t": 7.02,
+   "n_segs": 3,
+   "segs": [
+    [
+     1.03,
+     5.76
+    ],
+    [
+     6.91,
+     11.84
+    ],
+    [
+     12.32,
+     14.4
+    ]
+   ],
+   "cue_seg": 1,
+   "exposed_at_eou": true,
+   "delta_t": 1.156,
+   "asr_text": "Well, I want to calculate how much 100 euros would be in US dollars oh wait I was looking at the wrong invoice, it's actually $150s, not 100, so $150 to US dollars."
+  },
+  {
+   "id": "finance_15",
+   "folder": "finance_15_66c4f3cb14cbfc4db836bd4e",
+   "status": "ok",
+   "cue": "wait",
+   "cue_t": 5.22,
+   "n_segs": 2,
+   "segs": [
+    [
+     0.23,
+     4.83
+    ],
+    [
+     5.28,
+     12.38
+    ]
+   ],
+   "cue_seg": null,
+   "exposed_at_eou": false,
+   "delta_t": 0.0,
+   "asr_text": "I want them to switch my mortgage auto pay to pull from checking Wait, wait no, that's wrong to make it savings instead, yeah, savings savings is the right one."
+  },
+  {
+   "id": "finance_19",
+   "folder": "finance_19_66f59c766e7e22e1f90d08f6",
+   "status": "ok",
+   "cue": "nowait",
+   "cue_t": 5.64,
+   "n_segs": 2,
+   "segs": [
+    [
+     0.55,
+     9.09
+    ],
+    [
+     9.51,
+     14.21
+    ]
+   ],
+   "cue_seg": 0,
+   "exposed_at_eou": false,
+   "delta_t": 0.0,
+   "asr_text": "Okay, so I need to convert 200 euros to yen no no wait I just remembered I need British pounds, not yen and actually let me change the amount to make it 300 euros instead of 200."
+  },
+  {
+   "id": "finance_23",
+   "folder": "finance_23_66f59c766e7e22e1f90d08f6",
+   "status": "ok",
+   "cue": "actually",
+   "cue_t": 5.76,
+   "n_segs": 2,
+   "segs": [
+    [
+     1.31,
+     7.68
+    ],
+    [
+     8.16,
+     17.41
+    ]
+   ],
+   "cue_seg": 0,
+   "exposed_at_eou": false,
+   "delta_t": 0.0,
+   "asr_text": "U so can you check the balance on my actually never mind never mind forget that part I really need to set the mortgage auto pay to pull from checking no, no actually on second thought savings is better, make it pull from savings instead."
+  },
+  {
+   "id": "housing_09",
+   "folder": "housing_09_695bd157114f0d2317f88617",
+   "status": "ok",
+   "cue": "wait",
+   "cue_t": 5.22,
+   "n_segs": 7,
+   "segs": [
+    [
+     0.45,
+     1.21
+    ],
+    [
+     1.73,
+     4.8
+    ],
+    [
+     5.25,
+     5.63
+    ],
+    [
+     6.21,
+     7.68
+    ],
+    [
+     8.23,
+     9.12
+    ],
+    [
+     9.51,
+     11.36
+    ],
+    [
+     11.84,
+     14.88
+    ]
+   ],
+   "cue_seg": null,
+   "exposed_at_eou": false,
+   "delta_t": 0.0,
+   "asr_text": "Well, well I'm interested in two bedroom in Boston, wait, actually I changed my mind, let's look in Chicago instead and keep the max price around $2000 a month."
+  },
+  {
+   "id": "housing_11",
+   "folder": "housing_11_62a885d5b6af18b3d4579e1b",
+   "status": "ok",
+   "cue": "actually",
+   "cue_t": 3.0,
+   "n_segs": 1,
+   "segs": [
+    [
+     0.19,
+     10.59
+    ]
+   ],
+   "cue_seg": 0,
+   "exposed_at_eou": false,
+   "delta_t": 0.0,
+   "asr_text": "Well, I was thinking of one bedroom under 12, but actually no wait, my partner is moving in with me, so we need a two bedroom and we can go up to 1600 a month."
+  },
+  {
+   "id": "housing_17",
+   "folder": "housing_17_65e8cf8f4c7424fa062e54a3",
+   "status": "ok",
+   "cue": "wait",
+   "cue_t": 7.26,
+   "n_segs": 5,
+   "segs": [
+    [
+     0.77,
+     1.18
+    ],
+    [
+     1.63,
+     1.98
+    ],
+    [
+     2.59,
+     3.13
+    ],
+    [
+     3.52,
+     8.89
+    ],
+    [
+     9.51,
+     15.84
+    ]
+   ],
+   "cue_seg": 3,
+   "exposed_at_eou": false,
+   "delta_t": 0.0,
+   "asr_text": "Like like so calculate the transit time to the office from there, wait no, actually I just remembered I'd be driving so make it driving time to the office from my house instead."
+  },
+  {
+   "id": "housing_17",
+   "folder": "housing_17_69a9cf80f4d7668d5c815038",
+   "status": "ok",
+   "cue": "wait",
+   "cue_t": 7.62,
+   "n_segs": 5,
+   "segs": [
+    [
+     1.57,
+     3.65
+    ],
+    [
+     4.07,
+     7.01
+    ],
+    [
+     7.68,
+     9.89
+    ],
+    [
+     10.63,
+     12.45
+    ],
+    [
+     12.87,
+     15.81
+    ]
+   ],
+   "cue_seg": null,
+   "exposed_at_eou": false,
+   "delta_t": 0.0,
+   "asr_text": "Like like so calculate the transit time to the office from there, wait no, actually I just remembered I'd be driving so make it driving time to the office from my house instead."
+  },
+  {
+   "id": "housing_19",
+   "folder": "housing_19_62a885d5b6af18b3d4579e1b",
+   "status": "ok",
+   "cue": "wait",
+   "cue_t": 3.54,
+   "n_segs": 2,
+   "segs": [
+    [
+     0.29,
+     7.26
+    ],
+    [
+     7.75,
+     12.96
+    ]
+   ],
+   "cue_seg": 0,
+   "exposed_at_eou": false,
+   "delta_t": 0.0,
+   "asr_text": "Well calculate the transit time to the office, wait no, I wouldn't be going to the office, I'd be going to the gym and actually now they think about it I drive there and not take transit so make it drive to the gym from my house."
+  },
+  {
+   "id": "housing_21",
+   "folder": "housing_21_66c4f3cb14cbfc4db836bd4e",
+   "status": "ok",
+   "cue": "wait",
+   "cue_t": 6.18,
+   "n_segs": 2,
+   "segs": [
+    [
+     1.35,
+     17.31
+    ],
+    [
+     18.11,
+     19.2
+    ]
+   ],
+   "cue_seg": 0,
+   "exposed_at_eou": false,
+   "delta_t": 0.0,
+   "asr_text": "Well so you know, I want to search for a place with two bedrooms wait actually I mean I meant three bedrooms, we decided we need a home office, also check the transit time to the train station actually I'd rather walk so make that walking time."
+  },
+  {
+   "id": "housing_23",
+   "status": "no_audio"
+  },
+  {
+   "id": "housing_25",
+   "folder": "housing_25_66f59c766e7e22e1f90d08f6",
+   "status": "ok",
+   "cue": "wait",
+   "cue_t": 11.34,
+   "n_segs": 2,
+   "segs": [
+    [
+     1.06,
+     7.61
+    ],
+    [
+     8.29,
+     19.9
+    ]
+   ],
+   "cue_seg": 1,
+   "exposed_at_eou": false,
+   "delta_t": 0.0,
+   "asr_text": "You know, you know, all right, first set the filter so pets are allowed and set the max price to 3000 then search for in San Francisco, wait actually change the max price to 3500 instead San Francisco is expensive so I need more room in the budget."
+  },
+  {
+   "id": "ecommerce_09",
+   "folder": "ecommerce_09_695bd157114f0d2317f88617",
+   "status": "ok",
+   "cue": "actually",
+   "cue_t": 5.1,
+   "n_segs": 4,
+   "segs": [
+    [
+     0.45,
+     1.63
+    ],
+    [
+     2.34,
+     4.64
+    ],
+    [
+     5.06,
+     10.88
+    ],
+    [
+     11.33,
+     13.66
+    ]
+   ],
+   "cue_seg": 2,
+   "exposed_at_eou": true,
+   "delta_t": 0.42,
+   "asr_text": "Like well could you search for running shoes, actually no, I just remembered I already have running shoes, search for hiking boots instead, that's what I actually need."
+  },
+  {
+   "id": "ecommerce_11",
+   "folder": "ecommerce_11_62a885d5b6af18b3d4579e1b",
+   "status": "ok",
+   "cue": "makeit",
+   "cue_t": 3.48,
+   "n_segs": 1,
+   "segs": [
+    [
+     0.39,
+     10.27
+    ]
+   ],
+   "cue_seg": 0,
+   "exposed_at_eou": false,
+   "delta_t": 0.0,
+   "asr_text": "You know, like we'll go ahead and add the product B7 to my cart, make it three if I no no wait that's too many, just do one for now, I'll order more later if I need to."
+  },
+  {
+   "id": "ecommerce_19",
+   "folder": "ecommerce_19_66f59c766e7e22e1f90d08f6",
+   "status": "ok",
+   "cue": "wait",
+   "cue_t": 5.58,
+   "n_segs": 3,
+   "segs": [
+    [
+     0.96,
+     8.25
+    ],
+    [
+     8.64,
+     10.72
+    ],
+    [
+     11.43,
+     18.91
+    ]
+   ],
+   "cue_seg": 0,
+   "exposed_at_eou": false,
+   "delta_t": 0.0,
+   "asr_text": "Okay, so search for a laptop, wait no, no, actually I need a tablet, not a laptop, a tablet, and add two of them to the cart, actually no, no just one, just one, I only have a budget for one right now."
+  },
+  {
+   "id": "ecommerce_24",
+   "status": "no_audio"
+  }
+ ]
+}

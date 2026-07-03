@@ -1,7 +1,7 @@
 # AGENTS.md — fd-badcat 持久记忆（所有代理必读）
 
 > 单一真相源。CLAUDE.md 指向本文件。有重大事实变更时**更新本文件**，不要另开新文档。
-> 最后更新：2026-07-03 (W1 Day 0 夜间)
+> 最后更新：2026-07-03 (W2 重跑收口)
 
 ## 使命
 
@@ -20,7 +20,7 @@
 - 网络：本机代理环境变量存在，本地服务必须 `trust_env=False`/`NO_PROXY`。**shell 里不要 export OMP_NUM_THREADS=空值**（libgomp 报 Invalid value）。
 - DeepSeek judge key 已持久化：`configs/eval.env`（600 权限，gitignored，bashrc 自动 source）。judge 模型用 `deepseek-v4-flash`（`deepseek-chat` 已从 API 下线）。**延迟指标纪律：正式延迟数字必须串行专机跑（勿与 vLLM 争 max_num_seqs:1，勿并发 funasr GPU 加载）——W1 回归的 FRD 曾被此污染，勘误见 w1_report.md。**
 - **代理坑**：环境有 `all_proxy=socks5://…`，openai SDK(httpx) 缺 socksio 会静默初始化失败 → FDB evaluator 的 LLM judge 悄悄退化成 exact-match。跑 evaluator 前 `unset all_proxy ALL_PROXY http_proxy https_proxy HTTP_PROXY HTTPS_PROXY`（DeepSeek 国内直连）。
-- **FDB 分数口径**：永远双轨报告 exact + deepseek-v4-flash judge。基线：blocking exact 0.570（W1 逐分复现 6/23）/ judge 0.700；6/23 的 0.73 是 gpt-5.5 judge 口径，不同 judge 不可直接比。
+- **FDB 分数口径**：永远双轨报告 exact + deepseek-v4-flash judge。基线：blocking exact 0.570（W1 逐分复现 6/23）/ judge 0.700；6/23 的 0.73 是 gpt-5.5 judge 口径，不同 judge 不可直接比。**v3 有两条判分线**：`evaluate_pass_rate.py`（二元 pass，无 turn-take 门，工具选择 precision=1 一票否决——judge 模式也只接管参数比较）与 `evaluate_tool_calls.py`（metrics 轨，有 `turn_take_success` 门=转写非空，默认 metrics 只算 turn-taken 子集，tool F1 渐变）。同名工具多次调用按**位置 pop(0) 对齐**——顺序互换会双杀（0.71 之谜根因）。
 - **W1 汇报文件**：`手工文档/神谕/02_W1 执行汇报.md`（发给神谕求 W2 计划的汇总，含全部实验数字与开放问题）。
 
 ## 仓库拓扑与分叉事实（重要）
@@ -53,8 +53,27 @@
 - **吞吐轨**（测准确性/决策质量）：`injected` 回放模式（音频钟推进=记录的 infer_time，不真等），每会话独立 engine/VAD/输出目录，vLLM 天然支持并发 batch，`--concurrency N` 压满 GPU。
 - **实时轨**（测延迟指标）：串行、`realtime` 模式，只在最终出数时跑。
 - 隔离要点：module.py 的共享 `requests.Session` 与 sherpa 模型是并发下的坑（thread-safety），并发 runner 需 per-worker 实例化。
+- **W2 重跑追加的效率工具**（准确度回归用，出论文数字仍守 A 档串行）：
+  - `scripts/w2r_stream_replay.py --workers N`：线程池并发（VAD/HTTP 均 thread-local，决策缓存加锁）。注意沙箱延迟 `random.seed` 是全局的——并发下 per-example 抖动序列不保逐位复现（吞吐轨可接受，P5 类确定性验证必须 --workers 1）。
+  - **决策缓存**（sha256(messages)，T=0 合法）是最大的省卡时杠杆：δ 网格 6 个点里 4 个点几乎全缓存命中；改 harness 不改 prompt 时务必复用 `exp/w2_rerun/decision_cache.json`。
+  - **DeepSeek judge 并发**：官方 `llm_judge.py` 原生支持 `FDB_LLM_WORKERS`（默认 16 太保守），judge 是纯 API 调用，**直接 100**；`scripts/run_fdb_with_deepseek.sh` 已改默认 100。
+  - vLLM 侧：准确度回归可临时把 audio 配置 `max_num_seqs` 调高（重启分钟级）配合 --workers 压满；HumDial 管线自带 `--gen-workers/--clean-workers/--asr-workers/--judge-workers` 旋钮。
 
-## 当前状态（W1 —— 已收口，2026-07-03 GPU 日）
+## 当前状态（W2 —— 重跑收口，2026-07-03）
+
+**警示**：W2 首轮（17 代理并发，13:45–14:25）交付的实验结论**全部无效**（oracle 抄答案 / mock 数据 / 对照臂损坏），相关文档与伪造评测产物已**彻底删除**（fdbc_*_w2 等假 result 文件、mock 曲线、live 差距误诊报告等；勿再引用任何当日 13:56–14:23 时间窗的 docs）。**有效结论只看 `docs/w2_rerun_report.md` 与 `手工文档/神谕/04_W2 执行汇报.md`**（真模型单线程重跑）。
+
+- G1'：P1 ✅（TACT exact 0.560 vs blocking 0.570，judge 双双 0.690）；P2 ⚠️（judge 轨 76.5% ✓ / 状态轨 64.7% < 85% ✗）；P3 ❌（沙箱工具 p50 仅 0.315s，无重叠空间=R9 实现，走双档评测预案）；P4 ✅（HumDial 64.0 vs 63.88）；P5 ✅（新缓存双跑 100/100 逐位一致；解析末态失败 0）。
+- δ 扫描（rollback 17 夹）：δ*=1.5s，exact 0.647 **反超** sblock 0.588；eager δ=0 垫底 0.529（脏轨迹被 precision 处决）。D2 直方图：14/17 更正与意图同 VAD 段（EoU 粒度天然不暴露），暴露间隙 p50 1.12s——δ* 与其吻合，理论闭环第一圈成立。
+- **0.71<0.73 结案**（同 judge 重判 0.670 vs 0.690）：全部差距=2 场景——finance_14 同名调用顺序互换被按位对齐双杀（evaluator 生态问题）+ travel_16 实体逐字（Vegas/Las Vegas）。"急切调用被处决"假设证伪（0 例）。
+- **R12 结案**：judge-pass 轨工具选择仍是二元 precision=1（严苛）；只有 evaluate_tool_calls 的 F1 是渐变（宽恕）。双轨叙事按此分层。
+- 状态轨判分器校准：blocking 上与 exact 完全一致（TF=FT=0），TACT 上 TF=2 恰为脏轨迹终态正确案例。
+- 关键实现事实（W3 要继承）：流式 harness 在 `scripts/w2r_stream_replay.py`（EoU=VAD 段尾+0.64s hold；异议窗音频钟计时、用户语音暂停倒计时；快照必须含已执行集否则模型跨 EoU 重复 launch；launch 幂等去重；参数 schema 矫正；salvage 解析器。决策 p50≈1.0s 是首响地板，W3 主靶）。
+- rollback 21 中 6 场景无音频（released 数据只有 100 夹）；"回滚 21"物理上=15 场景/17 夹。
+
+**W3 入口弹药**：δ*-完成延迟曲线 + 双延迟档评测（R9 预案）；增量决策降首响地板；live 差距重查（首轮报告作废，假设清单 H6→H1→H2→H5→H3→H4）；状态轨 85% 缺口归因（TACT 的 state 0.580——主要输在与 blocking 共通的 ASR/实体逐字错误，非事务机制）。
+
+## 历史状态（W1 —— 已收口，2026-07-03 GPU 日）
 
 **G0 达成**：感知冻结消灭 + 音频钟迁移 + 行为保持验证 + FDB 跑通。详见 `docs/w1_report.md`。
 
