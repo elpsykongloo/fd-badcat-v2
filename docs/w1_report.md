@@ -57,7 +57,7 @@
 | actor 同集录制 | ✅ `traces/golden_actor/` |
 | **真 LLM 等价性：分类决策序列一致** | **19/20**（唯一翻转在 deny 决策边界；legacy 自复现抽测 2/3，自噪声地板即帧级抖动） |
 | injected 回放保真度 vs 金标 | **L1 20/20**；全集回放 **7.5s ≈ 60× 实时**（E7 判据 <5min） |
-| FDB-v3 blocking 冒烟（官方 scorer） | **6/6 PASS** |
+| FDB-v3 blocking 冒烟（官方 scorer） | **6/6 PASS**；随后全量 100 复现：**exact 0.570（逐分对齐 6/23 基线）/ deepseek-v4-flash judge 0.700**（6/23 gpt-5.5 judge 为 0.730，judge 更替口径差）；rollback 21 子集 70.6% |
 | HumDial 100 回归（--seed 42，样本名与 6/23 逐一对齐） | 运行中 → 完成后见 `logs/humdial_regression_*.log` 与本节回填 |
 
 ### HumDial 100 回归（--seed 42，逐样本对齐 6/23 legacy 运行）

@@ -19,6 +19,9 @@
 - 服务拓扑（GPU 在位时）：vLLM Qwen3-Omni-30B-A3B :10003（`setup/start_qwen3omni_audio.sh`，音频管线 max_num_seqs=1 确定性优先；文本配置 `qwen3_omni_text_only.yaml` 可高并发）→ 代理 `src/qwen3_api.py` :10004（`setup/start_qwen3_proxy.sh`）→ backend :18000。TTS 默认 **Omni 原生**。实测 Blackwell 上音频判定单次 ~0.26s。
 - 网络：本机代理环境变量存在，本地服务必须 `trust_env=False`/`NO_PROXY`。**shell 里不要 export OMP_NUM_THREADS=空值**（libgomp 报 Invalid value）。
 - DeepSeek judge key 已持久化：`configs/eval.env`（600 权限，gitignored，bashrc 自动 source）。judge 模型用 `deepseek-v4-flash`（`deepseek-chat` 已从 API 下线）。**延迟指标纪律：正式延迟数字必须串行专机跑（勿与 vLLM 争 max_num_seqs:1，勿并发 funasr GPU 加载）——W1 回归的 FRD 曾被此污染，勘误见 w1_report.md。**
+- **代理坑**：环境有 `all_proxy=socks5://…`，openai SDK(httpx) 缺 socksio 会静默初始化失败 → FDB evaluator 的 LLM judge 悄悄退化成 exact-match。跑 evaluator 前 `unset all_proxy ALL_PROXY http_proxy https_proxy HTTP_PROXY HTTPS_PROXY`（DeepSeek 国内直连）。
+- **FDB 分数口径**：永远双轨报告 exact + deepseek-v4-flash judge。基线：blocking exact 0.570（W1 逐分复现 6/23）/ judge 0.700；6/23 的 0.73 是 gpt-5.5 judge 口径，不同 judge 不可直接比。
+- **W1 汇报文件**：`手工文档/神谕/02_W1 执行汇报.md`（发给神谕求 W2 计划的汇总，含全部实验数字与开放问题）。
 
 ## 仓库拓扑与分叉事实（重要）
 
