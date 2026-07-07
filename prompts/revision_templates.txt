@@ -1,0 +1,116 @@
+# Revision Templates for Phase-B Objection Window
+# Used when user says "wait/stop/no/hold on" to correct parameters
+
+## Immediate Acknowledgments (respond within ~200ms)
+# Use these to acknowledge the objection instantly before asking for details
+
+"I'll revise that."
+"Let me correct that."
+"I'll update that for you."
+"Got it, let me fix that."
+"Hold on, I'll change that."
+"Let me adjust that."
+"I'll modify that."
+
+## Clarification Prompts
+# Ask what needs to be changed
+
+"What would you like to change?"
+"What needs to be different?"
+"What should I revise?"
+"What do you need to update?"
+"Tell me what to fix."
+"What's the correction?"
+
+## Confirmation Patterns
+# After receiving the correction, confirm before executing
+
+"I've updated {parameter} to {value}."
+"Changed {parameter} from {old_value} to {new_value}."
+"Revised: searching for flights to {destination} on {date}."
+"Got it: {summary_of_change}."
+"Updated: {action_description}."
+
+## Parameter-Specific Confirmations
+
+### Date/Time
+"Changed the date to {new_date}."
+"Updated departure to {new_date}."
+"Revised travel date: {new_date}."
+
+### Destination/Location
+"Changed destination to {new_city}."
+"Updated location to {new_address}."
+"Revised: looking in {new_city} instead."
+
+### Quantity/Amount
+"Updated quantity to {new_amount}."
+"Changed amount from {old} to {new}."
+"Revised: {new_quantity} instead of {old_quantity}."
+
+### Name/Identity
+"Updated passenger name to {new_name}."
+"Changed name to {new_name}."
+"Revised: booking for {new_name}."
+
+### Price/Budget
+"Updated budget to {new_price}."
+"Changed max price to {new_amount}."
+"Revised price limit: {new_price}."
+
+## Multi-Parameter Revisions
+"Updated {param1} to {value1} and {param2} to {value2}."
+"Changed both {param1} and {param2}."
+"Revised multiple parameters: {summary}."
+
+## Complete Reset
+"Starting over with the new information."
+"Let me search again with the updated details."
+"I'll restart with the correct parameters."
+
+## Error Recovery
+"Sorry, let me get that right."
+"My mistake, I'll fix that."
+"Let me correct that error."
+
+## Usage Guidelines
+
+1. **Timing**: Acknowledgments should come within 200ms of detecting objection keywords
+2. **Brevity**: Keep all templates under 10 words for voice output
+3. **Natural Flow**:
+   - Acknowledge → Ask for correction → Confirm revision → Execute
+   - Example: "I'll revise that." → "What needs to be different?" → "Changed date to July 20th." → [execute tool]
+
+4. **Objection Keywords to Detect**:
+   - "wait" / "hold on" / "hold up"
+   - "stop" / "no" / "nope"
+   - "actually" / "correction"
+   - "change that" / "fix that"
+   - "I meant" / "I said"
+   - "not {x}, {y}" patterns
+
+5. **Context Preservation**:
+   - Keep original tool call parameters in memory
+   - Only update the corrected fields
+   - Merge correction with existing parameters before execution
+
+6. **Confirmation Strategy**:
+   - For single parameter change: state the new value only
+   - For multiple changes: summarize briefly
+   - Always confirm before executing revised tool call
+
+## Example Interaction Flow
+
+User: "Search for flights to Tokyo on July 15th"
+Agent: [prepares search_flights(destination="Tokyo", date="July 15")]
+Agent: "I'll search for flights to Tokyo on July 15th."
+
+User: "Wait, I meant July 20th"
+Agent: "I'll revise that. Changed the date to July 20th." [execute search_flights(destination="Tokyo", date="July 20")]
+
+## Implementation Notes
+
+- Store these templates in the agent's response generation module
+- Use template matching with parameter extraction
+- Implement parameter diff tracking for old_value → new_value confirmations
+- Add latency monitoring for acknowledgment timing (target <200ms)
