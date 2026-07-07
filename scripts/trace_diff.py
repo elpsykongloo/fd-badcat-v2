@@ -2,13 +2,16 @@
 # -*- coding: utf-8 -*-
 """W1 D2.1 trace-diff: the judge for old-engine vs new-engine equivalence.
 
+W2 Phase-A R1: Updated to use concurrent-safe multiset comparison for events
+that may arrive in nondeterministic order (asr_done etc).
+
 Normalization: each trace event becomes (event, turn, state, content_key);
 wall timestamps are dropped; a time axis is kept separately for soft checks
 (legacy traces only have wall "timestamp", which equals audio time under paced
 realtime replay; actor traces carry an explicit t_audio).
 
 Levels:
-  L1 strict  — normalized sequences identical AND every |Δt| <= --tol.
+  L1 strict  — ordered spine + concurrent multisets identical AND every |Δt| <= --tol.
   L2         — sequence divergence; the tool prints the first divergence with
                ±3 events of context for manual attribution
                (docs/w1_equivalence.md).
@@ -21,6 +24,15 @@ import hashlib
 import json
 import sys
 from pathlib import Path
+
+# Import concurrent verification logic (W2 Phase-A R1)
+SCRIPT_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(SCRIPT_DIR.parent / "src"))
+try:
+    from concurrent_trace_checker import compare_concurrent_traces
+    CONCURRENT_MODE_AVAILABLE = True
+except ImportError:
+    CONCURRENT_MODE_AVAILABLE = False
 
 NEW_ENGINE_ONLY = {"llm_stale_dropped", "llm_timeout", "playback_end", "session_reset"}
 
@@ -155,7 +167,34 @@ def main():
     ap.add_argument("--tol", type=float, default=0.25,
                     help="soft time tolerance in seconds (audio clock vs paced wall)")
     ap.add_argument("--ignore", default="", help="comma-separated event kinds to ignore")
+    ap.add_argument("--concurrent-safe", action="store_true",
+                    help="Use concurrent-safe multiset comparison (W2 Phase-A R1)")
     args = ap.parse_args()
+
+    # W2 Phase-A R1: use concurrent-safe comparison when requested
+    if args.concurrent_safe:
+        if not CONCURRENT_MODE_AVAILABLE:
+            print("ERROR: concurrent_trace_checker module not available", file=sys.stderr)
+            sys.exit(3)
+
+        a_events = load_trace(args.trace_a)
+        b_events = load_trace(args.trace_b)
+        cmp = compare_concurrent_traces(a_events, b_events)
+
+        print(f"{Path(args.trace_a).name}: {len(a_events)} events")
+        print(f"{Path(args.trace_b).name}: {len(b_events)} events")
+        if cmp.info_counts:
+            print(f"informational (excluded): {cmp.info_counts}")
+        print(f"VERDICT: {cmp.verdict()}")
+
+        if not cmp.ordered_equal:
+            print(f"  Ordered divergence at event #{cmp.ordered_first_diff}")
+        if cmp.multiset_diff and not cmp.multiset_diff.equal:
+            print(f"  {cmp.multiset_diff.summary()}")
+
+        sys.exit(0 if cmp.equivalent else 1)
+
+    # Original W1 behavior
     ignore = tuple(x for x in args.ignore.split(",") if x)
     res = diff_traces(load_trace(args.trace_a), load_trace(args.trace_b),
                       tol=args.tol, ignore=ignore)

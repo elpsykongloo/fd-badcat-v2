@@ -434,6 +434,16 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
         lang = data.get("lang", {})
         if arch == "legacy":
             engine = ConversationEngine(websocket=websocket, prompts=prompts, delay=delay, llm_cfg=llm_cfg)
+        elif (engine_cfg or {}).get("phase") == "b":
+            # W3 D1: live TACT engine (same tact_core semantics as the replay driver)
+            from engine_b import TactEngine
+            from tact.tools import ToolRegistry   # path fixed by engine_b->tact_core
+            reg = ToolRegistry(
+                latency_profile=(engine_cfg or {}).get("latency_profile", "normal"),
+                room=f"live-{exp}")
+            engine = TactEngine(websocket=websocket, prompts=prompts, delay=delay,
+                                llm_cfg=llm_cfg, engine_cfg=engine_cfg,
+                                tool_executor=reg.executor)
         else:
             from engine import ActorEngine
             engine = ActorEngine(websocket=websocket, prompts=prompts, delay=delay,
@@ -441,6 +451,11 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
         engine.output_dir = Path("exp") / exp / f"realtimeout_{lang}"
         engine.output_dir.mkdir(parents=True, exist_ok=True)
         await engine.run_realtime(websocket)
+        if (engine_cfg or {}).get("phase") == "b" and hasattr(engine, "trace"):
+            trace_file = engine.output_dir / "trace_full.jsonl"
+            with trace_file.open("w", encoding="utf-8") as f:
+                for rec in engine.trace:
+                    f.write(json.dumps(rec, ensure_ascii=False) + "\n")
 
     return app
 

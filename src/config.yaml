@@ -18,6 +18,16 @@ engine:
   arch: actor            # actor | legacy (src/backend_legacy.py inline engine)
   playback_autoend: false     # true: SPEAK auto-returns to LISTEN at playback end (agent mode)
   cancellable_response: false # W3+: cancel in-flight response on user speech
+  # ---- Phase-B / TACT (W3 D1 wiring; phase "a" keeps HumDial behavior frozen) ----
+  phase: a               # a = HumDial judge/shift/response | b = transactional TACT engine
+  # The keys below only take effect when phase: b (see docs/engine_b_spec.md):
+  mode: tact             # tact | blocking (blocking = offline eval construct)
+  delta: 1.5             # objection window: seconds of SILENT audio-clock time
+  commit_barrier: true   # decision-atomic commit (06 §一 ruling); false = ablation arm
+  stale_eou_policy: apply  # apply = W2 bit-parity; drop = epoch-gate EoU decisions (W4 knob)
+  tool_sync: false       # true: execute tools inline in the engine loop (offline eval)
+  sv_alpha: null         # W4 speaker-verification placeholder — MUST stay null in W3
+                         # (a non-null value must enter the prompt => breaks cache/prompt freeze)
 llm:
   audio_block: audio_url # audio_url | input_audio | input_audio_datauri (cloud f4ff2b1 dialect)
   decision_timeout_s: 15 # per-decision hard timeout; on expiry fall back to the conservative
