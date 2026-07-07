@@ -1,0 +1,762 @@
+{
+ "summary": {
+  "n_scenarios": 100,
+  "multiturn_dialogues": 100,
+  "gold_arg_only_in_prior_turns": {
+   "n": 2,
+   "ids": [
+    "housing_11",
+    "ecommerce_12"
+   ]
+  },
+  "gold_arg_found_nowhere": {
+   "n": 52,
+   "ids": [
+    "travel_02",
+    "travel_04",
+    "travel_07",
+    "travel_15",
+    "travel_16",
+    "travel_18",
+    "travel_20",
+    "travel_21",
+    "travel_23",
+    "travel_24",
+    "travel_25",
+    "finance_01",
+    "finance_04",
+    "finance_08",
+    "finance_09",
+    "finance_10",
+    "finance_12",
+    "finance_14",
+    "finance_16",
+    "finance_18",
+    "finance_19",
+    "finance_20",
+    "finance_21",
+    "finance_24",
+    "finance_25",
+    "housing_02",
+    "housing_06",
+    "housing_08",
+    "housing_13",
+    "housing_16",
+    "housing_18",
+    "housing_20",
+    "housing_22",
+    "housing_23",
+    "housing_25",
+    "ecommerce_01",
+    "ecommerce_03",
+    "ecommerce_04",
+    "ecommerce_06",
+    "ecommerce_07",
+    "ecommerce_08",
+    "ecommerce_10",
+    "ecommerce_11",
+    "ecommerce_13",
+    "ecommerce_14",
+    "ecommerce_15",
+    "ecommerce_17",
+    "ecommerce_18",
+    "ecommerce_21",
+    "ecommerce_22",
+    "ecommerce_23",
+    "ecommerce_24"
+   ]
+  },
+  "chain_ge2_calls_independent": {
+   "n": 28,
+   "ids": [
+    "travel_06",
+    "travel_11",
+    "travel_12",
+    "travel_15",
+    "travel_18",
+    "travel_20",
+    "travel_21",
+    "travel_22",
+    "travel_23",
+    "travel_24",
+    "travel_25",
+    "finance_10",
+    "finance_13",
+    "finance_14",
+    "finance_18",
+    "finance_20",
+    "finance_21",
+    "finance_22",
+    "finance_24",
+    "finance_25",
+    "housing_10",
+    "housing_13",
+    "housing_25",
+    "ecommerce_10",
+    "ecommerce_13",
+    "ecommerce_22",
+    "ecommerce_23",
+    "ecommerce_24"
+   ]
+  },
+  "chain_ge2_calls_with_deps": {
+   "n": 10,
+   "ids": [
+    "housing_18",
+    "housing_20",
+    "housing_21",
+    "housing_22",
+    "housing_24",
+    "ecommerce_18",
+    "ecommerce_19",
+    "ecommerce_20",
+    "ecommerce_21",
+    "ecommerce_25"
+   ]
+  }
+ },
+ "prior_only": [
+  {
+   "id": "housing_11",
+   "args": [
+    {
+     "fn": "search_apartments",
+     "arg": "city",
+     "value": "Austin"
+    }
+   ]
+  },
+  {
+   "id": "ecommerce_12",
+   "args": [
+    {
+     "fn": "search_products",
+     "arg": "query",
+     "value": "gift"
+    }
+   ]
+  }
+ ],
+ "nowhere": [
+  {
+   "id": "travel_02",
+   "args": [
+    {
+     "fn": "update_identity_doc",
+     "arg": "doc_number",
+     "value": "P9-9-9-90011"
+    }
+   ]
+  },
+  {
+   "id": "travel_04",
+   "args": [
+    {
+     "fn": "update_identity_doc",
+     "arg": "doc_number",
+     "value": "V123456"
+    }
+   ]
+  },
+  {
+   "id": "travel_07",
+   "args": [
+    {
+     "fn": "update_identity_doc",
+     "arg": "doc_number",
+     "value": "DL555"
+    }
+   ]
+  },
+  {
+   "id": "travel_15",
+   "args": [
+    {
+     "fn": "update_identity_doc",
+     "arg": "doc_number",
+     "value": "DL555"
+    },
+    {
+     "fn": "update_identity_doc",
+     "arg": "doc_number",
+     "value": "P999"
+    }
+   ]
+  },
+  {
+   "id": "travel_16",
+   "args": [
+    {
+     "fn": "search_flights",
+     "arg": "destination",
+     "value": "Las Vegas"
+    }
+   ]
+  },
+  {
+   "id": "travel_18",
+   "args": [
+    {
+     "fn": "update_identity_doc",
+     "arg": "doc_number",
+     "value": "E772211"
+    }
+   ]
+  },
+  {
+   "id": "travel_20",
+   "args": [
+    {
+     "fn": "update_identity_doc",
+     "arg": "doc_number",
+     "value": "DL88"
+    }
+   ]
+  },
+  {
+   "id": "travel_21",
+   "args": [
+    {
+     "fn": "search_flights",
+     "arg": "destination",
+     "value": "Las Vegas"
+    },
+    {
+     "fn": "update_identity_doc",
+     "arg": "doc_number",
+     "value": "V77"
+    }
+   ]
+  },
+  {
+   "id": "travel_23",
+   "args": [
+    {
+     "fn": "update_identity_doc",
+     "arg": "doc_number",
+     "value": "P1122"
+    },
+    {
+     "fn": "update_identity_doc",
+     "arg": "doc_number",
+     "value": "DL9090"
+    }
+   ]
+  },
+  {
+   "id": "travel_24",
+   "args": [
+    {
+     "fn": "update_identity_doc",
+     "arg": "doc_number",
+     "value": "V44"
+    }
+   ]
+  },
+  {
+   "id": "travel_25",
+   "args": [
+    {
+     "fn": "update_identity_doc",
+     "arg": "doc_number",
+     "value": "P123"
+    },
+    {
+     "fn": "update_identity_doc",
+     "arg": "doc_number",
+     "value": "V321"
+    }
+   ]
+  },
+  {
+   "id": "finance_01",
+   "args": [
+    {
+     "fn": "get_exchange_rate",
+     "arg": "from_currency",
+     "value": "USD"
+    }
+   ]
+  },
+  {
+   "id": "finance_04",
+   "args": [
+    {
+     "fn": "get_exchange_rate",
+     "arg": "from_currency",
+     "value": "USD"
+    },
+    {
+     "fn": "get_exchange_rate",
+     "arg": "to_currency",
+     "value": "GBP"
+    }
+   ]
+  },
+  {
+   "id": "finance_08",
+   "args": [
+    {
+     "fn": "get_exchange_rate",
+     "arg": "to_currency",
+     "value": "USD"
+    }
+   ]
+  },
+  {
+   "id": "finance_09",
+   "args": [
+    {
+     "fn": "get_exchange_rate",
+     "arg": "from_currency",
+     "value": "USD"
+    }
+   ]
+  },
+  {
+   "id": "finance_10",
+   "args": [
+    {
+     "fn": "get_exchange_rate",
+     "arg": "from_currency",
+     "value": "GBP"
+    },
+    {
+     "fn": "get_exchange_rate",
+     "arg": "to_currency",
+     "value": "JPY"
+    }
+   ]
+  },
+  {
+   "id": "finance_12",
+   "args": [
+    {
+     "fn": "get_exchange_rate",
+     "arg": "to_currency",
+     "value": "USD"
+    }
+   ]
+  },
+  {
+   "id": "finance_14",
+   "args": [
+    {
+     "fn": "get_exchange_rate",
+     "arg": "from_currency",
+     "value": "USD"
+    },
+    {
+     "fn": "get_exchange_rate",
+     "arg": "from_currency",
+     "value": "CAD"
+    },
+    {
+     "fn": "get_exchange_rate",
+     "arg": "to_currency",
+     "value": "USD"
+    }
+   ]
+  },
+  {
+   "id": "finance_16",
+   "args": [
+    {
+     "fn": "get_exchange_rate",
+     "arg": "from_currency",
+     "value": "JPY"
+    },
+    {
+     "fn": "get_exchange_rate",
+     "arg": "to_currency",
+     "value": "USD"
+    }
+   ]
+  },
+  {
+   "id": "finance_18",
+   "args": [
+    {
+     "fn": "get_exchange_rate",
+     "arg": "from_currency",
+     "value": "USD"
+    }
+   ]
+  },
+  {
+   "id": "finance_19",
+   "args": [
+    {
+     "fn": "get_exchange_rate",
+     "arg": "to_currency",
+     "value": "GBP"
+    }
+   ]
+  },
+  {
+   "id": "finance_20",
+   "args": [
+    {
+     "fn": "get_exchange_rate",
+     "arg": "from_currency",
+     "value": "USD"
+    }
+   ]
+  },
+  {
+   "id": "finance_21",
+   "args": [
+    {
+     "fn": "get_exchange_rate",
+     "arg": "from_currency",
+     "value": "USD"
+    },
+    {
+     "fn": "get_exchange_rate",
+     "arg": "to_currency",
+     "value": "JPY"
+    }
+   ]
+  },
+  {
+   "id": "finance_24",
+   "args": [
+    {
+     "fn": "get_exchange_rate",
+     "arg": "from_currency",
+     "value": "USD"
+    },
+    {
+     "fn": "get_exchange_rate",
+     "arg": "to_currency",
+     "value": "CAD"
+    }
+   ]
+  },
+  {
+   "id": "finance_25",
+   "args": [
+    {
+     "fn": "get_exchange_rate",
+     "arg": "from_currency",
+     "value": "USD"
+    }
+   ]
+  },
+  {
+   "id": "housing_02",
+   "args": [
+    {
+     "fn": "calculate_commute",
+     "arg": "mode",
+     "value": "driving"
+    }
+   ]
+  },
+  {
+   "id": "housing_06",
+   "args": [
+    {
+     "fn": "calculate_commute",
+     "arg": "mode",
+     "value": "walking"
+    }
+   ]
+  },
+  {
+   "id": "housing_08",
+   "args": [
+    {
+     "fn": "update_search_filter",
+     "arg": "filter_name",
+     "value": "pets_allowed"
+    }
+   ]
+  },
+  {
+   "id": "housing_13",
+   "args": [
+    {
+     "fn": "update_search_filter",
+     "arg": "filter_name",
+     "value": "min_bedrooms"
+    }
+   ]
+  },
+  {
+   "id": "housing_16",
+   "args": [
+    {
+     "fn": "calculate_commute",
+     "arg": "mode",
+     "value": "driving"
+    }
+   ]
+  },
+  {
+   "id": "housing_18",
+   "args": [
+    {
+     "fn": "calculate_commute",
+     "arg": "mode",
+     "value": "biking"
+    }
+   ]
+  },
+  {
+   "id": "housing_20",
+   "args": [
+    {
+     "fn": "calculate_commute",
+     "arg": "mode",
+     "value": "driving"
+    },
+    {
+     "fn": "update_search_filter",
+     "arg": "filter_name",
+     "value": "max_price"
+    }
+   ]
+  },
+  {
+   "id": "housing_22",
+   "args": [
+    {
+     "fn": "update_search_filter",
+     "arg": "filter_name",
+     "value": "pets_allowed"
+    }
+   ]
+  },
+  {
+   "id": "housing_23",
+   "args": [
+    {
+     "fn": "update_search_filter",
+     "arg": "filter_name",
+     "value": "min_bedrooms"
+    }
+   ]
+  },
+  {
+   "id": "housing_25",
+   "args": [
+    {
+     "fn": "update_search_filter",
+     "arg": "filter_name",
+     "value": "pets_allowed"
+    }
+   ]
+  },
+  {
+   "id": "ecommerce_01",
+   "args": [
+    {
+     "fn": "track_order",
+     "arg": "order_id",
+     "value": "ABC123"
+    }
+   ]
+  },
+  {
+   "id": "ecommerce_03",
+   "args": [
+    {
+     "fn": "add_to_cart",
+     "arg": "product_id",
+     "value": "P99"
+    },
+    {
+     "fn": "add_to_cart",
+     "arg": "quantity",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "ecommerce_04",
+   "args": [
+    {
+     "fn": "track_order",
+     "arg": "order_id",
+     "value": "XYZ88"
+    }
+   ]
+  },
+  {
+   "id": "ecommerce_06",
+   "args": [
+    {
+     "fn": "add_to_cart",
+     "arg": "product_id",
+     "value": "K2"
+    }
+   ]
+  },
+  {
+   "id": "ecommerce_07",
+   "args": [
+    {
+     "fn": "track_order",
+     "arg": "order_id",
+     "value": "FAST99"
+    }
+   ]
+  },
+  {
+   "id": "ecommerce_08",
+   "args": [
+    {
+     "fn": "search_products",
+     "arg": "query",
+     "value": "mechanical keyboards"
+    }
+   ]
+  },
+  {
+   "id": "ecommerce_10",
+   "args": [
+    {
+     "fn": "track_order",
+     "arg": "order_id",
+     "value": "123ABC"
+    }
+   ]
+  },
+  {
+   "id": "ecommerce_11",
+   "args": [
+    {
+     "fn": "add_to_cart",
+     "arg": "product_id",
+     "value": "B7"
+    }
+   ]
+  },
+  {
+   "id": "ecommerce_13",
+   "args": [
+    {
+     "fn": "add_to_cart",
+     "arg": "product_id",
+     "value": "K2"
+    },
+    {
+     "fn": "add_to_cart",
+     "arg": "quantity",
+     "value": 1
+    },
+    {
+     "fn": "track_order",
+     "arg": "order_id",
+     "value": "DELIV"
+    }
+   ]
+  },
+  {
+   "id": "ecommerce_14",
+   "args": [
+    {
+     "fn": "add_to_cart",
+     "arg": "product_id",
+     "value": "P52"
+    }
+   ]
+  },
+  {
+   "id": "ecommerce_15",
+   "args": [
+    {
+     "fn": "track_order",
+     "arg": "order_id",
+     "value": "BOB12"
+    }
+   ]
+  },
+  {
+   "id": "ecommerce_17",
+   "args": [
+    {
+     "fn": "track_order",
+     "arg": "order_id",
+     "value": "GG5"
+    }
+   ]
+  },
+  {
+   "id": "ecommerce_18",
+   "args": [
+    {
+     "fn": "add_to_cart",
+     "arg": "quantity",
+     "value": 1
+    },
+    {
+     "fn": "track_order",
+     "arg": "order_id",
+     "value": "PO999"
+    }
+   ]
+  },
+  {
+   "id": "ecommerce_21",
+   "args": [
+    {
+     "fn": "track_order",
+     "arg": "order_id",
+     "value": "BOB"
+    },
+    {
+     "fn": "add_to_cart",
+     "arg": "quantity",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "ecommerce_22",
+   "args": [
+    {
+     "fn": "track_order",
+     "arg": "order_id",
+     "value": "A1"
+    },
+    {
+     "fn": "track_order",
+     "arg": "order_id",
+     "value": "B2"
+    }
+   ]
+  },
+  {
+   "id": "ecommerce_23",
+   "args": [
+    {
+     "fn": "track_order",
+     "arg": "order_id",
+     "value": "GG5"
+    },
+    {
+     "fn": "add_to_cart",
+     "arg": "product_id",
+     "value": "X1"
+    }
+   ]
+  },
+  {
+   "id": "ecommerce_24",
+   "args": [
+    {
+     "fn": "add_to_cart",
+     "arg": "product_id",
+     "value": "K9"
+    },
+    {
+     "fn": "add_to_cart",
+     "arg": "product_id",
+     "value": "M1"
+    }
+   ]
+  }
+ ]
+}

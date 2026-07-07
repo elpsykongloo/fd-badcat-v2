@@ -2,6 +2,8 @@
  "provider": "w2r_sblock_full",
  "n": 100,
  "n_pass": 57,
+ "n_pass_norm": 75,
+ "normalizer": "norm-v1",
  "exact_pass": 57,
  "calibration": {
   "TT": 57,
@@ -9,60 +11,81 @@
   "FT": 0,
   "FF": 43
  },
+ "calibration_norm": {
+  "TT": 57,
+  "TF": 18,
+  "FT": 0,
+  "FF": 25
+ },
  "rows": [
   {
    "id": "ecommerce_01",
    "folder": "ecommerce_01_65e8cf8f4c7424fa062e54a3",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "ecommerce_01",
    "folder": "ecommerce_01_69a9cf80f4d7668d5c815038",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "ecommerce_02",
    "folder": "ecommerce_02_5f4a4da1575d605c43bef871",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "ecommerce_04",
    "folder": "ecommerce_04_6998abd731d2ec50d067d5bd",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "ecommerce_05",
    "folder": "ecommerce_05_695bd157114f0d2317f88617",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "ecommerce_06",
    "folder": "ecommerce_06_66c4f3cb14cbfc4db836bd4e",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "ecommerce_07",
    "folder": "ecommerce_07_66f59c766e7e22e1f90d08f6",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "ecommerce_08",
    "folder": "ecommerce_08_5ff07b5ee7a1d23e719e421e",
    "state_pass": false,
+   "state_pass_norm": true,
    "exact_pass": false,
    "diffs": [
     {
@@ -77,12 +100,14 @@
       "query": "mechanical keyboard"
      }
     }
-   ]
+   ],
+   "diffs_norm": []
   },
   {
    "id": "ecommerce_08",
    "folder": "ecommerce_08_61517db6a7589569521b2356",
    "state_pass": false,
+   "state_pass_norm": true,
    "exact_pass": false,
    "diffs": [
     {
@@ -97,33 +122,41 @@
       "query": "mechanical keyboard"
      }
     }
-   ]
+   ],
+   "diffs_norm": []
   },
   {
    "id": "ecommerce_09",
    "folder": "ecommerce_09_695bd157114f0d2317f88617",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "ecommerce_10",
    "folder": "ecommerce_10_6998abd731d2ec50d067d5bd",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "ecommerce_11",
    "folder": "ecommerce_11_62a885d5b6af18b3d4579e1b",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "ecommerce_12",
    "folder": "ecommerce_12_6998abd731d2ec50d067d5bd",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
     {
@@ -134,12 +167,23 @@
       "query": "gift"
      }
     }
+   ],
+   "diffs_norm": [
+    {
+     "kind": "read_missing",
+     "fn": "search_products",
+     "expected": {
+      "category": "electronic",
+      "query": "gift"
+     }
+    }
    ]
   },
   {
    "id": "ecommerce_13",
    "folder": "ecommerce_13_5ff07b5ee7a1d23e719e421e",
    "state_pass": false,
+   "state_pass_norm": true,
    "exact_pass": false,
    "diffs": [
     {
@@ -175,19 +219,23 @@
       "order_id": "d-e-l-i-v"
      }
     }
-   ]
+   ],
+   "diffs_norm": []
   },
   {
    "id": "ecommerce_13",
    "folder": "ecommerce_13_61517db6a7589569521b2356",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "ecommerce_14",
    "folder": "ecommerce_14_5ff07b5ee7a1d23e719e421e",
    "state_pass": false,
+   "state_pass_norm": true,
    "exact_pass": false,
    "diffs": [
     {
@@ -213,49 +261,75 @@
       "quantity": 2
      }
     }
-   ]
+   ],
+   "diffs_norm": []
   },
   {
    "id": "ecommerce_14",
    "folder": "ecommerce_14_61517db6a7589569521b2356",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "ecommerce_15",
    "folder": "ecommerce_15_56780a5a89319e0011644cb4",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "ecommerce_15",
    "folder": "ecommerce_15_66c4f3cb14cbfc4db836bd4e",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "ecommerce_16",
    "folder": "ecommerce_16_695bd157114f0d2317f88617",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "ecommerce_17",
    "folder": "ecommerce_17_5f4a4da1575d605c43bef871",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "ecommerce_18",
    "folder": "ecommerce_18_62a885d5b6af18b3d4579e1b",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
+    {
+     "kind": "write",
+     "key": [
+      "add_to_cart",
+      "$result 0.cheapest product id"
+     ],
+     "expected": {
+      "product_id": "$result 0.cheapest product id",
+      "quantity": 1
+     },
+     "actual": null
+    }
+   ],
+   "diffs_norm": [
     {
      "kind": "write",
      "key": [
@@ -274,6 +348,7 @@
    "id": "ecommerce_19",
    "folder": "ecommerce_19_66f59c766e7e22e1f90d08f6",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
     {
@@ -288,12 +363,27 @@
      },
      "actual": null
     }
+   ],
+   "diffs_norm": [
+    {
+     "kind": "write",
+     "key": [
+      "add_to_cart",
+      "$result 0.product[0].product id"
+     ],
+     "expected": {
+      "product_id": "$result 0.product[0].product id",
+      "quantity": 1
+     },
+     "actual": null
+    }
    ]
   },
   {
    "id": "ecommerce_20",
    "folder": "ecommerce_20_66c4f3cb14cbfc4db836bd4e",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
     {
@@ -308,12 +398,27 @@
      },
      "actual": null
     }
+   ],
+   "diffs_norm": [
+    {
+     "kind": "write",
+     "key": [
+      "add_to_cart",
+      "$result 0.product[0].product id"
+     ],
+     "expected": {
+      "product_id": "$result 0.product[0].product id",
+      "quantity": 2
+     },
+     "actual": null
+    }
    ]
   },
   {
    "id": "ecommerce_21",
    "folder": "ecommerce_21_65e8cf8f4c7424fa062e54a3",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
     {
@@ -340,12 +445,39 @@
       "query": "nice watch"
      }
     }
+   ],
+   "diffs_norm": [
+    {
+     "kind": "write",
+     "key": [
+      "add_to_cart",
+      "$result 1.product[0].product id"
+     ],
+     "expected": {
+      "product_id": "$result 1.product[0].product id",
+      "quantity": 1
+     },
+     "actual": null
+    },
+    {
+     "kind": "read_final",
+     "fn": "search_products",
+     "expected": {
+      "max_price": 200,
+      "query": "watch"
+     },
+     "actual": {
+      "max_price": 200,
+      "query": "nice watch"
+     }
+    }
    ]
   },
   {
    "id": "ecommerce_21",
    "folder": "ecommerce_21_69a9cf80f4d7668d5c815038",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
     {
@@ -370,182 +502,269 @@
       "order_id": "pop"
      }
     }
+   ],
+   "diffs_norm": [
+    {
+     "kind": "write",
+     "key": [
+      "add_to_cart",
+      "$result 1.product[0].product id"
+     ],
+     "expected": {
+      "product_id": "$result 1.product[0].product id",
+      "quantity": 1
+     },
+     "actual": null
+    },
+    {
+     "kind": "read_final",
+     "fn": "track_order",
+     "expected": {
+      "order_id": "bob"
+     },
+     "actual": {
+      "order_id": "pop"
+     }
+    }
    ]
   },
   {
    "id": "ecommerce_23",
    "folder": "ecommerce_23_5f4a4da1575d605c43bef871",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "ecommerce_25",
    "folder": "ecommerce_25_65e8cf8f4c7424fa062e54a3",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "ecommerce_25",
    "folder": "ecommerce_25_69a9cf80f4d7668d5c815038",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_01",
    "folder": "finance_01_65e8cf8f4c7424fa062e54a3",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_01",
    "folder": "finance_01_69a9cf80f4d7668d5c815038",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_02",
    "folder": "finance_02_6998abd731d2ec50d067d5bd",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_03",
    "folder": "finance_03_5ff07b5ee7a1d23e719e421e",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_03",
    "folder": "finance_03_61517db6a7589569521b2356",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_04",
    "folder": "finance_04_62a885d5b6af18b3d4579e1b",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_06",
    "folder": "finance_06_66f59c766e7e22e1f90d08f6",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_07",
    "folder": "finance_07_5ff07b5ee7a1d23e719e421e",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_07",
    "folder": "finance_07_61517db6a7589569521b2356",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_08",
    "folder": "finance_08_65e8cf8f4c7424fa062e54a3",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_08",
    "folder": "finance_08_69a9cf80f4d7668d5c815038",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_10",
    "folder": "finance_10_66c4f3cb14cbfc4db836bd4e",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_11",
    "folder": "finance_11_695bd157114f0d2317f88617",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_12",
    "folder": "finance_12_65e8cf8f4c7424fa062e54a3",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_12",
    "folder": "finance_12_69a9cf80f4d7668d5c815038",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_14",
    "folder": "finance_14_5f4a4da1575d605c43bef871",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_15",
    "folder": "finance_15_66c4f3cb14cbfc4db836bd4e",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_16",
    "folder": "finance_16_62a885d5b6af18b3d4579e1b",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_17",
    "folder": "finance_17_6998abd731d2ec50d067d5bd",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_18",
    "folder": "finance_18_6998abd731d2ec50d067d5bd",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_19",
    "folder": "finance_19_66f59c766e7e22e1f90d08f6",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_20",
    "folder": "finance_20_66c4f3cb14cbfc4db836bd4e",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
+    {
+     "kind": "write",
+     "key": [
+      "modify_autopay",
+      "mortgage"
+     ],
+     "expected": {
+      "bill_type": "mortgage",
+      "source_account": "checking"
+     },
+     "actual": null
+    }
+   ],
+   "diffs_norm": [
     {
      "kind": "write",
      "key": [
@@ -564,20 +783,25 @@
    "id": "finance_21",
    "folder": "finance_21_5e3c1fbece3a7b000a6fd95a",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_22",
    "folder": "finance_22_5f4a4da1575d605c43bef871",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "finance_23",
    "folder": "finance_23_66f59c766e7e22e1f90d08f6",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
     {
@@ -592,54 +816,81 @@
      },
      "actual": null
     }
+   ],
+   "diffs_norm": [
+    {
+     "kind": "write",
+     "key": [
+      "modify_autopay",
+      "mortgage"
+     ],
+     "expected": {
+      "bill_type": "mortgage",
+      "source_account": "saving"
+     },
+     "actual": null
+    }
    ]
   },
   {
    "id": "housing_01",
    "folder": "housing_01_62a885d5b6af18b3d4579e1b",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "housing_02",
    "folder": "housing_02_5f4a4da1575d605c43bef871",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "housing_03",
    "folder": "housing_03_5f4a4da1575d605c43bef871",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "housing_04",
    "folder": "housing_04_695bd157114f0d2317f88617",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "housing_05",
    "folder": "housing_05_5ff07b5ee7a1d23e719e421e",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "housing_05",
    "folder": "housing_05_61517db6a7589569521b2356",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "housing_06",
    "folder": "housing_06_5f4a4da1575d605c43bef871",
    "state_pass": false,
+   "state_pass_norm": true,
    "exact_pass": false,
    "diffs": [
     {
@@ -656,26 +907,32 @@
       "origin_address": "oak street"
      }
     }
-   ]
+   ],
+   "diffs_norm": []
   },
   {
    "id": "housing_08",
    "folder": "housing_08_66f59c766e7e22e1f90d08f6",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "housing_09",
    "folder": "housing_09_695bd157114f0d2317f88617",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "housing_10",
    "folder": "housing_10_66f59c766e7e22e1f90d08f6",
    "state_pass": false,
+   "state_pass_norm": true,
    "exact_pass": false,
    "diffs": [
     {
@@ -692,14 +949,32 @@
       "origin_address": "500 central ave"
      }
     }
-   ]
+   ],
+   "diffs_norm": []
   },
   {
    "id": "housing_11",
    "folder": "housing_11_62a885d5b6af18b3d4579e1b",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
+    {
+     "kind": "read_final",
+     "fn": "search_apartments",
+     "expected": {
+      "bedrooms": 2,
+      "city": "austin",
+      "max_price": 1600
+     },
+     "actual": {
+      "bedrooms": 2,
+      "city": "new york city",
+      "max_price": 1600
+     }
+    }
+   ],
+   "diffs_norm": [
     {
      "kind": "read_final",
      "fn": "search_apartments",
@@ -720,6 +995,7 @@
    "id": "housing_13",
    "folder": "housing_13_5f4a4da1575d605c43bef871",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
     {
@@ -745,54 +1021,92 @@
       "value": 3
      }
     }
+   ],
+   "diffs_norm": [
+    {
+     "kind": "write",
+     "key": [
+      "update_search_filter",
+      "min bedroom"
+     ],
+     "expected": {
+      "filter_name": "min bedroom",
+      "value": 3
+     },
+     "actual": null
+    },
+    {
+     "kind": "write_extra",
+     "key": [
+      "update_search_filter",
+      "bedroom"
+     ],
+     "actual": {
+      "filter_name": "bedroom",
+      "value": 3
+     }
+    }
    ]
   },
   {
    "id": "housing_14",
    "folder": "housing_14_5ff07b5ee7a1d23e719e421e",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "housing_14",
    "folder": "housing_14_61517db6a7589569521b2356",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "housing_15",
    "folder": "housing_15_5ff07b5ee7a1d23e719e421e",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "housing_15",
    "folder": "housing_15_61517db6a7589569521b2356",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "housing_17",
    "folder": "housing_17_65e8cf8f4c7424fa062e54a3",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "housing_17",
    "folder": "housing_17_69a9cf80f4d7668d5c815038",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "housing_18",
    "folder": "housing_18_66c4f3cb14cbfc4db836bd4e",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
     {
@@ -823,19 +1137,52 @@
       "origin_address": "$result 0.address"
      }
     }
+   ],
+   "diffs_norm": [
+    {
+     "kind": "read_final",
+     "fn": "search_apartments",
+     "expected": {
+      "bedrooms": 1,
+      "city": "portland",
+      "max_price": 1800
+     },
+     "actual": {
+      "bedrooms": 1,
+      "city": "portland",
+      "max_price": 800
+     }
+    },
+    {
+     "kind": "read_final",
+     "fn": "calculate_commute",
+     "expected": {
+      "destination_address": "coffee shop on 5",
+      "mode": "biking",
+      "origin_address": "$result 0.cheapest apartment address"
+     },
+     "actual": {
+      "destination_address": "5 street coffee shop",
+      "mode": "bike",
+      "origin_address": "$result 0.address"
+     }
+    }
    ]
   },
   {
    "id": "housing_19",
    "folder": "housing_19_62a885d5b6af18b3d4579e1b",
    "state_pass": true,
+   "state_pass_norm": true,
    "exact_pass": true,
-   "diffs": []
+   "diffs": [],
+   "diffs_norm": []
   },
   {
    "id": "housing_20",
    "folder": "housing_20_62a885d5b6af18b3d4579e1b",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
     {
@@ -864,12 +1211,41 @@
       "origin_address": "my office"
      }
     }
+   ],
+   "diffs_norm": [
+    {
+     "kind": "write",
+     "key": [
+      "update_search_filter",
+      "max price"
+     ],
+     "expected": {
+      "filter_name": "max price",
+      "value": 2500
+     },
+     "actual": null
+    },
+    {
+     "kind": "read_final",
+     "fn": "calculate_commute",
+     "expected": {
+      "destination_address": "my office",
+      "mode": "driving",
+      "origin_address": "$result 0.apartment[0].address"
+     },
+     "actual": {
+      "destination_address": "",
+      "mode": "",
+      "origin_address": "my office"
+     }
+    }
    ]
   },
   {
    "id": "housing_21",
    "folder": "housing_21_66c4f3cb14cbfc4db836bd4e",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
     {
@@ -886,12 +1262,29 @@
       "origin_address": "123 main st, new york city"
      }
     }
+   ],
+   "diffs_norm": [
+    {
+     "kind": "read_final",
+     "fn": "calculate_commute",
+     "expected": {
+      "destination_address": "train station",
+      "mode": "walking",
+      "origin_address": "$result 0.apartment[0].address"
+     },
+     "actual": {
+      "destination_address": "penn station, new york city",
+      "mode": "walking",
+      "origin_address": "123 main st, new york city"
+     }
+    }
    ]
   },
   {
    "id": "housing_22",
    "folder": "housing_22_695bd157114f0d2317f88617",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
     {
@@ -907,12 +1300,28 @@
       "origin_address": ""
      }
     }
+   ],
+   "diffs_norm": [
+    {
+     "kind": "read_final",
+     "fn": "calculate_commute",
+     "expected": {
+      "destination_address": "stadium",
+      "mode": "transit",
+      "origin_address": "$result 1.apartment[0].address"
+     },
+     "actual": {
+      "destination_address": "stadium",
+      "origin_address": ""
+     }
+    }
    ]
   },
   {
    "id": "housing_24",
    "folder": "housing_24_65e8cf8f4c7424fa062e54a3",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
     {
@@ -943,12 +1352,43 @@
       "origin_address": "$result 1.apartments[0].address"
      }
     }
+   ],
+   "diffs_norm": [
+    {
+     "kind": "write",
+     "key": [
+      "update_search_filter",
+      "max price"
+     ],
+     "expected": {
+      "filter_name": "max price",
+      "value": 1500
+     },
+     "actual": null
+    },
+    {
+     "kind": "read_missing",
+     "fn": "search_apartments",
+     "expected": {
+      "city": "dalla"
+     }
+    },
+    {
+     "kind": "read_missing",
+     "fn": "calculate_commute",
+     "expected": {
+      "destination_address": "grocery store",
+      "mode": "walking",
+      "origin_address": "$result 1.apartment[0].address"
+     }
+    }
    ]
   },
   {
    "id": "housing_24",
    "folder": "housing_24_69a9cf80f4d7668d5c815038",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
     {
@@ -960,14 +1400,59 @@
       "origin_address": "$result 1.apartments[0].address"
      }
     }
+   ],
+   "diffs_norm": [
+    {
+     "kind": "read_missing",
+     "fn": "calculate_commute",
+     "expected": {
+      "destination_address": "grocery store",
+      "mode": "walking",
+      "origin_address": "$result 1.apartment[0].address"
+     }
+    }
    ]
   },
   {
    "id": "housing_25",
    "folder": "housing_25_66f59c766e7e22e1f90d08f6",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
+    {
+     "kind": "write",
+     "key": [
+      "update_search_filter",
+      "pets allowed"
+     ],
+     "expected": {
+      "filter_name": "pets allowed",
+      "value": true
+     },
+     "actual": null
+    },
+    {
+     "kind": "write",
+     "key": [
+      "update_search_filter",
+      "max price"
+     ],
+     "expected": {
+      "filter_name": "max price",
+      "value": 3500
+     },
+     "actual": null
+    },
+    {
+     "kind": "read_missing",
+     "fn": "search_apartments",
+     "expected": {
+      "city": "san francisco"
+     }
+    }
+   ],
+   "diffs_norm": [
     {
      "kind": "write",
      "key": [
@@ -1005,6 +1490,7 @@
    "id": "travel_01",
    "folder": "travel_01_62a885d5b6af18b3d4579e1b",
    "state_pass": false,
+   "state_pass_norm": true,
    "exact_pass": false,
    "diffs": [
     {
@@ -1019,12 +1505,14 @@
       "destination": "tokyo"
      }
     }
-   ]
+   ],
+   "diffs_norm": []
   },
   {
    "id": "travel_02",
    "folder": "travel_02_5e3c1fbece3a7b000a6fd95a",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
     {
@@ -1042,12 +1530,30 @@
       "doc_type": "passport"
      }
     }
+   ],
+   "diffs_norm": [
+    {
+     "kind": "write",
+     "key": [
+      "update_identity_doc",
+      "passport"
+     ],
+     "expected": {
+      "doc_number": "p99990011",
+      "doc_type": "passport"
+     },
+     "actual": {
+      "doc_number": "p88990011",
+      "doc_type": "passport"
+     }
+    }
    ]
   },
   {
    "id": "travel_03",
    "folder": "travel_03_5ff07b5ee7a1d23e719e421e",
    "state_pass": false,
+   "state_pass_norm": true,
    "exact_pass": false,
    "diffs": [
     {
@@ -1062,12 +1568,14 @@
       "destination": "london"
      }
     }
-   ]
+   ],
+   "diffs_norm": []
   },
   {
    "id": "travel_03",
    "folder": "travel_03_61517db6a7589569521b2356",
    "state_pass": false,
+   "state_pass_norm": true,
    "exact_pass": false,
    "diffs": [
     {
@@ -1082,12 +1590,14 @@
       "destination": "london"
      }
     }
-   ]
+   ],
+   "diffs_norm": []
   },
   {
    "id": "travel_05",
    "folder": "travel_05_6998abd731d2ec50d067d5bd",
    "state_pass": false,
+   "state_pass_norm": true,
    "exact_pass": false,
    "diffs": [
     {
@@ -1102,12 +1612,14 @@
       "destination": "chicago"
      }
     }
-   ]
+   ],
+   "diffs_norm": []
   },
   {
    "id": "travel_07",
    "folder": "travel_07_5ff07b5ee7a1d23e719e421e",
    "state_pass": false,
+   "state_pass_norm": true,
    "exact_pass": false,
    "diffs": [
     {
@@ -1133,12 +1645,14 @@
       "doc_type": "driver's license"
      }
     }
-   ]
+   ],
+   "diffs_norm": []
   },
   {
    "id": "travel_07",
    "folder": "travel_07_61517db6a7589569521b2356",
    "state_pass": false,
+   "state_pass_norm": true,
    "exact_pass": false,
    "diffs": [
     {
@@ -1164,12 +1678,14 @@
       "doc_type": "driver's license"
      }
     }
-   ]
+   ],
+   "diffs_norm": []
   },
   {
    "id": "travel_08",
    "folder": "travel_08_695bd157114f0d2317f88617",
    "state_pass": false,
+   "state_pass_norm": true,
    "exact_pass": false,
    "diffs": [
     {
@@ -1184,12 +1700,14 @@
       "destination": "seattle"
      }
     }
-   ]
+   ],
+   "diffs_norm": []
   },
   {
    "id": "travel_10",
    "folder": "travel_10_5f4a4da1575d605c43bef871",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
     {
@@ -1204,12 +1722,27 @@
       "destination": "miami"
      }
     }
+   ],
+   "diffs_norm": [
+    {
+     "kind": "read_final",
+     "fn": "search_flights",
+     "expected": {
+      "date": "october 7",
+      "destination": "miami"
+     },
+     "actual": {
+      "date": "october 5",
+      "destination": "miami"
+     }
+    }
    ]
   },
   {
    "id": "travel_11",
    "folder": "travel_11_66c4f3cb14cbfc4db836bd4e",
    "state_pass": false,
+   "state_pass_norm": true,
    "exact_pass": false,
    "diffs": [
     {
@@ -1224,12 +1757,14 @@
       "destination": "austin"
      }
     }
-   ]
+   ],
+   "diffs_norm": []
   },
   {
    "id": "travel_14",
    "folder": "travel_14_66c4f3cb14cbfc4db836bd4e",
    "state_pass": false,
+   "state_pass_norm": true,
    "exact_pass": false,
    "diffs": [
     {
@@ -1244,12 +1779,14 @@
       "destination": "seoul"
      }
     }
-   ]
+   ],
+   "diffs_norm": []
   },
   {
    "id": "travel_16",
    "folder": "travel_16_66f59c766e7e22e1f90d08f6",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
     {
@@ -1264,12 +1801,27 @@
       "destination": "vegas"
      }
     }
+   ],
+   "diffs_norm": [
+    {
+     "kind": "read_final",
+     "fn": "search_flights",
+     "expected": {
+      "date": "august 8",
+      "destination": "las vega"
+     },
+     "actual": {
+      "date": "august 8",
+      "destination": "vega"
+     }
+    }
    ]
   },
   {
    "id": "travel_18",
    "folder": "travel_18_66f59c766e7e22e1f90d08f6",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
     {
@@ -1295,12 +1847,26 @@
       "destination": "dubai"
      }
     }
+   ],
+   "diffs_norm": [
+    {
+     "kind": "write",
+     "key": [
+      "book_flight",
+      "casey lee"
+     ],
+     "expected": {
+      "passenger_name": "casey lee"
+     },
+     "actual": null
+    }
    ]
   },
   {
    "id": "travel_19",
    "folder": "travel_19_695bd157114f0d2317f88617",
    "state_pass": false,
+   "state_pass_norm": true,
    "exact_pass": false,
    "diffs": [
     {
@@ -1315,12 +1881,14 @@
       "destination": "milan"
      }
     }
-   ]
+   ],
+   "diffs_norm": []
   },
   {
    "id": "travel_20",
    "folder": "travel_20_62a885d5b6af18b3d4579e1b",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
     {
@@ -1369,12 +1937,26 @@
       "destination": "toronto"
      }
     }
+   ],
+   "diffs_norm": [
+    {
+     "kind": "write",
+     "key": [
+      "book_flight",
+      "riley kim"
+     ],
+     "expected": {
+      "passenger_name": "riley kim"
+     },
+     "actual": null
+    }
    ]
   },
   {
    "id": "travel_21",
    "folder": "travel_21_65e8cf8f4c7424fa062e54a3",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
     {
@@ -1389,12 +1971,27 @@
       "destination": "vegas"
      }
     }
+   ],
+   "diffs_norm": [
+    {
+     "kind": "read_final",
+     "fn": "search_flights",
+     "expected": {
+      "date": "august 8",
+      "destination": "las vega"
+     },
+     "actual": {
+      "date": "august 8",
+      "destination": "vega"
+     }
+    }
    ]
   },
   {
    "id": "travel_21",
    "folder": "travel_21_69a9cf80f4d7668d5c815038",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
     {
@@ -1409,12 +2006,27 @@
       "destination": "vegas"
      }
     }
+   ],
+   "diffs_norm": [
+    {
+     "kind": "read_final",
+     "fn": "search_flights",
+     "expected": {
+      "date": "august 8",
+      "destination": "las vega"
+     },
+     "actual": {
+      "date": "august 8",
+      "destination": "vega"
+     }
+    }
    ]
   },
   {
    "id": "travel_23",
    "folder": "travel_23_65e8cf8f4c7424fa062e54a3",
    "state_pass": false,
+   "state_pass_norm": true,
    "exact_pass": false,
    "diffs": [
     {
@@ -1440,12 +2052,14 @@
       "doc_type": "driver's license"
      }
     }
-   ]
+   ],
+   "diffs_norm": []
   },
   {
    "id": "travel_23",
    "folder": "travel_23_69a9cf80f4d7668d5c815038",
    "state_pass": false,
+   "state_pass_norm": true,
    "exact_pass": false,
    "diffs": [
     {
@@ -1471,12 +2085,14 @@
       "doc_type": "driver's license"
      }
     }
-   ]
+   ],
+   "diffs_norm": []
   },
   {
    "id": "travel_24",
    "folder": "travel_24_695bd157114f0d2317f88617",
    "state_pass": false,
+   "state_pass_norm": false,
    "exact_pass": false,
    "diffs": [
     {
@@ -1525,6 +2141,29 @@
      "actual": {
       "date": "november 5th",
       "destination": "vancouver"
+     }
+    }
+   ],
+   "diffs_norm": [
+    {
+     "kind": "write",
+     "key": [
+      "book_flight",
+      "skyler"
+     ],
+     "expected": {
+      "passenger_name": "skyler"
+     },
+     "actual": null
+    },
+    {
+     "kind": "write_extra",
+     "key": [
+      "book_flight",
+      "skylar"
+     ],
+     "actual": {
+      "passenger_name": "skylar"
      }
     }
    ]

@@ -1,0 +1,479 @@
+{
+  "deepseek_model": "deepseek-v4-flash",
+  "deepseek_results": [
+    {
+      "category": "ask",
+      "n": 10,
+      "counts": {
+        "C_RESPOND": 7,
+        "C_RESUME": 2,
+        "C_UNKNOWN": 1
+      },
+      "respond_rate": 0.7,
+      "resume_rate": 0.2,
+      "content_tags": "logs/humdial_w3_specon_20260707_130643_eval/json_group/ask/ask_content_tags.jsonl"
+    },
+    {
+      "category": "deny",
+      "n": 10,
+      "counts": {
+        "C_RESPOND": 9,
+        "C_UNKNOWN": 1
+      },
+      "respond_rate": 0.9,
+      "resume_rate": 0.0,
+      "content_tags": "logs/humdial_w3_specon_20260707_130643_eval/json_group/deny/deny_content_tags.jsonl"
+    },
+    {
+      "category": "repeat",
+      "n": 10,
+      "counts": {
+        "C_RESPOND": 9,
+        "C_UNKNOWN": 1
+      },
+      "respond_rate": 0.9,
+      "resume_rate": 0.0,
+      "content_tags": "logs/humdial_w3_specon_20260707_130643_eval/json_group/repeat/repeat_content_tags.jsonl"
+    },
+    {
+      "category": "shift",
+      "n": 10,
+      "counts": {
+        "C_RESPOND": 8,
+        "C_UNKNOWN": 1,
+        "C_RESUME": 1
+      },
+      "respond_rate": 0.8,
+      "resume_rate": 0.1,
+      "content_tags": "logs/humdial_w3_specon_20260707_130643_eval/json_group/shift/shift_content_tags.jsonl"
+    },
+    {
+      "category": "wait",
+      "n": 10,
+      "counts": {
+        "C_RESPOND": 10
+      },
+      "respond_rate": 1.0,
+      "resume_rate": 0.0,
+      "content_tags": "logs/humdial_w3_specon_20260707_130643_eval/json_group/wait/wait_content_tags.jsonl"
+    },
+    {
+      "category": "backchannel",
+      "n": 10,
+      "counts": {
+        "C_UNKNOWN": 9,
+        "C_RESUME": 1
+      },
+      "respond_rate": 0.0,
+      "resume_rate": 0.1,
+      "content_tags": "logs/humdial_w3_specon_20260707_130643_eval/json_group/backchannel/backchannel_content_tags.jsonl"
+    },
+    {
+      "category": "others_talk_to_user_after",
+      "n": 10,
+      "counts": {
+        "C_RESPOND": 5,
+        "C_UNCERTAIN_HANDLING": 1,
+        "C_RESUME": 4
+      },
+      "respond_rate": 0.5,
+      "resume_rate": 0.4,
+      "content_tags": "logs/humdial_w3_specon_20260707_130643_eval/json_group/others_talk_to_user_after/others_talk_to_user_after_content_tags.jsonl"
+    },
+    {
+      "category": "talk_to_others",
+      "n": 10,
+      "counts": {
+        "C_RESUME": 4,
+        "C_UNKNOWN": 2,
+        "C_RESPOND": 4
+      },
+      "respond_rate": 0.4,
+      "resume_rate": 0.4,
+      "content_tags": "logs/humdial_w3_specon_20260707_130643_eval/json_group/talk_to_others/talk_to_others_content_tags.jsonl"
+    }
+  ],
+  "rejection_rates": {
+    "pause": {
+      "total": 10,
+      "ahead": 9,
+      "ratio": 0.9
+    },
+    "others_talk_to_user_before": {
+      "total": 10,
+      "ahead": 0,
+      "ratio": 0.0
+    }
+  },
+  "first_response_delay": {
+    "ask": {
+      "n": 10,
+      "avg": 2.819
+    },
+    "deny": {
+      "n": 10,
+      "avg": 2.085
+    },
+    "repeat": {
+      "n": 10,
+      "avg": 3.621
+    },
+    "shift": {
+      "n": 10,
+      "avg": 2.17
+    },
+    "wait": {
+      "n": 10,
+      "avg": 2.144
+    },
+    "pause": {
+      "n": 9,
+      "avg": 2.128
+    },
+    "talk_to_others": {
+      "n": 10,
+      "avg": 2.284
+    },
+    "others_talk_to_user_after": {
+      "n": 10,
+      "avg": 2.364
+    },
+    "backchannel": {
+      "n": 10,
+      "avg": 2.167
+    },
+    "others_talk_to_user_before": {
+      "n": 0,
+      "avg": 0.0
+    }
+  },
+  "first_response_delay_by_category_lang": {
+    "ask:cn": {
+      "category": "ask",
+      "lang": "cn",
+      "prefix_count": 5,
+      "seen": 5,
+      "n": 5,
+      "avg": 2.952
+    },
+    "ask:en": {
+      "category": "ask",
+      "lang": "en",
+      "prefix_count": 5,
+      "seen": 5,
+      "n": 5,
+      "avg": 2.686
+    },
+    "deny:cn": {
+      "category": "deny",
+      "lang": "cn",
+      "prefix_count": 5,
+      "seen": 5,
+      "n": 5,
+      "avg": 2.002
+    },
+    "deny:en": {
+      "category": "deny",
+      "lang": "en",
+      "prefix_count": 5,
+      "seen": 5,
+      "n": 5,
+      "avg": 2.168
+    },
+    "repeat:cn": {
+      "category": "repeat",
+      "lang": "cn",
+      "prefix_count": 5,
+      "seen": 5,
+      "n": 5,
+      "avg": 3.624
+    },
+    "repeat:en": {
+      "category": "repeat",
+      "lang": "en",
+      "prefix_count": 5,
+      "seen": 5,
+      "n": 5,
+      "avg": 3.618
+    },
+    "shift:cn": {
+      "category": "shift",
+      "lang": "cn",
+      "prefix_count": 5,
+      "seen": 5,
+      "n": 5,
+      "avg": 2.018
+    },
+    "shift:en": {
+      "category": "shift",
+      "lang": "en",
+      "prefix_count": 5,
+      "seen": 5,
+      "n": 5,
+      "avg": 2.322
+    },
+    "wait:cn": {
+      "category": "wait",
+      "lang": "cn",
+      "prefix_count": 5,
+      "seen": 5,
+      "n": 5,
+      "avg": 2.122
+    },
+    "wait:en": {
+      "category": "wait",
+      "lang": "en",
+      "prefix_count": 5,
+      "seen": 5,
+      "n": 5,
+      "avg": 2.166
+    },
+    "pause:cn": {
+      "category": "pause",
+      "lang": "cn",
+      "prefix_count": 5,
+      "seen": 5,
+      "n": 4,
+      "avg": 2.085
+    },
+    "pause:en": {
+      "category": "pause",
+      "lang": "en",
+      "prefix_count": 5,
+      "seen": 5,
+      "n": 5,
+      "avg": 2.162
+    },
+    "talk_to_others:cn": {
+      "category": "talk_to_others",
+      "lang": "cn",
+      "prefix_count": 5,
+      "seen": 5,
+      "n": 5,
+      "avg": 2.036
+    },
+    "talk_to_others:en": {
+      "category": "talk_to_others",
+      "lang": "en",
+      "prefix_count": 5,
+      "seen": 5,
+      "n": 5,
+      "avg": 2.532
+    },
+    "others_talk_to_user_after:cn": {
+      "category": "others_talk_to_user_after",
+      "lang": "cn",
+      "prefix_count": 5,
+      "seen": 5,
+      "n": 5,
+      "avg": 2.318
+    },
+    "others_talk_to_user_after:en": {
+      "category": "others_talk_to_user_after",
+      "lang": "en",
+      "prefix_count": 5,
+      "seen": 5,
+      "n": 5,
+      "avg": 2.41
+    },
+    "backchannel:cn": {
+      "category": "backchannel",
+      "lang": "cn",
+      "prefix_count": 5,
+      "seen": 5,
+      "n": 5,
+      "avg": 2.074
+    },
+    "backchannel:en": {
+      "category": "backchannel",
+      "lang": "en",
+      "prefix_count": 5,
+      "seen": 5,
+      "n": 5,
+      "avg": 2.26
+    },
+    "others_talk_to_user_before:cn": {
+      "category": "others_talk_to_user_before",
+      "lang": "cn",
+      "prefix_count": 5,
+      "seen": 5,
+      "n": 0,
+      "avg": 0.0
+    },
+    "others_talk_to_user_before:en": {
+      "category": "others_talk_to_user_before",
+      "lang": "en",
+      "prefix_count": 5,
+      "seen": 5,
+      "n": 0,
+      "avg": 0.0
+    }
+  },
+  "interruption_scores": {
+    "ask": 0.7,
+    "deny": 0.9,
+    "repeat": 0.9,
+    "shift": 0.8,
+    "wait": 1.0
+  },
+  "interruption_respond_avg": 0.86,
+  "rejection_scores": {
+    "pause": 0.9,
+    "backchannel": 0.1,
+    "talk_to_others": 0.4,
+    "third_party_speech": 0.2
+  },
+  "rejection_resume_avg": 0.4,
+  "score_summary": {
+    "Interruption Total Score": 86.0,
+    "Rejection Total Score": 40.0,
+    "Overall Score": 63.0,
+    "First Response Delay": 2.178,
+    "avg_latency_stop": 1.55,
+    "avg_latency_resp": 2.886,
+    "Total Delay": 2.205
+  },
+  "interruption_latency": {
+    "by_category_lang": {
+      "ask:cn": {
+        "category": "ask",
+        "lang": "cn",
+        "samples": 5,
+        "stop_intervals": 4,
+        "resp_intervals": 9,
+        "avg_latency_stop": 2.124,
+        "avg_latency_resp": 2.603,
+        "path": "logs/humdial_w3_specon_20260707_130643_eval/json_group/ask/ask_cn_latency_results.json"
+      },
+      "ask:en": {
+        "category": "ask",
+        "lang": "en",
+        "samples": 5,
+        "stop_intervals": 5,
+        "resp_intervals": 10,
+        "avg_latency_stop": 3.132,
+        "avg_latency_resp": 3.172,
+        "path": "logs/humdial_w3_specon_20260707_130643_eval/json_group/ask/ask_en_latency_results.json"
+      },
+      "deny:cn": {
+        "category": "deny",
+        "lang": "cn",
+        "samples": 5,
+        "stop_intervals": 4,
+        "resp_intervals": 10,
+        "avg_latency_stop": 0.556,
+        "avg_latency_resp": 2.334,
+        "path": "logs/humdial_w3_specon_20260707_130643_eval/json_group/deny/deny_cn_latency_results.json"
+      },
+      "deny:en": {
+        "category": "deny",
+        "lang": "en",
+        "samples": 5,
+        "stop_intervals": 5,
+        "resp_intervals": 10,
+        "avg_latency_stop": 1.462,
+        "avg_latency_resp": 2.794,
+        "path": "logs/humdial_w3_specon_20260707_130643_eval/json_group/deny/deny_en_latency_results.json"
+      },
+      "repeat:cn": {
+        "category": "repeat",
+        "lang": "cn",
+        "samples": 5,
+        "stop_intervals": 4,
+        "resp_intervals": 10,
+        "avg_latency_stop": 1.012,
+        "avg_latency_resp": 3.636,
+        "path": "logs/humdial_w3_specon_20260707_130643_eval/json_group/repeat/repeat_cn_latency_results.json"
+      },
+      "repeat:en": {
+        "category": "repeat",
+        "lang": "en",
+        "samples": 5,
+        "stop_intervals": 5,
+        "resp_intervals": 9,
+        "avg_latency_stop": 1.858,
+        "avg_latency_resp": 3.688,
+        "path": "logs/humdial_w3_specon_20260707_130643_eval/json_group/repeat/repeat_en_latency_results.json"
+      },
+      "shift:cn": {
+        "category": "shift",
+        "lang": "cn",
+        "samples": 5,
+        "stop_intervals": 3,
+        "resp_intervals": 10,
+        "avg_latency_stop": 1.852,
+        "avg_latency_resp": 3.073,
+        "path": "logs/humdial_w3_specon_20260707_130643_eval/json_group/shift/shift_cn_latency_results.json"
+      },
+      "shift:en": {
+        "category": "shift",
+        "lang": "en",
+        "samples": 5,
+        "stop_intervals": 6,
+        "resp_intervals": 11,
+        "avg_latency_stop": 1.511,
+        "avg_latency_resp": 2.811,
+        "path": "logs/humdial_w3_specon_20260707_130643_eval/json_group/shift/shift_en_latency_results.json"
+      },
+      "wait:cn": {
+        "category": "wait",
+        "lang": "cn",
+        "samples": 5,
+        "stop_intervals": 3,
+        "resp_intervals": 10,
+        "avg_latency_stop": 1.095,
+        "avg_latency_resp": 2.234,
+        "path": "logs/humdial_w3_specon_20260707_130643_eval/json_group/wait/wait_cn_latency_results.json"
+      },
+      "wait:en": {
+        "category": "wait",
+        "lang": "en",
+        "samples": 5,
+        "stop_intervals": 5,
+        "resp_intervals": 9,
+        "avg_latency_stop": 0.898,
+        "avg_latency_resp": 2.514,
+        "path": "logs/humdial_w3_specon_20260707_130643_eval/json_group/wait/wait_en_latency_results.json"
+      }
+    },
+    "by_category": {
+      "ask": {
+        "samples": 10,
+        "stop_intervals": 9,
+        "resp_intervals": 19,
+        "avg_latency_stop": 2.628,
+        "avg_latency_resp": 2.888
+      },
+      "deny": {
+        "samples": 10,
+        "stop_intervals": 9,
+        "resp_intervals": 20,
+        "avg_latency_stop": 1.009,
+        "avg_latency_resp": 2.564
+      },
+      "repeat": {
+        "samples": 10,
+        "stop_intervals": 9,
+        "resp_intervals": 19,
+        "avg_latency_stop": 1.435,
+        "avg_latency_resp": 3.662
+      },
+      "shift": {
+        "samples": 10,
+        "stop_intervals": 9,
+        "resp_intervals": 21,
+        "avg_latency_stop": 1.681,
+        "avg_latency_resp": 2.942
+      },
+      "wait": {
+        "samples": 10,
+        "stop_intervals": 8,
+        "resp_intervals": 19,
+        "avg_latency_stop": 0.997,
+        "avg_latency_resp": 2.374
+      }
+    },
+    "avg_latency_stop": 1.55,
+    "avg_latency_resp": 2.886
+  }
+}

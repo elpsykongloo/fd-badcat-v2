@@ -1,0 +1,144 @@
+{
+ "delta_star": 1.5,
+ "arms": {
+  "tact": "w2r_tact_full",
+  "blocking": "w2r_sblock_full"
+ },
+ "clock": "nominal = max(t_commit) - t_user_end (wall-free, primary)",
+ "full": {
+  "set": "full-100",
+  "n": 96,
+  "fixed_premium_s": 123.78,
+  "oracle_A_premium_s": 20.88,
+  "oracle_A_n": 15,
+  "oracle_B_premium_s": 3.23,
+  "oracle_B_n": 2,
+  "recovery_A": 0.831,
+  "recovery_B": 0.974,
+  "mean_premium_s": 1.289,
+  "fixed_premium_wall_s": 124.44,
+  "recovery_A_wall": 0.832
+ },
+ "rollback": {
+  "set": "rollback-subset",
+  "n": 15,
+  "fixed_premium_s": 20.88,
+  "oracle_A_premium_s": 20.88,
+  "oracle_A_n": 15,
+  "oracle_B_premium_s": 3.23,
+  "oracle_B_n": 2,
+  "recovery_A": 0.0,
+  "recovery_B": 0.845,
+  "mean_premium_s": 1.392,
+  "fixed_premium_wall_s": 20.89,
+  "recovery_A_wall": 0.0
+ },
+ "travel_10": {
+  "rescue_route": {
+   "delta_needed": 3.91,
+   "completion_s": 4.959,
+   "per_clip_premium_s": 3.91,
+   "fleet_ripple": "fixed-arm delta 1.5 -> 3.91 costs +241.0s per 100 scenarios"
+  },
+  "cancel_rule_route": {
+   "mechanism": "announce-cancel at EoU1 (revision announced, content pending) -> relaunch at final EoU under delta*",
+   "completion_s": 2.549,
+   "per_clip_premium_s": 1.5
+  },
+  "ratio_rescue_over_cancel": 2.61
+ },
+ "skipped": [
+  {
+   "folder": "ecommerce_12_6998abd731d2ec50d067d5bd",
+   "tact_commits": false,
+   "block_commits": false
+  },
+  {
+   "folder": "finance_23_66f59c766e7e22e1f90d08f6",
+   "tact_commits": false,
+   "block_commits": false
+  },
+  {
+   "folder": "housing_24_65e8cf8f4c7424fa062e54a3",
+   "tact_commits": true,
+   "block_commits": false
+  },
+  {
+   "folder": "housing_25_66f59c766e7e22e1f90d08f6",
+   "tact_commits": true,
+   "block_commits": false
+  }
+ ],
+ "top10_premiums": [
+  {
+   "folder": "ecommerce_19_66f59c766e7e22e1f90d08f6",
+   "id": "ecommerce_19",
+   "rollback": true,
+   "premium_nominal": 1.744,
+   "premium_wall": 1.744
+  },
+  {
+   "folder": "travel_24_695bd157114f0d2317f88617",
+   "id": "travel_24",
+   "rollback": false,
+   "premium_nominal": 1.676,
+   "premium_wall": 1.676
+  },
+  {
+   "folder": "travel_18_66f59c766e7e22e1f90d08f6",
+   "id": "travel_18",
+   "rollback": false,
+   "premium_nominal": 1.622,
+   "premium_wall": 3.09
+  },
+  {
+   "folder": "ecommerce_01_69a9cf80f4d7668d5c815038",
+   "id": "ecommerce_01",
+   "rollback": false,
+   "premium_nominal": 1.585,
+   "premium_wall": 1.585
+  },
+  {
+   "folder": "finance_02_6998abd731d2ec50d067d5bd",
+   "id": "finance_02",
+   "rollback": false,
+   "premium_nominal": 1.584,
+   "premium_wall": 1.584
+  },
+  {
+   "folder": "travel_08_695bd157114f0d2317f88617",
+   "id": "travel_08",
+   "rollback": false,
+   "premium_nominal": 1.56,
+   "premium_wall": 1.56
+  },
+  {
+   "folder": "ecommerce_23_5f4a4da1575d605c43bef871",
+   "id": "ecommerce_23",
+   "rollback": false,
+   "premium_nominal": 1.559,
+   "premium_wall": 1.536
+  },
+  {
+   "folder": "ecommerce_08_5ff07b5ee7a1d23e719e421e",
+   "id": "ecommerce_08",
+   "rollback": false,
+   "premium_nominal": 1.55,
+   "premium_wall": 1.55
+  },
+  {
+   "folder": "ecommerce_21_65e8cf8f4c7424fa062e54a3",
+   "id": "ecommerce_21",
+   "rollback": false,
+   "premium_nominal": 1.534,
+   "premium_wall": 1.445
+  },
+  {
+   "folder": "ecommerce_15_56780a5a89319e0011644cb4",
+   "id": "ecommerce_15",
+   "rollback": false,
+   "premium_nominal": 1.531,
+   "premium_wall": 1.442
+  }
+ ]
+}

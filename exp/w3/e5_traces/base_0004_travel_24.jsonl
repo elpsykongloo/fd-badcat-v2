@@ -1,0 +1,58 @@
+{"event": "vad_start", "data": {"turn": 0, "state": "LISTEN", "timestamp": 1.037, "t_audio": 1.024}}
+{"event": "vad_done", "data": {"timestamp": 2.669, "turn": 0, "state": "LISTEN", "t_audio": 2.56}}
+{"event": "vad_start", "data": {"turn": 0, "state": "LISTEN", "timestamp": 2.772, "t_audio": 2.656}}
+{"event": "vad_done", "data": {"timestamp": 3.589, "turn": 0, "state": "LISTEN", "t_audio": 3.424}}
+{"event": "vad_start", "data": {"turn": 0, "state": "LISTEN", "timestamp": 3.76, "t_audio": 3.584}}
+{"event": "vad_done", "data": {"timestamp": 5.939, "turn": 0, "state": "LISTEN", "t_audio": 5.632}}
+{"event": "vad_start", "data": {"turn": 0, "state": "LISTEN", "timestamp": 6.518, "t_audio": 6.176}}
+{"event": "vad_done", "data": {"timestamp": 7.881, "turn": 0, "state": "LISTEN", "t_audio": 7.456}}
+{"event": "vad_640_done", "data": {"timestamp": 8.579, "turn": 0, "state": "LISTEN", "t_audio": 8.112}}
+{"event": "vad_start", "data": {"turn": 0, "state": "LISTEN", "timestamp": 8.598, "t_audio": 8.128}}
+{"event": "asr_done", "data": {"timestamp": 8.692, "turn": 0, "state": "LISTEN", "content": "and november fifth", "t_audio": 8.208}}
+{"event": "tact_decision_done", "data": {"timestamp": 9.105, "infer_time": 0.52, "turn": 0, "state": "LISTEN", "n_ops": 1, "t_audio": 8.592}}
+{"event": "tact_op_applied", "data": {"timestamp": 9.105, "t_audio": 8.592, "op": {"type": "launch", "fn": "search_flights", "op_id": 13}}}
+{"event": "tts_done", "data": {"timestamp": 9.704, "infer_time": 0.598, "turn": 0, "state": "LISTEN", "dur_audio": 2.811, "t_audio": 9.168}}
+{"event": "vad_done", "data": {"timestamp": 10.806, "turn": 0, "state": "SPEAK", "t_audio": 10.208}}
+{"event": "vad_640_done", "data": {"timestamp": 11.489, "turn": 0, "state": "SPEAK", "t_audio": 10.848}}
+{"event": "asr_done", "data": {"timestamp": 11.605, "turn": 0, "state": "SPEAK", "content": "and book it under the name skyler", "t_audio": 10.944}}
+{"event": "tact_decision_done", "data": {"timestamp": 12.168, "infer_time": 0.674, "turn": 0, "state": "SPEAK", "n_ops": 2, "t_audio": 11.472}}
+{"event": "act_commit", "data": {"op_id": 13, "t_commit": 11.708, "actual_commit": 12.147, "deferred_s": 0.439, "tool_wall_s": null, "t_audio": 11.472}}
+{"event": "act_commit_deferred", "data": {"op_id": 13, "nominal": 11.708, "actual": 12.147, "deferred_s": 0.439, "t_audio": 11.472}}
+{"event": "tact_op_applied", "data": {"timestamp": 12.168, "t_audio": 11.472, "op": {"type": "launch_dedup", "fn": "search_flights"}}}
+{"event": "tact_op_applied", "data": {"timestamp": 12.169, "t_audio": 11.472, "op": {"type": "launch", "fn": "book_flight", "op_id": 14}}}
+{"event": "vad_start", "data": {"turn": 0, "state": "SPEAK", "timestamp": 12.581, "t_audio": 11.872}}
+{"event": "tts_done", "data": {"timestamp": 12.859, "infer_time": 0.69, "turn": 0, "state": "SPEAK", "dur_audio": 3.531, "t_audio": 12.128}}
+{"event": "act_result", "data": {"timestamp": 12.971, "op_id": 13, "tool_wall_s": 0.801, "error": "", "t_audio": 12.224}}
+{"event": "vad_done", "data": {"timestamp": 15.069, "turn": 0, "state": "SPEAK", "t_audio": 14.208}}
+{"event": "vad_start", "data": {"turn": 0, "state": "SPEAK", "timestamp": 15.308, "t_audio": 14.432}}
+{"event": "vad_done", "data": {"timestamp": 18.201, "turn": 0, "state": "SPEAK", "t_audio": 17.152}}
+{"event": "vad_640_done", "data": {"timestamp": 18.883, "turn": 0, "state": "SPEAK", "t_audio": 17.792}}
+{"event": "asr_done", "data": {"timestamp": 19.008, "turn": 0, "state": "SPEAK", "content": "hotel near the airport for a couple of nights", "t_audio": 17.904}}
+{"event": "vad_start", "data": {"turn": 0, "state": "SPEAK", "timestamp": 19.09, "t_audio": 17.984}}
+{"event": "tact_decision_done", "data": {"timestamp": 19.92, "infer_time": 1.029, "turn": 0, "state": "SPEAK", "n_ops": 3, "t_audio": 18.752}}
+{"event": "tact_op_applied", "data": {"timestamp": 19.921, "t_audio": 18.752, "op": {"type": "launch_dedup", "fn": "search_flights"}}}
+{"event": "tact_op_applied", "data": {"timestamp": 19.921, "t_audio": 18.752, "op": {"type": "patch", "op_id": 14, "diff": {"passenger_name": "Skylar"}}}}
+{"event": "tact_op_applied", "data": {"timestamp": 19.921, "t_audio": 18.752, "op": {"type": "launch", "fn": "search_apartments", "op_id": 15}}}
+{"event": "tts_done", "data": {"timestamp": 21.277, "infer_time": 1.355, "turn": 0, "state": "SPEAK", "dur_audio": 7.404, "t_audio": 20.032}}
+{"event": "vad_done", "data": {"timestamp": 22.188, "turn": 0, "state": "SPEAK", "t_audio": 20.896}}
+{"event": "vad_start", "data": {"turn": 0, "state": "SPEAK", "timestamp": 22.563, "t_audio": 21.248}}
+{"event": "vad_done", "data": {"timestamp": 24.879, "turn": 0, "state": "SPEAK", "t_audio": 23.424}}
+{"event": "vad_start", "data": {"turn": 0, "state": "SPEAK", "timestamp": 25.186, "t_audio": 23.712}}
+{"event": "vad_done", "data": {"timestamp": 26.445, "turn": 0, "state": "SPEAK", "t_audio": 24.896}}
+{"event": "vad_start", "data": {"turn": 0, "state": "SPEAK", "timestamp": 26.513, "t_audio": 24.96}}
+{"event": "vad_done", "data": {"timestamp": 27.738, "turn": 0, "state": "SPEAK", "t_audio": 26.112}}
+{"event": "vad_640_done", "data": {"timestamp": 28.42, "turn": 0, "state": "SPEAK", "t_audio": 26.752}}
+{"event": "asr_done", "data": {"timestamp": 28.506, "turn": 0, "state": "SPEAK", "content": "just four", "t_audio": 26.816}}
+{"event": "tact_decision_done", "data": {"timestamp": 30.638, "infer_time": 2.205, "turn": 0, "state": "SPEAK", "n_ops": 5, "t_audio": 28.816}}
+{"event": "act_commit", "data": {"op_id": 14, "t_commit": 26.908, "actual_commit": 31.022, "deferred_s": 4.114, "tool_wall_s": null, "t_audio": 28.816}}
+{"event": "act_commit_deferred", "data": {"op_id": 14, "nominal": 26.908, "actual": 31.022, "deferred_s": 4.114, "t_audio": 28.816}}
+{"event": "tact_op_applied", "data": {"timestamp": 30.639, "t_audio": 28.816, "op": {"type": "launch_dedup", "fn": "search_flights"}}}
+{"event": "tact_op_applied", "data": {"timestamp": 30.639, "t_audio": 28.816, "op": {"type": "launch_dedup", "fn": "search_apartments"}}}
+{"event": "tact_op_applied", "data": {"timestamp": 30.639, "t_audio": 28.816, "op": {"type": "patch", "op_id": 15, "diff": {"origin_address": "airport"}}}}
+{"event": "tact_op_applied", "data": {"timestamp": 30.639, "t_audio": 28.816, "op": {"type": "launch", "fn": "update_identity_doc", "op_id": 16}}}
+{"event": "tts_done", "data": {"timestamp": 31.056, "infer_time": 0.416, "turn": 0, "state": "SPEAK", "dur_audio": 1.794, "t_audio": 29.216}}
+{"event": "act_result", "data": {"timestamp": 31.072, "op_id": 14, "tool_wall_s": 0.432, "error": "", "t_audio": 29.232}}
+{"event": "act_commit", "data": {"op_id": 15, "t_commit": 32.522, "actual_commit": 32.522, "deferred_s": 0.0, "tool_wall_s": null, "t_audio": 32.512}}
+{"event": "act_commit", "data": {"op_id": 16, "t_commit": 32.522, "actual_commit": 32.522, "deferred_s": 0.0, "tool_wall_s": null, "t_audio": 32.512}}
+{"event": "act_result", "data": {"timestamp": 35.014, "op_id": 16, "tool_wall_s": 0.429, "error": "", "t_audio": 32.928}}
+{"event": "act_result", "data": {"timestamp": 35.103, "op_id": 15, "tool_wall_s": 0.518, "error": "", "t_audio": 33.008}}

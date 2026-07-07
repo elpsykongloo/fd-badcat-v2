@@ -1,0 +1,41 @@
+{"event": "vad_start", "data": {"turn": 0, "state": "LISTEN", "timestamp": 0.287, "t_audio": 0.32}}
+{"event": "vad_done", "data": {"timestamp": 0.559, "turn": 0, "state": "LISTEN", "t_audio": 0.576}}
+{"event": "vad_start", "data": {"turn": 0, "state": "LISTEN", "timestamp": 0.594, "t_audio": 0.608}}
+{"event": "vad_done", "data": {"timestamp": 1.105, "turn": 0, "state": "LISTEN", "t_audio": 1.088}}
+{"event": "vad_640_done", "data": {"timestamp": 1.804, "turn": 0, "state": "LISTEN", "t_audio": 1.744}}
+{"event": "asr_done", "data": {"timestamp": 1.891, "turn": 0, "state": "LISTEN", "content": "嗯", "t_audio": 1.824}}
+{"event": "tact_decision_done", "data": {"timestamp": 2.042, "infer_time": 0.235, "turn": 0, "state": "LISTEN", "n_ops": 0, "t_audio": 1.952}}
+{"event": "vad_start", "data": {"turn": 0, "state": "LISTEN", "timestamp": 2.127, "t_audio": 2.048}}
+{"event": "vad_done", "data": {"timestamp": 3.658, "turn": 0, "state": "LISTEN", "t_audio": 3.488}}
+{"event": "vad_640_done", "data": {"timestamp": 4.341, "turn": 0, "state": "LISTEN", "t_audio": 4.128}}
+{"event": "asr_done", "data": {"timestamp": 4.447, "turn": 0, "state": "LISTEN", "content": "so 哼", "t_audio": 4.224}}
+{"event": "tact_decision_done", "data": {"timestamp": 4.584, "infer_time": 0.24, "turn": 0, "state": "LISTEN", "n_ops": 0, "t_audio": 4.352}}
+{"event": "vad_start", "data": {"turn": 0, "state": "LISTEN", "timestamp": 5.158, "t_audio": 4.896}}
+{"event": "vad_done", "data": {"timestamp": 5.874, "turn": 0, "state": "LISTEN", "t_audio": 5.568}}
+{"event": "vad_start", "data": {"turn": 0, "state": "LISTEN", "timestamp": 6.113, "t_audio": 5.792}}
+{"event": "vad_done", "data": {"timestamp": 6.828, "turn": 0, "state": "LISTEN", "t_audio": 6.464}}
+{"event": "vad_start", "data": {"turn": 0, "state": "LISTEN", "timestamp": 7.136, "t_audio": 6.752}}
+{"event": "vad_done", "data": {"timestamp": 12.072, "turn": 0, "state": "LISTEN", "t_audio": 11.392}}
+{"event": "vad_start", "data": {"turn": 0, "state": "LISTEN", "timestamp": 12.243, "t_audio": 11.552}}
+{"event": "vad_done", "data": {"timestamp": 13.059, "turn": 0, "state": "LISTEN", "t_audio": 12.32}}
+{"event": "vad_640_done", "data": {"timestamp": 13.741, "turn": 0, "state": "LISTEN", "t_audio": 12.96}}
+{"event": "asr_done", "data": {"timestamp": 13.838, "turn": 0, "state": "LISTEN", "content": "嗯", "t_audio": 13.04}}
+{"event": "tact_decision_done", "data": {"timestamp": 14.192, "infer_time": 0.446, "turn": 0, "state": "LISTEN", "n_ops": 1, "t_audio": 13.376}}
+{"event": "tact_op_applied", "data": {"timestamp": 14.192, "t_audio": 13.376, "op": {"type": "launch", "fn": "track_order", "op_id": 19}}}
+{"event": "vad_start", "data": {"turn": 0, "state": "LISTEN", "timestamp": 14.487, "t_audio": 13.664}}
+{"event": "tts_done", "data": {"timestamp": 14.804, "infer_time": 0.611, "turn": 0, "state": "LISTEN", "dur_audio": 3.211, "t_audio": 13.952}}
+{"event": "vad_done", "data": {"timestamp": 16.97, "turn": 0, "state": "SPEAK", "t_audio": 16.0}}
+{"event": "vad_start", "data": {"turn": 0, "state": "SPEAK", "timestamp": 17.038, "t_audio": 16.064}}
+{"event": "vad_done", "data": {"timestamp": 20.479, "turn": 0, "state": "SPEAK", "t_audio": 19.296}}
+{"event": "vad_start", "data": {"turn": 0, "state": "SPEAK", "timestamp": 20.821, "t_audio": 19.616}}
+{"event": "vad_done", "data": {"timestamp": 26.202, "turn": 0, "state": "SPEAK", "t_audio": 24.672}}
+{"event": "vad_640_done", "data": {"timestamp": 26.885, "turn": 0, "state": "SPEAK", "t_audio": 25.312}}
+{"event": "asr_done", "data": {"timestamp": 27.086, "turn": 0, "state": "SPEAK", "content": "i want to find something good go ahead and add it to my cart", "t_audio": 25.488}}
+{"event": "tact_decision_done", "data": {"timestamp": 27.457, "infer_time": 0.561, "turn": 0, "state": "SPEAK", "n_ops": 2, "t_audio": 25.84}}
+{"event": "act_commit", "data": {"op_id": 19, "t_commit": 25.788, "actual_commit": 26.402, "deferred_s": 0.614, "tool_wall_s": null, "t_audio": 25.84}}
+{"event": "act_commit_deferred", "data": {"op_id": 19, "nominal": 25.788, "actual": 26.402, "deferred_s": 0.614, "t_audio": 25.84}}
+{"event": "tact_op_applied", "data": {"timestamp": 27.458, "t_audio": 25.84, "op": {"type": "launch", "fn": "search_products", "op_id": 20}}}
+{"event": "tts_done", "data": {"timestamp": 27.913, "infer_time": 0.455, "turn": 0, "state": "SPEAK", "dur_audio": 2.114, "t_audio": 26.272}}
+{"event": "act_result", "data": {"timestamp": 28.127, "op_id": 19, "tool_wall_s": 0.668, "error": "", "t_audio": 26.464}}
+{"event": "act_commit", "data": {"op_id": 20, "t_commit": 27.902, "actual_commit": 27.902, "deferred_s": 0.0, "tool_wall_s": null, "t_audio": 27.888}}
+{"event": "act_result", "data": {"timestamp": 30.436, "op_id": 20, "tool_wall_s": 0.787, "error": "", "t_audio": 28.64}}

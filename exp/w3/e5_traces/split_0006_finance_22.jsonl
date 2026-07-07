@@ -1,0 +1,29 @@
+{"event": "vad_start", "data": {"turn": 0, "state": "LISTEN", "timestamp": 3.372, "t_audio": 3.296}}
+{"event": "vad_done", "data": {"timestamp": 4.121, "turn": 0, "state": "LISTEN", "t_audio": 4.0}}
+{"event": "vad_start", "data": {"turn": 0, "state": "LISTEN", "timestamp": 4.462, "t_audio": 4.32}}
+{"event": "vad_done", "data": {"timestamp": 6.917, "turn": 0, "state": "LISTEN", "t_audio": 6.624}}
+{"event": "vad_start", "data": {"turn": 0, "state": "LISTEN", "timestamp": 7.155, "t_audio": 6.848}}
+{"event": "vad_done", "data": {"timestamp": 9.406, "turn": 0, "state": "LISTEN", "t_audio": 8.96}}
+{"event": "vad_start", "data": {"turn": 0, "state": "LISTEN", "timestamp": 9.577, "t_audio": 9.12}}
+{"event": "vad_done", "data": {"timestamp": 10.292, "turn": 0, "state": "LISTEN", "t_audio": 9.792}}
+{"event": "vad_640_done", "data": {"timestamp": 10.973, "turn": 0, "state": "LISTEN", "t_audio": 10.432}}
+{"event": "vad_start", "data": {"turn": 0, "state": "LISTEN", "timestamp": 11.008, "t_audio": 10.464}}
+{"event": "asr_done", "data": {"timestamp": 11.07, "turn": 0, "state": "LISTEN", "content": "livings", "t_audio": 10.512}}
+{"event": "tact_decision_done", "data": {"timestamp": 11.501, "infer_time": 0.523, "turn": 0, "state": "LISTEN", "n_ops": 1, "t_audio": 10.912}}
+{"event": "tact_op_applied", "data": {"timestamp": 11.501, "t_audio": 10.912, "op": {"type": "launch", "fn": "modify_autopay", "op_id": 23}}}
+{"event": "tts_done", "data": {"timestamp": 12.046, "infer_time": 0.544, "turn": 0, "state": "LISTEN", "dur_audio": 2.571, "t_audio": 11.456}}
+{"event": "vad_done", "data": {"timestamp": 12.658, "turn": 0, "state": "SPEAK", "t_audio": 12.032}}
+{"event": "vad_start", "data": {"turn": 0, "state": "SPEAK", "timestamp": 13.101, "t_audio": 12.448}}
+{"event": "vad_done", "data": {"timestamp": 13.986, "turn": 0, "state": "SPEAK", "t_audio": 13.28}}
+{"event": "vad_start", "data": {"turn": 0, "state": "SPEAK", "timestamp": 14.53, "t_audio": 13.792}}
+{"event": "vad_done", "data": {"timestamp": 15.279, "turn": 0, "state": "SPEAK", "t_audio": 14.496}}
+{"event": "vad_start", "data": {"turn": 0, "state": "SPEAK", "timestamp": 15.415, "t_audio": 14.624}}
+{"event": "vad_done", "data": {"timestamp": 16.606, "turn": 0, "state": "SPEAK", "t_audio": 15.744}}
+{"event": "vad_start", "data": {"turn": 0, "state": "SPEAK", "timestamp": 16.777, "t_audio": 15.904}}
+{"event": "vad_done", "data": {"timestamp": 20.488, "turn": 0, "state": "SPEAK", "t_audio": 19.392}}
+{"event": "act_commit", "data": {"op_id": 23, "t_commit": 19.676, "actual_commit": 19.676, "deferred_s": 0.0, "tool_wall_s": null, "t_audio": 19.664}}
+{"event": "vad_640_done", "data": {"timestamp": 21.17, "turn": 0, "state": "SPEAK", "t_audio": 20.032}}
+{"event": "act_result", "data": {"timestamp": 21.189, "op_id": 23, "tool_wall_s": 0.393, "error": "", "t_audio": 20.048}}
+{"event": "asr_done", "data": {"timestamp": 21.322, "turn": 0, "state": "SPEAK", "content": "just set my credit card payit to come from my checking", "t_audio": 20.16}}
+{"event": "tact_decision_done", "data": {"timestamp": 21.594, "infer_time": 0.416, "turn": 0, "state": "SPEAK", "n_ops": 1, "t_audio": 20.416}}
+{"event": "tts_done", "data": {"timestamp": 22.185, "infer_time": 0.591, "turn": 0, "state": "SPEAK", "dur_audio": 2.971, "t_audio": 20.992}}

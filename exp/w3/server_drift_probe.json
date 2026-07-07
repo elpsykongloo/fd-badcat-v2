@@ -1,0 +1,74 @@
+{
+ "n": 10,
+ "byte_identical": 8,
+ "surface_only_drift": 2,
+ "ops_drift": 0,
+ "cache_misses": 0,
+ "verdict": "OPS-STABLE (drift confined to say/dialogue surface fields)",
+ "records": [
+  {
+   "key": "211c441093a6bbee",
+   "identical": true,
+   "ops_equal": null,
+   "parsed_equal": null
+  },
+  {
+   "key": "b1b7541313ef741c",
+   "identical": true,
+   "ops_equal": null,
+   "parsed_equal": null
+  },
+  {
+   "key": "a5ecb8011e1a6025",
+   "identical": true,
+   "ops_equal": null,
+   "parsed_equal": null
+  },
+  {
+   "key": "72e17f29b7ea7048",
+   "identical": true,
+   "ops_equal": null,
+   "parsed_equal": null
+  },
+  {
+   "key": "d9021f5371bd9f3f",
+   "identical": true,
+   "ops_equal": null,
+   "parsed_equal": null
+  },
+  {
+   "key": "f1087e972d99f69a",
+   "identical": false,
+   "ops_equal": true,
+   "parsed_equal": false,
+   "cached_raw": "{\"dialogue\": \"listen\", \"ops\": [{\"type\":\"patch\",\"op_id\":1,\"diff\":{\"args\":{\"query\":\"tablet\"}}},{\"type\":\"launch\",\"fn\":\"add_to_cart\",\"args\":{\"product_id\":\"$RESULT_1.product_id\",\"quantity\":1}}],\"say\": \"Searching for a tablet and adding one to your cart.\"}",
+   "fresh_raw": "{\"dialogue\": \"stay\", \"ops\": [{\"type\":\"patch\",\"op_id\":1,\"diff\":{\"args\":{\"query\":\"tablet\"}}},{\"type\":\"launch\",\"fn\":\"add_to_cart\",\"args\":{\"product_id\":\"$RESULT_1.product_id\",\"quantity\":1}}],\"say\": \"Updating to search for a tablet and adding one to the cart.\"}"
+  },
+  {
+   "key": "fe13d1f80173b1b6",
+   "identical": true,
+   "ops_equal": null,
+   "parsed_equal": null
+  },
+  {
+   "key": "935a4752b99a2bd7",
+   "identical": true,
+   "ops_equal": null,
+   "parsed_equal": null
+  },
+  {
+   "key": "1f110a90e26f7aeb",
+   "identical": false,
+   "ops_equal": true,
+   "parsed_equal": false,
+   "cached_raw": "{\"dialogue\": \"listen\", \"ops\": [{\"type\": \"launch\", \"fn\": \"get_exchange_rate\", \"args\": {\"amount\": 100, \"from_currency\": \"EUR\", \"to_currency\": \"USD\"}}], \"say\": \"\"}",
+   "fresh_raw": "{\"dialogue\": \"listen\", \"ops\": [{\"type\":\"launch\",\"fn\":\"get_exchange_rate\",\"args\":{\"amount\":100,\"from_currency\":\"EUR\",\"to_currency\":\"USD\"}}], \"say\": \"Calculating the exchange rate now.\"}"
+  },
+  {
+   "key": "eb014949e936990e",
+   "identical": true,
+   "ops_equal": null,
+   "parsed_equal": null
+  }
+ ]
+}

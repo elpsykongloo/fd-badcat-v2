@@ -1,0 +1,756 @@
+{
+ "provider": "w2r_tact_full",
+ "counts": {
+  "format": 24,
+  "benchmark_attr": 2,
+  "true_param_error": 4,
+  "dynref": 4,
+  "canonicalization": 6,
+  "asr_mishear": 4,
+  "missing_field": 2,
+  "missing_call": 7
+ },
+ "asr_pilot_triggered": true,
+ "ledger": [
+  {
+   "id": "ecommerce_08",
+   "kind": "read_final",
+   "fn": "search_products",
+   "class": "format",
+   "fields": [
+    {
+     "field": "query",
+     "gold": "mechanical keyboards",
+     "actual": "mechanical keyboard",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": true
+  },
+  {
+   "id": "ecommerce_08",
+   "kind": "read_final",
+   "fn": "search_products",
+   "class": "format",
+   "fields": [
+    {
+     "field": "query",
+     "gold": "mechanical keyboards",
+     "actual": "mechanical keyboard",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": true
+  },
+  {
+   "id": "ecommerce_12",
+   "kind": "read_missing",
+   "fn": "search_products",
+   "class": "benchmark_attr",
+   "fields": [],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "ecommerce_13",
+   "kind": "write",
+   "fn": "add_to_cart",
+   "class": "format",
+   "fields": [
+    {
+     "field": "product_id",
+     "gold": "k2",
+     "actual": "k-2",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": true
+  },
+  {
+   "id": "ecommerce_13",
+   "kind": "read_final",
+   "fn": "track_order",
+   "class": "format",
+   "fields": [
+    {
+     "field": "order_id",
+     "gold": "deliv",
+     "actual": "d-e-l-i-v",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": true
+  },
+  {
+   "id": "ecommerce_13",
+   "kind": "read_final",
+   "fn": "track_order",
+   "class": "true_param_error",
+   "fields": [
+    {
+     "field": "order_id",
+     "gold": "deliv",
+     "actual": "de",
+     "pair_class": "true_param_error"
+    }
+   ],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "ecommerce_14",
+   "kind": "write",
+   "fn": "add_to_cart",
+   "class": "format",
+   "fields": [
+    {
+     "field": "product_id",
+     "gold": "p52",
+     "actual": "p-5-2",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": true
+  },
+  {
+   "id": "ecommerce_18",
+   "kind": "write",
+   "fn": "add_to_cart",
+   "class": "dynref",
+   "fields": [],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "ecommerce_20",
+   "kind": "write",
+   "fn": "add_to_cart",
+   "class": "dynref",
+   "fields": [],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "ecommerce_21",
+   "kind": "write",
+   "fn": "add_to_cart",
+   "class": "dynref",
+   "fields": [],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "ecommerce_21",
+   "kind": "read_final",
+   "fn": "search_products",
+   "class": "canonicalization",
+   "fields": [
+    {
+     "field": "query",
+     "gold": "watch",
+     "actual": "nice watch",
+     "pair_class": "canonicalization"
+    }
+   ],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "ecommerce_21",
+   "kind": "write",
+   "fn": "add_to_cart",
+   "class": "dynref",
+   "fields": [],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "ecommerce_21",
+   "kind": "read_final",
+   "fn": "track_order",
+   "class": "asr_mishear",
+   "fields": [
+    {
+     "field": "order_id",
+     "gold": "bob",
+     "actual": "pop",
+     "pair_class": "asr_mishear"
+    }
+   ],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "ecommerce_21",
+   "kind": "read_final",
+   "fn": "search_products",
+   "class": "canonicalization",
+   "fields": [
+    {
+     "field": "query",
+     "gold": "watch",
+     "actual": "nice watch",
+     "pair_class": "canonicalization"
+    }
+   ],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "finance_04",
+   "kind": "read_final",
+   "fn": "get_exchange_rate",
+   "class": "missing_field",
+   "fields": [
+    {
+     "field": "to_currency",
+     "gold": "gbp",
+     "actual": null,
+     "pair_class": "missing_field"
+    }
+   ],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "finance_20",
+   "kind": "write",
+   "fn": "modify_autopay",
+   "class": "missing_call",
+   "fields": [],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "finance_23",
+   "kind": "write",
+   "fn": "modify_autopay",
+   "class": "missing_call",
+   "fields": [],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "housing_06",
+   "kind": "read_final",
+   "fn": "calculate_commute",
+   "class": "format",
+   "fields": [
+    {
+     "field": "destination_address",
+     "gold": "gym",
+     "actual": "the gym",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": true
+  },
+  {
+   "id": "housing_10",
+   "kind": "read_final",
+   "fn": "calculate_commute",
+   "class": "missing_field",
+   "fields": [
+    {
+     "field": "destination_address",
+     "gold": "university",
+     "actual": "the university",
+     "pair_class": "format"
+    },
+    {
+     "field": "mode",
+     "gold": "transit",
+     "actual": null,
+     "pair_class": "missing_field"
+    }
+   ],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "housing_11",
+   "kind": "read_final",
+   "fn": "search_apartments",
+   "class": "benchmark_attr",
+   "fields": [],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "housing_13",
+   "kind": "write",
+   "fn": "update_search_filter",
+   "class": "canonicalization",
+   "fields": [
+    {
+     "field": "filter_name",
+     "gold": "min bedrooms",
+     "actual": "bedrooms",
+     "pair_class": "canonicalization"
+    }
+   ],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "housing_17",
+   "kind": "read_final",
+   "fn": "calculate_commute",
+   "class": "true_param_error",
+   "fields": [
+    {
+     "field": "origin_address",
+     "gold": "my house",
+     "actual": "here",
+     "pair_class": "true_param_error"
+    }
+   ],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "housing_18",
+   "kind": "read_final",
+   "fn": "search_apartments",
+   "class": "asr_mishear",
+   "fields": [
+    {
+     "field": "max_price",
+     "gold": 1800,
+     "actual": 800,
+     "pair_class": "asr_mishear"
+    }
+   ],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "housing_18",
+   "kind": "read_final",
+   "fn": "calculate_commute",
+   "class": "true_param_error",
+   "fields": [
+    {
+     "field": "destination_address",
+     "gold": "coffee shop on 5th",
+     "actual": "5th street coffee shop",
+     "pair_class": "true_param_error"
+    },
+    {
+     "field": "mode",
+     "gold": "biking",
+     "actual": "bike",
+     "pair_class": "true_param_error"
+    }
+   ],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "housing_20",
+   "kind": "write",
+   "fn": "update_search_filter",
+   "class": "missing_call",
+   "fields": [],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "housing_20",
+   "kind": "read_final",
+   "fn": "calculate_commute",
+   "class": "true_param_error",
+   "fields": [
+    {
+     "field": "destination_address",
+     "gold": "my office",
+     "actual": "",
+     "pair_class": "true_param_error"
+    },
+    {
+     "field": "mode",
+     "gold": "driving",
+     "actual": "",
+     "pair_class": "true_param_error"
+    }
+   ],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "housing_22",
+   "kind": "read_missing",
+   "fn": "calculate_commute",
+   "class": "missing_call",
+   "fields": [],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "housing_24",
+   "kind": "read_final",
+   "fn": "calculate_commute",
+   "class": "format",
+   "fields": [
+    {
+     "field": "destination_address",
+     "gold": "the grocery store",
+     "actual": "grocery store",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": true
+  },
+  {
+   "id": "housing_24",
+   "kind": "read_missing",
+   "fn": "calculate_commute",
+   "class": "missing_call",
+   "fields": [],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "travel_01",
+   "kind": "read_final",
+   "fn": "search_flights",
+   "class": "format",
+   "fields": [
+    {
+     "field": "date",
+     "gold": "july 15",
+     "actual": "july 15th",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": true
+  },
+  {
+   "id": "travel_02",
+   "kind": "write",
+   "fn": "update_identity_doc",
+   "class": "asr_mishear",
+   "fields": [
+    {
+     "field": "doc_number",
+     "gold": "p9-9-9-90011",
+     "actual": "p88990011",
+     "pair_class": "asr_mishear"
+    }
+   ],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "travel_03",
+   "kind": "read_final",
+   "fn": "search_flights",
+   "class": "format",
+   "fields": [
+    {
+     "field": "date",
+     "gold": "august 20",
+     "actual": "august 20th",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": true
+  },
+  {
+   "id": "travel_03",
+   "kind": "read_final",
+   "fn": "search_flights",
+   "class": "format",
+   "fields": [
+    {
+     "field": "date",
+     "gold": "august 20",
+     "actual": "august 20th",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": true
+  },
+  {
+   "id": "travel_05",
+   "kind": "read_final",
+   "fn": "search_flights",
+   "class": "format",
+   "fields": [
+    {
+     "field": "date",
+     "gold": "december 12",
+     "actual": "december 12th",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": true
+  },
+  {
+   "id": "travel_07",
+   "kind": "write",
+   "fn": "update_identity_doc",
+   "class": "format",
+   "fields": [
+    {
+     "field": "doc_number",
+     "gold": "dl555",
+     "actual": "d-l-5-5-5",
+     "pair_class": "format"
+    },
+    {
+     "field": "doc_type",
+     "gold": "driver license",
+     "actual": "driver's license",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": true
+  },
+  {
+   "id": "travel_07",
+   "kind": "write",
+   "fn": "update_identity_doc",
+   "class": "format",
+   "fields": [
+    {
+     "field": "doc_type",
+     "gold": "driver license",
+     "actual": "driver's license",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": true
+  },
+  {
+   "id": "travel_08",
+   "kind": "read_final",
+   "fn": "search_flights",
+   "class": "format",
+   "fields": [
+    {
+     "field": "date",
+     "gold": "november 1",
+     "actual": "november 1st",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": true
+  },
+  {
+   "id": "travel_10",
+   "kind": "read_final",
+   "fn": "search_flights",
+   "class": "asr_mishear",
+   "fields": [
+    {
+     "field": "date",
+     "gold": "october 7",
+     "actual": "october 5th",
+     "pair_class": "asr_mishear"
+    }
+   ],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "travel_11",
+   "kind": "read_final",
+   "fn": "search_flights",
+   "class": "format",
+   "fields": [
+    {
+     "field": "date",
+     "gold": "february 2",
+     "actual": "february 2nd",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": true
+  },
+  {
+   "id": "travel_14",
+   "kind": "read_final",
+   "fn": "search_flights",
+   "class": "format",
+   "fields": [
+    {
+     "field": "date",
+     "gold": "march 22",
+     "actual": "march 22nd",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": true
+  },
+  {
+   "id": "travel_16",
+   "kind": "read_final",
+   "fn": "search_flights",
+   "class": "canonicalization",
+   "fields": [
+    {
+     "field": "date",
+     "gold": "august 8",
+     "actual": "august 8th",
+     "pair_class": "format"
+    },
+    {
+     "field": "destination",
+     "gold": "las vegas",
+     "actual": "vegas",
+     "pair_class": "canonicalization"
+    }
+   ],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "travel_18",
+   "kind": "read_final",
+   "fn": "search_flights",
+   "class": "format",
+   "fields": [
+    {
+     "field": "date",
+     "gold": "april 10",
+     "actual": "april 10th",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": true
+  },
+  {
+   "id": "travel_19",
+   "kind": "read_final",
+   "fn": "search_flights",
+   "class": "format",
+   "fields": [
+    {
+     "field": "date",
+     "gold": "june 3",
+     "actual": "june 3rd",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": true
+  },
+  {
+   "id": "travel_20",
+   "kind": "write",
+   "fn": "book_flight",
+   "class": "missing_call",
+   "fields": [],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "travel_20",
+   "kind": "write",
+   "fn": "update_identity_doc",
+   "class": "format",
+   "fields": [
+    {
+     "field": "doc_type",
+     "gold": "driver license",
+     "actual": "driver's license",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "travel_20",
+   "kind": "read_final",
+   "fn": "search_flights",
+   "class": "format",
+   "fields": [
+    {
+     "field": "date",
+     "gold": "july 20",
+     "actual": "july 20th",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "travel_21",
+   "kind": "read_final",
+   "fn": "search_flights",
+   "class": "canonicalization",
+   "fields": [
+    {
+     "field": "date",
+     "gold": "august 8",
+     "actual": "august 8th",
+     "pair_class": "format"
+    },
+    {
+     "field": "destination",
+     "gold": "las vegas",
+     "actual": "vegas",
+     "pair_class": "canonicalization"
+    }
+   ],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "travel_21",
+   "kind": "read_final",
+   "fn": "search_flights",
+   "class": "canonicalization",
+   "fields": [
+    {
+     "field": "destination",
+     "gold": "las vegas",
+     "actual": "vegas",
+     "pair_class": "canonicalization"
+    }
+   ],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "travel_23",
+   "kind": "write",
+   "fn": "update_identity_doc",
+   "class": "format",
+   "fields": [
+    {
+     "field": "doc_type",
+     "gold": "driver license",
+     "actual": "driver's license",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": true
+  },
+  {
+   "id": "travel_23",
+   "kind": "write",
+   "fn": "update_identity_doc",
+   "class": "format",
+   "fields": [
+    {
+     "field": "doc_type",
+     "gold": "driver license",
+     "actual": "driver's license",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": true
+  },
+  {
+   "id": "travel_24",
+   "kind": "write",
+   "fn": "book_flight",
+   "class": "missing_call",
+   "fields": [],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "travel_24",
+   "kind": "write",
+   "fn": "update_identity_doc",
+   "class": "format",
+   "fields": [
+    {
+     "field": "doc_number",
+     "gold": "v44",
+     "actual": "v-4-4",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": false
+  },
+  {
+   "id": "travel_24",
+   "kind": "read_final",
+   "fn": "search_flights",
+   "class": "format",
+   "fields": [
+    {
+     "field": "date",
+     "gold": "november 5",
+     "actual": "november 5th",
+     "pair_class": "format"
+    }
+   ],
+   "rescued_by_norm": false
+  }
+ ]
+}
