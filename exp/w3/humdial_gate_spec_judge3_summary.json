@@ -1,0 +1,332 @@
+{
+  "arms": {
+    "specoff": {
+      "runs": [
+        {
+          "rep": 1,
+          "eval_root": "logs/humdial_w3_specoff_judge3_rep1",
+          "score_summary": {
+            "Interruption Total Score": 86.0,
+            "Rejection Total Score": 42.5,
+            "Overall Score": 64.25,
+            "First Response Delay": 2.17,
+            "avg_latency_stop": 1.632,
+            "avg_latency_resp": 2.942,
+            "Total Delay": 2.248
+          },
+          "category_n": {
+            "ask": 10,
+            "deny": 10,
+            "repeat": 10,
+            "shift": 10,
+            "wait": 10,
+            "backchannel": 10,
+            "others_talk_to_user_after": 10,
+            "talk_to_others": 10
+          },
+          "content_tag_files": 8
+        },
+        {
+          "rep": 2,
+          "eval_root": "logs/humdial_w3_specoff_judge3_rep2",
+          "score_summary": {
+            "Interruption Total Score": 88.0,
+            "Rejection Total Score": 42.5,
+            "Overall Score": 65.25,
+            "First Response Delay": 2.17,
+            "avg_latency_stop": 1.632,
+            "avg_latency_resp": 2.942,
+            "Total Delay": 2.248
+          },
+          "category_n": {
+            "ask": 10,
+            "deny": 10,
+            "repeat": 10,
+            "shift": 10,
+            "wait": 10,
+            "backchannel": 10,
+            "others_talk_to_user_after": 10,
+            "talk_to_others": 10
+          },
+          "content_tag_files": 8
+        },
+        {
+          "rep": 3,
+          "eval_root": "logs/humdial_w3_specoff_judge3_rep3",
+          "score_summary": {
+            "Interruption Total Score": 86.0,
+            "Rejection Total Score": 36.25,
+            "Overall Score": 61.12,
+            "First Response Delay": 2.17,
+            "avg_latency_stop": 1.632,
+            "avg_latency_resp": 2.942,
+            "Total Delay": 2.248
+          },
+          "category_n": {
+            "ask": 10,
+            "deny": 10,
+            "repeat": 10,
+            "shift": 10,
+            "wait": 10,
+            "backchannel": 10,
+            "others_talk_to_user_after": 10,
+            "talk_to_others": 10
+          },
+          "content_tag_files": 8
+        }
+      ],
+      "aggregate": {
+        "Interruption Total Score": {
+          "values": [
+            86.0,
+            88.0,
+            86.0
+          ],
+          "mean": 86.667,
+          "median": 86.0,
+          "half_range": 1.0
+        },
+        "Rejection Total Score": {
+          "values": [
+            42.5,
+            42.5,
+            36.25
+          ],
+          "mean": 40.417,
+          "median": 42.5,
+          "half_range": 3.125
+        },
+        "Overall Score": {
+          "values": [
+            64.25,
+            65.25,
+            61.12
+          ],
+          "mean": 63.54,
+          "median": 64.25,
+          "half_range": 2.065
+        },
+        "First Response Delay": {
+          "values": [
+            2.17,
+            2.17,
+            2.17
+          ],
+          "mean": 2.17,
+          "median": 2.17,
+          "half_range": 0.0
+        },
+        "avg_latency_stop": {
+          "values": [
+            1.632,
+            1.632,
+            1.632
+          ],
+          "mean": 1.632,
+          "median": 1.632,
+          "half_range": 0.0
+        },
+        "avg_latency_resp": {
+          "values": [
+            2.942,
+            2.942,
+            2.942
+          ],
+          "mean": 2.942,
+          "median": 2.942,
+          "half_range": 0.0
+        },
+        "Total Delay": {
+          "values": [
+            2.248,
+            2.248,
+            2.248
+          ],
+          "mean": 2.248,
+          "median": 2.248,
+          "half_range": 0.0
+        }
+      }
+    },
+    "specon": {
+      "runs": [
+        {
+          "rep": 1,
+          "eval_root": "logs/humdial_w3_specon_judge3_rep1",
+          "score_summary": {
+            "Interruption Total Score": 88.0,
+            "Rejection Total Score": 42.5,
+            "Overall Score": 65.25,
+            "First Response Delay": 2.178,
+            "avg_latency_stop": 1.55,
+            "avg_latency_resp": 2.886,
+            "Total Delay": 2.205
+          },
+          "category_n": {
+            "ask": 10,
+            "deny": 10,
+            "repeat": 10,
+            "shift": 10,
+            "wait": 10,
+            "backchannel": 10,
+            "others_talk_to_user_after": 10,
+            "talk_to_others": 10
+          },
+          "content_tag_files": 8
+        },
+        {
+          "rep": 2,
+          "eval_root": "logs/humdial_w3_specon_judge3_rep2",
+          "score_summary": {
+            "Interruption Total Score": 86.0,
+            "Rejection Total Score": 42.5,
+            "Overall Score": 64.25,
+            "First Response Delay": 2.178,
+            "avg_latency_stop": 1.55,
+            "avg_latency_resp": 2.886,
+            "Total Delay": 2.205
+          },
+          "category_n": {
+            "ask": 10,
+            "deny": 10,
+            "repeat": 10,
+            "shift": 10,
+            "wait": 10,
+            "backchannel": 10,
+            "others_talk_to_user_after": 10,
+            "talk_to_others": 10
+          },
+          "content_tag_files": 8
+        },
+        {
+          "rep": 3,
+          "eval_root": "logs/humdial_w3_specon_judge3_rep3",
+          "score_summary": {
+            "Interruption Total Score": 88.0,
+            "Rejection Total Score": 40.0,
+            "Overall Score": 64.0,
+            "First Response Delay": 2.178,
+            "avg_latency_stop": 1.55,
+            "avg_latency_resp": 2.886,
+            "Total Delay": 2.205
+          },
+          "category_n": {
+            "ask": 10,
+            "deny": 10,
+            "repeat": 10,
+            "shift": 10,
+            "wait": 10,
+            "backchannel": 10,
+            "others_talk_to_user_after": 10,
+            "talk_to_others": 10
+          },
+          "content_tag_files": 8
+        }
+      ],
+      "aggregate": {
+        "Interruption Total Score": {
+          "values": [
+            88.0,
+            86.0,
+            88.0
+          ],
+          "mean": 87.333,
+          "median": 88.0,
+          "half_range": 1.0
+        },
+        "Rejection Total Score": {
+          "values": [
+            42.5,
+            42.5,
+            40.0
+          ],
+          "mean": 41.667,
+          "median": 42.5,
+          "half_range": 1.25
+        },
+        "Overall Score": {
+          "values": [
+            65.25,
+            64.25,
+            64.0
+          ],
+          "mean": 64.5,
+          "median": 64.25,
+          "half_range": 0.625
+        },
+        "First Response Delay": {
+          "values": [
+            2.178,
+            2.178,
+            2.178
+          ],
+          "mean": 2.178,
+          "median": 2.178,
+          "half_range": 0.0
+        },
+        "avg_latency_stop": {
+          "values": [
+            1.55,
+            1.55,
+            1.55
+          ],
+          "mean": 1.55,
+          "median": 1.55,
+          "half_range": 0.0
+        },
+        "avg_latency_resp": {
+          "values": [
+            2.886,
+            2.886,
+            2.886
+          ],
+          "mean": 2.886,
+          "median": 2.886,
+          "half_range": 0.0
+        },
+        "Total Delay": {
+          "values": [
+            2.205,
+            2.205,
+            2.205
+          ],
+          "mean": 2.205,
+          "median": 2.205,
+          "half_range": 0.0
+        }
+      }
+    }
+  },
+  "paired_deltas": [
+    {
+      "rep": 1,
+      "overall_delta_on_minus_off": 1.0,
+      "interruption_delta": 2.0,
+      "rejection_delta": 0.0,
+      "total_delay_delta": -0.043
+    },
+    {
+      "rep": 2,
+      "overall_delta_on_minus_off": -1.0,
+      "interruption_delta": -2.0,
+      "rejection_delta": 0.0,
+      "total_delay_delta": -0.043
+    },
+    {
+      "rep": 3,
+      "overall_delta_on_minus_off": 2.88,
+      "interruption_delta": 2.0,
+      "rejection_delta": 3.75,
+      "total_delay_delta": -0.043
+    }
+  ],
+  "delta_aggregate": {
+    "Overall Score": 0.96,
+    "Interruption Total Score": 0.666,
+    "Rejection Total Score": 1.25,
+    "First Response Delay": 0.008,
+    "avg_latency_stop": -0.082,
+    "avg_latency_resp": -0.056,
+    "Total Delay": -0.043
+  }
+}
