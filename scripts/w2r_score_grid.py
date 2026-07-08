@@ -75,6 +75,12 @@ if __name__ == "__main__":
         "w2r_tact_d100", "w2r_tact_d150", "w2r_tact_d250",
     ]
     only_rb = "--full" not in sys.argv
+    # --tag=NAME writes grid_{full|rollback}_NAME.json instead of clobbering the
+    # default file (the v3 grid overwrote the W2 v2 grid — noted in AGENTS.md).
+    group = ""
+    for a in sys.argv[1:]:
+        if a.startswith("--tag="):
+            group = "_" + a.split("=", 1)[1]
     providers = [p for p in providers if not p.startswith("--")]
     out = []
     print(f"{'provider':18s} {'n':>3s} {'exact':>6s} {'state':>6s} "
@@ -86,5 +92,5 @@ if __name__ == "__main__":
               f"{str(s['first_p50']):>6s}/{str(s['first_p90']):<7s} "
               f"{str(s['done_p50']):>6s}/{str(s['done_p90']):<7s} {s['ack_rate']:4.2f}")
     tag = "rollback" if only_rb else "full"
-    Path(f"/root/autodl-tmp/fd-badcat/exp/w2_rerun/grid_{tag}.json").write_text(
+    Path(f"/root/autodl-tmp/fd-badcat/exp/w2_rerun/grid_{tag}{group}.json").write_text(
         json.dumps(out, indent=1, ensure_ascii=False))

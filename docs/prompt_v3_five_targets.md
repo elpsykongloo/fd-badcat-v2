@@ -34,3 +34,30 @@
 3. 冻结 v3 → 全量 100 双臂 A 档一次（P1 差分制对账）→ 双档 δ 网格重生成 → HumDial 门（Δ≥−1，同日对称判）。
 4. 蓝图#8 试点素材：分类台账 asr_mishear 已 TRIGGERED（TACT 4 例/blocking 6 例）——是否立项 W3 最小试点
    （Phase-B 标记不确定槽 → 引擎带焦点提示重听）待用户/神谕裁断；prompt v3 不含此项。
+
+## 3. v3.1（W3 收口修订批；用户裁定 2026-07-08，免神谕轮）
+
+v3 全量 A/B（0.560→0.620，08 §四.4）暴露 3 个回归，全部词条级可修。**v3 文本冻结不动**
+（`PROMPT_V3_ADDENDUM` 保留为语义审计产物，同 grid v1 纪律）；v3.1 是独立常量
+`PROMPT_V31_ADDENDUM`（规则 12/13/14 逐字沿用 v3），`--prompt v3.1` / engine_cfg `prompt:"v3.1"` 显式装配，
+两版本进程内互斥（install 双向 guard）。
+
+### 3.1 三处 diff 与依据
+
+| 回归（v2 过→v3 挂） | 病因 | v3.1 修法 |
+|---|---|---|
+| ecommerce_23 | 规则 10 过度触发：多插一个用户没要的 `search_products`（track_order→**search**→add_to_cart），precision=1 处决。原风险栏"dedup 幂等已兜底"只防同参重复，防不了语义多余调用 | 规则 10 尾部加负向约束："ONLY re-issuing a corrected version of a call already made with wrong arguments — never add a search or lookup the user did not ask for; keep exactly one op per explicit user request" |
+| finance_19 | 规则 11 误伤：干净单调用场景被读成"宣告待撤销"，0 调用输出（原文 "announces a change" 触发面太宽） | 触发条件收窄为"explicitly retracts a PENDING op"（例句给 "cancel that" 类显式撤回）；加双重惰性条款：hedging/thinking-aloud 不算撤回；无 pending 时本规则不作为，永不抑制 launch |
+| ecommerce_25 ×2 | 动态引用退化：`$RESULT` 路径被置空（夹1 `product_id:""`）或依赖调用整个丢失（夹2 少 add_to_cart）；v2 时代 `$RESULT_1.id`/`$RESULT_2.product_id` 均可被判分器解析通过 | 新增规则 15（链完整性）：依赖前序结果的参数必须写全 `$RESULT_<op_id>.<field>` 引用；禁止置空、禁止编造字面值、禁止丢依赖调用 |
+
+### 3.2 验证协议（GPU）与诚实边界
+
+**预注册预期（跑前锁定）**：30 子集 exact ≥19/30（=v3 的 18 + fin19 翻回）且 v3 的 7 个子集内 gain
+（fin23/hou17/tr01/tr07/tr16/tr19/tr21）零丢失；rollback-17 ≥14/17（fin19 回来应到 15/17）。
+全量：eco23/eco25×2/fin19 四夹翻回 + v3 的 9 gain 保持 ⇒ 点预测 TACT 0.660、sblock 0.660（fin19 也是
+sblock 的唯一回归）。**诚实边界**：eco23/eco25 不在 tuning30 内（当初按规则选定的子集没覆盖它们），
+其修复必然一次性在全量上验证——若不中，不得再对全量迭代（那是测试集调参）；届时如实报残余回归并回到
+08 §六① 的姿势 (a)/(c) 之间选择。规则 15 是新增面，风险=引用语法被过度使用（该写字面值的地方写引用），
+30 子集里 ecommerce_13（证据夹，链式）承担哨兵。
+
+**HumDial 不需重跑**：addendum 只进 agent/tact 决策 prompt，Phase-A（judge/shift/response）逐字不动。

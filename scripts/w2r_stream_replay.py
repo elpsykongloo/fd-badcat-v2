@@ -38,7 +38,7 @@ Usage:
       [--only-rollback] [--limit N] [--force] [--workers N] [--infer-nominal S] \
       [--cache exp/w2_rerun/decision_cache.json] \
       [--latency-profile official|realistic] [--dag on|off] \
-      [--speculative on|off] [--prompt v2|v3] [--ids-file PATH]
+      [--speculative on|off] [--prompt v2|v3|v3.1] [--ids-file PATH]
 
 W3 D4-D6 knobs (ALL default off / official — frozen-grid parity):
   --latency-profile realistic  attach latency_realistic accounting (additive
@@ -49,6 +49,8 @@ W3 D4-D6 knobs (ALL default off / official — frozen-grid parity):
                                (t_dec = seg_end + max(HOLD, infer))
   --prompt v3                  five-target prompt batch (INVALIDATES the cache
                                keys — new decisions; use a fresh provider tag)
+  --prompt v3.1                v3 with rules 10/11 tightened + rule 15 added
+                               (repairs eco23/eco25/fin19; provider w3p31_*)
   --ids-file                   newline/JSON list of example_ids to run (e.g.
                                exp/w3/tuning30.json — the preregistered subset)
 """
@@ -464,9 +466,10 @@ def main():
                     help="on = dispatch decisions at VAD seg end (W3 D6); "
                          "t_dec = seg_end + max(HOLD, infer). Snapshots can "
                          "differ from the frozen grid — use a fresh provider.")
-    ap.add_argument("--prompt", choices=["v2", "v3"], default="v2",
-                    help="v3 = five-target batch (docs/prompt_v3_five_targets"
-                         ".md). INVALIDATES cache keys; new decisions.")
+    ap.add_argument("--prompt", choices=["v2", "v3", "v3.1"], default="v2",
+                    help="v3 = five-target batch; v3.1 = word-level repair of "
+                         "the three v3 regressions (docs/prompt_v3_five_targets"
+                         ".md §v3.1). Both INVALIDATE cache keys; new decisions.")
     ap.add_argument("--ids-file", default=None,
                     help="Path to a JSON array or newline list of example_ids "
                          "to run (e.g. exp/w3/tuning30.json).")
@@ -477,6 +480,11 @@ def main():
         if not (args.provider.startswith("w3p3_") or "_p3" in args.provider):
             print("WARNING: --prompt v3 without a p3-marked provider tag; "
                   "recommend w3p3_* so grids stay separable.")
+    elif args.prompt == "v3.1":
+        tact_core.install_prompt_v31()
+        if not (args.provider.startswith("w3p31") or "_p31" in args.provider):
+            print("WARNING: --prompt v3.1 without a p31-marked provider tag; "
+                  "recommend w3p31_* / w3p31r_* so grids stay separable.")
 
     barrier = (args.commit_barrier == "on")
     frozen_risk = (not barrier or args.engine != "core" or args.speculative == "on"

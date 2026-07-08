@@ -67,11 +67,11 @@
   - **⚠️ 7/07 新跑臂（w3r_*/w3spec_*/w3p3_*）的 infer/墙钟性锚全部污染**（与并发 GPU 争抢）：决策内容有效，延迟锚不可用——现实档延迟一律引冻结档案 rescore（`exp/w3/realistic_*.json`）；网格新点 d000–d100/d200 锚干净。
   - **投机派发**：exact 56→57（+eco15 良性）；HumDial 门单判 off **63.38** / on **63.00** Δ−0.38 过；**三判加固已补**（7/08，复用同一生成输出重判）：off **63.54±2.07** / on **64.50±0.63**，均值 Δ=**+0.96**，配对 Δ=+1.00/−1.00/+2.88，gate Δ≥−1 维持通过且无回归证据；首响投影 1.141→**0.64 地板**（冻结档分解 recheck）。live 实测收益待 D6 标准卡串行复测。
   - **DAG**：0 翻转；11 夹 dag.events 非空；comp_plans=0（官方轨零链式修订与 D2 普查互证 → 补偿评测只能靠 RB L7）。
-  - **prompt v3**：30 子集 12→18、rollback 12→14（+fin23/hou17/tr19 = 靶#4/#3/#5；−fin19）一轮过冻结门；全量 TACT 0.560→**0.620** / sblock 0.570→**0.650**——P1 差分门（vs 0.570）+5pt 过，**但 blocking 受益更大（+8 vs +6），同 prompt 差 −3pt**；verbatim 状态 57→64/65（规则 14 源头规范化实证）、normalized **反转** TACT 75 < sblock 79；v3 现实档 P-2 **再次精确 1.500**（定律 prompt 不变）、P-3 28/34 FAIL（前提失效非机制失效，5/6 miss 方向利 TACT）。TACT 三回归归因：eco23=规则10 过度 re-launch、eco25=动态引用退化、fin19=规则11 误伤。**v3 采纳姿势待神谕裁断（08 §六①，我方建议 v3.1 词条修复后定稿）**。
+  - **prompt v3**：30 子集 12→18、rollback 12→14（+fin23/hou17/tr19 = 靶#4/#3/#5；−fin19）一轮过冻结门；全量 TACT 0.560→**0.620** / sblock 0.570→**0.650**——P1 差分门（vs 0.570）+5pt 过，**但 blocking 受益更大（+8 vs +6），同 prompt 差 −3pt**；verbatim 状态 57→64/65（规则 14 源头规范化实证）、normalized **反转** TACT 75 < sblock 79；v3 现实档 P-2 **再次精确 1.500**（定律 prompt 不变）、P-3 28/34 FAIL（前提失效非机制失效，5/6 miss 方向利 TACT）。TACT 三回归归因：eco23=规则10 过度 re-launch、eco25=动态引用退化、fin19=规则11 误伤。**v3.1 已落地（用户 7/08 裁定免神谕轮）**：规则 10/11 词条收紧 + 新规则 15（$RESULT 链完整性），`PROMPT_V31_ADDENDUM` 独立常量（v3 冻结为审计产物，进程内互斥 guard）；`--prompt v3.1`，provider 约定 `w3p31_*`；协议+预注册预期在 `docs/prompt_v3_five_targets.md` §3（30 子集 ≥19/30 且 7 gain 零丢失、全量点预测双臂 0.660；eco23/eco25 不在 tuning30 内 ⇒ 只许全量一次性验证，不中不得再迭代）。**GPU 验证待跑**。
   - **E5 分句 TTS live**：机制链全验证（TtsSentDone/first_sentence/floor_decision yield/tts_sent_dropped，`exp/w3/e5_traces/`）；**勘误：同句首音频提前 p50 = 0.545s**（先前 10.324s 系跨句配对错误，作废）；只有长叙述句触发分句（3/10 runs）——分句收益域=长句场景，首响主战场在 ack/投机。
   - HumDial 门产物已入库 `exp/w3/humdial_gate_spec{off,on}_summary.json` 与三判聚合 `exp/w3/humdial_gate_spec_judge3_summary.json`；`exp/w2_rerun/grid_full.json` 已被 v3 网格覆写（v2 数字重算核验一致；scorer 后续加组名防覆写）。
-- **待裁断**（08 §六）：① prompt 口径（P0）② 蓝图#8 ASR 重听试点（TRIGGERED）③ P-1 写类分层口径 ④ G2'(ii) 自适应臂立项 ⑤ RB v1 批复。
-- **下一步**：裁断①落地（v3.1 一轮）→ D6 投机标准卡串行复测 → RB 录制 → λ(t) v2 工具。
+- **待裁断**（08 §六）：① prompt 口径——已由用户裁定走 v3.1（见上），出数后只剩'主表口径'确认 ② 蓝图#8 ASR 重听试点（TRIGGERED）③ P-1 写类分层口径 ④ G2'(ii) 自适应臂立项 ⑤ RB v1 批复。
+- **下一步**：v3.1 GPU 验证（30 子集→全量→双档网格，命令见 prompt_v3_five_targets §3.2）→ D6 投机标准卡串行复测 → RB 录制 → λ(t) v2 工具。scorer 已加 `--tag=` 防覆写（grid_{full,rollback}_TAG.json）。
 
 ### 既往（W3 D4–D6 代码批，2026-07-07）
 

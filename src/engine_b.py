@@ -167,6 +167,8 @@ class TactEngine(ActorEngine):
         self.sv_alpha = cfg.get("sv_alpha", None)   # W4 placeholder — keep None in W3
         if cfg.get("prompt", "v2") == "v3":
             tact_core.install_prompt_v3()   # live-side arming (driver uses --prompt v3)
+        elif cfg.get("prompt", "v2") == "v3.1":
+            tact_core.install_prompt_v31()  # W3 close-out repair batch
 
         # transactional state (single-writer: engine loop only)
         self.tx = tact_core.Transaction()

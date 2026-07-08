@@ -80,7 +80,8 @@ ADDITIONAL RULES:
    doing (e.g. "Updating that to Chicago and checking the commute now.").
 """
 
-_installed = {"prompt": False, "snapshot": False, "prompt_v3": False}
+_installed = {"prompt": False, "snapshot": False, "prompt_v3": False,
+              "prompt_v31": False}
 
 
 def install_prompt_v2():
@@ -124,10 +125,74 @@ the user said it, without added adjectives.
 
 
 def install_prompt_v3():
+    if _installed["prompt_v31"]:
+        raise RuntimeError("prompt v3.1 already installed; v3/v3.1 are mutually "
+                           "exclusive within one process")
     install_prompt_v2()
     if not _installed["prompt_v3"]:
         tact_decider.SYSTEM_PROMPT = tact_decider.SYSTEM_PROMPT + PROMPT_V3_ADDENDUM
         _installed["prompt_v3"] = True
+
+
+# ---------------------------------------------------------------------------
+# Prompt v3.1 (W3 close-out; user ruling 2026-07-08, no oracle round). Word-level
+# repair of the three full-set regressions of v3 — mechanism unchanged:
+#   rule 10 tightened  — eco23: v3 inserted an unrequested search_products
+#                        (precision=1 kill). Now authorizes ONLY re-issuing a
+#                        corrected version of an already-made wrong call.
+#   rule 11 tightened  — fin19: v3 read a clean single request as a
+#                        declare-then-cancel and emitted nothing. Now requires
+#                        an explicit retraction aimed at a pending op, and is
+#                        inert when nothing is pending.
+#   rule 15 added      — eco25 x2: dynamic $RESULT reference degraded to ""
+#                        / dependent call dropped. Chain-integrity clause.
+# Rules 12/13/14 are verbatim v3. PROMPT_V3_ADDENDUM stays frozen above as the
+# semantic-audit artifact (same discipline as grid v1). One-shot install below;
+# mutually exclusive with v3 in-process.
+# ---------------------------------------------------------------------------
+PROMPT_V31_ADDENDUM = """
+10. If ALREADY EXECUTED shows a call whose arguments the user has since \
+corrected, do not just acknowledge it in `say`: emit the corrective op in this \
+reply — re-launch the corrected call for search/lookup tools. And never drop \
+the user's other requests: every distinct request still gets its own op. This \
+rule ONLY authorizes re-issuing a corrected version of a call that was already \
+made with wrong arguments — never add a search or lookup the user did not ask \
+for; keep exactly one op per explicit user request.
+11. If the user explicitly retracts a PENDING op before giving the new value \
+("cancel that", "don't book it yet", "wait — my schedule just changed, hold \
+on"), immediately `cancel` that pending op — cancelling while pending costs \
+nothing; re-launch once the corrected details arrive. This requires an \
+explicit retraction aimed at a pending op: hedging or thinking aloud is not a \
+retraction, and when nothing is pending this rule does nothing — it never \
+suppresses launching what the user did ask for.
+12. When emitting a `patch`, patch exactly the field the user corrected: check \
+the user's words against each current arg value and change the one they \
+contradicted (origin vs destination is the common mix-up). Do not repeat \
+unchanged fields in the diff.
+13. When the user interrupts their own request and replaces it ("check my \
+balance— actually, never mind, just set up autopay"), the abandoned request is \
+dropped but the REPLACEMENT is a real request: launch its op now.
+14. Write argument values in canonical form: full official place names ("Las \
+Vegas", not "Vegas"); plain cardinal dates ("June 3", not "June 3rd"); compact \
+IDs without hyphens or spaces ("DL555", not "D-L-5-5-5"); no leading articles \
+("gym", not "the gym"); no possessives ("driver license"); the noun exactly as \
+the user said it, without added adjectives.
+15. When a tool argument must come from an earlier op's result, write the full \
+dynamic reference exactly as "$RESULT_<op_id>.<field>" (e.g. \
+"$RESULT_1.products[0].product_id"). Never leave such an argument empty, never \
+invent a literal value for it, and never drop the dependent call — a chained \
+request is incomplete until its final dependent call has been launched.
+"""
+
+
+def install_prompt_v31():
+    if _installed["prompt_v3"]:
+        raise RuntimeError("prompt v3 already installed; v3/v3.1 are mutually "
+                           "exclusive within one process")
+    install_prompt_v2()
+    if not _installed["prompt_v31"]:
+        tact_decider.SYSTEM_PROMPT = tact_decider.SYSTEM_PROMPT + PROMPT_V31_ADDENDUM
+        _installed["prompt_v31"] = True
 
 
 # ---------------------------------------------------------------------------
