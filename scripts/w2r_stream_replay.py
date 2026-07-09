@@ -80,6 +80,8 @@ from tact_core import (WindowLedger, apply_decision_ops, advance_over,     # noq
 from tact.transaction import Transaction                    # noqa: E402
 from tact.tools import ToolRegistry                         # noqa: E402
 import latency_realistic                                    # noqa: E402
+import delta_policy as delta_policy_mod                     # noqa: E402  (W4 ladder)
+from decider_b import _audio_block                          # noqa: E402
 
 import os                                                   # noqa: E402
 
@@ -217,7 +219,8 @@ def assemble_latency(commits, say_events, t_user_end, mode, n_eou, infer_nominal
 # ---------------------------------------------------------------------------
 def run_example(folder, provider, delta, cache, mode="tact", force=False,
                 infer_nominal=None, barrier=True, engine="core",
-                speculative=False, dag_on=False, lat_profile="official"):
+                speculative=False, dag_on=False, lat_profile="official",
+                delta_policy="fixed", fin_cache=None):
     m = _FOLDER_RE.match(folder.name)
     if not m:
         return None
@@ -266,6 +269,14 @@ def run_example(folder, provider, delta, cache, mode="tact", force=False,
              "decisions": [], "ops": {}, "commits": []}
     say_events = []                           # (t_audio, text)
 
+    # W4 adaptive ladder: per-op window policy (kappa rule / prompted finality).
+    # The policy never enters the Phase-B messages — cache keys stay v3.1.
+    use_policy = delta_policy != "fixed"
+    prompted = delta_policy.startswith("prompted")
+    if use_policy:
+        assert mode == "tact", "--delta-policy requires tact mode"
+        trace["delta_policy"] = delta_policy
+
     def do_commit(op_id, t_nominal, t_actual):
         if op_id not in tx.pending:
             return
@@ -306,18 +317,46 @@ def run_example(folder, provider, delta, cache, mode="tact", force=False,
         say = dec.get("say", "") if mode == "blocking" else ack_fallback(dec)
         if say:
             say_events.append((t_dec, say))
+        # W4 ladder: finality judged AFTER the decision call (independent calls,
+        # own cache); its wall time does NOT advance the audio clock — deployed
+        # it overlaps the 0.64 hold; we record its infer for the honesty check.
+        finality = fin_infer = None
+        fin_parsed = True
+        if prompted:
+            e_seg = segs[seg_idx][1]
+            tail = audio[int(max(0.0, e_seg - delta_policy_mod.FINALITY_TAIL_S) * SR):
+                         int(e_seg * SR)]
+            fraw, fin_infer = fin_cache.call(
+                delta_policy_mod.build_finality_msgs(_audio_block(tail)))
+            finality, fin_parsed = delta_policy_mod.parse_finality(fraw)
+        delta_fn = (delta_policy_mod.make_delta_fn(delta_policy, finality)
+                    if use_policy else None)
         # DecisionDone order (spec §一-2): ops FIRST (patch rescues, window
         # restarts), THEN sweep at the current clock.
         applied = apply_decision_ops(tx, ledger, dec, t_dec,
                                      immediate=(mode == "blocking" or delta <= 0),
                                      commit_cb=do_commit,
-                                     dag=dag, comp_registry=comp_reg)
+                                     dag=dag, comp_registry=comp_reg,
+                                     delta_fn=delta_fn)
         ledger.end_decision(seg_idx)
         ledger.sweep(t_dec, do_commit, cause="decision_done")
         dec_entry = {"seg_idx": seg_idx, "t_eou": round(t_eou, 3),
                      "infer_s": infer, "say": dec.get("say", ""),
                      "ops": applied,
                      "repaired": bool(dec.get("_repaired"))}
+        if use_policy:
+            ow = {}
+            for a in applied:
+                if a["type"] == "launch":
+                    ow[str(a["op_id"])] = delta_fn(a["fn"])
+                elif a["type"] == "patch" and a["op_id"] in tx.pending:
+                    ow[str(a["op_id"])] = delta_fn(tx.pending[a["op_id"]].fn)
+            dec_entry["op_windows"] = ow
+        if prompted:
+            dec_entry["finality"] = finality
+            dec_entry["finality_infer_s"] = fin_infer
+            if not fin_parsed:
+                dec_entry["finality_unparsed"] = True
         if speculative:
             dec_entry["t_disp"] = round(t_disp, 3)
             dec_entry["t_dec"] = round(t_dec, 3)
@@ -338,6 +377,7 @@ def run_example(folder, provider, delta, cache, mode="tact", force=False,
         "latency": latency,
         "tx_log": tx.log, "trace": trace, "status": "completed",
         "commit_barrier": barrier, "engine": "core",
+        **({"delta_policy": delta_policy} if use_policy else {}),
         "ledger": ledger.export(),
     }
     if speculative:
@@ -476,7 +516,26 @@ def main():
     ap.add_argument("--ids-file", default=None,
                     help="Path to a JSON array or newline list of example_ids "
                          "to run (e.g. exp/w3/tuning30.json).")
+    ap.add_argument("--delta-policy", default="fixed",
+                    choices=["fixed", "kappa:v0", "kappa:safe", "kappa:rev",
+                             "prompted:v0"],
+                    help="W4 adaptive ladder: per-op objection windows. "
+                         "kappa:* = reversibility-conditioned rule tables; "
+                         "prompted:v0 = Omni finality judge on the audio tail "
+                         "(separate call, ops/cache untouched). fixed = frozen "
+                         "path. Requires --mode tact --engine core. Tables in "
+                         "src/delta_policy.py (preregistered).")
+    ap.add_argument("--finality-cache",
+                    default="/root/autodl-tmp/fd-badcat/exp/w4/finality_cache.json",
+                    help="Cache file for prompted:* finality calls.")
     args = ap.parse_args()
+
+    if args.delta_policy != "fixed":
+        if args.mode != "tact" or args.engine != "core":
+            ap.error("--delta-policy requires --mode tact --engine core")
+        if not args.provider.startswith("w4"):
+            print("WARNING: --delta-policy without a w4* provider tag; "
+                  "recommend w4k0_/w4ks_/w4kr_/w4pf_* so grids stay separable.")
 
     if args.prompt == "v3":
         tact_core.install_prompt_v3()
@@ -485,9 +544,10 @@ def main():
                   "recommend w3p3_* so grids stay separable.")
     elif args.prompt == "v3.1":
         tact_core.install_prompt_v31()
-        if not (args.provider.startswith("w3p31") or "_p31" in args.provider):
-            print("WARNING: --prompt v3.1 without a p31-marked provider tag; "
-                  "recommend w3p31_* / w3p31r_* so grids stay separable.")
+        if not (args.provider.startswith("w3p31") or "_p31" in args.provider
+                or args.provider.startswith("w4")):
+            print("WARNING: --prompt v3.1 without a p31/w4-marked provider tag; "
+                  "recommend w3p31_* / w3p31r_* / w4* so grids stay separable.")
 
     barrier = (args.commit_barrier == "on")
     frozen_risk = (not barrier or args.engine != "core" or args.speculative == "on"
@@ -518,13 +578,16 @@ def main():
         folders = folders[: args.limit]
 
     cache = DecisionCache(args.cache)
+    fin_cache = (DecisionCache(args.finality_cache)
+                 if args.delta_policy.startswith("prompted") else None)
     infer_nominal = args.infer_nominal
     if args.workers > 1 and infer_nominal is None:
         infer_nominal = 1.0
         print("NOTE: --workers>1 forces nominal infer=1.0s (throughput track; "
               "latency fields not authoritative)")
     print(f"streaming replay | provider={args.provider} mode={args.mode} "
-          f"delta={args.delta} barrier={args.commit_barrier} engine={args.engine} "
+          f"delta={args.delta} policy={args.delta_policy} "
+          f"barrier={args.commit_barrier} engine={args.engine} "
           f"spec={args.speculative} dag={args.dag} prompt={args.prompt} "
           f"latprof={args.latency_profile} workers={args.workers} "
           f"infer={'nominal %.2f' % infer_nominal if infer_nominal is not None else 'live'} "
@@ -541,7 +604,9 @@ def main():
                             barrier=barrier, engine=args.engine,
                             speculative=(args.speculative == "on"),
                             dag_on=(args.dag == "on"),
-                            lat_profile=args.latency_profile)
+                            lat_profile=args.latency_profile,
+                            delta_policy=args.delta_policy,
+                            fin_cache=fin_cache)
             with count_lock:
                 done_count[0] += 1
                 i = done_count[0]
@@ -554,6 +619,8 @@ def main():
                       f"defer={len(r.get('ledger', {}).get('deferrals', []))}")
             if i % 10 == 0:
                 cache.save()
+                if fin_cache:
+                    fin_cache.save()
         except Exception as e:
             print(f"{f.name}: ERROR {type(e).__name__} {e}")
 
@@ -565,6 +632,9 @@ def main():
             _one(f)
     cache.save()
     print(f"cache: {cache.hits} hits / {cache.misses} misses")
+    if fin_cache:
+        fin_cache.save()
+        print(f"finality cache: {fin_cache.hits} hits / {fin_cache.misses} misses")
 
 
 if __name__ == "__main__":

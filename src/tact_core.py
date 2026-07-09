@@ -388,10 +388,12 @@ class WindowLedger:
         self.patch_after_commit = []  # barrier-off observability (and any late patch)
 
     # -- window lifecycle -------------------------------------------------
-    def open(self, op_id):
-        self.win[op_id] = self.delta
+    def open(self, op_id, delta=None):
+        """delta=None (frozen default) uses the ledger-wide budget; a float
+        overrides per op (W4 adaptive ladder — kappa rule / prompted finality)."""
+        self.win[op_id] = self.delta if delta is None else float(delta)
 
-    def restart(self, op_id):
+    def restart(self, op_id, delta=None):
         """Patch restarts the window with a FULL budget. If the op's expiry was
         deferred by the barrier, the patch RESCUES it (deferred commit voided)."""
         nominal = self.expired.pop(op_id, None)
@@ -399,7 +401,7 @@ class WindowLedger:
             self.deferrals.append({"op_id": op_id, "nominal": round(nominal, 3),
                                    "released": None, "deferred_s": None,
                                    "outcome": "rescued_patch", "cause": "decision_ops"})
-        self.win[op_id] = self.delta
+        self.win[op_id] = self.delta if delta is None else float(delta)
 
     def close(self, op_id):
         """Cancel or commit: the op leaves the ledger entirely."""
@@ -470,7 +472,7 @@ class WindowLedger:
 # Decision application — the exact W2 op semantics, single-sourced.
 # ---------------------------------------------------------------------------
 def apply_decision_ops(tx, ledger, dec, t_dec, immediate, commit_cb,
-                       dag=None, comp_registry=None):
+                       dag=None, comp_registry=None, delta_fn=None):
     """Apply a parsed decision's ops to (tx, ledger) at audio time t_dec.
 
     immediate : blocking arm or delta<=0 -> launch commits on the spot.
@@ -479,6 +481,9 @@ def apply_decision_ops(tx, ledger, dec, t_dec, immediate, commit_cb,
     dag       : optional tact_dag.OpDag (W3 D5, DEFAULT None = frozen v1
                 behavior). When armed: launches register into the DAG and
                 patches propagate to dependent ops (reparam / stale / comp plan).
+    delta_fn  : optional delta_fn(fn)->float (W4 adaptive ladder). DEFAULT None
+                = frozen fixed-delta windows. When set, launch opens and patch
+                restarts the op's window with the policy budget for its tool.
     Returns the `applied` list in the frozen v1 trace shape (dag events are
     exported separately — v1 trace parity).
     """
@@ -509,7 +514,8 @@ def apply_decision_ops(tx, ledger, dec, t_dec, immediate, commit_cb,
             if immediate:
                 commit_cb(p.op_id, t_dec, t_dec)
             else:
-                ledger.open(p.op_id)
+                ledger.open(p.op_id,
+                            delta=(delta_fn(fn) if delta_fn is not None else None))
             applied.append({"type": "launch", "fn": fn, "op_id": p.op_id})
         elif typ == "patch":
             oid = resolve_ref(tx, op)
@@ -519,7 +525,9 @@ def apply_decision_ops(tx, ledger, dec, t_dec, immediate, commit_cb,
                     diff = diff["args"]      # unwrap model's nested-args habit
                 diff = coerce_args(diff)
                 tx.patch(oid, diff, t=t_dec)
-                ledger.restart(oid)          # window restarts (rescues a deferred expiry)
+                pfn = tx.pending[oid].fn
+                ledger.restart(oid,          # window restarts (rescues a deferred expiry)
+                               delta=(delta_fn(pfn) if delta_fn is not None else None))
                 if dag is not None:
                     dag.on_patch(tx, oid, diff, t=t_dec,
                                  comp_registry=comp_registry)
