@@ -77,7 +77,7 @@
   - **E5 分句 TTS live**：机制链全验证（TtsSentDone/first_sentence/floor_decision yield/tts_sent_dropped，`exp/w3/e5_traces/`）；**勘误：同句首音频提前 p50 = 0.545s**（先前 10.324s 系跨句配对错误，作废）；只有长叙述句触发分句（3/10 runs）——分句收益域=长句场景，首响主战场在 ack/投机。
   - HumDial 门产物已入库 `exp/w3/humdial_gate_spec{off,on}_summary.json` 与三判聚合 `exp/w3/humdial_gate_spec_judge3_summary.json`；`exp/w2_rerun/grid_full.json` 已被 v3 网格覆写（v2 数字重算核验一致；scorer 后续加组名防覆写）。
 - **待裁断**（08 §六）：① prompt 口径——**已结：用户 7/09 裁定 v3.1 = 最终版/主表口径（免神谕）**，v2 留作无 prompt 工程参照行 ② 蓝图#8 ASR 重听试点（TRIGGERED）③ P-1 写类分层口径 ④ G2'(ii) 自适应臂立项 ⑤ RB v1 批复。
-- **下一步**：W3 GPU 项全清 ⇒ 神谕轮 09（W3 终局数字 + 裁断 ②–⑤ + W4 开工请示）→ RB 录制（裁断⑤后）→ κ 条件规则基线（G2'(ii) 前置，SFT 前必跑）→ λ(t) v2 工具。scorer 已加 `--tag=` 防覆写（grid_{full,rollback}_TAG.json）。
+- **下一步**：W3 GPU 项全清。**神谕请示稿已写：`手工文档/神谕/09_W3 终局与 W4 开工请示.md`**（终局数字表 / 学习组件收缩为"停时头"方案 + G2' 判据 / W4 逐日计划 / 裁断 ②–⑤+新增 A–D / 跑偏防火墙九条）。待神谕批复后进 W4：hindsight-DP 标注器 → κ 条件规则基线（SFT 前必跑）→ 停时头 SFT → GRPO；并行 RB 录制 + v3.1 judge 轨补跑（默认执行项）。scorer 已加 `--tag=` 防覆写（grid_{full,rollback}_TAG.json）。
 
 ### 既往（W3 D4–D6 代码批，2026-07-07）
 
