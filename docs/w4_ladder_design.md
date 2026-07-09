@@ -70,3 +70,27 @@ $PY scripts/w4_ladder_report.py --arms w4k0_tact w4ks_tact w4kr_tact w4pf_tact
 1. 四臂各自的 `cache: X hits / Y misses` 与 `finality cache` 行、任何 WARNING/ERROR；
 2. `w4_ladder_report.py` 的整表输出（exact/state/done50/prem_sum/recov_s/recov%/dExact + 每臂 windows/delay/monotone 行 + finality 分布行 + flips 行）；
 3. `exp/w4/ladder_v0.json` 与 `exp/w4/finality_cache.json` 生成确认。
+
+## 7. Round-1 判决（2026-07-09 跑后追加；零 shot 阶梯封盘）
+
+**门：四臂全败双门**（用户跑数，text-only 84g 栈 + workers 12，cache 215/217/217/214 hits——近零 GPU 兑现）：
+
+| 臂 | exact(Δ) | 保费 | 回收 | 门 |
+|---|---|---|---|---|
+| v0 | 0.550（**−10pt**）| 41.8s | 62.5% | exact ✗ |
+| safe | 0.630（−2pt）| 77.0s | 30.0% | exact ✗ |
+| rev | 0.650（±0）| **133.1s** | −21.7% | 保费 ✗ |
+| prompted | 0.610（−4pt）| 20.2s | **84.0%** | exact ✗ |
+
+**预测对账（诚实清单）**：v0 回收超预测（62.5 vs 35–55）但 exact 远超风险带；safe 回收 30% 恰在带顶 ✓ 但 exact 未持平（−2pt ✗）；rev 保费↑ ✓ 但 **exact 未掉**（预测 ≥3pt drop ✗——机制见下）；prompted 回收 ≫ v0 ✓ 但 **rollback 话语 73% 被标 final**（预测"偏 hesitant/unfinished" ✗）。kill 判据未触发（rev 与 v0 在两轴上截然可分 ⇒ κ 对齐有效），但 κ 单独不可用。
+
+**机制（零 GPU 探针，逐夹收据）**：
+
+1. **救援通道关闭**：fixed 赢下这些夹靠 `rescued_patch`（k0 的 10 个丢失夹里 8 个在 fixed 档 rescued=1）；短窗臂下修订到来时 op 已 EXECUTED，模型**大多根本不再发 patch**（丢失夹 patches=0——快照显示已执行，patch 无靶），偶发的 patch 成为 dropped（arm-wide patch_after_commit：k0=7 / pf=9 / fixed=3）。早提交不只是"补丁被丢弃"，是**关闭了修订这个动作类**。
+2. **事后修订对韵律不可见**：FDB rollback 修订是**afterthought**——修订前话语韵律上完全收尾（说话人当时真心的），新话语才改口。故 pf 在 eco19/fin12/hou25 的修订前 EoU 全标 `final`（labels=['final','final']），这不是判官弱，是**信号不在尾韵律里**。结构性结论：**韵律终结性检测的是"话语说完"，不是"意图稳定"**。
+3. rev 不掉 exact 的原因：修订几乎全打**中段的读操作**，写操作晚发（常在末 EoU 后再无修订）⇒ 短写窗几乎免费、长读窗恰好护住修订多发区。**修订发生率是位置/话语结构变量，不是 κ 变量**——κ 只管代价侧，这正是 P2 双变量结构的实证。
+4. fin12(1)/hou17(1) 在 READ=1.0 仍死、1.5 活——修订静默间隙落在 (1.0,1.5]，与 D3 静默预算台账的 1.12s 阈值咬合。
+
+**零 shot 前沿（学习臂的标高）**：fixed (0%,0) / safe (30%,−2pt) / prompted (84%,−4pt)；v0 被 prompted 支配。**rung 4 目标（重述）**：回收 ≥~47%（≈ frontier 记账 51.5s）且 exact ≥ −1pt——没有任何零 shot 臂到达的区域。特征结论：停时头输入**必须以对话状态/位置为主**（EoU 序数、pending/已执行结构、槽完整度、域先验），韵律降级为句内延续信号 + 投机门控用途。
+
+**封盘**：零 shot 表不再迭代（新表=新预注册 rung，但信息收益已低）；直接进 rung 4。部署脚注：finality 调用 infer p50 0.672 > 0.64 hold（workers-12 名义 regime 墙钟，非权威；该调用与决策派发独立可并行）。
