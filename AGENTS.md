@@ -60,8 +60,14 @@
   - **DeepSeek judge 并发**：官方 `llm_judge.py` 原生支持 `FDB_LLM_WORKERS`（默认 16 太保守），judge 是纯 API 调用，**直接 100**；`scripts/run_fdb_with_deepseek.sh` 已改默认 100。
   - vLLM 侧：准确度回归可临时把 audio 配置 `max_num_seqs` 调高（重启分钟级）配合 --workers 压满；HumDial 管线自带 `--gen-workers/--clean-workers/--asr-workers/--judge-workers` 旋钮。
 
-## 当前状态（W3 —— D4–D6 GPU 出数收口，2026-07-08）
+## 当前状态（W3 —— 全部收口，2026-07-09）
 
+- **D6 标准卡串行复测已清（7/09，W3 最后一个 GPU 项）**——三臂全量 100、音频标准栈、`--workers 1`、每臂全新缓存（0 hit，锚干净）、A 档双跑决策逐位（pass/tool calls/signature/transcript diff 全 0）。**主表最终数字（v3.1 口径，live 串行档）**：
+  - **准确性**：TACT d150 exact **0.640** / sblock **0.660**（差 −2pt 不变）。⚠️ live 音频栈 vs 前日 text 栈存在 **−1pt/臂 电平差**（各 3 夹刀口翻转，travel_14 双臂同向 F→T；TACT 丢 eco25/fin04 各一夹 = rule-15 修复本身也在刀口带上）。主表引 live 档；δ 曲线保留 text 栈产物作形状主张（eager 惩罚/单调升/收敛 sblock），脚注电平差。
+  - **延迟**：TACT first 1.218/1.579、done 3.012/3.411 vs sblock 1.529/2.134（done 同）；infer_final p50/p90 = 0.561/0.767（v3.1 prompt 变长 vs W2 v2 0.444）；恒等式 first = 0.64+infer 残差 max 0.0（ack 路 83/100，fallback 17）。**live 完成保费 = 1.483 ≈ δ**。
+  - **投机派发实测**：first p50 **1.218 → 0.640 = 地板精确命中**（Δ−0.578；P3 比 0.640/1.529 = **0.419 ≤ 0.50 过**）；exact 对基线 **0 翻转**；done 2.455（保费 0.926 = δ − infer 重叠 0.557 ≈ infer p50，算术自洽）；spec 恒等式 first = max(0.64, infer) 残差 0。**W2 的"P3 须 4B 头"结论正式作废——投机派发免训练拿下 P3**。
+  - **投机真实成本（full engine live，informational）**：604 派发 / 197 确认 / 407 作废 = **浪费率 67.4%（≈2.8× LLM 调用）**；exact 0.630（ε 带 −1，D2 已知感知敏感）；first p50 0.786。论文写实测收益必须同页写此成本。
+  - **权威现实档（干净锚重打分）**：P-1 ALL **0.62 ✗** / 写类 **0.249 ✓**；P-2 **1.494 ✓**（第 6 次落 δ±0.01）；P-3 27/34 ✗（7 miss 中 6 个方向利 TACT，前提失效非机制失效）；P-4 86/100（非同一 = fallback 夹）。产物 `exp/w3/realistic_compare_w3p31L_sblock__w3p31L_tact_d150.json`、`exp/w3/first_decomp_v31_{live,spec}.json`、`exp/w2_rerun/grid_full_v31_live*.json`。
 - **全部 GPU 项已跑完并逐文件核验**（用户跑数 7/07 晚，单线程复核 7/08）。汇报：**`手工文档/神谕/08_W3 执行汇报.md`**（07 缓发内容已并入）。要点：
   - **现实档**：30 冒烟播种不变量 30/30 逐位；对表（冻结档 rescore 为权威）P-1 全量 0.592✗/写类 **0.237✓**、P-2 保费 **1.500 精确=δ\***、P-3 31/33✓、P-4 93✓；**全量 δ 曲线首次出**（exact 0.470/0.470/0.550/0.560/0.570 @ δ0–2.0，eager 惩罚 −10pt 全量复现）；d150 A 档双跑 100/100 逐位、与 W2 冻结档**决策内容位齐**（0 翻转/0 调用集差）。
   - **⚠️ 7/07 新跑臂（w3r_*/w3spec_*/w3p3_*）的 infer/墙钟性锚全部污染**（与并发 GPU 争抢）：决策内容有效，延迟锚不可用——现实档延迟一律引冻结档案 rescore（`exp/w3/realistic_*.json`）；网格新点 d000–d100/d200 锚干净。
@@ -71,7 +77,7 @@
   - **E5 分句 TTS live**：机制链全验证（TtsSentDone/first_sentence/floor_decision yield/tts_sent_dropped，`exp/w3/e5_traces/`）；**勘误：同句首音频提前 p50 = 0.545s**（先前 10.324s 系跨句配对错误，作废）；只有长叙述句触发分句（3/10 runs）——分句收益域=长句场景，首响主战场在 ack/投机。
   - HumDial 门产物已入库 `exp/w3/humdial_gate_spec{off,on}_summary.json` 与三判聚合 `exp/w3/humdial_gate_spec_judge3_summary.json`；`exp/w2_rerun/grid_full.json` 已被 v3 网格覆写（v2 数字重算核验一致；scorer 后续加组名防覆写）。
 - **待裁断**（08 §六）：① prompt 口径——**已结：用户 7/09 裁定 v3.1 = 最终版/主表口径（免神谕）**，v2 留作无 prompt 工程参照行 ② 蓝图#8 ASR 重听试点（TRIGGERED）③ P-1 写类分层口径 ④ G2'(ii) 自适应臂立项 ⑤ RB v1 批复。
-- **下一步**：D6 投机标准卡串行复测（**用 --prompt v3.1 跑**，一石三鸟：主表口径下的干净 live 延迟锚 + spec on/off 实测 + 现实档干净 infer 锚重打分输入）→ 神谕轮（prompt 终局 + 裁断 ②–⑤ + W4 开工）→ RB 录制 → λ(t) v2 工具。scorer 已加 `--tag=` 防覆写（grid_{full,rollback}_TAG.json）。
+- **下一步**：W3 GPU 项全清 ⇒ 神谕轮 09（W3 终局数字 + 裁断 ②–⑤ + W4 开工请示）→ RB 录制（裁断⑤后）→ κ 条件规则基线（G2'(ii) 前置，SFT 前必跑）→ λ(t) v2 工具。scorer 已加 `--tag=` 防覆写（grid_{full,rollback}_TAG.json）。
 
 ### 既往（W3 D4–D6 代码批，2026-07-07）
 

@@ -63,6 +63,7 @@ import re
 import sys
 import threading
 import time
+from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -417,6 +418,8 @@ def _run_example_full(folder, provider, delta, cache, mode, meta, audio, segs,
         "commit_barrier": barrier, "engine": "full",
         "ledger": eng.ledger.export(),
         "engine_trace_events": len(eng.trace),
+        "engine_trace_event_counts": dict(Counter(
+            ev.get("event") for ev in eng.trace)),
     }
     if speculative:
         result["speculative_dispatch"] = True
