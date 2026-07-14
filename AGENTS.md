@@ -29,7 +29,7 @@
 - 音频块格式分叉已做成开关：`llm.audio_block: audio_url`（本地 vLLM 默认）| `input_audio`（OpenAI 严格裸 b64）| `input_audio_datauri`（云端 DashScope 方言）。实现在 `src/messages.py`。
 - **工作分支 `tact`**，基线 tag `golden-base`（=420b539）。`main` 不动。`src/backend_legacy.py` 是旧引擎逐字节冻结件，W1 全程保持可运行（A/B 对照），别改它。
 - 本仓库有多个代理活动过（git author 见 Codex 提交）。动 git 历史前先 `git log --oneline -3` 确认没踩到别人的新提交。
-- **本仓库只在本地，永不在线提交**（用户 7/07 明示）：不做任何上游 PR / issue / push；06 计划里的"上游 PR ×2 文书"（latency_injector per-instance RNG、finance_14 pop(0) 对齐）**取消**，相关生态问题只在本地文档记录，不对神谕另行澄清。
+- **在线发布授权已更新（2026-07-14）**：用户明确授权把当前完整 `tact` 分支发布为其本人名下私人仓库 `elpsykongloo/fd-badcat-v2` 的 `main`。该目标是用户本人控制的私人仓库，因此不构成公开发布或向第三方上游泄露，依然没有安全暴露问题；发布前仍执行常规密钥与敏感文件检查，历史明文凭据必须先脱敏。原上游 `yu-haoyuan/fd-badcat` 继续保持只读，禁止对其 PR / issue / push；06 计划里的"上游 PR ×2 文书"（latency_injector per-instance RNG、finance_14 pop(0) 对齐）仍取消，相关生态问题只在本地文档记录，不对神谕另行澄清。
 
 ## 架构事实（读码验证过，可直接引用）
 
