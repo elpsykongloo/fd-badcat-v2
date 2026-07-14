@@ -1,6 +1,6 @@
 # W4-V3：真实数据校准/增强停时头（G2R）——设计与预注册草案
 
-> **状态：DRAFT（两段式预注册的第一段）**。本文结构、判据形式与探针门**现在冻结**；数值常量（§6 占位）等 Phase-1 普查/探针结果回来后冻结为 v1——**冻结前不跑任何 FDB**。
+> **状态：PHASE-1 COMPLETE / NUMERIC FREEZE PENDING（两段式预注册的第一段已实跑）**。本文结构、判据形式与探针门已在实跑前冻结；§6 数值常量仍待下一次明确冻结为 v1——**冻结前不跑任何 FDB**。Phase-1 完整收据见 §9。
 > **前提变更记录（2026-07-15）**：① 用户获得 HumDial HD-Track2 完整训练用途许可（含训练集，9,988 样本/106.9h）；② 原 8/15 决策树的判定输入已于 7/14 齐备，实际进度快于路线约一个月；③ 用户明示目标 = 尽可能强的 **ICLR 2027** 文章，不被内部时间预设束缚。**v2 判决（w4_ladder_design.md §12.7）一字不动**：合成-only 的 rung 4 已收枪。本文不是 rung-4 重开，而是 §12.2-7(c) 当时预留的"许可通过 → 另开预注册增补"路径的兑现——预注册纪律防的是看结果反调同一杠杆，不禁止用预先点名的新数据源开新预注册。
 
 ## 1. 主张与门
@@ -93,3 +93,110 @@ $PY scripts/w4v3_text_probe.py --root /root/autodl-tmp/HumDial_train \
 ```
 
 回报清单：census 的 counts/strict-counts 行、vad_pause 分位、ranges_anchor 段、anomalies 对表；probe 的 combos 表 + GATE 行（主/X 两份）；readout 的 cache 行与 skip 数。拿到即冻结 v1（§6 填数 + 预测点数），然后才谈训练与 FDB。
+
+## 9. Phase-1 实跑收据（2026-07-15；仅供 §6 数值冻结输入）
+
+### 9.1 运行口径与评分前修正
+
+- 数据根：`/root/autodl-tmp/HumDial_train`，加载器解析至其 `HD-Track2/` 包装层；train/dev 物理计数分别为 9,988/1,800。
+- GPU：NVIDIA RTX 6000D 85,651 MiB。三阶段音频输出配置的 stage-0 `gpu_memory_utilization=0.72` 启动时无 KV block，且该任务只需音频理解→文本标签；正式读数故复用已冻结并在同类 84g 卡验证过的 `exp/w3/qwen3_omni_text_only_84g.yaml`（SHA-256 `793d1ef0…6677`；stage-0 only、8192、`max_num_seqs=1`、util 0.78）。模型、prompt、T=0/seed=42 和线格式均未改。
+- 实跑中发现四个实现—预注册偏差，均在任何 X 探针评分前修正并补 selftest：① overrun anomaly 改按文本 tier 声明 `xmax`（保留非空段给角色/时长/切点），恢复格式报告 108/13；②离散分数 AUC ties 改用 midrank；③新增独立 `GATE_X = DeLong(S+X, S)`，主门原样保留；④ cache 只允许五个 canonical 标签或 `__unparsed__`，杜绝模型 raw 落盘。另因 prefix 缺 X 全由 VAD 未检出内部停顿导致、与 label 强相关，X 评分在看结果前冻结为严格 paired common support，避免补零形成 missingness 旁道。
+- 扩展自测：census 15/15、probe 8/8、py_compile、cache 合规守卫均通过。未运行训练或 FDB。
+
+### 9.2 counts / anomalies / VAD
+
+`--strict-counts` 最终控制台：
+
+```text
+strict-counts train_total: 9988 vs 9988 PASS
+strict-counts dev_total: 1800 vs 1800 PASS
+strict-counts anomalies.train_overrun_gt_100ms: 108 vs 108 PASS
+strict-counts anomalies.train_overrun_gt_1s: 13 vs 13 PASS
+strict-counts anomalies.train_quote_text_samples: 9 vs 9 PASS
+strict-counts anomalies.pause_no_break_zh: 42 vs 42 PASS
+strict-counts anomalies.pause_no_break_en: 22 vs 22 PASS
+strict-counts anomalies.dev_duration_mismatch: 12 vs 12 PASS
+```
+
+其余已知 anomaly：`dev_duration_mismatch=12`；无标记总数 `42+22=64`。训练音频小时 en/zh = 39.232/67.647（合计 106.879h）。VAD 在 1,147 个有 `[break]` 样本上导出 748 个 `break_mid`；399 个未检出内部停顿；另导出 1,147 个 `utt_end`，cuts 共 1,895 条。
+
+| lang | 统计 | n | mean | min | p10 | p25 | p50 | p75 | p90 | max |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| zh | max pause/utt | 484 | 1.0171 | 0.388 | 0.484 | 0.644 | 0.900 | 1.284 | 1.6584 | 3.140 |
+| zh | all internal | 500 | 0.9997 | 0.388 | 0.484 | 0.612 | 0.868 | 1.284 | 1.636 | 3.140 |
+| en | max pause/utt | 264 | 1.2022 | 0.388 | 0.516 | 0.740 | 1.092 | 1.572 | 1.924 | 3.588 |
+| en | all internal | 295 | 1.1381 | 0.388 | 0.484 | 0.660 | 0.996 | 1.508 | 1.924 | 3.588 |
+
+### 9.3 `ranges_anchor`
+
+用户话语时长锚：
+
+| lang | n | mean | min | p10 | p25 | p50 | p75 | p90 | max |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| zh/user | 12,347 | 3.8918 | 0.000 | 2.080 | 2.899 | 3.779 | 4.789 | 5.880 | 14.129 |
+| en/user | 5,208 | 5.7125 | 0.4034 | 2.267 | 3.979 | 5.650 | 7.309 | 8.979 | 17.670 |
+
+train `rev_arrival`（含中间 assistant 音频，故只作 reactive 锚；单元秒）：
+
+| scene | en n/p50/p90 | zh n/p50/p90 |
+|---|---:|---:|
+| Follow-up Questions | 373 / 22.8684 / 33.2644 | 1,134 / 18.2084 / 24.8524 |
+| Negation or Dissatisfaction | 372 / 20.0884 / 26.0024 | 839 / 14.7584 / 18.8736 |
+| Repetition Requests | 373 / 25.2484 / 34.0744 | 840 / 16.9784 / 23.5484 |
+| Silence or Termination | 372 / 24.2034 / 34.5964 | 840 / 19.6584 / 27.1114 |
+| Topic Switching | 373 / 23.8484 / 33.9204 | 840 / 18.3184 / 26.3014 |
+| User Real-time Backchannels | 371 / 26.4384 / 33.1084 | 840 / 18.2684 / 23.2224 |
+
+dev `seg_gap` 是采集模板固定静默：18 个 lang/scene 组的 p50/p90 **全部 5.0/5.0s**（总 n=1,809 个 gap；每组 n=50–200）。合成 v2 对照支撑保持：`sig_fast_mu=[-1.5,-0.5]`、`sig_fast_s=[0.4,0.8]`、`sig_wide_p_lo=[0.35,0.65]`、`inter_req_lo=[0.6,1.5]`、`inter_req_hi=[2.0,4.0]`、`utt_complete=[[1.2,2.0],[4.5,6.5]]`、`utt_hesitant=[[1.0,1.6],[3.5,5.5]]`、`utt_cutoff=[[0.6,1.2],[2.5,4.0]]`。真实 max-pause p50 0.900/1.092s 高于合成 fast 分量的 config-median 上界约 0.607s；因此“双探针输且停顿分布与合成无显著差”的复合 kill 前提不能仅由本轮直接宣告成立（“显著差”检验尚未在 v0 草案中数值冻结）。
+
+### 9.4 主文本探针与 X 共同支撑探针
+
+主探针：1,143 对/2,286 实例，全文哈希去重 4 对；cuts duration 覆盖 82.6% <95%，故 S 只含 `log_len,is_zh`。X 探针在 745/1,143 对共同支撑上评分（398 对丢弃），1,490 实例 X 与 duration 均 100% 覆盖；S 含 4 列。
+
+| combo | 主 AUC (ncol) | X-common AUC (ncol) |
+|---|---:|---:|
+| S | 0.9841 (2) | 0.9897 (4) |
+| T1 | 0.6218 (7) | 0.6252 (7) |
+| T2 | 0.7359 (256) | 0.7357 (256) |
+| S+T1 | 0.9859 (9) | 0.9901 (11) |
+| S+T2 | 0.9638 (258) | 0.9697 (260) |
+| S+T1+T2 | 0.9662 (265) | 0.9688 (267) |
+| S+T1+T2+P | 0.9979 (268) | 0.9991 (270) |
+| S+X | — | 0.9916 (10) |
+| S+T1+T2+X | — | 0.9719 (273) |
+
+```text
+MAIN GATE: AUC(S+T1+T2)=0.9662 vs AUC(S)=0.9841; ΔAUC=-0.0179;
+           DeLong z=-6.378, one-sided p=0.99999999991 -> FAIL
+X-common MAIN: 0.9688 vs 0.9897; ΔAUC=-0.0210;
+               z=-6.863, p=0.999999999997 -> FAIL
+GATE_X: AUC(S+X)=0.9916 vs AUC(S)=0.9897; ΔAUC=+0.0018;
+        z=2.312, one-sided p=0.010381 -> FAIL
+```
+
+T-only 次级 paired accuracy 主/X-common = 0.8014/0.8000，flip-permutation p 均为 1/2001≈0.0004998；说明文本尾部有原始配对信号，但在近饱和 S 之上没有正增量。按冻结 §5，**T1/T2 与 X 双输，Arm F 不启用；当前只剩 Arm C，是否触发复合 kill 留给 §6 数值冻结轮裁定。**
+
+### 9.5 Omni readout
+
+正式首跑：`readout: 1895 labeled / 0 skipped`；`cache: 36 hits / 3754 misses`。同 cache 全量复放：`3790 hits / 0 misses`，输出与 cache SHA-256 均逐字节不变。
+
+| truth kind | n | final | hesitant | unfinished | amend continue | amend done | unparsed |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| `utt_end` | 1,147 | 803 | 0 | 344 | 1,142 | 5 | 0 |
+| `break_mid` | 748 | 110 | 0 | 638 | 748 | 0 | 0 |
+
+finality 对真实停顿的 unfinished 召回 638/748=85.3%，对真结束的 final 召回 803/1,147=70.0%，有 standalone 信号；但它在共同支撑的 S 上只增 0.0018 AUC。`amend` 几乎塌成 continue（1,890/1,895），无可用分离度。
+
+### 9.6 产物哈希与裁决边界
+
+| artifact | SHA-256 |
+|---|---|
+| `humdial_census.json` | `22531d1e5ce6e44bfd5111a066e450cf2568db373ee5dad83014a8f5dbd181df` |
+| `humdial_census_vad.json` | `74d42f208613e732751c6f20cf9d54cfc4bfaeaf4310c9129235a47e063e5f16` |
+| `humdial_cuts.jsonl` | `325f898b639d4cdf6dd5f3e19735799ef51d029f70cecda2d5873558dcbf1f93` |
+| `omni_readout.jsonl` | `affe547d43a40060fc4357d10422baa8757fc9be926e7256ee2dc41a59b9190c` |
+| `omni_readout_cache.json` | `2b9062ee4cf8fa42ca62e06912c1418d1e913f6d76aa888ff1b7ab8a4cde498f` |
+| `text_probe.json` | `43d2386321a91e666ab3a80ced3db9ed982d2c3e9c94877e5284793548810945` |
+| `text_probe_x.json` | `838439a9767162839e934902c8aff5e802861a77f76b55090bfb6f151bc2b94d` |
+
+本节不是 §6 数值冻结：`λ_mix/π*/Δπ*/P top 段/rollback 冒烟门/点预测` 仍为空，不得据此启动训练或 FDB。

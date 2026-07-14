@@ -54,6 +54,24 @@ AMEND_PROMPT_V0 = (
     "done - the request sounds complete."
 )
 _AMEND_RE = re.compile(r"\b(continue|done)\b", re.I)
+_FINALITY_RE = re.compile(r"\b(unfinished|hesitant|final)\b", re.I)
+_ANY_CACHE_LABEL_RE = re.compile(
+    r"\b(unfinished|hesitant|final|continue|done)\b", re.I)
+_CACHE_LABELS = {"unfinished", "hesitant", "final", "continue", "done",
+                 "__unparsed__"}
+
+
+def _canonical_cache_raw(raw, mode=None):
+    """Reduce output to the vocabulary of the requested frozen readout."""
+    matcher = {"finality": _FINALITY_RE, "amend": _AMEND_RE}.get(
+        mode, _ANY_CACHE_LABEL_RE)
+    m = matcher.search(raw or "")
+    return m.group(1).lower() if m else "__unparsed__"
+
+
+def _cache_mode(messages):
+    system = messages[0].get("content") if messages else None
+    return "amend" if system == AMEND_PROMPT_V0 else "finality"
 
 
 def _llm_call(messages):
@@ -94,20 +112,30 @@ class Cache:
     def __init__(self, path):
         self.path = Path(path)
         self.data = json.loads(self.path.read_text()) if self.path.exists() else {}
+        # Sanitize legacy/incomplete caches on load as well as new responses.
+        for value in self.data.values():
+            value["raw"] = _canonical_cache_raw(value.get("raw"))
         self.hits = self.misses = 0
 
     def call(self, msgs):
         k = hashlib.sha256(json.dumps(msgs, sort_keys=True).encode()).hexdigest()
+        mode = _cache_mode(msgs)
         if k in self.data:
             self.hits += 1
-            return self.data[k]["raw"], self.data[k]["infer"]
+            safe_raw = _canonical_cache_raw(self.data[k]["raw"], mode)
+            self.data[k]["raw"] = safe_raw
+            return safe_raw, self.data[k]["infer"]
         t0 = time.time()
         raw = _llm_call(msgs)
         self.misses += 1
-        self.data[k] = {"raw": raw, "infer": round(time.time() - t0, 3)}
-        return raw, self.data[k]["infer"]
+        safe_raw = _canonical_cache_raw(raw, mode)
+        self.data[k] = {"raw": safe_raw, "infer": round(time.time() - t0, 3)}
+        return safe_raw, self.data[k]["infer"]
 
     def save(self):
+        if any(v.get("raw") not in _CACHE_LABELS for v in self.data.values()):
+            raise SystemExit("compliance: non-canonical Omni cache label")
+        assert_no_text(self.data)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.path.write_text(json.dumps(self.data))
 

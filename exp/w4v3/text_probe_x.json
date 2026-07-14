@@ -1,0 +1,95 @@
+{
+ "primary": {
+  "tag": "paired",
+  "n_instances": 1490,
+  "n_pairs": 745,
+  "combos": {
+   "S": {
+    "auc": 0.9897,
+    "n_cols": 4
+   },
+   "T1": {
+    "auc": 0.6252,
+    "n_cols": 7
+   },
+   "T2": {
+    "auc": 0.7357,
+    "n_cols": 256
+   },
+   "S+T1": {
+    "auc": 0.9901,
+    "n_cols": 11
+   },
+   "S+T2": {
+    "auc": 0.9697,
+    "n_cols": 260
+   },
+   "S+T1+T2": {
+    "auc": 0.9688,
+    "n_cols": 267
+   },
+   "S+T1+T2+P": {
+    "auc": 0.9991,
+    "n_cols": 270
+   },
+   "S+X": {
+    "auc": 0.9916,
+    "n_cols": 10
+   },
+   "S+T1+T2+X": {
+    "auc": 0.9719,
+    "n_cols": 273
+   }
+  },
+  "gate": {
+   "delta_auc": -0.021,
+   "auc_gate": 0.9688,
+   "auc_base": 0.9897,
+   "delong_z": -6.863,
+   "delong_p_one_sided": 0.9999999999966362,
+   "thresholds": {
+    "dAUC": 0.05,
+    "p": 0.01
+   },
+   "pass": false
+  },
+  "secondary_T_only": {
+   "paired_acc": 0.8,
+   "flip_perm_p": 0.0004997501249375312,
+   "n_perm": 2000
+  },
+  "gate_x": {
+   "delta_auc": 0.0018,
+   "auc_gate": 0.9916,
+   "auc_base": 0.9897,
+   "delong_z": 2.312,
+   "delong_p_one_sided": 0.010381019035954203,
+   "thresholds": {
+    "dAUC": 0.05,
+    "p": 0.01
+   },
+   "pass": false
+  },
+  "by_lang": {
+   "zh": 962,
+   "en": 528
+  }
+ },
+ "external_common_support": {
+  "pairs_before": 1143,
+  "pairs_after": 745,
+  "pairs_dropped": 398,
+  "instances_after": 1490
+ },
+ "prefix_len_quantiles": {
+  "n": 745,
+  "mean": 16.1315,
+  "min": 4,
+  "max": 79,
+  "p10": 6.0,
+  "p25": 8.0,
+  "p50": 10.0,
+  "p75": 26.0,
+  "p90": 34.0
+ }
+}

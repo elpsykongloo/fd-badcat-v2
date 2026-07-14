@@ -73,6 +73,7 @@ _INTERVAL_RE = re.compile(
     r'text\s*=\s*"(.*)"[ \t]*$',
     re.MULTILINE,
 )
+_TIER_XMAX_RE = re.compile(r"^\s*xmax\s*=\s*([^\s]+)\s*$", re.MULTILINE)
 
 
 def read_textgrid_segments(path):
@@ -86,6 +87,25 @@ def read_textgrid_segments(path):
         segs = [{"xmin": float(a), "xmax": float(b), "text": t}
                 for a, b, t in _INTERVAL_RE.findall(tier) if t]
         return segs or None
+    except (OSError, ValueError, UnicodeDecodeError):
+        return None
+
+
+def read_textgrid_text_tier_xmax(path):
+    """Declared ``xmax`` of the 文本 tier, including trailing empty intervals.
+
+    Segment consumers deliberately drop empty intervals, but the format-audit
+    overrun definition is based on the tier boundary.  Keep the two semantics
+    separate so a trailing empty interval cannot silently weaken anomaly QA.
+    """
+    try:
+        content = Path(path).read_text(encoding="utf-8")
+        t0 = content.index('name = "文本"')
+        t1 = content.find("item [2]:", t0)
+        tier = content[t0:t1] if t1 != -1 else content[t0:]
+        header = tier.split("intervals:", 1)[0]
+        vals = _TIER_XMAX_RE.findall(header)
+        return float(vals[-1]) if vals else None
     except (OSError, ValueError, UnicodeDecodeError):
         return None
 
@@ -305,9 +325,7 @@ def predict_lr(model, X):
 
 def auc(y, p):
     import numpy as np
-    order = np.argsort(p)
-    r = np.empty(len(p))
-    r[order] = np.arange(1, len(p) + 1)
+    r = _midrank(np.asarray(p, float))
     pos = y == 1
     n1, n0 = int(pos.sum()), int((~pos).sum())
     if not (n1 and n0):

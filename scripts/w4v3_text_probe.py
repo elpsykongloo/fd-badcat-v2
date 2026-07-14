@@ -147,6 +147,28 @@ def load_cut_durations(cuts_path):
     return durs
 
 
+def external_common_support(insts, extra):
+    """Keep whole paired groups only when every side has external features.
+
+    VAD can miss a prefix cut while the full-turn cut is always available.
+    Zero-imputing that label-dependent absence would create a missingness
+    shortcut, so the X probe is defined on strict paired common support.
+    """
+    by_group = defaultdict(list)
+    for inst in insts:
+        by_group[inst["group"]].append(inst)
+
+    def covered(inst):
+        return inst["key"] in extra or inst.get("base") in extra
+
+    keep = {group for group, rows in by_group.items()
+            if len(rows) == 2 and all(covered(row) for row in rows)}
+    out = [inst for inst in insts if inst["group"] in keep]
+    return out, {"pairs_before": len(by_group), "pairs_after": len(keep),
+                 "pairs_dropped": len(by_group) - len(keep),
+                 "instances_after": len(out)}
+
+
 # ---------------------------------------------------------------------------
 # feature matrices
 # ---------------------------------------------------------------------------
@@ -244,11 +266,19 @@ def run_probe(insts, durs, extra, n_perm, seed, tag=""):
         oof = cv_oof(X, y, folds)
         oofs[combo] = oof
         res["+".join(combo)] = {"auc": round(auc(y, oof), 4), "n_cols": len(cols)}
-    # frozen gate: text increment over structure
-    gate_combo, base_combo = ("S", "T1", "T2"), ("S",)
-    a1, a0, z, p = delong_test(y, oofs[gate_combo], oofs[base_combo])
-    d_auc = a1 - a0
-    gate_pass = d_auc >= GATE_DAUC and p < GATE_P
+    def gate(contender, baseline):
+        a1, a0, z, p = delong_test(y, oofs[contender], oofs[baseline])
+        d_auc = a1 - a0
+        return {"delta_auc": round(d_auc, 4),
+                "auc_gate": round(a1, 4), "auc_base": round(a0, 4),
+                "delong_z": round(z, 3), "delong_p_one_sided": p,
+                "thresholds": {"dAUC": GATE_DAUC, "p": GATE_P},
+                "pass": bool(d_auc >= GATE_DAUC and p < GATE_P)}
+
+    # Frozen main gate: text increment over structure.  X is independently
+    # gated by the same rule (design §5), never substituted into this result.
+    gate_main = gate(("S", "T1", "T2"), ("S",))
+    gate_x = gate(("S", "X"), ("S",)) if "X" in fams else None
     # secondary: T-only paired accuracy + exact flip permutation
     Xt, _ = stack(fams, ("T1", "T2"))
     oof_t = cv_oof(Xt, y, folds)
@@ -256,14 +286,12 @@ def run_probe(insts, durs, extra, n_perm, seed, tag=""):
     acc_p = flip_perm_p(a_vec, n_perm, seed) if a_vec is not None else None
     out = {"tag": tag, "n_instances": len(insts), "n_pairs": n_pairs,
            "combos": res,
-           "gate": {"delta_auc": round(d_auc, 4),
-                    "auc_gate": round(a1, 4), "auc_base": round(a0, 4),
-                    "delong_z": round(z, 3), "delong_p_one_sided": p,
-                    "thresholds": {"dAUC": GATE_DAUC, "p": GATE_P},
-                    "pass": bool(gate_pass)},
+           "gate": gate_main,
            "secondary_T_only": {"paired_acc": None if acc is None
                                 else round(acc, 4),
                                 "flip_perm_p": acc_p, "n_perm": n_perm}}
+    if gate_x is not None:
+        out["gate_x"] = gate_x
     lang_n = defaultdict(int)
     for i in insts:
         lang_n[i["lang"]] += 1
@@ -291,6 +319,9 @@ def main(argv=None):
     args = ap.parse_args(argv)
     if args.selftest:
         return selftest()
+    if args.extra_jsonl and args.neg_scenes:
+        raise SystemExit("--extra-jsonl and --neg-scenes cannot be combined: "
+                         "external X requires strict paired common support")
 
     root = resolve_root(args.root)
     langs = tuple(args.langs.split(","))
@@ -302,14 +333,23 @@ def main(argv=None):
           f"dropped {n_dup} duplicate prompts")
     durs = load_cut_durations(args.cuts) if args.cuts else None
     extra = None
+    support = None
     if args.extra_jsonl:
         extra = {}
         for line in Path(args.extra_jsonl).read_text().splitlines():
             r = json.loads(line)
             extra[r["key"]] = r["feats"]
+        pairs, support = external_common_support(pairs, extra)
+        print("external paired common support: "
+              f"{support['pairs_after']}/{support['pairs_before']} pairs "
+              f"({support['pairs_dropped']} dropped)")
+        if not pairs:
+            raise SystemExit("no paired external common support")
 
     report = {"primary": run_probe(pairs, durs, extra, args.perms,
                                    args.seed, tag="paired")}
+    if support is not None:
+        report["external_common_support"] = support
     if args.neg_scenes:
         scenes = [s.strip() for s in args.neg_scenes.split(",") if s.strip()]
         negs = collect_extra_negs(root, langs, scenes, args.limit)
@@ -329,6 +369,11 @@ def main(argv=None):
     print(f"GATE dAUC={g['delta_auc']} (>= {GATE_DAUC}) "
           f"DeLong p={g['delong_p_one_sided']:.2e} (< {GATE_P}) "
           f"-> {'PASS: Arm F enabled' if g['pass'] else 'FAIL: Arm C only'}")
+    if "gate_x" in report["primary"]:
+        gx = report["primary"]["gate_x"]
+        print(f"GATE_X dAUC={gx['delta_auc']} (>= {GATE_DAUC}) "
+              f"DeLong p={gx['delong_p_one_sided']:.2e} (< {GATE_P}) "
+              f"-> {'PASS: X enabled' if gx['pass'] else 'FAIL: X disabled'}")
     print(f"-> {out}")
     return 0
 
@@ -375,12 +420,36 @@ def selftest():
     nul = _mk_insts(rng, 300, "zh", False) + _mk_insts(rng, 200, "en", False)
     r_sig = run_probe(sig, None, None, n_perm=500, seed=0, tag="sig")
     r_nul = run_probe(nul, None, None, n_perm=500, seed=0, tag="nul")
+    xinst, xextra = [], {}
+    for k in range(200):
+        group = f"x{k}"
+        for label in (1, 0):
+            key = f"{group}#{label}"
+            xinst.append({"key": key, "group": group, "lang": "en",
+                          "label": label, "text": "same item", "base": group})
+            # Strong but non-perfect signal keeps DeLong variance non-zero.
+            xval = 1 - label if k % 10 == 0 else label
+            xextra[key] = {"readout_signal": float(xval)}
+    r_x = run_probe(xinst, None, xextra, n_perm=100, seed=0, tag="x")
+    xmissing = dict(xextra)
+    xmissing.pop(xinst[0]["key"])
+    xkept, xsupport = external_common_support(xinst, xmissing)
+    y_tie = np.array([0, 1, 0, 1], float)
+    p_tie = np.ones(4)
     ck = {"signal_gate_pass": r_sig["gate"]["pass"] is True,
           "signal_paired_acc": (r_sig["secondary_T_only"]["paired_acc"] or 0) > 0.85,
           "signal_perm_p": (r_sig["secondary_T_only"]["flip_perm_p"] or 1) < 0.01,
           "null_gate_fail": r_nul["gate"]["pass"] is False,
           "null_paired_acc_mid": abs((r_nul["secondary_T_only"]["paired_acc"]
-                                      or 0.5) - 0.5) < 0.08}
+                                      or 0.5) - 0.5) < 0.08,
+          "x_gate_independent": r_x["gate"]["pass"] is False
+          and r_x["gate_x"]["pass"] is True
+          and r_x["gate_x"]["auc_gate"] == r_x["combos"]["S+X"]["auc"]
+          and r_x["gate_x"]["auc_base"] == r_x["combos"]["S"]["auc"],
+          "x_common_support": len(xkept) == 398
+          and xsupport["pairs_after"] == 199,
+          "auc_ties_midrank": auc(y_tie, p_tie) == 0.5
+          and auc(y_tie[::-1], p_tie[::-1]) == 0.5}
     for k, v in ck.items():
         print(f"  selftest {k}: {'PASS' if v else 'FAIL'}")
     print(f"  (signal gate dAUC={r_sig['gate']['delta_auc']}, "

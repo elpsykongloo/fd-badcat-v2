@@ -1,0 +1,69 @@
+{
+ "primary": {
+  "tag": "paired",
+  "n_instances": 2286,
+  "n_pairs": 1143,
+  "combos": {
+   "S": {
+    "auc": 0.9841,
+    "n_cols": 2
+   },
+   "T1": {
+    "auc": 0.6218,
+    "n_cols": 7
+   },
+   "T2": {
+    "auc": 0.7359,
+    "n_cols": 256
+   },
+   "S+T1": {
+    "auc": 0.9859,
+    "n_cols": 9
+   },
+   "S+T2": {
+    "auc": 0.9638,
+    "n_cols": 258
+   },
+   "S+T1+T2": {
+    "auc": 0.9662,
+    "n_cols": 265
+   },
+   "S+T1+T2+P": {
+    "auc": 0.9979,
+    "n_cols": 268
+   }
+  },
+  "gate": {
+   "delta_auc": -0.0179,
+   "auc_gate": 0.9662,
+   "auc_base": 0.9841,
+   "delong_z": -6.378,
+   "delong_p_one_sided": 0.999999999910087,
+   "thresholds": {
+    "dAUC": 0.05,
+    "p": 0.01
+   },
+   "pass": false
+  },
+  "secondary_T_only": {
+   "paired_acc": 0.8014,
+   "flip_perm_p": 0.0004997501249375312,
+   "n_perm": 2000
+  },
+  "by_lang": {
+   "zh": 1590,
+   "en": 696
+  }
+ },
+ "prefix_len_quantiles": {
+  "n": 1143,
+  "mean": 14.9711,
+  "min": 2,
+  "max": 79,
+  "p10": 6.0,
+  "p25": 7.0,
+  "p50": 10.0,
+  "p75": 22.5,
+  "p90": 32.0
+ }
+}

@@ -44,8 +44,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from w4v3_common import (BREAK, INTERRUPT_SCENES, SR, TRAIN_ROLES,  # noqa: E402
                          assert_no_text, derive_roles, iter_dev_samples,
                          iter_train_samples, quantiles, resolve_root,
-                         read_textgrid_segments, strip_break, t1_features,
-                         wav_duration)
+                         read_textgrid_segments, read_textgrid_text_tier_xmax,
+                         strip_break, t1_features, wav_duration)
 
 MIN_UTT_FOR_RATE = 0.2   # s; below this char-rate is meaningless
 OVERRUN_WARN = 0.1       # s; annotation end past the real WAV tail (§11.8)
@@ -73,9 +73,15 @@ def collect_train(root, langs, limit=None):
         roles = derive_roles(s["scene"], len(segs))
         if len(segs) != len(TRAIN_ROLES.get(s["scene"], [])):
             anomalies["train_template_mismatch"] += 1
-        if any(seg["xmax"] > wdur + OVERRUN_WARN for seg in segs):
+        # Format-report anomaly semantics use the declared text-tier boundary,
+        # including its trailing empty interval.  Non-empty ``segs`` remain the
+        # sole input to roles, gaps, durations and cuts.
+        tier_xmax = read_textgrid_text_tier_xmax(s["textgrid"])
+        overrun_xmax = tier_xmax if tier_xmax is not None else max(
+            seg["xmax"] for seg in segs)
+        if overrun_xmax > wdur + OVERRUN_WARN:
             anomalies["train_overrun_gt_100ms"] += 1
-            if any(seg["xmax"] > wdur + 1.0 for seg in segs):
+            if overrun_xmax > wdur + 1.0:
                 anomalies["train_overrun_gt_1s"] += 1
         if any('"' in seg["text"] for seg in segs):
             anomalies["train_quote_text_samples"] += 1
@@ -360,6 +366,26 @@ def main(argv=None):
                 ok &= good
                 print(f"strict-counts {k}: {report[k]} vs {v} "
                       f"{'PASS' if good else 'FAIL'}")
+        if set(langs) == {"zh", "en"} and not args.limit and "train" in splits:
+            anomaly_want = {
+                "train_overrun_gt_100ms": 108,
+                "train_overrun_gt_1s": 13,
+                "train_quote_text_samples": 9,
+                "pause_no_break_zh": 42,
+                "pause_no_break_en": 22,
+            }
+            for k, v in anomaly_want.items():
+                got = report["anomalies"].get(k, 0)
+                good = got == v
+                ok &= good
+                print(f"strict-counts anomalies.{k}: {got} vs {v} "
+                      f"{'PASS' if good else 'FAIL'}")
+        if set(langs) == {"zh", "en"} and not args.limit and "dev" in splits:
+            got = report["anomalies"].get("dev_duration_mismatch", 0)
+            good = got == 12
+            ok &= good
+            print("strict-counts anomalies.dev_duration_mismatch: "
+                  f"{got} vs 12 {'PASS' if good else 'FAIL'}")
 
     assert_no_text(report)
     out = Path(args.out)
@@ -437,6 +463,14 @@ def selftest():
               (4.0, 10.0, '他说 "好的" 已经订好'),
               (12.0, 14.0, "对了再帮我加一份保险的"),
               (15.0, 20.0, "保险已加")], 20.0)
+    p = te / "Follow-up Questions/0002_0002"     # tail-empty threshold edge
+    _mk_wav(p.with_suffix(".wav"), 18.0)
+    _mk_grid(p.with_suffix(".TextGrid"),
+             [(0.5, 3.0, "book a ticket"),
+              (4.0, 10.0, "the ticket is booked"),
+              (12.0, 14.0, "add insurance"),
+              (15.0, 18.095, "insurance added"),
+              (18.095, 18.105, "")], 18.105)
     p = dz / "Follow-up Questions/0001_0001"
     _mk_wav(p.with_suffix(".wav"), 30.0)
     p.parent.mkdir(parents=True, exist_ok=True)
@@ -451,8 +485,9 @@ def selftest():
     rc = main(["--root", str(root), "--splits", "train,dev",
                "--emit-cuts", str(cuts), "--out", str(out)])
     rep = json.loads(out.read_text())
-    ck = {"train_total": rep["train_total"] == 4,
-          "counts": rep["counts_train"] == {"en/Pause Handling": 1,
+    ck = {"train_total": rep["train_total"] == 5,
+          "counts": rep["counts_train"] == {"en/Follow-up Questions": 1,
+                                            "en/Pause Handling": 1,
                                             "zh/Follow-up Questions": 1,
                                             "zh/Pause Handling": 2},
           "pause_zh": rep["pause"]["zh"]["n_with_break"] == 1
@@ -463,7 +498,7 @@ def selftest():
           "gap_a2u": rep["gaps_train"]["zh/Follow-up Questions"]["a2u"]["p50"] == 2.0,
           "rev_arrival": rep["gaps_train"]["zh/Follow-up Questions"]
           ["rev_arrival"]["p50"] == 9.0,
-          "overrun": rep["anomalies"].get("train_overrun_gt_100ms") == 1
+          "overrun": rep["anomalies"].get("train_overrun_gt_100ms") == 2
           and rep["anomalies"].get("train_overrun_gt_1s") == 1,
           "quote": rep["anomalies"].get("train_quote_text_samples") == 1,
           "no_break": rep["anomalies"].get("pause_no_break_zh") == 1,
