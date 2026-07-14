@@ -21,8 +21,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-# Load transaction module directly
-exec(open("/root/autodl-tmp/tact/transaction.py").read())
+from tact.transaction import Transaction, Reversibility
 
 # Minimal mock tools for testing
 class ToolRegistry:

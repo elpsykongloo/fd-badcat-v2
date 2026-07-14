@@ -71,8 +71,9 @@ import numpy as np
 import requests
 import soundfile as sf
 
-sys.path.insert(0, "/root/autodl-tmp")
-sys.path.insert(0, "/root/autodl-tmp/fd-badcat/src")
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
 
 import tact_core                                            # noqa: E402
 from tact_core import (WindowLedger, apply_decision_ops, advance_over,     # noqa: E402

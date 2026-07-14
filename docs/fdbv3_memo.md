@@ -1,6 +1,6 @@
 # FDB-v3 深审计备忘录（W1 D5.1 — 评测设计的宪法）
 
-> 依据：直读 `/root/autodl-tmp/FDBench_v3/v3/` 源码 + 既有 tact_* 实验报告 + `/root/autodl-tmp/tact/INTEGRATION.md`（上一轮 sprint 的集成指南，其结论本备忘录已复核）。
+> 依据：直读 `/root/autodl-tmp/FDBench_v3/v3/` 源码 + 既有 tact_* 实验报告 + `tact/INTEGRATION.md`（上一轮 sprint 的集成指南；原独立包已于 2026-07-14 归入本仓，其结论本备忘录已复核）。
 > 状态标记：✅=源码实锤 ⚠️=需 GPU/在线验证 📌=行动项
 > 更新：2026-07-03（W1 Day 0 夜间，无 GPU）
 
@@ -57,10 +57,10 @@
 
 | 资产 | 位置 | 状态 |
 |---|---|---|
-| TACT 原型包（事务代数/工具注册/决策器/离线 runner） | `/root/autodl-tmp/tact/`（独立 git 仓库） | 可用；decider 走文本 LLM（module_adapter），未接 Qwen3-Omni 音频决策 |
+| TACT 原型包（事务代数/工具注册/决策器/离线 runner） | `tact/`（原独立仓历史已归入本仓） | 可用；decider 走文本 LLM（module_adapter），未接 Qwen3-Omni 音频决策 |
 | LiveKit 常驻 agent + 推流器 | `FDBench_v3/v3/tact_livekit_{agent,inference}.py` | 已跑通线上评测（0.65） |
 | blocking / async 基线分数 | `v3/tact_*_report*.json` | blocking 0.73 / async 0.71 / async_live 0.65（6/23） |
-| 集成指南 | `/root/autodl-tmp/tact/INTEGRATION.md` | 结论已复核，audio_url 判断与本备忘录一致 |
+| 集成指南 | `tact/INTEGRATION.md` | 结论已复核，audio_url 判断与本备忘录一致 |
 | 调参子集 | `v3/tuning_subsets/` | 防过拟合的场景切分 |
 
 📌 蓝图（00）对系统的核心要求是 **audio-native 决策中枢**（Qwen3-Omni 直接听音频）——现 tact 包 decider 是文本路（消融基线现成！），W2 的正主是把 fd-badcat 新引擎（今晚已 actor 化）+ Qwen3-Omni 音频决策接到这个已验证的 harness 管道上。

@@ -22,15 +22,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-# Load transaction module directly
-exec(open("/root/autodl-tmp/tact/transaction.py").read())
-
-# Minimal mock tools and reversibility for testing
-class Reversibility:
-    READ = 0
-    REV = 1
-    COMP = 2
-    IRR = 3
+from tact.transaction import Transaction, Reversibility
 
 REVERSIBILITY = {
     "search_flights": Reversibility.READ,

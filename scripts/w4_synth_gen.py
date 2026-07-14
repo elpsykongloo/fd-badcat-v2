@@ -33,8 +33,9 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-sys.path.insert(0, "/root/autodl-tmp")
-sys.path.insert(0, "/root/autodl-tmp/fd-badcat/src")
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
 from stophead import kappa_name, REQUIRED_ARGS   # noqa: E402
 
 # -- preregistered grammar constants (frozen; changes = new tag) --------------

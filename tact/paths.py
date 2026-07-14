@@ -1,4 +1,4 @@
-"""Path discovery for the sibling fd-badcat and FDBench_v3 checkouts."""
+"""Path discovery for the in-repo fd-badcat source and sibling FDBench_v3."""
 
 from __future__ import annotations
 
@@ -9,7 +9,11 @@ from typing import Iterable
 
 
 TACT_DIR = Path(__file__).resolve().parent
-WORKSPACE_DIR = TACT_DIR.parent
+PACKAGE_PARENT = TACT_DIR.parent
+# New layout: <workspace>/fd-badcat/tact (PACKAGE_PARENT is the repo root).
+# Legacy layout: <workspace>/tact (PACKAGE_PARENT is the workspace root).
+REPO_ROOT = PACKAGE_PARENT if (PACKAGE_PARENT / "src").is_dir() else None
+WORKSPACE_DIR = REPO_ROOT.parent if REPO_ROOT is not None else PACKAGE_PARENT
 
 
 def _existing(paths: Iterable[Path]) -> Path | None:
@@ -26,6 +30,7 @@ def fd_badcat_src() -> Path | None:
         [
             Path(src_env) if src_env else None,
             Path(root_env) / "src" if root_env else None,
+            REPO_ROOT / "src" if REPO_ROOT else None,
             WORKSPACE_DIR / "fd-badcat" / "src",
         ]
     )

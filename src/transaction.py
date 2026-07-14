@@ -3,7 +3,7 @@ src/transaction.py
 ==================
 Phase-B transaction management for TACT (fd-badcat integration).
 
-Ported from /root/autodl-tmp/tact/transaction.py with adaptations:
+Ported from the in-repository `tact/transaction.py` with adaptations:
 - Integrated with fd-badcat's audio-clock discipline
 - Aligned with W1 iron laws (single-writer, audio-clock timestamps)
 - Ready for dissent-window mechanism (delta parameter)

@@ -29,8 +29,9 @@ from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, "/root/autodl-tmp")
-sys.path.insert(0, "/root/autodl-tmp/fd-badcat/src")
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
 from stophead import StopHead, T_GRID, W_CAP, FEATS, KAPPAS   # noqa: E402
 
 KILL_PEN = 50.0

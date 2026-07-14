@@ -44,9 +44,10 @@ import json
 import sys
 from pathlib import Path
 
-sys.path.insert(0, "/root/autodl-tmp")
-sys.path.insert(0, "/root/autodl-tmp/fd-badcat/src")
-sys.path.insert(0, "/root/autodl-tmp/fd-badcat/scripts")
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "scripts"))
 sys.path.insert(0, "/root/autodl-tmp/FDBench_v3/v3")
 
 from w2r_stream_replay import (DATA, BENCH, DecisionCache, run_example)  # noqa: E402

@@ -2,9 +2,10 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+REPO_DIR="$(cd "$ROOT_DIR/.." && pwd)"
 PYTHON_BIN="${PYTHON_BIN:-/root/miniconda3/envs/fd-sds/bin/python}"
 
-export FDBC_REPO_ROOT="${FDBC_REPO_ROOT:-/root/autodl-tmp/fd-badcat}"
+export FDBC_REPO_ROOT="${FDBC_REPO_ROOT:-$REPO_DIR}"
 export FDBC_SRC_DIR="${FDBC_SRC_DIR:-$FDBC_REPO_ROOT/src}"
 export FDBENCH_REPO_ROOT="${FDBENCH_REPO_ROOT:-/root/autodl-tmp/FDBench_v3}"
 export FDB_V3_DIR="${FDB_V3_DIR:-$FDBENCH_REPO_ROOT/v3}"

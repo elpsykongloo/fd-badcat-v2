@@ -26,8 +26,9 @@ from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, "/root/autodl-tmp")
-sys.path.insert(0, "/root/autodl-tmp/fd-badcat/src")
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
 from stophead import featurize, FEATS, T_GRID, H, KAPPAS   # noqa: E402
 
 EPS = 0.05   # w* = gap + EPS (just past the last revision)

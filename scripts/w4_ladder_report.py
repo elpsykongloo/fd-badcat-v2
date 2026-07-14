@@ -24,9 +24,10 @@ import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
-sys.path.insert(0, "/root/autodl-tmp")
-sys.path.insert(0, "/root/autodl-tmp/fd-badcat/src")
-sys.path.insert(0, "/root/autodl-tmp/fd-badcat/scripts")
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "scripts"))
 
 from w2r_score_grid import score, pct, DATA, _FOLDER_RE     # noqa: E402
 from tact.tools import REVERSIBILITY                        # noqa: E402

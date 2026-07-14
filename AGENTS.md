@@ -1,7 +1,7 @@
 # AGENTS.md — fd-badcat 持久记忆（所有代理必读）
 
 > 单一真相源。CLAUDE.md 指向本文件。有重大事实变更时**更新本文件**，不要另开新文档。
-> 最后更新：2026-07-14 (W4 rung 4 停时头 v1 全量实测)
+> 最后更新：2026-07-14 (W4 rung 4 停时头 v1 全量实测；TACT 基础包归仓)
 
 ## 使命
 
@@ -13,7 +13,7 @@
 
 ## 环境事实
 
-- 工作目录 `/root/autodl-tmp/fd-badcat`；FDBench 在 `/root/autodl-tmp/FDBench_v3`（v1_v1.5/v2/v3 三代，用 v3）；**TACT 原型包在 `/root/autodl-tmp/tact/`**（独立 git 仓库，6/23 构建：事务代数/工具注册/decider/offline_runner，decider 走文本路=现成消融基线；INTEGRATION.md 是集成指南）。
+- 工作目录 `/root/autodl-tmp/fd-badcat`；FDBench 在 `/root/autodl-tmp/FDBench_v3`（v1_v1.5/v2/v3 三代，用 v3）；**TACT 原型基础包已于 7/14 归仓到 `tact/`**（原独立仓 6/23 的 5 个提交由 subtree merge `c82869b` + tag `archive/tact-standalone-e8ee305` 保留，事务代数/工具注册/decider/offline_runner 均在内；后续 W2–W4 实现在 `src/tact_core.py`、`src/engine_b.py`、`src/tact_dag.py`、`src/delta_policy.py`、`src/stophead.py` 与 `scripts/w{2,3,4}_*`）。两个运行环境的 `tact-fdb` editable 安装必须指向 `/root/autodl-tmp/fd-badcat/tact`。
 - **conda 环境**：`fd-sds`（`/root/miniconda3/envs/fd-sds`，backend 运行环境）；`/root/autodl-tmp/conda-envs/` 下有 `fdb_v3`、`fdbc-qwen3o-vllm`（vLLM 服务）、`index-tts-vllm`。直接用绝对路径 `/root/miniconda3/envs/fd-sds/bin/python` 最稳。
 - **容器规格随租卡变化**：无 GPU 时 1 核/2GB（torch 进程会 OOM——用 `scripts/extract_vad_events.py` 预抽 VAD + `install_light_stubs()` 轻进程路；预压分配 trick 见该脚本）；GPU 日为 RTX PRO 6000 Blackwell 96GB + 208 核/118GB。
 - 服务拓扑（GPU 在位时）：vLLM Qwen3-Omni-30B-A3B :10003（`setup/start_qwen3omni_audio.sh`，音频管线 max_num_seqs=1 确定性优先；文本配置 `qwen3_omni_text_only.yaml` 可高并发）→ 代理 `src/qwen3_api.py` :10004（`setup/start_qwen3_proxy.sh`）→ backend :18000。TTS 默认 **Omni 原生**。实测 Blackwell 上音频判定单次 ~0.26s。
@@ -129,4 +129,4 @@
 - [x] FDB-v3 blocking 冒烟 6/6 PASS（官方 scorer）；决策延迟基线：分类 p50 0.10s / response 0.15s / TTS 0.66s
 - [x] 并发轨验证：24 会话 @ 并发 8 = 14s（mock）；SenseVoice 双语 ASR 验收（RTF 0.021, EN 带标点）
 
-**W2 入口弹药**（蓝图 §4.2–4.3）：决策延迟基线已测；guided_json 可用性待查（vLLM 版本支持 structured output 大概率 ok，W2 Day1 确认）；PendingSet 原型已在 `/root/autodl-tmp/tact/transaction.py`；FDB 离线契约已验证。
+**W2 入口弹药**（蓝图 §4.2–4.3）：决策延迟基线已测；guided_json 可用性待查（vLLM 版本支持 structured output 大概率 ok，W2 Day1 确认）；PendingSet 原型现位于 `tact/transaction.py`；FDB 离线契约已验证。

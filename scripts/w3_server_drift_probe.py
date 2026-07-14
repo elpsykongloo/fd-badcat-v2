@@ -23,9 +23,10 @@ import json
 import sys
 from pathlib import Path
 
-sys.path.insert(0, "/root/autodl-tmp")
-sys.path.insert(0, "/root/autodl-tmp/fd-badcat/src")
-sys.path.insert(0, "/root/autodl-tmp/fd-badcat/scripts")
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "scripts"))
 
 from w2r_stream_replay import DATA, DecisionCache, run_example, _llm_call  # noqa: E402
 from tact.decider import parse_decision                                    # noqa: E402

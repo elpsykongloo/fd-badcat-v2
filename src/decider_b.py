@@ -3,7 +3,7 @@ src/decider_b.py
 ================
 Phase-B decision center with extended operation algebra.
 
-Adapted from /root/autodl-tmp/tact/decider.py for fd-badcat integration.
+Adapted from the in-repository `tact/decider.py` for fd-badcat integration.
 This is the prompt-engineered extended decision space (blueprint §3.2 / §4.1 regime 1).
 
 The decider is the MLLM decision center's *transactional head*. Given the current

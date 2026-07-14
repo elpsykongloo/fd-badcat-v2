@@ -5,11 +5,13 @@ resolution, finality parsing, WindowLedger per-op override (incl. frozen
 default), and apply_decision_ops delta_fn wiring (launch + patch restart).
 """
 import sys
+from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, "/root/autodl-tmp")
-sys.path.insert(0, "/root/autodl-tmp/fd-badcat/src")
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
 
 import delta_policy as dp                                   # noqa: E402
 from tact_core import WindowLedger, apply_decision_ops      # noqa: E402

@@ -14,9 +14,8 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-sys.path.insert(0, "/root/autodl-tmp/tact")
 
-from transaction import Transaction, Reversibility, OpStatus, PendingOp
+from tact.transaction import Transaction, Reversibility, OpStatus, PendingOp
 
 
 def mock_executor(fn, args):
@@ -207,9 +206,13 @@ def test_t8_reversibility():
 def test_t9_pending_snapshot():
     tx = Transaction()
 
-    # Empty pending
+    # The standalone algebra returns ``(none)``.  Importing tact_core installs
+    # the W2 snapshot overlay on this same class, so an aggregate pytest run
+    # sees the richer active-engine form.  Both are intentional layers.
     snap = tx.snapshot_for_prompt()
-    assert snap == "(none)"
+    core_snapshot = snap != "(none)"
+    if core_snapshot:
+        assert snap == "PENDING (not yet executed, patch/cancel by id):\n  (none)"
 
     op1 = tx.launch("search_flights", {"destination": "NYC", "date": "2026-07-15"},
                     Reversibility.READ, t=1.0)
@@ -217,8 +220,11 @@ def test_t9_pending_snapshot():
                     Reversibility.COMP, t=1.2)
 
     snap = tx.snapshot_for_prompt()
-    assert f"id={op1.op_id}" in snap
-    assert f"id={op2.op_id}" in snap
+    if core_snapshot:
+        assert "id=1" in snap and "id=2" in snap
+    else:
+        assert f"id={op1.op_id}" in snap
+        assert f"id={op2.op_id}" in snap
     assert "search_flights" in snap
     assert "book_flight" in snap
     assert "NYC" in snap
@@ -303,4 +309,3 @@ if __name__ == "__main__":
             traceback.print_exc()
     print(f"\n{len(fns) - failed}/{len(fns)} passed")
     sys.exit(1 if failed else 0)
-
