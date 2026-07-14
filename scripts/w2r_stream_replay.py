@@ -530,13 +530,15 @@ def main():
                          "to run (e.g. exp/w3/tuning30.json).")
     ap.add_argument("--delta-policy", default="fixed",
                     choices=["fixed", "kappa:v0", "kappa:safe", "kappa:rev",
-                             "prompted:v0", "learned:v0"],
+                             "prompted:v0", "learned:v0", "learned:v2"],
                     help="W4 adaptive ladder: per-op objection windows. "
                          "kappa:* = reversibility-conditioned rule tables; "
                          "prompted:v0 = Omni finality judge on the audio tail "
                          "(separate call, ops/cache untouched); learned:v0 = "
                          "trained stopping head (rung 4; needs --stophead-model "
-                         "and also runs the finality call as a feature). "
+                         "and also runs the finality call as a feature); "
+                         "learned:v2 = two-stage protect(1.5)/commit-now head "
+                         "(rung-4 v2; model JSON must carry policy=twostage). "
                          "Requires --mode tact --engine core. Tables in "
                          "src/delta_policy.py (preregistered).")
     ap.add_argument("--stophead-model",
@@ -601,9 +603,24 @@ def main():
     stophead = None
     if args.delta_policy.startswith("learned"):
         stophead = stophead_mod.StopHead.load(args.stophead_model)
-        if stophead.d.get("c_w") is None:
-            ap.error("stophead model has no c_w — run w4_train_stophead.py first")
-        print(f"stophead: {stophead.d.get('version')} c_w={stophead.d['c_w']}")
+        twostage = stophead.d.get("policy") == "twostage"
+        if args.delta_policy == "learned:v2" and not twostage:
+            ap.error("learned:v2 requires a policy=twostage model "
+                     "(w4_train_stophead.py v2 output)")
+        if twostage and args.delta_policy != "learned:v2":
+            ap.error("model is policy=twostage — use --delta-policy learned:v2")
+        if twostage:
+            if stophead.d.get("theta") is None:
+                ap.error("twostage model has no theta — "
+                         "run w4_train_stophead.py first")
+            print(f"stophead: {stophead.d.get('version')} policy=twostage "
+                  f"theta={stophead.d['theta']} "
+                  f"w_protect={stophead.d.get('w_protect')} "
+                  f"grace={stophead.d.get('grace')}")
+        else:
+            if stophead.d.get("c_w") is None:
+                ap.error("stophead model has no c_w — run w4_train_stophead.py first")
+            print(f"stophead: {stophead.d.get('version')} c_w={stophead.d['c_w']}")
     infer_nominal = args.infer_nominal
     if args.workers > 1 and infer_nominal is None:
         infer_nominal = 1.0

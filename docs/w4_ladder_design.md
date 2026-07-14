@@ -347,3 +347,54 @@ $PY scripts/w4_ladder_report.py --arms w4k0_tact w4ks_tact w4kr_tact w4pf_tact w
 **结论**：① 信号**存在**（LOO 0.753；载荷特征 = slots_missing 0.668 / f_unfinished 0.625 / 短 utt_dur 0.642 / 早 eou_idx 0.59）——"afterthought 完全不可预测"的悲观假设被否定；② 目标区角 (≤1, ≥47%) 在 LOO 前沿**边缘**（44% vs 47%，且这是全局阈值+全局窗+LR 的下界）；③ **约束瓶颈被精确定位为 sim-to-real 排序迁移**：合成训练模型的 AUC 差距（0.75→0.64/0.68）在 lost≤1 处折损 26–36 个回收点。v1 的失败此前归因"先验偏高→保守"，本诊断进一步显示即便经济学修对，排序迁移不够也到不了目标区。
 
 **决策含义**：v2 的唯一正当靶 = 缩小排序迁移差。防火墙内的杠杆（按安全性排序）：(a) **域随机化**——多套生成器配置混合训练，逼模型依赖秩稳定结构而非合成边缘分布；(b) 特征收缩到信号核（slots/finality/utt_dur/eou_idx/κ，5–7 维，减小漂移面）；(c) 非评测真实语料（HumDial，许可待查）校准特征边缘分布与修订先验；(d) 策略形态改为诊断验证过的"score→保护(W=1.5)/立即提交"二段式 + 训练回放加入屏障宽限（又一处 metric-structural 修正）。**v2 = 最后一枪**，预注册后不再迭代；未中则按 8/15 决策树落 ICASSP 分支，本诊断的上限曲线 + 迁移分解直接成为论文的分析节。
+
+## 12. Rung 4 v2（预注册，2026-07-14；排序迁移批——最后一枪）
+
+### 12.1 死因链条与本轮靶
+
+v0 死于**代价函数错**（记账层，§10.1 已修）；v1 死于**世界错**（分布层：合成修订先验 32.5% ≫ 部署域，窗全饱和 4s cap，回收 −193%）。§11 上限诊断把剩余瓶颈**唯一定位在 sim-to-real 排序迁移**（同一 LR：域内 LOO 0.753 → 合成迁移 0.644/0.679，lost≤1 处折损 26–36 回收点），并证明策略形态 W=1.5（屏障修正后）覆盖全部 13 个承重 op。v2 不再赌"把世界拍对"（防火墙禁止看 FDB 调分布），改为**让学习对分布未知免疫、把策略下行用结构封死**：模型只需学跨配置稳定的排序，其余全部固定。
+
+### 12.2 改动清单（五杠杆；代码已交付）
+
+1. **(a) 域随机化**（`w4_synth_gen.py` v2 重写）：语法常量 → 预注册 `RANGES` 表，**每 dialogue** 从范围采样一套配置（style 混合、各修订通道概率、slot 缺失率、σ_pre 分布参数、finality 混淆行抖动 J=0.6、链概率、间隔静默）；配置与内容同一 `random.Random(seed)` 驱动，config_hash 覆盖范围表。validator 打印 per-dialogue 期望修订率 `rev_prior` 的 p10/p50/p90（预期横跨 ~5%–45%，把部署域先验包进支撑域）。
+2. **结构勘正 ①（GAP_FLOOR）**：gap = **1.64 + σ_pre**（0.64 hold + 1.0 nominal infer = 吞吐轨决策间静默物理下界；v0/v1 的 [0.3,4.0] gap 物理不可实现）。σ_pre（用户开口修订前的犹豫）才是被随机化的量。**结构勘正 ②（utt_dur 因果链）**：utt_dur 按 style 条件采样（cutoff 话语本来就短）——v0/v1 style 无关均匀采样使该部署实信号在训练中是死重。两处均为引擎/语言结构知识，非 FDB 统计。
+3. **(b) 特征收缩**（`src/stophead.py` `FEATS_V2`，7 维）：`t, eou_idx, utt_dur, slots_missing, f_final, f_hesitant, f_unfinished`。**显式排除**：κ one-hots（§11 单特征 AUC≈随机 0.48–0.53，且二段式经济学在 FDB 二元 pass 上 κ-平坦——miss=场景死刑、保费=1.5s/op 均与 κ 无关）、gap_prev/n_prior_ops/chain_dep（≈随机）、domain one-hots（纯合成伪影载体）。特征行按名字从模型自带 `feats` 构建（标注/训练/运行时单源）。
+4. **(d) 二段式策略**（`StopHead.risk/window`）：`risk(op) = 1 − Π_{t<RISK_HORIZON}(1−λ̂(t))`（RISK_HORIZON=2.5=W_PROTECT+GRACE=可救 gap 支撑域）；`window = 1.5 if risk ≥ θ else 0`。**下行结构有界：protect-all ≡ fixed δ\*=1.5 臂**，v1 的 4s 窗/318.6s 保费形态不可表达；上界 = oracle（只保护承重 op）。排序质量成为唯一自由变量。
+5. **(e) 屏障宽限入训练回放**（`w4_train_stophead.py` v2 重写）：救援判定 = `w>0 且 w > gap − GRACE`（窗在下一决策 guard 内过期 → 屏障推迟 → patch 救回；与 §11 对 FDB 的实证规则同构，fixed-sim 保费 sanity 差 3%）。保费记账沿用 v1 尾溢出定义，KILL_PEN=50 不变。
+6. **模型类阶梯内消融**：LR（主臂，~10¹ 参数）+ 单隐层 tanh MLP h=16（~10² 参数，seed=0 确定性 Adam）；(model, θ) 在**合成 val** 上按回放代价**联合选择**，平手取 LR。产出 `stophead_v2.json`（选中者）+ `stophead_v2_{lr,mlp}.json` 审计件；FDB 只跑选中者一次。
+7. **θ 选点切片（跑前冒烟发现的结构修正，预注册化）**：全混合 val 上代价最优解塌缩到 **protect-all**（池化修订率 ~25% 使任何提前提交的边际保费收益 ≪ 50s 死刑期望——v1 先验错配换位重现，且 protect-all 在 FDB 上 ≡ fixed 臂 = 回收门必败）。故 θ 选点在 **val 的 rev_intensity 下三分位切片**上做：随机化混合是**教学分布**，高修订域是刻意夸张的（教排序稳健），部署代表性经济学在低强度带（op 级先验 ~2%–14%）。mid/high/full 三档 θ\* 全部打印留档（预期 full 档 = protect-all，作为该机制的对照证据）。选点仍纯合成侧，FDB 不进入。
+7. **(c) HumDial 校准：本轮不启用**（训练用途许可未核查完）。范围以宽先验代替锚定；若后续许可通过，HumDial 只得用于范围中心/边缘校准并须另开预注册增补，不改本轮判决。
+
+### 12.3 预注册常量（跑前锁定；改动=新 tag）
+
+- `RANGES`（见 `w4_synth_gen.py` 文件头，本表为正文）：style 权重 complete/hesitant/cutoff = (2.0,6.0)/(0.5,2.5)/(0.3,1.8) 归一；p_slot_missing (0.08,0.40)；p_rev slot/cutoff/hesitant/afterthought = (0.45,0.95)/(0.45,0.95)/(0.15,0.70)/(0.02,0.25)（**pre-intensity**）；**全局修订强度 rev_intensity = log-uniform (0.15,1.50)** 乘到四通道（cap 0.97）——把 per-dialogue op 级先验支撑域拉到 ~3%–55%，部署样低修订域**进入训练支撑**（v1 单点 32.5% 先验 = 已判死因）；首意图倍率 (1.0,2.0)；p_chain (0.30,0.80)；p_upstream_hit (0.10,0.50)；σ_pre fast=lognormal(μ∈(−1.5,−0.5),s∈(0.4,0.8)) 截 [0.03,1.5]，wide=双带 [0.1,1.0]/[1.0,2.8] 低带权 (0.35,0.65)；inter_req (0.6,1.5)–(2.0,4.0)；utt_dur 三 style 界范围见文件；FIN_JITTER=0.6。N=600 冒烟：池化修订率 25.4%、rev_prior p10/p50/p90 = 0.072/0.185/0.441、gap floor=1.64 精确、可救占比 65.8%。
+- 结构常数：HOLD_S=0.64、GRACE=1.0（nominal infer）、GAP_FLOOR=1.64、W_PROTECT=1.5、RISK_HORIZON=2.5——全部为评测轨引擎知识，非 FDB 统计。
+- 训练/选点：THETA_GRID = {0.002,0.005,0.01,0.02,0.03,0.05,0.08,0.12,0.20,0.35,0.50}；KILL_PEN=50.0；**选点切片 = val 按 cfg.rev_intensity 下三分位**（§12.2-7）；生成 N=8000/seed=42；hazard 目标定义不变（宽限只进代价回放，不进标签）；did%5 切分不变。
+- 经济学 sanity 锚（跑前写下）：二段式盈亏平衡 θ\* ≈ 保费上界/KILL_PEN = 1.5/50 = 0.03——低带选点若落 0.01–0.08 区间为算术自洽（N=600 冒烟：LR 低带 θ\*=0.03 精确命中；full 档 θ\*=0.02=protect-all，对照机制成立）。
+- 冒烟信息位（N=600，不构成门）：LR val AUC 0.715 / **MLP 0.860**——随机化使线性任务显著变难（预测 ② 兑现方向），MLP 的 finality×slots×utt 交互在混合分布下有真实增益，消融臂地位坐实。风险相应更新：若全量后 LR/MLP 排序在 FDB 上分化，选型规则（低带代价）已预注册，不得跑后改选。
+
+### 12.4 门、诚实预测与容量判据（跑前锁定）
+
+**门不变**：exact ≥ 0.640（净口径，gain 可抵 loss）∧ 回收 ≥47%（主口径；strict 共同支撑并报）。
+
+**诚实预测**：① 结构上保费 ≤ fixed ⇒ **回收 ≥ 0 保证成立**（v1 式负回收不可表达），回收侧的真赌点变为"θ 处保护率足够低"；② exact 侧的真赌点回到排序迁移：LOO 上限在 lost=1 处 44%、lost=2 处 52%——**命中 AND 区需要迁移 AUC 从 0.64–0.68 收复到 ~0.72+**（域随机化+特征收缩+两处结构勘正合力），或 lost=2 时出现 ≥1 个 gain（v1 实证 gain 存在）。③ 已声明风险：域随机化可能不足以关闭迁移差（配置多样性 ≠ 真实分布覆盖）；GAP_FLOOR/utt_dur 结构建模若有误差会systematic 移动 σ_pre 支撑域。预计 val AUC 会**低于** v1 的 0.859（randomization 使任务变难——这是特性不是回归，迁移 AUC 才是靶）。
+
+**容量升级判据（固化，回应"是否换 0.6B"）**：仅当 (i) v2 迁移后排序质量已逼近 LOO 上限（FDB 侧 lost≤1 前沿差 ≤5 回收点）仍不过门，且 (ii) 特征增补 LOO 探针（零 GPU，扩展 `w4_ceiling_diag.py` 特征列）证明**文本语义特征显著抬升域内上限**时，才允许引入文本编码器（特征提取器形态，0.6B 起）。二者缺一，容量升级永久排除——§11 已证明现瓶颈在数据轴不在容量轴，同时换容量+换数据将使 v2 归因失效。
+
+**最后一枪声明**：v2 预注册后不再迭代 rung 4；未中 AND 区则按 8/15 决策树落 ICASSP 分支（§11 曲线 + 三代失败归因 = 论文分析节），G2 叙事收缩为"停时规则的 zero-shot 可实现性 + 学习组件的迁移瓶颈实证"。
+
+### 12.5 运行（前三步纯 CPU；第四步同 84g text-only 口径 + workers 12）
+
+```bash
+$PY scripts/w4_synth_gen.py --n 8000 --seed 42 --tag v2
+$PY scripts/w4_hindsight_label.py --tag v2 --feats v2
+$PY scripts/w4_train_stophead.py --tag v2
+$PY scripts/w2r_stream_replay.py --delta 1.5 --provider w4lh2_tact --prompt v3.1 \
+    --delta-policy learned:v2 --stophead-model exp/w4/stophead_v2.json --workers 12
+$PY scripts/w4_ladder_report.py --arms w4k0_tact w4ks_tact w4kr_tact w4pf_tact \
+    w4lh_tact w4lh1_tact w4lh2_tact
+```
+
+### 12.6 汇报清单（跑完发回）
+
+gen：config_hash / 池化修订率 / **rev_prior p10/p50/p90** / gap 分位（floor 应=1.64）/ 混淆表。label：样本数 / 正例率 / dims=7 / rescue_states。train：**双头 val AUC** / LR 校准 bin / **双头 θ 扫描整表** / 联合选型行（winner+双成本）/ protect-by-{finality,style,position,kind} 四行。FDB：cache 双行（决策+finality 均应高命中）/ 打表整行（exact/state/done50/prem/recov 主+strict）/ **对 fixed 逐夹翻转**（v0 七夹逐夹核对）/ finality 分布 / windows 均值（应为 {0,1.5} 两点混合）。
