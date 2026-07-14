@@ -1,7 +1,7 @@
 # AGENTS.md — fd-badcat 持久记忆（所有代理必读）
 
 > 单一真相源。CLAUDE.md 指向本文件。有重大事实变更时**更新本文件**，不要另开新文档。
-> 最后更新：2026-07-14 (W4 rung 4 v2 transfer AUC=0.752 回填，容量判据(i)边缘未立；G2 未立、rung 4 收枪，落 8/15 ICASSP 分支；实跑后直推 main 纪律；TACT 基础包归仓)
+> 最后更新：2026-07-15 (W4-V3 开工：HumDial 训练许可到手，Phase-1 普查/探针/读数三件套交付，预注册草案 docs/w4v3_design.md；v2 判决不动、目标改锚 ICLR；实跑后直推 main 纪律)
 
 ## 使命
 
@@ -62,7 +62,7 @@
   - **DeepSeek judge 并发**：官方 `llm_judge.py` 原生支持 `FDB_LLM_WORKERS`；judge 是纯 API 调用。v3.1 正式三判采用 strict runner、workers=32，避免把并发/解析失败与 judge 判决混合。`scripts/run_fdb_with_deepseek.sh` 仍指向连续 metrics 轨，不可用于论文 binary judge-pass 主轨。
   - vLLM 侧：准确度回归可临时把 audio 配置 `max_num_seqs` 调高（重启分钟级）配合 --workers 压满；HumDial 管线自带 `--gen-workers/--clean-workers/--asr-workers/--judge-workers` 旋钮。
 
-## 当前状态（W3 全部收口；W4 rung 4 v2 已实测，2026-07-14）
+## 当前状态（W3 全部收口；W4 rung 4 收枪；W4-V3 Phase-1 开工，2026-07-15）
 
 - **D6 标准卡串行复测已清（7/09，W3 最后一个 GPU 项）**——三臂全量 100、音频标准栈、`--workers 1`、每臂全新缓存（0 hit，锚干净）、A 档双跑决策逐位（pass/tool calls/signature/transcript diff 全 0）。**主表最终数字（v3.1 口径，live 串行档）**：
   - **准确性**：TACT d150 exact **0.640** / sblock **0.660**（差 −2pt 不变）。**7/13 DeepSeek semantic-argument 三判已闭合**：TACT **0.710±0.010**、spec **0.723±0.005**、sblock **0.730±0.010**（±=三次半极差；逐轮 TACT−sblock = −3/0/−3pt，均值仍 −2pt；spec−sblock = −2/0/0pt）。judge 语义宽恕把三臂各抬约 7–8pt，但不反转主结论；报告 `exp/w3/fdb_v31_deepseek_judge3_summary.json`。live state 同栈复算为 verbatim TACT/sblock **0.66/0.66**、normalized **0.77/0.79**；此前 0.79/0.82 是 text 栈，不得混入 live 主表。⚠️ live 音频栈 vs 前日 text 栈 exact 存在 **−1pt/臂 电平差**；主表引 live 档，δ 曲线保留 text 栈产物作形状主张。
@@ -88,6 +88,8 @@
 - **W4 rung 4 v2 全量结果（7/14；双门失败——G2 未立，rung 4 按预注册永久收枪）**：完整收据与判读 = `docs/w4_ladder_design.md` §12.7（对 `exp/w4/ladder_v0.json`+`stophead_v2*.json` 逐位核验）。gen `config_hash=b62a069cd900`（8000 dlg / 19288 ops / 池化修订 24.6% / **rev_prior p10/50/90 = 0.077/0.198/0.474** / gap floor 1.64 精确）；label 394757 hazard / 正例 1.20% / dims=7；train **LR val AUC 0.749** / MLP 0.896，低带（rev_intensity≤0.3174）联合选型 **LR θ=0.03**（2713.8 < 2780.0；θ\* 第三次精确命中盈亏锚 1.5/50；full/mid 档双头塌 protect-all = 对照机制在 N=8000 复现）。FDB（84g text-only / workers 12；决策 cache 217/1、finality 217/0 ⇒ 翻转纯窗口政策效应）：exact **0.630**（差 1 夹）✗ / state 0.660 / done50 **3.455 = fixed 逐位相等** / premium **82.6s**（p50 1.459）/ 回收 **24.8%**（strict 24.7%, n=98）✗ ⇒ **AND 区双败**。**0 gain / 2 loss**（eco01#1、eco25#1）= v0 七夹的严格子集（收复 5/7，无 v1 式新增）；windows 严格两点 {0×27, 1.5×142}（protect 84.0%，κ-平坦）。预测对账：①回收 ≥0 结构保证**兑现**（−193% 形态不可表达），但"θ 处保护率足够低"未兑现（84% vs 所需 ~60%）；②exact 收复差 1 夹（eco01#1 = 排序错杀实例：v1 巨窗恰罩其修订、v2 commit-now 放行；eco25#1 三代皆输持久夹）；③val AUC < v1 0.859 方向兑现，MLP 反超 AUC 但低带经济学更差（protect-all）= 容量涨判别力不涨部署经济学。机制读数：θ=0.03 经济学要求 ~2/3 op 读出风险 <3%，迁移后 λ̂ 把 84% 读到 ≥3%——**排序（AUC）× 风险标度（教学先验 ~25% vs FDB ~8%）双重迁移误差**，标度差 = 防火墙代价（预注册已声明）；lost=2 处 LOO 上限 52% vs 实测 24.8%，残差 ~27 回收点 ≈ §11 预言量级。**真赌点（迁移 AUC 0.64→0.72+）待回填**：`w4_ceiling_diag.py` transfer 段已补 v2 打分（feats 感知 + protect@θ 部署工作点），服务器零 GPU 一跑即回填三代迁移曲线（0.679→0.644→?）并判容量判据条件 (i)。**裁决：G2 核心证据未建立；落 8/15 决策树 → ICASSP 分支，§11 曲线 + 三代归因（v0 代价层/v1 世界层/v2 迁移层）= 论文分析节；容量判据两条件只作分析节/future-work 判据，不触发任何新一轮。**
 
 - **W4 rung 4 v2 transfer 回填（7/14；本条覆盖上文“待回填”与容量判据(i)占位）**：服务器零 GPU 运行 `scripts/w4_ceiling_diag.py` exit 0。三代 transfer AUC = **0.679 → 0.644 → 0.752009**，v2 与 LOO **0.753157** 仅差 **0.001148**，按 AUC 口径排序迁移已实质追平域内上限；v2 `protect@theta=85.7%`，W=1.5 frontier lost=0/1/2/3/4 回收 = **15.1/38.4/56.2/61.7/69.9%**。但 §12.4 冻结的容量判据(i)不只看 AUC，而要求 lost≤1 前沿与 LOO 差 ≤5 回收点；实测 **38.4% vs 43.9%**，差约 **5.5pt**，以约 **0.5pt** 之差严格未立。因此可写“AUC 层排序数据轴近乎榨干”，不可写“冻结容量条件(i)已成立”；条件(ii)文本语义 LOO 探针仍未做且不被触发，不引出新 rung 或容量升级。AUC 追平但部署点仍保护 85.7% 把剩余失败进一步收缩为**风险绝对标度/校准迁移**，ICASSP 分支与 rung 4 永久收枪裁决不变。完整收据已回写 `exp/w4/ceiling_diag.json`与 `docs/w4_ladder_design.md` §12.8。
+
+- **W4-V3（G2R）开工：HumDial 真实数据校准/增强停时头，Phase-1 三件套已交付（7/15）**：**前提变更（记录在案）**——① 用户获得 HumDial HD-Track2 **完整训练用途许可（含训练集**：9,988 样本/106.9h/中英双语/8 场景，格式探测报告已逐字节核验，zip sha256 6555F6F2…）；② 用户明示目标 = 尽可能强的 **ICLR 2027** 文章，内部时间预设解除，神谕文书降级为决策记录（发送时机由用户定）；③ RB 本步暂缓（用户 7/15 指示）。**v2 判决一字不动**：这不是 rung-4 重开，是 §12.2-7(c) 预留的"许可通过→另开预注册"路径兑现。设计 = `docs/w4v3_design.md`（**两段式预注册**：结构/判据/探针门已冻结，数值常量待 Phase-1 回填后冻为 v1，冻结前不跑任何 FDB）。三臂对 v2 尸检三缺口：**C 校准-only**（预注册预期失败 ≈38.4%@lost≤1 = 分解预测力的可证伪验证）/ **F 特征升级**（探针门控，AND 区主赌点）/ **P 三档窗 {0,1.5,3.0}**（重开 gain 通道，仅 F 达标后叠加）。**边际先验 π 参数化**：HumDial 场景配额人为 ⇒ 只能校准条件形态不能校准边际率，主报告 = π∈[0.02,0.30] 扫描曲线，判据 = 过门 π 带非空且宽 ≥Δπ\*（待冻结）。**探针门（已冻结）**：ΔAUC(S→S+T1+T2) ≥0.05 ∧ DeLong 单侧 p<0.01（pooled OOF，分组 CV，全文哈希去重防 §11.11 泄漏；标点族 P = 标注员泄漏嫌疑，永不进门）。代码：`scripts/w4v3_common.py`（加载层固化格式报告全部边界：dev 以 JSON 为主索引、未转义引号 regex、时间轴溢出 clamp、[break] 缺失 64 例）+ `w4v3_humdial_census.py`（普查+VAD 停顿实测 σ_pre + 切点导出；selftest 15/15）+ `w4v3_text_probe.py`（PAIRED-CONTINUATION 前缀 vs 全句；selftest 5/5，T2 已 L1 归一化切断长度旁道）+ `w4v3_omni_readout.py`（T3="蒸馏即特征"：rung-3 同线 finality + 冻结 AMEND_PROMPT_V0）。**合规红线**：本仓历史发布公开分支 `Rice` ⇒ 任何落盘产物禁含 HumDial 转写原文，`assert_no_text()` 脚本层强制，census/probe 产物仅统计/路径/哈希/标签；论文义务 = 致谢 Hum-Dial Challenge + 官方论文后按要求引用。**kill 判据**：可用 [break] 停顿事件 <300，或探针双输且停顿分布与合成 v2 支撑无显著差 ⇒ v3 取消零 GPU 浪费，论文以 v2 分析节收尾。数据根路径约定 `/root/autodl-tmp/HumDial_train`。下一步 = 用户按 §8 五条命令跑 Phase-1 回数 → 冻结 v1（§6 填数+预测点数）→ 训练 + FDB 单次出数。
 
 ### 既往（W3 D4–D6 代码批，2026-07-07）
 
