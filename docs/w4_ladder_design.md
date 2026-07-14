@@ -398,3 +398,23 @@ $PY scripts/w4_ladder_report.py --arms w4k0_tact w4ks_tact w4kr_tact w4pf_tact \
 ### 12.6 汇报清单（跑完发回）
 
 gen：config_hash / 池化修订率 / **rev_prior p10/p50/p90** / gap 分位（floor 应=1.64）/ 混淆表。label：样本数 / 正例率 / dims=7 / rescue_states。train：**双头 val AUC** / LR 校准 bin / **双头 θ 扫描整表** / 联合选型行（winner+双成本）/ protect-by-{finality,style,position,kind} 四行。FDB：cache 双行（决策+finality 均应高命中）/ 打表整行（exact/state/done50/prem/recov 主+strict）/ **对 fixed 逐夹翻转**（v0 七夹逐夹核对）/ finality 分布 / windows 均值（应为 {0,1.5} 两点混合）。
+
+### 12.7 v2 全量结果与门判读（2026-07-14 实跑；收据核验 = `exp/w4/ladder_v0.json` + `stophead_v2*.json` 逐位对账）
+
+**跑数口径**：用户按 §12.5 顺序五命令，均 exit 0；FDB 步 84g text-only（stage-0、8192/8192、max_num_seqs=1、util 0.78）、`--workers 12`；决策 cache **217 hit / 1 miss**（库 1009 条）、finality cache **217/0**（库 217 条）——决策内容与冻结语料位齐，臂间差异纯属窗口政策效应，归因干净。
+
+**gen/label/train 收据**：`config_hash=b62a069cd900`；8000 dlg / 19288 ops / 池化修订 24.6%；**rev_prior p10/p50/p90 = 0.077/0.198/0.474**（部署样低修订域入支撑 ✓）；gap p10/p50/p90 = 1.83/2.18/3.20s，floor=1.64 精确，≤2.5s 可救 69.7%。label：394757 hazard 样本 / 正例 1.20% / dims=7 / rescue_states 4744。train：LR val AUC **0.749**（校准 5-bin 单调贴合）/ MLP **0.896**；低带切片 rev_intensity≤0.3174（534/1600）；θ 扫描：LR 低带 θ\*=**0.03 第三次精确命中盈亏锚 1.5/50**（成本 2713.8），MLP 低带 θ\*=0.002=protect-all（2780.0）⇒ 联合选型 **LR θ=0.03**；full/mid 档双头全塌 protect-all（§12.2-7 对照机制在 N=8000 复现 ✓）。
+
+**FDB 主行（w4lh2_tact）**：exact **0.630** / state 0.660 / done50 **3.455 = fixed 完全相等** / premium **82.6s**（p50 1.459）/ 回收 **27.2s = 24.8%**（strict 共同支撑 24.7%, n=98）。翻转：**0 gain / 2 loss**（`ecommerce_01#1`、`ecommerce_25#1`）——**loss 集是 v0 七夹的严格子集**（收复 eco19/fin02/fin12/hou17/hou25 = 5/7；无 v1 式新增 loss）。windows 原始取值严格 {0.0×27, 1.5×142}（protect **84.0%**，均值 1.260s）；κ 窗均值 READ/REV/COMP/IRR = 1.297/1.227/1.400/0.857（κ-平坦 = 特征收缩按设计）；finality final/hesitant/unfinished = 117/38/62，infer p50/p90 = 0.672/0.990s，unparsed 0。
+
+**门判读**：exact 0.630 < 0.640 ✗（差 1 夹）；回收 24.8% < 47% ✗（差 22.2pt）。**AND 目标区双败 ⇒ G2 核心证据未建立。最后一枪已用尽：rung 4 永久收口，按 §12.4 声明落 8/15 决策树 → ICASSP 分支。**
+
+**预测对账（§12.4 vs 实测）**：
+- ① 回收 ≥0 结构保证 → **兑现**：+24.8%（v1 −193% 形态不可表达）；done50 与 fixed 逐位相等、premium 82.6 < 109.6、窗严格两点——二段式下行封死按设计工作。但其真赌点"θ 处保护率足够低"**未兑现**：FDB protect 84%，距回收 47% 所需 ~60%（按有效保费 ~0.58s/护 op 估算需再放行 ~40 op 而不添 miss）差 ~24pt。
+- ② exact 门"大概率收复" → **差 1 夹未中**（0.630；v1 曾压线 0.640）。eco01#1 得而复失 = 排序错杀实例（v1 巨窗 READ 均值 3.6s 恰罩住其修订，v2 commit-now 放行）；eco25#1 三代皆输（add_to_cart 缺失，窗形态无关的持久夹）。v1 的 gain eco15#0 消失与两点窗形态一致（巨窗副产品）。
+- ③ val AUC 低于 v1 0.859 → **方向兑现**（LR 0.749）；MLP 0.896 反超但低带经济学更差（θ\*=0.002=protect-all）⇒ 消融结论：**容量在合成域内涨判别力、不涨部署侧经济学**，联合选型规则（预注册）正确拦截。
+- **真赌点（迁移 AUC 0.64→0.72+）待回填**：`w4_ceiling_diag.py` transfer 段已补 v2 打分（feats 感知 + 二段式部署工作点 protect@θ），服务器零 GPU 秒级；间接证据 = lost=2 处 LOO 上限 52% vs 实测 24.8%，残差 ~27 回收点 ≈ §11 预言的迁移折损量级（26–36 点）。
+
+**机制读数（为什么停在 25%）**：θ=0.03 的盈亏经济学（1.5/50）= "整合风险 <3% 才 commit-now"。FDB 承重修订率 ~8%（13/169 launch-op），校准完美的模型应给 ~2/3 的 op 读出 <3%；迁移后 λ̂ 把 84% 读到 ≥3%。缺口 = **排序（AUC）× 风险标度（合成教学分布 op 级先验 ~25% vs FDB ~8%）双重迁移误差**；标度部分正是防火墙的代价（不得看 FDB 调 θ/先验），§12.2-7 预注册时已声明。合成侧结构梯度方向全对（position：final_eou 74% < earlier 94%；finality：hesitant/unfinished 100% 保护），坏的只是绝对电平——与"排序可学、标定不可迁移"的诊断一致。
+
+**三代归因收口（论文分析节素材）**：v0 死于代价层（记账）→ v1 死于世界层（先验单点 32.5%、窗饱和）→ v2 把记账、下行结构、策略形态全部封死后，残余误差**干净落在 §11 预言的排序/标定迁移轴上**。负结果三件套：因果上限存在（LOO 0.753；W=1.5 lost=1→44%，目标区在边缘）+ 迁移三代曲线（0.679 → 0.644 → v2 待回填）+ 结构下界有效性实证（回收 −193% → +24.8% 而 exact 只让 1 夹）。**容量判据（§12.4 冻结）状态**：条件 (i) 待 v2 迁移 AUC 判定（若 FDB 侧 lost≤1 前沿差 ≤5 回收点仍不过门 ⇒ 成立）；条件 (ii) 文本语义 LOO 探针未做——两者只作为 ICASSP 分析节 / future-work 判据，**不触发任何新一轮 rung 4**。

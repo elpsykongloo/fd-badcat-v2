@@ -284,12 +284,13 @@ def main():
     # transfer check: how well do the firewall-trained models rank FDB lb ops?
     transfer = {}
     from stophead import StopHead
-    for tag in ("v0", "v1"):
+    for tag in ("v0", "v1", "v2"):
         mp = Path(f"/root/autodl-tmp/fd-badcat/exp/w4/stophead_{tag}.json")
         if not mp.exists():
             continue
         m = StopHead.load(mp)
-        s = np.array([m.hazard(featurize(o, 0.0)) for c in clips for o in c["ops"]])
+        s = np.array([m.hazard(featurize(o, 0.0, m.feats))
+                      for c in clips for o in c["ops"]])
         sc, i0 = [], 0
         for c in clips:
             sc.append(s[i0:i0 + len(c["ops"])]); i0 += len(c["ops"])
@@ -300,8 +301,14 @@ def main():
         transfer[tag] = {"auc": auc(y, s),
                          "w15_frontier": {k: round((fixed_prem - v) / fixed_prem, 3)
                                           for k, v in sorted(env.items())[:5]}}
+        extra = ""
+        if m.d.get("policy") == "twostage":      # deployed operating point
+            r = np.array([m.risk(o) for c in clips for o in c["ops"]])
+            transfer[tag]["protect_frac_at_theta"] = round(
+                float((r >= m.d["theta"]).mean()), 3)
+            extra = f" protect@theta={transfer[tag]['protect_frac_at_theta']:.1%}"
         print(f"transfer stophead_{tag}: AUC={transfer[tag]['auc']:.3f} "
-              f"W=1.5 frontier={transfer[tag]['w15_frontier']}")
+              f"W=1.5 frontier={transfer[tag]['w15_frontier']}{extra}")
 
     out = Path("/root/autodl-tmp/fd-badcat/exp/w4/ceiling_diag.json")
     out.write_text(json.dumps({"n_ops": n_ops, "n_rev": n_rev, "n_lb": n_lb,
