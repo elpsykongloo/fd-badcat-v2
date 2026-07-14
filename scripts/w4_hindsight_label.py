@@ -14,10 +14,15 @@ while the op is alive (t < gap, or all steps if never revised):
 This trains lambda_hat(t) directly — the head learns "risk now", not the
 hindsight ACTION, so the hindsight-optimism bias stays out of the target.
 
-Usage: w4_hindsight_label.py [--tag v0]
+Usage: w4_hindsight_label.py [--tag v2] [--feats v2]
 In:  exp/w4/synth/dialogues_{tag}.jsonl
-Out: exp/w4/synth/hazard_{tag}.npz   (X, y, t, did, kappa_idx, gap)
+Out: exp/w4/synth/hazard_{tag}.npz   (X, y, t, did, kappa_idx, gap, feats)
      exp/w4/synth/ops_{tag}.jsonl    (op records + w_star, for c_w sweep/eval)
+
+--feats v2 selects the §12 shrunk signal core (FEATS_V2); the chosen feature
+list is stored in the npz and the trainer/model read it from there — the
+hazard TARGET is unchanged (barrier grace is a rescue-accounting concept and
+enters only the trainer's cost replay, never the label).
 """
 import argparse
 import json
@@ -29,15 +34,18 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "src"))
-from stophead import featurize, FEATS, T_GRID, H, KAPPAS   # noqa: E402
+from stophead import featurize, FEATS, FEATS_V2, T_GRID, H, KAPPAS   # noqa: E402
 
 EPS = 0.05   # w* = gap + EPS (just past the last revision)
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--tag", default="v1")
+    ap.add_argument("--tag", default="v2")
+    ap.add_argument("--feats", default="v2", choices=["v1", "v2"],
+                    help="v1 = 18-dim FEATS (v0/v1 archives); v2 = FEATS_V2 core")
     args = ap.parse_args()
+    feats = FEATS if args.feats == "v1" else FEATS_V2
     base = Path("/root/autodl-tmp/fd-badcat/exp/w4/synth")
     src = base / f"dialogues_{args.tag}.jsonl"
 
@@ -50,7 +58,7 @@ def main():
             if gap is not None and t >= gap:
                 break                         # op no longer alive at t
             pos = int(gap is not None and t < gap <= t + H)
-            X.append(featurize(feat_src, t))
+            X.append(featurize(feat_src, t, feats))
             y.append(pos)
             ts.append(t)
             dids.append(did)
@@ -87,7 +95,7 @@ def main():
                         did=np.asarray(dids, np.int32),
                         kappa_idx=np.asarray(kidx, np.int8),
                         gap=np.asarray(gaps, np.float32),
-                        feats=np.asarray(FEATS))
+                        feats=np.asarray(feats))
     print(f"ops={n_ops} rescue_states={n_rescue} hazard_samples={len(y)} "
           f"positives={n_pos} ({n_pos / max(1, len(y)):.2%}) dims={X.shape[1]}")
     print("->", base / f"hazard_{args.tag}.npz", "and", base / f"ops_{args.tag}.jsonl")
