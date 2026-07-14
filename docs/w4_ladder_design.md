@@ -130,3 +130,78 @@ $PY scripts/w2r_stream_replay.py --delta 1.5 --provider w4lh_tact --prompt v3.1 
 $PY scripts/w4_ladder_report.py --arms w4k0_tact w4ks_tact w4kr_tact w4pf_tact w4lh_tact
 ```
 **汇报**：gen 的 config_hash/修订率/混淆表；label 的样本数/正例率；train 的 AUC/校准 bin/c_w 表与选点；FDB 的 cache 行（决策+finality 均应高命中）与打表整行（exact/回收/翻转/finality 分布）。
+
+## 9. Rung 4 v0 全量结果（2026-07-14；预注册后只跑一次）
+
+### 9.1 运行口径与产物完整性
+
+- 代码锚：`e97dbbb`；开跑前工作树干净，GPU 为 RTX PRO 6000 Blackwell 96GB。
+- 服务严格复用 7/09 的 text-only 84g 口径：`exp/w3/qwen3_omni_text_only_84g.yaml`、stage-0、`max_model_len=8192`、`max_num_batched_tokens=8192`、`max_num_seqs=1`、GPU utilization 0.78；误起的默认 8-seq 服务在零请求时即停掉，不进入实验。
+- gen → label → train → FDB → ladder 严格按 §8 顺序，五条命令均 exit 0。FDB runner 100/100 夹完成，未打印 `WARNING`/`ERROR`；三次真实 cache miss 请求在 proxy/vLLM 两端均为 HTTP 200。结束后按 proxy → vLLM 顺序优雅停服，端口释放、GPU 回到 0 MiB。
+- 完整性复核：`dialogues_v0.jsonl` 8000 行、`ops_v0.jsonl` 19531 行、hazard `X=(205242,18)` / `y=205242` / 6148 positives、模型 features/mean/std/weights 均 18 维、100 个 `result_w4lh_tact.json` 全部可解析。官方 `evaluate_pass_rate.py` 独立复算仍为 58/100。
+
+### 9.2 合成与标注
+
+- `config_hash=d48204c6582b`，seed 42，dialogues 8000，ops 19531。
+- 修订 6315 / 19531 = **32.3%**。kinds（占修订）：slot_completion 2234（35.4%）、afterthought 1116（17.7%）、cutoff_continuation 1469（23.3%）、hesitant_revision 1096（17.4%）、upstream 400（6.3%）。
+- domain：travel 2011、finance 2018、housing 1936、ecommerce 2035。
+- style → observed finality 混淆计数（脚本 stdout 标题写作 `finality|style`，实际方向由生成器定义为 style → label）：
+
+| style \\ finality | final | hesitant | unfinished | 合计 |
+|---|---:|---:|---:|---:|
+| complete | 10906 | 2102 | 688 | 13696 |
+| cutoff | 214 | 444 | 1642 | 2300 |
+| hesitant | 871 | 2190 | 474 | 3535 |
+
+- hindsight label：ops 19531，hazard samples 205242，positives 6148（**3.00%**），dims 18。
+
+### 9.3 训练
+
+- train n=163500、positive=3.01%；val n=41742，**AUC=0.789**（高于 N=300 冒烟的 0.755）。
+- 先验校正后的五个等频校准 bin：
+
+| bin | pred | actual | n |
+|---:|---:|---:|---:|
+| 0 | 0.006 | 0.007 | 8349 |
+| 1 | 0.010 | 0.011 | 8348 |
+| 2 | 0.013 | 0.015 | 8348 |
+| 3 | 0.023 | 0.021 | 8348 |
+| 4 | 0.106 | 0.094 | 8349 |
+
+- `c_w` 只在 3964 个合成验证 ops 上扫描，代价仍为 `sum(w) + 3.0*C_k*miss`：
+
+| c_w | mean_w | miss / 1262 | cost |
+|---:|---:|---:|---:|
+| 0.02 | 1.454 | 249 | 6866 |
+| 0.05 | 0.914 | 456 | 5654 |
+| **0.08** | **0.638** | **627** | **5293** |
+| 0.12 | 0.448 | 732 | 5302 |
+| 0.20 | 0.322 | 872 | 5441 |
+| 0.30 | 0.224 | 961 | 5974 |
+| 0.50 | 0.142 | 1052 | 6311 |
+| 0.80 | 0.091 | 1121 | 7108 |
+| 1.20 | 0.036 | 1209 | 8666 |
+
+选点为内点 **`c_w=0.08`**；模型落 `exp/w4/stophead_v0.json`。
+
+### 9.4 FDB learned:v0 整行与门判读
+
+缓存：决策 **215 hits / 3 misses**（cache 从 997 增至 1000，既有键 0 改写）；finality **217 hits / 0 misses**。
+
+| arm | exact | state | done50 | prem_sum | recov_s | recov% | dExact |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| w4lh_tact | **0.580** | 0.620 | 1.955 | **6.2s** | **106.8s** | **97.4%** | **−0.070** |
+
+- windows(mean)：READ 0.628、REV 0.526、COMP 0.333、IRR 2.096。
+- realized delay(mean)：READ 1.996、REV 2.596、COMP 1.149、IRR 4.034；`delay_monotone_in_kappa=false`。
+- finality all：final 117 / unfinished 62 / hesitant 38；rollback clips：final 22 / unfinished 6 / hesitant 2；infer p50/p90=0.672/0.990（名义吞吐轨信息位），unparsed=0。
+- 对 fixed 的逐夹翻转：gain **0**；loss **7** = `ecommerce_01#1`、`ecommerce_19#0`、`ecommerce_25#1`、`finance_02#0`、`finance_12#1`、`housing_17#1`、`housing_25#0`。7 个净 loss 与 0.650 → 0.580 完全对齐。
+- 预注册门：exact ≥0.640 **失败（差 6pt）**；回收 ≥47% **通过**；AND 目标区 **失败**。因此 **G2 核心证据未建立**。
+
+对零 shot 前沿的定位：相对 safe（0.630 / 30%）多回收 67.4pt、少 exact 5pt；相对 prompted（0.610 / 84%）多回收 13.4pt、少 exact 3pt。学习头把 READ/REV/COMP 窗进一步压短，却没有换回任何 fixed 的失败夹，落在更激进、更低精度的一端，未击穿目标区。
+
+**记账口径审计**：预注册 report 的 97.4% 必须保留为主读数；其 recovery 分子按 fixed↔learned 可比的 99 夹求和，fixed-premium 分母按 fixed↔blocking 可比的 98 夹求和。差异来自 `housing_25#0`：fixed done=3.454、learned=0.108，而 blocking done=None，故该夹只进入分子。严格三臂共同 98 夹时 fixed premium=109.640s、learned premium=6.187s、recovery=103.453s，回收为 **94.4%**。两口径均远高于 47%，不改变门判决；这是 scorer 既有配对定义，不在跑后改脚本。
+
+**迁移结论**：合成验证集内 AUC/校准良好，但 FDB exact 下落 7pt，构成明确的 sim-to-real 失败信号；本轮不能在两条预注册风险间归因——①训练 finality 是混淆表模拟、部署是真 Omni 标签；②训练状态来自脚本决策、部署来自 Omni 决策。不得用本轮 FDB 结果反调 `c_w`；下一轮需新预注册的跨域/消融证据再区分两者。
+
+产物：`exp/w4/synth/{dialogues_v0.jsonl,hazard_v0.npz,ops_v0.jsonl}`、`exp/w4/stophead_v0.json`、`exp/w4/ladder_v0.json`、`exp/w2_rerun/decision_cache.json`；单夹结果在 FDBench 外部数据树的 `result_w4lh_tact.json`。

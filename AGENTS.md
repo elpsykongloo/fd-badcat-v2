@@ -1,7 +1,7 @@
 # AGENTS.md — fd-badcat 持久记忆（所有代理必读）
 
 > 单一真相源。CLAUDE.md 指向本文件。有重大事实变更时**更新本文件**，不要另开新文档。
-> 最后更新：2026-07-13 (v3.1 DeepSeek 三判闭合)
+> 最后更新：2026-07-14 (W4 rung 4 停时头 v0 全量实测)
 
 ## 使命
 
@@ -60,7 +60,7 @@
   - **DeepSeek judge 并发**：官方 `llm_judge.py` 原生支持 `FDB_LLM_WORKERS`；judge 是纯 API 调用。v3.1 正式三判采用 strict runner、workers=32，避免把并发/解析失败与 judge 判决混合。`scripts/run_fdb_with_deepseek.sh` 仍指向连续 metrics 轨，不可用于论文 binary judge-pass 主轨。
   - vLLM 侧：准确度回归可临时把 audio 配置 `max_num_seqs` 调高（重启分钟级）配合 --workers 压满；HumDial 管线自带 `--gen-workers/--clean-workers/--asr-workers/--judge-workers` 旋钮。
 
-## 当前状态（W3 —— 全部收口，2026-07-09）
+## 当前状态（W3 全部收口；W4 rung 4 v0 已实测，2026-07-14）
 
 - **D6 标准卡串行复测已清（7/09，W3 最后一个 GPU 项）**——三臂全量 100、音频标准栈、`--workers 1`、每臂全新缓存（0 hit，锚干净）、A 档双跑决策逐位（pass/tool calls/signature/transcript diff 全 0）。**主表最终数字（v3.1 口径，live 串行档）**：
   - **准确性**：TACT d150 exact **0.640** / sblock **0.660**（差 −2pt 不变）。**7/13 DeepSeek semantic-argument 三判已闭合**：TACT **0.710±0.010**、spec **0.723±0.005**、sblock **0.730±0.010**（±=三次半极差；逐轮 TACT−sblock = −3/0/−3pt，均值仍 −2pt；spec−sblock = −2/0/0pt）。judge 语义宽恕把三臂各抬约 7–8pt，但不反转主结论；报告 `exp/w3/fdb_v31_deepseek_judge3_summary.json`。live state 同栈复算为 verbatim TACT/sblock **0.66/0.66**、normalized **0.77/0.79**；此前 0.79/0.82 是 text 栈，不得混入 live 主表。⚠️ live 音频栈 vs 前日 text 栈 exact 存在 **−1pt/臂 电平差**；主表引 live 档，δ 曲线保留 text 栈产物作形状主张。
@@ -77,7 +77,7 @@
   - **E5 分句 TTS live**：机制链全验证（TtsSentDone/first_sentence/floor_decision yield/tts_sent_dropped，`exp/w3/e5_traces/`）；**勘误：同句首音频提前 p50 = 0.545s**（先前 10.324s 系跨句配对错误，作废）；只有长叙述句触发分句（3/10 runs）——分句收益域=长句场景，首响主战场在 ack/投机。
   - HumDial 门产物已入库 `exp/w3/humdial_gate_spec{off,on}_summary.json` 与三判聚合 `exp/w3/humdial_gate_spec_judge3_summary.json`；`exp/w2_rerun/grid_full.json` 已被 v3 网格覆写（v2 数字重算核验一致；scorer 后续加组名防覆写）。
 - **待裁断**（08 §六）：① prompt 口径——**已结：用户 7/09 裁定 v3.1 = 最终版/主表口径（免神谕）**，v2 留作无 prompt 工程参照行 ② 蓝图#8 ASR 重听试点（TRIGGERED）③ P-1 写类分层口径 ④ G2'(ii) 自适应臂立项 ⑤ RB v1 批复。
-- **下一步**：W3 GPU 项全清。**神谕请示稿已写：`手工文档/神谕/09_W3 终局与 W4 开工请示.md`**（终局数字表 / 学习组件收缩为"停时头"方案 + G2' 判据 / W4 逐日计划 / 裁断 ②–⑤+新增 A–D / 跑偏防火墙九条）。**W4 阶梯 rungs 2–3 已跑完（7/09 晚，近零 GPU：cache 214–217 hits/臂）**：四臂全败双门——v0 0.550/回收62.5%、safe 0.630/30%、rev 0.650/保费↑133.1（kill 判据未触发=κ 对齐有效）、prompted 0.610/**回收84%**。机制已钉死（probe 收据在 w4_ladder_design §7）：①早提交**关闭修订动作类**（fixed 靠 rescued_patch 赢的夹，短窗臂 patches=0，dropped 7/9 vs fixed 3）；②**afterthought 修订对尾韵律不可见**（rollback EoU 73% 标 final）——"韵律测话语完成，不测意图稳定"；③修订发生率是位置/话语结构变量非 κ 变量（rev 不掉 exact 的原因）；④fin12b/hou17b 间隙落 (1.0,1.5] 与 D3 预算阈值 1.12 咬合。**零 shot 前沿 = fixed(0,0)/safe(30%,−2)/pf(84%,−4)；rung 4 停时头目标 = 回收≥47% 且 ≥−1pt；特征以对话状态/位置为主，韵律降级**。零 shot 表封盘。**Rung 4 停时头 v0 代码已交付（7/10，预注册 = w4_ladder_design §8）**：`w4_synth_gen.py`（事件时间轴合成，无 TTS）→ `w4_hindsight_label.py`（hazard 目标=此刻风险非事后动作）→ `w4_train_stophead.py`（numpy LR+先验校正+合成集 c_w 扫描）→ `--delta-policy learned:v0 --stophead-model`（特征单源 `src/stophead.py`；learned 复用 finality_cache ⇒ FDB 评测近零 GPU）。冒烟 AUC 0.755/校准对齐；待用户按 §8 命令跑全量。scorer 已加 `--tag=` 防覆写（grid_{full,rollback}_TAG.json）。
+- **下一步**：W3 GPU 项全清。**神谕请示稿已写：`手工文档/神谕/09_W3 终局与 W4 开工请示.md`**（终局数字表 / 学习组件收缩为"停时头"方案 + G2' 判据 / W4 逐日计划 / 裁断 ②–⑤+新增 A–D / 跑偏防火墙九条）。**W4 阶梯 rungs 2–3 已跑完（7/09 晚，近零 GPU：cache 214–217 hits/臂）**：四臂全败双门——v0 0.550/回收62.5%、safe 0.630/30%、rev 0.650/保费↑133.1（kill 判据未触发=κ 对齐有效）、prompted 0.610/**回收84%**。机制已钉死（probe 收据在 w4_ladder_design §7）：①早提交**关闭修订动作类**（fixed 靠 rescued_patch 赢的夹，短窗臂 patches=0，dropped 7/9 vs fixed 3）；②**afterthought 修订对尾韵律不可见**（rollback EoU 73% 标 final）——"韵律测话语完成，不测意图稳定"；③修订发生率是位置/话语结构变量非 κ 变量（rev 不掉 exact 的原因）；④fin12b/hou17b 间隙落 (1.0,1.5] 与 D3 预算阈值 1.12 咬合。**零 shot 前沿 = fixed(0,0)/safe(30%,−2)/pf(84%,−4)；rung 4 停时头目标 = 回收≥47% 且 ≥−1pt**。**Rung 4 停时头 v0 已全量实测（7/14，预注册与完整收据 = `docs/w4_ladder_design.md` §8–9）**：N=8000 合成 `config_hash=d48204c6582b`，19531 ops / 205242 hazard samples / 3.00% positives；val AUC **0.789**、校准贴合、合成集选 `c_w=0.08`。FDB 同 84g text-only/`workers=12` 口径，决策 cache **215/3**、finality **217/0**；learned exact **0.580** / state 0.620 / premium 6.2s / 预注册回收 **97.4%** / Δexact **−7pt**，0 gain / 7 loss。故回收门（≥47%）过、exact 门（≥0.640）差 6pt，**AND 目标区失败，G2 核心证据未建立**；相对 pf 多回收13.4pt但再掉3pt，相对 safe 多回收67.4pt但再掉5pt。配对审计：report 主口径 97.4%，三臂共同98夹为94.4%（`housing_25` 的 blocking done=None），不改判决。两条 sim-to-real 风险（模拟 finality→真 Omni、脚本状态→Omni 决策）本轮不能拆分，**不得用 FDB 反调 `c_w`，后续须新预注册跨域/消融证据**。scorer 已加 `--tag=` 防覆写（grid_{full,rollback}_TAG.json）。
 
 ### 既往（W3 D4–D6 代码批，2026-07-07）
 

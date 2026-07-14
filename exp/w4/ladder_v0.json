@@ -315,6 +315,99 @@
     "premium_below_fixed": true,
     "delay_monotone_in_kappa": false
    }
+  },
+  {
+   "provider": "w4lh_tact",
+   "exact": 0.58,
+   "state": 0.62,
+   "done_p50": 1.955,
+   "premium": {
+    "n_paired": 98,
+    "sum_s": 6.2,
+    "p50_s": 0.0
+   },
+   "recovery_vs_fixed_s": 106.8,
+   "recovery_frac_of_fixed_premium": 0.974,
+   "d_exact_vs_fixed": -0.07,
+   "flips_vs_fixed": {
+    "gain": [],
+    "loss": [
+     [
+      "ecommerce_01",
+      1
+     ],
+     [
+      "ecommerce_19",
+      0
+     ],
+     [
+      "ecommerce_25",
+      1
+     ],
+     [
+      "finance_02",
+      0
+     ],
+     [
+      "finance_12",
+      1
+     ],
+     [
+      "housing_17",
+      1
+     ],
+     [
+      "housing_25",
+      0
+     ]
+    ]
+   },
+   "kappa_stats": {
+    "policy_window_mean": {
+     "READ": 0.628,
+     "REV": 0.526,
+     "COMP": 0.333,
+     "IRR": 2.096
+    },
+    "commit_delay_mean": {
+     "READ": 1.996,
+     "REV": 2.596,
+     "COMP": 1.149,
+     "IRR": 4.034
+    },
+    "commit_delay_p50": {
+     "READ": 0.25,
+     "REV": 1.592,
+     "COMP": 0.0,
+     "IRR": 2.0
+    },
+    "n_commits_by_kappa": {
+     "READ": 101,
+     "REV": 18,
+     "COMP": 14,
+     "IRR": 11
+    },
+    "finality": {
+     "labels_all": {
+      "final": 117,
+      "unfinished": 62,
+      "hesitant": 38
+     },
+     "labels_rollback_clips": {
+      "hesitant": 2,
+      "final": 22,
+      "unfinished": 6
+     },
+     "infer_p50": 0.672,
+     "infer_p90": 0.99,
+     "unparsed": 0
+    }
+   },
+   "verdicts": {
+    "G2iii_exact_ge_minus1pt": false,
+    "premium_below_fixed": true,
+    "delay_monotone_in_kappa": false
+   }
   }
  ]
 }
