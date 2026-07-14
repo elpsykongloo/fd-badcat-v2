@@ -1,0 +1,145 @@
+{
+  "schema": "w4v3-armc-phase2-receipt-v1",
+  "as_of": "2026-07-15",
+  "input_commit": "22b1610f0b10c20650bf445dcb6f797ed916b2d0",
+  "stack": {
+    "gpu": "NVIDIA RTX 6000D 85651 MiB",
+    "config": "exp/w3/qwen3_omni_text_only_84g.yaml",
+    "config_sha256": "793d1ef0e14cb33d4333062ab8a5516357b7fbc08b7f91b1b99704ef7a486677",
+    "workers": 12,
+    "nominal_infer_s": 1.0,
+    "prompt": "v3.1",
+    "delta_policy": "learned:v2"
+  },
+  "smoke": {
+    "provider": "w4v3c_smoke",
+    "pi": 0.1,
+    "theta": 0.055792,
+    "result_files": 30,
+    "status_completed": 30,
+    "decisions": 58,
+    "decision_cache": {"hits": 58, "misses": 0},
+    "finality_cache": {"hits": 58, "misses": 0},
+    "policy_window_counts": {"0.0": 31, "1.5": 17},
+    "result_manifest_sha256": "8394f11575ab4d5a9b566c54fcc7395a1d63eda08ec8e1256b62b784d957773e",
+    "mechanism_gate": {
+      "window_domain_0_or_1_5": true,
+      "decision_cache_hit_rate_ge_0_90": true,
+      "startup_theta_round4_eq_0_0558": true,
+      "pass": true
+    }
+  },
+  "grid": [
+    {
+      "pi": 0.02,
+      "provider": "w4v3c_pi020_tact",
+      "theta": 0.243022,
+      "result_files": 100,
+      "status_completed": 100,
+      "decisions": 217,
+      "decision_cache": {"hits": 216, "misses": 1},
+      "finality_cache": {"hits": 217, "misses": 0},
+      "policy_window_counts": {"0.0": 141, "1.5": 10},
+      "result_manifest_sha256": "3d061325c0090f21ec9dc26eeba7fb3865e61d0517cedfe27b379d6a7be938a8"
+    },
+    {
+      "pi": 0.04,
+      "provider": "w4v3c_pi040_tact",
+      "theta": 0.135935,
+      "result_files": 100,
+      "status_completed": 100,
+      "decisions": 217,
+      "decision_cache": {"hits": 217, "misses": 0},
+      "finality_cache": {"hits": 217, "misses": 0},
+      "policy_window_counts": {"0.0": 115, "1.5": 42},
+      "result_manifest_sha256": "b5dc38e7dfc2d5ade8729a4614be6ee64964ed7c244b8766fd11194b76e3d340"
+    },
+    {
+      "pi": 0.06,
+      "provider": "w4v3c_pi060_tact",
+      "theta": 0.093174,
+      "result_files": 100,
+      "status_completed": 100,
+      "decisions": 217,
+      "decision_cache": {"hits": 217, "misses": 1},
+      "finality_cache": {"hits": 217, "misses": 0},
+      "policy_window_counts": {"0.0": 104, "1.5": 56},
+      "result_manifest_sha256": "7cb83effd15f8d35456c1945d39127e22f16f4404777e27ecd1b4adab0e3ae14"
+    },
+    {
+      "pi": 0.08,
+      "provider": "w4v3c_pi080_tact",
+      "theta": 0.070166,
+      "result_files": 100,
+      "status_completed": 100,
+      "decisions": 217,
+      "decision_cache": {"hits": 217, "misses": 1},
+      "finality_cache": {"hits": 217, "misses": 0},
+      "policy_window_counts": {"0.0": 100, "1.5": 60},
+      "result_manifest_sha256": "37016ccb5d1e7d106c267a735c4ca54c6526c80d96c24275deae29351cbfdb6f"
+    },
+    {
+      "pi": 0.1,
+      "provider": "w4v3c_pi100_tact",
+      "theta": 0.055792,
+      "result_files": 100,
+      "status_completed": 100,
+      "decisions": 217,
+      "decision_cache": {"hits": 218, "misses": 0},
+      "finality_cache": {"hits": 217, "misses": 0},
+      "policy_window_counts": {"0.0": 96, "1.5": 64},
+      "result_manifest_sha256": "fbd067169fbb423e1d3e30d5bc02eccb8e74c2a01c93b80c24c9b940c70da4ef"
+    },
+    {
+      "pi": 0.15,
+      "provider": "w4v3c_pi150_tact",
+      "theta": 0.035921,
+      "result_files": 100,
+      "status_completed": 100,
+      "decisions": 217,
+      "decision_cache": {"hits": 217, "misses": 1},
+      "finality_cache": {"hits": 217, "misses": 0},
+      "policy_window_counts": {"0.0": 58, "1.5": 109},
+      "result_manifest_sha256": "d0f9891ff178a1c8d319b72bd9a24c38941040fbbf945b8af5439554483c9567"
+    },
+    {
+      "pi": 0.2,
+      "provider": "w4v3c_pi200_tact",
+      "theta": 0.025668,
+      "result_files": 100,
+      "status_completed": 100,
+      "decisions": 217,
+      "decision_cache": {"hits": 218, "misses": 0},
+      "finality_cache": {"hits": 217, "misses": 0},
+      "policy_window_counts": {"0.0": 15, "1.5": 154},
+      "result_manifest_sha256": "e488b69bfb3eccb652ea6677f13c514590b435cb898871c02b067877f43b115e"
+    },
+    {
+      "pi": 0.3,
+      "provider": "w4v3c_pi300_tact",
+      "theta": 0.015195,
+      "result_files": 100,
+      "status_completed": 100,
+      "decisions": 217,
+      "decision_cache": {"hits": 218, "misses": 0},
+      "finality_cache": {"hits": 217, "misses": 0},
+      "policy_window_counts": {"0.0": 2, "1.5": 170},
+      "result_manifest_sha256": "d6f7fa411e274acade6e899da8d394696d8bada973e4b4071fbdbd73c8983aab"
+    }
+  ],
+  "cache_totals": {
+    "decision": {"hits": 1796, "misses": 4},
+    "finality": {"hits": 1794, "misses": 0},
+    "decision_repair_retry_calls": 6,
+    "repair_example": "housing_24#0"
+  },
+  "artifacts": {
+    "ladder": "exp/w4v3/ladder_armc.json",
+    "ladder_sha256": "cf0bc15a13324faaacfabf5e4e79eb5a1d53181806c48653618e456060fa7f17",
+    "decision_cache_sha256": "3a240d8306810a6e0244a511fc6a5a716257fc2c12f8b0661775253163f5c7a9",
+    "decision_cache_entries_before": 1009,
+    "decision_cache_entries_after": 1013,
+    "decision_cache_added": 4,
+    "historical_ladder_v0_sha256": "2715e3e6dadf4ad71ce4ba645aa6c5eeb93938d77678f75edfe4b5f626748c87"
+  }
+}
