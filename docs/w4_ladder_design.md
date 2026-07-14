@@ -328,3 +328,22 @@ $PY scripts/w4_ladder_report.py --arms w4k0_tact w4ks_tact w4kr_tact w4pf_tact w
 - 这构成对“合成修订先验 32.5% 远高于部署域，概率系统性偏高”风险的强一致证据，但单轮 FDB 结果不能单独证明唯一因果。按预注册，不用 FDB 反调；v2 只允许用 HumDial 等非评测真实数据做先验/强度校准，并须另开预注册。
 
 产物：`exp/w4/synth/{dialogues_v1.jsonl,hazard_v1.npz,ops_v1.jsonl}`、`exp/w4/stophead_v1.json`、更新后的 `exp/w4/ladder_v0.json` 与 `exp/w2_rerun/decision_cache.json`；100 个单夹结果在 FDBench 数据树的 `result_w4lh1_tact.json`。
+
+## 11. 因果可达上限诊断（2026-07-14；`scripts/w4_ceiling_diag.py`，零 GPU）
+
+**性质**：与 `w3_oracle_frontier` 同类的 hindsight 诊断——在 FDB 自己的特征分布上估计"承重修订可分性"的上限；LOO（留一夹）防内漏；**产物永不进训练/选点**（防火墙照旧）。
+
+**数据**：fixed 臂 trace 重建 147 个 launch op（18 维同源特征，finality 从 w4pf 交叉引用——同音频同调用，缓存 217/0 佐证）；hindsight 修订标签 25（patch 21 / relaunch 4）；**承重正类 = patch 救回且该夹 pass = 13**。gap 分布揭示屏障效应：patch 类密集在 1.64s（=0.64 hold + 1.0 nominal infer）——fixed 1.5 能救靠的是 guard 期过期→延迟提交→patch 救回，**有效 gap = gap − 1.0**（此修正后 W=1.5 覆盖全部 13 个承重 op）。sanity：同一记账下 fixed-sim 保费 106.5s vs 实测 109.6s（差 3%）。
+
+**三个判定数字（lost = 未保护承重夹 ≈ exact 损失；W=1.5 保护窗、屏障修正后）**：
+
+| 排序来源 | AUC | lost=0 | lost=1 | lost=2 | lost=3 |
+|---|---|---|---|---|---|
+| **LOO 上限**（FDB 特征训练，诊断） | 0.753 | 32% | **44%** | 52% | 74% |
+| stophead **v0** 迁移 | 0.679 | 8% | 18% | 22% | 34% |
+| stophead **v1** 迁移 | 0.644 | 6% | 8% | 29% | 41% |
+| oracle-features（完美判别） | — | **100%** | | | |
+
+**结论**：① 信号**存在**（LOO 0.753；载荷特征 = slots_missing 0.668 / f_unfinished 0.625 / 短 utt_dur 0.642 / 早 eou_idx 0.59）——"afterthought 完全不可预测"的悲观假设被否定；② 目标区角 (≤1, ≥47%) 在 LOO 前沿**边缘**（44% vs 47%，且这是全局阈值+全局窗+LR 的下界）；③ **约束瓶颈被精确定位为 sim-to-real 排序迁移**：合成训练模型的 AUC 差距（0.75→0.64/0.68）在 lost≤1 处折损 26–36 个回收点。v1 的失败此前归因"先验偏高→保守"，本诊断进一步显示即便经济学修对，排序迁移不够也到不了目标区。
+
+**决策含义**：v2 的唯一正当靶 = 缩小排序迁移差。防火墙内的杠杆（按安全性排序）：(a) **域随机化**——多套生成器配置混合训练，逼模型依赖秩稳定结构而非合成边缘分布；(b) 特征收缩到信号核（slots/finality/utt_dur/eou_idx/κ，5–7 维，减小漂移面）；(c) 非评测真实语料（HumDial，许可待查）校准特征边缘分布与修订先验；(d) 策略形态改为诊断验证过的"score→保护(W=1.5)/立即提交"二段式 + 训练回放加入屏障宽限（又一处 metric-structural 修正）。**v2 = 最后一枪**，预注册后不再迭代；未中则按 8/15 决策树落 ICASSP 分支，本诊断的上限曲线 + 迁移分解直接成为论文的分析节。
