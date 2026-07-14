@@ -238,3 +238,93 @@ $PY scripts/w4_ladder_report.py --arms w4k0_tact w4ks_tact w4kr_tact w4pf_tact w
 ```
 
 **汇报**：gen config_hash/修订率；label 样本数（含 rescue_states 行）；train AUC/校准/c_w 整表与选点/**κ×位置窗结构两行**；FDB cache 双行 + 打表整行（含 strict 口径）+ 对 v0 七夹的逐夹收复情况。
+
+### 10.5 全量结果（2026-07-14；预注册后只跑一次）
+
+#### 运行口径与完整性
+
+- 代码锚：`09f2dda`（实现提交 `c5a1bc5`）；开跑前 `tact` 工作树干净、96GB RTX PRO 6000 空闲、`result_w4lh1_tact.json` 为 0 份。
+- gen → label → train → FDB → ladder 严格按 §10.4 顺序执行，五条命令均 exit 0。服务严格复用 7/09 口径：`exp/w3/qwen3_omni_text_only_84g.yaml`、stage-0、8192、`max_num_seqs=1`、GPU utilization 0.78。
+- replay 完成 100/100，stdout 无 `WARNING`/`ERROR`；8 次 cache miss 在 proxy/vLLM 两端均 HTTP 200。结束后按 proxy → vLLM 优雅停服，端口释放、GPU 回到 0 MiB。
+- 独立完整性复核：dialogues 8000 行、ops 19402 行、hazard `X=(382869,18)` / `y=382869` / 6310 positives、模型 features/mean/std/weights 均 18 维、`t_grid` 18 点覆盖 0–4.25、100 个结果 JSON 全部可解析。官方 `evaluate_pass_rate.py` 独立复算为 64/100。
+
+#### Gen / label
+
+- `config_hash=497567920fc4`，seed 42，dialogues 8000，ops 19402。
+- 修订 6310 / 19402 = **32.5%**。kinds（占修订）：slot_completion 2257（35.8%）、afterthought 1114（17.7%）、hesitant_revision 1097（17.4%）、cutoff_continuation 1459（23.1%）、upstream 383（6.1%）。
+- domain：travel 1975、ecommerce 2011、finance 2028、housing 1986。
+- style → observed finality：complete=(final 10888 / hesitant 2007 / unfinished 748)，cutoff=(227 / 458 / 1602)，hesitant=(895 / 2044 / 533)。
+- label：ops 19402，**rescue_states 6310**，hazard samples 382869，positives 6310（**1.65%**），dims 18。
+
+#### Train
+
+- train n=305905、positive=1.65%；val n=76964，**AUC=0.859**（跑前预计 0.85+，命中）。
+- 先验校正后五个等频校准 bin：
+
+| bin | pred | actual | n |
+|---:|---:|---:|---:|
+| 0 | 0.001 | 0.001 | 15393 |
+| 1 | 0.003 | 0.003 | 15393 |
+| 2 | 0.006 | 0.005 | 15392 |
+| 3 | 0.012 | 0.012 | 15393 |
+| 4 | 0.074 | 0.061 | 15393 |
+
+- `c_w` 在 1600 个合成验证 dialogues 上扫描；代价为 `sum(tail premium) + 50.0*miss`，共 1251 个 revised ops：
+
+| c_w | premium | premium/dialogue | miss / 1251 | cost |
+|---:|---:|---:|---:|---:|
+| 0.001 | 6250s | 3.906 | 1 | 6300 |
+| **0.002** | **5802s** | **3.626** | **6** | **6102** |
+| 0.005 | 4552s | 2.845 | 47 | 6902 |
+| 0.010 | 3282s | 2.052 | 121 | 9332 |
+| 0.020 | 2042s | 1.276 | 255 | 14792 |
+| 0.030 | 1432s | 0.895 | 349 | 18882 |
+| 0.050 | 867s | 0.542 | 472 | 24467 |
+| 0.080 | 517s | 0.323 | 597 | 30367 |
+| 0.120 | 314s | 0.196 | 710 | 35814 |
+| 0.200 | 172s | 0.107 | 860 | 43172 |
+| 0.300 | 110s | 0.069 | 965 | 48360 |
+
+选点为 **`c_w=0.002`**。结构诊断：
+
+- mean window by kappa：READ 3.843、REV 3.841、COMP 3.993、IRR 4.000。
+- mean window by position：**final_eou 3.820**、earlier 3.909。final_eou ≫1.5，跑前已明确预告回收侧危险。
+
+#### FDB 整行、strict 口径与门
+
+缓存：决策 **210 hits / 8 misses**（cache 1000→1008，新键 8、既有键 0 改写）；finality **217 hits / 0 misses**（217→217）。
+
+| arm | exact | state | done50 | prem_sum | recov_s | recov% | dExact | strict common support |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| w4lh1_tact | **0.640** | 0.640 | 5.955 | **318.6s** | **−211.6s** | **−193.1%** | **−0.010** | **−190.6% (n=98)** |
+
+- FDB windows(mean)：READ 3.604、REV 3.815、COMP 3.983、IRR 4.000；commit delay(mean)：READ 6.103、REV 7.170、COMP 5.871、IRR 5.802；commit-delay κ 单调性 false。
+- premium paired n=98，p50=3.970s。strict 共同支撑复算：fixed premium 109.640s、v1 premium 318.630s、recovery −208.990s（report 按 −209.0s / 109.640 = **−1.906**）；主口径额外包含 blocking done 为空的 `housing_25#0`，故为 −211.6s / 109.6 = **−1.931**。双口径结论一致。
+- finality all：final 117 / unfinished 62 / hesitant 38；rollback：final 22 / unfinished 6 / hesitant 2；infer p50/p90=0.672/0.990（吞吐轨信息位），unparsed=0。
+- 对 fixed 翻转：gain `ecommerce_15#0`；loss `ecommerce_23#0`、`ecommerce_25#1`，净 −1pt，与 0.650→0.640 对齐。
+- 门：exact ≥0.640 **精确踩线通过**；回收 ≥47% **失败**（主/strict 均远低于门）；AND 目标区 **失败**，G2 核心证据仍未建立。
+
+#### v0 七个 loss 的逐夹收复
+
+以下均用固定目录 hash 直接调用官方 `evaluate_scenario_pass(use_llm=False)` 重判，避免 occurrence 漂移：
+
+| v0 loss | fixed | v0 | v1 | 收复 |
+|---|---:|---:|---:|---:|
+| ecommerce_01#1 | ✓ | ✗ | ✓ | ✓ |
+| ecommerce_19#0 | ✓ | ✗ | ✓ | ✓ |
+| ecommerce_25#1 | ✓ | ✗ | ✗ | **✗** |
+| finance_02#0 | ✓ | ✗ | ✓ | ✓ |
+| finance_12#1 | ✓ | ✗ | ✓ | ✓ |
+| housing_17#1 | ✓ | ✗ | ✓ | ✓ |
+| housing_25#0 | ✓ | ✗ | ✓ | ✓ |
+
+实际收复 **6/7**。唯一例外 `ecommerce_25#1` 仍缺 `add_to_cart`：v1 给早段 `track_order` / `search_products` 的窗只有 0.25 / 0.0s，并未得到平均意义上的长窗，因此跑前“七夹 gap 都小于新窗”预测在该夹失效。新增 loss `ecommerce_23#0` 是长窗轨迹下多发 `process_refund`；新增 gain `ecommerce_15#0` 则消除了 fixed/v0 的多余 `track_order(DL555)`。
+
+#### 预测对账与结论
+
+- **AUC 预测命中**：预计 0.85+，实际 0.859；合成域可学性与校准成立。
+- **exact 预测基本命中但非全中**：七夹收复 6/7，加一个新 gain、一个新 loss，最终 exact 0.640 精确过门，而非预测的七夹全收复。
+- **回收赌点落在保守失败分支**：训练 final_eou 3.820s，部署 READ/REV/COMP/IRR 窗均接近 4s cap，done p50 从 fixed 3.455s 拉到 5.955s，保费从 109.6s 增至 318.6s。全量头未能把足够多低危 op 分到 `lambda_hat < 0.002`。
+- 这构成对“合成修订先验 32.5% 远高于部署域，概率系统性偏高”风险的强一致证据，但单轮 FDB 结果不能单独证明唯一因果。按预注册，不用 FDB 反调；v2 只允许用 HumDial 等非评测真实数据做先验/强度校准，并须另开预注册。
+
+产物：`exp/w4/synth/{dialogues_v1.jsonl,hazard_v1.npz,ops_v1.jsonl}`、`exp/w4/stophead_v1.json`、更新后的 `exp/w4/ladder_v0.json` 与 `exp/w2_rerun/decision_cache.json`；100 个单夹结果在 FDBench 数据树的 `result_w4lh1_tact.json`。
