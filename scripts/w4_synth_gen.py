@@ -98,6 +98,41 @@ SIG_WIDE_LO = (0.10, 1.0)     # afterthought sigma_pre bands
 SIG_WIDE_HI = (1.0, 2.80)
 GAP_MAX = GAP_FLOOR + SIG_WIDE_HI[1] + 0.01   # validator bound (~4.45)
 
+# -- C1 world re-anchor (w4v3_design.md §10.2/§11.3; measured HumDial values).
+# Default OFF: the v2 path stays byte-identical (this dict is EXCLUDED from the
+# default config_hash so historical b62a069cd900 keeps reproducing). --anchor
+# v3c1 swaps ONLY the three named world quantities; grammar, chains and the
+# revision channels stay v2.
+ANCHOR_V3C1 = {
+    # sigma_pre <- empirical resample of the 748 measured max-pauses,
+    # clamped to the observed support (census vad_pause receipts)
+    "sig_clamp": (0.38, 3.60),
+    # finality emission <- measured Omni confusion rows (readout receipts):
+    # complete <- the true-end row, cutoff <- the continuation row; the
+    # hesitant style row is UNMEASURED on HumDial (the judge never emitted
+    # 'hesitant' there) and keeps the v2 base row. FIN_JITTER still applies.
+    "fin_base": {
+        "complete": [("final", 0.700), ("hesitant", 0.0), ("unfinished", 0.300)],
+        "cutoff":   [("final", 0.147), ("hesitant", 0.0), ("unfinished", 0.853)],
+    },
+    # utt_dur bands <- measured bilingual user-utterance p10-p90 envelope
+    # ([[2.0,4.5],[5.0,9.0]] frozen in §10.2), style multipliers 1.0/0.8/0.5
+    "utt": {"utt_complete": ((2.0, 4.5), (5.0, 9.0)),
+            "utt_hesitant": ((1.6, 3.6), (4.0, 7.2)),
+            "utt_cutoff":   ((1.0, 2.25), (2.5, 4.5))},
+}
+
+
+def load_pause_pool(path):
+    """Measured break_mid pause durations -> sorted, clamped resampling pool."""
+    lo, hi = ANCHOR_V3C1["sig_clamp"]
+    pool = sorted(min(hi, max(lo, json.loads(line)["pause_dur"]))
+                  for line in Path(path).read_text().splitlines()
+                  if json.loads(line).get("kind") == "break_mid")
+    if len(pool) < 300:                     # §4 kill threshold as a load guard
+        raise SystemExit(f"pause pool too small: {len(pool)} < 300")
+    return pool
+
 
 def U(rng, key):
     return rng.uniform(*RANGES[key])
@@ -109,20 +144,22 @@ def jitter_row(rng, row):
     return [(lab, p / tot) for lab, p in w]
 
 
-def sample_config(rng):
+def sample_config(rng, anchor=None):
     wc, wh, wk = (U(rng, "style_w_complete"), U(rng, "style_w_hesitant"),
                   U(rng, "style_w_cutoff"))
     tot = wc + wh + wk
     utt = {}
     for style in ("complete", "hesitant", "cutoff"):
-        (lo_r, hi_r) = RANGES["utt_" + style]
+        (lo_r, hi_r) = ((anchor or {}).get("utt", {}).get("utt_" + style)
+                        or RANGES["utt_" + style])
         utt[style] = (rng.uniform(*lo_r), rng.uniform(*hi_r))
     lo, hi = RANGES["rev_intensity"]
     rev_m = math.exp(rng.uniform(math.log(lo), math.log(hi)))
+    fin_base = {**FINALITY_BASE, **(anchor or {}).get("fin_base", {})}
     return {
         "style_p": [("complete", wc / tot), ("hesitant", wh / tot),
                     ("cutoff", wk / tot)],
-        "fin": {s: jitter_row(rng, row) for s, row in FINALITY_BASE.items()},
+        "fin": {s: jitter_row(rng, row) for s, row in fin_base.items()},
         "p_slot_missing": U(rng, "p_slot_missing"),
         "rev_intensity": rev_m,
         "p_rev": {"slot_completion": min(0.97, U(rng, "p_rev_slot") * rev_m),
@@ -172,8 +209,9 @@ def rev_prior(cfg, domain):
     return a + (1 - a) * style
 
 
-def gen_dialogue(rng, did):
-    cfg = sample_config(rng)
+def gen_dialogue(rng, did, anchor=None, pool=None):
+    cfg = sample_config(rng, anchor)
+    emp = (lambda: pool[rng.randrange(len(pool))]) if pool else None
     domain = rng.choice(list(CATALOG))
     n_intents = rng.randint(1, 3)
     eous, sigmas, ops = [], [], []
@@ -198,13 +236,14 @@ def gen_dialogue(rng, did):
         p_eff = lambda k: min(0.97, cfg["p_rev"][k] * m)
         sig = kind = None
         if slots_missing and rng.random() < p_eff("slot_completion"):
-            sig, kind = sig_fast(rng, cfg), "slot_completion"
+            sig, kind = emp() if emp else sig_fast(rng, cfg), "slot_completion"
         elif style == "cutoff" and rng.random() < p_eff("cutoff_continuation"):
-            sig, kind = sig_fast(rng, cfg), "cutoff_continuation"
+            sig, kind = emp() if emp else sig_fast(rng, cfg), "cutoff_continuation"
         elif style == "hesitant" and rng.random() < p_eff("hesitant_revision"):
-            sig, kind = (sig_fast(rng, cfg) + sig_wide(rng, cfg)) / 2, "hesitant_revision"
+            sig, kind = (emp() if emp else
+                         (sig_fast(rng, cfg) + sig_wide(rng, cfg)) / 2), "hesitant_revision"
         elif rng.random() < p_eff("afterthought"):
-            sig, kind = sig_wide(rng, cfg), "afterthought"
+            sig, kind = emp() if emp else sig_wide(rng, cfg), "afterthought"
         gap = None if sig is None else round(GAP_FLOOR + sig, 3)
         rev_eou = len(eous) if gap is not None else None
 
@@ -234,7 +273,8 @@ def gen_dialogue(rng, did):
                          "style": "complete"})
         if it < n_intents - 1:   # silence before the next independent request
             sigmas.append(round(rng.uniform(*cfg["inter_req"]), 3))
-    rec = {"did": did, "domain": domain, "version": "v2",
+    rec = {"did": did, "domain": domain,
+           "version": "v3c1" if anchor else "v2",
            "eous": eous, "sigmas": sigmas, "ops": ops,
            "rev_prior": round(rev_prior(cfg, domain), 4),
            "cfg": json.loads(json.dumps(cfg), parse_float=lambda x: round(float(x), 4))}
@@ -246,22 +286,41 @@ def main():
     ap.add_argument("--n", type=int, default=8000)
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--tag", default="v2")
+    ap.add_argument("--anchor", choices=["v3c1"],
+                    help="C1 world re-anchor (w4v3_design.md §11.3); default "
+                         "off = frozen v2 path, byte-identical")
+    ap.add_argument("--pauses", default=str(ROOT / "exp/w4v3/humdial_cuts.jsonl"),
+                    help="census cuts jsonl for the empirical sigma_pre pool")
+    ap.add_argument("--outdir",
+                    default="/root/autodl-tmp/fd-badcat/exp/w4/synth")
     args = ap.parse_args()
 
+    anchor = ANCHOR_V3C1 if args.anchor == "v3c1" else None
+    pool = load_pause_pool(args.pauses) if anchor else None
+    # ANCHOR_V3C1 is excluded from the default hash payload so the frozen v2
+    # config_hash (b62a069cd900) keeps reproducing; anchor runs extend it.
     cfg_const = {k: v for k, v in globals().items()
-                 if k.isupper() and isinstance(v, (dict, list, tuple, float, int))}
+                 if k.isupper() and k != "ANCHOR_V3C1"
+                 and isinstance(v, (dict, list, tuple, float, int))}
+    if anchor:
+        cfg_const["ANCHOR"] = {
+            "mode": args.anchor, **ANCHOR_V3C1,
+            "pool_n": len(pool),
+            "pool_sha": hashlib.sha256(
+                json.dumps(pool).encode()).hexdigest()[:12]}
     cfg_hash = hashlib.sha256(
         json.dumps(cfg_const, sort_keys=True, default=str).encode()).hexdigest()[:12]
     rng = random.Random(args.seed)
-    out = Path(f"/root/autodl-tmp/fd-badcat/exp/w4/synth/dialogues_{args.tag}.jsonl")
+    out = Path(args.outdir) / f"dialogues_{args.tag}.jsonl"
     out.parent.mkdir(parents=True, exist_ok=True)
+    gap_max = (GAP_FLOOR + ANCHOR_V3C1["sig_clamp"][1] + 0.01) if anchor else GAP_MAX
 
     kinds, doms, fin_by_style = Counter(), Counter(), Counter()
     n_ops = n_rev = 0
     priors, gaps = [], []
     with out.open("w") as fh:
         for i in range(args.n):
-            d = gen_dialogue(rng, i)
+            d = gen_dialogue(rng, i, anchor, pool)
             assert len(d["sigmas"]) == len(d["eous"]) - 1
             doms[d["domain"]] += 1
             priors.append(d["rev_prior"])
@@ -269,7 +328,7 @@ def main():
                 n_ops += 1
                 fin_by_style[(o["style"], o["finality"])] += 1
                 if o["gap_silence"] is not None:
-                    assert GAP_FLOOR - 1e-9 <= o["gap_silence"] <= GAP_MAX
+                    assert GAP_FLOOR - 1e-9 <= o["gap_silence"] <= gap_max
                     assert o["rev_eou"] == o["eou_idx"] + 1
                     assert abs(d["sigmas"][o["eou_idx"]] - o["gap_silence"]) < 1e-6
                     n_rev += 1

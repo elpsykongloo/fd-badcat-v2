@@ -87,33 +87,53 @@ def verify_constants(repo_root):
         print(f"M_TRAIN verified against {ops.name}: {in_h}/{n}")
 
 
-def build(stophead_path, outdir, pi_grid=PI_GRID):
+def m_train_from_ops(ops_path):
+    """Recompute the horizon-event training marginal from an ops file
+    (the C1 branch: a re-anchored world has its own m_train)."""
+    n = in_h = 0
+    for line in Path(ops_path).read_text().splitlines():
+        o = json.loads(line)
+        n += 1
+        if o.get("revision_kind") and o.get("gap_silence") is not None \
+                and 0 < o["gap_silence"] <= RISK_HORIZON:
+            in_h += 1
+    return in_h, n
+
+
+def build(stophead_path, outdir, pi_grid=PI_GRID, variant="v3c", m_frac=None):
     base = json.loads(Path(stophead_path).read_text())
     if base.get("policy") != "twostage":
-        raise SystemExit("Arm C0 requires the frozen v2 twostage head")
-    if abs(base.get("theta", -1) - THETA) > 1e-9:
+        raise SystemExit("Arm C requires a twostage head")
+    m_num, m_den = m_frac if m_frac else (M_NUM, M_DEN)
+    m_train = m_num / m_den
+    if m_frac is None and abs(base.get("theta", -1) - THETA) > 1e-9:
         raise SystemExit(f"base theta {base.get('theta')} != anchor {THETA}")
+    if m_frac is not None:
+        print(f"C1 variant: trainer-selected theta {base.get('theta')} ignored "
+              f"(remapped from the {THETA} anchor); m_train = {m_num}/{m_den} "
+              f"= {m_train:.5f}")
     outdir = Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
     rows = []
     for pi in pi_grid:
-        te = theta_eff(pi)
+        te = theta_eff(pi, m_train=m_train)
         d = dict(base)
         d["theta"] = round(te, 6)
         d["armc"] = {"pi": pi, "q_h": [Q_H_NUM, Q_H_DEN],
-                     "m_train": [M_NUM, M_DEN], "theta_base": THETA,
+                     "m_train": [m_num, m_den], "theta_base": THETA,
+                     "variant": variant,
                      "formula": "sigmoid(logit(theta)-logit(pi*q_H)+logit(m_train))",
-                     "source": "docs/w4v3_design.md §10.2"}
-        out = outdir / f"stophead_v3c_pi{pi_tag(pi)}.json"
+                     "source": "docs/w4v3_design.md §10.2/§11.3"}
+        out = outdir / f"stophead_{variant}_pi{pi_tag(pi)}.json"
         out.write_text(json.dumps(d))
         rows.append((pi, te, out))
     print(f"\n{'pi':>6} {'pi*q_H':>8} {'theta_eff':>10}  provider / file")
     for pi, te, out in rows:
         star = "  <- pi*" if abs(pi - PI_STAR) < 1e-9 else ""
         print(f"{pi:>6.2f} {pi * Q_H:>8.4f} {te:>10.4f}  "
-              f"w4v3c_pi{pi_tag(pi)}_tact  {out}{star}")
-    print(f"\nimplied v2 deployment prior (theta_eff==theta): "
-          f"pi = m_train/q_H = {M_TRAIN / Q_H:.4f}")
+              f"w4{variant}_pi{pi_tag(pi)}_tact  {out}{star}")
+    print(f"\nimplied deployment prior of the base head (theta_eff==theta): "
+          f"pi = m_train/q_H = {m_train / Q_H:.4f}")
     return rows
 
 
@@ -141,6 +161,22 @@ def selftest():
     ck["roundtrip_frozen_rest"] = all(got[k] == stub[k] for k in stub
                                       if k != "theta")
     ck["roundtrip_provenance"] = got["armc"]["pi"] == 0.10
+    # C1 path: m_train recomputed from a stub ops file; trainer theta waived;
+    # variant naming
+    ops = tmp / "ops_stub.jsonl"
+    ops.write_text("\n".join(json.dumps(o) for o in [
+        {"revision_kind": "cutoff_continuation", "gap_silence": 2.0},
+        {"revision_kind": "afterthought", "gap_silence": 3.0},
+        {"revision_kind": None, "gap_silence": None},
+        {"revision_kind": "slot_completion", "gap_silence": 1.8}]))
+    mf = m_train_from_ops(ops)
+    ck["c1_m_train"] = mf == (2, 4)
+    (tmp / "stophead_c1.json").write_text(json.dumps(dict(stub, theta=0.07)))
+    rows = build(tmp / "stophead_c1.json", tmp, pi_grid=(0.10,),
+                 variant="v3c1", m_frac=mf)
+    got = json.loads(rows[0][2].read_text())
+    ck["c1_variant_name"] = rows[0][2].name == "stophead_v3c1_pi100.json"
+    ck["c1_theta"] = abs(got["theta"] - theta_eff(0.10, m_train=0.5)) < 1e-6
     for k, v in ck.items():
         print(f"  selftest {k}: {'PASS' if v else 'FAIL'}")
     print("SELFTEST", "PASS" if all(ck.values()) else "FAIL")
@@ -151,13 +187,20 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--stophead", default="exp/w4/stophead_v2.json")
     ap.add_argument("--outdir", default="exp/w4v3")
+    ap.add_argument("--variant", default="v3c",
+                    help="output naming: v3c (C0, default) | v3c1 (C1 branch)")
+    ap.add_argument("--ops",
+                    help="C1: ops jsonl of the re-anchored world; m_train is "
+                         "recomputed from it (and the base-theta check is "
+                         "waived — theta is always remapped from the anchor)")
     ap.add_argument("--selftest", action="store_true")
     args = ap.parse_args(argv)
     if args.selftest:
         return selftest()
     repo_root = Path(__file__).resolve().parent.parent
     verify_constants(repo_root)
-    build(args.stophead, args.outdir)
+    m_frac = m_train_from_ops(args.ops) if args.ops else None
+    build(args.stophead, args.outdir, variant=args.variant, m_frac=m_frac)
     return 0
 
 
