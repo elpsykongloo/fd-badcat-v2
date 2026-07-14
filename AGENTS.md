@@ -13,7 +13,7 @@
 
 ## 环境事实
 
-- 工作目录 `/root/autodl-tmp/fd-badcat`；FDBench 在 `/root/autodl-tmp/FDBench_v3`（v1_v1.5/v2/v3 三代，用 v3）；**TACT 原型基础包已于 7/14 归仓到 `tact/`**（原独立仓 6/23 的 5 个提交由 subtree merge `c82869b` + tag `archive/tact-standalone-e8ee305` 保留，事务代数/工具注册/decider/offline_runner 均在内；后续 W2–W4 实现在 `src/tact_core.py`、`src/engine_b.py`、`src/tact_dag.py`、`src/delta_policy.py`、`src/stophead.py` 与 `scripts/w{2,3,4}_*`）。两个运行环境的 `tact-fdb` editable 安装必须指向 `/root/autodl-tmp/fd-badcat/tact`。
+- 工作目录 `/root/autodl-tmp/fd-badcat`；FDBench 在 `/root/autodl-tmp/FDBench_v3`（v1_v1.5/v2/v3 三代，用 v3）；**TACT 原型基础包已于 7/14 归仓到 `tact/`**（原独立仓 6/23 的 5 个提交由 subtree merge `09ebf06` + tag `archive/tact-standalone-e8ee305` 保留，事务代数/工具注册/decider/offline_runner 均在内；后续 W2–W4 实现在 `src/tact_core.py`、`src/engine_b.py`、`src/tact_dag.py`、`src/delta_policy.py`、`src/stophead.py` 与 `scripts/w{2,3,4}_*`）。两个运行环境的 `tact-fdb` editable 安装必须指向 `/root/autodl-tmp/fd-badcat/tact`。
 - **conda 环境**：`fd-sds`（`/root/miniconda3/envs/fd-sds`，backend 运行环境）；`/root/autodl-tmp/conda-envs/` 下有 `fdb_v3`、`fdbc-qwen3o-vllm`（vLLM 服务）、`index-tts-vllm`。直接用绝对路径 `/root/miniconda3/envs/fd-sds/bin/python` 最稳。
 - **容器规格随租卡变化**：无 GPU 时 1 核/2GB（torch 进程会 OOM——用 `scripts/extract_vad_events.py` 预抽 VAD + `install_light_stubs()` 轻进程路；预压分配 trick 见该脚本）；GPU 日为 RTX PRO 6000 Blackwell 96GB + 208 核/118GB。
 - 服务拓扑（GPU 在位时）：vLLM Qwen3-Omni-30B-A3B :10003（`setup/start_qwen3omni_audio.sh`，音频管线 max_num_seqs=1 确定性优先；文本配置 `qwen3_omni_text_only.yaml` 可高并发）→ 代理 `src/qwen3_api.py` :10004（`setup/start_qwen3_proxy.sh`）→ backend :18000。TTS 默认 **Omni 原生**。实测 Blackwell 上音频判定单次 ~0.26s。
@@ -25,11 +25,12 @@
 
 ## 仓库拓扑与分叉事实（重要）
 
-- **本地是云端的严格超集**：`origin/main` 顶端 `f4ff2b1` 即本地历史的 merge-base；本地在其上有 10+ 提交（vLLM 本地化、HumDial 批量评测、Omni TTS 端到端）。**不要从云端拷文件回来**（云端 `qwen3_api.py` 有 setdefault-after-post 的无效代码 + `/data/ptmodels` 路径；本地早已修好）。
+- **本地代码内容是原上游的严格超集**：只读原上游 `upstream/main` 顶端为 `f4ff2b1`；私仓发布脱敏历史中的对应提交为 `e5a5c86`（内容关系不变，哈希因历史脱敏而变化），其上还有 10+ 提交（vLLM 本地化、HumDial 批量评测、Omni TTS 端到端）。**不要从原上游拷文件回来**（云端 `qwen3_api.py` 有 setdefault-after-post 的无效代码 + `/data/ptmodels` 路径；本地早已修好）。
 - 音频块格式分叉已做成开关：`llm.audio_block: audio_url`（本地 vLLM 默认）| `input_audio`（OpenAI 严格裸 b64）| `input_audio_datauri`（云端 DashScope 方言）。实现在 `src/messages.py`。
-- **工作分支 `tact`**，基线 tag `golden-base`（=420b539）。`main` 不动。`src/backend_legacy.py` 是旧引擎逐字节冻结件，W1 全程保持可运行（A/B 对照），别改它。
+- **工作分支 `tact`**，发布映射为私仓 `origin/main`；本地分支仍保留 `tact` 名称。基线 tag `golden-base`（=`aecfc80`）。`src/backend_legacy.py` 是旧引擎逐字节冻结件，W1 全程保持可运行（A/B 对照），别改它。
 - 本仓库有多个代理活动过（git author 见 Codex 提交）。动 git 历史前先 `git log --oneline -3` 确认没踩到别人的新提交。
 - **在线发布授权已更新（2026-07-14）**：用户明确授权把当前完整 `tact` 分支发布为其本人名下私人仓库 `elpsykongloo/fd-badcat-v2` 的 `main`。该目标是用户本人控制的私人仓库，因此不构成公开发布或向第三方上游泄露，依然没有安全暴露问题；发布前仍执行常规密钥与敏感文件检查，历史明文凭据必须先脱敏。原上游 `yu-haoyuan/fd-badcat` 继续保持只读，禁止对其 PR / issue / push；06 计划里的"上游 PR ×2 文书"（latency_injector per-instance RNG、finance_14 pop(0) 对齐）仍取消，相关生态问题只在本地文档记录，不对神谕另行澄清。
+- **私仓发布前历史脱敏已完成（2026-07-14）**：删除态旧历史里发现 1 个 DashScope 明文 key，另有 6 份 `__pycache__/*.pyc` 嵌入副本；文本历史已替换为脱敏占位符，所有历史 `.pyc` 已移除。128 个提交的拓扑与代码历史保留，`git fsck`、缺失对象检查和全对象密钥模式复扫均通过。脱敏前历史报告里的 `420b539`/`c82869b` 等旧短哈希属于当时的真实标识；当前对应 tag/merge 为 `aecfc80`/`09ebf06`。
 
 ## 架构事实（读码验证过，可直接引用）
 
