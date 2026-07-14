@@ -1,7 +1,7 @@
 # AGENTS.md — fd-badcat 持久记忆（所有代理必读）
 
 > 单一真相源。CLAUDE.md 指向本文件。有重大事实变更时**更新本文件**，不要另开新文档。
-> 最后更新：2026-07-14 (W4 rung 4 v2 双门判读——G2 未立、rung 4 收枪，落 8/15 ICASSP 分支；实跑后直推 main 纪律；TACT 基础包归仓)
+> 最后更新：2026-07-14 (W4 rung 4 v2 transfer AUC=0.752 回填，容量判据(i)边缘未立；G2 未立、rung 4 收枪，落 8/15 ICASSP 分支；实跑后直推 main 纪律；TACT 基础包归仓)
 
 ## 使命
 
@@ -87,7 +87,7 @@
 
 - **W4 rung 4 v2 全量结果（7/14；双门失败——G2 未立，rung 4 按预注册永久收枪）**：完整收据与判读 = `docs/w4_ladder_design.md` §12.7（对 `exp/w4/ladder_v0.json`+`stophead_v2*.json` 逐位核验）。gen `config_hash=b62a069cd900`（8000 dlg / 19288 ops / 池化修订 24.6% / **rev_prior p10/50/90 = 0.077/0.198/0.474** / gap floor 1.64 精确）；label 394757 hazard / 正例 1.20% / dims=7；train **LR val AUC 0.749** / MLP 0.896，低带（rev_intensity≤0.3174）联合选型 **LR θ=0.03**（2713.8 < 2780.0；θ\* 第三次精确命中盈亏锚 1.5/50；full/mid 档双头塌 protect-all = 对照机制在 N=8000 复现）。FDB（84g text-only / workers 12；决策 cache 217/1、finality 217/0 ⇒ 翻转纯窗口政策效应）：exact **0.630**（差 1 夹）✗ / state 0.660 / done50 **3.455 = fixed 逐位相等** / premium **82.6s**（p50 1.459）/ 回收 **24.8%**（strict 24.7%, n=98）✗ ⇒ **AND 区双败**。**0 gain / 2 loss**（eco01#1、eco25#1）= v0 七夹的严格子集（收复 5/7，无 v1 式新增）；windows 严格两点 {0×27, 1.5×142}（protect 84.0%，κ-平坦）。预测对账：①回收 ≥0 结构保证**兑现**（−193% 形态不可表达），但"θ 处保护率足够低"未兑现（84% vs 所需 ~60%）；②exact 收复差 1 夹（eco01#1 = 排序错杀实例：v1 巨窗恰罩其修订、v2 commit-now 放行；eco25#1 三代皆输持久夹）；③val AUC < v1 0.859 方向兑现，MLP 反超 AUC 但低带经济学更差（protect-all）= 容量涨判别力不涨部署经济学。机制读数：θ=0.03 经济学要求 ~2/3 op 读出风险 <3%，迁移后 λ̂ 把 84% 读到 ≥3%——**排序（AUC）× 风险标度（教学先验 ~25% vs FDB ~8%）双重迁移误差**，标度差 = 防火墙代价（预注册已声明）；lost=2 处 LOO 上限 52% vs 实测 24.8%，残差 ~27 回收点 ≈ §11 预言量级。**真赌点（迁移 AUC 0.64→0.72+）待回填**：`w4_ceiling_diag.py` transfer 段已补 v2 打分（feats 感知 + protect@θ 部署工作点），服务器零 GPU 一跑即回填三代迁移曲线（0.679→0.644→?）并判容量判据条件 (i)。**裁决：G2 核心证据未建立；落 8/15 决策树 → ICASSP 分支，§11 曲线 + 三代归因（v0 代价层/v1 世界层/v2 迁移层）= 论文分析节；容量判据两条件只作分析节/future-work 判据，不触发任何新一轮。**
 
-- **W4 rung 4 v2 全量实测已完成（7/14；正式门判读待用户裁定）**：五条 §12.5 命令均 exit 0。N=8000，`config_hash=b62a069cd900`，19288 ops / 4744 rescue states / 394757 hazard samples / 1.20% positives；rev_prior p10/p50/p90=0.077/0.198/0.474，gap floor=1.64。val AUC LR/MLP=**0.749/0.896**，低强度带联合成本选 LR `theta=0.03`（LR 2713.8 < MLP 2780.0），full-mixture 两头均塌到 protect-all，与预注册对照一致。FDB 严格复用 84g text-only/stage-0/8192/`max_num_seqs=1`/workers=12；100/100 completed，decision cache **217/1**、finality **217/0**。v2 exact **0.630** / state **0.660** / done50 **3.455s** / premium **82.6s** / 主回收 **24.8%** / strict **24.7% (n=98)** / Δexact **−2pt**；对 fixed 0 gain / 2 loss（`ecommerce_01#1`、`ecommerce_25#1`），v0 七夹收复 5/7。op windows 仅 `{0,1.5}`（0×27 / 1.5×142），保护率 84.0%；结构上的非负回收保证兑现，但两个原始坐标均低于预注册阈值（exact 0.640 / 回收 47%），最终 G2/投稿分支判读由用户完成。产物已落 `exp/w4/synth/*_v2.*`、`exp/w4/stophead_v2{,_lr,_mlp}.json`、`exp/w4/ladder_v0.json`。
+- **W4 rung 4 v2 transfer 回填（7/14；本条覆盖上文“待回填”与容量判据(i)占位）**：服务器零 GPU 运行 `scripts/w4_ceiling_diag.py` exit 0。三代 transfer AUC = **0.679 → 0.644 → 0.752009**，v2 与 LOO **0.753157** 仅差 **0.001148**，按 AUC 口径排序迁移已实质追平域内上限；v2 `protect@theta=85.7%`，W=1.5 frontier lost=0/1/2/3/4 回收 = **15.1/38.4/56.2/61.7/69.9%**。但 §12.4 冻结的容量判据(i)不只看 AUC，而要求 lost≤1 前沿与 LOO 差 ≤5 回收点；实测 **38.4% vs 43.9%**，差约 **5.5pt**，以约 **0.5pt** 之差严格未立。因此可写“AUC 层排序数据轴近乎榨干”，不可写“冻结容量条件(i)已成立”；条件(ii)文本语义 LOO 探针仍未做且不被触发，不引出新 rung 或容量升级。AUC 追平但部署点仍保护 85.7% 把剩余失败进一步收缩为**风险绝对标度/校准迁移**，ICASSP 分支与 rung 4 永久收枪裁决不变。完整收据已回写 `exp/w4/ceiling_diag.json`与 `docs/w4_ladder_design.md` §12.8。
 
 ### 既往（W3 D4–D6 代码批，2026-07-07）
 
