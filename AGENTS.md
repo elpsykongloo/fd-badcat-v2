@@ -1,7 +1,7 @@
 # AGENTS.md — fd-badcat 持久记忆（所有代理必读）
 
 > 单一真相源。CLAUDE.md 指向本文件。有重大事实变更时**更新本文件**，不要另开新文档。
-> 最后更新：2026-07-14 (W4 rung 4 v2 代码交付——排序迁移批，最后一枪；TACT 基础包归仓)
+> 最后更新：2026-07-14 (W4 rung 4 v2 全量实测与结果归档；实跑后直推 main 纪律；TACT 基础包归仓)
 
 ## 使命
 
@@ -29,6 +29,7 @@
 - 音频块格式分叉已做成开关：`llm.audio_block: audio_url`（本地 vLLM 默认）| `input_audio`（OpenAI 严格裸 b64）| `input_audio_datauri`（云端 DashScope 方言）。实现在 `src/messages.py`。
 - **工作分支 `tact`**，发布映射为私仓 `origin/main`；本地分支仍保留 `tact` 名称。基线 tag `golden-base`（=`aecfc80`）。`src/backend_legacy.py` 是旧引擎逐字节冻结件，W1 全程保持可运行（A/B 对照），别改它。
 - 本仓库有多个代理活动过（git author 见 Codex 提交）。动 git 历史前先 `git log --oneline -3` 确认没踩到别人的新提交。
+- **实跑归档与发布纪律（用户明确授权，2026-07-14）**：不为实验运行或结果归档另建临时/代理分支。代理实际运行代码并完成必要核验后，应将该次产生的代码、产物、缓存、报告与相应 `AGENTS.md` 事实更新一并提交，然后直接推送到私仓 `origin/main`（本地 `tact` 映射远端 `main`）；不需要额外分支或 PR。推送前仍须做常规密钥/敏感文件扫描与产物一致性核验。
 - **在线发布授权已更新（2026-07-14）**：用户明确授权把当前完整 `tact` 分支发布为其本人名下私人仓库 `elpsykongloo/fd-badcat-v2` 的 `main`。该目标是用户本人控制的私人仓库，因此不构成公开发布或向第三方上游泄露，依然没有安全暴露问题；发布前仍执行常规密钥与敏感文件检查，历史明文凭据必须先脱敏。原上游 `yu-haoyuan/fd-badcat` 默认继续只读；唯一新增例外是用户同日明确授权把当前脱敏后的完整 TACT 历史发布到其现有公开分支 `Rice`（大小写敏感），不授权向 `main`、其他分支、PR 或 issue 写入。`upstream` 仍保留 `NO_PUSH` 防误推，只通过显式目标 URL 更新 `Rice`。06 计划里的"上游 PR ×2 文书"（latency_injector per-instance RNG、finance_14 pop(0) 对齐）仍取消，相关生态问题只在本地文档记录，不对神谕另行澄清。
 - **私仓发布前历史脱敏已完成（2026-07-14）**：删除态旧历史里发现 1 个 DashScope 明文 key，另有 6 份 `__pycache__/*.pyc` 嵌入副本；文本历史已替换为脱敏占位符，所有历史 `.pyc` 已移除。128 个提交的拓扑与代码历史保留，`git fsck`、缺失对象检查和全对象密钥模式复扫均通过。脱敏前历史报告里的 `420b539`/`c82869b` 等旧短哈希属于当时的真实标识；当前对应 tag/merge 为 `aecfc80`/`09ebf06`。
 
@@ -61,7 +62,7 @@
   - **DeepSeek judge 并发**：官方 `llm_judge.py` 原生支持 `FDB_LLM_WORKERS`；judge 是纯 API 调用。v3.1 正式三判采用 strict runner、workers=32，避免把并发/解析失败与 judge 判决混合。`scripts/run_fdb_with_deepseek.sh` 仍指向连续 metrics 轨，不可用于论文 binary judge-pass 主轨。
   - vLLM 侧：准确度回归可临时把 audio 配置 `max_num_seqs` 调高（重启分钟级）配合 --workers 压满；HumDial 管线自带 `--gen-workers/--clean-workers/--asr-workers/--judge-workers` 旋钮。
 
-## 当前状态（W3 全部收口；W4 rung 4 v1 已实测，2026-07-14）
+## 当前状态（W3 全部收口；W4 rung 4 v2 已实测，2026-07-14）
 
 - **D6 标准卡串行复测已清（7/09，W3 最后一个 GPU 项）**——三臂全量 100、音频标准栈、`--workers 1`、每臂全新缓存（0 hit，锚干净）、A 档双跑决策逐位（pass/tool calls/signature/transcript diff 全 0）。**主表最终数字（v3.1 口径，live 串行档）**：
   - **准确性**：TACT d150 exact **0.640** / sblock **0.660**（差 −2pt 不变）。**7/13 DeepSeek semantic-argument 三判已闭合**：TACT **0.710±0.010**、spec **0.723±0.005**、sblock **0.730±0.010**（±=三次半极差；逐轮 TACT−sblock = −3/0/−3pt，均值仍 −2pt；spec−sblock = −2/0/0pt）。judge 语义宽恕把三臂各抬约 7–8pt，但不反转主结论；报告 `exp/w3/fdb_v31_deepseek_judge3_summary.json`。live state 同栈复算为 verbatim TACT/sblock **0.66/0.66**、normalized **0.77/0.79**；此前 0.79/0.82 是 text 栈，不得混入 live 主表。⚠️ live 音频栈 vs 前日 text 栈 exact 存在 **−1pt/臂 电平差**；主表引 live 档，δ 曲线保留 text 栈产物作形状主张。
@@ -83,6 +84,8 @@
 - **W4 rung 4 v1 全量结果（7/14；本条覆盖上句“待用户按 §10.4 跑”的占位）**：完整收据见 `docs/w4_ladder_design.md` §10.5。N=8000，`config_hash=497567920fc4`，19402 ops / 6310 rescue states / 382869 hazard samples；val AUC **0.859**、合成选点 `c_w=0.002`，训练 final_eou 窗 3.820s 已预告保守失守。FDB 同 84g text-only/`workers=12`，cache 决策 **210/8**、finality **217/0**；exact **0.640** 精确踩门、state 0.640，但 premium **318.6s**、主回收 **−193.1%**、strict common-support **−190.6% (n=98)**，故回收门失败、AND 目标区失败，G2 核心证据仍未建立。v0 七个 loss 收复 **6/7**（`ecommerce_25#1` 仍缺 add_to_cart），另 gain `ecommerce_15#0` / 新 loss `ecommerce_23#0`，净 −1pt 对 fixed。预测对账：AUC 命中、exact 基本命中、回收落保守失败分支；结果与“合成 32.5% 修订先验导致风险概率偏高”一致但不能单轮定唯一因果。**不得用 FDB 反调；v2 只许 HumDial 等非评测真实数据做先验/强度校准并另开预注册。**
 
 - **W4 rung 4 v2 代码已交付（7/14，预注册 = `docs/w4_ladder_design.md` §12；最后一枪）**：v0 死于代价函数（记账层）、v1 死于世界（分布层）、§11 诊断把剩余瓶颈定位在**排序迁移**且策略形态 W=1.5+屏障宽限覆盖全部 13 承重 op ⇒ v2 不再赌拍对分布，改为对分布未知免疫 + 下行结构封死。五件套：① 生成器域随机化（`RANGES` 每 dialogue 采样配置；validator 报 rev_prior p10/p50/p90）+ 两处结构勘正（**GAP_FLOOR=1.64**=0.64 hold+1.0 nominal infer 的决策间静默物理下界，σ_pre 才是随机量；utt_dur 按 style 条件采样）；② 特征收缩 `FEATS_V2` 7 维（κ/domain/gap_prev 等≈随机特征全排除，理由记 §12.2）；③ **二段式策略** risk=∫λ̂@[0,2.5) ≥θ → 保护 1.5 否则立即提交——**protect-all ≡ fixed 臂 ⇒ 保费下行有界，v1 式 −193% 不可表达**；④ 训练回放加屏障宽限（救援 iff w>gap−1.0，与 §11 实证规则同构）；⑤ LR 主臂 + MLP h=16 消融，(model,θ) 合成 val 联合选型平手取 LR——**θ 选点在 val 的 rev_intensity 下三分位切片**（全混合经济学塌到 protect-all=回收门必败，冒烟已实证；教学分布高修订域刻意夸张，低带才是部署代表性经济学；rev_intensity=log-uniform(0.15,1.5) 把先验支撑拉到 ~3%–55%）。**容量判据固化（回应"要不要换 0.6B"）：§11 证明瓶颈在数据轴非容量轴——仅当迁移逼近 LOO 上限仍不过门且特征增补 LOO 探针证明文本语义抬上限，才允许文本编码器（特征提取器形态）；现阶段升容量=归因失效**。门不变（exact ≥0.640 ∧ 回收 ≥47%）；诚实预测：回收 ≥0 结构保证，真赌点=排序迁移 AUC 0.64→0.72+；val AUC 预计低于 v1 0.859（randomization 使任务变难=特性）。运行命令 §12.5（provider `w4lh2_tact`，`--delta-policy learned:v2`）。未中 → 8/15 决策树落 ICASSP，§11 曲线+三代失败归因=分析节。
+
+- **W4 rung 4 v2 全量实测已完成（7/14；正式门判读待用户裁定）**：五条 §12.5 命令均 exit 0。N=8000，`config_hash=b62a069cd900`，19288 ops / 4744 rescue states / 394757 hazard samples / 1.20% positives；rev_prior p10/p50/p90=0.077/0.198/0.474，gap floor=1.64。val AUC LR/MLP=**0.749/0.896**，低强度带联合成本选 LR `theta=0.03`（LR 2713.8 < MLP 2780.0），full-mixture 两头均塌到 protect-all，与预注册对照一致。FDB 严格复用 84g text-only/stage-0/8192/`max_num_seqs=1`/workers=12；100/100 completed，decision cache **217/1**、finality **217/0**。v2 exact **0.630** / state **0.660** / done50 **3.455s** / premium **82.6s** / 主回收 **24.8%** / strict **24.7% (n=98)** / Δexact **−2pt**；对 fixed 0 gain / 2 loss（`ecommerce_01#1`、`ecommerce_25#1`），v0 七夹收复 5/7。op windows 仅 `{0,1.5}`（0×27 / 1.5×142），保护率 84.0%；结构上的非负回收保证兑现，但两个原始坐标均低于预注册阈值（exact 0.640 / 回收 47%），最终 G2/投稿分支判读由用户完成。产物已落 `exp/w4/synth/*_v2.*`、`exp/w4/stophead_v2{,_lr,_mlp}.json`、`exp/w4/ladder_v0.json`。
 
 ### 既往（W3 D4–D6 代码批，2026-07-07）
 

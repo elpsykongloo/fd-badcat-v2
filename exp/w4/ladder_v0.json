@@ -498,6 +498,81 @@
     "premium_below_fixed": false,
     "delay_monotone_in_kappa": false
    }
+  },
+  {
+   "provider": "w4lh2_tact",
+   "exact": 0.63,
+   "state": 0.66,
+   "done_p50": 3.455,
+   "premium": {
+    "n_paired": 98,
+    "sum_s": 82.6,
+    "p50_s": 1.459
+   },
+   "recovery_vs_fixed_s": 27.2,
+   "recovery_frac_of_fixed_premium": 0.248,
+   "recovery_frac_strict_common_support": 0.247,
+   "n_strict_common": 98,
+   "d_exact_vs_fixed": -0.02,
+   "flips_vs_fixed": {
+    "gain": [],
+    "loss": [
+     [
+      "ecommerce_01",
+      1
+     ],
+     [
+      "ecommerce_25",
+      1
+     ]
+    ]
+   },
+   "kappa_stats": {
+    "policy_window_mean": {
+     "READ": 1.297,
+     "REV": 1.227,
+     "COMP": 1.4,
+     "IRR": 0.857
+    },
+    "commit_delay_mean": {
+     "READ": 3.199,
+     "REV": 4.143,
+     "COMP": 3.159,
+     "IRR": 2.552
+    },
+    "commit_delay_p50": {
+     "READ": 1.5,
+     "REV": 1.5,
+     "COMP": 1.5,
+     "IRR": 1.5
+    },
+    "n_commits_by_kappa": {
+     "READ": 100,
+     "REV": 19,
+     "COMP": 14,
+     "IRR": 12
+    },
+    "finality": {
+     "labels_all": {
+      "final": 117,
+      "unfinished": 62,
+      "hesitant": 38
+     },
+     "labels_rollback_clips": {
+      "hesitant": 2,
+      "final": 22,
+      "unfinished": 6
+     },
+     "infer_p50": 0.672,
+     "infer_p90": 0.99,
+     "unparsed": 0
+    }
+   },
+   "verdicts": {
+    "G2iii_exact_ge_minus1pt": false,
+    "premium_below_fixed": true,
+    "delay_monotone_in_kappa": false
+   }
   }
  ]
 }
