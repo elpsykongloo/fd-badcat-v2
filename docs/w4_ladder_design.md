@@ -110,3 +110,23 @@ $PY scripts/w4_ladder_report.py --arms w4k0_tact w4ks_tact w4kr_tact w4pf_tact
 叠上阶梯臂：**safe (30%,−2) 贴在固定线上**（内插 −2pt≈33%）——κ 分级在保守档位上等价于把固定 δ 调小到 ~1.15，无帕累托增量，这才是它"不行"的真正理由；**v0 (62.5%,−10) 在线下**（内插 −10pt≈82%）——被固定 δ 严格支配，死；**prompted (84%,−4) 在线上方 ~30 个百分点**（内插 −4pt≈54%）——**唯一击穿固定前沿的零 shot 臂**，是真实的强结果。其"不可采纳"仅指不能作为终局配置（−4pt 使对 sblock 总差距扩到 −6pt，砸 P1 平价主张；且损失集中在论文核心的修订夹=机制自噬），论文中应作为亮点行报告。
 
 **韵律结论的勘正**：前文"韵律降级"过度。117 个 final 标签只造成 ~5 夹损失 ⇒ finality 是高精度的"可提前提交"负风险信号（84% 回收的主要来源），它只对 afterthought 类修订盲。P2(iv) 精化为：韵律终结性对**多数类**（无修订话语）授权提前 commit 成立；对少数类（改口）无信号。停时头设计修正：**保留 finality 作为特征**（可直接用 Omni 零 shot 标签作运行时特征=蒸馏即特征，无需韵律训练集），叠加对话状态/位置特征修盲区；数据方案相应精化 = 合成（结构/时序）+ Omni 零 shot 韵律特征 + 小样本真实校准（HumDial 许可待查），FDB/RB 仍全程隔离。
+
+## 8. Rung 4：停时头 v0（预注册，2026-07-10；代码已交付）
+
+**组件**（特征定义单源 `src/stophead.py` 的 `FEATS`，标注/训练/运行时共用，禁止漂移）：
+`w4_synth_gen.py`（事件时间轴生成器，**无音频无 TTS**；语法常量冻结在文件头，config_hash 打印；修订间隙混合分布横跨 [0.3,4.0]s **不拟合 FDB**；afterthought 类保留 10% 质量=本轮盲区）→ `w4_hindsight_label.py`（闭式 w\*=gap+ε；hazard 目标 y(op,t)=1⟺gap∈(t,t+H]——头学"此刻风险"而非事后动作，hindsight 偏差不进目标）→ `w4_train_stophead.py`（numpy 逻辑回归、类均衡+先验校正、按对话切分 8/2、AUC+校准 bin；c_w 在**合成验证集**上按预注册代价 `Σw + 3.0·C_κ·miss` 扫描选定）→ `--delta-policy learned:v0`（`--stophead-model`；同 `--delta-policy` 机制/同打表脚本；**learned 同时跑 finality 调用作特征**——w4pf 的 finality_cache 全命中 ⇒ 近零 GPU）。
+
+**预注册常量**：C_κ=(1,2,4,8)、T_GRID=0:0.25:3.0、W_CAP=2.5、EPS=0.05、MISS_PEN=3.0、CW_GRID 九点；生成器 N=8000/seed=42/语法表冻结（改=新 tag）。**泄漏防火墙**：训练与 c_w 选择只见合成数据；FDB/RB 只评测；FDB 间隙统计只作跑后覆盖检查。
+
+**门与目标（跑前锁定）**：exact ≥ fixed−1pt（≥0.640）；目标区 = 回收 ≥47%（≈frontier 记账 51.5s）——零 shot 前沿 fixed(0,0)/safe(30,−2)/pf(84,−4) 之外的区域；同时对表 pf 作 context。**两条已知 sim-to-real 迁移风险（如实报）**：① finality 特征训练时按混淆表模拟、部署时是真 Omni 标签；② 状态特征训练时来自脚本化决策、部署时来自 Omni 实际决策（协变量偏移）。冒烟基线（N=300）：AUC 0.755、先验校正后校准逐 bin 对齐。
+
+**运行**（前三步纯 CPU；第四步需 text 栈 + workers 12）：
+```bash
+$PY scripts/w4_synth_gen.py --n 8000 --tag v0
+$PY scripts/w4_hindsight_label.py --tag v0
+$PY scripts/w4_train_stophead.py --tag v0
+$PY scripts/w2r_stream_replay.py --delta 1.5 --provider w4lh_tact --prompt v3.1 \
+    --delta-policy learned:v0 --workers 12
+$PY scripts/w4_ladder_report.py --arms w4k0_tact w4ks_tact w4kr_tact w4pf_tact w4lh_tact
+```
+**汇报**：gen 的 config_hash/修订率/混淆表；label 的样本数/正例率；train 的 AUC/校准 bin/c_w 表与选点；FDB 的 cache 行（决策+finality 均应高命中）与打表整行（exact/回收/翻转/finality 分布）。

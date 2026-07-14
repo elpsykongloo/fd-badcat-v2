@@ -80,7 +80,7 @@ def parse_finality(raw):
 
 
 def parse_spec(spec):
-    """'fixed' | 'kappa:NAME' | 'prompted:v0' -> (kind, table_name). Raises on junk."""
+    """'fixed' | 'kappa:NAME' | 'prompted:v0' | 'learned:TAG' -> (kind, name)."""
     if spec == "fixed":
         return "fixed", None
     kind, _, name = spec.partition(":")
@@ -88,20 +88,26 @@ def parse_spec(spec):
         return "kappa", name
     if kind == "prompted" and name == "v0":
         return "prompted", name
+    if kind == "learned" and name:
+        return "learned", name
     raise ValueError(f"unknown --delta-policy {spec!r}")
 
 
 def make_delta_fn(spec, finality=None):
-    """Per-EoU factory: returns delta_fn(fn)->float for apply_decision_ops,
-    or None for the fixed policy (frozen path: ledger uses its own delta)."""
+    """Per-EoU factory: returns delta_fn(fn, args=None)->float for
+    apply_decision_ops, or None for the fixed policy (frozen path). The
+    'learned' kind is wired by the harness via stophead.make_learned_delta_fn
+    (it needs the EoU context) — calling it here is an error."""
     kind, name = parse_spec(spec)
     if kind == "fixed":
         return None
+    if kind == "learned":
+        raise ValueError("learned:* delta_fn is built by the harness (needs ctx)")
     if kind == "kappa":
         table = KAPPA_TABLES[name]
-        return lambda fn: table[kappa_name(fn)]
+        return lambda fn, args=None: table[kappa_name(fn)]
     table = FINALITY_TABLE[finality if finality in FINALITY_TABLE else FINALITY_FALLBACK]
-    return lambda fn: table[kappa_name(fn)]
+    return lambda fn, args=None: table[kappa_name(fn)]
 
 
 def build_finality_msgs(audio_block):

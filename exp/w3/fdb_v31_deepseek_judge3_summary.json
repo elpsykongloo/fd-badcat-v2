@@ -1,0 +1,100 @@
+{
+  "evaluated_at": "2026-07-13",
+  "benchmark": "FDB-v3",
+  "generation_stack": "v3.1 live serial standard-audio stack",
+  "judge": {
+    "model": "deepseek-v4-flash",
+    "metric": "binary pass rate with strict tool multiset and semantic argument judging",
+    "runs_per_arm": 3,
+    "temperature": 0,
+    "workers": 32,
+    "max_tokens": 1024,
+    "retries": 5,
+    "exact_fallback": "disabled; any exhausted judge call fails the whole run",
+    "runner": "scripts/fdb_pass_judge_strict.py"
+  },
+  "arms": {
+    "tact_d150": {
+      "provider": "w3p31L_tact_d150",
+      "exact": 0.64,
+      "judge_runs": [0.71, 0.72, 0.70],
+      "judge_mean": 0.71,
+      "judge_half_range": 0.01,
+      "judge_majority_vote": 0.71,
+      "failure_breakdown": [
+        {"wrong_tools": 15, "wrong_arguments": 14},
+        {"wrong_tools": 15, "wrong_arguments": 13},
+        {"wrong_tools": 15, "wrong_arguments": 15}
+      ]
+    },
+    "tact_speculative": {
+      "provider": "w3p31Ls_tact_d150",
+      "exact": 0.64,
+      "judge_runs": [0.72, 0.72, 0.73],
+      "judge_mean": 0.7233333333,
+      "judge_half_range": 0.005,
+      "judge_majority_vote": 0.72,
+      "failure_breakdown": [
+        {"wrong_tools": 14, "wrong_arguments": 14},
+        {"wrong_tools": 14, "wrong_arguments": 14},
+        {"wrong_tools": 14, "wrong_arguments": 13}
+      ]
+    },
+    "sblock": {
+      "provider": "w3p31L_sblock",
+      "exact": 0.66,
+      "judge_runs": [0.74, 0.72, 0.73],
+      "judge_mean": 0.73,
+      "judge_half_range": 0.01,
+      "judge_majority_vote": 0.73,
+      "failure_breakdown": [
+        {"wrong_tools": 11, "wrong_arguments": 15},
+        {"wrong_tools": 11, "wrong_arguments": 17},
+        {"wrong_tools": 11, "wrong_arguments": 16}
+      ]
+    }
+  },
+  "paired_deltas": {
+    "tact_minus_sblock_by_run": [-0.03, 0.0, -0.03],
+    "tact_minus_sblock_mean": -0.02,
+    "speculative_minus_sblock_by_run": [-0.02, 0.0, 0.0],
+    "speculative_minus_sblock_mean": -0.0066666667,
+    "majority_vote_tact_vs_sblock": {
+      "both_pass": 67,
+      "tact_only": 4,
+      "sblock_only": 6,
+      "both_fail": 23
+    },
+    "majority_vote_speculative_vs_sblock": {
+      "both_pass": 67,
+      "speculative_only": 5,
+      "sblock_only": 6,
+      "both_fail": 22
+    }
+  },
+  "judge_fluctuations": {
+    "tact_d150": {
+      "housing_21": [1, 1, 0],
+      "travel_07": [0, 1, 0]
+    },
+    "tact_speculative": {
+      "travel_07": [0, 0, 1]
+    },
+    "sblock": {
+      "ecommerce_13": [1, 0, 0],
+      "travel_07": [1, 0, 1]
+    }
+  },
+  "report_files": [
+    "/root/autodl-tmp/FDBench_v3/v3/w3p31L_tact_d150_pass_judge_rep1.json",
+    "/root/autodl-tmp/FDBench_v3/v3/w3p31L_tact_d150_pass_judge_rep2.json",
+    "/root/autodl-tmp/FDBench_v3/v3/w3p31L_tact_d150_pass_judge_rep3.json",
+    "/root/autodl-tmp/FDBench_v3/v3/w3p31Ls_tact_d150_pass_judge_rep1.json",
+    "/root/autodl-tmp/FDBench_v3/v3/w3p31Ls_tact_d150_pass_judge_rep2.json",
+    "/root/autodl-tmp/FDBench_v3/v3/w3p31Ls_tact_d150_pass_judge_rep3.json",
+    "/root/autodl-tmp/FDBench_v3/v3/w3p31L_sblock_pass_judge_rep1.json",
+    "/root/autodl-tmp/FDBench_v3/v3/w3p31L_sblock_pass_judge_rep2.json",
+    "/root/autodl-tmp/FDBench_v3/v3/w3p31L_sblock_pass_judge_rep3.json"
+  ],
+  "audit_note": "An initial 200-token upstream run was quarantined because reasoning exhausted the token budget and silently triggered exact fallback. It is excluded from every reported number."
+}

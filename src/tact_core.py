@@ -515,7 +515,7 @@ def apply_decision_ops(tx, ledger, dec, t_dec, immediate, commit_cb,
                 commit_cb(p.op_id, t_dec, t_dec)
             else:
                 ledger.open(p.op_id,
-                            delta=(delta_fn(fn) if delta_fn is not None else None))
+                            delta=(delta_fn(fn, args) if delta_fn is not None else None))
             applied.append({"type": "launch", "fn": fn, "op_id": p.op_id})
         elif typ == "patch":
             oid = resolve_ref(tx, op)
@@ -525,9 +525,10 @@ def apply_decision_ops(tx, ledger, dec, t_dec, immediate, commit_cb,
                     diff = diff["args"]      # unwrap model's nested-args habit
                 diff = coerce_args(diff)
                 tx.patch(oid, diff, t=t_dec)
-                pfn = tx.pending[oid].fn
+                pend = tx.pending[oid]
                 ledger.restart(oid,          # window restarts (rescues a deferred expiry)
-                               delta=(delta_fn(pfn) if delta_fn is not None else None))
+                               delta=(delta_fn(pend.fn, pend.args)
+                                      if delta_fn is not None else None))
                 if dag is not None:
                     dag.on_patch(tx, oid, diff, t=t_dec,
                                  comp_registry=comp_registry)

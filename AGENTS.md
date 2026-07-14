@@ -1,7 +1,7 @@
 # AGENTS.md — fd-badcat 持久记忆（所有代理必读）
 
 > 单一真相源。CLAUDE.md 指向本文件。有重大事实变更时**更新本文件**，不要另开新文档。
-> 最后更新：2026-07-08 (W3 D4–D6 GPU 出数收口)
+> 最后更新：2026-07-13 (v3.1 DeepSeek 三判闭合)
 
 ## 使命
 
@@ -19,8 +19,8 @@
 - 服务拓扑（GPU 在位时）：vLLM Qwen3-Omni-30B-A3B :10003（`setup/start_qwen3omni_audio.sh`，音频管线 max_num_seqs=1 确定性优先；文本配置 `qwen3_omni_text_only.yaml` 可高并发）→ 代理 `src/qwen3_api.py` :10004（`setup/start_qwen3_proxy.sh`）→ backend :18000。TTS 默认 **Omni 原生**。实测 Blackwell 上音频判定单次 ~0.26s。
 - 网络：本机代理环境变量存在，本地服务必须 `trust_env=False`/`NO_PROXY`。**shell 里不要 export OMP_NUM_THREADS=空值**（libgomp 报 Invalid value）。
 - DeepSeek judge key 已持久化：`configs/eval.env`（600 权限，gitignored，bashrc 自动 source）。judge 模型用 `deepseek-v4-flash`（`deepseek-chat` 已从 API 下线）。**延迟指标纪律：正式延迟数字必须串行专机跑（勿与 vLLM 争 max_num_seqs:1，勿并发 funasr GPU 加载）——W1 回归的 FRD 曾被此污染，勘误见 w1_report.md。**
-- **代理坑**：环境有 `all_proxy=socks5://…`，openai SDK(httpx) 缺 socksio 会静默初始化失败 → FDB evaluator 的 LLM judge 悄悄退化成 exact-match。跑 evaluator 前 `unset all_proxy ALL_PROXY http_proxy https_proxy HTTP_PROXY HTTPS_PROXY`（DeepSeek 国内直连）。
-- **FDB 分数口径**：永远双轨报告 exact + deepseek-v4-flash judge。基线：blocking exact 0.570（W1 逐分复现 6/23）/ judge 0.700；6/23 的 0.73 是 gpt-5.5 judge 口径，不同 judge 不可直接比。**v3 有两条判分线**：`evaluate_pass_rate.py`（二元 pass，无 turn-take 门，工具选择 precision=1 一票否决——judge 模式也只接管参数比较）与 `evaluate_tool_calls.py`（metrics 轨，有 `turn_take_success` 门=转写非空，默认 metrics 只算 turn-taken 子集，tool F1 渐变）。同名工具多次调用按**位置 pop(0) 对齐**——顺序互换会双杀（0.71 之谜根因）。
+- **judge 静默回退坑**：① 环境有 `all_proxy=socks5://…`，openai SDK(httpx) 缺 socksio 会静默初始化失败；② 官方 `evaluate_pass_rate.py` 给 argument judge 仅 `max_tokens=200`，`deepseek-v4-flash` 会把预算耗在 reasoning、`content` 为空后再次静默退化 exact。正式重判必须用 `scripts/fdb_pass_judge_strict.py`（当前冻结：1024 tokens、最多 5 retry、fallback 硬失败）并先 `unset all_proxy ALL_PROXY http_proxy https_proxy HTTP_PROXY HTTPS_PROXY`。
+- **FDB 分数口径**：永远双轨报告 exact + deepseek-v4-flash judge。历史 blocking exact 0.570 / judge 0.700；但 7/13 审计发现 W1/W2 的 200-token judge 报告每份含 10–14 个明确 exact-fallback mismatch 签名，**历史 judge 绝对分在 strict 重判前只作旧口径记录，不得与 v3.1 strict judge 直接相减**。6/23 的 0.73 还是 gpt-5.5 口径，更不可比。**v3 有两条判分线**：`evaluate_pass_rate.py`（二元 pass，无 turn-take 门，工具选择 precision=1 一票否决——judge 模式也只接管参数比较）与 `evaluate_tool_calls.py`（metrics 轨，有 `turn_take_success` 门=转写非空，默认 metrics 只算 turn-taken 子集，tool F1 渐变）。同名工具多次调用按**位置 pop(0) 对齐**——顺序互换会双杀。
 - **W1 汇报文件**：`手工文档/神谕/02_W1 执行汇报.md`（发给神谕求 W2 计划的汇总，含全部实验数字与开放问题）。
 
 ## 仓库拓扑与分叉事实（重要）
@@ -57,13 +57,13 @@
 - **W2 重跑追加的效率工具**（准确度回归用，出论文数字仍守 A 档串行）：
   - `scripts/w2r_stream_replay.py --workers N`：线程池并发（VAD/HTTP 均 thread-local，决策缓存加锁）。注意沙箱延迟 `random.seed` 是全局的——并发下 per-example 抖动序列不保逐位复现（吞吐轨可接受，P5 类确定性验证必须 --workers 1）。
   - **决策缓存**（sha256(messages)，T=0 合法）是最大的省卡时杠杆：δ 网格 6 个点里 4 个点几乎全缓存命中；改 harness 不改 prompt 时务必复用 `exp/w2_rerun/decision_cache.json`。
-  - **DeepSeek judge 并发**：官方 `llm_judge.py` 原生支持 `FDB_LLM_WORKERS`（默认 16 太保守），judge 是纯 API 调用，**直接 100**；`scripts/run_fdb_with_deepseek.sh` 已改默认 100。
+  - **DeepSeek judge 并发**：官方 `llm_judge.py` 原生支持 `FDB_LLM_WORKERS`；judge 是纯 API 调用。v3.1 正式三判采用 strict runner、workers=32，避免把并发/解析失败与 judge 判决混合。`scripts/run_fdb_with_deepseek.sh` 仍指向连续 metrics 轨，不可用于论文 binary judge-pass 主轨。
   - vLLM 侧：准确度回归可临时把 audio 配置 `max_num_seqs` 调高（重启分钟级）配合 --workers 压满；HumDial 管线自带 `--gen-workers/--clean-workers/--asr-workers/--judge-workers` 旋钮。
 
 ## 当前状态（W3 —— 全部收口，2026-07-09）
 
 - **D6 标准卡串行复测已清（7/09，W3 最后一个 GPU 项）**——三臂全量 100、音频标准栈、`--workers 1`、每臂全新缓存（0 hit，锚干净）、A 档双跑决策逐位（pass/tool calls/signature/transcript diff 全 0）。**主表最终数字（v3.1 口径，live 串行档）**：
-  - **准确性**：TACT d150 exact **0.640** / sblock **0.660**（差 −2pt 不变）。⚠️ live 音频栈 vs 前日 text 栈存在 **−1pt/臂 电平差**（各 3 夹刀口翻转，travel_14 双臂同向 F→T；TACT 丢 eco25/fin04 各一夹 = rule-15 修复本身也在刀口带上）。主表引 live 档；δ 曲线保留 text 栈产物作形状主张（eager 惩罚/单调升/收敛 sblock），脚注电平差。
+  - **准确性**：TACT d150 exact **0.640** / sblock **0.660**（差 −2pt 不变）。**7/13 DeepSeek semantic-argument 三判已闭合**：TACT **0.710±0.010**、spec **0.723±0.005**、sblock **0.730±0.010**（±=三次半极差；逐轮 TACT−sblock = −3/0/−3pt，均值仍 −2pt；spec−sblock = −2/0/0pt）。judge 语义宽恕把三臂各抬约 7–8pt，但不反转主结论；报告 `exp/w3/fdb_v31_deepseek_judge3_summary.json`。live state 同栈复算为 verbatim TACT/sblock **0.66/0.66**、normalized **0.77/0.79**；此前 0.79/0.82 是 text 栈，不得混入 live 主表。⚠️ live 音频栈 vs 前日 text 栈 exact 存在 **−1pt/臂 电平差**；主表引 live 档，δ 曲线保留 text 栈产物作形状主张。
   - **延迟**：TACT first 1.218/1.579、done 3.012/3.411 vs sblock 1.529/2.134（done 同）；infer_final p50/p90 = 0.561/0.767（v3.1 prompt 变长 vs W2 v2 0.444）；恒等式 first = 0.64+infer 残差 max 0.0（ack 路 83/100，fallback 17）。**live 完成保费 = 1.483 ≈ δ**。
   - **投机派发实测**：first p50 **1.218 → 0.640 = 地板精确命中**（Δ−0.578；P3 比 0.640/1.529 = **0.419 ≤ 0.50 过**）；exact 对基线 **0 翻转**；done 2.455（保费 0.926 = δ − infer 重叠 0.557 ≈ infer p50，算术自洽）；spec 恒等式 first = max(0.64, infer) 残差 0。**W2 的"P3 须 4B 头"结论正式作废——投机派发免训练拿下 P3**。
   - **投机真实成本（full engine live，informational）**：604 派发 / 197 确认 / 407 作废 = **浪费率 67.4%（≈2.8× LLM 调用）**；exact 0.630（ε 带 −1，D2 已知感知敏感）；first p50 0.786。论文写实测收益必须同页写此成本。
@@ -77,7 +77,7 @@
   - **E5 分句 TTS live**：机制链全验证（TtsSentDone/first_sentence/floor_decision yield/tts_sent_dropped，`exp/w3/e5_traces/`）；**勘误：同句首音频提前 p50 = 0.545s**（先前 10.324s 系跨句配对错误，作废）；只有长叙述句触发分句（3/10 runs）——分句收益域=长句场景，首响主战场在 ack/投机。
   - HumDial 门产物已入库 `exp/w3/humdial_gate_spec{off,on}_summary.json` 与三判聚合 `exp/w3/humdial_gate_spec_judge3_summary.json`；`exp/w2_rerun/grid_full.json` 已被 v3 网格覆写（v2 数字重算核验一致；scorer 后续加组名防覆写）。
 - **待裁断**（08 §六）：① prompt 口径——**已结：用户 7/09 裁定 v3.1 = 最终版/主表口径（免神谕）**，v2 留作无 prompt 工程参照行 ② 蓝图#8 ASR 重听试点（TRIGGERED）③ P-1 写类分层口径 ④ G2'(ii) 自适应臂立项 ⑤ RB v1 批复。
-- **下一步**：W3 GPU 项全清。**神谕请示稿已写：`手工文档/神谕/09_W3 终局与 W4 开工请示.md`**（终局数字表 / 学习组件收缩为"停时头"方案 + G2' 判据 / W4 逐日计划 / 裁断 ②–⑤+新增 A–D / 跑偏防火墙九条）。**W4 阶梯 rungs 2–3 已跑完（7/09 晚，近零 GPU：cache 214–217 hits/臂）**：四臂全败双门——v0 0.550/回收62.5%、safe 0.630/30%、rev 0.650/保费↑133.1（kill 判据未触发=κ 对齐有效）、prompted 0.610/**回收84%**。机制已钉死（probe 收据在 w4_ladder_design §7）：①早提交**关闭修订动作类**（fixed 靠 rescued_patch 赢的夹，短窗臂 patches=0，dropped 7/9 vs fixed 3）；②**afterthought 修订对尾韵律不可见**（rollback EoU 73% 标 final）——"韵律测话语完成，不测意图稳定"；③修订发生率是位置/话语结构变量非 κ 变量（rev 不掉 exact 的原因）；④fin12b/hou17b 间隙落 (1.0,1.5] 与 D3 预算阈值 1.12 咬合。**零 shot 前沿 = fixed(0,0)/safe(30%,−2)/pf(84%,−4)；rung 4 停时头目标 = 回收≥47% 且 ≥−1pt；特征以对话状态/位置为主，韵律降级**。零 shot 表封盘。scorer 已加 `--tag=` 防覆写（grid_{full,rollback}_TAG.json）。
+- **下一步**：W3 GPU 项全清。**神谕请示稿已写：`手工文档/神谕/09_W3 终局与 W4 开工请示.md`**（终局数字表 / 学习组件收缩为"停时头"方案 + G2' 判据 / W4 逐日计划 / 裁断 ②–⑤+新增 A–D / 跑偏防火墙九条）。**W4 阶梯 rungs 2–3 已跑完（7/09 晚，近零 GPU：cache 214–217 hits/臂）**：四臂全败双门——v0 0.550/回收62.5%、safe 0.630/30%、rev 0.650/保费↑133.1（kill 判据未触发=κ 对齐有效）、prompted 0.610/**回收84%**。机制已钉死（probe 收据在 w4_ladder_design §7）：①早提交**关闭修订动作类**（fixed 靠 rescued_patch 赢的夹，短窗臂 patches=0，dropped 7/9 vs fixed 3）；②**afterthought 修订对尾韵律不可见**（rollback EoU 73% 标 final）——"韵律测话语完成，不测意图稳定"；③修订发生率是位置/话语结构变量非 κ 变量（rev 不掉 exact 的原因）；④fin12b/hou17b 间隙落 (1.0,1.5] 与 D3 预算阈值 1.12 咬合。**零 shot 前沿 = fixed(0,0)/safe(30%,−2)/pf(84%,−4)；rung 4 停时头目标 = 回收≥47% 且 ≥−1pt；特征以对话状态/位置为主，韵律降级**。零 shot 表封盘。**Rung 4 停时头 v0 代码已交付（7/10，预注册 = w4_ladder_design §8）**：`w4_synth_gen.py`（事件时间轴合成，无 TTS）→ `w4_hindsight_label.py`（hazard 目标=此刻风险非事后动作）→ `w4_train_stophead.py`（numpy LR+先验校正+合成集 c_w 扫描）→ `--delta-policy learned:v0 --stophead-model`（特征单源 `src/stophead.py`；learned 复用 finality_cache ⇒ FDB 评测近零 GPU）。冒烟 AUC 0.755/校准对齐；待用户按 §8 命令跑全量。scorer 已加 `--tag=` 防覆写（grid_{full,rollback}_TAG.json）。
 
 ### 既往（W3 D4–D6 代码批，2026-07-07）
 

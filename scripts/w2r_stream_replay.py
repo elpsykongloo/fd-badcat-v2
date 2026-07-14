@@ -81,6 +81,7 @@ from tact.transaction import Transaction                    # noqa: E402
 from tact.tools import ToolRegistry                         # noqa: E402
 import latency_realistic                                    # noqa: E402
 import delta_policy as delta_policy_mod                     # noqa: E402  (W4 ladder)
+import stophead as stophead_mod                             # noqa: E402  (W4 rung 4)
 from decider_b import _audio_block                          # noqa: E402
 
 import os                                                   # noqa: E402
@@ -220,7 +221,7 @@ def assemble_latency(commits, say_events, t_user_end, mode, n_eou, infer_nominal
 def run_example(folder, provider, delta, cache, mode="tact", force=False,
                 infer_nominal=None, barrier=True, engine="core",
                 speculative=False, dag_on=False, lat_profile="official",
-                delta_policy="fixed", fin_cache=None):
+                delta_policy="fixed", fin_cache=None, stophead=None):
     m = _FOLDER_RE.match(folder.name)
     if not m:
         return None
@@ -269,10 +270,11 @@ def run_example(folder, provider, delta, cache, mode="tact", force=False,
              "decisions": [], "ops": {}, "commits": []}
     say_events = []                           # (t_audio, text)
 
-    # W4 adaptive ladder: per-op window policy (kappa rule / prompted finality).
-    # The policy never enters the Phase-B messages — cache keys stay v3.1.
+    # W4 adaptive ladder: per-op window policy (kappa rule / prompted finality /
+    # learned stopping head). Never enters Phase-B messages — cache keys stay v3.1.
     use_policy = delta_policy != "fixed"
-    prompted = delta_policy.startswith("prompted")
+    learned = delta_policy.startswith("learned")
+    prompted = delta_policy.startswith("prompted") or learned  # both need finality
     if use_policy:
         assert mode == "tact", "--delta-policy requires tact mode"
         trace["delta_policy"] = delta_policy
@@ -290,7 +292,7 @@ def run_example(folder, provider, delta, cache, mode="tact", force=False,
                                  "deferred_s": round(max(0.0, t_actual - t_nominal), 3)})
 
     cursor = 0.0
-    for seg_idx, t_eou in eous:
+    for eou_i, (seg_idx, t_eou) in enumerate(eous):
         # Speculative dispatch (W3 D6): the LLM call starts at VAD SEG END, so
         # inference overlaps the 0.64 hold; the result stays inert until the
         # EoU is confirmed => t_dec = seg_end + max(HOLD, infer). Non-spec:
@@ -329,8 +331,16 @@ def run_example(folder, provider, delta, cache, mode="tact", force=False,
             fraw, fin_infer = fin_cache.call(
                 delta_policy_mod.build_finality_msgs(_audio_block(tail)))
             finality, fin_parsed = delta_policy_mod.parse_finality(fraw)
-        delta_fn = (delta_policy_mod.make_delta_fn(delta_policy, finality)
-                    if use_policy else None)
+        if learned:
+            s0, e0 = segs[seg_idx]
+            ctx = {"eou_idx": eou_i, "utt_dur": round(e0 - s0, 3),
+                   "gap_prev": round(s0 - (segs[seg_idx - 1][1] if seg_idx else 0.0), 3),
+                   "n_prior_ops": len(tx.pending) + len(tx.committed),
+                   "finality": finality, "domain": meta.get("domain")}
+            delta_fn = stophead_mod.make_learned_delta_fn(stophead, ctx)
+        else:
+            delta_fn = (delta_policy_mod.make_delta_fn(delta_policy, finality)
+                        if use_policy else None)
         # DecisionDone order (spec §一-2): ops FIRST (patch rescues, window
         # restarts), THEN sweep at the current clock.
         applied = apply_decision_ops(tx, ledger, dec, t_dec,
@@ -347,10 +357,11 @@ def run_example(folder, provider, delta, cache, mode="tact", force=False,
         if use_policy:
             ow = {}
             for a in applied:
-                if a["type"] == "launch":
-                    ow[str(a["op_id"])] = delta_fn(a["fn"])
-                elif a["type"] == "patch" and a["op_id"] in tx.pending:
-                    ow[str(a["op_id"])] = delta_fn(tx.pending[a["op_id"]].fn)
+                oid = a.get("op_id")
+                if a["type"] in ("launch", "patch") and oid is not None:
+                    rem = ledger.remaining(oid)   # budget just assigned (no burn yet)
+                    if rem is not None:
+                        ow[str(oid)] = round(rem, 3)
             dec_entry["op_windows"] = ow
         if prompted:
             dec_entry["finality"] = finality
@@ -518,13 +529,18 @@ def main():
                          "to run (e.g. exp/w3/tuning30.json).")
     ap.add_argument("--delta-policy", default="fixed",
                     choices=["fixed", "kappa:v0", "kappa:safe", "kappa:rev",
-                             "prompted:v0"],
+                             "prompted:v0", "learned:v0"],
                     help="W4 adaptive ladder: per-op objection windows. "
                          "kappa:* = reversibility-conditioned rule tables; "
                          "prompted:v0 = Omni finality judge on the audio tail "
-                         "(separate call, ops/cache untouched). fixed = frozen "
-                         "path. Requires --mode tact --engine core. Tables in "
+                         "(separate call, ops/cache untouched); learned:v0 = "
+                         "trained stopping head (rung 4; needs --stophead-model "
+                         "and also runs the finality call as a feature). "
+                         "Requires --mode tact --engine core. Tables in "
                          "src/delta_policy.py (preregistered).")
+    ap.add_argument("--stophead-model",
+                    default="/root/autodl-tmp/fd-badcat/exp/w4/stophead_v0.json",
+                    help="Model JSON for learned:* (from w4_train_stophead.py).")
     ap.add_argument("--finality-cache",
                     default="/root/autodl-tmp/fd-badcat/exp/w4/finality_cache.json",
                     help="Cache file for prompted:* finality calls.")
@@ -579,7 +595,14 @@ def main():
 
     cache = DecisionCache(args.cache)
     fin_cache = (DecisionCache(args.finality_cache)
-                 if args.delta_policy.startswith("prompted") else None)
+                 if (args.delta_policy.startswith("prompted")
+                     or args.delta_policy.startswith("learned")) else None)
+    stophead = None
+    if args.delta_policy.startswith("learned"):
+        stophead = stophead_mod.StopHead.load(args.stophead_model)
+        if stophead.d.get("c_w") is None:
+            ap.error("stophead model has no c_w — run w4_train_stophead.py first")
+        print(f"stophead: {stophead.d.get('version')} c_w={stophead.d['c_w']}")
     infer_nominal = args.infer_nominal
     if args.workers > 1 and infer_nominal is None:
         infer_nominal = 1.0
@@ -606,7 +629,7 @@ def main():
                             dag_on=(args.dag == "on"),
                             lat_profile=args.latency_profile,
                             delta_policy=args.delta_policy,
-                            fin_cache=fin_cache)
+                            fin_cache=fin_cache, stophead=stophead)
             with count_lock:
                 done_count[0] += 1
                 i = done_count[0]
