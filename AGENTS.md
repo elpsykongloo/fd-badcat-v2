@@ -29,7 +29,7 @@
 - 音频块格式分叉已做成开关：`llm.audio_block: audio_url`（本地 vLLM 默认）| `input_audio`（OpenAI 严格裸 b64）| `input_audio_datauri`（云端 DashScope 方言）。实现在 `src/messages.py`。
 - **工作分支 `tact`**，发布映射为私仓 `origin/main`；本地分支仍保留 `tact` 名称。基线 tag `golden-base`（=`aecfc80`）。`src/backend_legacy.py` 是旧引擎逐字节冻结件，W1 全程保持可运行（A/B 对照），别改它。
 - 本仓库有多个代理活动过（git author 见 Codex 提交）。动 git 历史前先 `git log --oneline -3` 确认没踩到别人的新提交。
-- **在线发布授权已更新（2026-07-14）**：用户明确授权把当前完整 `tact` 分支发布为其本人名下私人仓库 `elpsykongloo/fd-badcat-v2` 的 `main`。该目标是用户本人控制的私人仓库，因此不构成公开发布或向第三方上游泄露，依然没有安全暴露问题；发布前仍执行常规密钥与敏感文件检查，历史明文凭据必须先脱敏。原上游 `yu-haoyuan/fd-badcat` 继续保持只读，禁止对其 PR / issue / push；06 计划里的"上游 PR ×2 文书"（latency_injector per-instance RNG、finance_14 pop(0) 对齐）仍取消，相关生态问题只在本地文档记录，不对神谕另行澄清。
+- **在线发布授权已更新（2026-07-14）**：用户明确授权把当前完整 `tact` 分支发布为其本人名下私人仓库 `elpsykongloo/fd-badcat-v2` 的 `main`。该目标是用户本人控制的私人仓库，因此不构成公开发布或向第三方上游泄露，依然没有安全暴露问题；发布前仍执行常规密钥与敏感文件检查，历史明文凭据必须先脱敏。原上游 `yu-haoyuan/fd-badcat` 默认继续只读；唯一新增例外是用户同日明确授权把当前脱敏后的完整 TACT 历史发布到其现有公开分支 `Rice`（大小写敏感），不授权向 `main`、其他分支、PR 或 issue 写入。`upstream` 仍保留 `NO_PUSH` 防误推，只通过显式目标 URL 更新 `Rice`。06 计划里的"上游 PR ×2 文书"（latency_injector per-instance RNG、finance_14 pop(0) 对齐）仍取消，相关生态问题只在本地文档记录，不对神谕另行澄清。
 - **私仓发布前历史脱敏已完成（2026-07-14）**：删除态旧历史里发现 1 个 DashScope 明文 key，另有 6 份 `__pycache__/*.pyc` 嵌入副本；文本历史已替换为脱敏占位符，所有历史 `.pyc` 已移除。128 个提交的拓扑与代码历史保留，`git fsck`、缺失对象检查和全对象密钥模式复扫均通过。脱敏前历史报告里的 `420b539`/`c82869b` 等旧短哈希属于当时的真实标识；当前对应 tag/merge 为 `aecfc80`/`09ebf06`。
 
 ## 架构事实（读码验证过，可直接引用）
