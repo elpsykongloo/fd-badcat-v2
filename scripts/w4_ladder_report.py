@@ -167,6 +167,14 @@ def main():
         recov_sum = round(sum(recov), 1)
         recov_frac = (round(recov_sum / fixed_prem["sum_s"], 3)
                       if fixed_prem["sum_s"] else None)
+        # strict common-support variant (arm ∩ fixed ∩ blocking, all done
+        # non-null) — the housing_25 audit caliber; both reported.
+        common = [k for k in amap if k in fmap and k in bmap
+                  and amap[k]["done"] is not None and fmap[k]["done"] is not None
+                  and bmap[k]["done"] is not None]
+        rs = round(sum(fmap[k]["done"] - amap[k]["done"] for k in common), 1)
+        fs = sum(fmap[k]["done"] - bmap[k]["done"] for k in common)
+        recov_strict = round(rs / fs, 3) if fs else None
         gains = sorted(k for k in amap if amap[k]["exact"]
                        and k in fmap and not fmap[k]["exact"])
         losses = sorted(k for k in amap if not amap[k]["exact"]
@@ -176,6 +184,8 @@ def main():
                  "done_p50": s["done_p50"], "premium": prem,
                  "recovery_vs_fixed_s": recov_sum,
                  "recovery_frac_of_fixed_premium": recov_frac,
+                 "recovery_frac_strict_common_support": recov_strict,
+                 "n_strict_common": len(common),
                  "d_exact_vs_fixed": round(s["exact"] - fixed["exact"], 3),
                  "flips_vs_fixed": {"gain": gains, "loss": losses},
                  "kappa_stats": ks,
@@ -188,7 +198,8 @@ def main():
         report["arms"].append(entry)
         print(f"{arm:14s} {s['exact']:6.3f} {s['state']:6.3f} "
               f"{str(s['done_p50']):>7s} {prem['sum_s']:9.1f} {recov_sum:8.1f} "
-              f"{str(recov_frac):>7s} {entry['d_exact_vs_fixed']:+7.3f}")
+              f"{str(recov_frac):>7s} {entry['d_exact_vs_fixed']:+7.3f}"
+              f"   [strict n={len(common)}: {recov_strict}]")
         print(f"   windows(mean) {ks['policy_window_mean']} | "
               f"delay(mean) {ks['commit_delay_mean']} | "
               f"monotone={entry['verdicts']['delay_monotone_in_kappa']}")

@@ -1,17 +1,26 @@
 #!/usr/bin/env python3
 """
-w4_train_stophead.py — train stopping-head v0 (logistic hazard, pure numpy).
+w4_train_stophead.py — train stopping-head v1 (logistic hazard, pure numpy).
 
 Split: by dialogue id (did % 5 == 0 -> val) — no op/step leakage across splits.
-Model: standardized logistic regression, class-balanced, full-batch GD.
-c_w selection (preregistered objective, synthetic-val only — FDB never touches
-training or selection): for each candidate c_w, apply the P2 threshold policy
-to every val op and score
-    cost = sum(window_assigned) + MISS_PEN * sum(C_kappa over missed revisions)
-with MISS_PEN = 3.0 s-equivalents per unit C_kappa. Pick argmin.
+Model: standardized logistic regression, class-balanced + prior correction
+(lambda_hat is an approximately calibrated probability).
 
-Usage: w4_train_stophead.py [--tag v0] [--epochs 300] [--lr 0.5] [--l2 1e-4]
-Out:   exp/w4/stophead_{tag}.json  (+ printed val AUC / calibration / sweep)
+c_w selection (v1, PREMIUM-FAITHFUL — preregistered in w4_ladder_design §10;
+synthetic-val only, FDB never touches training or selection):
+replay the policy on each val dialogue's silence timeline:
+  - op revised at gap g: window w0 <= g -> MISS (scenario kill); else rescued,
+    restarted at the revising EoU with the policy's new window there;
+  - premium(dialogue) = max over ops of the budget LEFT OVER past the final
+    decision (mid-dialogue waiting is free; only tail spill delays completion)
+  cost = sum(premium) + KILL_PEN * misses,  KILL_PEN = 50.0 s/clip
+(derived from the G2' gate exchange rate: -1pt <-> >=51.5s per 100 scenarios).
+v0's uniform per-second cost + 3s miss price was a mis-specification of the
+published scoring rules — both corrections are metric-structural, no FDB
+content or statistics enter (leakage firewall intact).
+
+Usage: w4_train_stophead.py [--tag v1] [--epochs 300] [--lr 0.5] [--l2 1e-4]
+Out:   exp/w4/stophead_{tag}.json  (+ printed AUC / calibration / sweep / structure)
 """
 import argparse
 import json
@@ -22,10 +31,10 @@ import numpy as np
 
 sys.path.insert(0, "/root/autodl-tmp")
 sys.path.insert(0, "/root/autodl-tmp/fd-badcat/src")
-from stophead import StopHead, C_KAPPA, KAPPAS, T_GRID, FEATS   # noqa: E402
+from stophead import StopHead, T_GRID, W_CAP, FEATS, KAPPAS   # noqa: E402
 
-MISS_PEN = 3.0
-CW_GRID = [0.02, 0.05, 0.08, 0.12, 0.2, 0.3, 0.5, 0.8, 1.2]
+KILL_PEN = 50.0
+CW_GRID = [0.001, 0.002, 0.005, 0.01, 0.02, 0.03, 0.05, 0.08, 0.12, 0.2, 0.3]
 
 
 def auc(y, p):
@@ -36,9 +45,32 @@ def auc(y, p):
     return (r[pos].sum() - n1 * (n1 + 1) / 2) / (n1 * n0)
 
 
+def dialogue_cost(model, dlg, cw):
+    """Premium-faithful replay of the policy on one dialogue's timeline."""
+    sig, M = dlg["sigmas"], len(dlg["eous"])
+    tail = lambda i: sum(sig[i:M - 1])       # silence from decision i to final
+    leftovers, miss, wins = [0.0], 0, []
+    for o in dlg["ops"]:
+        w0 = model.window(o, c_w=cw)
+        wins.append((o, w0))
+        j = o.get("rev_eou")
+        if j is not None:
+            if w0 <= o["gap_silence"]:
+                miss += 1                    # committed stale mid-dialogue
+                continue
+            e = dlg["eous"][j]
+            s = {**o, "eou_idx": j, "utt_dur": e["utt_dur"],
+                 "gap_prev": e["gap_prev"], "finality": e["finality"],
+                 "slots_missing": 0}
+            leftovers.append(max(0.0, model.window(s, c_w=cw) - tail(j)))
+        else:
+            leftovers.append(max(0.0, w0 - tail(o["eou_idx"])))
+    return max(leftovers), miss, wins
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--tag", default="v0")
+    ap.add_argument("--tag", default="v1")
     ap.add_argument("--epochs", type=int, default=300)
     ap.add_argument("--lr", type=float, default=0.5)
     ap.add_argument("--l2", type=float, default=1e-4)
@@ -62,8 +94,7 @@ def main():
         g = (p - ytr) * sw
         w -= args.lr * (Xn.T @ g / n + args.l2 * w)
         b -= args.lr * g.mean()
-    b -= np.log(w_pos)   # prior correction: undo class-weight inflation so
-    #                      lambda_hat is a (approximately) calibrated probability
+    b -= np.log(w_pos)   # prior correction: calibrated lambda_hat
     pv = 1 / (1 + np.exp(-np.clip(Xv @ w + b, -30, 30)))
     print(f"train n={n} pos={ytr.mean():.2%} | val n={len(yva)} "
           f"AUC={auc(yva, pv):.3f}")
@@ -71,34 +102,46 @@ def main():
     for i in range(5):
         m = (pv >= bins[i]) & (pv <= bins[i + 1])
         if m.sum():
-            print(f"  calib bin {i}: pred={pv[m].mean():.3f} actual={yva[m].mean():.3f} n={m.sum()}")
+            print(f"  calib bin {i}: pred={pv[m].mean():.3f} "
+                  f"actual={yva[m].mean():.3f} n={m.sum()}")
 
     model = StopHead({"version": f"stophead_{args.tag}", "feats": FEATS,
                       "mean": mu.tolist(), "std": sd.tolist(),
                       "w": w.tolist(), "b": float(b),
-                      "t_grid": T_GRID, "c_w": None})
+                      "t_grid": T_GRID, "w_cap": W_CAP, "c_w": None})
 
-    # -- c_w sweep on val ops (policy-level, preregistered cost) -------------
-    ops = [json.loads(l) for l in (base / f"ops_{args.tag}.jsonl").open()
-           if json.loads(l)["did"] % 5 == 0]
-    print(f"c_w sweep on {len(ops)} val ops (cost = sum(w) + {MISS_PEN}*C_k*miss):")
+    # -- premium-faithful c_w sweep on val dialogues --------------------------
+    dlgs = [json.loads(l) for l in (base / f"dialogues_{args.tag}.jsonl").open()]
+    dlgs = [d for d in dlgs if d["did"] % 5 == 0]
+    n_rev = sum(1 for d in dlgs for o in d["ops"] if o["gap_silence"] is not None)
+    print(f"c_w sweep on {len(dlgs)} val dialogues "
+          f"(cost = sum(tail premium) + {KILL_PEN}*miss; {n_rev} revised ops):")
     best = None
     for cw in CW_GRID:
-        tot_w = tot_pen = miss = 0
-        for o in ops:
-            wnd = model.window(o, c_w=cw)
-            tot_w += wnd
-            if o["gap_silence"] is not None and wnd < o["gap_silence"]:
-                miss += 1
-                tot_pen += MISS_PEN * C_KAPPA[o["kappa"]]
-        cost = tot_w + tot_pen
-        rev = sum(1 for o in ops if o["gap_silence"] is not None)
-        print(f"  c_w={cw:<5} mean_w={tot_w / len(ops):.3f} miss={miss}/{rev} "
-              f"cost={cost:.0f}")
+        prem = miss = 0.0
+        for dlg in dlgs:
+            p, m, _ = dialogue_cost(model, dlg, cw)
+            prem += p; miss += m
+        cost = prem + KILL_PEN * miss
+        print(f"  c_w={cw:<6} premium={prem:8.0f}s ({prem / len(dlgs):.3f}/dlg) "
+              f"miss={int(miss)}/{n_rev} cost={cost:.0f}")
         if best is None or cost < best[1]:
             best = (cw, cost)
     model.d["c_w"] = best[0]
     print(f"chosen c_w={best[0]}")
+
+    # -- structure diagnostics at the chosen point ----------------------------
+    by_k, by_pos = {k: [] for k in KAPPAS}, {"final_eou": [], "earlier": []}
+    for dlg in dlgs:
+        M = len(dlg["eous"])
+        _, _, wins = dialogue_cost(model, dlg, best[0])
+        for o, w0 in wins:
+            by_k[o["kappa"]].append(w0)
+            by_pos["final_eou" if o["eou_idx"] == M - 1 else "earlier"].append(w0)
+    print("mean window by kappa:",
+          {k: round(sum(v) / len(v), 3) for k, v in by_k.items() if v})
+    print("mean window by position:",
+          {k: round(sum(v) / len(v), 3) for k, v in by_pos.items() if v})
 
     out = Path(f"/root/autodl-tmp/fd-badcat/exp/w4/stophead_{args.tag}.json")
     out.write_text(json.dumps(model.d))

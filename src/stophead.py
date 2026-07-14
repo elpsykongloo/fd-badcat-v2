@@ -18,9 +18,12 @@ from tact.tools import REVERSIBILITY
 
 KAPPAS = ("READ", "REV", "COMP", "IRR")
 C_KAPPA = {"READ": 1.0, "REV": 2.0, "COMP": 4.0, "IRR": 8.0}   # cost weights (prereg)
-T_GRID = [round(i * 0.25, 2) for i in range(13)]               # 0 .. 3.0 s silence clock
+# v1: grid/cap extended to cover the generator's own gap support (<=4.0s) —
+# v0's 2.5 cap couldn't even express rescues its training distribution contains
+# (design bug, w4_ladder_design §10). v0 model JSONs carry their own t_grid/w_cap.
+T_GRID = [round(i * 0.25, 2) for i in range(18)]               # 0 .. 4.25 s silence clock
 H = 0.25                                                       # hazard step horizon
-W_CAP = 2.5                                                    # window clamp (prereg)
+W_CAP = 4.0                                                    # window clamp (prereg v1)
 DOMAINS = ("travel", "finance", "housing", "ecommerce")
 FINALITY = ("final", "hesitant", "unfinished")
 
@@ -101,10 +104,11 @@ class StopHead:
         """P2 threshold rule: first grid time where hazard * C_kappa <= c_w."""
         cw = self.d["c_w"] if c_w is None else c_w
         ck = C_KAPPA[s["kappa"]]
+        cap = self.d.get("w_cap", W_CAP)
         for t in self.d.get("t_grid", T_GRID):
             if self.hazard(featurize(s, t)) * ck <= cw:
-                return min(float(t), W_CAP)
-        return W_CAP
+                return min(float(t), cap)
+        return cap
 
 
 def make_learned_delta_fn(model, ctx):

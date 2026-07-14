@@ -35,13 +35,28 @@ EPS = 0.05   # w* = gap + EPS (just past the last revision)
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--tag", default="v0")
+    ap.add_argument("--tag", default="v1")
     args = ap.parse_args()
     base = Path("/root/autodl-tmp/fd-badcat/exp/w4/synth")
     src = base / f"dialogues_{args.tag}.jsonl"
 
     X, y, ts, dids, kidx, gaps = [], [], [], [], [], []
-    n_ops = n_pos = 0
+    n_ops = n_pos = n_rescue = 0
+
+    def emit(feat_src, gap, did, kappa):
+        nonlocal n_pos
+        for t in T_GRID:
+            if gap is not None and t >= gap:
+                break                         # op no longer alive at t
+            pos = int(gap is not None and t < gap <= t + H)
+            X.append(featurize(feat_src, t))
+            y.append(pos)
+            ts.append(t)
+            dids.append(did)
+            kidx.append(KAPPAS.index(kappa))
+            gaps.append(-1.0 if gap is None else gap)
+            n_pos += pos
+
     with (base / f"ops_{args.tag}.jsonl").open("w") as ops_out:
         for line in src.open():
             d = json.loads(line)
@@ -51,17 +66,18 @@ def main():
                 o["w_star"] = 0.0 if gap is None else round(gap + EPS, 3)
                 o["did"] = d["did"]
                 ops_out.write(json.dumps(o) + "\n")
-                for t in T_GRID:
-                    if gap is not None and t >= gap:
-                        break                         # op no longer alive at t
-                    pos = int(gap is not None and t < gap <= t + H)
-                    X.append(featurize(o, t))
-                    y.append(pos)
-                    ts.append(t)
-                    dids.append(d["did"])
-                    kidx.append(KAPPAS.index(o["kappa"]))
-                    gaps.append(-1.0 if gap is None else gap)
-                    n_pos += pos
+                emit(o, gap, d["did"], o["kappa"])
+                # post-rescue state (v1): after the patch lands the op is safe
+                # (generator: <=1 revision/op) — all-negative samples with the
+                # revising EoU's features teach "rescued -> commit fast".
+                j = o.get("rev_eou")
+                if j is not None and j < len(d.get("eous", [])):
+                    e = d["eous"][j]
+                    s = {**o, "eou_idx": j, "utt_dur": e["utt_dur"],
+                         "gap_prev": e["gap_prev"], "finality": e["finality"],
+                         "slots_missing": 0}
+                    emit(s, None, d["did"], o["kappa"])
+                    n_rescue += 1
 
     X = np.asarray(X, dtype=np.float32)
     y = np.asarray(y, dtype=np.int8)
@@ -71,8 +87,8 @@ def main():
                         kappa_idx=np.asarray(kidx, np.int8),
                         gap=np.asarray(gaps, np.float32),
                         feats=np.asarray(FEATS))
-    print(f"ops={n_ops} hazard_samples={len(y)} positives={n_pos} "
-          f"({n_pos / max(1, len(y)):.2%}) dims={X.shape[1]}")
+    print(f"ops={n_ops} rescue_states={n_rescue} hazard_samples={len(y)} "
+          f"positives={n_pos} ({n_pos / max(1, len(y)):.2%}) dims={X.shape[1]}")
     print("->", base / f"hazard_{args.tag}.npz", "and", base / f"ops_{args.tag}.jsonl")
 
 

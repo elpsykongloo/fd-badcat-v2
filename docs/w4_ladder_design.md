@@ -205,3 +205,36 @@ $PY scripts/w4_ladder_report.py --arms w4k0_tact w4ks_tact w4kr_tact w4pf_tact w
 **迁移结论**：合成验证集内 AUC/校准良好，但 FDB exact 下落 7pt，构成明确的 sim-to-real 失败信号；本轮不能在两条预注册风险间归因——①训练 finality 是混淆表模拟、部署是真 Omni 标签；②训练状态来自脚本决策、部署来自 Omni 决策。不得用本轮 FDB 结果反调 `c_w`；下一轮需新预注册的跨域/消融证据再区分两者。
 
 产物：`exp/w4/synth/{dialogues_v0.jsonl,hazard_v0.npz,ops_v0.jsonl}`、`exp/w4/stophead_v0.json`、`exp/w4/ladder_v0.json`、`exp/w2_rerun/decision_cache.json`；单夹结果在 FDBench 外部数据树的 `result_w4lh_tact.json`。
+
+## 10. Rung 4 v1（预注册，2026-07-14；代价函数勘正批）
+
+### 10.1 v0 死因判定（探针收据）
+
+7 个丢失夹**全同构**：fixed 靠"早段 EoU 的 op 被下一 EoU patch 救回"取胜（6/7 在 eou0 launch、@eou1 被 patch），learned 给这些 op 的窗是 **0.0/0.5**——而保费由**末 EoU 窗口**贡献（70/98 夹末 EoU 有 launch；windows 均值 REV 0.526/COMP 0.333 = 策略把火力全用在压免费的中段窗上）。**头是好的**（AUC 0.789、校准贴合）；错在 v0 代价 `Σw + 3·C_κ·miss` 的两个常数：①等待被逐 op 均匀收费（真实保费只在完成关键路径=末段窗+早段溢出上产生）；②miss 定价 3s（FDB 上 miss≈二元场景死刑，汇率由 G2' 门自身给出：−1pt ↔ 51.5s ⇒ ~50s/夹）。
+
+**防火墙声明**：两处修正均为评测记账规则的结构知识（done 锚算法、exact 二元性、G2' 汇率），从公开判分规则可先验推出，不含任何 FDB 内容/统计；v0 之误 = 未把已知记账想透，如实认。
+
+### 10.2 v1 改动（代码已交付；特征/模型/FDB 门不变）
+
+1. **生成器 v1**：显式时间轴——`eous`（逐 EoU 特征）+ `sigmas`（决策间静默）+ `rev_eou`；gap_silence ≡ sigmas[launch]，与 WindowLedger 语义逐位对齐。语法概率不变，新 config_hash。
+2. **标注器 v1**：补 rescue 后状态的全负样本（教会"补丁已落 → 快提交"）。
+3. **训练器 v1 代价（核心）**：在合成时间轴上**真实回放**策略窗——`cost = Σ(尾部溢出保费) + 50.0×miss`；rescue 后按修订 EoU 特征重估窗（与运行时 restart 路径同构）。CW_GRID 补 0.001/0.002；产出按 κ×位置的窗结构诊断。
+4. **常数勘正**：T_GRID→0:0.25:4.25、W_CAP→4.0（v0 的 2.5 连自己训练分布的 gap 支持域 ≤4.0 都盖不住=设计 bug；v0 模型 JSON 自带 t_grid 不受影响）。KILL_PEN=50.0 预注册。
+5. report 补严格三臂共同支撑口径（housing_25 审计），双口径并报。
+
+### 10.3 门与诚实预测（跑前锁定）
+
+门不变：exact ≥ 0.640 ∧ 回收 ≥47%。**点预测**：v0 的 7 个丢失夹应全部收复（其 gap ≤1.6 ≪ 新窗）⇒ exact 门大概率过；**回收门存疑且这正是本轮的信息产出**——冒烟（N=300）显示 50s 汇率 + 合成 32% 修订先验下最优解偏保守（选点 c_w=0.002、miss=0、窗均值 ~3.7 ⇒ 若原样迁移则保费高于 fixed、回收为负）。全量模型（AUC 预计 ~0.85+）能否在低危区分辨出 λ̂<c_w 的安全 op，决定回收侧成败。**已声明的先验错配风险**：合成修订率（~32%/op）远高于 FDB（~6%）⇒ λ̂ 系统性偏高 ⇒ 保守侧失守的概率不小；被批准的 v2 杠杆 = 非评测真实数据（HumDial，许可待查）做先验/强度校准——仍不触 FDB。
+
+### 10.4 运行（同 §8 流程，tag=v1）
+
+```bash
+$PY scripts/w4_synth_gen.py --n 8000 --tag v1
+$PY scripts/w4_hindsight_label.py --tag v1
+$PY scripts/w4_train_stophead.py --tag v1
+$PY scripts/w2r_stream_replay.py --delta 1.5 --provider w4lh1_tact --prompt v3.1 \
+    --delta-policy learned:v0 --stophead-model exp/w4/stophead_v1.json --workers 12
+$PY scripts/w4_ladder_report.py --arms w4k0_tact w4ks_tact w4kr_tact w4pf_tact w4lh_tact w4lh1_tact
+```
+
+**汇报**：gen config_hash/修订率；label 样本数（含 rescue_states 行）；train AUC/校准/c_w 整表与选点/**κ×位置窗结构两行**；FDB cache 双行 + 打表整行（含 strict 口径）+ 对 v0 七夹的逐夹收复情况。
