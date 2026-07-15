@@ -1,0 +1,29 @@
+{
+  "frozen": "2026-07-16",
+  "design": "docs/rb_design.md \u00a78-2",
+  "oracle_gate": {
+    "A": {
+      "L1": 1.0,
+      "L2": 1.0,
+      "L3": 1.0,
+      "L4": 1.0,
+      "L7": 1.0,
+      "L9": 1.0,
+      "L10": 1.0,
+      "exact": 0.7458
+    },
+    "B": {
+      "L4": 1.0,
+      "L8": 1.0,
+      "L9": 1.0,
+      "L10": 1.0,
+      "exact": 0.75
+    },
+    "note": "windowed-oracle ceiling layers L5/L6/L8-A exempt"
+  },
+  "hashes": {
+    "rb/scorer.py": "34d50c4ab0326f65e8824fbd955732ef9c56d29dfa57f8e97c0915778fc2b41c",
+    "rb/sandbox.py": "146a67ccd1cd9c4eacf950c8f33baec338d4343cb371f6f7b4bbd463b859f954",
+    "rb/registry.py": "daff3b81a7f5aef1f4cea56fb8a8f71e67f3966625b5537cfd218c322a8e58de"
+  }
+}

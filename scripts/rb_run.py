@@ -154,11 +154,15 @@ class OracleDecider:
         self.scn = SCENARIOS[ep["scenario"]]
         self.launched = False
         self.applied_revs = set()
-        self.slot_arg = {}                       # slot -> (step_idx, arg)
+        # slot -> [(step_idx, arg), ...] — MULTI-map: the same slot may feed
+        # several steps (fin_transfer: amount -> get_fx_quote AND
+        # transfer_funds); a revision must patch EVERY pending op using it
+        # (single-value map was the L3/L4 oracle gate failure, 2026-07-16).
+        self.slot_args = {}
         for i, st in enumerate(self.scn["steps"]):
             for a, v in st["args"].items():
                 if isinstance(v, str) and v.startswith("{"):
-                    self.slot_arg[v.strip("{}")] = (i, a)
+                    self.slot_args.setdefault(v.strip("{}"), []).append((i, a))
 
     def heard(self, segs_done):
         """Slot values after the user pieces heard so far."""
@@ -198,16 +202,16 @@ class OracleDecider:
             self.applied_revs.update(revs)
             return {"dialogue": "stay", "ops": ops, "say": "好的，马上办。"}
         for slot in revs:
-            if slot in self.applied_revs or slot not in self.slot_arg:
+            if slot in self.applied_revs or slot not in self.slot_args:
                 continue
             self.applied_revs.add(slot)
-            step_i, arg = self.slot_arg[slot]
-            fn = self.scn["steps"][step_i]["fn"]
-            for oid in tx.pending:
-                if tx.pending[oid].fn == fn:
-                    ops.append({"type": "patch", "op_id": oid,
-                                "diff": {arg: slots[slot]}})
-                    break
+            for step_i, arg in self.slot_args[slot]:
+                fn = self.scn["steps"][step_i]["fn"]
+                for oid in tx.pending:
+                    if tx.pending[oid].fn == fn:
+                        ops.append({"type": "patch", "op_id": oid,
+                                    "diff": {arg: slots[slot]}})
+                        break
         return {"dialogue": "stay", "ops": ops,
                 "say": "已更新。" if ops else ""}
 
@@ -436,6 +440,12 @@ def main():
     args = ap.parse_args()
     if args.selftest:
         return selftest()
+    if args.split == "test":                     # design §8-2: scorer frozen
+        fz = json.loads((ROOT / "exp/rb/scorer_freeze.json").read_text())
+        import hashlib as _h
+        for f, want in fz["hashes"].items():
+            got = _h.sha256((ROOT / f).read_bytes()).hexdigest()
+            assert got == want, f"scorer freeze violated: {f} changed"
     install_rb(args.prompt)
     cache = None
     if args.decider == "llm":
@@ -515,6 +525,10 @@ def selftest():
     ck["l2_exact"] = r2["exact"]
     ep4, r4 = run_oracle("A", "L4", 0)
     ck["l4_exact_patch_rescued"] = r4["exact"]
+    _, r4f = run_oracle("A", "L4", 1)           # finance: shared-slot chain
+    ck["l4_shared_slot_multimap"] = r4f["exact"]
+    _, rb5 = run_oracle("B", "L4", 5)           # the reported B_L4_0005 case
+    ck["b_l4_0005_regression"] = rb5["exact"]
     _, r10 = run_oracle("A", "L10", 0)          # bystander command ignored
     ck["l10_bystander_ignored"] = r10["exact"]
     _, r10b = run_oracle("A", "L10", 2)         # benign user revision applies

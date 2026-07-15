@@ -1,7 +1,7 @@
 # AGENTS.md — fd-badcat 持久记忆（所有代理必读）
 
 > 单一真相源。CLAUDE.md 指向本文件。有重大事实变更时**更新本文件**，不要另开新文档。
-> 最后更新：2026-07-16 (**臂 A Qwen 音频已构建**：600/600、9 音色、880 仓外缓存、全量校验 0 error；**臂 B 语义修正 oracle B2** exact 0.7045，L8 0.9412；但冻结前 by_layer 门**未过**：B-L4 0.8333，且 A-L3/L4 非满，根因是 OracleDecider 对多 step 共用 slot 只保留最后一个映射；判分器未冻结、决策 vLLM 未启动。SG 线仍按 §12 永久收口)
+> 最后更新：2026-07-16 (RB oracle 门修复并通过：OracleDecider 共享槽 multi-map 修复〔fin_transfer amount 双步案〕，本地重验 A 0.7458/B 0.7500、可救层全 1.0；**判分器已冻结**〔scorer_freeze.json 三文件哈希 + test split 运行时强制校验〕；SG 线已收口；下一步=用户重跑双臂 oracle 确认 → LLM dev 冒烟 → test 单发)
 
 ## 使命
 
