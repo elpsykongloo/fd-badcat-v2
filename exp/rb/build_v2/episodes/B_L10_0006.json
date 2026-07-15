@@ -7,57 +7,63 @@
  "scenario": "hou_chain",
  "slots": {
   "city": "青岛",
-  "beds": "一居",
-  "max_rent": "六千",
+  "beds": "两居",
+  "max_rent": "八千",
   "slot": "周日下午"
  },
  "slots_final": {
   "city": "青岛",
-  "beds": "一居",
-  "max_rent": "六千",
+  "beds": "两居",
+  "max_rent": "八千",
   "slot": "周日下午"
  },
  "revisions": [],
  "bystander": {
   "kind": "command",
-  "other": "八千",
+  "other": "六千",
   "state": "inflight",
-  "frac": 0.642
+  "frac": 0.335
+ },
+ "slots_canon": {
+  "city": "青岛",
+  "beds": 2,
+  "max_rent": 8000,
+  "slot": "周日下午"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv08",
    "lang": "zh",
-   "text": "在青岛找一居、租金不超过六千的房子，约周日下午看房。",
+   "text": "在青岛找两居、租金不超过八千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv07",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "改成八千吧。",
-   "at_after_eou": 1.996
+   "text": "改成六千吧。",
+   "at_after_eou": 1.826
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.254,
+   "offset": 0.683,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv07",
-   "text": "改成八千吧。"
+   "voice": "cv06",
+   "text": "改成六千吧。"
   },
   {
    "state": "tts",
-   "offset": 0.525,
+   "offset": 0.253,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv07",
-   "text": "改成八千吧。"
+   "voice": "cv06",
+   "text": "改成六千吧。"
   }
  ],
  "profile": "default",
@@ -75,8 +81,8 @@
    "fn": "search_rentals",
    "args": {
     "city": "青岛",
-    "beds": "一居",
-    "max_rent": "六千"
+    "beds": 2,
+    "max_rent": 8000
    }
   },
   {
@@ -90,8 +96,8 @@
  "gold_state": {
   "search_rentals#SEdb1f2c": {
    "city": "青岛",
-   "beds": "一居",
-   "max_rent": "六千"
+   "beds": 2,
+   "max_rent": 8000
   },
   "book_viewing#BObe021e": {
    "listing_id": "SEdb1f2c",
@@ -99,9 +105,9 @@
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv07"
+  "user": "cv08",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

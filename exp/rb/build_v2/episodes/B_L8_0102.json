@@ -6,28 +6,34 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "厦门",
-  "beds": "两居",
-  "max_rent": "八千",
+  "city": "杭州",
+  "beds": "一居",
+  "max_rent": "六千",
   "slot": "周六上午"
  },
  "slots_final": {
   "city": "厦门",
-  "beds": "两居",
+  "beds": "一居",
   "max_rent": "六千",
   "slot": "周六上午"
  },
  "revisions": [
   {
-   "slot": "max_rent",
-   "old": "八千",
-   "new": "六千",
+   "slot": "city",
+   "old": "杭州",
+   "new": "厦门",
    "by": "user",
    "kind": "default",
    "gap": null
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "厦门",
+  "beds": 1,
+  "max_rent": 6000,
+  "slot": "周六上午"
+ },
  "l8_action": "revise",
  "cancelled": false,
  "pieces": [
@@ -35,25 +41,25 @@
    "role": "user",
    "voice": "cv03",
    "lang": "zh",
-   "text": "在厦门找两居、租金不超过八千的房子，约周六上午看房。",
+   "text": "在杭州找一居、租金不超过六千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv03",
    "lang": "zh",
-   "text": "等等，改成六千。",
-   "at_after_eou": 1.948
+   "text": "等等，改成厦门。",
+   "at_after_eou": 1.822
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.642,
+   "offset": 0.729,
    "action": "revise",
    "role": "user",
    "voice": "cv03",
-   "text": "等等，改成六千。"
+   "text": "等等，改成厦门。"
   }
  ],
  "profile": "default",
@@ -71,8 +77,8 @@
    "fn": "search_rentals",
    "args": {
     "city": "厦门",
-    "beds": "两居",
-    "max_rent": "六千"
+    "beds": 1,
+    "max_rent": 6000
    }
   },
   {
@@ -86,8 +92,8 @@
  "gold_state": {
   "search_rentals#SE08edb5": {
    "city": "厦门",
-   "beds": "两居",
-   "max_rent": "六千"
+   "beds": 1,
+   "max_rent": 6000
   },
   "book_viewing#BO85c3eb": {
    "listing_id": "SE08edb5",
@@ -96,8 +102,8 @@
  },
  "voices": {
   "user": "cv03",
-  "bystander": "cv05"
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

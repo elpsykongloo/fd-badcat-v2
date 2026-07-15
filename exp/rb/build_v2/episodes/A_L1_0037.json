@@ -11,29 +11,34 @@
   "date": "June first"
  },
  "slots_final": {
-  "payee": "the property office",
-  "amount": "five thousand",
+  "payee": "the landlord",
+  "amount": "eight hundred",
   "date": "June first"
  },
  "revisions": [
   {
-   "slot": "payee",
-   "old": "the landlord",
-   "new": "the property office",
+   "slot": "amount",
+   "old": "five thousand",
+   "new": "eight hundred",
    "by": "user",
    "kind": "inline",
    "gap": null
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "payee": "the landlord",
+  "amount": 800,
+  "date": "June 1"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Schedule a payment of five thousand to the landlord on June first., oh no, make that the property office",
+   "text": "Schedule a payment of five thousand to the landlord on June first., oh no, make that eight hundred",
    "gap_before": 0.5
   }
  ],
@@ -51,30 +56,30 @@
   {
    "fn": "schedule_payment",
    "args": {
-    "payee": "the property office",
-    "amount": "five thousand",
-    "date": "June first"
+    "payee": "the landlord",
+    "amount": 800,
+    "date": "June 1"
    }
   }
  ],
  "gold_state": {
   "schedule_payment#SC93adb7": {
-   "payee": "the property office",
-   "amount": "five thousand",
-   "date": "June first"
+   "payee": "the landlord",
+   "amount": 800,
+   "date": "June 1"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv05"
+  "user": "cv04",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.14,
+   "t_end": 6.5,
    "scheduled": "sequential"
   }
  ],

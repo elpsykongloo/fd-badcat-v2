@@ -6,42 +6,47 @@
  "lang": "en",
  "scenario": "travel_hotel",
  "slots": {
-  "city": "Miami",
-  "checkin": "May third",
-  "nights": "two"
+  "city": "Denver",
+  "checkin": "May tenth",
+  "nights": "three"
  },
  "slots_final": {
-  "city": "Miami",
-  "checkin": "May tenth",
-  "nights": "two"
+  "city": "Denver",
+  "checkin": "May third",
+  "nights": "three"
  },
  "revisions": [
   {
    "slot": "checkin",
-   "old": "May third",
-   "new": "May tenth",
+   "old": "May tenth",
+   "new": "May third",
    "by": "user",
    "kind": "default",
-   "gap": 0.267
+   "gap": 0.475
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "Denver",
+  "checkin": "May 3",
+  "nights": 3
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Book me a hotel in Miami, checking in May third, for two nights.",
+   "text": "Book me a hotel in Denver, checking in May tenth, for three nights.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Wait — make it May tenth.",
-   "gap_before": 0.267
+   "text": "Wait — make it May third.",
+   "gap_before": 0.475
   }
  ],
  "events": [],
@@ -58,25 +63,25 @@
   {
    "fn": "reserve_hotel",
    "args": {
-    "city": "Miami",
-    "checkin": "May tenth",
-    "nights": "two"
+    "city": "Denver",
+    "checkin": "May 3",
+    "nights": 3
    }
   }
  ],
  "gold_state": {
   "reserve_hotel#RE36906f": {
-   "city": "Miami",
-   "checkin": "May tenth",
-   "nights": "two"
+   "city": "Denver",
+   "checkin": "May 3",
+   "nights": 3
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv09"
+  "user": "cv08",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
@@ -86,12 +91,12 @@
   },
   {
    "role": "user",
-   "t_start": 4.687,
-   "t_end": 6.287,
+   "t_start": 4.895,
+   "t_end": 7.535,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.267
+  0.475
  ]
 }

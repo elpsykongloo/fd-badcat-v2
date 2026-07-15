@@ -6,23 +6,23 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "保温杯",
+  "query": "跑步鞋",
   "qty": "两",
-  "address": "浦东新区世纪大道八号"
+  "address": "海淀区学院路一号"
  },
  "slots_final": {
   "query": "蓝牙耳机",
   "qty": "一",
-  "address": "浦东新区世纪大道八号"
+  "address": "海淀区学院路一号"
  },
  "revisions": [
   {
    "slot": "query",
-   "old": "保温杯",
+   "old": "跑步鞋",
    "new": "蓝牙耳机",
    "by": "user",
    "kind": "default",
-   "gap": 0.936
+   "gap": 1.374
   },
   {
    "slot": "qty",
@@ -30,10 +30,15 @@
    "new": "一",
    "by": "user",
    "kind": "second",
-   "gap": 2.987
+   "gap": 2.553
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "query": "蓝牙耳机",
+  "qty": 1,
+  "address": "海淀区学院路一号"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
@@ -41,7 +46,7 @@
    "role": "user",
    "voice": "cv02",
    "lang": "zh",
-   "text": "帮我搜保温杯，加两件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜跑步鞋，加两件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
@@ -49,20 +54,20 @@
    "voice": "cv02",
    "lang": "zh",
    "text": "等等，改成蓝牙耳机。",
-   "gap_before": 0.936
+   "gap_before": 1.374
   },
   {
    "role": "user",
    "voice": "cv02",
    "lang": "zh",
    "text": "还有，再改一下，要一。",
-   "gap_before": 2.987
+   "gap_before": 2.553
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.838,
+   "offset": 0.445,
    "action": "revise",
    "role": "user",
    "voice": "cv02",
@@ -70,7 +75,7 @@
   },
   {
    "state": "committed",
-   "offset": 0.93,
+   "offset": 0.341,
    "action": "revise",
    "role": "user",
    "voice": "cv02",
@@ -99,14 +104,14 @@
    "fn": "add_item",
    "args": {
     "item_id": "SEd5e86b",
-    "qty": "一"
+    "qty": 1
    }
   },
   {
    "fn": "place_order",
    "args": {
     "cart_id": "AD058a62",
-    "address": "浦东新区世纪大道八号"
+    "address": "海淀区学院路一号"
    }
   }
  ],
@@ -116,17 +121,17 @@
   },
   "add_item#AD058a62": {
    "item_id": "SEd5e86b",
-   "qty": "一"
+   "qty": 1
   },
   "place_order#PLa1c76a": {
    "cart_id": "AD058a62",
-   "address": "浦东新区世纪大道八号"
+   "address": "海淀区学院路一号"
   }
  },
  "voices": {
   "user": "cv02",
-  "bystander": "cv01"
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

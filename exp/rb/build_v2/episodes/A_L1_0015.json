@@ -26,12 +26,17 @@
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "Austin",
+  "checkin": "May 3",
+  "nights": 3
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv04",
    "lang": "en",
    "text": "Book me a hotel in Austin, checking in May third, for two nights., oh no, make that three",
    "gap_before": 0.5
@@ -52,29 +57,29 @@
    "fn": "reserve_hotel",
    "args": {
     "city": "Austin",
-    "checkin": "May third",
-    "nights": "three"
+    "checkin": "May 3",
+    "nights": 3
    }
   }
  ],
  "gold_state": {
   "reserve_hotel#RE51ae38": {
    "city": "Austin",
-   "checkin": "May third",
-   "nights": "three"
+   "checkin": "May 3",
+   "nights": 3
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv05"
+  "user": "cv04",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 9.94,
+   "t_end": 8.1,
    "scheduled": "sequential"
   }
  ],

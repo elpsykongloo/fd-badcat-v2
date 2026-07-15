@@ -7,45 +7,52 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Seattle",
-  "destination": "Portland",
+  "destination": "Austin",
   "date": "May eighth",
-  "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
  },
  "slots_final": {
   "origin": "Seattle",
-  "destination": "Portland",
+  "destination": "Austin",
   "date": "May eighth",
-  "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "May 8",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
+ },
  "l8_action": "progress",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Find a train from Seattle to Portland on May eighth, hold a business seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Seattle to Austin on May eighth, hold a first class seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv01",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 1.758
+   "at_after_eou": 1.817
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.72,
+   "offset": 0.544,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv01",
    "text": "Any progress?"
   }
  ],
@@ -65,44 +72,44 @@
    "fn": "search_trains",
    "args": {
     "origin": "Seattle",
-    "destination": "Portland",
-    "date": "May eighth"
+    "destination": "Austin",
+    "date": "May 8"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SEfe6721",
-    "seat_class": "business"
+    "seat_class": "first class"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO19ea86",
-    "passenger": "Sam Rivera"
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEfe6721": {
    "origin": "Seattle",
-   "destination": "Portland",
-   "date": "May eighth"
+   "destination": "Austin",
+   "date": "May 8"
   },
   "hold_seat#HO19ea86": {
    "train_id": "SEfe6721",
-   "seat_class": "business"
+   "seat_class": "first class"
   },
   "purchase_ticket#PU4f2b2c": {
    "hold_id": "HO19ea86",
-   "passenger": "Sam Rivera"
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv09"
+  "user": "cv01",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

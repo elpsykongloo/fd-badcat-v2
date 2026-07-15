@@ -6,44 +6,50 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "厦门",
-  "beds": "两居",
-  "max_rent": "八千",
-  "slot": "周六上午"
+  "city": "杭州",
+  "beds": "一居",
+  "max_rent": "六千",
+  "slot": "周日下午"
  },
  "slots_final": {
   "city": "厦门",
-  "beds": "两居",
-  "max_rent": "八千",
+  "beds": "一居",
+  "max_rent": "六千",
   "slot": "周日下午"
  },
  "revisions": [
   {
-   "slot": "slot",
-   "old": "周六上午",
-   "new": "周日下午",
+   "slot": "city",
+   "old": "杭州",
+   "new": "厦门",
    "by": "user",
    "kind": "default",
-   "gap": 0.65
+   "gap": 0.681
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "厦门",
+  "beds": 1,
+  "max_rent": 6000,
+  "slot": "周日下午"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv07",
    "lang": "zh",
-   "text": "在厦门找两居、租金不超过八千的房子，约周六上午看房。",
+   "text": "在杭州找一居、租金不超过六千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv07",
    "lang": "zh",
-   "text": "等等，改成周日下午。",
-   "gap_before": 0.65
+   "text": "等等，改成厦门。",
+   "gap_before": 0.681
   }
  ],
  "events": [],
@@ -62,8 +68,8 @@
    "fn": "search_rentals",
    "args": {
     "city": "厦门",
-    "beds": "两居",
-    "max_rent": "八千"
+    "beds": 1,
+    "max_rent": 6000
    }
   },
   {
@@ -77,8 +83,8 @@
  "gold_state": {
   "search_rentals#SEc3ef69": {
    "city": "厦门",
-   "beds": "两居",
-   "max_rent": "八千"
+   "beds": 1,
+   "max_rent": 6000
   },
   "book_viewing#BOd00108": {
    "listing_id": "SEc3ef69",
@@ -86,26 +92,26 @@
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv02"
+  "user": "cv07",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 5.54,
+   "t_end": 6.02,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 6.19,
-   "t_end": 8.91,
+   "t_start": 6.701,
+   "t_end": 8.381,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.65
+  0.681
  ]
 }

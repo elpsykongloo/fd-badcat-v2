@@ -9,43 +9,50 @@
   "origin": "Seattle",
   "destination": "Atlanta",
   "date": "June first",
-  "seat_class": "first class",
-  "passenger": "Sam Rivera"
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
  },
  "slots_final": {
   "origin": "Seattle",
   "destination": "Atlanta",
-  "date": "May eighth",
+  "date": "June first",
   "seat_class": "first class",
-  "passenger": "Sam Rivera"
+  "passenger": "Jordan Lee"
  },
  "revisions": [
   {
-   "slot": "date",
-   "old": "June first",
-   "new": "May eighth",
+   "slot": "seat_class",
+   "old": "business",
+   "new": "first class",
    "by": "user",
    "kind": "default",
-   "gap": 0.682
+   "gap": 0.655
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "June 1",
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Find a train from Seattle to Atlanta on June first, hold a first class seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Seattle to Atlanta on June first, hold a business seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Wait — make it May eighth.",
-   "gap_before": 0.682
+   "text": "Wait — make it first class.",
+   "gap_before": 0.655
   }
  ],
  "events": [],
@@ -66,7 +73,7 @@
    "args": {
     "origin": "Seattle",
     "destination": "Atlanta",
-    "date": "May eighth"
+    "date": "June 1"
    }
   },
   {
@@ -80,7 +87,7 @@
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO2b3cef",
-    "passenger": "Sam Rivera"
+    "passenger": "Jordan Lee"
    }
   }
  ],
@@ -88,7 +95,7 @@
   "search_trains#SE84a9b6": {
    "origin": "Seattle",
    "destination": "Atlanta",
-   "date": "May eighth"
+   "date": "June 1"
   },
   "hold_seat#HO2b3cef": {
    "train_id": "SE84a9b6",
@@ -96,30 +103,30 @@
   },
   "purchase_ticket#PU0d24ef": {
    "hold_id": "HO2b3cef",
-   "passenger": "Sam Rivera"
+   "passenger": "Jordan Lee"
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv09"
+  "user": "cv08",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 10.02,
+   "t_end": 6.42,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.702,
-   "t_end": 13.502,
+   "t_start": 7.075,
+   "t_end": 9.155,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.682
+  0.655
  ]
 }

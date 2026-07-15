@@ -6,12 +6,12 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "跑步鞋",
+  "query": "蓝牙耳机",
   "qty": "两",
   "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
-  "query": "跑步鞋",
+  "query": "蓝牙耳机",
   "qty": "一",
   "address": "浦东新区世纪大道八号"
  },
@@ -22,10 +22,15 @@
    "new": "一",
    "by": "user",
    "kind": "default",
-   "gap": 0.758
+   "gap": 0.662
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "query": "蓝牙耳机",
+  "qty": 1,
+  "address": "浦东新区世纪大道八号"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
@@ -33,7 +38,7 @@
    "role": "user",
    "voice": "cv05",
    "lang": "zh",
-   "text": "帮我搜跑步鞋，加两件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
@@ -41,7 +46,7 @@
    "voice": "cv05",
    "lang": "zh",
    "text": "等等，改成一。",
-   "gap_before": 0.758
+   "gap_before": 0.662
   }
  ],
  "events": [],
@@ -60,14 +65,14 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "跑步鞋"
+    "query": "蓝牙耳机"
    }
   },
   {
    "fn": "add_item",
    "args": {
     "item_id": "SEc49a52",
-    "qty": "一"
+    "qty": 1
    }
   },
   {
@@ -80,11 +85,11 @@
  ],
  "gold_state": {
   "search_catalog#SEc49a52": {
-   "query": "跑步鞋"
+   "query": "蓝牙耳机"
   },
   "add_item#AD7d3737": {
    "item_id": "SEc49a52",
-   "qty": "一"
+   "qty": 1
   },
   "place_order#PLb20e5a": {
    "cart_id": "AD7d3737",
@@ -93,25 +98,25 @@
  },
  "voices": {
   "user": "cv05",
-  "bystander": "cv07"
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.5,
+   "t_end": 9.06,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 7.258,
-   "t_end": 8.698,
+   "t_start": 9.722,
+   "t_end": 11.162,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.758
+  0.662
  ]
 }

@@ -6,14 +6,14 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "five thousand",
+  "amount": "three thousand",
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "savings"
  },
  "slots_final": {
-  "amount": "eight hundred",
+  "amount": "five thousand",
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
@@ -22,30 +22,37 @@
  "revisions": [
   {
    "slot": "amount",
-   "old": "five thousand",
-   "new": "eight hundred",
+   "old": "three thousand",
+   "new": "five thousand",
    "by": "user",
    "kind": "default",
-   "gap": 2.626
+   "gap": 0.829
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "amount": 5000,
+  "from_cur": "USD",
+  "to_cur": "EUR",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Get a quote for five thousand dollars to euros, then transfer five thousand from checking to savings.",
+   "text": "Get a quote for three thousand dollars to euros, then transfer three thousand from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Wait — make it eight hundred.",
-   "gap_before": 2.626
+   "text": "Wait — make it five thousand.",
+   "gap_before": 0.829
   }
  ],
  "events": [],
@@ -63,9 +70,9 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": "eight hundred",
-    "from_cur": "dollars",
-    "to_cur": "euros"
+    "amount": 5000,
+    "from_cur": "USD",
+    "to_cur": "EUR"
    }
   },
   {
@@ -73,43 +80,43 @@
    "args": {
     "from_acct": "checking",
     "to_acct": "savings",
-    "amount": "eight hundred"
+    "amount": 5000
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GEe39bee": {
-   "amount": "eight hundred",
-   "from_cur": "dollars",
-   "to_cur": "euros"
+   "amount": 5000,
+   "from_cur": "USD",
+   "to_cur": "EUR"
   },
   "transfer_funds#TRcb692a": {
    "from_acct": "checking",
    "to_acct": "savings",
-   "amount": "eight hundred"
+   "amount": 5000
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv01"
+  "user": "cv05",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.42,
+   "t_end": 6.1,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.046,
-   "t_end": 11.206,
+   "t_start": 6.929,
+   "t_end": 9.169,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.626
+  0.829
  ]
 }

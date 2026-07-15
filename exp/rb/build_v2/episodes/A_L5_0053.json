@@ -6,14 +6,14 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "five thousand",
+  "amount": "eight hundred",
   "from_cur": "dollars",
   "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "slots_final": {
-  "amount": "five thousand",
+  "amount": "three thousand",
   "from_cur": "dollars",
   "to_cur": "yen",
   "from_acct": "checking",
@@ -21,15 +21,22 @@
  },
  "revisions": [
   {
-   "slot": "to_acct",
-   "old": "savings",
-   "new": "rent account",
+   "slot": "amount",
+   "old": "eight hundred",
+   "new": "three thousand",
    "by": "user",
    "kind": "default",
-   "gap": 2.513
+   "gap": 2.345
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "amount": 3000,
+  "from_cur": "USD",
+  "to_cur": "JPY",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
@@ -37,15 +44,15 @@
    "role": "user",
    "voice": "cv07",
    "lang": "en",
-   "text": "Get a quote for five thousand dollars to yen, then transfer five thousand from checking to savings.",
+   "text": "Get a quote for eight hundred dollars to yen, then transfer eight hundred from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv07",
    "lang": "en",
-   "text": "Wait — make it rent account.",
-   "gap_before": 2.513
+   "text": "Wait — make it three thousand.",
+   "gap_before": 2.345
   }
  ],
  "events": [],
@@ -63,9 +70,9 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": "five thousand",
-    "from_cur": "dollars",
-    "to_cur": "yen"
+    "amount": 3000,
+    "from_cur": "USD",
+    "to_cur": "JPY"
    }
   },
   {
@@ -73,20 +80,20 @@
    "args": {
     "from_acct": "checking",
     "to_acct": "rent account",
-    "amount": "five thousand"
+    "amount": 3000
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GE5d1d66": {
-   "amount": "five thousand",
-   "from_cur": "dollars",
-   "to_cur": "yen"
+   "amount": 3000,
+   "from_cur": "USD",
+   "to_cur": "JPY"
   },
   "transfer_funds#TR839d73": {
    "from_acct": "checking",
    "to_acct": "rent account",
-   "amount": "five thousand"
+   "amount": 3000
   }
  },
  "voices": {
@@ -94,22 +101,22 @@
   "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.18,
+   "t_end": 5.7,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.693,
-   "t_end": 9.893,
+   "t_start": 8.045,
+   "t_end": 9.485,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.513
+  2.345
  ]
 }

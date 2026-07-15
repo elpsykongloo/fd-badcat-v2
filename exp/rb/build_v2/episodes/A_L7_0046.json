@@ -6,46 +6,53 @@
  "lang": "zh",
  "scenario": "hou_multi",
  "slots": {
-  "city": "厦门",
+  "city": "青岛",
   "beds": "两居",
-  "max_rent": "八千",
-  "from_addr": "中关村",
+  "max_rent": "六千",
+  "from_addr": "望京",
   "to_addr": "西二旗"
  },
  "slots_final": {
   "city": "厦门",
   "beds": "两居",
-  "max_rent": "八千",
-  "from_addr": "中关村",
-  "to_addr": "国贸"
+  "max_rent": "六千",
+  "from_addr": "望京",
+  "to_addr": "西二旗"
  },
  "revisions": [
   {
-   "slot": "to_addr",
-   "old": "西二旗",
-   "new": "国贸",
+   "slot": "city",
+   "old": "青岛",
+   "new": "厦门",
    "by": "user",
    "kind": "default",
-   "gap": 2.478
+   "gap": 1.844
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "厦门",
+  "beds": 2,
+  "max_rent": 6000,
+  "from_addr": "望京",
+  "to_addr": "西二旗"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "在厦门找两居、不超过八千的房子，再算下从中关村到西二旗的通勤时间。",
+   "text": "在青岛找两居、不超过六千的房子，再算下从望京到西二旗的通勤时间。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "等等，改成国贸。",
-   "gap_before": 2.478
+   "text": "等等，改成厦门。",
+   "gap_before": 1.844
   }
  ],
  "events": [],
@@ -64,50 +71,50 @@
    "fn": "search_rentals",
    "args": {
     "city": "厦门",
-    "beds": "两居",
-    "max_rent": "八千"
+    "beds": 2,
+    "max_rent": 6000
    }
   },
   {
    "fn": "get_commute_time",
    "args": {
-    "from_addr": "中关村",
-    "to_addr": "国贸"
+    "from_addr": "望京",
+    "to_addr": "西二旗"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SEfdf513": {
    "city": "厦门",
-   "beds": "两居",
-   "max_rent": "八千"
+   "beds": 2,
+   "max_rent": 6000
   },
   "get_commute_time#GE2b4471": {
-   "from_addr": "中关村",
-   "to_addr": "国贸"
+   "from_addr": "望京",
+   "to_addr": "西二旗"
   }
  },
  "voices": {
-  "user": "cv07",
+  "user": "cv09",
   "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 10.1,
+   "t_end": 8.18,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 12.578,
-   "t_end": 14.178,
+   "t_start": 10.024,
+   "t_end": 12.104,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.478
+  1.844
  ]
 }

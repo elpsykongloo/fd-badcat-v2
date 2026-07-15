@@ -22,7 +22,7 @@
    "new": "跑步鞋",
    "by": "user",
    "kind": "default",
-   "gap": 0.876
+   "gap": 0.925
   },
   {
    "slot": "qty",
@@ -30,33 +30,38 @@
    "new": "一",
    "by": "user",
    "kind": "second",
-   "gap": 2.58
+   "gap": 2.869
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "query": "跑步鞋",
+  "qty": 1,
+  "address": "海淀区学院路一号"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv09",
    "lang": "zh",
    "text": "帮我搜保温杯，加两件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv09",
    "lang": "zh",
    "text": "等等，改成跑步鞋。",
-   "gap_before": 0.876
+   "gap_before": 0.925
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv09",
    "lang": "zh",
    "text": "还有，再改一下，要一。",
-   "gap_before": 2.58
+   "gap_before": 2.869
   }
  ],
  "events": [],
@@ -82,7 +87,7 @@
    "fn": "add_item",
    "args": {
     "item_id": "SE8b1e83",
-    "qty": "一"
+    "qty": 1
    }
   },
   {
@@ -99,7 +104,7 @@
   },
   "add_item#AD67a6f0": {
    "item_id": "SE8b1e83",
-   "qty": "一"
+   "qty": 1
   },
   "place_order#PL6d0a66": {
    "cart_id": "AD67a6f0",
@@ -107,33 +112,33 @@
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv05"
+  "user": "cv09",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.3,
+   "t_end": 5.38,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.176,
-   "t_end": 10.016,
+   "t_start": 6.305,
+   "t_end": 8.465,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 12.596,
-   "t_end": 16.356,
+   "t_start": 11.334,
+   "t_end": 15.334,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.876,
-  2.58
+  0.925,
+  2.869
  ]
 }

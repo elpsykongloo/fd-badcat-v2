@@ -19,31 +19,37 @@
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "city": "青岛",
+  "beds": 1,
+  "max_rent": 6000,
+  "slot": "周六上午"
+ },
  "l8_action": "cancel",
  "cancelled": true,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv06",
    "lang": "zh",
    "text": "在青岛找一居、租金不超过六千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv06",
    "lang": "zh",
    "text": "算了，先别办了。",
-   "at_after_eou": 1.911
+   "at_after_eou": 2.026
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.243,
+   "offset": 0.435,
    "action": "cancel",
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv06",
    "text": "算了，先别办了。"
   }
  ],
@@ -60,9 +66,9 @@
  "gold_calls": [],
  "gold_state": {},
  "voices": {
-  "user": "cv08",
-  "bystander": "cv07"
+  "user": "cv06",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

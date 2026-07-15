@@ -6,14 +6,14 @@
  "lang": "en",
  "scenario": "travel_hotel",
  "slots": {
-  "city": "Miami",
+  "city": "Denver",
   "checkin": "May third",
-  "nights": "two"
+  "nights": "three"
  },
  "slots_final": {
-  "city": "Miami",
+  "city": "Denver",
   "checkin": "May tenth",
-  "nights": "two"
+  "nights": "three"
  },
  "revisions": [
   {
@@ -22,26 +22,31 @@
    "new": "May tenth",
    "by": "user",
    "kind": "default",
-   "gap": 0.409
+   "gap": 0.212
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "Denver",
+  "checkin": "May 10",
+  "nights": 3
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Book me a hotel in Miami, checking in May third, for two nights.",
+   "text": "Book me a hotel in Denver, checking in May third, for three nights.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv03",
    "lang": "en",
    "text": "Wait — make it May tenth.",
-   "gap_before": 0.409
+   "gap_before": 0.212
   }
  ],
  "events": [],
@@ -58,40 +63,40 @@
   {
    "fn": "reserve_hotel",
    "args": {
-    "city": "Miami",
-    "checkin": "May tenth",
-    "nights": "two"
+    "city": "Denver",
+    "checkin": "May 10",
+    "nights": 3
    }
   }
  ],
  "gold_state": {
   "reserve_hotel#REeb8eb3": {
-   "city": "Miami",
-   "checkin": "May tenth",
-   "nights": "two"
+   "city": "Denver",
+   "checkin": "May 10",
+   "nights": 3
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv08"
+  "user": "cv03",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 4.5,
+   "t_end": 5.22,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 4.909,
-   "t_end": 6.989,
+   "t_start": 5.432,
+   "t_end": 8.072,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.409
+  0.212
  ]
 }

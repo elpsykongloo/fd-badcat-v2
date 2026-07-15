@@ -6,35 +6,41 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "青岛",
+  "city": "杭州",
   "beds": "一居",
-  "max_rent": "八千",
-  "slot": "周日下午"
+  "max_rent": "六千",
+  "slot": "周六上午"
  },
  "slots_final": {
-  "city": "青岛",
+  "city": "杭州",
   "beds": "一居",
-  "max_rent": "八千",
-  "slot": "周日下午"
+  "max_rent": "六千",
+  "slot": "周六上午"
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "city": "杭州",
+  "beds": 1,
+  "max_rent": 6000,
+  "slot": "周六上午"
+ },
  "l8_action": "progress",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "在青岛找一居、租金不超过八千的房子，约周日下午看房。",
+   "text": "在杭州找一居、租金不超过六千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv05",
    "lang": "zh",
    "text": "好了没？",
-   "at_after_eou": 2.289
+   "at_after_eou": 1.87
   }
  ],
  "events": [],
@@ -52,47 +58,47 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "青岛",
-    "beds": "一居",
-    "max_rent": "八千"
+    "city": "杭州",
+    "beds": 1,
+    "max_rent": 6000
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SEa8b786",
-    "slot": "周日下午"
+    "slot": "周六上午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SEa8b786": {
-   "city": "青岛",
-   "beds": "一居",
-   "max_rent": "八千"
+   "city": "杭州",
+   "beds": 1,
+   "max_rent": 6000
   },
   "book_viewing#BObbe089": {
    "listing_id": "SEa8b786",
-   "slot": "周日下午"
+   "slot": "周六上午"
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv02"
+  "user": "cv05",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.7,
+   "t_end": 5.38,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.629,
-   "t_end": 11.269,
+   "t_start": 7.89,
+   "t_end": 9.01,
    "scheduled": "lifecycle_nominal"
   }
  ],

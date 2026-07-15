@@ -6,30 +6,37 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Portland",
-  "date": "May third",
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "June first",
   "seat_class": "first class",
   "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Seattle",
-  "destination": "Denver",
-  "date": "May third",
-  "seat_class": "first class",
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "June first",
+  "seat_class": "coach",
   "passenger": "Jordan Lee"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Portland",
-   "new": "Denver",
+   "slot": "seat_class",
+   "old": "first class",
+   "new": "coach",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.691
+   "gap": 0.696
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "June 1",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
@@ -37,15 +44,15 @@
    "role": "user",
    "voice": "cv03",
    "lang": "en",
-   "text": "Find a train from Seattle to Portland on May third, hold a first class seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Chicago to Austin on June first, hold a first class seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv03",
    "lang": "en",
-   "text": "Denver — change it to Denver.",
-   "gap_before": 0.691
+   "text": "coach — change it to coach.",
+   "gap_before": 0.696
   }
  ],
  "events": [],
@@ -64,16 +71,16 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
-    "destination": "Denver",
-    "date": "May third"
+    "origin": "Chicago",
+    "destination": "Austin",
+    "date": "June 1"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE020609",
-    "seat_class": "first class"
+    "seat_class": "coach"
    }
   },
   {
@@ -86,13 +93,13 @@
  ],
  "gold_state": {
   "search_trains#SE020609": {
-   "origin": "Seattle",
-   "destination": "Denver",
-   "date": "May third"
+   "origin": "Chicago",
+   "destination": "Austin",
+   "date": "June 1"
   },
   "hold_seat#HO50a6c0": {
    "train_id": "SE020609",
-   "seat_class": "first class"
+   "seat_class": "coach"
   },
   "purchase_ticket#PUf2404d": {
    "hold_id": "HO50a6c0",
@@ -101,25 +108,25 @@
  },
  "voices": {
   "user": "cv03",
-  "bystander": "cv08"
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.66,
+   "t_end": 8.9,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.351,
-   "t_end": 11.271,
+   "t_start": 9.596,
+   "t_end": 12.156,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.691
+  0.696
  ]
 }

@@ -6,14 +6,14 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "eight hundred",
+  "amount": "three thousand",
   "from_cur": "dollars",
   "to_cur": "yen",
   "from_acct": "checking",
   "to_acct": "savings"
  },
  "slots_final": {
-  "amount": "eight hundred",
+  "amount": "three thousand",
   "from_cur": "dollars",
   "to_cur": "yen",
   "from_acct": "checking",
@@ -21,6 +21,13 @@
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "amount": 3000,
+  "from_cur": "USD",
+  "to_cur": "JPY",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
  "l8_action": "progress",
  "cancelled": false,
  "pieces": [
@@ -28,7 +35,7 @@
    "role": "user",
    "voice": "cv03",
    "lang": "en",
-   "text": "Get a quote for eight hundred dollars to yen, then transfer eight hundred from checking to savings.",
+   "text": "Get a quote for three thousand dollars to yen, then transfer three thousand from checking to savings.",
    "gap_before": 0.5
   },
   {
@@ -36,7 +43,7 @@
    "voice": "cv03",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 1.997
+   "at_after_eou": 1.98
   }
  ],
  "events": [],
@@ -54,9 +61,9 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": "eight hundred",
-    "from_cur": "dollars",
-    "to_cur": "yen"
+    "amount": 3000,
+    "from_cur": "USD",
+    "to_cur": "JPY"
    }
   },
   {
@@ -64,39 +71,39 @@
    "args": {
     "from_acct": "checking",
     "to_acct": "savings",
-    "amount": "eight hundred"
+    "amount": 3000
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GEb93fa1": {
-   "amount": "eight hundred",
-   "from_cur": "dollars",
-   "to_cur": "yen"
+   "amount": 3000,
+   "from_cur": "USD",
+   "to_cur": "JPY"
   },
   "transfer_funds#TR02994e": {
    "from_acct": "checking",
    "to_acct": "savings",
-   "amount": "eight hundred"
+   "amount": 3000
   }
  },
  "voices": {
   "user": "cv03",
-  "bystander": "cv09"
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.66,
+   "t_end": 6.98,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.297,
-   "t_end": 10.577,
+   "t_start": 9.6,
+   "t_end": 10.88,
    "scheduled": "lifecycle_nominal"
   }
  ],

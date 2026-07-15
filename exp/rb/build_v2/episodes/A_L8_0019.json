@@ -6,21 +6,28 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Portland",
-  "date": "May third",
+  "origin": "Seattle",
+  "destination": "Denver",
+  "date": "May eighth",
   "seat_class": "first class",
-  "passenger": "Sam Rivera"
+  "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Chicago",
-  "destination": "Portland",
-  "date": "May third",
+  "origin": "Seattle",
+  "destination": "Denver",
+  "date": "May eighth",
   "seat_class": "first class",
-  "passenger": "Sam Rivera"
+  "passenger": "Jordan Lee"
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Denver",
+  "date": "May 8",
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
+ },
  "l8_action": "cancel",
  "cancelled": true,
  "pieces": [
@@ -28,7 +35,7 @@
    "role": "user",
    "voice": "cv06",
    "lang": "en",
-   "text": "Find a train from Chicago to Portland on May third, hold a first class seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Seattle to Denver on May eighth, hold a first class seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
@@ -36,7 +43,7 @@
    "voice": "cv06",
    "lang": "en",
    "text": "Actually, hold off, don't do it yet.",
-   "at_after_eou": 1.858
+   "at_after_eou": 1.882
   }
  ],
  "events": [],
@@ -58,18 +65,18 @@
   "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.42,
+   "t_end": 7.78,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.918,
-   "t_end": 16.518,
+   "t_start": 10.302,
+   "t_end": 15.902,
    "scheduled": "lifecycle_nominal"
   }
  ],

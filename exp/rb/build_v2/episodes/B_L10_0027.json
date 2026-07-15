@@ -6,60 +6,67 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Portland",
-  "date": "May third",
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "June first",
   "seat_class": "coach",
-  "passenger": "Alex Chen"
+  "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Seattle",
-  "destination": "Portland",
-  "date": "May third",
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "June first",
   "seat_class": "coach",
-  "passenger": "Alex Chen"
+  "passenger": "Jordan Lee"
  },
  "revisions": [],
  "bystander": {
   "kind": "command",
-  "other": "Denver",
+  "other": "May eighth",
   "state": "inflight",
-  "frac": 0.368
+  "frac": 0.577
+ },
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "June 1",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Find a train from Seattle to Portland on May third, hold a coach seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Chicago to Austin on June first, hold a coach seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv03",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Change it to Denver.",
-   "at_after_eou": 1.855
+   "text": "Change it to May eighth.",
+   "at_after_eou": 1.978
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.278,
+   "offset": 0.645,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv03",
-   "text": "Change it to Denver."
+   "voice": "cv08",
+   "text": "Change it to May eighth."
   },
   {
    "state": "tts",
-   "offset": 0.579,
+   "offset": 0.377,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv03",
-   "text": "Change it to Denver."
+   "voice": "cv08",
+   "text": "Change it to May eighth."
   }
  ],
  "profile": "default",
@@ -77,9 +84,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
-    "destination": "Portland",
-    "date": "May third"
+    "origin": "Chicago",
+    "destination": "Austin",
+    "date": "June 1"
    }
   },
   {
@@ -93,15 +100,15 @@
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HOc81dd0",
-    "passenger": "Alex Chen"
+    "passenger": "Jordan Lee"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEab44bb": {
-   "origin": "Seattle",
-   "destination": "Portland",
-   "date": "May third"
+   "origin": "Chicago",
+   "destination": "Austin",
+   "date": "June 1"
   },
   "hold_seat#HOc81dd0": {
    "train_id": "SEab44bb",
@@ -109,13 +116,13 @@
   },
   "purchase_ticket#PU8687b4": {
    "hold_id": "HOc81dd0",
-   "passenger": "Alex Chen"
+   "passenger": "Jordan Lee"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv03"
+  "user": "cv09",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

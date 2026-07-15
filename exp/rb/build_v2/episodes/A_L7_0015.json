@@ -6,46 +6,53 @@
  "lang": "en",
  "scenario": "travel_multi",
  "slots": {
-  "origin": "Boston",
-  "destination": "Denver",
-  "date": "May eighth",
+  "origin": "Chicago",
+  "destination": "Portland",
+  "date": "May third",
   "country": "Japan",
   "nationality": "American"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Denver",
-  "date": "May eighth",
-  "country": "Thailand",
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May third",
+  "country": "Japan",
   "nationality": "American"
  },
  "revisions": [
   {
-   "slot": "country",
-   "old": "Japan",
-   "new": "Thailand",
+   "slot": "destination",
+   "old": "Portland",
+   "new": "Atlanta",
    "by": "user",
    "kind": "default",
-   "gap": 2.131
+   "gap": 2.451
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May 3",
+  "country": "Japan",
+  "nationality": "American"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Look up trains from Boston to Denver on May eighth, and also check if American citizens need a visa for Japan.",
+   "text": "Look up trains from Chicago to Portland on May third, and also check if American citizens need a visa for Japan.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Wait — make it Thailand.",
-   "gap_before": 2.131
+   "text": "Wait — make it Atlanta.",
+   "gap_before": 2.451
   }
  ],
  "events": [],
@@ -63,51 +70,51 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
-    "destination": "Denver",
-    "date": "May eighth"
+    "origin": "Chicago",
+    "destination": "Atlanta",
+    "date": "May 3"
    }
   },
   {
    "fn": "check_visa_rule",
    "args": {
-    "country": "Thailand",
+    "country": "Japan",
     "nationality": "American"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE49d0a7": {
-   "origin": "Boston",
-   "destination": "Denver",
-   "date": "May eighth"
+   "origin": "Chicago",
+   "destination": "Atlanta",
+   "date": "May 3"
   },
   "check_visa_rule#CH4a1211": {
-   "country": "Thailand",
+   "country": "Japan",
    "nationality": "American"
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv03"
+  "user": "cv08",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.62,
+   "t_end": 7.46,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.751,
-   "t_end": 11.591,
+   "t_start": 9.911,
+   "t_end": 12.951,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.131
+  2.451
  ]
 }

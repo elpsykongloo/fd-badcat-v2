@@ -7,45 +7,52 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Chicago",
-  "destination": "Austin",
+  "destination": "Atlanta",
   "date": "May third",
-  "seat_class": "coach",
+  "seat_class": "first class",
   "passenger": "Jordan Lee"
  },
  "slots_final": {
   "origin": "Chicago",
-  "destination": "Austin",
+  "destination": "Atlanta",
   "date": "May third",
-  "seat_class": "coach",
+  "seat_class": "first class",
   "passenger": "Jordan Lee"
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May 3",
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
+ },
  "l8_action": "progress",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Find a train from Chicago to Austin on May third, hold a coach seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Chicago to Atlanta on May third, hold a first class seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv02",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 1.829
+   "at_after_eou": 1.896
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.453,
+   "offset": 0.36,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv02",
    "text": "Any progress?"
   }
  ],
@@ -65,15 +72,15 @@
    "fn": "search_trains",
    "args": {
     "origin": "Chicago",
-    "destination": "Austin",
-    "date": "May third"
+    "destination": "Atlanta",
+    "date": "May 3"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SEe83b21",
-    "seat_class": "coach"
+    "seat_class": "first class"
    }
   },
   {
@@ -87,12 +94,12 @@
  "gold_state": {
   "search_trains#SEe83b21": {
    "origin": "Chicago",
-   "destination": "Austin",
-   "date": "May third"
+   "destination": "Atlanta",
+   "date": "May 3"
   },
   "hold_seat#HOf7d5d8": {
    "train_id": "SEe83b21",
-   "seat_class": "coach"
+   "seat_class": "first class"
   },
   "purchase_ticket#PU6d9266": {
    "hold_id": "HOf7d5d8",
@@ -100,9 +107,9 @@
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv01"
+  "user": "cv02",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

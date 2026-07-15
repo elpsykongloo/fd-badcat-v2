@@ -6,44 +6,50 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "厦门",
-  "beds": "两居",
-  "max_rent": "六千",
+  "city": "成都",
+  "beds": "一居",
+  "max_rent": "八千",
   "slot": "周六上午"
  },
  "slots_final": {
   "city": "成都",
-  "beds": "两居",
+  "beds": "一居",
   "max_rent": "六千",
   "slot": "周六上午"
  },
  "revisions": [
   {
-   "slot": "city",
-   "old": "厦门",
-   "new": "成都",
+   "slot": "max_rent",
+   "old": "八千",
+   "new": "六千",
    "by": "user",
    "kind": "default",
-   "gap": 2.794
+   "gap": 2.771
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "成都",
+  "beds": 1,
+  "max_rent": 6000,
+  "slot": "周六上午"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "在厦门找两居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在成都找一居、租金不超过八千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "等等，改成成都。",
-   "gap_before": 2.794
+   "text": "等等，改成六千。",
+   "gap_before": 2.771
   }
  ],
  "events": [],
@@ -62,8 +68,8 @@
    "fn": "search_rentals",
    "args": {
     "city": "成都",
-    "beds": "两居",
-    "max_rent": "六千"
+    "beds": 1,
+    "max_rent": 6000
    }
   },
   {
@@ -77,8 +83,8 @@
  "gold_state": {
   "search_rentals#SEa4a72e": {
    "city": "成都",
-   "beds": "两居",
-   "max_rent": "六千"
+   "beds": 1,
+   "max_rent": 6000
   },
   "book_viewing#BO3178b1": {
    "listing_id": "SEa4a72e",
@@ -86,26 +92,26 @@
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv01"
+  "user": "cv01",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 5.54,
+   "t_end": 6.1,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.334,
-   "t_end": 9.854,
+   "t_start": 8.871,
+   "t_end": 11.111,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.794
+  2.771
  ]
 }

@@ -6,51 +6,58 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Denver",
+  "origin": "Seattle",
+  "destination": "Austin",
   "date": "June first",
-  "seat_class": "first class",
-  "passenger": "Alex Chen"
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Chicago",
-  "destination": "Denver",
+  "origin": "Seattle",
+  "destination": "Austin",
   "date": "June first",
-  "seat_class": "first class",
-  "passenger": "Alex Chen"
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
  },
  "revisions": [],
  "bystander": {
   "kind": "irrelevant",
-  "other": "business",
+  "other": "first class",
   "state": "inflight",
-  "frac": 0.385
+  "frac": 0.76
+ },
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "June 1",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Find a train from Chicago to Denver on June first, hold a first class seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Seattle to Austin on June first, hold a coach seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv03",
+   "voice": "cv01",
    "lang": "en",
    "text": "What do you want for dinner? Let's order in.",
-   "at_after_eou": 1.805
+   "at_after_eou": 1.965
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.309,
+   "offset": 0.341,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv03",
+   "voice": "cv01",
    "text": "What do you want for dinner? Let's order in."
   }
  ],
@@ -69,45 +76,45 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
-    "destination": "Denver",
-    "date": "June first"
+    "origin": "Seattle",
+    "destination": "Austin",
+    "date": "June 1"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SEa76b15",
-    "seat_class": "first class"
+    "seat_class": "coach"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO70a29a",
-    "passenger": "Alex Chen"
+    "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEa76b15": {
-   "origin": "Chicago",
-   "destination": "Denver",
-   "date": "June first"
+   "origin": "Seattle",
+   "destination": "Austin",
+   "date": "June 1"
   },
   "hold_seat#HO70a29a": {
    "train_id": "SEa76b15",
-   "seat_class": "first class"
+   "seat_class": "coach"
   },
   "purchase_ticket#PU655f46": {
    "hold_id": "HO70a29a",
-   "passenger": "Alex Chen"
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv03"
+  "user": "cv08",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

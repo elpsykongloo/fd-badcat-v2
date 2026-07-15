@@ -7,48 +7,54 @@
  "scenario": "hou_chain",
  "slots": {
   "city": "青岛",
-  "beds": "一居",
+  "beds": "两居",
   "max_rent": "八千",
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "slots_final": {
   "city": "青岛",
-  "beds": "一居",
+  "beds": "两居",
   "max_rent": "八千",
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "revisions": [],
  "bystander": {
   "kind": "irrelevant",
-  "other": "两居",
+  "other": "六千",
   "state": "inflight",
-  "frac": 0.499
+  "frac": 0.501
+ },
+ "slots_canon": {
+  "city": "青岛",
+  "beds": 2,
+  "max_rent": 8000,
+  "slot": "周日下午"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "在青岛找一居、租金不超过八千的房子，约周六上午看房。",
+   "text": "在青岛找两居、租金不超过八千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv06",
+   "voice": "cv09",
    "lang": "zh",
    "text": "今晚想吃什么？我们点外卖吧。",
-   "at_after_eou": 2.05
+   "at_after_eou": 2.052
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.124,
+   "offset": 0.251,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv06",
+   "voice": "cv09",
    "text": "今晚想吃什么？我们点外卖吧。"
   }
  ],
@@ -67,33 +73,33 @@
    "fn": "search_rentals",
    "args": {
     "city": "青岛",
-    "beds": "一居",
-    "max_rent": "八千"
+    "beds": 2,
+    "max_rent": 8000
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SE010b3f",
-    "slot": "周六上午"
+    "slot": "周日下午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SE010b3f": {
    "city": "青岛",
-   "beds": "一居",
-   "max_rent": "八千"
+   "beds": 2,
+   "max_rent": 8000
   },
   "book_viewing#BOe904d2": {
    "listing_id": "SE010b3f",
-   "slot": "周六上午"
+   "slot": "周日下午"
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv06"
+  "user": "cv06",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

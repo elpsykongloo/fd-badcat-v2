@@ -6,30 +6,37 @@
  "lang": "zh",
  "scenario": "hou_multi",
  "slots": {
-  "city": "青岛",
-  "beds": "两居",
-  "max_rent": "八千",
-  "from_addr": "望京",
+  "city": "杭州",
+  "beds": "一居",
+  "max_rent": "六千",
+  "from_addr": "中关村",
   "to_addr": "国贸"
  },
  "slots_final": {
-  "city": "青岛",
-  "beds": "两居",
-  "max_rent": "八千",
-  "from_addr": "望京",
-  "to_addr": "西二旗"
+  "city": "厦门",
+  "beds": "一居",
+  "max_rent": "六千",
+  "from_addr": "中关村",
+  "to_addr": "国贸"
  },
  "revisions": [
   {
-   "slot": "to_addr",
-   "old": "国贸",
-   "new": "西二旗",
+   "slot": "city",
+   "old": "杭州",
+   "new": "厦门",
    "by": "user",
    "kind": "default",
-   "gap": 2.438
+   "gap": 1.911
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "厦门",
+  "beds": 1,
+  "max_rent": 6000,
+  "from_addr": "中关村",
+  "to_addr": "国贸"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
@@ -37,15 +44,15 @@
    "role": "user",
    "voice": "cv03",
    "lang": "zh",
-   "text": "在青岛找两居、不超过八千的房子，再算下从望京到国贸的通勤时间。",
+   "text": "在杭州找一居、不超过六千的房子，再算下从中关村到国贸的通勤时间。",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv03",
    "lang": "zh",
-   "text": "等等，改成西二旗。",
-   "gap_before": 2.438
+   "text": "等等，改成厦门。",
+   "gap_before": 1.911
   }
  ],
  "events": [],
@@ -63,51 +70,51 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "青岛",
-    "beds": "两居",
-    "max_rent": "八千"
+    "city": "厦门",
+    "beds": 1,
+    "max_rent": 6000
    }
   },
   {
    "fn": "get_commute_time",
    "args": {
-    "from_addr": "望京",
-    "to_addr": "西二旗"
+    "from_addr": "中关村",
+    "to_addr": "国贸"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SEfb7c65": {
-   "city": "青岛",
-   "beds": "两居",
-   "max_rent": "八千"
+   "city": "厦门",
+   "beds": 1,
+   "max_rent": 6000
   },
   "get_commute_time#GE522710": {
-   "from_addr": "望京",
-   "to_addr": "西二旗"
+   "from_addr": "中关村",
+   "to_addr": "国贸"
   }
  },
  "voices": {
   "user": "cv03",
-  "bystander": "cv09"
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.82,
+   "t_end": 6.98,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.258,
-   "t_end": 11.258,
+   "t_start": 8.891,
+   "t_end": 10.331,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.438
+  1.911
  ]
 }

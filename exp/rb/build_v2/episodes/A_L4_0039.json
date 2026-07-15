@@ -7,45 +7,52 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Boston",
-  "destination": "Portland",
-  "date": "May eighth",
-  "seat_class": "first class",
+  "destination": "Atlanta",
+  "date": "May third",
+  "seat_class": "business",
   "passenger": "Jordan Lee"
  },
  "slots_final": {
   "origin": "Boston",
-  "destination": "Portland",
+  "destination": "Atlanta",
   "date": "May third",
   "seat_class": "first class",
   "passenger": "Jordan Lee"
  },
  "revisions": [
   {
-   "slot": "date",
-   "old": "May eighth",
-   "new": "May third",
+   "slot": "seat_class",
+   "old": "business",
+   "new": "first class",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.986
+   "gap": 0.862
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "May 3",
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Find a train from Boston to Portland on May eighth, hold a first class seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Boston to Atlanta on May third, hold a business seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv08",
    "lang": "en",
-   "text": "May third — change it to May third.",
-   "gap_before": 0.986
+   "text": "first class — change it to first class.",
+   "gap_before": 0.862
   }
  ],
  "events": [],
@@ -65,8 +72,8 @@
    "fn": "search_trains",
    "args": {
     "origin": "Boston",
-    "destination": "Portland",
-    "date": "May third"
+    "destination": "Atlanta",
+    "date": "May 3"
    }
   },
   {
@@ -87,8 +94,8 @@
  "gold_state": {
   "search_trains#SE1433aa": {
    "origin": "Boston",
-   "destination": "Portland",
-   "date": "May third"
+   "destination": "Atlanta",
+   "date": "May 3"
   },
   "hold_seat#HO3a9ddb": {
    "train_id": "SE1433aa",
@@ -100,26 +107,26 @@
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv04"
+  "user": "cv08",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.7,
+   "t_end": 10.5,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.686,
-   "t_end": 11.246,
+   "t_start": 11.362,
+   "t_end": 14.482,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.986
+  0.862
  ]
 }

@@ -9,41 +9,47 @@
   "city": "厦门",
   "beds": "两居",
   "max_rent": "八千",
-  "slot": "周日下午"
+  "slot": "周六上午"
  },
  "slots_final": {
   "city": "厦门",
   "beds": "两居",
   "max_rent": "八千",
-  "slot": "周日下午"
+  "slot": "周六上午"
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "city": "厦门",
+  "beds": 2,
+  "max_rent": 8000,
+  "slot": "周六上午"
+ },
  "l8_action": "progress",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "在厦门找两居、租金不超过八千的房子，约周日下午看房。",
+   "text": "在厦门找两居、租金不超过八千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv05",
    "lang": "zh",
    "text": "好了没？",
-   "at_after_eou": 1.849
+   "at_after_eou": 1.768
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.508,
+   "offset": 0.851,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv05",
    "text": "好了没？"
   }
  ],
@@ -62,33 +68,33 @@
    "fn": "search_rentals",
    "args": {
     "city": "厦门",
-    "beds": "两居",
-    "max_rent": "八千"
+    "beds": 2,
+    "max_rent": 8000
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SEa77e8b",
-    "slot": "周日下午"
+    "slot": "周六上午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SEa77e8b": {
    "city": "厦门",
-   "beds": "两居",
-   "max_rent": "八千"
+   "beds": 2,
+   "max_rent": 8000
   },
   "book_viewing#BO325f14": {
    "listing_id": "SEa77e8b",
-   "slot": "周日下午"
+   "slot": "周六上午"
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv09"
+  "user": "cv05",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

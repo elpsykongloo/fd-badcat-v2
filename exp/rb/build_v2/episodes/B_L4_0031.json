@@ -6,56 +6,63 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Portland",
+  "origin": "Boston",
+  "destination": "Denver",
   "date": "June first",
   "seat_class": "coach",
   "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Chicago",
+  "origin": "Boston",
   "destination": "Portland",
-  "date": "May third",
+  "date": "June first",
   "seat_class": "coach",
   "passenger": "Jordan Lee"
  },
  "revisions": [
   {
-   "slot": "date",
-   "old": "June first",
-   "new": "May third",
+   "slot": "destination",
+   "old": "Denver",
+   "new": "Portland",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.855
+   "gap": 0.843
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Boston",
+  "destination": "Portland",
+  "date": "June 1",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Find a train from Chicago to Portland on June first, hold a coach seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Boston to Denver on June first, hold a coach seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv02",
    "lang": "en",
-   "text": "May third — change it to May third.",
-   "gap_before": 0.855
+   "text": "Portland — change it to Portland.",
+   "gap_before": 0.843
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.312,
+   "offset": 0.118,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
-   "text": "May third — change it to May third."
+   "voice": "cv02",
+   "text": "Portland — change it to Portland."
   }
  ],
  "profile": "default",
@@ -73,9 +80,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
+    "origin": "Boston",
     "destination": "Portland",
-    "date": "May third"
+    "date": "June 1"
    }
   },
   {
@@ -95,9 +102,9 @@
  ],
  "gold_state": {
   "search_trains#SE737817": {
-   "origin": "Chicago",
+   "origin": "Boston",
    "destination": "Portland",
-   "date": "May third"
+   "date": "June 1"
   },
   "hold_seat#HO509c36": {
    "train_id": "SE737817",
@@ -109,9 +116,9 @@
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv09"
+  "user": "cv02",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

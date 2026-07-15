@@ -6,44 +6,50 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "青岛",
+  "city": "厦门",
   "beds": "两居",
   "max_rent": "六千",
   "slot": "周六上午"
  },
  "slots_final": {
-  "city": "青岛",
-  "beds": "两居",
-  "max_rent": "八千",
+  "city": "厦门",
+  "beds": "一居",
+  "max_rent": "六千",
   "slot": "周六上午"
  },
  "revisions": [
   {
-   "slot": "max_rent",
-   "old": "六千",
-   "new": "八千",
+   "slot": "beds",
+   "old": "两居",
+   "new": "一居",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.684
+   "gap": 0.696
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "厦门",
+  "beds": 1,
+  "max_rent": 6000,
+  "slot": "周六上午"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "在青岛找两居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在厦门找两居、租金不超过六千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "八千，改成八千。",
-   "gap_before": 0.684
+   "text": "一居，改成一居。",
+   "gap_before": 0.696
   }
  ],
  "events": [],
@@ -61,9 +67,9 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "青岛",
-    "beds": "两居",
-    "max_rent": "八千"
+    "city": "厦门",
+    "beds": 1,
+    "max_rent": 6000
    }
   },
   {
@@ -76,9 +82,9 @@
  ],
  "gold_state": {
   "search_rentals#SE2d5644": {
-   "city": "青岛",
-   "beds": "两居",
-   "max_rent": "八千"
+   "city": "厦门",
+   "beds": 1,
+   "max_rent": 6000
   },
   "book_viewing#BOcbe740": {
    "listing_id": "SE2d5644",
@@ -86,26 +92,26 @@
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv04"
+  "user": "cv06",
+  "bystander": "cv08"
  },
  "split": "dev",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.74,
+   "t_end": 7.86,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 7.424,
-   "t_end": 11.504,
+   "t_start": 8.556,
+   "t_end": 11.596,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.684
+  0.696
  ]
 }

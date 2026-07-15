@@ -13,7 +13,7 @@
   "to_acct": "savings"
  },
  "slots_final": {
-  "amount": "eight hundred",
+  "amount": "three thousand",
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
@@ -23,39 +23,46 @@
   {
    "slot": "amount",
    "old": "five thousand",
-   "new": "eight hundred",
+   "new": "three thousand",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.865
+   "gap": 1.065
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "amount": 3000,
+  "from_cur": "USD",
+  "to_cur": "EUR",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv01",
    "lang": "en",
    "text": "Get a quote for five thousand dollars to euros, then transfer five thousand from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv01",
    "lang": "en",
-   "text": "eight hundred — change it to eight hundred.",
-   "gap_before": 0.865
+   "text": "three thousand — change it to three thousand.",
+   "gap_before": 1.065
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.334,
+   "offset": 0.446,
    "action": "revise",
    "role": "user",
-   "voice": "cv04",
-   "text": "eight hundred — change it to eight hundred."
+   "voice": "cv01",
+   "text": "three thousand — change it to three thousand."
   }
  ],
  "profile": "default",
@@ -72,9 +79,9 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": "eight hundred",
-    "from_cur": "dollars",
-    "to_cur": "euros"
+    "amount": 3000,
+    "from_cur": "USD",
+    "to_cur": "EUR"
    }
   },
   {
@@ -82,26 +89,26 @@
    "args": {
     "from_acct": "checking",
     "to_acct": "savings",
-    "amount": "eight hundred"
+    "amount": 3000
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GE49f5c7": {
-   "amount": "eight hundred",
-   "from_cur": "dollars",
-   "to_cur": "euros"
+   "amount": 3000,
+   "from_cur": "USD",
+   "to_cur": "EUR"
   },
   "transfer_funds#TR8fca15": {
    "from_acct": "checking",
    "to_acct": "savings",
-   "amount": "eight hundred"
+   "amount": 3000
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv09"
+  "user": "cv01",
+  "bystander": "cv02"
  },
  "split": "dev",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

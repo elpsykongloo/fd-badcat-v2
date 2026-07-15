@@ -6,44 +6,50 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "青岛",
+  "city": "厦门",
   "beds": "两居",
-  "max_rent": "八千",
-  "slot": "周日下午"
+  "max_rent": "六千",
+  "slot": "周六上午"
  },
  "slots_final": {
   "city": "厦门",
-  "beds": "两居",
-  "max_rent": "八千",
-  "slot": "周日下午"
+  "beds": "一居",
+  "max_rent": "六千",
+  "slot": "周六上午"
  },
  "revisions": [
   {
-   "slot": "city",
-   "old": "青岛",
-   "new": "厦门",
+   "slot": "beds",
+   "old": "两居",
+   "new": "一居",
    "by": "user",
    "kind": "default",
    "gap": null
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "厦门",
+  "beds": 1,
+  "max_rent": 6000,
+  "slot": "周六上午"
+ },
  "l8_action": "revise",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "在青岛找两居、租金不超过八千的房子，约周日下午看房。",
+   "text": "在厦门找两居、租金不超过六千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "等等，改成厦门。",
-   "at_after_eou": 1.848
+   "text": "等等，改成一居。",
+   "at_after_eou": 1.75
   }
  ],
  "events": [],
@@ -62,46 +68,46 @@
    "fn": "search_rentals",
    "args": {
     "city": "厦门",
-    "beds": "两居",
-    "max_rent": "八千"
+    "beds": 1,
+    "max_rent": 6000
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SE4f0630",
-    "slot": "周日下午"
+    "slot": "周六上午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SE4f0630": {
    "city": "厦门",
-   "beds": "两居",
-   "max_rent": "八千"
+   "beds": 1,
+   "max_rent": 6000
   },
   "book_viewing#BO759d98": {
    "listing_id": "SE4f0630",
-   "slot": "周日下午"
+   "slot": "周六上午"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv06"
+  "user": "cv03",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.42,
+   "t_end": 5.54,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.908,
-   "t_end": 14.348,
+   "t_start": 7.93,
+   "t_end": 9.29,
    "scheduled": "lifecycle_nominal"
   }
  ],

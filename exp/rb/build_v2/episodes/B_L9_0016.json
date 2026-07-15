@@ -15,19 +15,23 @@
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "item_id": "C330",
+  "qty": 1
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv07",
    "lang": "zh",
    "text": "把编号C330的商品加一件到购物车。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv07",
    "lang": "zh",
    "text": "好了没？",
    "at_after_eou": 13.382
@@ -36,10 +40,10 @@
  "events": [
   {
    "state": "inflight",
-   "offset": 0.585,
+   "offset": 0.651,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv07",
    "text": "好了没？"
   }
  ],
@@ -57,20 +61,20 @@
    "fn": "add_item",
    "args": {
     "item_id": "C330",
-    "qty": "一"
+    "qty": 1
    }
   }
  ],
  "gold_state": {
   "add_item#AD9ac1cd": {
    "item_id": "C330",
-   "qty": "一"
+   "qty": 1
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv05"
+  "user": "cv07",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

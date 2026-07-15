@@ -6,16 +6,16 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "three thousand",
+  "amount": "five thousand",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "savings"
  },
  "slots_final": {
-  "amount": "three thousand",
+  "amount": "five thousand",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "savings"
  },
@@ -24,24 +24,31 @@
   "kind": "irrelevant",
   "other": "eight hundred",
   "state": "inflight",
-  "frac": 0.695
+  "frac": 0.542
+ },
+ "slots_canon": {
+  "amount": 5000,
+  "from_cur": "USD",
+  "to_cur": "EUR",
+  "from_acct": "checking",
+  "to_acct": "savings"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Get a quote for three thousand dollars to yen, then transfer three thousand from checking to savings.",
+   "text": "Get a quote for five thousand dollars to euros, then transfer five thousand from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv05",
+   "voice": "cv06",
    "lang": "en",
    "text": "What do you want for dinner? Let's order in.",
-   "at_after_eou": 2.051
+   "at_after_eou": 1.96
   }
  ],
  "events": [],
@@ -59,9 +66,9 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": "three thousand",
-    "from_cur": "dollars",
-    "to_cur": "yen"
+    "amount": 5000,
+    "from_cur": "USD",
+    "to_cur": "EUR"
    }
   },
   {
@@ -69,39 +76,39 @@
    "args": {
     "from_acct": "checking",
     "to_acct": "savings",
-    "amount": "three thousand"
+    "amount": 5000
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GEc6177f": {
-   "amount": "three thousand",
-   "from_cur": "dollars",
-   "to_cur": "yen"
+   "amount": 5000,
+   "from_cur": "USD",
+   "to_cur": "EUR"
   },
   "transfer_funds#TR3bdeaf": {
    "from_acct": "checking",
    "to_acct": "savings",
-   "amount": "three thousand"
+   "amount": 5000
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv05"
+  "user": "cv08",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.34,
+   "t_end": 6.42,
    "scheduled": "sequential"
   },
   {
    "role": "bystander",
-   "t_start": 9.031,
-   "t_end": 11.111,
+   "t_start": 9.02,
+   "t_end": 15.1,
    "scheduled": "lifecycle_nominal"
   }
  ],

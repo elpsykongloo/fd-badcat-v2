@@ -6,30 +6,37 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
+  "origin": "Seattle",
   "destination": "Denver",
-  "date": "June first",
-  "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "date": "May eighth",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Boston",
+  "origin": "Seattle",
   "destination": "Denver",
-  "date": "June first",
-  "seat_class": "first class",
-  "passenger": "Sam Rivera"
+  "date": "May eighth",
+  "seat_class": "business",
+  "passenger": "Alex Chen"
  },
  "revisions": [
   {
    "slot": "seat_class",
-   "old": "business",
-   "new": "first class",
+   "old": "first class",
+   "new": "business",
    "by": "user",
    "kind": "default",
-   "gap": 2.602
+   "gap": 0.828
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Denver",
+  "date": "May 8",
+  "seat_class": "business",
+  "passenger": "Alex Chen"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
@@ -37,15 +44,15 @@
    "role": "user",
    "voice": "cv03",
    "lang": "en",
-   "text": "Find a train from Boston to Denver on June first, hold a business seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Seattle to Denver on May eighth, hold a first class seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv03",
    "lang": "en",
-   "text": "Wait — make it first class.",
-   "gap_before": 2.602
+   "text": "Wait — make it business.",
+   "gap_before": 0.828
   }
  ],
  "events": [],
@@ -64,62 +71,62 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
+    "origin": "Seattle",
     "destination": "Denver",
-    "date": "June first"
+    "date": "May 8"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE335f38",
-    "seat_class": "first class"
+    "seat_class": "business"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HOafe73e",
-    "passenger": "Sam Rivera"
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE335f38": {
-   "origin": "Boston",
+   "origin": "Seattle",
    "destination": "Denver",
-   "date": "June first"
+   "date": "May 8"
   },
   "hold_seat#HOafe73e": {
    "train_id": "SE335f38",
-   "seat_class": "first class"
+   "seat_class": "business"
   },
   "purchase_ticket#PU449d41": {
    "hold_id": "HOafe73e",
-   "passenger": "Sam Rivera"
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
   "user": "cv03",
-  "bystander": "cv07"
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 9.14,
+   "t_end": 8.5,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 11.742,
-   "t_end": 14.462,
+   "t_start": 9.328,
+   "t_end": 11.328,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.602
+  0.828
  ]
 }

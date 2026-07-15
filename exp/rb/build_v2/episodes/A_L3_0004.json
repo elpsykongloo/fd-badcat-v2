@@ -6,42 +6,47 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "蓝牙耳机",
+  "query": "跑步鞋",
   "qty": "两",
-  "address": "浦东新区世纪大道八号"
+  "address": "海淀区学院路一号"
  },
  "slots_final": {
   "query": "蓝牙耳机",
-  "qty": "一",
-  "address": "浦东新区世纪大道八号"
+  "qty": "两",
+  "address": "海淀区学院路一号"
  },
  "revisions": [
   {
-   "slot": "qty",
-   "old": "两",
-   "new": "一",
+   "slot": "query",
+   "old": "跑步鞋",
+   "new": "蓝牙耳机",
    "by": "user",
    "kind": "default",
-   "gap": 0.67
+   "gap": 0.759
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "query": "蓝牙耳机",
+  "qty": 2,
+  "address": "海淀区学院路一号"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv02",
    "lang": "zh",
-   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜跑步鞋，加两件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv02",
    "lang": "zh",
-   "text": "等等，改成一。",
-   "gap_before": 0.67
+   "text": "等等，改成蓝牙耳机。",
+   "gap_before": 0.759
   }
  ],
  "events": [],
@@ -67,14 +72,14 @@
    "fn": "add_item",
    "args": {
     "item_id": "SEd7abe1",
-    "qty": "一"
+    "qty": 2
    }
   },
   {
    "fn": "place_order",
    "args": {
     "cart_id": "AD8f8c01",
-    "address": "浦东新区世纪大道八号"
+    "address": "海淀区学院路一号"
    }
   }
  ],
@@ -84,34 +89,34 @@
   },
   "add_item#AD8f8c01": {
    "item_id": "SEd7abe1",
-   "qty": "一"
+   "qty": 2
   },
   "place_order#PL083fcc": {
    "cart_id": "AD8f8c01",
-   "address": "浦东新区世纪大道八号"
+   "address": "海淀区学院路一号"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv04"
+  "user": "cv02",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.7,
+   "t_end": 8.58,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.37,
-   "t_end": 9.65,
+   "t_start": 9.339,
+   "t_end": 11.659,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.67
+  0.759
  ]
 }

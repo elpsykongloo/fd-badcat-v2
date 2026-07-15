@@ -7,78 +7,85 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Seattle",
-  "destination": "Austin",
+  "destination": "Portland",
   "date": "June first",
   "seat_class": "coach",
   "passenger": "Alex Chen"
  },
  "slots_final": {
   "origin": "Seattle",
-  "destination": "Portland",
+  "destination": "Atlanta",
   "date": "June first",
-  "seat_class": "first class",
+  "seat_class": "business",
   "passenger": "Alex Chen"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Austin",
-   "new": "Portland",
+   "old": "Portland",
+   "new": "Atlanta",
    "by": "user",
    "kind": "default",
-   "gap": 0.982
+   "gap": 0.899
   },
   {
    "slot": "seat_class",
    "old": "coach",
-   "new": "first class",
+   "new": "business",
    "by": "user",
    "kind": "second",
-   "gap": 2.93
+   "gap": 2.706
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "June 1",
+  "seat_class": "business",
+  "passenger": "Alex Chen"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Find a train from Seattle to Austin on June first, hold a coach seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Seattle to Portland on June first, hold a coach seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Wait — make it Portland.",
-   "gap_before": 0.982
+   "text": "Wait — make it Atlanta.",
+   "gap_before": 0.899
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Also, one more change — first class.",
-   "gap_before": 2.93
+   "text": "Also, one more change — business.",
+   "gap_before": 2.706
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.211,
+   "offset": 0.362,
    "action": "revise",
    "role": "user",
-   "voice": "cv03",
-   "text": "Wait — make it Portland."
+   "voice": "cv01",
+   "text": "Wait — make it Atlanta."
   },
   {
    "state": "committed",
-   "offset": 0.55,
+   "offset": 1.29,
    "action": "revise",
    "role": "user",
-   "voice": "cv03",
-   "text": "Wait — make it Portland."
+   "voice": "cv01",
+   "text": "Wait — make it Atlanta."
   }
  ],
  "profile": "default",
@@ -97,15 +104,15 @@
    "fn": "search_trains",
    "args": {
     "origin": "Seattle",
-    "destination": "Portland",
-    "date": "June first"
+    "destination": "Atlanta",
+    "date": "June 1"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SEe2b04b",
-    "seat_class": "first class"
+    "seat_class": "business"
    }
   },
   {
@@ -119,12 +126,12 @@
  "gold_state": {
   "search_trains#SEe2b04b": {
    "origin": "Seattle",
-   "destination": "Portland",
-   "date": "June first"
+   "destination": "Atlanta",
+   "date": "June 1"
   },
   "hold_seat#HO449853": {
    "train_id": "SEe2b04b",
-   "seat_class": "first class"
+   "seat_class": "business"
   },
   "purchase_ticket#PU196105": {
    "hold_id": "HO449853",
@@ -132,9 +139,9 @@
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv04"
+  "user": "cv01",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

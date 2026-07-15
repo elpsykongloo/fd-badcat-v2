@@ -7,45 +7,52 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Seattle",
-  "destination": "Austin",
-  "date": "June first",
+  "destination": "Denver",
+  "date": "May eighth",
   "seat_class": "business",
   "passenger": "Jordan Lee"
  },
  "slots_final": {
   "origin": "Seattle",
-  "destination": "Austin",
-  "date": "May eighth",
+  "destination": "Denver",
+  "date": "May third",
   "seat_class": "business",
   "passenger": "Jordan Lee"
  },
  "revisions": [
   {
    "slot": "date",
-   "old": "June first",
-   "new": "May eighth",
+   "old": "May eighth",
+   "new": "May third",
    "by": "user",
    "kind": "default",
-   "gap": 2.8
+   "gap": 2.562
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Denver",
+  "date": "May 3",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Find a train from Seattle to Austin on June first, hold a business seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Seattle to Denver on May eighth, hold a business seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Wait — make it May eighth.",
-   "gap_before": 2.8
+   "text": "Wait — make it May third.",
+   "gap_before": 2.562
   }
  ],
  "events": [],
@@ -65,8 +72,8 @@
    "fn": "search_trains",
    "args": {
     "origin": "Seattle",
-    "destination": "Austin",
-    "date": "May eighth"
+    "destination": "Denver",
+    "date": "May 3"
    }
   },
   {
@@ -87,8 +94,8 @@
  "gold_state": {
   "search_trains#SE2b13e3": {
    "origin": "Seattle",
-   "destination": "Austin",
-   "date": "May eighth"
+   "destination": "Denver",
+   "date": "May 3"
   },
   "hold_seat#HO93dee2": {
    "train_id": "SE2b13e3",
@@ -100,26 +107,26 @@
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv05"
+  "user": "cv09",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.9,
+   "t_end": 11.46,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 11.7,
-   "t_end": 14.5,
+   "t_start": 14.022,
+   "t_end": 15.302,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.8
+  2.562
  ]
 }

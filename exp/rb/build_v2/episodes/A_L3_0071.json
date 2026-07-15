@@ -6,46 +6,53 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
-  "destination": "Portland",
-  "date": "May eighth",
-  "seat_class": "first class",
-  "passenger": "Sam Rivera"
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Portland",
-  "date": "May third",
-  "seat_class": "first class",
-  "passenger": "Sam Rivera"
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "May eighth",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
  },
  "revisions": [
   {
    "slot": "date",
-   "old": "May eighth",
-   "new": "May third",
+   "old": "June first",
+   "new": "May eighth",
    "by": "user",
    "kind": "default",
-   "gap": 0.646
+   "gap": 0.651
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "May 8",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Find a train from Boston to Portland on May eighth, hold a first class seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Seattle to Austin on June first, hold a coach seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Wait — make it May third.",
-   "gap_before": 0.646
+   "text": "Wait — make it May eighth.",
+   "gap_before": 0.651
   }
  ],
  "events": [],
@@ -64,62 +71,62 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
-    "destination": "Portland",
-    "date": "May third"
+    "origin": "Seattle",
+    "destination": "Austin",
+    "date": "May 8"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE73eb98",
-    "seat_class": "first class"
+    "seat_class": "coach"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO0db19c",
-    "passenger": "Sam Rivera"
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE73eb98": {
-   "origin": "Boston",
-   "destination": "Portland",
-   "date": "May third"
+   "origin": "Seattle",
+   "destination": "Austin",
+   "date": "May 8"
   },
   "hold_seat#HO0db19c": {
    "train_id": "SE73eb98",
-   "seat_class": "first class"
+   "seat_class": "coach"
   },
   "purchase_ticket#PU36378b": {
    "hold_id": "HO0db19c",
-   "passenger": "Sam Rivera"
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv09"
+  "user": "cv06",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.46,
+   "t_end": 7.7,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.106,
-   "t_end": 10.906,
+   "t_start": 8.351,
+   "t_end": 11.471,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.646
+  0.651
  ]
 }

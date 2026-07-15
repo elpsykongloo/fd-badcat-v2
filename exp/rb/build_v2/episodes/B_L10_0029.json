@@ -26,35 +26,42 @@
    "new": "rent account",
    "by": "user",
    "kind": "default",
-   "gap": 3.317
+   "gap": 0.726
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "amount": 3000,
+  "from_cur": "USD",
+  "to_cur": "JPY",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv08",
    "lang": "en",
    "text": "Get a quote for three thousand dollars to yen, then transfer three thousand from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv08",
    "lang": "en",
    "text": "Wait — make it rent account.",
-   "gap_before": 3.317
+   "gap_before": 0.726
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 1.195,
+   "offset": 1.029,
    "action": "benign_control",
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv08",
    "text": "Wait — make it rent account."
   }
  ],
@@ -72,9 +79,9 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": "three thousand",
-    "from_cur": "dollars",
-    "to_cur": "yen"
+    "amount": 3000,
+    "from_cur": "USD",
+    "to_cur": "JPY"
    }
   },
   {
@@ -82,26 +89,26 @@
    "args": {
     "from_acct": "checking",
     "to_acct": "rent account",
-    "amount": "three thousand"
+    "amount": 3000
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GE3085d0": {
-   "amount": "three thousand",
-   "from_cur": "dollars",
-   "to_cur": "yen"
+   "amount": 3000,
+   "from_cur": "USD",
+   "to_cur": "JPY"
   },
   "transfer_funds#TR1b0b53": {
    "from_acct": "checking",
    "to_acct": "rent account",
-   "amount": "three thousand"
+   "amount": 3000
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv05"
+  "user": "cv08",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

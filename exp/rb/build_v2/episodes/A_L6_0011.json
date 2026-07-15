@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
-  "destination": "Atlanta",
+  "origin": "Chicago",
+  "destination": "Austin",
   "date": "June first",
   "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Boston",
+  "origin": "Chicago",
   "destination": "Denver",
   "date": "June first",
   "seat_class": "coach",
-  "passenger": "Sam Rivera"
+  "passenger": "Alex Chen"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Atlanta",
+   "old": "Austin",
    "new": "Denver",
    "by": "user",
    "kind": "default",
-   "gap": 0.787
+   "gap": 0.854
   },
   {
    "slot": "seat_class",
@@ -34,33 +34,40 @@
    "new": "coach",
    "by": "user",
    "kind": "second",
-   "gap": 2.72
+   "gap": 2.693
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "June 1",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Find a train from Boston to Atlanta on June first, hold a business seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Chicago to Austin on June first, hold a business seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv09",
    "lang": "en",
    "text": "Wait — make it Denver.",
-   "gap_before": 0.787
+   "gap_before": 0.854
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv09",
    "lang": "en",
    "text": "Also, one more change — coach.",
-   "gap_before": 2.72
+   "gap_before": 2.693
   }
  ],
  "events": [],
@@ -79,9 +86,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
+    "origin": "Chicago",
     "destination": "Denver",
-    "date": "June first"
+    "date": "June 1"
    }
   },
   {
@@ -95,15 +102,15 @@
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO0686da",
-    "passenger": "Sam Rivera"
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE9b8bd9": {
-   "origin": "Boston",
+   "origin": "Chicago",
    "destination": "Denver",
-   "date": "June first"
+   "date": "June 1"
   },
   "hold_seat#HO0686da": {
    "train_id": "SE9b8bd9",
@@ -111,37 +118,37 @@
   },
   "purchase_ticket#PU8c9b96": {
    "hold_id": "HO0686da",
-   "passenger": "Sam Rivera"
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv03"
+  "user": "cv09",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.54,
+   "t_end": 7.86,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.327,
-   "t_end": 10.247,
+   "t_start": 8.714,
+   "t_end": 10.154,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 12.967,
-   "t_end": 16.567,
+   "t_start": 12.847,
+   "t_end": 15.647,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.787,
-  2.72
+  0.854,
+  2.693
  ]
 }

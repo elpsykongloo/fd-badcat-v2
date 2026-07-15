@@ -8,14 +8,14 @@
  "slots": {
   "city": "杭州",
   "beds": "一居",
-  "max_rent": "六千",
-  "slot": "周日下午"
+  "max_rent": "八千",
+  "slot": "周六上午"
  },
  "slots_final": {
   "city": "青岛",
   "beds": "两居",
-  "max_rent": "六千",
-  "slot": "周日下午"
+  "max_rent": "八千",
+  "slot": "周六上午"
  },
  "revisions": [
   {
@@ -24,7 +24,7 @@
    "new": "青岛",
    "by": "user",
    "kind": "default",
-   "gap": 1.159
+   "gap": 0.828
   },
   {
    "slot": "beds",
@@ -32,50 +32,56 @@
    "new": "两居",
    "by": "user",
    "kind": "second",
-   "gap": 2.643
+   "gap": 2.665
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "青岛",
+  "beds": 2,
+  "max_rent": 8000,
+  "slot": "周六上午"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "在杭州找一居、租金不超过六千的房子，约周日下午看房。",
+   "text": "在杭州找一居、租金不超过八千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv01",
    "lang": "zh",
    "text": "等等，改成青岛。",
-   "gap_before": 1.159
+   "gap_before": 0.828
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv01",
    "lang": "zh",
    "text": "还有，再改一下，要两居。",
-   "gap_before": 2.643
+   "gap_before": 2.665
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.092,
+   "offset": 0.271,
    "action": "revise",
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv01",
    "text": "等等，改成青岛。"
   },
   {
    "state": "committed",
-   "offset": 1.458,
+   "offset": 1.333,
    "action": "revise",
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv01",
    "text": "等等，改成青岛。"
   }
  ],
@@ -94,33 +100,33 @@
    "fn": "search_rentals",
    "args": {
     "city": "青岛",
-    "beds": "两居",
-    "max_rent": "六千"
+    "beds": 2,
+    "max_rent": 8000
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SEfe54da",
-    "slot": "周日下午"
+    "slot": "周六上午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SEfe54da": {
    "city": "青岛",
-   "beds": "两居",
-   "max_rent": "六千"
+   "beds": 2,
+   "max_rent": 8000
   },
   "book_viewing#BO49efd0": {
    "listing_id": "SEfe54da",
-   "slot": "周日下午"
+   "slot": "周六上午"
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv04"
+  "user": "cv01",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

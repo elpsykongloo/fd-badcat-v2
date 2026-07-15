@@ -9,43 +9,50 @@
   "origin": "Seattle",
   "destination": "Austin",
   "date": "May third",
-  "seat_class": "first class",
-  "passenger": "Sam Rivera"
+  "seat_class": "business",
+  "passenger": "Alex Chen"
  },
  "slots_final": {
   "origin": "Seattle",
-  "destination": "Austin",
+  "destination": "Portland",
   "date": "May third",
   "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "passenger": "Alex Chen"
  },
  "revisions": [
   {
-   "slot": "seat_class",
-   "old": "first class",
-   "new": "business",
+   "slot": "destination",
+   "old": "Austin",
+   "new": "Portland",
    "by": "user",
    "kind": "default",
-   "gap": 2.875
+   "gap": 2.745
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "May 3",
+  "seat_class": "business",
+  "passenger": "Alex Chen"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Find a train from Seattle to Austin on May third, hold a first class seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Seattle to Austin on May third, hold a business seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Wait — make it business.",
-   "gap_before": 2.875
+   "text": "Wait — make it Portland.",
+   "gap_before": 2.745
   }
  ],
  "events": [],
@@ -65,8 +72,8 @@
    "fn": "search_trains",
    "args": {
     "origin": "Seattle",
-    "destination": "Austin",
-    "date": "May third"
+    "destination": "Portland",
+    "date": "May 3"
    }
   },
   {
@@ -80,15 +87,15 @@
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO145d74",
-    "passenger": "Sam Rivera"
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEe45811": {
    "origin": "Seattle",
-   "destination": "Austin",
-   "date": "May third"
+   "destination": "Portland",
+   "date": "May 3"
   },
   "hold_seat#HO145d74": {
    "train_id": "SEe45811",
@@ -96,30 +103,30 @@
   },
   "purchase_ticket#PUd9451e": {
    "hold_id": "HO145d74",
-   "passenger": "Sam Rivera"
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv05"
+  "user": "cv01",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.02,
+   "t_end": 7.78,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.895,
-   "t_end": 13.135,
+   "t_start": 10.525,
+   "t_end": 14.045,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.875
+  2.745
  ]
 }

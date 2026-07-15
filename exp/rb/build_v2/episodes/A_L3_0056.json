@@ -6,26 +6,31 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "蓝牙耳机",
-  "qty": "两",
-  "address": "浦东新区世纪大道八号"
+  "query": "跑步鞋",
+  "qty": "一",
+  "address": "海淀区学院路一号"
  },
  "slots_final": {
-  "query": "蓝牙耳机",
-  "qty": "一",
-  "address": "浦东新区世纪大道八号"
+  "query": "跑步鞋",
+  "qty": "两",
+  "address": "海淀区学院路一号"
  },
  "revisions": [
   {
    "slot": "qty",
-   "old": "两",
-   "new": "一",
+   "old": "一",
+   "new": "两",
    "by": "user",
    "kind": "default",
-   "gap": 0.667
+   "gap": 0.777
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "query": "跑步鞋",
+  "qty": 2,
+  "address": "海淀区学院路一号"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
@@ -33,15 +38,15 @@
    "role": "user",
    "voice": "cv07",
    "lang": "zh",
-   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜跑步鞋，加一件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv07",
    "lang": "zh",
-   "text": "等等，改成一。",
-   "gap_before": 0.667
+   "text": "等等，改成两。",
+   "gap_before": 0.777
   }
  ],
  "events": [],
@@ -60,58 +65,58 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "蓝牙耳机"
+    "query": "跑步鞋"
    }
   },
   {
    "fn": "add_item",
    "args": {
     "item_id": "SEbe2723",
-    "qty": "一"
+    "qty": 2
    }
   },
   {
    "fn": "place_order",
    "args": {
     "cart_id": "AD80198b",
-    "address": "浦东新区世纪大道八号"
+    "address": "海淀区学院路一号"
    }
   }
  ],
  "gold_state": {
   "search_catalog#SEbe2723": {
-   "query": "蓝牙耳机"
+   "query": "跑步鞋"
   },
   "add_item#AD80198b": {
    "item_id": "SEbe2723",
-   "qty": "一"
+   "qty": 2
   },
   "place_order#PL5d6229": {
    "cart_id": "AD80198b",
-   "address": "浦东新区世纪大道八号"
+   "address": "海淀区学院路一号"
   }
  },
  "voices": {
   "user": "cv07",
-  "bystander": "cv03"
+  "bystander": "cv02"
  },
  "split": "dev",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.9,
+   "t_end": 6.42,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 7.567,
-   "t_end": 9.327,
+   "t_start": 7.197,
+   "t_end": 8.397,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.667
+  0.777
  ]
 }

@@ -7,29 +7,36 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Seattle",
-  "destination": "Denver",
-  "date": "May eighth",
-  "seat_class": "coach",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "business",
   "passenger": "Sam Rivera"
  },
  "slots_final": {
   "origin": "Seattle",
   "destination": "Denver",
   "date": "May third",
-  "seat_class": "coach",
+  "seat_class": "business",
   "passenger": "Sam Rivera"
  },
  "revisions": [
   {
-   "slot": "date",
-   "old": "May eighth",
-   "new": "May third",
+   "slot": "destination",
+   "old": "Austin",
+   "new": "Denver",
    "by": "user",
    "kind": "value_first",
-   "gap": 1.101
+   "gap": 0.689
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Denver",
+  "date": "May 3",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
@@ -37,15 +44,15 @@
    "role": "user",
    "voice": "cv04",
    "lang": "en",
-   "text": "Find a train from Seattle to Denver on May eighth, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Seattle to Austin on May third, hold a business seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv04",
    "lang": "en",
-   "text": "May third — change it to May third.",
-   "gap_before": 1.101
+   "text": "Denver — change it to Denver.",
+   "gap_before": 0.689
   }
  ],
  "events": [],
@@ -66,14 +73,14 @@
    "args": {
     "origin": "Seattle",
     "destination": "Denver",
-    "date": "May third"
+    "date": "May 3"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SEc2f196",
-    "seat_class": "coach"
+    "seat_class": "business"
    }
   },
   {
@@ -88,11 +95,11 @@
   "search_trains#SEc2f196": {
    "origin": "Seattle",
    "destination": "Denver",
-   "date": "May third"
+   "date": "May 3"
   },
   "hold_seat#HOd665ae": {
    "train_id": "SEc2f196",
-   "seat_class": "coach"
+   "seat_class": "business"
   },
   "purchase_ticket#PU785e54": {
    "hold_id": "HOd665ae",
@@ -104,22 +111,22 @@
   "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.34,
+   "t_end": 7.7,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.441,
-   "t_end": 12.481,
+   "t_start": 8.389,
+   "t_end": 10.789,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.101
+  0.689
  ]
 }

@@ -6,46 +6,53 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Denver",
-  "date": "May eighth",
-  "seat_class": "business",
+  "origin": "Chicago",
+  "destination": "Portland",
+  "date": "May third",
+  "seat_class": "first class",
   "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Seattle",
+  "origin": "Chicago",
   "destination": "Denver",
-  "date": "May eighth",
-  "seat_class": "coach",
+  "date": "May third",
+  "seat_class": "first class",
   "passenger": "Jordan Lee"
  },
  "revisions": [
   {
-   "slot": "seat_class",
-   "old": "business",
-   "new": "coach",
+   "slot": "destination",
+   "old": "Portland",
+   "new": "Denver",
    "by": "user",
    "kind": "default",
-   "gap": 2.351
+   "gap": 1.338
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "May 3",
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Find a train from Seattle to Denver on May eighth, hold a business seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Chicago to Portland on May third, hold a first class seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Wait — make it coach.",
-   "gap_before": 2.351
+   "text": "Wait — make it Denver.",
+   "gap_before": 1.338
   }
  ],
  "events": [],
@@ -64,16 +71,16 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
+    "origin": "Chicago",
     "destination": "Denver",
-    "date": "May eighth"
+    "date": "May 3"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE52a43b",
-    "seat_class": "coach"
+    "seat_class": "first class"
    }
   },
   {
@@ -86,13 +93,13 @@
  ],
  "gold_state": {
   "search_trains#SE52a43b": {
-   "origin": "Seattle",
+   "origin": "Chicago",
    "destination": "Denver",
-   "date": "May eighth"
+   "date": "May 3"
   },
   "hold_seat#HOa8d174": {
    "train_id": "SE52a43b",
-   "seat_class": "coach"
+   "seat_class": "first class"
   },
   "purchase_ticket#PUa0c88c": {
    "hold_id": "HOa8d174",
@@ -100,26 +107,26 @@
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv07"
+  "user": "cv04",
+  "bystander": "cv02"
  },
  "split": "dev",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.18,
+   "t_end": 7.78,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.531,
-   "t_end": 10.291,
+   "t_start": 9.118,
+   "t_end": 10.958,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.351
+  1.338
  ]
 }

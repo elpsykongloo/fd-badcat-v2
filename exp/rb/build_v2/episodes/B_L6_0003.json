@@ -7,77 +7,84 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Chicago",
-  "destination": "Austin",
+  "destination": "Portland",
   "date": "May third",
-  "seat_class": "first class",
-  "passenger": "Jordan Lee"
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
  },
  "slots_final": {
   "origin": "Chicago",
   "destination": "Atlanta",
   "date": "May third",
   "seat_class": "business",
-  "passenger": "Jordan Lee"
+  "passenger": "Sam Rivera"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Austin",
+   "old": "Portland",
    "new": "Atlanta",
    "by": "user",
    "kind": "default",
-   "gap": 1.233
+   "gap": 0.792
   },
   {
    "slot": "seat_class",
-   "old": "first class",
+   "old": "coach",
    "new": "business",
    "by": "user",
    "kind": "second",
-   "gap": 2.674
+   "gap": 2.813
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May 3",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Find a train from Chicago to Austin on May third, hold a first class seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Chicago to Portland on May third, hold a coach seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv01",
    "lang": "en",
    "text": "Wait — make it Atlanta.",
-   "gap_before": 1.233
+   "gap_before": 0.792
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv01",
    "lang": "en",
    "text": "Also, one more change — business.",
-   "gap_before": 2.674
+   "gap_before": 2.813
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.672,
+   "offset": 0.563,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv01",
    "text": "Wait — make it Atlanta."
   },
   {
    "state": "committed",
-   "offset": 0.521,
+   "offset": 1.155,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv01",
    "text": "Wait — make it Atlanta."
   }
  ],
@@ -98,7 +105,7 @@
    "args": {
     "origin": "Chicago",
     "destination": "Atlanta",
-    "date": "May third"
+    "date": "May 3"
    }
   },
   {
@@ -112,7 +119,7 @@
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO7cf2ed",
-    "passenger": "Jordan Lee"
+    "passenger": "Sam Rivera"
    }
   }
  ],
@@ -120,7 +127,7 @@
   "search_trains#SE6e8477": {
    "origin": "Chicago",
    "destination": "Atlanta",
-   "date": "May third"
+   "date": "May 3"
   },
   "hold_seat#HO7cf2ed": {
    "train_id": "SE6e8477",
@@ -128,13 +135,13 @@
   },
   "purchase_ticket#PUd50ae1": {
    "hold_id": "HO7cf2ed",
-   "passenger": "Jordan Lee"
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv02"
+  "user": "cv01",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

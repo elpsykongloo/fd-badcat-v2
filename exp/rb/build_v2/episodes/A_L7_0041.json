@@ -20,26 +20,30 @@
    "new": "one thousand",
    "by": "user",
    "kind": "default",
-   "gap": 2.429
+   "gap": 1.852
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "account": "checking",
+  "threshold": 1000
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv03",
    "lang": "en",
    "text": "Check my checking balance, and set an alert if it drops below five hundred.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv03",
    "lang": "en",
    "text": "Wait — make it one thousand.",
-   "gap_before": 2.429
+   "gap_before": 1.852
   }
  ],
  "events": [],
@@ -63,7 +67,7 @@
   {
    "fn": "set_alert",
    "args": {
-    "threshold": "one thousand",
+    "threshold": 1000,
     "account": "checking"
    }
   }
@@ -73,31 +77,31 @@
    "account": "checking"
   },
   "set_alert#SE7c6e71": {
-   "threshold": "one thousand",
+   "threshold": 1000,
    "account": "checking"
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv02"
+  "user": "cv03",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 5.3,
+   "t_end": 5.54,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 7.729,
-   "t_end": 10.049,
+   "t_start": 7.392,
+   "t_end": 10.032,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.429
+  1.852
  ]
 }

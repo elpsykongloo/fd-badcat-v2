@@ -8,19 +8,26 @@
  "slots": {
   "amount": "three thousand",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "rent account"
+  "to_acct": "savings"
  },
  "slots_final": {
   "amount": "three thousand",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "rent account"
+  "to_acct": "savings"
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "amount": 3000,
+  "from_cur": "USD",
+  "to_cur": "JPY",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
  "l8_action": "cancel",
  "cancelled": true,
  "pieces": [
@@ -28,7 +35,7 @@
    "role": "user",
    "voice": "cv06",
    "lang": "en",
-   "text": "Get a quote for three thousand dollars to euros, then transfer three thousand from checking to rent account.",
+   "text": "Get a quote for three thousand dollars to yen, then transfer three thousand from checking to savings.",
    "gap_before": 0.5
   },
   {
@@ -36,7 +43,7 @@
    "voice": "cv06",
    "lang": "en",
    "text": "Actually, hold off, don't do it yet.",
-   "at_after_eou": 2.08
+   "at_after_eou": 1.966
   }
  ],
  "events": [],
@@ -54,21 +61,21 @@
  "gold_state": {},
  "voices": {
   "user": "cv06",
-  "bystander": "cv04"
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.22,
+   "t_end": 5.22,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.94,
-   "t_end": 15.54,
+   "t_start": 7.826,
+   "t_end": 13.426,
    "scheduled": "lifecycle_nominal"
   }
  ],

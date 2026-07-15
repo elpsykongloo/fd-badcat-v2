@@ -13,23 +13,30 @@
   "to_acct": "rent account"
  },
  "slots_final": {
-  "amount": "eight hundred",
+  "amount": "five thousand",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
  "revisions": [
   {
-   "slot": "amount",
-   "old": "five thousand",
-   "new": "eight hundred",
+   "slot": "to_cur",
+   "old": "euros",
+   "new": "yen",
    "by": "user",
    "kind": "default",
-   "gap": 2.575
+   "gap": 2.989
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "amount": 5000,
+  "from_cur": "USD",
+  "to_cur": "JPY",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
@@ -44,8 +51,8 @@
    "role": "user",
    "voice": "cv07",
    "lang": "en",
-   "text": "Wait — make it eight hundred.",
-   "gap_before": 2.575
+   "text": "Wait — make it yen.",
+   "gap_before": 2.989
   }
  ],
  "events": [],
@@ -63,9 +70,9 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": "eight hundred",
-    "from_cur": "dollars",
-    "to_cur": "euros"
+    "amount": 5000,
+    "from_cur": "USD",
+    "to_cur": "JPY"
    }
   },
   {
@@ -73,28 +80,28 @@
    "args": {
     "from_acct": "checking",
     "to_acct": "rent account",
-    "amount": "eight hundred"
+    "amount": 5000
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GEb92d82": {
-   "amount": "eight hundred",
-   "from_cur": "dollars",
-   "to_cur": "euros"
+   "amount": 5000,
+   "from_cur": "USD",
+   "to_cur": "JPY"
   },
   "transfer_funds#TR4b3dc1": {
    "from_acct": "checking",
    "to_acct": "rent account",
-   "amount": "eight hundred"
+   "amount": 5000
   }
  },
  "voices": {
   "user": "cv07",
-  "bystander": "cv06"
+  "bystander": "cv04"
  },
  "split": "dev",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
@@ -104,12 +111,12 @@
   },
   {
    "role": "user",
-   "t_start": 8.835,
-   "t_end": 10.675,
+   "t_start": 9.249,
+   "t_end": 10.449,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.575
+  2.989
  ]
 }

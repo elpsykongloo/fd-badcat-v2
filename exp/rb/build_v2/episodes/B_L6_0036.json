@@ -6,75 +6,80 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "跑步鞋",
-  "qty": "两",
+  "query": "蓝牙耳机",
+  "qty": "一",
   "address": "海淀区学院路一号"
  },
  "slots_final": {
-  "query": "蓝牙耳机",
-  "qty": "一",
+  "query": "保温杯",
+  "qty": "两",
   "address": "海淀区学院路一号"
  },
  "revisions": [
   {
    "slot": "query",
-   "old": "跑步鞋",
-   "new": "蓝牙耳机",
+   "old": "蓝牙耳机",
+   "new": "保温杯",
    "by": "user",
    "kind": "default",
-   "gap": 0.723
+   "gap": 0.725
   },
   {
    "slot": "qty",
-   "old": "两",
-   "new": "一",
+   "old": "一",
+   "new": "两",
    "by": "user",
    "kind": "second",
-   "gap": 2.767
+   "gap": 2.883
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "query": "保温杯",
+  "qty": 2,
+  "address": "海淀区学院路一号"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "帮我搜跑步鞋，加两件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "等等，改成蓝牙耳机。",
-   "gap_before": 0.723
+   "text": "等等，改成保温杯。",
+   "gap_before": 0.725
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "还有，再改一下，要一。",
-   "gap_before": 2.767
+   "text": "还有，再改一下，要两。",
+   "gap_before": 2.883
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.675,
+   "offset": 0.072,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
-   "text": "等等，改成蓝牙耳机。"
+   "voice": "cv05",
+   "text": "等等，改成保温杯。"
   },
   {
    "state": "committed",
-   "offset": 0.345,
+   "offset": 1.373,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
-   "text": "等等，改成蓝牙耳机。"
+   "voice": "cv05",
+   "text": "等等，改成保温杯。"
   }
  ],
  "profile": "default",
@@ -92,14 +97,14 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "蓝牙耳机"
+    "query": "保温杯"
    }
   },
   {
    "fn": "add_item",
    "args": {
     "item_id": "SE646735",
-    "qty": "一"
+    "qty": 2
    }
   },
   {
@@ -112,11 +117,11 @@
  ],
  "gold_state": {
   "search_catalog#SE646735": {
-   "query": "蓝牙耳机"
+   "query": "保温杯"
   },
   "add_item#AD86cf2b": {
    "item_id": "SE646735",
-   "qty": "一"
+   "qty": 2
   },
   "place_order#PL6dd15d": {
    "cart_id": "AD86cf2b",
@@ -124,9 +129,9 @@
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv06"
+  "user": "cv05",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

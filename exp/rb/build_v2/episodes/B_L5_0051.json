@@ -7,55 +7,62 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Boston",
-  "destination": "Atlanta",
-  "date": "June first",
+  "destination": "Austin",
+  "date": "May eighth",
   "seat_class": "coach",
   "passenger": "Sam Rivera"
  },
  "slots_final": {
   "origin": "Boston",
-  "destination": "Atlanta",
-  "date": "May third",
-  "seat_class": "coach",
+  "destination": "Austin",
+  "date": "May eighth",
+  "seat_class": "first class",
   "passenger": "Sam Rivera"
  },
  "revisions": [
   {
-   "slot": "date",
-   "old": "June first",
-   "new": "May third",
+   "slot": "seat_class",
+   "old": "coach",
+   "new": "first class",
    "by": "user",
    "kind": "default",
-   "gap": 2.777
+   "gap": 3.781
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Boston",
+  "destination": "Austin",
+  "date": "May 8",
+  "seat_class": "first class",
+  "passenger": "Sam Rivera"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Find a train from Boston to Atlanta on June first, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Boston to Austin on May eighth, hold a coach seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Wait — make it May third.",
-   "gap_before": 2.777
+   "text": "Wait — make it first class.",
+   "gap_before": 3.781
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.646,
+   "offset": 2.482,
    "action": "revise",
    "role": "user",
-   "voice": "cv02",
-   "text": "Wait — make it May third."
+   "voice": "cv04",
+   "text": "Wait — make it first class."
   }
  ],
  "profile": "default",
@@ -74,15 +81,15 @@
    "fn": "search_trains",
    "args": {
     "origin": "Boston",
-    "destination": "Atlanta",
-    "date": "May third"
+    "destination": "Austin",
+    "date": "May 8"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE80cecd",
-    "seat_class": "coach"
+    "seat_class": "first class"
    }
   },
   {
@@ -96,12 +103,12 @@
  "gold_state": {
   "search_trains#SE80cecd": {
    "origin": "Boston",
-   "destination": "Atlanta",
-   "date": "May third"
+   "destination": "Austin",
+   "date": "May 8"
   },
   "hold_seat#HOfb7452": {
    "train_id": "SE80cecd",
-   "seat_class": "coach"
+   "seat_class": "first class"
   },
   "purchase_ticket#PU47abb0": {
    "hold_id": "HOfb7452",
@@ -109,9 +116,9 @@
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv05"
+  "user": "cv04",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

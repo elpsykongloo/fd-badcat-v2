@@ -22,7 +22,7 @@
    "new": "蓝牙耳机",
    "by": "user",
    "kind": "default",
-   "gap": 1.128
+   "gap": 1.185
   },
   {
    "slot": "qty",
@@ -30,50 +30,55 @@
    "new": "两",
    "by": "user",
    "kind": "second",
-   "gap": 2.93
+   "gap": 2.769
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "query": "蓝牙耳机",
+  "qty": 2,
+  "address": "海淀区学院路一号"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv03",
    "lang": "zh",
    "text": "帮我搜跑步鞋，加一件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv03",
    "lang": "zh",
    "text": "等等，改成蓝牙耳机。",
-   "gap_before": 1.128
+   "gap_before": 1.185
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv03",
    "lang": "zh",
    "text": "还有，再改一下，要两。",
-   "gap_before": 2.93
+   "gap_before": 2.769
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.213,
+   "offset": 0.827,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv03",
    "text": "等等，改成蓝牙耳机。"
   },
   {
    "state": "committed",
-   "offset": 0.406,
+   "offset": 0.727,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv03",
    "text": "等等，改成蓝牙耳机。"
   }
  ],
@@ -99,7 +104,7 @@
    "fn": "add_item",
    "args": {
     "item_id": "SE4f1f31",
-    "qty": "两"
+    "qty": 2
    }
   },
   {
@@ -116,7 +121,7 @@
   },
   "add_item#ADc6bf51": {
    "item_id": "SE4f1f31",
-   "qty": "两"
+   "qty": 2
   },
   "place_order#PLf0f007": {
    "cart_id": "ADc6bf51",
@@ -124,9 +129,9 @@
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv08"
+  "user": "cv03",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

@@ -6,60 +6,67 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "five thousand",
+  "amount": "eight hundred",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
   "to_acct": "savings"
  },
  "slots_final": {
-  "amount": "five thousand",
+  "amount": "eight hundred",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
   "to_acct": "savings"
  },
  "revisions": [],
  "bystander": {
   "kind": "command",
-  "other": "yen",
+  "other": "euros",
   "state": "inflight",
-  "frac": 0.175
+  "frac": 0.485
+ },
+ "slots_canon": {
+  "amount": 800,
+  "from_cur": "USD",
+  "to_cur": "JPY",
+  "from_acct": "checking",
+  "to_acct": "savings"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Get a quote for five thousand dollars to euros, then transfer five thousand from checking to savings.",
+   "text": "Get a quote for eight hundred dollars to yen, then transfer eight hundred from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv03",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Change it to yen.",
-   "at_after_eou": 1.689
+   "text": "Change it to euros.",
+   "at_after_eou": 1.776
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.651,
+   "offset": 0.288,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv03",
-   "text": "Change it to yen."
+   "voice": "cv05",
+   "text": "Change it to euros."
   },
   {
    "state": "tts",
-   "offset": 0.545,
+   "offset": 0.563,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv03",
-   "text": "Change it to yen."
+   "voice": "cv05",
+   "text": "Change it to euros."
   }
  ],
  "profile": "default",
@@ -76,9 +83,9 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": "five thousand",
-    "from_cur": "dollars",
-    "to_cur": "euros"
+    "amount": 800,
+    "from_cur": "USD",
+    "to_cur": "JPY"
    }
   },
   {
@@ -86,26 +93,26 @@
    "args": {
     "from_acct": "checking",
     "to_acct": "savings",
-    "amount": "five thousand"
+    "amount": 800
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GE8801d8": {
-   "amount": "five thousand",
-   "from_cur": "dollars",
-   "to_cur": "euros"
+   "amount": 800,
+   "from_cur": "USD",
+   "to_cur": "JPY"
   },
   "transfer_funds#TR640353": {
    "from_acct": "checking",
    "to_acct": "savings",
-   "amount": "five thousand"
+   "amount": 800
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv03"
+  "user": "cv03",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

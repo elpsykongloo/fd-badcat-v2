@@ -6,56 +6,61 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "保温杯",
-  "qty": "一",
+  "query": "蓝牙耳机",
+  "qty": "两",
   "address": "海淀区学院路一号"
  },
  "slots_final": {
-  "query": "保温杯",
-  "qty": "一",
+  "query": "蓝牙耳机",
+  "qty": "两",
   "address": "海淀区学院路一号"
  },
  "revisions": [],
  "bystander": {
   "kind": "command",
-  "other": "两",
+  "other": "保温杯",
   "state": "inflight",
-  "frac": 0.697
+  "frac": 0.274
+ },
+ "slots_canon": {
+  "query": "蓝牙耳机",
+  "qty": 2,
+  "address": "海淀区学院路一号"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv02",
    "lang": "zh",
-   "text": "帮我搜保温杯，加一件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv07",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "改成两吧。",
-   "at_after_eou": 2.108
+   "text": "改成保温杯吧。",
+   "at_after_eou": 1.824
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.6,
+   "offset": 0.337,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv07",
-   "text": "改成两吧。"
+   "voice": "cv09",
+   "text": "改成保温杯吧。"
   },
   {
    "state": "tts",
-   "offset": 0.196,
+   "offset": 0.468,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv07",
-   "text": "改成两吧。"
+   "voice": "cv09",
+   "text": "改成保温杯吧。"
   }
  ],
  "profile": "default",
@@ -73,14 +78,14 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "保温杯"
+    "query": "蓝牙耳机"
    }
   },
   {
    "fn": "add_item",
    "args": {
     "item_id": "SE2e9f52",
-    "qty": "一"
+    "qty": 2
    }
   },
   {
@@ -93,11 +98,11 @@
  ],
  "gold_state": {
   "search_catalog#SE2e9f52": {
-   "query": "保温杯"
+   "query": "蓝牙耳机"
   },
   "add_item#ADa42c5c": {
    "item_id": "SE2e9f52",
-   "qty": "一"
+   "qty": 2
   },
   "place_order#PLf8cf3d": {
    "cart_id": "ADa42c5c",
@@ -105,9 +110,9 @@
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv07"
+  "user": "cv02",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

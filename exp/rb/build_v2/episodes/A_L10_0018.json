@@ -7,39 +7,45 @@
  "scenario": "hou_chain",
  "slots": {
   "city": "厦门",
-  "beds": "一居",
-  "max_rent": "八千",
-  "slot": "周日下午"
+  "beds": "两居",
+  "max_rent": "六千",
+  "slot": "周六上午"
  },
  "slots_final": {
   "city": "厦门",
-  "beds": "一居",
-  "max_rent": "八千",
-  "slot": "周日下午"
+  "beds": "两居",
+  "max_rent": "六千",
+  "slot": "周六上午"
  },
  "revisions": [],
  "bystander": {
   "kind": "command",
-  "other": "成都",
+  "other": "周日下午",
   "state": "inflight",
-  "frac": 0.745
+  "frac": 0.623
+ },
+ "slots_canon": {
+  "city": "厦门",
+  "beds": 2,
+  "max_rent": 6000,
+  "slot": "周六上午"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "在厦门找一居、租金不超过八千的房子，约周日下午看房。",
+   "text": "在厦门找两居、租金不超过六千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv08",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "改成成都吧。",
-   "at_after_eou": 1.915
+   "text": "改成周日下午吧。",
+   "at_after_eou": 1.87
   }
  ],
  "events": [],
@@ -58,46 +64,46 @@
    "fn": "search_rentals",
    "args": {
     "city": "厦门",
-    "beds": "一居",
-    "max_rent": "八千"
+    "beds": 2,
+    "max_rent": 6000
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SE8fa4c9",
-    "slot": "周日下午"
+    "slot": "周六上午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SE8fa4c9": {
    "city": "厦门",
-   "beds": "一居",
-   "max_rent": "八千"
+   "beds": 2,
+   "max_rent": 6000
   },
   "book_viewing#BO176373": {
    "listing_id": "SE8fa4c9",
-   "slot": "周日下午"
+   "slot": "周六上午"
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv08"
+  "user": "cv04",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.42,
+   "t_end": 6.82,
    "scheduled": "sequential"
   },
   {
    "role": "bystander",
-   "t_start": 8.975,
-   "t_end": 10.175,
+   "t_start": 9.33,
+   "t_end": 11.49,
    "scheduled": "lifecycle_nominal"
   }
  ],

@@ -22,35 +22,42 @@
  "revisions": [],
  "bystander": {
   "kind": "irrelevant",
-  "other": "three thousand",
+  "other": "euros",
   "state": "inflight",
-  "frac": 0.237
+  "frac": 0.79
+ },
+ "slots_canon": {
+  "amount": 5000,
+  "from_cur": "USD",
+  "to_cur": "JPY",
+  "from_acct": "checking",
+  "to_acct": "rent account"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv06",
    "lang": "en",
    "text": "Get a quote for five thousand dollars to yen, then transfer five thousand from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv04",
+   "voice": "cv09",
    "lang": "en",
    "text": "What do you want for dinner? Let's order in.",
-   "at_after_eou": 1.724
+   "at_after_eou": 1.92
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.729,
+   "offset": 0.42,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv04",
+   "voice": "cv09",
    "text": "What do you want for dinner? Let's order in."
   }
  ],
@@ -68,9 +75,9 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": "five thousand",
-    "from_cur": "dollars",
-    "to_cur": "yen"
+    "amount": 5000,
+    "from_cur": "USD",
+    "to_cur": "JPY"
    }
   },
   {
@@ -78,26 +85,26 @@
    "args": {
     "from_acct": "checking",
     "to_acct": "rent account",
-    "amount": "five thousand"
+    "amount": 5000
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GE92c872": {
-   "amount": "five thousand",
-   "from_cur": "dollars",
-   "to_cur": "yen"
+   "amount": 5000,
+   "from_cur": "USD",
+   "to_cur": "JPY"
   },
   "transfer_funds#TR9af39f": {
    "from_acct": "checking",
    "to_acct": "rent account",
-   "amount": "five thousand"
+   "amount": 5000
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv04"
+  "user": "cv06",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

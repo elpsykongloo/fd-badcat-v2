@@ -13,39 +13,46 @@
   "to_addr": "国贸"
  },
  "slots_final": {
-  "city": "成都",
+  "city": "厦门",
   "beds": "两居",
   "max_rent": "八千",
   "from_addr": "中关村",
-  "to_addr": "国贸"
+  "to_addr": "西二旗"
  },
  "revisions": [
   {
-   "slot": "city",
-   "old": "厦门",
-   "new": "成都",
+   "slot": "to_addr",
+   "old": "国贸",
+   "new": "西二旗",
    "by": "user",
    "kind": "default",
-   "gap": 1.182
+   "gap": 2.428
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "厦门",
+  "beds": 2,
+  "max_rent": 8000,
+  "from_addr": "中关村",
+  "to_addr": "西二旗"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv09",
    "lang": "zh",
    "text": "在厦门找两居、不超过八千的房子，再算下从中关村到国贸的通勤时间。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "等等，改成成都。",
-   "gap_before": 1.182
+   "text": "等等，改成西二旗。",
+   "gap_before": 2.428
   }
  ],
  "events": [],
@@ -63,51 +70,51 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "成都",
-    "beds": "两居",
-    "max_rent": "八千"
+    "city": "厦门",
+    "beds": 2,
+    "max_rent": 8000
    }
   },
   {
    "fn": "get_commute_time",
    "args": {
     "from_addr": "中关村",
-    "to_addr": "国贸"
+    "to_addr": "西二旗"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SE9829b7": {
-   "city": "成都",
-   "beds": "两居",
-   "max_rent": "八千"
+   "city": "厦门",
+   "beds": 2,
+   "max_rent": 8000
   },
   "get_commute_time#GE9028b3": {
    "from_addr": "中关村",
-   "to_addr": "国贸"
+   "to_addr": "西二旗"
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv02"
+  "user": "cv09",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 9.14,
+   "t_end": 7.94,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.322,
-   "t_end": 12.322,
+   "t_start": 10.368,
+   "t_end": 12.208,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.182
+  2.428
  ]
 }

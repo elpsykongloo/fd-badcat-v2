@@ -6,16 +6,16 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "厦门",
+  "city": "青岛",
   "beds": "一居",
-  "max_rent": "八千",
-  "slot": "周日下午"
+  "max_rent": "六千",
+  "slot": "周六上午"
  },
  "slots_final": {
-  "city": "厦门",
+  "city": "青岛",
   "beds": "两居",
-  "max_rent": "八千",
-  "slot": "周日下午"
+  "max_rent": "六千",
+  "slot": "周六上午"
  },
  "revisions": [
   {
@@ -24,26 +24,32 @@
    "new": "两居",
    "by": "user",
    "kind": "default",
-   "gap": 2.622
+   "gap": 2.769
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "青岛",
+  "beds": 2,
+  "max_rent": 6000,
+  "slot": "周六上午"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "在厦门找一居、租金不超过八千的房子，约周日下午看房。",
+   "text": "在青岛找一居、租金不超过六千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv04",
    "lang": "zh",
    "text": "等等，改成两居。",
-   "gap_before": 2.622
+   "gap_before": 2.769
   }
  ],
  "events": [],
@@ -61,36 +67,36 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "厦门",
-    "beds": "两居",
-    "max_rent": "八千"
+    "city": "青岛",
+    "beds": 2,
+    "max_rent": 6000
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SEf3e152",
-    "slot": "周日下午"
+    "slot": "周六上午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SEf3e152": {
-   "city": "厦门",
-   "beds": "两居",
-   "max_rent": "八千"
+   "city": "青岛",
+   "beds": 2,
+   "max_rent": 6000
   },
   "book_viewing#BOc7335f": {
    "listing_id": "SEf3e152",
-   "slot": "周日下午"
+   "slot": "周六上午"
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv04"
+  "user": "cv04",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
@@ -100,12 +106,12 @@
   },
   {
    "role": "user",
-   "t_start": 9.042,
-   "t_end": 11.282,
+   "t_start": 9.189,
+   "t_end": 11.349,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.622
+  2.769
  ]
 }

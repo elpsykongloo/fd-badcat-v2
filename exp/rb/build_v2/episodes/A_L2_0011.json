@@ -6,42 +6,47 @@
  "lang": "en",
  "scenario": "travel_hotel",
  "slots": {
-  "city": "Miami",
-  "checkin": "May third",
+  "city": "Denver",
+  "checkin": "May tenth",
   "nights": "two"
  },
  "slots_final": {
   "city": "Denver",
-  "checkin": "May third",
-  "nights": "two"
+  "checkin": "May tenth",
+  "nights": "three"
  },
  "revisions": [
   {
-   "slot": "city",
-   "old": "Miami",
-   "new": "Denver",
+   "slot": "nights",
+   "old": "two",
+   "new": "three",
    "by": "user",
    "kind": "default",
-   "gap": 0.317
+   "gap": 0.471
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "Denver",
+  "checkin": "May 10",
+  "nights": 3
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Book me a hotel in Miami, checking in May third, for two nights.",
+   "text": "Book me a hotel in Denver, checking in May tenth, for two nights.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Wait — make it Denver.",
-   "gap_before": 0.317
+   "text": "Wait — make it three.",
+   "gap_before": 0.471
   }
  ],
  "events": [],
@@ -59,39 +64,39 @@
    "fn": "reserve_hotel",
    "args": {
     "city": "Denver",
-    "checkin": "May third",
-    "nights": "two"
+    "checkin": "May 10",
+    "nights": 3
    }
   }
  ],
  "gold_state": {
   "reserve_hotel#RE00f7f3": {
    "city": "Denver",
-   "checkin": "May third",
-   "nights": "two"
+   "checkin": "May 10",
+   "nights": 3
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv07"
+  "user": "cv06",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.18,
+   "t_end": 5.94,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 6.497,
-   "t_end": 8.017,
+   "t_start": 6.411,
+   "t_end": 8.731,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.317
+  0.471
  ]
 }

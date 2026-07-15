@@ -7,15 +7,15 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Boston",
-  "destination": "Austin",
-  "date": "May eighth",
+  "destination": "Portland",
+  "date": "June first",
   "seat_class": "first class",
   "passenger": "Alex Chen"
  },
  "slots_final": {
   "origin": "Boston",
-  "destination": "Austin",
-  "date": "May eighth",
+  "destination": "Portland",
+  "date": "June first",
   "seat_class": "business",
   "passenger": "Alex Chen"
  },
@@ -26,26 +26,33 @@
    "new": "business",
    "by": "user",
    "kind": "default",
-   "gap": 2.96
+   "gap": 2.51
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Boston",
+  "destination": "Portland",
+  "date": "June 1",
+  "seat_class": "business",
+  "passenger": "Alex Chen"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Find a train from Boston to Austin on May eighth, hold a first class seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Boston to Portland on June first, hold a first class seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv01",
    "lang": "en",
    "text": "Wait — make it business.",
-   "gap_before": 2.96
+   "gap_before": 2.51
   }
  ],
  "events": [],
@@ -65,8 +72,8 @@
    "fn": "search_trains",
    "args": {
     "origin": "Boston",
-    "destination": "Austin",
-    "date": "May eighth"
+    "destination": "Portland",
+    "date": "June 1"
    }
   },
   {
@@ -87,8 +94,8 @@
  "gold_state": {
   "search_trains#SE0c2543": {
    "origin": "Boston",
-   "destination": "Austin",
-   "date": "May eighth"
+   "destination": "Portland",
+   "date": "June 1"
   },
   "hold_seat#HOb4d261": {
    "train_id": "SE0c2543",
@@ -100,26 +107,26 @@
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv07"
+  "user": "cv01",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.86,
+   "t_end": 9.14,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.82,
-   "t_end": 12.66,
+   "t_start": 11.65,
+   "t_end": 14.13,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.96
+  2.51
  ]
 }

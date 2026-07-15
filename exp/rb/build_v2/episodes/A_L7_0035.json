@@ -8,44 +8,51 @@
  "slots": {
   "origin": "Chicago",
   "destination": "Denver",
-  "date": "May third",
+  "date": "June first",
   "country": "Thailand",
   "nationality": "American"
  },
  "slots_final": {
   "origin": "Chicago",
-  "destination": "Denver",
-  "date": "May third",
-  "country": "Japan",
+  "destination": "Atlanta",
+  "date": "June first",
+  "country": "Thailand",
   "nationality": "American"
  },
  "revisions": [
   {
-   "slot": "country",
-   "old": "Thailand",
-   "new": "Japan",
+   "slot": "destination",
+   "old": "Denver",
+   "new": "Atlanta",
    "by": "user",
    "kind": "default",
-   "gap": 2.247
+   "gap": 1.42
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "June 1",
+  "country": "Thailand",
+  "nationality": "American"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Look up trains from Chicago to Denver on May third, and also check if American citizens need a visa for Thailand.",
+   "text": "Look up trains from Chicago to Denver on June first, and also check if American citizens need a visa for Thailand.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Wait — make it Japan.",
-   "gap_before": 2.247
+   "text": "Wait — make it Atlanta.",
+   "gap_before": 1.42
   }
  ],
  "events": [],
@@ -64,14 +71,14 @@
    "fn": "search_trains",
    "args": {
     "origin": "Chicago",
-    "destination": "Denver",
-    "date": "May third"
+    "destination": "Atlanta",
+    "date": "June 1"
    }
   },
   {
    "fn": "check_visa_rule",
    "args": {
-    "country": "Japan",
+    "country": "Thailand",
     "nationality": "American"
    }
   }
@@ -79,35 +86,35 @@
  "gold_state": {
   "search_trains#SE3ca4ea": {
    "origin": "Chicago",
-   "destination": "Denver",
-   "date": "May third"
+   "destination": "Atlanta",
+   "date": "June 1"
   },
   "check_visa_rule#CH1b2b9d": {
-   "country": "Japan",
+   "country": "Thailand",
    "nationality": "American"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv09"
+  "user": "cv03",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.26,
+   "t_end": 9.7,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.507,
-   "t_end": 12.747,
+   "t_start": 11.12,
+   "t_end": 13.76,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.247
+  1.42
  ]
 }

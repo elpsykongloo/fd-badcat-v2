@@ -6,46 +6,53 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
-  "destination": "Denver",
-  "date": "May eighth",
-  "seat_class": "coach",
-  "passenger": "Alex Chen"
- },
- "slots_final": {
-  "origin": "Boston",
+  "origin": "Chicago",
   "destination": "Atlanta",
   "date": "May eighth",
   "seat_class": "coach",
   "passenger": "Alex Chen"
  },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Denver",
-   "new": "Atlanta",
+   "slot": "date",
+   "old": "May eighth",
+   "new": "May third",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.689
+   "gap": 0.685
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May 3",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Find a train from Boston to Denver on May eighth, hold a coach seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Chicago to Atlanta on May eighth, hold a coach seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Atlanta — change it to Atlanta.",
-   "gap_before": 0.689
+   "text": "May third — change it to May third.",
+   "gap_before": 0.685
   }
  ],
  "events": [],
@@ -64,9 +71,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
+    "origin": "Chicago",
     "destination": "Atlanta",
-    "date": "May eighth"
+    "date": "May 3"
    }
   },
   {
@@ -86,9 +93,9 @@
  ],
  "gold_state": {
   "search_trains#SE9e5011": {
-   "origin": "Boston",
+   "origin": "Chicago",
    "destination": "Atlanta",
-   "date": "May eighth"
+   "date": "May 3"
   },
   "hold_seat#HO126248": {
    "train_id": "SE9e5011",
@@ -100,26 +107,26 @@
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv05"
+  "user": "cv08",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 9.06,
+   "t_end": 6.66,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.749,
-   "t_end": 12.949,
+   "t_start": 7.345,
+   "t_end": 11.025,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.689
+  0.685
  ]
 }

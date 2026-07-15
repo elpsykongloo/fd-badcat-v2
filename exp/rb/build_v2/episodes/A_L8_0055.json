@@ -6,21 +6,28 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Atlanta",
-  "date": "June first",
-  "seat_class": "first class",
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "coach",
   "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Seattle",
-  "destination": "Atlanta",
-  "date": "June first",
-  "seat_class": "first class",
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "coach",
   "passenger": "Sam Rivera"
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "May 3",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
  "l8_action": "cancel",
  "cancelled": true,
  "pieces": [
@@ -28,7 +35,7 @@
    "role": "user",
    "voice": "cv03",
    "lang": "en",
-   "text": "Find a train from Seattle to Atlanta on June first, hold a first class seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Chicago to Austin on May third, hold a coach seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
@@ -36,7 +43,7 @@
    "voice": "cv03",
    "lang": "en",
    "text": "Actually, hold off, don't do it yet.",
-   "at_after_eou": 2.152
+   "at_after_eou": 1.808
   }
  ],
  "events": [],
@@ -55,21 +62,21 @@
  "gold_state": {},
  "voices": {
   "user": "cv03",
-  "bystander": "cv05"
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 10.02,
+   "t_end": 7.94,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 12.812,
-   "t_end": 16.332,
+   "t_start": 10.388,
+   "t_end": 13.908,
    "scheduled": "lifecycle_nominal"
   }
  ],

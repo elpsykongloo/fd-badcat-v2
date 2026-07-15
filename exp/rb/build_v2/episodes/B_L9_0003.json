@@ -6,30 +6,35 @@
  "lang": "en",
  "scenario": "travel_hotel",
  "slots": {
-  "city": "Miami",
-  "checkin": "May tenth",
+  "city": "Denver",
+  "checkin": "May third",
   "nights": "two"
  },
  "slots_final": {
-  "city": "Miami",
-  "checkin": "May tenth",
+  "city": "Denver",
+  "checkin": "May third",
   "nights": "two"
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "city": "Denver",
+  "checkin": "May 3",
+  "nights": 2
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Book me a hotel in Miami, checking in May tenth, for two nights.",
+   "text": "Book me a hotel in Denver, checking in May third, for two nights.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv08",
    "lang": "en",
    "text": "Any progress?",
    "at_after_eou": 9.515
@@ -38,10 +43,10 @@
  "events": [
   {
    "state": "inflight",
-   "offset": 0.504,
+   "offset": 0.557,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv08",
    "text": "Any progress?"
   }
  ],
@@ -58,23 +63,23 @@
   {
    "fn": "reserve_hotel",
    "args": {
-    "city": "Miami",
-    "checkin": "May tenth",
-    "nights": "two"
+    "city": "Denver",
+    "checkin": "May 3",
+    "nights": 2
    }
   }
  ],
  "gold_state": {
   "reserve_hotel#RE63feb6": {
-   "city": "Miami",
-   "checkin": "May tenth",
-   "nights": "two"
+   "city": "Denver",
+   "checkin": "May 3",
+   "nights": 2
   }
  },
  "voices": {
-  "user": "cv01",
+  "user": "cv08",
   "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

@@ -9,27 +9,34 @@
   "origin": "Seattle",
   "destination": "Austin",
   "date": "May eighth",
-  "country": "Japan",
+  "country": "Thailand",
   "nationality": "American"
  },
  "slots_final": {
   "origin": "Seattle",
-  "destination": "Portland",
+  "destination": "Denver",
   "date": "May eighth",
-  "country": "Japan",
+  "country": "Thailand",
   "nationality": "American"
  },
  "revisions": [
   {
    "slot": "destination",
    "old": "Austin",
-   "new": "Portland",
+   "new": "Denver",
    "by": "user",
    "kind": "default",
-   "gap": 2.216
+   "gap": 1.954
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Denver",
+  "date": "May 8",
+  "country": "Thailand",
+  "nationality": "American"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
@@ -37,15 +44,15 @@
    "role": "user",
    "voice": "cv07",
    "lang": "en",
-   "text": "Look up trains from Seattle to Austin on May eighth, and also check if American citizens need a visa for Japan.",
+   "text": "Look up trains from Seattle to Austin on May eighth, and also check if American citizens need a visa for Thailand.",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv07",
    "lang": "en",
-   "text": "Wait — make it Portland.",
-   "gap_before": 2.216
+   "text": "Wait — make it Denver.",
+   "gap_before": 1.954
   }
  ],
  "events": [],
@@ -64,14 +71,14 @@
    "fn": "search_trains",
    "args": {
     "origin": "Seattle",
-    "destination": "Portland",
-    "date": "May eighth"
+    "destination": "Denver",
+    "date": "May 8"
    }
   },
   {
    "fn": "check_visa_rule",
    "args": {
-    "country": "Japan",
+    "country": "Thailand",
     "nationality": "American"
    }
   }
@@ -79,11 +86,11 @@
  "gold_state": {
   "search_trains#SEf915f8": {
    "origin": "Seattle",
-   "destination": "Portland",
-   "date": "May eighth"
+   "destination": "Denver",
+   "date": "May 8"
   },
   "check_visa_rule#CHc6c062": {
-   "country": "Japan",
+   "country": "Thailand",
    "nationality": "American"
   }
  },
@@ -92,22 +99,22 @@
   "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.02,
+   "t_end": 7.54,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.236,
-   "t_end": 11.676,
+   "t_start": 9.494,
+   "t_end": 11.014,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.216
+  1.954
  ]
 }

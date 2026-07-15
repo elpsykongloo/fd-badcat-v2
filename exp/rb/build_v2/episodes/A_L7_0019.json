@@ -6,46 +6,53 @@
  "lang": "en",
  "scenario": "travel_multi",
  "slots": {
-  "origin": "Boston",
-  "destination": "Denver",
-  "date": "May eighth",
-  "country": "Japan",
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "May third",
+  "country": "Thailand",
   "nationality": "American"
  },
  "slots_final": {
-  "origin": "Boston",
+  "origin": "Seattle",
   "destination": "Denver",
-  "date": "May eighth",
+  "date": "May third",
   "country": "Thailand",
   "nationality": "American"
  },
  "revisions": [
   {
-   "slot": "country",
-   "old": "Japan",
-   "new": "Thailand",
+   "slot": "destination",
+   "old": "Atlanta",
+   "new": "Denver",
    "by": "user",
    "kind": "default",
-   "gap": 1.289
+   "gap": 1.017
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Denver",
+  "date": "May 3",
+  "country": "Thailand",
+  "nationality": "American"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Look up trains from Boston to Denver on May eighth, and also check if American citizens need a visa for Japan.",
+   "text": "Look up trains from Seattle to Atlanta on May third, and also check if American citizens need a visa for Thailand.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Wait — make it Thailand.",
-   "gap_before": 1.289
+   "text": "Wait — make it Denver.",
+   "gap_before": 1.017
   }
  ],
  "events": [],
@@ -63,9 +70,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
+    "origin": "Seattle",
     "destination": "Denver",
-    "date": "May eighth"
+    "date": "May 3"
    }
   },
   {
@@ -78,9 +85,9 @@
  ],
  "gold_state": {
   "search_trains#SEbe356f": {
-   "origin": "Boston",
+   "origin": "Seattle",
    "destination": "Denver",
-   "date": "May eighth"
+   "date": "May 3"
   },
   "check_visa_rule#CHd907d3": {
    "country": "Thailand",
@@ -88,26 +95,26 @@
   }
  },
  "voices": {
-  "user": "cv09",
+  "user": "cv04",
   "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 10.18,
+   "t_end": 8.02,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 11.469,
-   "t_end": 14.429,
+   "t_start": 9.037,
+   "t_end": 10.877,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.289
+  1.017
  ]
 }

@@ -6,37 +6,44 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
-  "destination": "Austin",
+  "origin": "Chicago",
+  "destination": "Denver",
   "date": "May third",
   "seat_class": "first class",
   "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Austin",
+  "origin": "Chicago",
+  "destination": "Denver",
   "date": "May third",
   "seat_class": "first class",
   "passenger": "Sam Rivera"
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "May 3",
+  "seat_class": "first class",
+  "passenger": "Sam Rivera"
+ },
  "l8_action": "progress",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Find a train from Boston to Austin on May third, hold a first class seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Chicago to Denver on May third, hold a first class seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv04",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 2.265
+   "at_after_eou": 2.315
   }
  ],
  "events": [],
@@ -55,9 +62,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
-    "destination": "Austin",
-    "date": "May third"
+    "origin": "Chicago",
+    "destination": "Denver",
+    "date": "May 3"
    }
   },
   {
@@ -77,9 +84,9 @@
  ],
  "gold_state": {
   "search_trains#SEb5bb65": {
-   "origin": "Boston",
-   "destination": "Austin",
-   "date": "May third"
+   "origin": "Chicago",
+   "destination": "Denver",
+   "date": "May 3"
   },
   "hold_seat#HO3cc33a": {
    "train_id": "SEb5bb65",
@@ -91,22 +98,22 @@
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv04"
+  "user": "cv04",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 9.46,
+   "t_end": 8.02,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 12.365,
-   "t_end": 13.645,
+   "t_start": 10.975,
+   "t_end": 12.255,
    "scheduled": "lifecycle_nominal"
   }
  ],

@@ -6,42 +6,47 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "跑步鞋",
+  "query": "保温杯",
   "qty": "一",
   "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
-  "query": "跑步鞋",
+  "query": "保温杯",
   "qty": "一",
   "address": "浦东新区世纪大道八号"
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "query": "保温杯",
+  "qty": 1,
+  "address": "浦东新区世纪大道八号"
+ },
  "l8_action": "cancel",
  "cancelled": true,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv07",
    "lang": "zh",
-   "text": "帮我搜跑步鞋，加一件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜保温杯，加一件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv07",
    "lang": "zh",
    "text": "算了，先别办了。",
-   "at_after_eou": 1.761
+   "at_after_eou": 1.78
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.593,
+   "offset": 0.231,
    "action": "cancel",
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv07",
    "text": "算了，先别办了。"
   }
  ],
@@ -59,9 +64,9 @@
  "gold_calls": [],
  "gold_state": {},
  "voices": {
-  "user": "cv03",
-  "bystander": "cv04"
+  "user": "cv07",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

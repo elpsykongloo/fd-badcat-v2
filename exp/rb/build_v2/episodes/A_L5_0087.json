@@ -6,46 +6,53 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
-  "destination": "Atlanta",
+  "origin": "Seattle",
+  "destination": "Denver",
   "date": "June first",
-  "seat_class": "coach",
+  "seat_class": "first class",
   "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Austin",
-  "date": "June first",
-  "seat_class": "coach",
+  "origin": "Seattle",
+  "destination": "Denver",
+  "date": "May eighth",
+  "seat_class": "first class",
   "passenger": "Sam Rivera"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Atlanta",
-   "new": "Austin",
+   "slot": "date",
+   "old": "June first",
+   "new": "May eighth",
    "by": "user",
    "kind": "default",
-   "gap": 1.57
+   "gap": 3.081
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Denver",
+  "date": "May 8",
+  "seat_class": "first class",
+  "passenger": "Sam Rivera"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Find a train from Boston to Atlanta on June first, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Seattle to Denver on June first, hold a first class seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Wait — make it Austin.",
-   "gap_before": 1.57
+   "text": "Wait — make it May eighth.",
+   "gap_before": 3.081
   }
  ],
  "events": [],
@@ -64,16 +71,16 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
-    "destination": "Austin",
-    "date": "June first"
+    "origin": "Seattle",
+    "destination": "Denver",
+    "date": "May 8"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE4facca",
-    "seat_class": "coach"
+    "seat_class": "first class"
    }
   },
   {
@@ -86,13 +93,13 @@
  ],
  "gold_state": {
   "search_trains#SE4facca": {
-   "origin": "Boston",
-   "destination": "Austin",
-   "date": "June first"
+   "origin": "Seattle",
+   "destination": "Denver",
+   "date": "May 8"
   },
   "hold_seat#HOa068ea": {
    "train_id": "SE4facca",
-   "seat_class": "coach"
+   "seat_class": "first class"
   },
   "purchase_ticket#PUd209e3": {
    "hold_id": "HOa068ea",
@@ -100,26 +107,26 @@
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv01"
+  "user": "cv08",
+  "bystander": "cv05"
  },
  "split": "dev",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.62,
+   "t_end": 6.5,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.19,
-   "t_end": 11.19,
+   "t_start": 9.581,
+   "t_end": 11.501,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.57
+  3.081
  ]
 }

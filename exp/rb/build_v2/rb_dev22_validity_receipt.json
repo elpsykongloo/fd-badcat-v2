@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "date_utc": "2026-07-16",
+  "build": {
+    "version": "rb_v2.2",
+    "config_hash": "9f8f4ae9edc8",
+    "content_hash": "17cceb7303f3",
+    "n": 1000,
+    "dev": 103,
+    "test": 897,
+    "audio": "qwen"
+  },
+  "status": "DEV_VALIDITY_GATE_FAIL",
+  "test_split_run": false,
+  "oracle_gate": {
+    "status": "PASS",
+    "arm_a": {
+      "provider": "rbdev_oracle_a4",
+      "n": 59,
+      "exact": 0.7627,
+      "gate_layers_exact_1": ["L1", "L2", "L3", "L4", "L7", "L8", "L9", "L10"],
+      "ceiling_layers": {"L5": 0.2857, "L6": 0.0}
+    },
+    "arm_b": {
+      "provider": "rbdev_oracle_b4",
+      "n": 44,
+      "exact": 0.75,
+      "gate_layers_exact_1": ["L4", "L8", "L9", "L10"],
+      "ceiling_layers": {"L5": 0.1818, "L6": 0.0}
+    }
+  },
+  "llm_dev": {
+    "tact": {
+      "provider": "rbdev22_tact_d150",
+      "report": "exp/rb/build_v2/rb_report_rbdev22_tact_d150.json",
+      "n": 59,
+      "exact": 0.2542,
+      "state_verbatim": 0.2542,
+      "state_normalized": 0.2542,
+      "U_mean": 0.1889,
+      "first_p50": 1.64,
+      "done_p50": 3.793,
+      "wrong_commits": 0,
+      "unrepaired": 0,
+      "by_layer_exact": {
+        "L1": 0.3333,
+        "L2": 1.0,
+        "L3": 0.2308,
+        "L4": 0.0,
+        "L5": 0.0714,
+        "L6": 0.0,
+        "L7": 0.75,
+        "L8": 0.3333,
+        "L9": 0.5714,
+        "L10": 0.5
+      },
+      "first_run_cache": {"hits": 2, "misses": 140, "unique_entries": 140},
+      "offline_replay": {"hits": 142, "misses": 0, "byte_identical": true},
+      "parse_path": {
+        "logical_decisions": 118,
+        "raw_calls": 142,
+        "initial_strict_json": 94,
+        "initial_parse_error": 24,
+        "repair_strict_success": 1,
+        "salvaged_after_failed_repair": 23,
+        "final_unrecoverable_parse": 0
+      },
+      "episode_outcome_taxonomy": {
+        "exact": 15,
+        "tool_inventory_mismatch": 23,
+        "invalid_required_args": 4,
+        "unresolved_result_reference": 9,
+        "argument_value_mismatch": 8
+      }
+    },
+    "blocking": {
+      "provider": "rbdev22_sblock",
+      "report": "exp/rb/build_v2/rb_report_rbdev22_sblock.json",
+      "n": 59,
+      "exact": 0.1695,
+      "state_verbatim": 0.1695,
+      "state_normalized": 0.1695,
+      "U_mean": 0.1073,
+      "first_p50": 2.116,
+      "done_p50": 2.235,
+      "wrong_commits": 0,
+      "unrepaired": 0,
+      "by_layer_exact": {
+        "L1": 0.3333,
+        "L2": 1.0,
+        "L3": 0.0,
+        "L4": 0.0,
+        "L5": 0.0,
+        "L6": 0.0,
+        "L7": 0.5,
+        "L8": 0.3333,
+        "L9": 0.5714,
+        "L10": 0.5
+      },
+      "first_run_cache": {"hits": 1, "misses": 76, "unique_entries": 76},
+      "offline_replay": {"hits": 77, "misses": 0, "byte_identical": true},
+      "parse_path": {
+        "logical_decisions": 59,
+        "raw_calls": 77,
+        "initial_strict_json": 41,
+        "initial_parse_error": 18,
+        "repair_strict_success": 1,
+        "salvaged_after_failed_repair": 17,
+        "final_unrecoverable_parse": 0
+      },
+      "episode_outcome_taxonomy": {
+        "exact": 10,
+        "tool_inventory_mismatch": 41,
+        "invalid_required_args": 2,
+        "unresolved_result_reference": 1,
+        "argument_value_mismatch": 5
+      }
+    },
+    "paired_exact": {
+      "tact_only": ["A_L3_0041", "A_L3_0053", "A_L3_0061", "A_L5_0045", "A_L7_0007"],
+      "blocking_only": [],
+      "both_pass": ["A_L10_0013", "A_L1_0031", "A_L2_0007", "A_L7_0012", "A_L7_0017", "A_L8_0037", "A_L9_0023", "A_L9_0043", "A_L9_0067", "A_L9_0070"],
+      "both_fail_n": 44
+    }
+  },
+  "validity_findings": [
+    {
+      "id": "blocking_batch_map_after_immediate_commit",
+      "kind": "runner_ordering_bug",
+      "evidence": "scripts/rb_run.py calls apply_decision_ops(immediate=True), which executes each launch, before batch_of is populated. A_L4_0002 therefore commits book_viewing with literal $RESULT_0.listings[0].id.",
+      "observed_episode": "A_L4_0002",
+      "pre_test_action": "Install the current-decision launch mapping before immediate execution, then add a blocking same-batch reference regression."
+    },
+    {
+      "id": "rb_opdag_has_no_rb_templates",
+      "kind": "runner_dependency_bug",
+      "evidence": "src/tact_dag.py DAG_TEMPLATES contains only FDB tool pairs; none of the RB chains (search_rentals->book_viewing, search_trains->hold_seat->purchase_ticket, search_catalog->add_item->place_order) can instantiate an edge. rb_run selftest supplies oracle-minted result ids and does not assert an RB dag_edge.",
+      "pre_test_action": "Declare RB dependency templates and assert edge creation plus downstream-window restart for an RB chain."
+    },
+    {
+      "id": "canonical_language_for_named_entities_undefined",
+      "kind": "gold_catalog_ambiguity",
+      "evidence": "ARG_FORMAT does not declare a canonical language for city/slot strings. Paired successful calls contain 9 TACT and 5 blocking Chinese-place translations such as 成都->Chengdu, 厦门->Xiamen and 杭州->Hangzhou, which exact scoring rejects.",
+      "pre_test_action": "Either declare and generate a single API canonical representation or score a frozen declared alias map."
+    },
+    {
+      "id": "payee_gold_conflicts_with_prompt_rule14",
+      "kind": "gold_prompt_conflict",
+      "evidence": "Prompt v3.1 rule 14 says no leading articles, while gold keeps 'the landlord' and 'the property office'. Both systems correctly remove the article in two L9 dev episodes and are scored wrong.",
+      "pre_test_action": "Canonicalize payee gold consistently with the frozen prompt/catalog rule."
+    }
+  ],
+  "value_shape_audit": {
+    "date_format_only_mismatches": 0,
+    "seat_class_shape": {"tact_first_class_to_first": 2, "blocking": 0},
+    "account_shape": {"tact_rent_account_to_snake_case": 2, "blocking_rent_account_to_snake_case": 1},
+    "note": "The two TACT date mismatches were semantic stale-value errors (May 8 versus June 1), not formatting-only errors."
+  },
+  "l4_raw_cache_samples": [
+    {
+      "provider": "rbdev22_tact_d150",
+      "episode": "A_L4_0055",
+      "decision": 0,
+      "cache_key": "688e0f2113b35a4382ea6fdba62629101b1231840e7603c09c6cd696661a85ec",
+      "strict_json": false,
+      "raw": "{\n  \"dialogue\": \"listen\",\n  \"ops\": [\n    {\n      \"type\": \"launch\",\n      \"fn\": \"search_trains\",\n      \"args\": {\n        \"origin\": \"Chicago\",\n        \"destination\": \"Austin\",\n        \"date\": \"May 8\"\n      }\n    },\n    {\n      \"type\": \"launch\",\n      \"fn\": \"hold_seat\",\n      \"args\": {\n        \"$RESULT_0.id$train_id$seat_class$: coach\"\n      }\n    },\n    {\n      \"type\": \"\"commit\"\",\n      \"op_id\":\"1\"\n    },\n    {\n      type: \"\"launch\"\",\n      fn: \"\"purchase_ticket\"\",\n      args: {\"\"hold_id\"\": \"$RESULT_1.id\", \"\"passenger\"\": \"\"Alex Chen\"\"}\n    }\n  ],\n  say: \"\"\n}",
+      "outcome": "Repair output was also invalid; salvage retained only search_trains. The later decision launched hold_seat with an unresolvable $RESULT_1 and omitted purchase_ticket."
+    },
+    {
+      "provider": "rbdev22_tact_d150",
+      "episode": "A_L4_0037",
+      "decision": 1,
+      "cache_key": "cc56aa797e38a67aef01e8a7bd1b741043477d9ba36e0205648aef8677003456",
+      "strict_json": true,
+      "raw": "{\n  \"dialogue\": \"listen\",\n  \"ops\": [\n    {\"type\": \"patch\", \"op_id\": 1, \"diff\": {\"to_cur\": \"EUR\"}},\n    {\"type\": \"patch\", \"op_id\": 2, \"diff\": {\"to_acct\": \"rent_account_eur\"}}\n  ],\n  \"say\": \"\"\n}",
+      "outcome": "The intended to_cur patch was correct, but the model also corrupted the unchanged transfer destination account."
+    },
+    {
+      "provider": "rbdev22_sblock",
+      "episode": "A_L4_0002",
+      "decision": 0,
+      "cache_key": "f9eff93b377cd4959df57cd58f36a901906715deea5890023f919bb41a9ff395",
+      "strict_json": true,
+      "raw": "```json\n{\n  \"dialogue\": \"listen\",\n  \"ops\": [\n    {\"type\": \"launch\", \"fn\": \"search_rentals\", \"args\": {\"city\": \"Chengdu\", \"beds\": 2, \"max_rent\": 6000}},\n    {\"type\": \"launch\", \"fn\": \"book_viewing\", \"args\": {\"listing_id\": \"$RESULT_0.listings[0].id\", \"slot\": \"$RESULT_1.slot\"}}\n  ],\n  \"say\": \"\"\n}\n```",
+      "outcome": "The runner committed the second launch before batch_of existed, leaving listing_id literal; city language and the invented result-backed slot are additional independent mismatches."
+    }
+  ],
+  "regression": {
+    "pytest": {"passed": 156, "warnings": 4, "failed": 0},
+    "w3_barrier_probe": {"verdict": "ALL EXPECTATIONS MET", "parity": "21/21", "cache_misses": 0},
+    "rb_build_selftest": "12/12 PASS",
+    "rb_run_selftest": "12/12 PASS"
+  },
+  "artifact_sha256": {
+    "manifest": "bd245d52e0fefe8c4e0ae30c716e544cb98062f1dbab62de951ecd80e3cf173d",
+    "oracle_a4_report": "6d5452b4ac7ffb07b442597b2b8a4d67598a96f6861a41e748d7b2fcdf774440",
+    "oracle_b4_report": "242077c80b5cb52db9640937e550aeb2d17ee94ed22a66d2c02e858b4ef65b27",
+    "tact_report": "6f9dc509b27ab6d3d3d36d435d740e6e915167ee4246788d07513f45d5d86253",
+    "tact_cache": "4b83fffd550dfe01440c29ecc40a45ac60a4f46b7ec2fdc84b674cca813b3ff9",
+    "blocking_report": "095db07d61f22cf1f9242c273e8d19c89a5c1cc4b661d2444d3d8147ac1ead1a",
+    "blocking_cache": "91e8aa37cb142236a94d3944f18841eae1fe4ab9486e7a2af5127ef220cc91e9"
+  },
+  "conclusion": "Oracle/freeze parity and deterministic cache replay pass, but the LLM dev validity gate fails. Do not run RB test 897 until the runner-ordering, RB-DAG and catalog/gold ambiguities are corrected, re-selftested, re-frozen as required, and both dev systems are rerun."
+}

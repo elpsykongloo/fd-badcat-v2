@@ -6,58 +6,64 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "杭州",
-  "beds": "一居",
+  "city": "青岛",
+  "beds": "两居",
   "max_rent": "六千",
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "slots_final": {
-  "city": "杭州",
-  "beds": "一居",
+  "city": "青岛",
+  "beds": "两居",
   "max_rent": "六千",
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "revisions": [],
  "bystander": {
   "kind": "command",
-  "other": "厦门",
+  "other": "八千",
   "state": "inflight",
-  "frac": 0.736
+  "frac": 0.322
+ },
+ "slots_canon": {
+  "city": "青岛",
+  "beds": 2,
+  "max_rent": 6000,
+  "slot": "周日下午"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv02",
    "lang": "zh",
-   "text": "在杭州找一居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在青岛找两居、租金不超过六千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv09",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "改成厦门吧。",
-   "at_after_eou": 2.054
+   "text": "改成八千吧。",
+   "at_after_eou": 1.821
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.195,
+   "offset": 0.572,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv09",
-   "text": "改成厦门吧。"
+   "voice": "cv04",
+   "text": "改成八千吧。"
   },
   {
    "state": "tts",
-   "offset": 0.442,
+   "offset": 0.358,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv09",
-   "text": "改成厦门吧。"
+   "voice": "cv04",
+   "text": "改成八千吧。"
   }
  ],
  "profile": "default",
@@ -74,34 +80,34 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "杭州",
-    "beds": "一居",
-    "max_rent": "六千"
+    "city": "青岛",
+    "beds": 2,
+    "max_rent": 6000
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SE210079",
-    "slot": "周六上午"
+    "slot": "周日下午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SE210079": {
-   "city": "杭州",
-   "beds": "一居",
-   "max_rent": "六千"
+   "city": "青岛",
+   "beds": 2,
+   "max_rent": 6000
   },
   "book_viewing#BOde6308": {
    "listing_id": "SE210079",
-   "slot": "周六上午"
+   "slot": "周日下午"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv09"
+  "user": "cv02",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

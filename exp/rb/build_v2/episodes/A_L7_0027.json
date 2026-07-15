@@ -7,9 +7,9 @@
  "scenario": "travel_multi",
  "slots": {
   "origin": "Chicago",
-  "destination": "Portland",
+  "destination": "Atlanta",
   "date": "June first",
-  "country": "Japan",
+  "country": "Thailand",
   "nationality": "American"
  },
  "slots_final": {
@@ -21,31 +21,38 @@
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Portland",
-   "new": "Atlanta",
+   "slot": "country",
+   "old": "Thailand",
+   "new": "Japan",
    "by": "user",
    "kind": "default",
-   "gap": 2.122
+   "gap": 2.495
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "June 1",
+  "country": "Japan",
+  "nationality": "American"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Look up trains from Chicago to Portland on June first, and also check if American citizens need a visa for Japan.",
+   "text": "Look up trains from Chicago to Atlanta on June first, and also check if American citizens need a visa for Thailand.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Wait — make it Atlanta.",
-   "gap_before": 2.122
+   "text": "Wait — make it Japan.",
+   "gap_before": 2.495
   }
  ],
  "events": [],
@@ -65,7 +72,7 @@
    "args": {
     "origin": "Chicago",
     "destination": "Atlanta",
-    "date": "June first"
+    "date": "June 1"
    }
   },
   {
@@ -80,7 +87,7 @@
   "search_trains#SE53ccdb": {
    "origin": "Chicago",
    "destination": "Atlanta",
-   "date": "June first"
+   "date": "June 1"
   },
   "check_visa_rule#CH58c0df": {
    "country": "Japan",
@@ -88,26 +95,26 @@
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv09"
+  "user": "cv09",
+  "bystander": "cv06"
  },
  "split": "dev",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 10.98,
+   "t_end": 7.94,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 13.102,
-   "t_end": 15.582,
+   "t_start": 10.435,
+   "t_end": 12.115,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.122
+  2.495
  ]
 }

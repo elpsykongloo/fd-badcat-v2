@@ -6,52 +6,57 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "跑步鞋",
-  "qty": "一",
-  "address": "海淀区学院路一号"
+  "query": "保温杯",
+  "qty": "两",
+  "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
-  "query": "跑步鞋",
-  "qty": "一",
+  "query": "蓝牙耳机",
+  "qty": "两",
   "address": "浦东新区世纪大道八号"
  },
  "revisions": [
   {
-   "slot": "address",
-   "old": "海淀区学院路一号",
-   "new": "浦东新区世纪大道八号",
+   "slot": "query",
+   "old": "保温杯",
+   "new": "蓝牙耳机",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.685
+   "gap": 0.846
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "query": "蓝牙耳机",
+  "qty": 2,
+  "address": "浦东新区世纪大道八号"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "帮我搜跑步鞋，加一件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜保温杯，加两件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "浦东新区世纪大道八号，改成浦东新区世纪大道八号。",
-   "gap_before": 0.685
+   "text": "蓝牙耳机，改成蓝牙耳机。",
+   "gap_before": 0.846
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.444,
+   "offset": 0.074,
    "action": "revise",
    "role": "user",
-   "voice": "cv08",
-   "text": "浦东新区世纪大道八号，改成浦东新区世纪大道八号。"
+   "voice": "cv03",
+   "text": "蓝牙耳机，改成蓝牙耳机。"
   }
  ],
  "profile": "default",
@@ -69,14 +74,14 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "跑步鞋"
+    "query": "蓝牙耳机"
    }
   },
   {
    "fn": "add_item",
    "args": {
     "item_id": "SEe7a174",
-    "qty": "一"
+    "qty": 2
    }
   },
   {
@@ -89,11 +94,11 @@
  ],
  "gold_state": {
   "search_catalog#SEe7a174": {
-   "query": "跑步鞋"
+   "query": "蓝牙耳机"
   },
   "add_item#AD83839e": {
    "item_id": "SEe7a174",
-   "qty": "一"
+   "qty": 2
   },
   "place_order#PL2bc847": {
    "cart_id": "AD83839e",
@@ -101,9 +106,9 @@
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv03"
+  "user": "cv03",
+  "bystander": "cv09"
  },
  "split": "dev",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

@@ -6,25 +6,25 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "成都",
+  "city": "杭州",
   "beds": "一居",
   "max_rent": "六千",
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "slots_final": {
   "city": "青岛",
   "beds": "两居",
   "max_rent": "六千",
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "revisions": [
   {
    "slot": "city",
-   "old": "成都",
+   "old": "杭州",
    "new": "青岛",
    "by": "user",
    "kind": "default",
-   "gap": 0.755
+   "gap": 0.759
   },
   {
    "slot": "beds",
@@ -32,33 +32,39 @@
    "new": "两居",
    "by": "user",
    "kind": "second",
-   "gap": 2.619
+   "gap": 2.458
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "青岛",
+  "beds": 2,
+  "max_rent": 6000,
+  "slot": "周日下午"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv08",
    "lang": "zh",
-   "text": "在成都找一居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在杭州找一居、租金不超过六千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv08",
    "lang": "zh",
    "text": "等等，改成青岛。",
-   "gap_before": 0.755
+   "gap_before": 0.759
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv08",
    "lang": "zh",
    "text": "还有，再改一下，要两居。",
-   "gap_before": 2.619
+   "gap_before": 2.458
   }
  ],
  "events": [],
@@ -77,57 +83,57 @@
    "fn": "search_rentals",
    "args": {
     "city": "青岛",
-    "beds": "两居",
-    "max_rent": "六千"
+    "beds": 2,
+    "max_rent": 6000
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SE0f0cfc",
-    "slot": "周六上午"
+    "slot": "周日下午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SE0f0cfc": {
    "city": "青岛",
-   "beds": "两居",
-   "max_rent": "六千"
+   "beds": 2,
+   "max_rent": 6000
   },
   "book_viewing#BO4b9a8a": {
    "listing_id": "SE0f0cfc",
-   "slot": "周六上午"
+   "slot": "周日下午"
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv07"
+  "user": "cv08",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 12.34,
+   "t_end": 7.14,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 13.095,
-   "t_end": 15.335,
+   "t_start": 7.899,
+   "t_end": 10.299,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 17.954,
-   "t_end": 21.474,
+   "t_start": 12.757,
+   "t_end": 14.757,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.755,
-  2.619
+  0.759,
+  2.458
  ]
 }

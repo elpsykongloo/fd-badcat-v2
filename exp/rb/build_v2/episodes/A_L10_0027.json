@@ -8,40 +8,47 @@
  "slots": {
   "origin": "Chicago",
   "destination": "Atlanta",
-  "date": "May third",
+  "date": "June first",
   "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "passenger": "Alex Chen"
  },
  "slots_final": {
   "origin": "Chicago",
   "destination": "Atlanta",
-  "date": "May third",
+  "date": "June first",
   "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "passenger": "Alex Chen"
  },
  "revisions": [],
  "bystander": {
   "kind": "command",
   "other": "May eighth",
   "state": "inflight",
-  "frac": 0.75
+  "frac": 0.417
+ },
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "June 1",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Find a train from Chicago to Atlanta on May third, hold a coach seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Chicago to Atlanta on June first, hold a coach seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv05",
+   "voice": "cv08",
    "lang": "en",
    "text": "Change it to May eighth.",
-   "at_after_eou": 1.996
+   "at_after_eou": 1.838
   }
  ],
  "events": [],
@@ -62,7 +69,7 @@
    "args": {
     "origin": "Chicago",
     "destination": "Atlanta",
-    "date": "May third"
+    "date": "June 1"
    }
   },
   {
@@ -76,7 +83,7 @@
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO7e406d",
-    "passenger": "Jordan Lee"
+    "passenger": "Alex Chen"
    }
   }
  ],
@@ -84,7 +91,7 @@
   "search_trains#SE6c6d60": {
    "origin": "Chicago",
    "destination": "Atlanta",
-   "date": "May third"
+   "date": "June 1"
   },
   "hold_seat#HO7e406d": {
    "train_id": "SE6c6d60",
@@ -92,26 +99,26 @@
   },
   "purchase_ticket#PU134286": {
    "hold_id": "HO7e406d",
-   "passenger": "Jordan Lee"
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv05"
+  "user": "cv02",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.42,
+   "t_end": 6.1,
    "scheduled": "sequential"
   },
   {
    "role": "bystander",
-   "t_start": 11.056,
-   "t_end": 12.176,
+   "t_start": 8.578,
+   "t_end": 10.098,
    "scheduled": "lifecycle_nominal"
   }
  ],

@@ -6,46 +6,53 @@
  "lang": "zh",
  "scenario": "hou_multi",
  "slots": {
-  "city": "厦门",
+  "city": "成都",
   "beds": "一居",
-  "max_rent": "八千",
+  "max_rent": "六千",
   "from_addr": "中关村",
-  "to_addr": "国贸"
+  "to_addr": "西二旗"
  },
  "slots_final": {
-  "city": "厦门",
+  "city": "青岛",
   "beds": "一居",
-  "max_rent": "八千",
+  "max_rent": "六千",
   "from_addr": "中关村",
   "to_addr": "西二旗"
  },
  "revisions": [
   {
-   "slot": "to_addr",
-   "old": "国贸",
-   "new": "西二旗",
+   "slot": "city",
+   "old": "成都",
+   "new": "青岛",
    "by": "user",
    "kind": "default",
-   "gap": 1.165
+   "gap": 1.637
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "青岛",
+  "beds": 1,
+  "max_rent": 6000,
+  "from_addr": "中关村",
+  "to_addr": "西二旗"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "在厦门找一居、不超过八千的房子，再算下从中关村到国贸的通勤时间。",
+   "text": "在成都找一居、不超过六千的房子，再算下从中关村到西二旗的通勤时间。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "等等，改成西二旗。",
-   "gap_before": 1.165
+   "text": "等等，改成青岛。",
+   "gap_before": 1.637
   }
  ],
  "events": [],
@@ -63,9 +70,9 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "厦门",
-    "beds": "一居",
-    "max_rent": "八千"
+    "city": "青岛",
+    "beds": 1,
+    "max_rent": 6000
    }
   },
   {
@@ -78,9 +85,9 @@
  ],
  "gold_state": {
   "search_rentals#SE6191e9": {
-   "city": "厦门",
-   "beds": "一居",
-   "max_rent": "八千"
+   "city": "青岛",
+   "beds": 1,
+   "max_rent": 6000
   },
   "get_commute_time#GEd50af7": {
    "from_addr": "中关村",
@@ -88,26 +95,26 @@
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv01"
+  "user": "cv04",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.7,
+   "t_end": 8.02,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.865,
-   "t_end": 11.265,
+   "t_start": 9.657,
+   "t_end": 11.897,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.165
+  1.637
  ]
 }

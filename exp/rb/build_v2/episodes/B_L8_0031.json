@@ -6,46 +6,53 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
+  "origin": "Seattle",
   "destination": "Austin",
-  "date": "May third",
-  "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Chicago",
+  "origin": "Seattle",
   "destination": "Austin",
-  "date": "May third",
-  "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "June 1",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
+ },
  "l8_action": "cancel",
  "cancelled": true,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Find a train from Chicago to Austin on May third, hold a business seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Seattle to Austin on June first, hold a coach seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv06",
    "lang": "en",
    "text": "Actually, hold off, don't do it yet.",
-   "at_after_eou": 2.133
+   "at_after_eou": 2.067
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.593,
+   "offset": 0.793,
    "action": "cancel",
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv06",
    "text": "Actually, hold off, don't do it yet."
   }
  ],
@@ -63,9 +70,9 @@
  "gold_calls": [],
  "gold_state": {},
  "voices": {
-  "user": "cv05",
-  "bystander": "cv02"
+  "user": "cv06",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

@@ -6,18 +6,18 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Denver",
-  "date": "May eighth",
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "June first",
   "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Chicago",
-  "destination": "Denver",
-  "date": "May eighth",
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "June first",
   "seat_class": "coach",
-  "passenger": "Sam Rivera"
+  "passenger": "Alex Chen"
  },
  "revisions": [
   {
@@ -26,26 +26,33 @@
    "new": "coach",
    "by": "user",
    "kind": "default",
-   "gap": 2.65
+   "gap": 2.966
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "June 1",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Find a train from Chicago to Denver on May eighth, hold a business seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Seattle to Atlanta on June first, hold a business seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv02",
    "lang": "en",
    "text": "Wait — make it coach.",
-   "gap_before": 2.65
+   "gap_before": 2.966
   }
  ],
  "events": [],
@@ -64,9 +71,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
-    "destination": "Denver",
-    "date": "May eighth"
+    "origin": "Seattle",
+    "destination": "Atlanta",
+    "date": "June 1"
    }
   },
   {
@@ -80,15 +87,15 @@
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO203da3",
-    "passenger": "Sam Rivera"
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE820fef": {
-   "origin": "Chicago",
-   "destination": "Denver",
-   "date": "May eighth"
+   "origin": "Seattle",
+   "destination": "Atlanta",
+   "date": "June 1"
   },
   "hold_seat#HO203da3": {
    "train_id": "SE820fef",
@@ -96,30 +103,30 @@
   },
   "purchase_ticket#PUb4c378": {
    "hold_id": "HO203da3",
-   "passenger": "Sam Rivera"
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv07"
+  "user": "cv02",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.02,
+   "t_end": 6.42,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.67,
-   "t_end": 13.31,
+   "t_start": 9.386,
+   "t_end": 11.146,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.65
+  2.966
  ]
 }

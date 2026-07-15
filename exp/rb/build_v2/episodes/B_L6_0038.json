@@ -6,13 +6,13 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "杭州",
+  "city": "成都",
   "beds": "两居",
   "max_rent": "八千",
   "slot": "周日下午"
  },
  "slots_final": {
-  "city": "成都",
+  "city": "厦门",
   "beds": "一居",
   "max_rent": "八千",
   "slot": "周日下午"
@@ -20,11 +20,11 @@
  "revisions": [
   {
    "slot": "city",
-   "old": "杭州",
-   "new": "成都",
+   "old": "成都",
+   "new": "厦门",
    "by": "user",
    "kind": "default",
-   "gap": 1.289
+   "gap": 0.807
   },
   {
    "slot": "beds",
@@ -32,51 +32,57 @@
    "new": "一居",
    "by": "user",
    "kind": "second",
-   "gap": 2.764
+   "gap": 2.608
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "厦门",
+  "beds": 1,
+  "max_rent": 8000,
+  "slot": "周日下午"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv02",
    "lang": "zh",
-   "text": "在杭州找两居、租金不超过八千的房子，约周日下午看房。",
+   "text": "在成都找两居、租金不超过八千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv02",
    "lang": "zh",
-   "text": "等等，改成成都。",
-   "gap_before": 1.289
+   "text": "等等，改成厦门。",
+   "gap_before": 0.807
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv02",
    "lang": "zh",
    "text": "还有，再改一下，要一居。",
-   "gap_before": 2.764
+   "gap_before": 2.608
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.807,
+   "offset": 0.81,
    "action": "revise",
    "role": "user",
-   "voice": "cv08",
-   "text": "等等，改成成都。"
+   "voice": "cv02",
+   "text": "等等，改成厦门。"
   },
   {
    "state": "committed",
-   "offset": 1.004,
+   "offset": 0.527,
    "action": "revise",
    "role": "user",
-   "voice": "cv08",
-   "text": "等等，改成成都。"
+   "voice": "cv02",
+   "text": "等等，改成厦门。"
   }
  ],
  "profile": "default",
@@ -93,9 +99,9 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "成都",
-    "beds": "一居",
-    "max_rent": "八千"
+    "city": "厦门",
+    "beds": 1,
+    "max_rent": 8000
    }
   },
   {
@@ -108,9 +114,9 @@
  ],
  "gold_state": {
   "search_rentals#SEf793f2": {
-   "city": "成都",
-   "beds": "一居",
-   "max_rent": "八千"
+   "city": "厦门",
+   "beds": 1,
+   "max_rent": 8000
   },
   "book_viewing#BOb30dba": {
    "listing_id": "SEf793f2",
@@ -118,9 +124,9 @@
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv09"
+  "user": "cv02",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

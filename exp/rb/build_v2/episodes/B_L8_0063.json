@@ -9,53 +9,60 @@
   "origin": "Chicago",
   "destination": "Austin",
   "date": "June first",
-  "seat_class": "business",
+  "seat_class": "coach",
   "passenger": "Sam Rivera"
  },
  "slots_final": {
   "origin": "Chicago",
-  "destination": "Atlanta",
+  "destination": "Austin",
   "date": "June first",
-  "seat_class": "business",
+  "seat_class": "first class",
   "passenger": "Sam Rivera"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Austin",
-   "new": "Atlanta",
+   "slot": "seat_class",
+   "old": "coach",
+   "new": "first class",
    "by": "user",
    "kind": "default",
    "gap": null
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "June 1",
+  "seat_class": "first class",
+  "passenger": "Sam Rivera"
+ },
  "l8_action": "revise",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Find a train from Chicago to Austin on June first, hold a business seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Chicago to Austin on June first, hold a coach seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Wait — make it Atlanta.",
-   "at_after_eou": 1.896
+   "text": "Wait — make it first class.",
+   "at_after_eou": 1.761
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.744,
+   "offset": 0.405,
    "action": "revise",
    "role": "user",
-   "voice": "cv06",
-   "text": "Wait — make it Atlanta."
+   "voice": "cv03",
+   "text": "Wait — make it first class."
   }
  ],
  "profile": "default",
@@ -74,15 +81,15 @@
    "fn": "search_trains",
    "args": {
     "origin": "Chicago",
-    "destination": "Atlanta",
-    "date": "June first"
+    "destination": "Austin",
+    "date": "June 1"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SEd8fc3a",
-    "seat_class": "business"
+    "seat_class": "first class"
    }
   },
   {
@@ -96,12 +103,12 @@
  "gold_state": {
   "search_trains#SEd8fc3a": {
    "origin": "Chicago",
-   "destination": "Atlanta",
-   "date": "June first"
+   "destination": "Austin",
+   "date": "June 1"
   },
   "hold_seat#HO3c7acf": {
    "train_id": "SEd8fc3a",
-   "seat_class": "business"
+   "seat_class": "first class"
   },
   "purchase_ticket#PU499a70": {
    "hold_id": "HO3c7acf",
@@ -109,9 +116,9 @@
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv03"
+  "user": "cv03",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

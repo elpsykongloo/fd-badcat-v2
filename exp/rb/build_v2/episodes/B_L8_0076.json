@@ -6,17 +6,22 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "蓝牙耳机",
-  "qty": "一",
+  "query": "保温杯",
+  "qty": "两",
   "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
-  "query": "蓝牙耳机",
-  "qty": "一",
+  "query": "保温杯",
+  "qty": "两",
   "address": "浦东新区世纪大道八号"
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "query": "保温杯",
+  "qty": 2,
+  "address": "浦东新区世纪大道八号"
+ },
  "l8_action": "cancel",
  "cancelled": true,
  "pieces": [
@@ -24,7 +29,7 @@
    "role": "user",
    "voice": "cv04",
    "lang": "zh",
-   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜保温杯，加两件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
@@ -32,13 +37,13 @@
    "voice": "cv04",
    "lang": "zh",
    "text": "算了，先别办了。",
-   "at_after_eou": 1.837
+   "at_after_eou": 1.911
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.548,
+   "offset": 0.681,
    "action": "cancel",
    "role": "user",
    "voice": "cv04",
@@ -60,8 +65,8 @@
  "gold_state": {},
  "voices": {
   "user": "cv04",
-  "bystander": "cv03"
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

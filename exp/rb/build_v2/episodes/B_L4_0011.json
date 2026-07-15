@@ -6,56 +6,63 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
+  "origin": "Boston",
   "destination": "Austin",
   "date": "May third",
   "seat_class": "business",
   "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Seattle",
+  "origin": "Boston",
   "destination": "Austin",
-  "date": "May third",
-  "seat_class": "first class",
+  "date": "June first",
+  "seat_class": "business",
   "passenger": "Sam Rivera"
  },
  "revisions": [
   {
-   "slot": "seat_class",
-   "old": "business",
-   "new": "first class",
+   "slot": "date",
+   "old": "May third",
+   "new": "June first",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.686
+   "gap": 0.687
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Boston",
+  "destination": "Austin",
+  "date": "June 1",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Find a train from Seattle to Austin on May third, hold a business seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Boston to Austin on May third, hold a business seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv05",
    "lang": "en",
-   "text": "first class — change it to first class.",
-   "gap_before": 0.686
+   "text": "June first — change it to June first.",
+   "gap_before": 0.687
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.359,
+   "offset": 0.48,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
-   "text": "first class — change it to first class."
+   "voice": "cv05",
+   "text": "June first — change it to June first."
   }
  ],
  "profile": "default",
@@ -73,16 +80,16 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
+    "origin": "Boston",
     "destination": "Austin",
-    "date": "May third"
+    "date": "June 1"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SEd9d9d0",
-    "seat_class": "first class"
+    "seat_class": "business"
    }
   },
   {
@@ -95,13 +102,13 @@
  ],
  "gold_state": {
   "search_trains#SEd9d9d0": {
-   "origin": "Seattle",
+   "origin": "Boston",
    "destination": "Austin",
-   "date": "May third"
+   "date": "June 1"
   },
   "hold_seat#HO2b609f": {
    "train_id": "SEd9d9d0",
-   "seat_class": "first class"
+   "seat_class": "business"
   },
   "purchase_ticket#PUb71282": {
    "hold_id": "HO2b609f",
@@ -109,9 +116,9 @@
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv08"
+  "user": "cv05",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

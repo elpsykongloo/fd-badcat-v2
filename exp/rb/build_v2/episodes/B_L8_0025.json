@@ -6,21 +6,28 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "five thousand",
+  "amount": "eight hundred",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "slots_final": {
-  "amount": "five thousand",
+  "amount": "eight hundred",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "amount": 800,
+  "from_cur": "USD",
+  "to_cur": "EUR",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
  "l8_action": "cancel",
  "cancelled": true,
  "pieces": [
@@ -28,7 +35,7 @@
    "role": "user",
    "voice": "cv04",
    "lang": "en",
-   "text": "Get a quote for five thousand dollars to yen, then transfer five thousand from checking to savings.",
+   "text": "Get a quote for eight hundred dollars to euros, then transfer eight hundred from checking to rent account.",
    "gap_before": 0.5
   },
   {
@@ -36,13 +43,13 @@
    "voice": "cv04",
    "lang": "en",
    "text": "Actually, hold off, don't do it yet.",
-   "at_after_eou": 2.029
+   "at_after_eou": 1.801
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.364,
+   "offset": 0.28,
    "action": "cancel",
    "role": "user",
    "voice": "cv04",
@@ -63,8 +70,8 @@
  "gold_state": {},
  "voices": {
   "user": "cv04",
-  "bystander": "cv07"
+  "bystander": "cv01"
  },
  "split": "dev",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

@@ -6,28 +6,34 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "青岛",
-  "beds": "一居",
-  "max_rent": "六千",
-  "slot": "周六上午"
+  "city": "成都",
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周日下午"
  },
  "slots_final": {
-  "city": "杭州",
-  "beds": "一居",
-  "max_rent": "六千",
-  "slot": "周六上午"
+  "city": "厦门",
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周日下午"
  },
  "revisions": [
   {
    "slot": "city",
-   "old": "青岛",
-   "new": "杭州",
+   "old": "成都",
+   "new": "厦门",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.691
+   "gap": 0.926
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "厦门",
+  "beds": 2,
+  "max_rent": 8000,
+  "slot": "周日下午"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
@@ -35,25 +41,25 @@
    "role": "user",
    "voice": "cv04",
    "lang": "zh",
-   "text": "在青岛找一居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在成都找两居、租金不超过八千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv04",
    "lang": "zh",
-   "text": "杭州，改成杭州。",
-   "gap_before": 0.691
+   "text": "厦门，改成厦门。",
+   "gap_before": 0.926
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.389,
+   "offset": 0.49,
    "action": "revise",
    "role": "user",
    "voice": "cv04",
-   "text": "杭州，改成杭州。"
+   "text": "厦门，改成厦门。"
   }
  ],
  "profile": "default",
@@ -70,28 +76,28 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "杭州",
-    "beds": "一居",
-    "max_rent": "六千"
+    "city": "厦门",
+    "beds": 2,
+    "max_rent": 8000
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SE2b4fff",
-    "slot": "周六上午"
+    "slot": "周日下午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SE2b4fff": {
-   "city": "杭州",
-   "beds": "一居",
-   "max_rent": "六千"
+   "city": "厦门",
+   "beds": 2,
+   "max_rent": 8000
   },
   "book_viewing#BO6b689e": {
    "listing_id": "SE2b4fff",
-   "slot": "周六上午"
+   "slot": "周日下午"
   }
  },
  "voices": {
@@ -99,5 +105,5 @@
   "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

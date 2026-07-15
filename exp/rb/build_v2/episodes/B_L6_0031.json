@@ -6,79 +6,86 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
-  "destination": "Atlanta",
-  "date": "May third",
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "June first",
   "seat_class": "business",
-  "passenger": "Jordan Lee"
+  "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Denver",
-  "date": "May third",
-  "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Atlanta",
-   "new": "Denver",
+   "old": "Portland",
+   "new": "Atlanta",
    "by": "user",
    "kind": "default",
-   "gap": 1.178
+   "gap": 0.786
   },
   {
    "slot": "seat_class",
    "old": "business",
-   "new": "coach",
+   "new": "first class",
    "by": "user",
    "kind": "second",
-   "gap": 1.854
+   "gap": 2.765
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "June 1",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Find a train from Boston to Atlanta on May third, hold a business seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Seattle to Portland on June first, hold a business seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Wait — make it Denver.",
-   "gap_before": 1.178
+   "text": "Wait — make it Atlanta.",
+   "gap_before": 0.786
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Also, one more change — coach.",
-   "gap_before": 1.854
+   "text": "Also, one more change — first class.",
+   "gap_before": 2.765
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.07,
+   "offset": 0.216,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
-   "text": "Wait — make it Denver."
+   "voice": "cv05",
+   "text": "Wait — make it Atlanta."
   },
   {
    "state": "committed",
-   "offset": 0.824,
+   "offset": 1.23,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
-   "text": "Wait — make it Denver."
+   "voice": "cv05",
+   "text": "Wait — make it Atlanta."
   }
  ],
  "profile": "default",
@@ -96,45 +103,45 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
-    "destination": "Denver",
-    "date": "May third"
+    "origin": "Seattle",
+    "destination": "Atlanta",
+    "date": "June 1"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SEa7192c",
-    "seat_class": "coach"
+    "seat_class": "first class"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO8e6696",
-    "passenger": "Jordan Lee"
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEa7192c": {
-   "origin": "Boston",
-   "destination": "Denver",
-   "date": "May third"
+   "origin": "Seattle",
+   "destination": "Atlanta",
+   "date": "June 1"
   },
   "hold_seat#HO8e6696": {
    "train_id": "SEa7192c",
-   "seat_class": "coach"
+   "seat_class": "first class"
   },
   "purchase_ticket#PU4611ee": {
    "hold_id": "HO8e6696",
-   "passenger": "Jordan Lee"
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv07",
+  "user": "cv05",
   "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

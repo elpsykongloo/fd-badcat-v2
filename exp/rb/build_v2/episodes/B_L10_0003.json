@@ -7,59 +7,66 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Chicago",
-  "destination": "Denver",
-  "date": "May eighth",
-  "seat_class": "coach",
-  "passenger": "Sam Rivera"
+  "destination": "Portland",
+  "date": "June first",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
  },
  "slots_final": {
   "origin": "Chicago",
-  "destination": "Denver",
-  "date": "May eighth",
-  "seat_class": "coach",
-  "passenger": "Sam Rivera"
+  "destination": "Portland",
+  "date": "June first",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
  },
  "revisions": [],
  "bystander": {
   "kind": "command",
-  "other": "June first",
+  "other": "Atlanta",
   "state": "inflight",
-  "frac": 0.459
+  "frac": 0.65
+ },
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Portland",
+  "date": "June 1",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Find a train from Chicago to Denver on May eighth, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Chicago to Portland on June first, hold a first class seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv07",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Change it to June first.",
-   "at_after_eou": 1.943
+   "text": "Change it to Atlanta.",
+   "at_after_eou": 2.069
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.653,
+   "offset": 0.43,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv07",
-   "text": "Change it to June first."
+   "voice": "cv02",
+   "text": "Change it to Atlanta."
   },
   {
    "state": "tts",
-   "offset": 0.366,
+   "offset": 0.451,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv07",
-   "text": "Change it to June first."
+   "voice": "cv02",
+   "text": "Change it to Atlanta."
   }
  ],
  "profile": "default",
@@ -78,44 +85,44 @@
    "fn": "search_trains",
    "args": {
     "origin": "Chicago",
-    "destination": "Denver",
-    "date": "May eighth"
+    "destination": "Portland",
+    "date": "June 1"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE211bc3",
-    "seat_class": "coach"
+    "seat_class": "first class"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO8ee7cd",
-    "passenger": "Sam Rivera"
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE211bc3": {
    "origin": "Chicago",
-   "destination": "Denver",
-   "date": "May eighth"
+   "destination": "Portland",
+   "date": "June 1"
   },
   "hold_seat#HO8ee7cd": {
    "train_id": "SE211bc3",
-   "seat_class": "coach"
+   "seat_class": "first class"
   },
   "purchase_ticket#PUd79214": {
    "hold_id": "HO8ee7cd",
-   "passenger": "Sam Rivera"
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv07"
+  "user": "cv08",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

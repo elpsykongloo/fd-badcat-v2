@@ -6,30 +6,37 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Austin",
-  "date": "May third",
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "June first",
   "seat_class": "coach",
   "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Seattle",
-  "destination": "Austin",
-  "date": "May eighth",
+  "origin": "Boston",
+  "destination": "Denver",
+  "date": "June first",
   "seat_class": "coach",
   "passenger": "Sam Rivera"
  },
  "revisions": [
   {
-   "slot": "date",
-   "old": "May third",
-   "new": "May eighth",
+   "slot": "destination",
+   "old": "Atlanta",
+   "new": "Denver",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.695
+   "gap": 0.696
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Boston",
+  "destination": "Denver",
+  "date": "June 1",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
@@ -37,25 +44,25 @@
    "role": "user",
    "voice": "cv05",
    "lang": "en",
-   "text": "Find a train from Seattle to Austin on May third, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Boston to Atlanta on June first, hold a coach seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv05",
    "lang": "en",
-   "text": "May eighth — change it to May eighth.",
-   "gap_before": 0.695
+   "text": "Denver — change it to Denver.",
+   "gap_before": 0.696
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.316,
+   "offset": 0.19,
    "action": "revise",
    "role": "user",
    "voice": "cv05",
-   "text": "May eighth — change it to May eighth."
+   "text": "Denver — change it to Denver."
   }
  ],
  "profile": "default",
@@ -73,9 +80,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
-    "destination": "Austin",
-    "date": "May eighth"
+    "origin": "Boston",
+    "destination": "Denver",
+    "date": "June 1"
    }
   },
   {
@@ -95,9 +102,9 @@
  ],
  "gold_state": {
   "search_trains#SE9bbd12": {
-   "origin": "Seattle",
-   "destination": "Austin",
-   "date": "May eighth"
+   "origin": "Boston",
+   "destination": "Denver",
+   "date": "June 1"
   },
   "hold_seat#HOa1d0a7": {
    "train_id": "SE9bbd12",
@@ -110,8 +117,8 @@
  },
  "voices": {
   "user": "cv05",
-  "bystander": "cv04"
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

@@ -12,22 +12,28 @@
   "slot": "周六上午"
  },
  "slots_final": {
-  "city": "成都",
+  "city": "厦门",
   "beds": "两居",
-  "max_rent": "六千",
+  "max_rent": "八千",
   "slot": "周六上午"
  },
  "revisions": [
   {
-   "slot": "max_rent",
-   "old": "八千",
-   "new": "六千",
+   "slot": "city",
+   "old": "成都",
+   "new": "厦门",
    "by": "user",
    "kind": "default",
-   "gap": 0.673
+   "gap": 0.713
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "厦门",
+  "beds": 2,
+  "max_rent": 8000,
+  "slot": "周六上午"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
@@ -42,8 +48,8 @@
    "role": "user",
    "voice": "cv06",
    "lang": "zh",
-   "text": "等等，改成六千。",
-   "gap_before": 0.673
+   "text": "等等，改成厦门。",
+   "gap_before": 0.713
   }
  ],
  "events": [],
@@ -61,9 +67,9 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "成都",
-    "beds": "两居",
-    "max_rent": "六千"
+    "city": "厦门",
+    "beds": 2,
+    "max_rent": 8000
    }
   },
   {
@@ -76,9 +82,9 @@
  ],
  "gold_state": {
   "search_rentals#SEbc58c4": {
-   "city": "成都",
-   "beds": "两居",
-   "max_rent": "六千"
+   "city": "厦门",
+   "beds": 2,
+   "max_rent": 8000
   },
   "book_viewing#BO4dae65": {
    "listing_id": "SEbc58c4",
@@ -87,10 +93,10 @@
  },
  "voices": {
   "user": "cv06",
-  "bystander": "cv01"
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
@@ -100,12 +106,12 @@
   },
   {
    "role": "user",
-   "t_start": 7.173,
-   "t_end": 10.213,
+   "t_start": 7.213,
+   "t_end": 8.893,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.673
+  0.713
  ]
 }

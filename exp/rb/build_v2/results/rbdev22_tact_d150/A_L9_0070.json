@@ -1,0 +1,65 @@
+{
+ "id": "A_L9_0070",
+ "layer": "L9",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 15.773,
+ "U": 0.4453,
+ "U_sens": {
+  "0.5": 0.4453,
+  "1.0": 0.4453,
+  "2.0": 0.4453
+ },
+ "first_response_s": 15.773,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 4.98,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "save_listing",
+     "op_id": 2
+    }
+   ],
+   "say": "正在收藏房源LST47。"
+  },
+  {
+   "i": 1,
+   "t_eou": 32.829,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   5.98,
+   "正在收藏房源LST47。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   4.34,
+   "user"
+  ],
+  [
+   30.909,
+   32.189,
+   "user"
+  ]
+ ]
+}

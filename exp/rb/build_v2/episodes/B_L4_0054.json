@@ -24,35 +24,41 @@
    "new": "一居",
    "by": "user",
    "kind": "value_first",
-   "gap": 1.057
+   "gap": 0.697
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "厦门",
+  "beds": 1,
+  "max_rent": 8000,
+  "slot": "周日下午"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv03",
    "lang": "zh",
    "text": "在厦门找两居、租金不超过八千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv03",
    "lang": "zh",
    "text": "一居，改成一居。",
-   "gap_before": 1.057
+   "gap_before": 0.697
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.435,
+   "offset": 0.21,
    "action": "revise",
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv03",
    "text": "一居，改成一居。"
   }
  ],
@@ -71,8 +77,8 @@
    "fn": "search_rentals",
    "args": {
     "city": "厦门",
-    "beds": "一居",
-    "max_rent": "八千"
+    "beds": 1,
+    "max_rent": 8000
    }
   },
   {
@@ -86,8 +92,8 @@
  "gold_state": {
   "search_rentals#SE46da4c": {
    "city": "厦门",
-   "beds": "一居",
-   "max_rent": "八千"
+   "beds": 1,
+   "max_rent": 8000
   },
   "book_viewing#BOc14c29": {
    "listing_id": "SE46da4c",
@@ -95,9 +101,9 @@
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv02"
+  "user": "cv03",
+  "bystander": "cv08"
  },
  "split": "dev",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

@@ -7,54 +7,61 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Chicago",
-  "destination": "Austin",
+  "destination": "Atlanta",
   "date": "June first",
   "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "passenger": "Alex Chen"
  },
  "slots_final": {
   "origin": "Chicago",
   "destination": "Denver",
   "date": "June first",
   "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "passenger": "Alex Chen"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Austin",
+   "old": "Atlanta",
    "new": "Denver",
    "by": "user",
    "kind": "default",
-   "gap": 2.668
+   "gap": 0.692
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "June 1",
+  "seat_class": "business",
+  "passenger": "Alex Chen"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Find a train from Chicago to Austin on June first, hold a business seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Chicago to Atlanta on June first, hold a business seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv01",
    "lang": "en",
    "text": "Wait — make it Denver.",
-   "gap_before": 2.668
+   "gap_before": 0.692
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.862,
+   "offset": 0.728,
    "action": "benign_control",
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv01",
    "text": "Wait — make it Denver."
   }
  ],
@@ -75,7 +82,7 @@
    "args": {
     "origin": "Chicago",
     "destination": "Denver",
-    "date": "June first"
+    "date": "June 1"
    }
   },
   {
@@ -89,7 +96,7 @@
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HOc01ba3",
-    "passenger": "Sam Rivera"
+    "passenger": "Alex Chen"
    }
   }
  ],
@@ -97,7 +104,7 @@
   "search_trains#SE759666": {
    "origin": "Chicago",
    "destination": "Denver",
-   "date": "June first"
+   "date": "June 1"
   },
   "hold_seat#HOc01ba3": {
    "train_id": "SE759666",
@@ -105,13 +112,13 @@
   },
   "purchase_ticket#PUfc5988": {
    "hold_id": "HOc01ba3",
-   "passenger": "Sam Rivera"
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv01"
+  "user": "cv01",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

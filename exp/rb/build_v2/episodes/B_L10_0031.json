@@ -6,51 +6,58 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Austin",
+  "origin": "Chicago",
+  "destination": "Atlanta",
   "date": "June first",
-  "seat_class": "business",
-  "passenger": "Alex Chen"
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Seattle",
-  "destination": "Austin",
+  "origin": "Chicago",
+  "destination": "Atlanta",
   "date": "June first",
-  "seat_class": "business",
-  "passenger": "Alex Chen"
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
  },
  "revisions": [],
  "bystander": {
   "kind": "irrelevant",
-  "other": "May third",
+  "other": "Denver",
   "state": "inflight",
-  "frac": 0.358
+  "frac": 0.394
+ },
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "June 1",
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Find a train from Seattle to Austin on June first, hold a business seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Chicago to Atlanta on June first, hold a first class seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv05",
+   "voice": "cv04",
    "lang": "en",
    "text": "What do you want for dinner? Let's order in.",
-   "at_after_eou": 1.858
+   "at_after_eou": 1.88
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.565,
+   "offset": 0.56,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv05",
+   "voice": "cv04",
    "text": "What do you want for dinner? Let's order in."
   }
  ],
@@ -69,45 +76,45 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
-    "destination": "Austin",
-    "date": "June first"
+    "origin": "Chicago",
+    "destination": "Atlanta",
+    "date": "June 1"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE230bbe",
-    "seat_class": "business"
+    "seat_class": "first class"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HOecec57",
-    "passenger": "Alex Chen"
+    "passenger": "Jordan Lee"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE230bbe": {
-   "origin": "Seattle",
-   "destination": "Austin",
-   "date": "June first"
+   "origin": "Chicago",
+   "destination": "Atlanta",
+   "date": "June 1"
   },
   "hold_seat#HOecec57": {
    "train_id": "SE230bbe",
-   "seat_class": "business"
+   "seat_class": "first class"
   },
   "purchase_ticket#PU4d1b1b": {
    "hold_id": "HOecec57",
-   "passenger": "Alex Chen"
+   "passenger": "Jordan Lee"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv05"
+  "user": "cv05",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

@@ -7,39 +7,43 @@
  "scenario": "ecom_multi",
  "slots": {
   "query": "跑步鞋",
-  "item_id": "A100"
+  "item_id": "B205"
  },
  "slots_final": {
   "query": "跑步鞋",
-  "item_id": "B205"
+  "item_id": "A100"
  },
  "revisions": [
   {
    "slot": "item_id",
-   "old": "A100",
-   "new": "B205",
+   "old": "B205",
+   "new": "A100",
    "by": "user",
    "kind": "default",
-   "gap": 1.058
+   "gap": 1.955
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "query": "跑步鞋",
+  "item_id": "A100"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "搜一下跑步鞋，再看看编号A100还有没有货。",
+   "text": "搜一下跑步鞋，再看看编号B205还有没有货。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "等等，改成B205。",
-   "gap_before": 1.058
+   "text": "等等，改成A100。",
+   "gap_before": 1.955
   }
  ],
  "events": [],
@@ -63,7 +67,7 @@
   {
    "fn": "check_stock",
    "args": {
-    "item_id": "B205"
+    "item_id": "A100"
    }
   }
  ],
@@ -72,30 +76,30 @@
    "query": "跑步鞋"
   },
   "check_stock#CH7622d3": {
-   "item_id": "B205"
+   "item_id": "A100"
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv01"
+  "user": "cv01",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 4.42,
+   "t_end": 4.82,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 5.478,
-   "t_end": 7.638,
+   "t_start": 6.775,
+   "t_end": 9.415,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.058
+  1.955
  ]
 }

@@ -7,74 +7,79 @@
  "scenario": "ecom_chain",
  "slots": {
   "query": "保温杯",
-  "qty": "两",
+  "qty": "一",
   "address": "海淀区学院路一号"
  },
  "slots_final": {
-  "query": "蓝牙耳机",
-  "qty": "一",
+  "query": "跑步鞋",
+  "qty": "两",
   "address": "海淀区学院路一号"
  },
  "revisions": [
   {
    "slot": "query",
    "old": "保温杯",
-   "new": "蓝牙耳机",
+   "new": "跑步鞋",
    "by": "user",
    "kind": "default",
-   "gap": 1.147
+   "gap": 0.963
   },
   {
    "slot": "qty",
-   "old": "两",
-   "new": "一",
+   "old": "一",
+   "new": "两",
    "by": "user",
    "kind": "second",
-   "gap": 2.528
+   "gap": 2.734
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "query": "跑步鞋",
+  "qty": 2,
+  "address": "海淀区学院路一号"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv07",
    "lang": "zh",
-   "text": "帮我搜保温杯，加两件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜保温杯，加一件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv07",
    "lang": "zh",
-   "text": "等等，改成蓝牙耳机。",
-   "gap_before": 1.147
+   "text": "等等，改成跑步鞋。",
+   "gap_before": 0.963
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv07",
    "lang": "zh",
-   "text": "还有，再改一下，要一。",
-   "gap_before": 2.528
+   "text": "还有，再改一下，要两。",
+   "gap_before": 2.734
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.586,
+   "offset": 0.093,
    "action": "revise",
    "role": "user",
-   "voice": "cv08",
-   "text": "等等，改成蓝牙耳机。"
+   "voice": "cv07",
+   "text": "等等，改成跑步鞋。"
   },
   {
    "state": "committed",
-   "offset": 0.458,
+   "offset": 1.104,
    "action": "revise",
    "role": "user",
-   "voice": "cv08",
-   "text": "等等，改成蓝牙耳机。"
+   "voice": "cv07",
+   "text": "等等，改成跑步鞋。"
   }
  ],
  "profile": "default",
@@ -92,14 +97,14 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "蓝牙耳机"
+    "query": "跑步鞋"
    }
   },
   {
    "fn": "add_item",
    "args": {
     "item_id": "SEbe64bc",
-    "qty": "一"
+    "qty": 2
    }
   },
   {
@@ -112,11 +117,11 @@
  ],
  "gold_state": {
   "search_catalog#SEbe64bc": {
-   "query": "蓝牙耳机"
+   "query": "跑步鞋"
   },
   "add_item#AD01f21a": {
    "item_id": "SEbe64bc",
-   "qty": "一"
+   "qty": 2
   },
   "place_order#PL717b7d": {
    "cart_id": "AD01f21a",
@@ -124,9 +129,9 @@
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv09"
+  "user": "cv07",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

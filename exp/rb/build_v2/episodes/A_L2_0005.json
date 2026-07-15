@@ -6,42 +6,47 @@
  "lang": "en",
  "scenario": "fin_payment",
  "slots": {
-  "payee": "the property office",
-  "amount": "eight hundred",
+  "payee": "the landlord",
+  "amount": "five thousand",
   "date": "May third"
  },
  "slots_final": {
-  "payee": "the property office",
-  "amount": "eight hundred",
-  "date": "June first"
+  "payee": "the landlord",
+  "amount": "five thousand",
+  "date": "May eighth"
  },
  "revisions": [
   {
    "slot": "date",
    "old": "May third",
-   "new": "June first",
+   "new": "May eighth",
    "by": "user",
    "kind": "default",
-   "gap": 0.258
+   "gap": 0.215
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "payee": "the landlord",
+  "amount": 5000,
+  "date": "May 8"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Schedule a payment of eight hundred to the property office on May third.",
+   "text": "Schedule a payment of five thousand to the landlord on May third.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Wait — make it June first.",
-   "gap_before": 0.258
+   "text": "Wait — make it May eighth.",
+   "gap_before": 0.215
   }
  ],
  "events": [],
@@ -58,40 +63,40 @@
   {
    "fn": "schedule_payment",
    "args": {
-    "payee": "the property office",
-    "amount": "eight hundred",
-    "date": "June first"
+    "payee": "the landlord",
+    "amount": 5000,
+    "date": "May 8"
    }
   }
  ],
  "gold_state": {
   "schedule_payment#SC606235": {
-   "payee": "the property office",
-   "amount": "eight hundred",
-   "date": "June first"
+   "payee": "the landlord",
+   "amount": 5000,
+   "date": "May 8"
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv04"
+  "user": "cv03",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 4.34,
+   "t_end": 4.42,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 4.598,
-   "t_end": 6.438,
+   "t_start": 4.635,
+   "t_end": 7.435,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.258
+  0.215
  ]
 }

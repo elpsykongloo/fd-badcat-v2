@@ -6,54 +6,60 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "杭州",
-  "beds": "两居",
-  "max_rent": "六千",
-  "slot": "周日下午"
- },
- "slots_final": {
-  "city": "杭州",
+  "city": "厦门",
   "beds": "一居",
   "max_rent": "六千",
   "slot": "周日下午"
  },
+ "slots_final": {
+  "city": "厦门",
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周日下午"
+ },
  "revisions": [
   {
-   "slot": "beds",
-   "old": "两居",
-   "new": "一居",
+   "slot": "max_rent",
+   "old": "六千",
+   "new": "八千",
    "by": "user",
    "kind": "default",
-   "gap": 2.951
+   "gap": 2.893
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "厦门",
+  "beds": 1,
+  "max_rent": 8000,
+  "slot": "周日下午"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "在杭州找两居、租金不超过六千的房子，约周日下午看房。",
+   "text": "在厦门找一居、租金不超过六千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "等等，改成一居。",
-   "gap_before": 2.951
+   "text": "等等，改成八千。",
+   "gap_before": 2.893
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 2.0,
+   "offset": 2.253,
    "action": "revise",
    "role": "user",
-   "voice": "cv04",
-   "text": "等等，改成一居。"
+   "voice": "cv06",
+   "text": "等等，改成八千。"
   }
  ],
  "profile": "default",
@@ -70,9 +76,9 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "杭州",
-    "beds": "一居",
-    "max_rent": "六千"
+    "city": "厦门",
+    "beds": 1,
+    "max_rent": 8000
    }
   },
   {
@@ -85,9 +91,9 @@
  ],
  "gold_state": {
   "search_rentals#SE393864": {
-   "city": "杭州",
-   "beds": "一居",
-   "max_rent": "六千"
+   "city": "厦门",
+   "beds": 1,
+   "max_rent": 8000
   },
   "book_viewing#BO6322e3": {
    "listing_id": "SE393864",
@@ -95,9 +101,9 @@
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv06"
+  "user": "cv06",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

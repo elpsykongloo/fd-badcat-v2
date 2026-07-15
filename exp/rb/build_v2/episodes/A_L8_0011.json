@@ -8,35 +8,42 @@
  "slots": {
   "origin": "Chicago",
   "destination": "Austin",
-  "date": "June first",
-  "seat_class": "first class",
-  "passenger": "Sam Rivera"
+  "date": "May eighth",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
  },
  "slots_final": {
   "origin": "Chicago",
   "destination": "Austin",
-  "date": "June first",
-  "seat_class": "first class",
-  "passenger": "Sam Rivera"
+  "date": "May eighth",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "May 8",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
+ },
  "l8_action": "progress",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Find a train from Chicago to Austin on June first, hold a first class seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Chicago to Austin on May eighth, hold a coach seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv04",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 1.836
+   "at_after_eou": 1.834
   }
  ],
  "events": [],
@@ -57,21 +64,21 @@
    "args": {
     "origin": "Chicago",
     "destination": "Austin",
-    "date": "June first"
+    "date": "May 8"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE4d5fba",
-    "seat_class": "first class"
+    "seat_class": "coach"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO86245e",
-    "passenger": "Sam Rivera"
+    "passenger": "Jordan Lee"
    }
   }
  ],
@@ -79,34 +86,34 @@
   "search_trains#SE4d5fba": {
    "origin": "Chicago",
    "destination": "Austin",
-   "date": "June first"
+   "date": "May 8"
   },
   "hold_seat#HO86245e": {
    "train_id": "SE4d5fba",
-   "seat_class": "first class"
+   "seat_class": "coach"
   },
   "purchase_ticket#PUec462b": {
    "hold_id": "HO86245e",
-   "passenger": "Sam Rivera"
+   "passenger": "Jordan Lee"
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv06"
+  "user": "cv04",
+  "bystander": "cv01"
  },
  "split": "dev",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.42,
+   "t_end": 7.86,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.896,
-   "t_end": 12.176,
+   "t_start": 10.334,
+   "t_end": 11.614,
    "scheduled": "lifecycle_nominal"
   }
  ],

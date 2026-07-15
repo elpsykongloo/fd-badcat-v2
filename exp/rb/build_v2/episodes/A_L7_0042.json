@@ -6,14 +6,14 @@
  "lang": "zh",
  "scenario": "hou_multi",
  "slots": {
-  "city": "杭州",
+  "city": "厦门",
   "beds": "一居",
   "max_rent": "六千",
   "from_addr": "望京",
   "to_addr": "西二旗"
  },
  "slots_final": {
-  "city": "杭州",
+  "city": "厦门",
   "beds": "一居",
   "max_rent": "六千",
   "from_addr": "望京",
@@ -26,26 +26,33 @@
    "new": "国贸",
    "by": "user",
    "kind": "default",
-   "gap": 2.268
+   "gap": 2.482
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "厦门",
+  "beds": 1,
+  "max_rent": 6000,
+  "from_addr": "望京",
+  "to_addr": "国贸"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv02",
    "lang": "zh",
-   "text": "在杭州找一居、不超过六千的房子，再算下从望京到西二旗的通勤时间。",
+   "text": "在厦门找一居、不超过六千的房子，再算下从望京到西二旗的通勤时间。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv02",
    "lang": "zh",
    "text": "等等，改成国贸。",
-   "gap_before": 2.268
+   "gap_before": 2.482
   }
  ],
  "events": [],
@@ -63,9 +70,9 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "杭州",
-    "beds": "一居",
-    "max_rent": "六千"
+    "city": "厦门",
+    "beds": 1,
+    "max_rent": 6000
    }
   },
   {
@@ -78,9 +85,9 @@
  ],
  "gold_state": {
   "search_rentals#SE075715": {
-   "city": "杭州",
-   "beds": "一居",
-   "max_rent": "六千"
+   "city": "厦门",
+   "beds": 1,
+   "max_rent": 6000
   },
   "get_commute_time#GEe86ae5": {
    "from_addr": "望京",
@@ -88,26 +95,26 @@
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv02"
+  "user": "cv02",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.58,
+   "t_end": 7.78,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.848,
-   "t_end": 12.448,
+   "t_start": 10.262,
+   "t_end": 11.702,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.268
+  2.482
  ]
 }

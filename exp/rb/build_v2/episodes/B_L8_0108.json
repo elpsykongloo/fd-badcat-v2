@@ -26,31 +26,36 @@
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "query": "保温杯",
+  "qty": 1,
+  "address": "浦东新区世纪大道八号"
+ },
  "l8_action": "revise",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv08",
    "lang": "zh",
    "text": "帮我搜保温杯，加两件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv08",
    "lang": "zh",
    "text": "等等，改成一。",
-   "at_after_eou": 2.112
+   "at_after_eou": 2.107
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.669,
+   "offset": 0.467,
    "action": "revise",
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv08",
    "text": "等等，改成一。"
   }
  ],
@@ -76,7 +81,7 @@
    "fn": "add_item",
    "args": {
     "item_id": "SEe129e7",
-    "qty": "一"
+    "qty": 1
    }
   },
   {
@@ -93,7 +98,7 @@
   },
   "add_item#AD0d3312": {
    "item_id": "SEe129e7",
-   "qty": "一"
+   "qty": 1
   },
   "place_order#PLe7a741": {
    "cart_id": "AD0d3312",
@@ -101,9 +106,9 @@
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv09"
+  "user": "cv08",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

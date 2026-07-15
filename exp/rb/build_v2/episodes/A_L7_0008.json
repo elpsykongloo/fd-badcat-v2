@@ -6,40 +6,44 @@
  "lang": "zh",
  "scenario": "ecom_multi",
  "slots": {
-  "query": "保温杯",
+  "query": "蓝牙耳机",
   "item_id": "A100"
  },
  "slots_final": {
   "query": "保温杯",
-  "item_id": "C330"
+  "item_id": "A100"
  },
  "revisions": [
   {
-   "slot": "item_id",
-   "old": "A100",
-   "new": "C330",
+   "slot": "query",
+   "old": "蓝牙耳机",
+   "new": "保温杯",
    "by": "user",
    "kind": "default",
-   "gap": 2.413
+   "gap": 1.219
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "query": "保温杯",
+  "item_id": "A100"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "搜一下保温杯，再看看编号A100还有没有货。",
+   "text": "搜一下蓝牙耳机，再看看编号A100还有没有货。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "等等，改成C330。",
-   "gap_before": 2.413
+   "text": "等等，改成保温杯。",
+   "gap_before": 1.219
   }
  ],
  "events": [],
@@ -63,7 +67,7 @@
   {
    "fn": "check_stock",
    "args": {
-    "item_id": "C330"
+    "item_id": "A100"
    }
   }
  ],
@@ -72,30 +76,30 @@
    "query": "保温杯"
   },
   "check_stock#CH3e96e0": {
-   "item_id": "C330"
+   "item_id": "A100"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv09"
+  "user": "cv05",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.58,
+   "t_end": 5.06,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.993,
-   "t_end": 11.873,
+   "t_start": 6.279,
+   "t_end": 8.119,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.413
+  1.219
  ]
 }

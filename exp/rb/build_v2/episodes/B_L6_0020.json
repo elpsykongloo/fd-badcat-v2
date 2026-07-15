@@ -6,74 +6,79 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "蓝牙耳机",
-  "qty": "一",
+  "query": "跑步鞋",
+  "qty": "两",
   "address": "海淀区学院路一号"
  },
  "slots_final": {
   "query": "保温杯",
-  "qty": "两",
+  "qty": "一",
   "address": "海淀区学院路一号"
  },
  "revisions": [
   {
    "slot": "query",
-   "old": "蓝牙耳机",
+   "old": "跑步鞋",
    "new": "保温杯",
    "by": "user",
    "kind": "default",
-   "gap": 0.728
+   "gap": 0.869
   },
   {
    "slot": "qty",
-   "old": "一",
-   "new": "两",
+   "old": "两",
+   "new": "一",
    "by": "user",
    "kind": "second",
-   "gap": 2.898
+   "gap": 1.126
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "query": "保温杯",
+  "qty": 1,
+  "address": "海淀区学院路一号"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜跑步鞋，加两件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv04",
    "lang": "zh",
    "text": "等等，改成保温杯。",
-   "gap_before": 0.728
+   "gap_before": 0.869
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "还有，再改一下，要两。",
-   "gap_before": 2.898
+   "text": "还有，再改一下，要一。",
+   "gap_before": 1.126
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.384,
+   "offset": 0.299,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv04",
    "text": "等等，改成保温杯。"
   },
   {
    "state": "committed",
-   "offset": 0.544,
+   "offset": 0.531,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv04",
    "text": "等等，改成保温杯。"
   }
  ],
@@ -99,7 +104,7 @@
    "fn": "add_item",
    "args": {
     "item_id": "SEebaf81",
-    "qty": "两"
+    "qty": 1
    }
   },
   {
@@ -116,7 +121,7 @@
   },
   "add_item#AD219fb2": {
    "item_id": "SEebaf81",
-   "qty": "两"
+   "qty": 1
   },
   "place_order#PLb5536d": {
    "cart_id": "AD219fb2",
@@ -124,9 +129,9 @@
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv09"
+  "user": "cv04",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

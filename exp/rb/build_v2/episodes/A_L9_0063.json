@@ -8,28 +8,33 @@
  "slots": {
   "city": "Boise",
   "checkin": "May third",
-  "nights": "three"
+  "nights": "two"
  },
  "slots_final": {
   "city": "Boise",
   "checkin": "May third",
-  "nights": "three"
+  "nights": "two"
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "city": "Boise",
+  "checkin": "May 3",
+  "nights": 2
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Book me a hotel in Boise, checking in May third, for three nights.",
+   "text": "Book me a hotel in Boise, checking in May third, for two nights.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv02",
    "lang": "en",
    "text": "Any progress?",
    "at_after_eou": 25.06
@@ -50,35 +55,35 @@
    "fn": "reserve_hotel",
    "args": {
     "city": "Boise",
-    "checkin": "May third",
-    "nights": "three"
+    "checkin": "May 3",
+    "nights": 2
    }
   }
  ],
  "gold_state": {
   "reserve_hotel#RE123202": {
    "city": "Boise",
-   "checkin": "May third",
-   "nights": "three"
+   "checkin": "May 3",
+   "nights": 2
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv03"
+  "user": "cv02",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 4.42,
+   "t_end": 5.06,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 30.12,
-   "t_end": 31.08,
+   "t_start": 30.76,
+   "t_end": 31.8,
    "scheduled": "lifecycle_nominal"
   }
  ],

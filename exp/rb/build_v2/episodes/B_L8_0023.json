@@ -6,21 +6,28 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Atlanta",
-  "date": "May third",
-  "seat_class": "first class",
+  "origin": "Boston",
+  "destination": "Denver",
+  "date": "June first",
+  "seat_class": "business",
   "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Chicago",
-  "destination": "Atlanta",
-  "date": "May third",
-  "seat_class": "first class",
+  "origin": "Boston",
+  "destination": "Denver",
+  "date": "June first",
+  "seat_class": "business",
   "passenger": "Alex Chen"
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Boston",
+  "destination": "Denver",
+  "date": "June 1",
+  "seat_class": "business",
+  "passenger": "Alex Chen"
+ },
  "l8_action": "progress",
  "cancelled": false,
  "pieces": [
@@ -28,7 +35,7 @@
    "role": "user",
    "voice": "cv02",
    "lang": "en",
-   "text": "Find a train from Chicago to Atlanta on May third, hold a first class seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Boston to Denver on June first, hold a business seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
@@ -36,13 +43,13 @@
    "voice": "cv02",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 1.82
+   "at_after_eou": 1.952
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.731,
+   "offset": 0.873,
    "action": "progress_query",
    "role": "user",
    "voice": "cv02",
@@ -64,16 +71,16 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
-    "destination": "Atlanta",
-    "date": "May third"
+    "origin": "Boston",
+    "destination": "Denver",
+    "date": "June 1"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE0e1dce",
-    "seat_class": "first class"
+    "seat_class": "business"
    }
   },
   {
@@ -86,13 +93,13 @@
  ],
  "gold_state": {
   "search_trains#SE0e1dce": {
-   "origin": "Chicago",
-   "destination": "Atlanta",
-   "date": "May third"
+   "origin": "Boston",
+   "destination": "Denver",
+   "date": "June 1"
   },
   "hold_seat#HO73178c": {
    "train_id": "SE0e1dce",
-   "seat_class": "first class"
+   "seat_class": "business"
   },
   "purchase_ticket#PUcc391a": {
    "hold_id": "HO73178c",
@@ -104,5 +111,5 @@
   "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

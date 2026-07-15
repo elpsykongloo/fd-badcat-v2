@@ -7,56 +7,61 @@
  "scenario": "ecom_chain",
  "slots": {
   "query": "蓝牙耳机",
-  "qty": "一",
+  "qty": "两",
   "address": "海淀区学院路一号"
  },
  "slots_final": {
-  "query": "跑步鞋",
-  "qty": "两",
+  "query": "保温杯",
+  "qty": "一",
   "address": "海淀区学院路一号"
  },
  "revisions": [
   {
    "slot": "query",
    "old": "蓝牙耳机",
-   "new": "跑步鞋",
+   "new": "保温杯",
    "by": "user",
    "kind": "default",
-   "gap": 0.781
+   "gap": 0.742
   },
   {
    "slot": "qty",
-   "old": "一",
-   "new": "两",
+   "old": "两",
+   "new": "一",
    "by": "user",
    "kind": "second",
-   "gap": 2.787
+   "gap": 2.792
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "query": "保温杯",
+  "qty": 1,
+  "address": "海淀区学院路一号"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "等等，改成跑步鞋。",
-   "gap_before": 0.781
+   "text": "等等，改成保温杯。",
+   "gap_before": 0.742
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "还有，再改一下，要两。",
-   "gap_before": 2.787
+   "text": "还有，再改一下，要一。",
+   "gap_before": 2.792
   }
  ],
  "events": [],
@@ -75,14 +80,14 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "跑步鞋"
+    "query": "保温杯"
    }
   },
   {
    "fn": "add_item",
    "args": {
     "item_id": "SE95864a",
-    "qty": "两"
+    "qty": 1
    }
   },
   {
@@ -95,11 +100,11 @@
  ],
  "gold_state": {
   "search_catalog#SE95864a": {
-   "query": "跑步鞋"
+   "query": "保温杯"
   },
   "add_item#ADa4fbba": {
    "item_id": "SE95864a",
-   "qty": "两"
+   "qty": 1
   },
   "place_order#PLef3985": {
    "cart_id": "ADa4fbba",
@@ -107,33 +112,33 @@
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv09"
+  "user": "cv06",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.58,
+   "t_end": 12.58,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 7.361,
-   "t_end": 9.441,
+   "t_start": 13.322,
+   "t_end": 15.242,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 12.228,
-   "t_end": 14.708,
+   "t_start": 18.034,
+   "t_end": 21.794,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.781,
-  2.787
+  0.742,
+  2.792
  ]
 }

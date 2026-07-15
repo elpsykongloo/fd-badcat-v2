@@ -17,22 +17,27 @@
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "query": "跑步鞋",
+  "qty": 2,
+  "address": "浦东新区世纪大道八号"
+ },
  "l8_action": "cancel",
  "cancelled": true,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv07",
    "lang": "zh",
    "text": "帮我搜跑步鞋，加两件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv07",
    "lang": "zh",
    "text": "算了，先别办了。",
-   "at_after_eou": 1.957
+   "at_after_eou": 2.222
   }
  ],
  "events": [],
@@ -50,22 +55,22 @@
  "gold_calls": [],
  "gold_state": {},
  "voices": {
-  "user": "cv05",
-  "bystander": "cv03"
+  "user": "cv07",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.5,
+   "t_end": 6.82,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.097,
-   "t_end": 10.297,
+   "t_start": 9.682,
+   "t_end": 10.802,
    "scheduled": "lifecycle_nominal"
   }
  ],

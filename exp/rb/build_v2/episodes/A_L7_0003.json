@@ -6,46 +6,53 @@
  "lang": "en",
  "scenario": "travel_multi",
  "slots": {
-  "origin": "Boston",
+  "origin": "Seattle",
   "destination": "Austin",
   "date": "May third",
   "country": "Thailand",
   "nationality": "American"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Denver",
+  "origin": "Seattle",
+  "destination": "Austin",
   "date": "May third",
-  "country": "Thailand",
+  "country": "Japan",
   "nationality": "American"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Austin",
-   "new": "Denver",
+   "slot": "country",
+   "old": "Thailand",
+   "new": "Japan",
    "by": "user",
    "kind": "default",
-   "gap": 1.109
+   "gap": 2.492
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "May 3",
+  "country": "Japan",
+  "nationality": "American"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Look up trains from Boston to Austin on May third, and also check if American citizens need a visa for Thailand.",
+   "text": "Look up trains from Seattle to Austin on May third, and also check if American citizens need a visa for Thailand.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Wait — make it Denver.",
-   "gap_before": 1.109
+   "text": "Wait — make it Japan.",
+   "gap_before": 2.492
   }
  ],
  "events": [],
@@ -63,51 +70,51 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
-    "destination": "Denver",
-    "date": "May third"
+    "origin": "Seattle",
+    "destination": "Austin",
+    "date": "May 3"
    }
   },
   {
    "fn": "check_visa_rule",
    "args": {
-    "country": "Thailand",
+    "country": "Japan",
     "nationality": "American"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE30bb10": {
-   "origin": "Boston",
-   "destination": "Denver",
-   "date": "May third"
+   "origin": "Seattle",
+   "destination": "Austin",
+   "date": "May 3"
   },
   "check_visa_rule#CHabf420": {
-   "country": "Thailand",
+   "country": "Japan",
    "nationality": "American"
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv06"
+  "user": "cv06",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.78,
+   "t_end": 7.7,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.889,
-   "t_end": 11.369,
+   "t_start": 10.192,
+   "t_end": 12.432,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.109
+  2.492
  ]
 }

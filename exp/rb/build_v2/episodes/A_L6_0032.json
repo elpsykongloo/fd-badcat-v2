@@ -6,23 +6,23 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "跑步鞋",
+  "query": "蓝牙耳机",
   "qty": "两",
-  "address": "海淀区学院路一号"
+  "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
-  "query": "蓝牙耳机",
+  "query": "保温杯",
   "qty": "一",
-  "address": "海淀区学院路一号"
+  "address": "浦东新区世纪大道八号"
  },
  "revisions": [
   {
    "slot": "query",
-   "old": "跑步鞋",
-   "new": "蓝牙耳机",
+   "old": "蓝牙耳机",
+   "new": "保温杯",
    "by": "user",
    "kind": "default",
-   "gap": 1.471
+   "gap": 1.152
   },
   {
    "slot": "qty",
@@ -30,33 +30,38 @@
    "new": "一",
    "by": "user",
    "kind": "second",
-   "gap": 2.664
+   "gap": 2.912
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "query": "保温杯",
+  "qty": 1,
+  "address": "浦东新区世纪大道八号"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv02",
    "lang": "zh",
-   "text": "帮我搜跑步鞋，加两件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv02",
    "lang": "zh",
-   "text": "等等，改成蓝牙耳机。",
-   "gap_before": 1.471
+   "text": "等等，改成保温杯。",
+   "gap_before": 1.152
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv02",
    "lang": "zh",
    "text": "还有，再改一下，要一。",
-   "gap_before": 2.664
+   "gap_before": 2.912
   }
  ],
  "events": [],
@@ -75,65 +80,65 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "蓝牙耳机"
+    "query": "保温杯"
    }
   },
   {
    "fn": "add_item",
    "args": {
     "item_id": "SEd26000",
-    "qty": "一"
+    "qty": 1
    }
   },
   {
    "fn": "place_order",
    "args": {
     "cart_id": "ADe3f97a",
-    "address": "海淀区学院路一号"
+    "address": "浦东新区世纪大道八号"
    }
   }
  ],
  "gold_state": {
   "search_catalog#SEd26000": {
-   "query": "蓝牙耳机"
+   "query": "保温杯"
   },
   "add_item#ADe3f97a": {
    "item_id": "SEd26000",
-   "qty": "一"
+   "qty": 1
   },
   "place_order#PLdf222b": {
    "cart_id": "ADe3f97a",
-   "address": "海淀区学院路一号"
+   "address": "浦东新区世纪大道八号"
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv07"
+  "user": "cv02",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.62,
+   "t_end": 6.18,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.091,
-   "t_end": 11.331,
+   "t_start": 7.332,
+   "t_end": 9.572,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 13.995,
-   "t_end": 17.035,
+   "t_start": 12.484,
+   "t_end": 16.084,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.471,
-  2.664
+  1.152,
+  2.912
  ]
 }

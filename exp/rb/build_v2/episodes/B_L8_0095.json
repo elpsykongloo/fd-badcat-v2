@@ -6,14 +6,14 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
+  "origin": "Chicago",
   "destination": "Denver",
   "date": "May third",
   "seat_class": "first class",
   "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Seattle",
+  "origin": "Chicago",
   "destination": "Denver",
   "date": "May third",
   "seat_class": "first class",
@@ -21,31 +21,38 @@
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "May 3",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
+ },
  "l8_action": "progress",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Find a train from Seattle to Denver on May third, hold a first class seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Chicago to Denver on May third, hold a first class seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv08",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 1.739
+   "at_after_eou": 1.762
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.465,
+   "offset": 0.562,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv08",
    "text": "Any progress?"
   }
  ],
@@ -64,9 +71,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
+    "origin": "Chicago",
     "destination": "Denver",
-    "date": "May third"
+    "date": "May 3"
    }
   },
   {
@@ -86,9 +93,9 @@
  ],
  "gold_state": {
   "search_trains#SE54ef73": {
-   "origin": "Seattle",
+   "origin": "Chicago",
    "destination": "Denver",
-   "date": "May third"
+   "date": "May 3"
   },
   "hold_seat#HO5058e8": {
    "train_id": "SE54ef73",
@@ -100,9 +107,9 @@
   }
  },
  "voices": {
-  "user": "cv02",
+  "user": "cv08",
   "bystander": "cv07"
  },
  "split": "dev",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

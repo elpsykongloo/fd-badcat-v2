@@ -6,52 +6,57 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "保温杯",
+  "query": "蓝牙耳机",
   "qty": "一",
-  "address": "海淀区学院路一号"
+  "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
-  "query": "跑步鞋",
+  "query": "蓝牙耳机",
   "qty": "一",
   "address": "海淀区学院路一号"
  },
  "revisions": [
   {
-   "slot": "query",
-   "old": "保温杯",
-   "new": "跑步鞋",
+   "slot": "address",
+   "old": "浦东新区世纪大道八号",
+   "new": "海淀区学院路一号",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.692
+   "gap": 0.698
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "query": "蓝牙耳机",
+  "qty": 1,
+  "address": "海淀区学院路一号"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "帮我搜保温杯，加一件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "跑步鞋，改成跑步鞋。",
-   "gap_before": 0.692
+   "text": "海淀区学院路一号，改成海淀区学院路一号。",
+   "gap_before": 0.698
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.062,
+   "offset": 0.459,
    "action": "revise",
    "role": "user",
-   "voice": "cv05",
-   "text": "跑步鞋，改成跑步鞋。"
+   "voice": "cv06",
+   "text": "海淀区学院路一号，改成海淀区学院路一号。"
   }
  ],
  "profile": "default",
@@ -69,14 +74,14 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "跑步鞋"
+    "query": "蓝牙耳机"
    }
   },
   {
    "fn": "add_item",
    "args": {
     "item_id": "SEd3db7d",
-    "qty": "一"
+    "qty": 1
    }
   },
   {
@@ -89,11 +94,11 @@
  ],
  "gold_state": {
   "search_catalog#SEd3db7d": {
-   "query": "跑步鞋"
+   "query": "蓝牙耳机"
   },
   "add_item#AD13b3a9": {
    "item_id": "SEd3db7d",
-   "qty": "一"
+   "qty": 1
   },
   "place_order#PLda4967": {
    "cart_id": "AD13b3a9",
@@ -101,9 +106,9 @@
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv03"
+  "user": "cv06",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

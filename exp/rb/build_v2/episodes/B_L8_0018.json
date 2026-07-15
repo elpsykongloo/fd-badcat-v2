@@ -6,28 +6,34 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "成都",
-  "beds": "一居",
-  "max_rent": "六千",
+  "city": "青岛",
+  "beds": "两居",
+  "max_rent": "八千",
   "slot": "周六上午"
  },
  "slots_final": {
   "city": "成都",
-  "beds": "一居",
-  "max_rent": "六千",
-  "slot": "周日下午"
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周六上午"
  },
  "revisions": [
   {
-   "slot": "slot",
-   "old": "周六上午",
-   "new": "周日下午",
+   "slot": "city",
+   "old": "青岛",
+   "new": "成都",
    "by": "user",
    "kind": "default",
    "gap": null
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "成都",
+  "beds": 2,
+  "max_rent": 8000,
+  "slot": "周六上午"
+ },
  "l8_action": "revise",
  "cancelled": false,
  "pieces": [
@@ -35,25 +41,25 @@
    "role": "user",
    "voice": "cv03",
    "lang": "zh",
-   "text": "在成都找一居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在青岛找两居、租金不超过八千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv03",
    "lang": "zh",
-   "text": "等等，改成周日下午。",
-   "at_after_eou": 1.834
+   "text": "等等，改成成都。",
+   "at_after_eou": 2.039
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.767,
+   "offset": 0.653,
    "action": "revise",
    "role": "user",
    "voice": "cv03",
-   "text": "等等，改成周日下午。"
+   "text": "等等，改成成都。"
   }
  ],
  "profile": "default",
@@ -71,33 +77,33 @@
    "fn": "search_rentals",
    "args": {
     "city": "成都",
-    "beds": "一居",
-    "max_rent": "六千"
+    "beds": 2,
+    "max_rent": 8000
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SE4065f9",
-    "slot": "周日下午"
+    "slot": "周六上午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SE4065f9": {
    "city": "成都",
-   "beds": "一居",
-   "max_rent": "六千"
+   "beds": 2,
+   "max_rent": 8000
   },
   "book_viewing#BO1bae7f": {
    "listing_id": "SE4065f9",
-   "slot": "周日下午"
+   "slot": "周六上午"
   }
  },
  "voices": {
   "user": "cv03",
-  "bystander": "cv01"
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

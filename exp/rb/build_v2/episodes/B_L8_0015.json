@@ -6,56 +6,63 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Portland",
-  "date": "May eighth",
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "June first",
   "seat_class": "business",
   "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Seattle",
-  "destination": "Atlanta",
-  "date": "May eighth",
+  "origin": "Chicago",
+  "destination": "Portland",
+  "date": "June first",
   "seat_class": "business",
   "passenger": "Sam Rivera"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Portland",
-   "new": "Atlanta",
+   "old": "Austin",
+   "new": "Portland",
    "by": "user",
    "kind": "default",
    "gap": null
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Portland",
+  "date": "June 1",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
  "l8_action": "revise",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Find a train from Seattle to Portland on May eighth, hold a business seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Chicago to Austin on June first, hold a business seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Wait — make it Atlanta.",
-   "at_after_eou": 2.052
+   "text": "Wait — make it Portland.",
+   "at_after_eou": 2.159
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.356,
+   "offset": 0.434,
    "action": "revise",
    "role": "user",
-   "voice": "cv01",
-   "text": "Wait — make it Atlanta."
+   "voice": "cv07",
+   "text": "Wait — make it Portland."
   }
  ],
  "profile": "default",
@@ -73,9 +80,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
-    "destination": "Atlanta",
-    "date": "May eighth"
+    "origin": "Chicago",
+    "destination": "Portland",
+    "date": "June 1"
    }
   },
   {
@@ -95,9 +102,9 @@
  ],
  "gold_state": {
   "search_trains#SE1623d9": {
-   "origin": "Seattle",
-   "destination": "Atlanta",
-   "date": "May eighth"
+   "origin": "Chicago",
+   "destination": "Portland",
+   "date": "June 1"
   },
   "hold_seat#HOa9842b": {
    "train_id": "SE1623d9",
@@ -109,9 +116,9 @@
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv06"
+  "user": "cv07",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

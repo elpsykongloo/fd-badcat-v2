@@ -7,45 +7,52 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Boston",
-  "destination": "Portland",
-  "date": "May third",
+  "destination": "Denver",
+  "date": "June first",
   "seat_class": "first class",
-  "passenger": "Jordan Lee"
+  "passenger": "Alex Chen"
  },
  "slots_final": {
   "origin": "Boston",
-  "destination": "Denver",
-  "date": "May third",
+  "destination": "Austin",
+  "date": "June first",
   "seat_class": "first class",
-  "passenger": "Jordan Lee"
+  "passenger": "Alex Chen"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Portland",
-   "new": "Denver",
+   "old": "Denver",
+   "new": "Austin",
    "by": "user",
    "kind": "default",
-   "gap": 0.722
+   "gap": 0.744
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Boston",
+  "destination": "Austin",
+  "date": "June 1",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Find a train from Boston to Portland on May third, hold a first class seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Boston to Denver on June first, hold a first class seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Wait — make it Denver.",
-   "gap_before": 0.722
+   "text": "Wait — make it Austin.",
+   "gap_before": 0.744
   }
  ],
  "events": [],
@@ -65,8 +72,8 @@
    "fn": "search_trains",
    "args": {
     "origin": "Boston",
-    "destination": "Denver",
-    "date": "May third"
+    "destination": "Austin",
+    "date": "June 1"
    }
   },
   {
@@ -80,15 +87,15 @@
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HOb1bc1e",
-    "passenger": "Jordan Lee"
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEf3e092": {
    "origin": "Boston",
-   "destination": "Denver",
-   "date": "May third"
+   "destination": "Austin",
+   "date": "June 1"
   },
   "hold_seat#HOb1bc1e": {
    "train_id": "SEf3e092",
@@ -96,30 +103,30 @@
   },
   "purchase_ticket#PU18a499": {
    "hold_id": "HOb1bc1e",
-   "passenger": "Jordan Lee"
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv08"
+  "user": "cv02",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 9.38,
+   "t_end": 6.66,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.102,
-   "t_end": 12.582,
+   "t_start": 7.404,
+   "t_end": 9.644,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.722
+  0.744
  ]
 }

@@ -6,52 +6,57 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "跑步鞋",
-  "qty": "两",
+  "query": "蓝牙耳机",
+  "qty": "一",
   "address": "海淀区学院路一号"
  },
  "slots_final": {
-  "query": "蓝牙耳机",
-  "qty": "两",
+  "query": "跑步鞋",
+  "qty": "一",
   "address": "海淀区学院路一号"
  },
  "revisions": [
   {
    "slot": "query",
-   "old": "跑步鞋",
-   "new": "蓝牙耳机",
+   "old": "蓝牙耳机",
+   "new": "跑步鞋",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.78
+   "gap": 0.694
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "query": "跑步鞋",
+  "qty": 1,
+  "address": "海淀区学院路一号"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "帮我搜跑步鞋，加两件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "蓝牙耳机，改成蓝牙耳机。",
-   "gap_before": 0.78
+   "text": "跑步鞋，改成跑步鞋。",
+   "gap_before": 0.694
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.046,
+   "offset": 0.289,
    "action": "revise",
    "role": "user",
-   "voice": "cv09",
-   "text": "蓝牙耳机，改成蓝牙耳机。"
+   "voice": "cv06",
+   "text": "跑步鞋，改成跑步鞋。"
   }
  ],
  "profile": "default",
@@ -69,14 +74,14 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "蓝牙耳机"
+    "query": "跑步鞋"
    }
   },
   {
    "fn": "add_item",
    "args": {
     "item_id": "SEdb9536",
-    "qty": "两"
+    "qty": 1
    }
   },
   {
@@ -89,11 +94,11 @@
  ],
  "gold_state": {
   "search_catalog#SEdb9536": {
-   "query": "蓝牙耳机"
+   "query": "跑步鞋"
   },
   "add_item#AD19e1e6": {
    "item_id": "SEdb9536",
-   "qty": "两"
+   "qty": 1
   },
   "place_order#PL6f2f2b": {
    "cart_id": "AD19e1e6",
@@ -101,9 +106,9 @@
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv04"
+  "user": "cv06",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

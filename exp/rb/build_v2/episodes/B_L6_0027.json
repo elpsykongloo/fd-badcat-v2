@@ -6,79 +6,86 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "May eighth",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
+ "slots_final": {
+  "origin": "Seattle",
   "destination": "Atlanta",
   "date": "May eighth",
   "seat_class": "coach",
   "passenger": "Sam Rivera"
  },
- "slots_final": {
-  "origin": "Chicago",
-  "destination": "Denver",
-  "date": "May eighth",
-  "seat_class": "business",
-  "passenger": "Sam Rivera"
- },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Atlanta",
-   "new": "Denver",
+   "old": "Portland",
+   "new": "Atlanta",
    "by": "user",
    "kind": "default",
-   "gap": 1.128
+   "gap": 1.169
   },
   {
    "slot": "seat_class",
-   "old": "coach",
-   "new": "business",
+   "old": "business",
+   "new": "coach",
    "by": "user",
    "kind": "second",
-   "gap": 2.843
+   "gap": 2.655
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "May 8",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Find a train from Chicago to Atlanta on May eighth, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Seattle to Portland on May eighth, hold a business seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Wait — make it Denver.",
-   "gap_before": 1.128
+   "text": "Wait — make it Atlanta.",
+   "gap_before": 1.169
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Also, one more change — business.",
-   "gap_before": 2.843
+   "text": "Also, one more change — coach.",
+   "gap_before": 2.655
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.712,
+   "offset": 0.185,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
-   "text": "Wait — make it Denver."
+   "voice": "cv05",
+   "text": "Wait — make it Atlanta."
   },
   {
    "state": "committed",
-   "offset": 0.795,
+   "offset": 0.526,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
-   "text": "Wait — make it Denver."
+   "voice": "cv05",
+   "text": "Wait — make it Atlanta."
   }
  ],
  "profile": "default",
@@ -96,16 +103,16 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
-    "destination": "Denver",
-    "date": "May eighth"
+    "origin": "Seattle",
+    "destination": "Atlanta",
+    "date": "May 8"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SEfff6cd",
-    "seat_class": "business"
+    "seat_class": "coach"
    }
   },
   {
@@ -118,13 +125,13 @@
  ],
  "gold_state": {
   "search_trains#SEfff6cd": {
-   "origin": "Chicago",
-   "destination": "Denver",
-   "date": "May eighth"
+   "origin": "Seattle",
+   "destination": "Atlanta",
+   "date": "May 8"
   },
   "hold_seat#HO73c0e4": {
    "train_id": "SEfff6cd",
-   "seat_class": "business"
+   "seat_class": "coach"
   },
   "purchase_ticket#PU905afb": {
    "hold_id": "HO73c0e4",
@@ -132,9 +139,9 @@
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv06"
+  "user": "cv05",
+  "bystander": "cv04"
  },
  "split": "dev",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

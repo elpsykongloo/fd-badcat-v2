@@ -6,37 +6,44 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
+  "origin": "Chicago",
   "destination": "Atlanta",
-  "date": "May third",
-  "seat_class": "first class",
+  "date": "June first",
+  "seat_class": "business",
   "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Seattle",
+  "origin": "Chicago",
   "destination": "Atlanta",
-  "date": "May third",
-  "seat_class": "first class",
+  "date": "June first",
+  "seat_class": "business",
   "passenger": "Jordan Lee"
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "June 1",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
  "l8_action": "progress",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Find a train from Seattle to Atlanta on May third, hold a first class seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Chicago to Atlanta on June first, hold a business seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv04",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 2.085
+   "at_after_eou": 2.046
   }
  ],
  "events": [],
@@ -55,16 +62,16 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
+    "origin": "Chicago",
     "destination": "Atlanta",
-    "date": "May third"
+    "date": "June 1"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE67646a",
-    "seat_class": "first class"
+    "seat_class": "business"
    }
   },
   {
@@ -77,13 +84,13 @@
  ],
  "gold_state": {
   "search_trains#SE67646a": {
-   "origin": "Seattle",
+   "origin": "Chicago",
    "destination": "Atlanta",
-   "date": "May third"
+   "date": "June 1"
   },
   "hold_seat#HO0e998a": {
    "train_id": "SE67646a",
-   "seat_class": "first class"
+   "seat_class": "business"
   },
   "purchase_ticket#PUb0c711": {
    "hold_id": "HO0e998a",
@@ -91,22 +98,22 @@
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv09"
+  "user": "cv04",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.1,
+   "t_end": 7.3,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.825,
-   "t_end": 11.785,
+   "t_start": 9.986,
+   "t_end": 11.266,
    "scheduled": "lifecycle_nominal"
   }
  ],

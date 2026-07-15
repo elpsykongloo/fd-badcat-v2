@@ -6,25 +6,25 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "成都",
+  "city": "厦门",
   "beds": "两居",
   "max_rent": "六千",
-  "slot": "周日下午"
+  "slot": "周六上午"
  },
  "slots_final": {
-  "city": "厦门",
+  "city": "杭州",
   "beds": "一居",
   "max_rent": "六千",
-  "slot": "周日下午"
+  "slot": "周六上午"
  },
  "revisions": [
   {
    "slot": "city",
-   "old": "成都",
-   "new": "厦门",
+   "old": "厦门",
+   "new": "杭州",
    "by": "user",
    "kind": "default",
-   "gap": 0.702
+   "gap": 1.264
   },
   {
    "slot": "beds",
@@ -32,51 +32,57 @@
    "new": "一居",
    "by": "user",
    "kind": "second",
-   "gap": 2.77
+   "gap": 2.517
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "city": "杭州",
+  "beds": 1,
+  "max_rent": 6000,
+  "slot": "周六上午"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "在成都找两居、租金不超过六千的房子，约周日下午看房。",
+   "text": "在厦门找两居、租金不超过六千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "等等，改成厦门。",
-   "gap_before": 0.702
+   "text": "等等，改成杭州。",
+   "gap_before": 1.264
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv03",
    "lang": "zh",
    "text": "还有，再改一下，要一居。",
-   "gap_before": 2.77
+   "gap_before": 2.517
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.407,
+   "offset": 0.246,
    "action": "revise",
    "role": "user",
-   "voice": "cv04",
-   "text": "等等，改成厦门。"
+   "voice": "cv03",
+   "text": "等等，改成杭州。"
   },
   {
    "state": "committed",
-   "offset": 0.737,
+   "offset": 1.233,
    "action": "revise",
    "role": "user",
-   "voice": "cv04",
-   "text": "等等，改成厦门。"
+   "voice": "cv03",
+   "text": "等等，改成杭州。"
   }
  ],
  "profile": "default",
@@ -93,34 +99,34 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "厦门",
-    "beds": "一居",
-    "max_rent": "六千"
+    "city": "杭州",
+    "beds": 1,
+    "max_rent": 6000
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SEf265dd",
-    "slot": "周日下午"
+    "slot": "周六上午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SEf265dd": {
-   "city": "厦门",
-   "beds": "一居",
-   "max_rent": "六千"
+   "city": "杭州",
+   "beds": 1,
+   "max_rent": 6000
   },
   "book_viewing#BO89c926": {
    "listing_id": "SEf265dd",
-   "slot": "周日下午"
+   "slot": "周六上午"
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv08"
+  "user": "cv03",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

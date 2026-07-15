@@ -7,45 +7,52 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Seattle",
-  "destination": "Austin",
+  "destination": "Portland",
   "date": "May eighth",
-  "seat_class": "business",
-  "passenger": "Jordan Lee"
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
  },
  "slots_final": {
   "origin": "Seattle",
-  "destination": "Austin",
+  "destination": "Portland",
   "date": "May eighth",
-  "seat_class": "business",
-  "passenger": "Jordan Lee"
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
  },
  "revisions": [],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "May 8",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
  "l8_action": "cancel",
  "cancelled": true,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Find a train from Seattle to Austin on May eighth, hold a business seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Seattle to Portland on May eighth, hold a coach seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv01",
    "lang": "en",
    "text": "Actually, hold off, don't do it yet.",
-   "at_after_eou": 1.858
+   "at_after_eou": 1.72
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.315,
+   "offset": 0.594,
    "action": "cancel",
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv01",
    "text": "Actually, hold off, don't do it yet."
   }
  ],
@@ -63,9 +70,9 @@
  "gold_calls": [],
  "gold_state": {},
  "voices": {
-  "user": "cv06",
-  "bystander": "cv07"
+  "user": "cv01",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

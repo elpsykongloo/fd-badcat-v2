@@ -7,45 +7,52 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Chicago",
-  "destination": "Portland",
+  "destination": "Atlanta",
   "date": "May eighth",
   "seat_class": "first class",
   "passenger": "Jordan Lee"
  },
  "slots_final": {
   "origin": "Chicago",
-  "destination": "Denver",
+  "destination": "Atlanta",
   "date": "May eighth",
-  "seat_class": "first class",
+  "seat_class": "business",
   "passenger": "Jordan Lee"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Portland",
-   "new": "Denver",
+   "slot": "seat_class",
+   "old": "first class",
+   "new": "business",
    "by": "user",
    "kind": "default",
-   "gap": 2.547
+   "gap": 0.884
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May 8",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Find a train from Chicago to Portland on May eighth, hold a first class seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Chicago to Atlanta on May eighth, hold a first class seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Wait — make it Denver.",
-   "gap_before": 2.547
+   "text": "Wait — make it business.",
+   "gap_before": 0.884
   }
  ],
  "events": [],
@@ -65,15 +72,15 @@
    "fn": "search_trains",
    "args": {
     "origin": "Chicago",
-    "destination": "Denver",
-    "date": "May eighth"
+    "destination": "Atlanta",
+    "date": "May 8"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE32b010",
-    "seat_class": "first class"
+    "seat_class": "business"
    }
   },
   {
@@ -87,12 +94,12 @@
  "gold_state": {
   "search_trains#SE32b010": {
    "origin": "Chicago",
-   "destination": "Denver",
-   "date": "May eighth"
+   "destination": "Atlanta",
+   "date": "May 8"
   },
   "hold_seat#HOf64f7b": {
    "train_id": "SE32b010",
-   "seat_class": "first class"
+   "seat_class": "business"
   },
   "purchase_ticket#PU893e64": {
    "hold_id": "HOf64f7b",
@@ -100,26 +107,26 @@
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv04"
+  "user": "cv04",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.66,
+   "t_end": 8.26,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.207,
-   "t_end": 10.727,
+   "t_start": 9.144,
+   "t_end": 11.064,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.547
+  0.884
  ]
 }

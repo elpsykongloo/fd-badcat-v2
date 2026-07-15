@@ -7,17 +7,17 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Chicago",
-  "destination": "Portland",
-  "date": "June first",
+  "destination": "Austin",
+  "date": "May third",
   "seat_class": "first class",
-  "passenger": "Sam Rivera"
+  "passenger": "Alex Chen"
  },
  "slots_final": {
   "origin": "Chicago",
-  "destination": "Portland",
-  "date": "June first",
+  "destination": "Austin",
+  "date": "May third",
   "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "passenger": "Alex Chen"
  },
  "revisions": [
   {
@@ -26,10 +26,17 @@
    "new": "business",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.735
+   "gap": 0.691
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "May 3",
+  "seat_class": "business",
+  "passenger": "Alex Chen"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
@@ -37,7 +44,7 @@
    "role": "user",
    "voice": "cv03",
    "lang": "en",
-   "text": "Find a train from Chicago to Portland on June first, hold a first class seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Chicago to Austin on May third, hold a first class seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
@@ -45,13 +52,13 @@
    "voice": "cv03",
    "lang": "en",
    "text": "business — change it to business.",
-   "gap_before": 0.735
+   "gap_before": 0.691
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.174,
+   "offset": 0.475,
    "action": "revise",
    "role": "user",
    "voice": "cv03",
@@ -74,8 +81,8 @@
    "fn": "search_trains",
    "args": {
     "origin": "Chicago",
-    "destination": "Portland",
-    "date": "June first"
+    "destination": "Austin",
+    "date": "May 3"
    }
   },
   {
@@ -89,15 +96,15 @@
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO55c86c",
-    "passenger": "Sam Rivera"
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEc9f4dc": {
    "origin": "Chicago",
-   "destination": "Portland",
-   "date": "June first"
+   "destination": "Austin",
+   "date": "May 3"
   },
   "hold_seat#HO55c86c": {
    "train_id": "SEc9f4dc",
@@ -105,13 +112,13 @@
   },
   "purchase_ticket#PU0ab919": {
    "hold_id": "HO55c86c",
-   "passenger": "Sam Rivera"
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
   "user": "cv03",
-  "bystander": "cv04"
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }

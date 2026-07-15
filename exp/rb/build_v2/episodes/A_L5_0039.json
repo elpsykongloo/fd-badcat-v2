@@ -6,46 +6,53 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Atlanta",
-  "date": "May eighth",
-  "seat_class": "coach",
-  "passenger": "Alex Chen"
+  "origin": "Boston",
+  "destination": "Portland",
+  "date": "May third",
+  "seat_class": "first class",
+  "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Chicago",
+  "origin": "Boston",
   "destination": "Denver",
-  "date": "May eighth",
-  "seat_class": "coach",
-  "passenger": "Alex Chen"
+  "date": "May third",
+  "seat_class": "first class",
+  "passenger": "Sam Rivera"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Atlanta",
+   "old": "Portland",
    "new": "Denver",
    "by": "user",
    "kind": "default",
-   "gap": 2.54
+   "gap": 2.673
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Boston",
+  "destination": "Denver",
+  "date": "May 3",
+  "seat_class": "first class",
+  "passenger": "Sam Rivera"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Find a train from Chicago to Atlanta on May eighth, hold a coach seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Boston to Portland on May third, hold a first class seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv01",
    "lang": "en",
    "text": "Wait — make it Denver.",
-   "gap_before": 2.54
+   "gap_before": 2.673
   }
  ],
  "events": [],
@@ -64,62 +71,62 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
+    "origin": "Boston",
     "destination": "Denver",
-    "date": "May eighth"
+    "date": "May 3"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE0810d0",
-    "seat_class": "coach"
+    "seat_class": "first class"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HOb45091",
-    "passenger": "Alex Chen"
+    "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE0810d0": {
-   "origin": "Chicago",
+   "origin": "Boston",
    "destination": "Denver",
-   "date": "May eighth"
+   "date": "May 3"
   },
   "hold_seat#HOb45091": {
    "train_id": "SE0810d0",
-   "seat_class": "coach"
+   "seat_class": "first class"
   },
   "purchase_ticket#PU8cf6e6": {
    "hold_id": "HOb45091",
-   "passenger": "Alex Chen"
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv07"
+  "user": "cv01",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.66,
+   "t_end": 7.86,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.2,
-   "t_end": 10.72,
+   "t_start": 10.533,
+   "t_end": 13.013,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.54
+  2.673
  ]
 }

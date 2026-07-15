@@ -8,40 +8,45 @@
  "slots": {
   "payee": "the landlord",
   "amount": "eight hundred",
-  "date": "June first"
+  "date": "May third"
  },
  "slots_final": {
   "payee": "the landlord",
   "amount": "eight hundred",
-  "date": "May third"
+  "date": "May eighth"
  },
  "revisions": [
   {
    "slot": "date",
-   "old": "June first",
-   "new": "May third",
+   "old": "May third",
+   "new": "May eighth",
    "by": "user",
    "kind": "default",
-   "gap": 0.364
+   "gap": 0.213
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "payee": "the landlord",
+  "amount": 800,
+  "date": "May 8"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Schedule a payment of eight hundred to the landlord on June first.",
+   "text": "Schedule a payment of eight hundred to the landlord on May third.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Wait — make it May third.",
-   "gap_before": 0.364
+   "text": "Wait — make it May eighth.",
+   "gap_before": 0.213
   }
  ],
  "events": [],
@@ -59,39 +64,39 @@
    "fn": "schedule_payment",
    "args": {
     "payee": "the landlord",
-    "amount": "eight hundred",
-    "date": "May third"
+    "amount": 800,
+    "date": "May 8"
    }
   }
  ],
  "gold_state": {
   "schedule_payment#SCf85f8d": {
    "payee": "the landlord",
-   "amount": "eight hundred",
-   "date": "May third"
+   "amount": 800,
+   "date": "May 8"
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv06"
+  "user": "cv06",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 3.86,
+   "t_end": 4.58,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 4.224,
-   "t_end": 6.064,
+   "t_start": 4.793,
+   "t_end": 7.913,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.364
+  0.213
  ]
 }

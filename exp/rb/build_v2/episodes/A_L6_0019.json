@@ -7,26 +7,26 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Chicago",
-  "destination": "Austin",
+  "destination": "Denver",
   "date": "June first",
   "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "passenger": "Alex Chen"
  },
  "slots_final": {
   "origin": "Chicago",
-  "destination": "Denver",
+  "destination": "Atlanta",
   "date": "June first",
   "seat_class": "first class",
-  "passenger": "Jordan Lee"
+  "passenger": "Alex Chen"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Austin",
-   "new": "Denver",
+   "old": "Denver",
+   "new": "Atlanta",
    "by": "user",
    "kind": "default",
-   "gap": 0.949
+   "gap": 0.728
   },
   {
    "slot": "seat_class",
@@ -34,10 +34,17 @@
    "new": "first class",
    "by": "user",
    "kind": "second",
-   "gap": 1.799
+   "gap": 2.717
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "June 1",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
+ },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
@@ -45,22 +52,22 @@
    "role": "user",
    "voice": "cv06",
    "lang": "en",
-   "text": "Find a train from Chicago to Austin on June first, hold a coach seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Chicago to Denver on June first, hold a coach seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv06",
    "lang": "en",
-   "text": "Wait — make it Denver.",
-   "gap_before": 0.949
+   "text": "Wait — make it Atlanta.",
+   "gap_before": 0.728
   },
   {
    "role": "user",
    "voice": "cv06",
    "lang": "en",
    "text": "Also, one more change — first class.",
-   "gap_before": 1.799
+   "gap_before": 2.717
   }
  ],
  "events": [],
@@ -80,8 +87,8 @@
    "fn": "search_trains",
    "args": {
     "origin": "Chicago",
-    "destination": "Denver",
-    "date": "June first"
+    "destination": "Atlanta",
+    "date": "June 1"
    }
   },
   {
@@ -95,15 +102,15 @@
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO8003df",
-    "passenger": "Jordan Lee"
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEe52e57": {
    "origin": "Chicago",
-   "destination": "Denver",
-   "date": "June first"
+   "destination": "Atlanta",
+   "date": "June 1"
   },
   "hold_seat#HO8003df": {
    "train_id": "SEe52e57",
@@ -111,37 +118,37 @@
   },
   "purchase_ticket#PU97ee46": {
    "hold_id": "HO8003df",
-   "passenger": "Jordan Lee"
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
   "user": "cv06",
-  "bystander": "cv02"
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "b30499ad9de7",
+ "config_hash": "9f8f4ae9edc8",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.1,
+   "t_end": 7.22,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.049,
-   "t_end": 11.129,
+   "t_start": 7.948,
+   "t_end": 10.188,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 12.928,
-   "t_end": 16.288,
+   "t_start": 12.905,
+   "t_end": 16.265,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.949,
-  1.799
+  0.728,
+  2.717
  ]
 }

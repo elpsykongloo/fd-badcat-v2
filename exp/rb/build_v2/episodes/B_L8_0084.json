@@ -11,47 +11,52 @@
   "address": "海淀区学院路一号"
  },
  "slots_final": {
-  "query": "保温杯",
-  "qty": "一",
+  "query": "跑步鞋",
+  "qty": "两",
   "address": "海淀区学院路一号"
  },
  "revisions": [
   {
-   "slot": "qty",
-   "old": "两",
-   "new": "一",
+   "slot": "query",
+   "old": "保温杯",
+   "new": "跑步鞋",
    "by": "user",
    "kind": "default",
    "gap": null
   }
  ],
  "bystander": null,
+ "slots_canon": {
+  "query": "跑步鞋",
+  "qty": 2,
+  "address": "海淀区学院路一号"
+ },
  "l8_action": "revise",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv01",
    "lang": "zh",
    "text": "帮我搜保温杯，加两件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "等等，改成一。",
-   "at_after_eou": 1.814
+   "text": "等等，改成跑步鞋。",
+   "at_after_eou": 1.723
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.388,
+   "offset": 0.46,
    "action": "revise",
    "role": "user",
-   "voice": "cv09",
-   "text": "等等，改成一。"
+   "voice": "cv01",
+   "text": "等等，改成跑步鞋。"
   }
  ],
  "profile": "default",
@@ -69,14 +74,14 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "保温杯"
+    "query": "跑步鞋"
    }
   },
   {
    "fn": "add_item",
    "args": {
     "item_id": "SEbf83df",
-    "qty": "一"
+    "qty": 2
    }
   },
   {
@@ -89,11 +94,11 @@
  ],
  "gold_state": {
   "search_catalog#SEbf83df": {
-   "query": "保温杯"
+   "query": "跑步鞋"
   },
   "add_item#ADca4432": {
    "item_id": "SEbf83df",
-   "qty": "一"
+   "qty": 2
   },
   "place_order#PLec5ed2": {
    "cart_id": "ADca4432",
@@ -101,9 +106,9 @@
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv05"
+  "user": "cv01",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "b30499ad9de7"
+ "config_hash": "9f8f4ae9edc8"
 }
