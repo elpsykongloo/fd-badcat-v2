@@ -164,6 +164,12 @@ class TactEngine(ActorEngine):
         self.dag_on = bool(cfg.get("dag", False))
         self.tts_split = bool(cfg.get("tts_split", False))
         self.floor_holding = bool(cfg.get("floor_holding", False))
+        self.floor_commit_tiers = cfg.get("floor_commit_tiers", None)  # W5-FC: None=off
+        self.specgate = None                                           # W5-SG: None=off
+        if cfg.get("speculative_gate"):
+            from specgate import SpecGate, SGTracker
+            self.specgate = SpecGate.load(cfg["speculative_gate"])
+            self._sg_tracker = SGTracker()
         self.sv_alpha = cfg.get("sv_alpha", None)   # W4 placeholder — keep None in W3
         if cfg.get("prompt", "v2") == "v3":
             tact_core.install_prompt_v3()   # live-side arming (driver uses --prompt v3)
@@ -226,6 +232,8 @@ class TactEngine(ActorEngine):
         self.tact_decisions = []
         self.tact_eous = []
         self.tool_call_log = []
+        if self.specgate is not None:
+            self._sg_tracker.reset()
         self._session_frames = []
         self._session_samples = 0
         self._ledger_t = 0.0
@@ -463,6 +471,8 @@ class TactEngine(ActorEngine):
                 "timestamp": self._wall_ts(), "t_audio": round(self.t_audio, 3),
                 "op": op_applied})
 
+        if self.floor_commit_tiers and not self.blocking_mode:
+            say = self._commit_tier_say(say, applied)
         if say:
             self.say_events.append((t_dec, say))
             self.assistant_history.append(say)
@@ -492,6 +502,33 @@ class TactEngine(ActorEngine):
             self.dispatch_tts_sentences(say, turn, kind=self._say_kind)
         else:
             self.dispatch_tts(say, turn)
+
+    def _commit_tier_say(self, say, applied):
+        """W5-FC (flag `floor_commit_tiers`; default None = frozen path
+        untouched). When the decision LAUNCHES tools, the waiting-period
+        utterance is chosen by the commitment-tier policy instead of the raw
+        decision say — what the agent VERBALLY COMMITS to while a tool runs is
+        a policy variable, scored by RB's commitment-repair track. Modes:
+        "v1" (rule policy) | "always_filler" | "always_silent". silence tier
+        => empty say (nothing enqueued). Non-launch decisions pass through."""
+        from floor_policy import commit_tier, tier_utterance, eta_prior, worst_kappa
+        launches = [a for a in applied if a.get("type") == "launch"]
+        if not launches:
+            return say
+        fns = [a.get("fn", "") for a in launches]
+        mode = self.floor_commit_tiers
+        if mode == "always_silent":
+            tier = "silence"
+        elif mode == "always_filler":
+            tier = "filler"
+        else:                                          # "v1" rule policy
+            tier = commit_tier(eta_s=eta_prior(fns), kappa=worst_kappa(fns))
+        text = tier_utterance(tier, lang=self.engine_cfg.get("lang", "zh"),
+                              fns=fns, eta_s=eta_prior(fns))
+        self.trace.append({"event": "floor_commit_tier",
+                           "data": {"tier": tier, "fns": fns,
+                                    "t_audio": round(self.t_audio, 3)}})
+        return text
 
     # ------------------------------------------------------------------
     # sentence-split TTS (tts_split flag; W3 D4) + floor-holding v0
@@ -694,6 +731,8 @@ class TactEngine(ActorEngine):
             await self.send_control("vad_start", {
                 "turn": self.TURN_IDX, "state": self.STATE, "timestamp": self._wall_ts()})
             self.IN_SPEECH = True
+            if self.specgate is not None:
+                self._sg_tracker.on_start(t)
             self._hold_armed = False    # speech resumed within hold: no EoU
             self._invalidate_open_spec()
             self.BUFFER = [frame]
@@ -709,7 +748,19 @@ class TactEngine(ActorEngine):
             # user went silent: the ledger resumes burning from here on
             self.IN_SPEECH = False
             self._hold_armed = True
+            if self.specgate is not None:
+                self._sg_tracker.on_end(t)
             if self.speculative and self.mode == "tact":
+                if (self.specgate is not None
+                        and not self.specgate.allow(self._sg_tracker.features())):
+                    # W5-SG: gate predicts this hold will be voided — skip the
+                    # precompute. A confirmed EoU still decides via the normal
+                    # hold path (same snapshot, later): decision CONTENT is
+                    # unchanged by construction (design §2).
+                    await self.send_control("tact_spec_gated", {
+                        "timestamp": self._wall_ts(), "turn": self.TURN_IDX,
+                        "anchor": round(t, 3)})
+                    return
                 # W3 D6: dispatch NOW; the result stays inert until the hold
                 # confirms this anchor as a real EoU (see _on_tact_decision).
                 await self.send_control("tact_spec_dispatch", {

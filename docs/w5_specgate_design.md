@@ -72,6 +72,8 @@
 
 - 常量：θ\*、基率换算、P-SG1..4 点预测、Phase-2 运行命令（provider `w5sg_tact`，账面重放脚本 `scripts/w5sg_replay_account.py`，对 spec-on 档案零 GPU 重记账）。
 
+**Phase-1 工具已交付（2026-07-15，本容器 selftest 全过）**：`src/specgate.py`（SGTracker 单一特征化器=训练/记账/引擎三方共用；SpecGate 运行时，stophead JSON 约定；selftest 11/11）；`scripts/w5sg_census.py`（引擎同参 VADIterator 扫描 + events.jsonl 数字化落盘 + census_report〔K1/基率/gap 分位/ASR 可用性审计〕+ **pause_prior.json = RB 共用时序先验**）；`scripts/w5sg_train.py`（--probe 分组 OOF/K2 判决；train 按 §6 冻结规则选 θ + MLP 消融）；`scripts/w5sg_replay_account.py`（§5 门算术 + always-dispatch 基线行）。引擎挂点：`engine_b.py` cfg `speculative_gate:<path>`（默认 None=冻结路径逐位不动；gated 时发 `tact_spec_gated` 控制事件）。**census/probe 结果回填本节并冻结数值后，方可训练与 FDB 单发。**
+
 ## §10 相关工作定位（写作素材，非判据）
 
 - **SHANKS (2510.06917)**：边听边想、用户未说完即完成 56.9% 工具调用——占据"提前执行"极大化。本项目目标不同：在**修订安全不变量**（R0/R1 inert、EoU 确认前无副作用、决策内容不变）之上优化既有投机机制的**浪费经济学**——SHANKS 最大化提前量，我们在给定提前量（地板 0.64）下最小化计算废单。
