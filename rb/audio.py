@@ -6,10 +6,10 @@ Backends return (samples, sr) with samples = array('h') mono PCM16 @16k.
   SilenceStub  — deterministic placeholder tone (dry builds: validates the
                  assembly/manifest pipeline; NOT VAD-triggerable, engine runs
                  need a real backend).
-  QwenTTSBackend — Qwen3-TTS open-source (CustomVoice, 9 preset voices).
-                 >>> USER WIRES THIS: fill synthesize() with your local
-                 model/endpoint call; map VOICES cv01..cv09 to the CustomVoice
-                 preset names in VOICE_MAP. Everything else is ready. <<<
+  QwenTTSBackend — Qwen3-TTS open-source (CustomVoice): WIRED to the local
+                 deployment (subprocess to QWEN3TTS_DIR/scripts/synthesize.py,
+                 out-of-repo cache, 16k resample). Voice map:
+                 exp/rb/tts_voices.json (cv01..cv09 -> preset names).
 
 Assembly: pieces are placed sequentially by gap_before (exact silence-clock
 control — the revision cue time IS end-of-previous-piece + gap); pieces with
@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import array
 import hashlib
+import json
 import math
 import wave
 from pathlib import Path
@@ -48,25 +49,67 @@ class SilenceStub(TTSBackend):
 
 
 class QwenTTSBackend(TTSBackend):
-    """Qwen3-TTS open-source, CustomVoice model, 9 preset voices.
+    """Local Qwen3-TTS (CustomVoice) via the user's deployment at
+    /root/autodl-tmp/Qwen3TTS (override: env QWEN3TTS_DIR): calls
+    `<dir>/.venv/bin/python <dir>/scripts/synthesize.py --text .. --voice ..
+    --language Chinese|English --output <wav>`, caches OUT OF REPO
+    (env RB_TTS_CACHE, default /root/autodl-tmp/rb_tts_cache), resamples to
+    16k mono PCM16. Deterministic per (text, preset, lang, rate) — the cache
+    key IS the reproducibility unit; a rebuilt cache re-synthesizes.
 
-    TODO(user): implement synthesize() against your local deployment and fill
-    VOICE_MAP with the real preset names. Contract: return mono PCM16 @16k as
-    (array('h'), 16000) — resample if the model emits another rate. Keep
-    synthesis DETERMINISTIC (fixed seed / no sampling temperature) so builds
-    are reproducible; cache by sha256(text|voice|lang|rate) under cache_dir."""
+    VOICE_MAP: cv01..cv09 -> CustomVoice preset names, loaded from
+    exp/rb/tts_voices.json when present ({"cv01": "Vivian", ...}). Fallback
+    (until the user lists all 9 presets): zh->Vivian, en->Ryan — flagged in
+    the manifest as voice_map_complete=false."""
 
-    VOICE_MAP = {f"cv{i:02d}": f"CUSTOMVOICE_PRESET_{i}" for i in range(1, 10)}
+    LANG = {"zh": "Chinese", "en": "English"}
+    FALLBACK = {"zh": "Vivian", "en": "Ryan"}
 
-    def __init__(self, endpoint=None, model_dir=None, cache_dir="exp/rb/tts_cache"):
-        self.endpoint = endpoint
-        self.model_dir = model_dir
-        self.cache_dir = Path(cache_dir)
+    def __init__(self, tts_dir=None, cache_dir=None,
+                 voice_map_path="exp/rb/tts_voices.json"):
+        import os
+        self.dir = Path(tts_dir or os.getenv("QWEN3TTS_DIR",
+                                             "/root/autodl-tmp/Qwen3TTS"))
+        self.cache = Path(cache_dir or os.getenv("RB_TTS_CACHE",
+                                                 "/root/autodl-tmp/rb_tts_cache"))
+        self.cache.mkdir(parents=True, exist_ok=True)
+        p = Path(voice_map_path)
+        self.voice_map = json.loads(p.read_text()) if p.exists() else {}
+        self.voice_map_complete = len(self.voice_map) >= 9
+
+    def _preset(self, voice, lang):
+        return self.voice_map.get(voice) or self.FALLBACK[lang]
 
     def synthesize(self, text, voice, lang, rate=1.0):
-        raise NotImplementedError(
-            "wire Qwen3-TTS here: local CustomVoice inference or HTTP endpoint; "
-            "return (array('h') PCM16 mono, 16000)")
+        import subprocess
+        import soundfile as sf
+        preset = self._preset(voice, lang)
+        key = hashlib.sha256(
+            f"{text}|{preset}|{lang}|{rate}".encode()).hexdigest()[:24]
+        wav = self.cache / f"{key}.wav"
+        if not wav.exists():
+            tmp = wav.with_suffix(".tmp.wav")
+            cmd = [str(self.dir / ".venv/bin/python"),
+                   str(self.dir / "scripts/synthesize.py"),
+                   "--text", text, "--voice", preset,
+                   "--language", self.LANG[lang], "--output", str(tmp)]
+            r = subprocess.run(cmd, cwd=str(self.dir), capture_output=True,
+                               text=True, timeout=300)
+            if r.returncode != 0 or not tmp.exists():
+                raise RuntimeError(f"qwen3-tts failed for [{preset}/{lang}]: "
+                                   f"{r.stderr[-400:]}")
+            tmp.replace(wav)
+        a, sr = sf.read(str(wav), dtype="float32")
+        if a.ndim == 2:
+            a = a.mean(axis=1)
+        if sr != SR:
+            import torch
+            import torchaudio
+            a = torchaudio.functional.resample(
+                torch.from_numpy(a).unsqueeze(0), sr, SR).squeeze(0).numpy()
+        pcm = array.array("h", (int(max(-1.0, min(1.0, float(x))) * 32767)
+                                for x in a))
+        return pcm, SR
 
 
 def _mix_into(buf, samples, at_s):

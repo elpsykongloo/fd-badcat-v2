@@ -88,14 +88,18 @@ def stub_dur(text, lang):
 
 def plan_segments(ep, use_cues=True):
     cues = ep.get("cues") if use_cues else None
+    pieces = ep["pieces"]
+    if ep.get("arm") == "B":                 # reactive arm: nominal-timed
+        pieces = [q for q in pieces if "at_after_eou" not in q]   # pieces out
     segs = []
     if cues:
-        for p, c in zip(ep["pieces"], cues):
+        for p, c in zip(pieces, cues):
             segs.append({"s": c["t_start"], "e": c["t_end"],
-                         "text": p["text"], "role": p["role"]})
+                         "text": p["text"], "role": p["role"],
+                         "voice": p.get("voice"), "lang": p.get("lang")})
     else:
         t, seq_end = 0.0, 0.0
-        for p in ep["pieces"]:
+        for p in pieces:
             d = stub_dur(p["text"], p["lang"])
             if "at_after_eou" in p:
                 s = seq_end + HOLD + float(p["at_after_eou"])
@@ -103,9 +107,40 @@ def plan_segments(ep, use_cues=True):
                 s = max(t, seq_end) + float(p.get("gap_before", 0.0))
                 seq_end = s + d
             segs.append({"s": round(s, 3), "e": round(s + d, 3),
-                         "text": p["text"], "role": p["role"]})
+                         "text": p["text"], "role": p["role"],
+                         "voice": p.get("voice"), "lang": p.get("lang")})
             t = s + d
     return sorted(segs, key=lambda x: x["s"])
+
+
+class LiveAudio:
+    """Arm-B audio assembler: synthesizes pieces on demand and mixes them at
+    their segment times; prefix(t) yields the decider's audio input. With a
+    real backend the segment DURATIONS come from the synthesized audio."""
+
+    def __init__(self, backend):
+        import array
+        self.backend = backend
+        self.buf = array.array("h")
+
+    def place(self, seg):
+        samples, _sr = self.backend.synthesize(
+            seg["text"], seg.get("voice") or "cv01", seg.get("lang") or "zh")
+        i0 = int(seg["s"] * SR)
+        need = i0 + len(samples)
+        if need > len(self.buf):
+            self.buf.extend([0] * (need - len(self.buf)))
+        for j, v in enumerate(samples):
+            x = self.buf[i0 + j] + v
+            self.buf[i0 + j] = max(-32768, min(32767, x))
+        seg["e"] = round(seg["s"] + len(samples) / SR, 3)   # true duration
+
+    def prefix(self, t):
+        import numpy as np
+        n = int(t * SR)
+        if n > len(self.buf):
+            self.buf.extend([0] * (n - len(self.buf)))
+        return np.asarray(self.buf[:n], dtype=np.float32) / 32768.0
 
 
 # ---------------------------------------------------------------------------
@@ -206,7 +241,7 @@ def _resolve_ref(v, by_op, by_step):
 
 
 def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
-                fc_mode=None, input_kind="text", audio=None, tts=None,
+                fc_mode=None, input_kind="text", audio=None, tts_backend=None,
                 infer_nominal=1.0, dag_on=True):
     random.seed(42)
     import itertools
@@ -220,8 +255,15 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
         from tact_dag import OpDag, CompensationRegistry
         dag = OpDag(ledger)
         comp_reg = CompensationRegistry()
-    segs = plan_segments(ep, use_cues=input_kind == "audio")
+    segs = plan_segments(ep, use_cues=input_kind == "audio" and ep["arm"] == "A")
     sim = ReactiveUser(ep) if ep["arm"] == "B" else None
+    live = None
+    if input_kind == "audio" and ep["arm"] == "B":
+        assert tts_backend is not None, "arm B audio runs need --tts"
+        live = LiveAudio(tts_backend)
+        for sg_ in segs:
+            live.place(sg_)
+        segs.sort(key=lambda x: x["s"])
     say_events, commits, decisions = [], [], []
     trace_events = []
     results_by_op, results_by_step = {}, []
@@ -259,7 +301,10 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
                 dur = stub_dur(p["text"], p["lang"])
                 s = max(act["at"], (segs[-1]["e"] + 0.05) if segs else 0.0, t_now)
                 seg = {"s": round(s, 3), "e": round(s + dur, 3),
-                       "text": p["text"], "role": p["role"]}
+                       "text": p["text"], "role": p["role"],
+                       "voice": p.get("voice"), "lang": p.get("lang")}
+                if live is not None:
+                    live.place(seg)          # true duration replaces the stub
                 lo = 0
                 while lo < len(segs) and segs[lo]["s"] <= seg["s"]:
                     lo += 1
@@ -284,7 +329,8 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
             dec, infer = decider(tx, seen, len(tx.pending) + len(tx.committed)), 0.05
         else:
             if input_kind == "audio":
-                prefix = audio[: int(e_i * SR)]
+                prefix = live.prefix(e_i) if live is not None \
+                    else audio[: int(e_i * SR)]
                 msgs = build_decider_messages(tx, "LISTEN", audio=prefix)
             else:
                 blob = " / ".join(s["text"] for s in seen)
@@ -382,6 +428,8 @@ def main():
     ap.add_argument("--prompt", default="v3.1")
     ap.add_argument("--infer-nominal", type=float, default=1.0)
     ap.add_argument("--dag", default="on", choices=["on", "off"])
+    ap.add_argument("--tts", default=None, choices=[None, "qwen", "stub"],
+                    help="arm-B audio synthesis backend")
     ap.add_argument("--provider", required=False, default="rbdev")
     ap.add_argument("--limit", type=int)
     ap.add_argument("--selftest", action="store_true")
@@ -394,6 +442,13 @@ def main():
         sys.path.insert(0, str(ROOT / "scripts"))
         from w2r_stream_replay import DecisionCache
         cache = DecisionCache(Path(args.build) / f"decision_cache_{args.provider}.json")
+    tts_backend = None
+    if args.tts == "qwen":
+        from rb.audio import QwenTTSBackend
+        tts_backend = QwenTTSBackend()
+    elif args.tts == "stub":
+        from rb.audio import SilenceStub
+        tts_backend = SilenceStub()
     epdir = Path(args.build) / "episodes"
     outdir = Path(args.build) / "results" / args.provider
     outdir.mkdir(parents=True, exist_ok=True)
@@ -405,7 +460,7 @@ def main():
         if args.limit and len(rows) >= args.limit:
             break
         audio = None
-        if args.input == "audio":
+        if args.input == "audio" and ep["arm"] == "A":
             import soundfile as sf
             wav = Path(args.build) / "audio" / f"{ep['id']}.wav"
             if not wav.exists():
@@ -419,14 +474,14 @@ def main():
                           fc_mode=args.floor_commit_tiers,
                           input_kind=args.input, audio=audio,
                           infer_nominal=args.infer_nominal,
-                          dag_on=args.dag == "on") \
+                          dag_on=args.dag == "on", tts_backend=tts_backend) \
             if args.decider == "oracle" else \
             run_episode(ep, "llm", cache=cache, mode=args.system,
                         delta=args.delta, barrier=args.commit_barrier == "on",
                         fc_mode=args.floor_commit_tiers,
                         input_kind=args.input, audio=audio,
                         infer_nominal=args.infer_nominal,
-                        dag_on=args.dag == "on")
+                        dag_on=args.dag == "on", tts_backend=tts_backend)
         (outdir / f"{ep['id']}.json").write_text(
             json.dumps(row, ensure_ascii=False, indent=1))
         rows.append(row)
