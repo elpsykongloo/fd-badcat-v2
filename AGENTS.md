@@ -1,7 +1,7 @@
 # AGENTS.md — fd-badcat 持久记忆（所有代理必读）
 
 > 单一真相源。CLAUDE.md 指向本文件。有重大事实变更时**更新本文件**，不要另开新文档。
-> 最后更新：2026-07-16 (**rb_v2.2 已重建并完成音频 dev 复验，但构建有效性门仍 FAIL，严禁 test 897**：hash 9f8f4ae9edc8；Qwen 音频 600/600 全检通过；oracle A4/B4 位齐 0.7627/0.7500；LLM TACT/blocking 仅 0.2542/0.1695，L4 双零。新定位 blocking 批内引用提交顺序、RB OpDag 零模板、中文实体 canonical 未声明、payee gold 与 prompt 规则冲突；完整机器收据 `exp/rb/build_v2/rb_dev22_validity_receipt.json`。SG 线仍按 §12 永久收口)
+> 最后更新：2026-07-16 (RB dev22 四残留缺陷已修 ⇒ **rb_v2.2.1 hash 265c7cd8f485 + 判分器冻结 v3**〔blocking 批内引用基址回退 / RB DAG 模板注入 / verbatim 语言声明 / 词池去冠词；勘误 rb_design §14〕；oracle 门 A 0.7966/B 0.7273 全绿；LLM dev22 已有真实分化 TACT 0.2542 vs sblock 0.1695；待用户：重建+音频+LLM dev 第三轮)
 
 ## 使命
 

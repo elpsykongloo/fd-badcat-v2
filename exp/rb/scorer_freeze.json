@@ -1,10 +1,10 @@
 {
-  "version": 2,
+  "version": 3,
   "frozen": "2026-07-16",
   "errata_v1_to_v2": "pre-test construction-validity revision after the dev LLM smoke (no test observation occurred): (1) gold args now carry the CATALOG-DECLARED canonical forms (integers as ints, ISO currency codes, canonical dates) while utterances keep spoken forms \u2014 the dev smoke showed the decider correctly canonicalizes speech (800/USD/2) and verbatim-spoken gold was unmatchable-by-design; (2) canonical_calls compares scalars as strings (int 800 == '800'); (3) benign-L10 control gap now draws the L4 bin \u2014 rescuable by construction, else it cannot separate SV-kill from window loss; (4) rb_v2.2 config_hash 9f8f4ae9edc8.",
   "oracle_gate": {
     "A": {
-      "exact": 0.7627,
+      "exact": 0.7966,
       "gate_layers_all_1": [
         "L1",
         "L2",
@@ -17,7 +17,7 @@
       ]
     },
     "B": {
-      "exact": 0.75,
+      "exact": 0.7273,
       "gate_layers_all_1": [
         "L4",
         "L8",
@@ -27,11 +27,11 @@
     },
     "ceiling": {
       "A": {
-        "L5": 0.2857,
+        "L5": 0.4286,
         "L6": 0.0
       },
       "B": {
-        "L5": 0.1818,
+        "L5": 0.0909,
         "L6": 0.0
       }
     }
@@ -39,6 +39,7 @@
   "hashes": {
     "rb/scorer.py": "34d50c4ab0326f65e8824fbd955732ef9c56d29dfa57f8e97c0915778fc2b41c",
     "rb/sandbox.py": "833968903e8325154da2196fa65c3e1b52d8afe9a8428f0706eb8ae129a631c5",
-    "rb/registry.py": "a9dbb3c23d1e5c8a5f1b4dda02fee4d622991e88cbad38428c6f27b74f6e7831"
-  }
+    "rb/registry.py": "419f4db041d94f9fba0db750893b19293ce1343685c3bf7a9a24226f3e58e9bd"
+  },
+  "errata_v2_to_v3": "second pre-test dev-window revision (no test observation): (1) blocking/immediate commits resolve same-batch 0-based $RESULT refs via a results_by_step base fallback (batch_of was only populated post-apply); (2) RB chain dependency templates injected into DAG_TEMPLATES (hold_seat<-search_trains, purchase_ticket<-hold_seat, add_item<-search_catalog, place_order<-add_item, book_viewing<-search_rentals) \u2014 RB chains previously had no propagation edges; (3) catalog declares string values VERBATIM in the user's language and multiword values whole; seat_class format anchor added; (4) en pools drop leading articles (landlord/property office/university campus/tech park) \u2014 prompt rule 14 strips articles, gold must not carry them. rb_v2.2.1 config_hash 265c7cd8f485."
 }

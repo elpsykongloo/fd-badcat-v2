@@ -29,7 +29,7 @@ ARM_A_QUOTA = {"L1": 48, "L2": 42, "L3": 72, "L4": 72, "L5": 96,
 ARM_B_QUOTA = {"L4": 60, "L5": 60, "L6": 40, "L8": 120, "L9": 80, "L10": 40}
 LEAD_IN_S = 0.5
 VOICES = tuple(f"cv{i:02d}" for i in range(1, 10))     # Qwen3-TTS CustomVoice presets
-GEN_VERSION = "rb_v2.2"
+GEN_VERSION = "rb_v2.2.1"
 
 
 def config_hash():

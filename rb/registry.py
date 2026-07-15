@@ -46,6 +46,7 @@ ARG_FORMAT = {
     "from_cur": "ISO code, e.g. USD/CNY", "to_cur": "ISO code, e.g. EUR/JPY",
     "date": "e.g. May 3 / 5月3日", "checkin": "e.g. May 3 / 5月3日",
     "item_id": "e.g. A100", "listing_id": "e.g. LST12",
+    "seat_class": 'verbatim, e.g. "first class"',
 }
 
 
@@ -111,12 +112,12 @@ SLOT_POOLS = {
            "checkin": ["May third", "May tenth"], "nights": ["two", "three"],
            "query": ["wireless earbuds", "thermos bottle", "running shoes"], "qty": ["one", "two"],
            "address": ["12 College Road", "88 Century Avenue"],
-           "payee": ["the landlord", "the property office"], "amount": ["three thousand", "five thousand", "eight hundred"],
+           "payee": ["landlord", "property office"], "amount": ["three thousand", "five thousand", "eight hundred"],
            "from_cur": ["dollars"], "to_cur": ["euros", "yen"],
            "from_acct": ["checking"], "to_acct": ["rent account", "savings"],
            "account": ["checking"], "threshold": ["five hundred", "one thousand"],
            "beds": ["one-bedroom", "two-bedroom"], "max_rent": ["two thousand", "three thousand"],
-           "from_addr": ["Midtown", "the university"], "to_addr": ["Downtown", "the tech park"],
+           "from_addr": ["Midtown", "university campus"], "to_addr": ["Downtown", "tech park"],
            "slot": ["Saturday morning", "Sunday afternoon"], "applicant": ["Alex Chen", "Jordan Lee"],
            "country": ["Japan", "Thailand"], "nationality": ["American"],
            "item_id": ["A100", "B205", "C330"], "listing_id": ["LST12", "LST47"]},

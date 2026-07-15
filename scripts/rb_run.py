@@ -67,7 +67,9 @@ def rb_catalog():
         "as an argument write exactly \"$RESULT_<n>.id\", where <n> is the "
         "op_id shown in PENDING OPS, or the 0-based position of an earlier "
         "launch in YOUR CURRENT ops list. Write integer arguments as plain "
-        "digits and currencies as ISO codes.")
+        "digits and currencies as ISO codes. Write string values VERBATIM in "
+        "the user's language (成都 stays 成都, never Chengdu; keep multiword "
+        "values whole: \"first class\", not \"first\").")
     return "\n".join(lines)
 
 
@@ -83,6 +85,19 @@ def install_rb(prompt="v3.1"):
     td._RB_INSTALLED = True
     for fn, spec in TOOLS.items():
         _REV.setdefault(fn, Reversibility[spec["kappa"]])
+    import tact_dag
+    tact_dag.DAG_TEMPLATES.update({          # RB chain dependency declarations
+        "hold_seat": {"search_trains": {"passthrough": {}, "derived": ["train_id"],
+                      "key_fields": ["origin", "destination", "date"]}},
+        "purchase_ticket": {"hold_seat": {"passthrough": {}, "derived": ["hold_id"],
+                            "key_fields": ["train_id", "seat_class"]}},
+        "add_item": {"search_catalog": {"passthrough": {}, "derived": ["item_id"],
+                     "key_fields": ["query"]}},
+        "place_order": {"add_item": {"passthrough": {}, "derived": ["cart_id"],
+                        "key_fields": ["item_id", "qty"]}},
+        "book_viewing": {"search_rentals": {"passthrough": {}, "derived": ["listing_id"],
+                         "key_fields": ["city", "beds", "max_rent"]}},
+    })
     if prompt == "v3.1":
         tact_core.install_prompt_v31()
 
@@ -235,7 +250,7 @@ def eta_of(fn, profile):
     return round(math.exp(LATENCY[cls][0]), 3)
 
 
-def _resolve_ref(v, by_op, by_step, batch=None):
+def _resolve_ref(v, by_op, by_step, batch=None, base=None):
     """Resolve chained-arg references at commit time. "$RESULT_<n>.<path>":
     <n> is tried as (i) the 0-based position of a launch in the SAME decision
     batch (what the dev smoke showed the LLM emits for ops it just launched),
@@ -252,6 +267,12 @@ def _resolve_ref(v, by_op, by_step, batch=None):
             res = None
             if batch is not None and n < len(batch):
                 res = by_op.get(batch[n])
+            elif base is not None and base + n < len(by_step):
+                # same-batch 0-based ref committing DURING apply (blocking
+                # immediate mode / model-emitted commit ops): batch_of is not
+                # populated yet, but this decision's commits land in launch
+                # order at by_step[base:], so base+n is that same op.
+                res = by_step[base + n]
             if res is None:
                 res = by_op.get(n)
             if res is None:
@@ -293,6 +314,7 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
     trace_events = []
     results_by_op, results_by_step = {}, []
     batch_of = {}                  # op_id -> ordered launch op_ids of its decision
+    cur_base = {"v": 0}            # len(results_by_step) at the current apply
 
     def do_commit(op_id, t_nominal, t_actual):
         if op_id not in tx.pending:
@@ -303,7 +325,8 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
 
         def _exec(f, a):
             batch = batch_of.get(op_id)
-            ra = {k: _resolve_ref(v, results_by_op, results_by_step, batch)
+            ra = {k: _resolve_ref(v, results_by_op, results_by_step, batch,
+                                  base=cur_base["v"])
                   for k, v in (a or {}).items()}
             res = sandbox.execute(f, ra)
             if res.get("status") == "success":
@@ -367,6 +390,7 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
         advance_over(ledger, cursor, t_dec, tuple_segs(), do_commit)
         cursor = max(cursor, t_dec)
         say = dec.get("say", "") if mode == "blocking" else ack_fallback(dec)
+        cur_base["v"] = len(results_by_step)
         applied = apply_decision_ops(tx, ledger, dec, t_dec,
                                      immediate=(mode == "blocking" or delta <= 0),
                                      commit_cb=do_commit,
@@ -575,6 +599,18 @@ def selftest():
                                       OracleDecider(make_episode("A", "L5", 1, ch)),
                                       mode="blocking", input_kind="text",
                                       )["n_eou"] == 1
+    # blocking same-batch $RESULT refs (immediate commits) must resolve: an
+    # L3 chain episode decided ONCE post-hoc must be exact under blocking.
+    epb3 = make_episode("A", "L3", 2, ch)
+    rb3 = run_episode(epb3, OracleDecider(epb3), mode="blocking",
+                      input_kind="text")
+    ck["blocking_chain_refs_resolve"] = rb3["exact"]
+    # unit: same-batch 0-based $RESULT under immediate commits (base fallback)
+    steps = [{"result": {"id": "AAA"}}, {"result": {"id": "BBB"}}]
+    ck["resolver_base_fallback"] = (
+        _resolve_ref("$RESULT_0.trains[0].id", {}, steps, None, base=0) == "AAA"
+        and _resolve_ref("$RESULT_1.id", {}, steps, None, base=0) == "BBB"
+        and _resolve_ref("$RESULT_7.id", {}, steps, None, base=0) == "$RESULT_7.id")
     for k, v in ck.items():
         print(f"  selftest {k}: {'PASS' if v else 'FAIL'}")
     print("SELFTEST", "PASS" if all(ck.values()) else "FAIL")
