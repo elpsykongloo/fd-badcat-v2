@@ -16,6 +16,42 @@ lists slots a revision may retarget; utterances are bilingual templates.
 
 KAPPA_ORDER = ("READ", "REV", "COMP", "IRR")
 
+# Spoken -> canonical value maps (rb_v2.2): utterances speak the SPOKEN form,
+# gold args carry the CANONICAL form the catalog declares — the dev smoke
+# showed the decider (correctly) canonicalizes what it hears (800, USD, 2),
+# so verbatim-spoken gold was a construction-validity bug, not model error.
+CANON = {
+    "amount": {"三千": 3000, "五千": 5000, "八百": 800,
+               "three thousand": 3000, "five thousand": 5000,
+               "eight hundred": 800},
+    "threshold": {"五百": 500, "一千": 1000,
+                  "five hundred": 500, "one thousand": 1000},
+    "max_rent": {"六千": 6000, "八千": 8000,
+                 "two thousand": 2000, "three thousand": 3000},
+    "qty": {"一": 1, "两": 2, "one": 1, "two": 2},
+    "nights": {"两": 2, "三": 3, "two": 2, "three": 3},
+    "beds": {"一居": 1, "两居": 2, "one-bedroom": 1, "two-bedroom": 2},
+    "from_cur": {"人民币": "CNY", "dollars": "USD"},
+    "to_cur": {"美元": "USD", "日元": "JPY", "euros": "EUR", "yen": "JPY"},
+    "date": {"五月三号": "5月3日", "五月八号": "5月8日", "六月一号": "6月1日",
+             "May third": "May 3", "May eighth": "May 8", "June first": "June 1"},
+    "checkin": {"五月三号": "5月3日", "五月十号": "5月10日",
+                "May third": "May 3", "May tenth": "May 10"},
+}
+
+# Rendered into the tool catalog so the canonical form is DECLARED, not guessed.
+ARG_FORMAT = {
+    "amount": "integer", "threshold": "integer", "max_rent": "integer",
+    "qty": "integer", "nights": "integer", "beds": "integer",
+    "from_cur": "ISO code, e.g. USD/CNY", "to_cur": "ISO code, e.g. EUR/JPY",
+    "date": "e.g. May 3 / 5月3日", "checkin": "e.g. May 3 / 5月3日",
+    "item_id": "e.g. A100", "listing_id": "e.g. LST12",
+}
+
+
+def canon_value(slot, spoken):
+    return CANON.get(slot, {}).get(spoken, spoken)
+
 TOOLS = {
     # ecommerce
     "search_catalog":   {"domain": "ecommerce", "kappa": "READ", "required": ["query"], "reverse": None, "latency": "short"},

@@ -16,7 +16,8 @@ import hashlib
 import json
 import random
 
-from .registry import SCENARIOS, SCENARIOS_BY_KIND, SLOT_POOLS, DOMAINS, TOOLS
+from .registry import (SCENARIOS, SCENARIOS_BY_KIND, SLOT_POOLS, DOMAINS,
+                       TOOLS, canon_value)
 from .grammar import (LAYER_GAP, LAYER_KIND, LAYERS, HOLD_S, NOMINAL_INFER_S,
                       ARM_B_RULES, gap_for_layer, revision_text, bystander_text,
                       PROGRESS_QUERY)
@@ -28,7 +29,7 @@ ARM_A_QUOTA = {"L1": 48, "L2": 42, "L3": 72, "L4": 72, "L5": 96,
 ARM_B_QUOTA = {"L4": 60, "L5": 60, "L6": 40, "L8": 120, "L9": 80, "L10": 40}
 LEAD_IN_S = 0.5
 VOICES = tuple(f"cv{i:02d}" for i in range(1, 10))     # Qwen3-TTS CustomVoice presets
-GEN_VERSION = "rb_v2.1.1"
+GEN_VERSION = "rb_v2.2"
 
 
 def config_hash():
@@ -92,11 +93,13 @@ def make_episode(arm, layer, idx, cfg_hash, pause_prior=None, content_hook=None)
         kind = ("value_first" if layer == "L4"
                 else "inline" if layer == "L1" else "default")
         # L1 is in-utterance (inline appended to the intent text, no separate
-        # piece); L8's timing is lifecycle-projected; benign L10 uses the L5 bin.
+        # piece); L8's timing is lifecycle-projected. The benign-L10 control
+        # draws from the L4 bin: it must be RESCUABLE BY CONSTRUCTION, or it
+        # cannot separate "killed by SV gating" from "lost to the window".
         revisions.append({"slot": slot, "old": slots[slot], "new": new,
                           "by": "user", "kind": kind,
                           "gap": None if layer in ("L1", "L8") else
-                          gap_for_layer("L5" if layer == "L10" else layer,
+                          gap_for_layer("L4" if layer == "L10" else layer,
                                         rng, pause_prior)})
     if layer == "L6":
         s1 = scn["revisable"][0]
@@ -122,7 +125,8 @@ def make_episode(arm, layer, idx, cfg_hash, pause_prior=None, content_hook=None)
         if r["by"] == "user":
             slots_final[r["slot"]] = r["new"]
     cancelled = (layer == "L8" and l8_action == "cancel")
-    gold_calls, gold_state, lats = oracle_run(eid, scn["steps"], slots_final,
+    slots_canon = {k: canon_value(k, v) for k, v in slots_final.items()}
+    gold_calls, gold_state, lats = oracle_run(eid, scn["steps"], slots_canon,
                                               profile=profile)
     if cancelled:
         gold_calls, gold_state = [], {}
@@ -216,6 +220,7 @@ def make_episode(arm, layer, idx, cfg_hash, pause_prior=None, content_hook=None)
     return {"id": eid, "arm": arm, "layer": layer, "domain": domain, "lang": lang,
             "scenario": scn_id, "slots": slots, "slots_final": slots_final,
             "revisions": revisions, "bystander": bystander,
+            "slots_canon": slots_canon,
             "l8_action": l8_action, "cancelled": cancelled,
             "pieces": pieces, "events": events, "profile": profile,
             "nominal": nominal, "step_latencies": lats,

@@ -1,29 +1,44 @@
 {
+  "version": 2,
   "frozen": "2026-07-16",
-  "design": "docs/rb_design.md \u00a78-2",
+  "errata_v1_to_v2": "pre-test construction-validity revision after the dev LLM smoke (no test observation occurred): (1) gold args now carry the CATALOG-DECLARED canonical forms (integers as ints, ISO currency codes, canonical dates) while utterances keep spoken forms \u2014 the dev smoke showed the decider correctly canonicalizes speech (800/USD/2) and verbatim-spoken gold was unmatchable-by-design; (2) canonical_calls compares scalars as strings (int 800 == '800'); (3) benign-L10 control gap now draws the L4 bin \u2014 rescuable by construction, else it cannot separate SV-kill from window loss; (4) rb_v2.2 config_hash 9f8f4ae9edc8.",
   "oracle_gate": {
     "A": {
-      "L1": 1.0,
-      "L2": 1.0,
-      "L3": 1.0,
-      "L4": 1.0,
-      "L7": 1.0,
-      "L9": 1.0,
-      "L10": 1.0,
-      "exact": 0.7458
+      "exact": 0.7627,
+      "gate_layers_all_1": [
+        "L1",
+        "L2",
+        "L3",
+        "L4",
+        "L7",
+        "L8",
+        "L9",
+        "L10"
+      ]
     },
     "B": {
-      "L4": 1.0,
-      "L8": 1.0,
-      "L9": 1.0,
-      "L10": 1.0,
-      "exact": 0.75
+      "exact": 0.75,
+      "gate_layers_all_1": [
+        "L4",
+        "L8",
+        "L9",
+        "L10"
+      ]
     },
-    "note": "windowed-oracle ceiling layers L5/L6/L8-A exempt"
+    "ceiling": {
+      "A": {
+        "L5": 0.2857,
+        "L6": 0.0
+      },
+      "B": {
+        "L5": 0.1818,
+        "L6": 0.0
+      }
+    }
   },
   "hashes": {
     "rb/scorer.py": "34d50c4ab0326f65e8824fbd955732ef9c56d29dfa57f8e97c0915778fc2b41c",
-    "rb/sandbox.py": "146a67ccd1cd9c4eacf950c8f33baec338d4343cb371f6f7b4bbd463b859f954",
-    "rb/registry.py": "daff3b81a7f5aef1f4cea56fb8a8f71e67f3966625b5537cfd218c322a8e58de"
+    "rb/sandbox.py": "833968903e8325154da2196fa65c3e1b52d8afe9a8428f0706eb8ae129a631c5",
+    "rb/registry.py": "a9dbb3c23d1e5c8a5f1b4dda02fee4d622991e88cbad38428c6f27b74f6e7831"
   }
 }

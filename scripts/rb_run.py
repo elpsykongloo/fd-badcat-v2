@@ -40,7 +40,7 @@ from tact.tools import REVERSIBILITY as _REV                      # noqa: E402
 from tact.decider import build_decider_messages                   # noqa: E402
 import math                                                        # noqa: E402
 
-from rb.registry import TOOLS, DOMAINS, SCENARIOS                 # noqa: E402
+from rb.registry import TOOLS, DOMAINS, SCENARIOS, ARG_FORMAT, canon_value  # noqa: E402
 from rb.sandbox import Sandbox, LATENCY, mint_id                  # noqa: E402
 from rb import scorer as rb_scorer                                # noqa: E402
 from rb.simulator import ReactiveUser                             # noqa: E402
@@ -58,7 +58,16 @@ def rb_catalog():
         lines.append(d.capitalize() + ":")
         for fn, spec in TOOLS.items():
             if spec["domain"] == d:
-                lines.append(f"  {fn}({', '.join(spec['required'])})")
+                args = ", ".join(
+                    f"{a} ({ARG_FORMAT[a]})" if a in ARG_FORMAT else a
+                    for a in spec["required"])
+                lines.append(f"  {fn}({args})")
+    lines.append(
+        "Every tool returns {\"id\": \"...\"}. To use an earlier op's result "
+        "as an argument write exactly \"$RESULT_<n>.id\", where <n> is the "
+        "op_id shown in PENDING OPS, or the 0-based position of an earlier "
+        "launch in YOUR CURRENT ops list. Write integer arguments as plain "
+        "digits and currencies as ISO codes.")
     return "\n".join(lines)
 
 
@@ -195,7 +204,8 @@ class OracleDecider:
                         ref_fn = self.scn["steps"][int(v[2:])]["fn"]
                         args[a] = mint_id(self.ep["id"], ref_fn, 0)
                     elif isinstance(v, str) and v.startswith("{"):
-                        args[a] = slots[v.strip("{}")]
+                        sl = v.strip("{}")
+                        args[a] = canon_value(sl, slots[sl])
                     else:
                         args[a] = v
                 ops.append({"type": "launch", "fn": st["fn"], "args": args})
@@ -210,7 +220,7 @@ class OracleDecider:
                 for oid in tx.pending:
                     if tx.pending[oid].fn == fn:
                         ops.append({"type": "patch", "op_id": oid,
-                                    "diff": {arg: slots[slot]}})
+                                    "diff": {arg: canon_value(slot, slots[slot])}})
                         break
         return {"dialogue": "stay", "ops": ops,
                 "say": "已更新。" if ops else ""}
@@ -225,21 +235,32 @@ def eta_of(fn, profile):
     return round(math.exp(LATENCY[cls][0]), 3)
 
 
-def _resolve_ref(v, by_op, by_step):
-    """Resolve chained-arg references at commit time: "$RESULT_<op_id>.<field>"
-    (the prompt-rule form the LLM emits) and "$RSTEP_<i>.<field>" (the oracle's
-    order form = i-th successful call this episode). Unresolvable -> literal."""
+def _resolve_ref(v, by_op, by_step, batch=None):
+    """Resolve chained-arg references at commit time. "$RESULT_<n>.<path>":
+    <n> is tried as (i) the 0-based position of a launch in the SAME decision
+    batch (what the dev smoke showed the LLM emits for ops it just launched),
+    then (ii) a global op_id. The field path is IGNORED — RB results carry a
+    single value ({"id": ...}), so any guessed schema ("trains[0].train_id")
+    resolves to that id (catalog documents the {"id"} form). Unresolvable ->
+    literal (a real, scored system failure)."""
     if not isinstance(v, str) or not v.startswith("$R"):
         return v
     try:
-        head, field = v.split(".", 1)
+        head, _field = v.split(".", 1) if "." in v else (v, "id")
         if head.startswith("$RESULT_"):
-            res = by_op[int(head[len("$RESULT_"):])]
+            n = int(head[len("$RESULT_"):])
+            res = None
+            if batch is not None and n < len(batch):
+                res = by_op.get(batch[n])
+            if res is None:
+                res = by_op.get(n)
+            if res is None:
+                return v
         elif head.startswith("$RSTEP_"):
             res = by_step[int(head[len("$RSTEP_"):])]
         else:
             return v
-        return res["result"].get(field.split(".")[0].split("[")[0], v)
+        return res["result"].get("id", v)
     except Exception:
         return v
 
@@ -271,6 +292,7 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
     say_events, commits, decisions = [], [], []
     trace_events = []
     results_by_op, results_by_step = {}, []
+    batch_of = {}                  # op_id -> ordered launch op_ids of its decision
 
     def do_commit(op_id, t_nominal, t_actual):
         if op_id not in tx.pending:
@@ -280,7 +302,8 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
         ledger.close(op_id)
 
         def _exec(f, a):
-            ra = {k: _resolve_ref(v, results_by_op, results_by_step)
+            batch = batch_of.get(op_id)
+            ra = {k: _resolve_ref(v, results_by_op, results_by_step, batch)
                   for k, v in (a or {}).items()}
             res = sandbox.execute(f, ra)
             if res.get("status") == "success":
@@ -351,6 +374,9 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
         ledger.end_decision(i)
         ledger.sweep(t_dec, do_commit, cause="decision_done")
         launches = [a for a in applied if a.get("type") == "launch"]
+        batch_ids = [a.get("op_id") for a in launches if a.get("op_id") is not None]
+        for oid_ in batch_ids:
+            batch_of[oid_] = batch_ids
         tier = None
         if fc_mode and mode != "blocking" and launches:
             from floor_policy import commit_tier, tier_utterance, worst_kappa

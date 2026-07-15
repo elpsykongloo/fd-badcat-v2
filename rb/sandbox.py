@@ -104,6 +104,8 @@ def oracle_run(episode_id, steps, slots, profile="default"):
         for k, v in st["args"].items():
             if isinstance(v, str) and v.startswith("$R"):
                 args[k] = results[int(v[2:])]["result"]["id"]
+            elif isinstance(v, str) and v.startswith("{") and v.endswith("}"):
+                args[k] = slots[v.strip("{}")]          # keep canonical type
             elif isinstance(v, str):
                 args[k] = v.format(**slots)
             else:
@@ -122,6 +124,8 @@ def canonical_calls(calls):
     of args. Scoring compares these lists."""
     out = {}
     for c in calls:
+        norm = {k: (str(v) if isinstance(v, (int, float)) else v)
+                for k, v in c["args"].items()}
         out.setdefault(c["fn"], []).append(
-            json.dumps(c["args"], sort_keys=True, ensure_ascii=False))
+            json.dumps(norm, sort_keys=True, ensure_ascii=False))
     return {fn: sorted(v) for fn, v in out.items()}
