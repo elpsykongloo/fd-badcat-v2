@@ -1,0 +1,98 @@
+{
+ "id": "A_L5_0093",
+ "arm": "A",
+ "layer": "L5",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "eight hundred",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "slots_final": {
+  "amount": "eight hundred",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "revisions": [
+  {
+   "slot": "to_acct",
+   "old": "rent account",
+   "new": "savings",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.94
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Get a quote for eight hundred dollars to yen, then transfer eight hundred from checking to rent account.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Wait — make it savings.",
+   "gap_before": 2.94
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.413
+ },
+ "step_latencies": [
+  0.413,
+  2.365
+ ],
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": "eight hundred",
+    "from_cur": "dollars",
+    "to_cur": "yen"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "savings",
+    "amount": "eight hundred"
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GEed0f9e": {
+   "amount": "eight hundred",
+   "from_cur": "dollars",
+   "to_cur": "yen"
+  },
+  "transfer_funds#TReea6c8": {
+   "from_acct": "checking",
+   "to_acct": "savings",
+   "amount": "eight hundred"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv01"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

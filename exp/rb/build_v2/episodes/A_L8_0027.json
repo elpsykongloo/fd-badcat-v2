@@ -1,0 +1,108 @@
+{
+ "id": "A_L8_0027",
+ "arm": "A",
+ "layer": "L8",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "May third",
+  "seat_class": "first class",
+  "passenger": "Sam Rivera"
+ },
+ "slots_final": {
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
+ "revisions": [
+  {
+   "slot": "seat_class",
+   "old": "first class",
+   "new": "business",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "l8_action": "revise",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "Find a train from Seattle to Atlanta on May third, hold a first class seat, and buy the ticket for Sam Rivera.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "Wait — make it business.",
+   "at_after_eou": 1.874
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.313
+ },
+ "step_latencies": [
+  0.313,
+  0.244,
+  2.422
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Seattle",
+    "destination": "Atlanta",
+    "date": "May third"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE1e5d3a",
+    "seat_class": "business"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO41e7f7",
+    "passenger": "Sam Rivera"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE1e5d3a": {
+   "origin": "Seattle",
+   "destination": "Atlanta",
+   "date": "May third"
+  },
+  "hold_seat#HO41e7f7": {
+   "train_id": "SE1e5d3a",
+   "seat_class": "business"
+  },
+  "purchase_ticket#PU86e8c4": {
+   "hold_id": "HO41e7f7",
+   "passenger": "Sam Rivera"
+  }
+ },
+ "voices": {
+  "user": "cv05",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

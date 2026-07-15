@@ -1,0 +1,91 @@
+{
+ "id": "A_L10_0017",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "three thousand",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "slots_final": {
+  "amount": "three thousand",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "revisions": [
+  {
+   "slot": "to_cur",
+   "old": "euros",
+   "new": "yen",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Get a quote for three thousand dollars to euros, then transfer three thousand from checking to savings.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.576
+ },
+ "step_latencies": [
+  0.576,
+  2.26
+ ],
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": "three thousand",
+    "from_cur": "dollars",
+    "to_cur": "yen"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "savings",
+    "amount": "three thousand"
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GEe39bee": {
+   "amount": "three thousand",
+   "from_cur": "dollars",
+   "to_cur": "yen"
+  },
+  "transfer_funds#TRa04f04": {
+   "from_acct": "checking",
+   "to_acct": "savings",
+   "amount": "three thousand"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv06"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

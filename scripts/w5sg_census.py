@@ -22,13 +22,16 @@ HumDial train sample, and emits:
 
 Run (server):
   $PY scripts/w5sg_census.py --root /root/autodl-tmp/HumDial_train
+  $PY scripts/w5sg_census.py --root /root/autodl-tmp/HumDial_train --workers 64
   $PY scripts/w5sg_census.py --selftest      # no torch/VAD needed
 """
 from __future__ import annotations
 
 import argparse
+import concurrent.futures
 import hashlib
 import json
+import multiprocessing
 import sys
 from pathlib import Path
 
@@ -43,6 +46,8 @@ CHUNK = 256                      # engine audio-clock unit (t = seq*256/16000)
 ASR_RTF = 0.021                  # SenseVoice offline RTF (W1 acceptance)
 ASR_LAG_BAR_S = 0.050            # frozen F_text availability bar (design §4)
 K1_MIN_EVENTS = 20000            # frozen kill: fewer labels => cancel (design §7)
+
+_WORKER_DEPS = None
 
 
 def vad_segments(wav_path, model, VADIterator, torch, sf, np):
@@ -84,48 +89,100 @@ def quantiles(xs, ps=(0.1, 0.25, 0.5, 0.75, 0.9)):
     return out
 
 
-def census(root, out_dir, limit=None):
+def sample_language(sample):
+    """Normalize the loader's `language` field with legacy `lang` fallback."""
+    return sample.get("language", sample.get("lang", "zh"))
+
+
+def _scan_sample(task, deps):
+    """Scan one sample; task/result contain paths and numeric rows only."""
+    seq, wav, lang, group = task
+    model, VADIterator, torch, sf, np = deps
+    try:
+        segs = vad_segments(Path(wav), model, VADIterator, torch, sf, np)
+        return seq, wav, lang, group, events_to_rows(segs), None
+    except Exception as exc:  # preserve the serial scanner's skip-on-bad-wav rule
+        error = f"{type(exc).__name__}: {exc}"
+        return seq, wav, lang, group, [], error
+
+
+def _init_worker():
+    """Load one independent VAD instance per process (no shared torch state)."""
+    global _WORKER_DEPS
+    import numpy as np
+    import soundfile as sf
+    import torch
+    from silero_vad import load_silero_vad, VADIterator
+
+    torch.set_num_threads(1)
+    _WORKER_DEPS = (load_silero_vad(), VADIterator, torch, sf, np)
+
+
+def _scan_sample_worker(task):
+    if _WORKER_DEPS is None:
+        raise RuntimeError("VAD worker was not initialized")
+    return _scan_sample(task, _WORKER_DEPS)
+
+
+def census(root, out_dir, limit=None, workers=1):
     import numpy as np
     import soundfile as sf
     import torch
     from silero_vad import load_silero_vad, VADIterator
     from w4v3_common import resolve_root, iter_train_samples, assert_no_text
 
-    torch.set_num_threads(2)
-    model = load_silero_vad()
     root = resolve_root(root)
     out_dir.mkdir(parents=True, exist_ok=True)
     rows_f = (out_dir / "events.jsonl").open("w")
-    n_events = n_samples = 0
-    gaps = {"zh": [], "en": []}
-    utt_durs, labels, lag_proj = [], [], []
+    tasks = []
     for smp in iter_train_samples(root):
-        if limit and n_samples >= limit:
+        if limit and len(tasks) >= limit:
             break
         wav = smp.get("wav")
         if not wav or not Path(wav).exists():
             continue
-        n_samples += 1
-        lang = smp.get("lang", "zh")
+        lang = sample_language(smp)
         group = hashlib.sha256(str(smp.get("key", wav)).encode()).hexdigest()[:12]
-        try:
-            segs = vad_segments(wav, model, VADIterator, torch, sf, np)
-        except Exception as e:                     # unreadable wav: count and skip
-            print(f"skip {wav}: {e}")
-            continue
-        for feats, y, gap in events_to_rows(segs):
-            rec = {"f": feats, "y": y, "gap": gap, "lang": lang, "g": group}
-            assert_no_text(rec)
-            rows_f.write(json.dumps(rec) + "\n")
-            n_events += 1
-            labels.append(y)
-            utt_durs.append(feats[0])
-            lag_proj.append(ASR_RTF * feats[0])
-            if gap is not None:
-                gaps[lang].append(gap)
-        if n_samples % 500 == 0:
-            print(f"  {n_samples} samples / {n_events} events")
-    rows_f.close()
+        tasks.append((len(tasks), str(wav), lang, group))
+
+    n_events = 0
+    n_samples = len(tasks)
+    gaps = {"zh": [], "en": []}
+    utt_durs, labels, lag_proj = [], [], []
+
+    if workers <= 1:
+        torch.set_num_threads(2)
+        deps = (load_silero_vad(), VADIterator, torch, sf, np)
+        results = (_scan_sample(task, deps) for task in tasks)
+        pool = None
+    else:
+        ctx = multiprocessing.get_context("spawn")
+        pool = concurrent.futures.ProcessPoolExecutor(
+            max_workers=workers, mp_context=ctx, initializer=_init_worker)
+        results = pool.map(_scan_sample_worker, tasks, chunksize=1)
+
+    try:
+        for done, result in enumerate(results, 1):
+            _seq, wav, lang, group, event_rows, error = result
+            if error is not None:
+                print(f"skip {wav}: {error}")
+                continue
+            for feats, y, gap in event_rows:
+                rec = {"f": feats, "y": y, "gap": gap, "lang": lang, "g": group}
+                assert_no_text(rec)
+                rows_f.write(json.dumps(rec) + "\n")
+                n_events += 1
+                labels.append(y)
+                utt_durs.append(feats[0])
+                lag_proj.append(ASR_RTF * feats[0])
+                if gap is not None:
+                    gaps[lang].append(gap)
+            if done % 500 == 0:
+                print(f"  {done} samples / {n_events} events")
+    finally:
+        if pool is not None:
+            pool.shutdown(wait=True, cancel_futures=True)
+        rows_f.close()
 
     lag_p50 = quantiles(lag_proj).get("p50", 0.0)
     all_gaps = gaps["zh"] + gaps["en"]
@@ -167,6 +224,11 @@ def selftest():
     # ASR-lag audit arithmetic: 4s utterance -> 84ms > 50ms bar
     ck["lag_projection"] = ASR_RTF * 4.0 > ASR_LAG_BAR_S
     ck["feats_len"] = len(rows[0][0]) == len(FEATS_SG)
+    ck["language_field"] = (
+        sample_language({"language": "en"}) == "en"
+        and sample_language({"lang": "en"}) == "en"
+        and sample_language({}) == "zh"
+    )
     for k, v in ck.items():
         print(f"  selftest {k}: {'PASS' if v else 'FAIL'}")
     print("SELFTEST", "PASS" if all(ck.values()) else "FAIL")
@@ -178,11 +240,15 @@ def main():
     ap.add_argument("--root", default="/root/autodl-tmp/HumDial_train")
     ap.add_argument("--out", default="exp/w5sg")
     ap.add_argument("--limit", type=int, help="debug: cap sample count")
+    ap.add_argument("--workers", type=int, default=1,
+                    help="sample-level VAD processes (default 1 preserves legacy path)")
     ap.add_argument("--selftest", action="store_true")
     args = ap.parse_args()
     if args.selftest:
         return selftest()
-    return census(args.root, Path(args.out), args.limit)
+    if args.workers < 1:
+        ap.error("--workers must be >= 1")
+    return census(args.root, Path(args.out), args.limit, args.workers)
 
 
 if __name__ == "__main__":

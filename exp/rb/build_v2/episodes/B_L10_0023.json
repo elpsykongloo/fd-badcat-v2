@@ -1,0 +1,110 @@
+{
+ "id": "B_L10_0023",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
+ "slots_final": {
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "first class",
+  "passenger": "Sam Rivera"
+ },
+ "revisions": [
+  {
+   "slot": "seat_class",
+   "old": "coach",
+   "new": "first class",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Find a train from Seattle to Austin on May third, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.626,
+   "action": "benign_control",
+   "role": "user",
+   "voice": "cv03",
+   "text": "Wait — make it first class."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.442
+ },
+ "step_latencies": [
+  0.442,
+  0.594,
+  4.195
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Seattle",
+    "destination": "Austin",
+    "date": "May third"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE574575",
+    "seat_class": "first class"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HOa8585b",
+    "passenger": "Sam Rivera"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE574575": {
+   "origin": "Seattle",
+   "destination": "Austin",
+   "date": "May third"
+  },
+  "hold_seat#HOa8585b": {
+   "train_id": "SE574575",
+   "seat_class": "first class"
+  },
+  "purchase_ticket#PUd89e27": {
+   "hold_id": "HOa8585b",
+   "passenger": "Sam Rivera"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv09"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

@@ -1,0 +1,96 @@
+{
+ "id": "A_L7_0027",
+ "arm": "A",
+ "layer": "L7",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_multi",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "May third",
+  "country": "Japan",
+  "nationality": "American"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May third",
+  "country": "Japan",
+  "nationality": "American"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "Denver",
+   "new": "Atlanta",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.176
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Look up trains from Chicago to Denver on May third, and also check if American citizens need a visa for Japan.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Wait — make it Atlanta.",
+   "gap_before": 1.176
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.365
+ },
+ "step_latencies": [
+  0.365,
+  0.738
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Chicago",
+    "destination": "Atlanta",
+    "date": "May third"
+   }
+  },
+  {
+   "fn": "check_visa_rule",
+   "args": {
+    "country": "Japan",
+    "nationality": "American"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE53ccdb": {
+   "origin": "Chicago",
+   "destination": "Atlanta",
+   "date": "May third"
+  },
+  "check_visa_rule#CHad1a26": {
+   "country": "Japan",
+   "nationality": "American"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv04"
+ },
+ "split": "dev",
+ "config_hash": "586da9e6a8c4"
+}

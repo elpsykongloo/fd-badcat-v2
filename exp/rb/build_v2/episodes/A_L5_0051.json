@@ -1,0 +1,108 @@
+{
+ "id": "A_L5_0051",
+ "arm": "A",
+ "layer": "L5",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Boston",
+  "destination": "Portland",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
+ },
+ "slots_final": {
+  "origin": "Boston",
+  "destination": "Portland",
+  "date": "May third",
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
+ },
+ "revisions": [
+  {
+   "slot": "seat_class",
+   "old": "coach",
+   "new": "first class",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.761
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Find a train from Boston to Portland on May third, hold a coach seat, and buy the ticket for Jordan Lee.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Wait — make it first class.",
+   "gap_before": 2.761
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.569
+ },
+ "step_latencies": [
+  0.569,
+  0.946,
+  1.888
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Boston",
+    "destination": "Portland",
+    "date": "May third"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE4a2ab1",
+    "seat_class": "first class"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO5ce838",
+    "passenger": "Jordan Lee"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE4a2ab1": {
+   "origin": "Boston",
+   "destination": "Portland",
+   "date": "May third"
+  },
+  "hold_seat#HO5ce838": {
+   "train_id": "SE4a2ab1",
+   "seat_class": "first class"
+  },
+  "purchase_ticket#PU6adacd": {
+   "hold_id": "HO5ce838",
+   "passenger": "Jordan Lee"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

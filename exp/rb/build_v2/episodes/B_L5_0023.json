@@ -1,0 +1,117 @@
+{
+ "id": "B_L5_0023",
+ "arm": "B",
+ "layer": "L5",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Boston",
+  "destination": "Portland",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "slots_final": {
+  "origin": "Boston",
+  "destination": "Denver",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "Portland",
+   "new": "Denver",
+   "by": "user",
+   "kind": "default",
+   "gap": 3.043
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Find a train from Boston to Portland on June first, hold a coach seat, and buy the ticket for Alex Chen.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Wait — make it Denver.",
+   "gap_before": 3.043
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 1.319,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv03",
+   "text": "Wait — make it Denver."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.628
+ },
+ "step_latencies": [
+  0.628,
+  0.463,
+  1.915
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Boston",
+    "destination": "Denver",
+    "date": "June first"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE6e4aef",
+    "seat_class": "coach"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO6ed68d",
+    "passenger": "Alex Chen"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE6e4aef": {
+   "origin": "Boston",
+   "destination": "Denver",
+   "date": "June first"
+  },
+  "hold_seat#HO6ed68d": {
+   "train_id": "SE6e4aef",
+   "seat_class": "coach"
+  },
+  "purchase_ticket#PUe118fd": {
+   "hold_id": "HO6ed68d",
+   "passenger": "Alex Chen"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

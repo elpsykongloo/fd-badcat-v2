@@ -1,0 +1,108 @@
+{
+ "id": "A_L4_0003",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Portland",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "Denver",
+   "new": "Portland",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 1.134
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Find a train from Chicago to Denver on May third, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Portland — change it to Portland.",
+   "gap_before": 1.134
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.533
+ },
+ "step_latencies": [
+  0.533,
+  0.444,
+  1.042
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Chicago",
+    "destination": "Portland",
+    "date": "May third"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEb5fc08",
+    "seat_class": "coach"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HOc3a544",
+    "passenger": "Sam Rivera"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEb5fc08": {
+   "origin": "Chicago",
+   "destination": "Portland",
+   "date": "May third"
+  },
+  "hold_seat#HOc3a544": {
+   "train_id": "SEb5fc08",
+   "seat_class": "coach"
+  },
+  "purchase_ticket#PU9ccfb5": {
+   "hold_id": "HOc3a544",
+   "passenger": "Sam Rivera"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv01"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

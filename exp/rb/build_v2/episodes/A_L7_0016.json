@@ -1,0 +1,84 @@
+{
+ "id": "A_L7_0016",
+ "arm": "A",
+ "layer": "L7",
+ "domain": "ecommerce",
+ "lang": "zh",
+ "scenario": "ecom_multi",
+ "slots": {
+  "query": "跑步鞋",
+  "item_id": "B205"
+ },
+ "slots_final": {
+  "query": "保温杯",
+  "item_id": "B205"
+ },
+ "revisions": [
+  {
+   "slot": "query",
+   "old": "跑步鞋",
+   "new": "保温杯",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.416
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "zh",
+   "text": "搜一下跑步鞋，再看看编号B205还有没有货。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "zh",
+   "text": "等等，改成保温杯。",
+   "gap_before": 2.416
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.608
+ },
+ "step_latencies": [
+  0.608,
+  0.792
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "保温杯"
+   }
+  },
+  {
+   "fn": "check_stock",
+   "args": {
+    "item_id": "B205"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE0bb43b": {
+   "query": "保温杯"
+  },
+  "check_stock#CHee66e3": {
+   "item_id": "B205"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv01"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

@@ -1,0 +1,108 @@
+{
+ "id": "A_L5_0027",
+ "arm": "A",
+ "layer": "L5",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
+ "slots_final": {
+  "origin": "Boston",
+  "destination": "Portland",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "Atlanta",
+   "new": "Portland",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.723
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Find a train from Boston to Atlanta on June first, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Wait — make it Portland.",
+   "gap_before": 2.723
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.614
+ },
+ "step_latencies": [
+  0.614,
+  0.705,
+  4.812
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Boston",
+    "destination": "Portland",
+    "date": "June first"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEbbb234",
+    "seat_class": "coach"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO60f209",
+    "passenger": "Sam Rivera"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEbbb234": {
+   "origin": "Boston",
+   "destination": "Portland",
+   "date": "June first"
+  },
+  "hold_seat#HO60f209": {
+   "train_id": "SEbbb234",
+   "seat_class": "coach"
+  },
+  "purchase_ticket#PU986f95": {
+   "hold_id": "HO60f209",
+   "passenger": "Sam Rivera"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv03"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

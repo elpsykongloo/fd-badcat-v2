@@ -1,0 +1,94 @@
+{
+ "id": "A_L5_0026",
+ "arm": "A",
+ "layer": "L5",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "杭州",
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周日下午"
+ },
+ "slots_final": {
+  "city": "杭州",
+  "beds": "两居",
+  "max_rent": "六千",
+  "slot": "周日下午"
+ },
+ "revisions": [
+  {
+   "slot": "max_rent",
+   "old": "八千",
+   "new": "六千",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.563
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "在杭州找两居、租金不超过八千的房子，约周日下午看房。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "等等，改成六千。",
+   "gap_before": 2.563
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.514
+ },
+ "step_latencies": [
+  0.514,
+  1.989
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "杭州",
+    "beds": "两居",
+    "max_rent": "六千"
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE0750b9",
+    "slot": "周日下午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE0750b9": {
+   "city": "杭州",
+   "beds": "两居",
+   "max_rent": "六千"
+  },
+  "book_viewing#BO18f0aa": {
+   "listing_id": "SE0750b9",
+   "slot": "周日下午"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv05"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

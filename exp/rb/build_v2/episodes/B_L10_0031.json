@@ -1,0 +1,113 @@
+{
+ "id": "B_L10_0031",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "June first",
+  "seat_class": "first class",
+  "passenger": "Sam Rivera"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "June first",
+  "seat_class": "first class",
+  "passenger": "Sam Rivera"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "irrelevant",
+  "other": "May eighth",
+  "state": "inflight",
+  "frac": 0.276
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Find a train from Chicago to Denver on June first, hold a first class seat, and buy the ticket for Sam Rivera.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "What do you want for dinner? Let's order in.",
+   "at_after_eou": 1.808
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.48,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv05",
+   "text": "What do you want for dinner? Let's order in."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.609
+ },
+ "step_latencies": [
+  0.609,
+  0.435,
+  4.271
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Chicago",
+    "destination": "Denver",
+    "date": "June first"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE230bbe",
+    "seat_class": "first class"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO63e981",
+    "passenger": "Sam Rivera"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE230bbe": {
+   "origin": "Chicago",
+   "destination": "Denver",
+   "date": "June first"
+  },
+  "hold_seat#HO63e981": {
+   "train_id": "SE230bbe",
+   "seat_class": "first class"
+  },
+  "purchase_ticket#PU3427e9": {
+   "hold_id": "HO63e981",
+   "passenger": "Sam Rivera"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv05"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

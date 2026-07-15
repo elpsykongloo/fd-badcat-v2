@@ -1,0 +1,96 @@
+{
+ "id": "A_L7_0031",
+ "arm": "A",
+ "layer": "L7",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_multi",
+ "slots": {
+  "origin": "Seattle",
+  "destination": "Denver",
+  "date": "May third",
+  "country": "Thailand",
+  "nationality": "American"
+ },
+ "slots_final": {
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "May third",
+  "country": "Thailand",
+  "nationality": "American"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "Denver",
+   "new": "Portland",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.77
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Look up trains from Seattle to Denver on May third, and also check if American citizens need a visa for Thailand.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Wait — make it Portland.",
+   "gap_before": 1.77
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.63
+ },
+ "step_latencies": [
+  0.63,
+  0.327
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Seattle",
+    "destination": "Portland",
+    "date": "May third"
+   }
+  },
+  {
+   "fn": "check_visa_rule",
+   "args": {
+    "country": "Thailand",
+    "nationality": "American"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE1b014d": {
+   "origin": "Seattle",
+   "destination": "Portland",
+   "date": "May third"
+  },
+  "check_visa_rule#CHec0b97": {
+   "country": "Thailand",
+   "nationality": "American"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

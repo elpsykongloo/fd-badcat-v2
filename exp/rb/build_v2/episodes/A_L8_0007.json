@@ -1,0 +1,62 @@
+{
+ "id": "A_L8_0007",
+ "arm": "A",
+ "layer": "L8",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "revisions": [],
+ "bystander": null,
+ "l8_action": "cancel",
+ "cancelled": true,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Find a train from Chicago to Denver on May third, hold a coach seat, and buy the ticket for Alex Chen.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Actually, hold off, don't do it yet.",
+   "at_after_eou": 1.846
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.401
+ },
+ "step_latencies": [
+  0.401,
+  0.997,
+  1.412
+ ],
+ "gold_calls": [],
+ "gold_state": {},
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv09"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

@@ -1,0 +1,130 @@
+{
+ "id": "B_L6_0017",
+ "arm": "B",
+ "layer": "L6",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "eight hundred",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "slots_final": {
+  "amount": "five thousand",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "revisions": [
+  {
+   "slot": "amount",
+   "old": "eight hundred",
+   "new": "five thousand",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.731
+  },
+  {
+   "slot": "to_acct",
+   "old": "rent account",
+   "new": "savings",
+   "by": "user",
+   "kind": "second",
+   "gap": 2.533
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Get a quote for eight hundred dollars to yen, then transfer eight hundred from checking to rent account.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Wait — make it five thousand.",
+   "gap_before": 0.731
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Also, one more change — savings.",
+   "gap_before": 2.533
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.432,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv03",
+   "text": "Wait — make it five thousand."
+  },
+  {
+   "state": "committed",
+   "offset": 0.425,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv03",
+   "text": "Wait — make it five thousand."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.615
+ },
+ "step_latencies": [
+  0.615,
+  2.834
+ ],
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": "five thousand",
+    "from_cur": "dollars",
+    "to_cur": "yen"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "savings",
+    "amount": "five thousand"
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GE163087": {
+   "amount": "five thousand",
+   "from_cur": "dollars",
+   "to_cur": "yen"
+  },
+  "transfer_funds#TR3e8d80": {
+   "from_acct": "checking",
+   "to_acct": "savings",
+   "amount": "five thousand"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv06"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

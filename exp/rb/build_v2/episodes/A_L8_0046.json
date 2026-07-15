@@ -1,0 +1,59 @@
+{
+ "id": "A_L8_0046",
+ "arm": "A",
+ "layer": "L8",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "青岛",
+  "beds": "一居",
+  "max_rent": "六千",
+  "slot": "周日下午"
+ },
+ "slots_final": {
+  "city": "青岛",
+  "beds": "一居",
+  "max_rent": "六千",
+  "slot": "周日下午"
+ },
+ "revisions": [],
+ "bystander": null,
+ "l8_action": "cancel",
+ "cancelled": true,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "zh",
+   "text": "在青岛找一居、租金不超过六千的房子，约周日下午看房。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "zh",
+   "text": "算了，先别办了。",
+   "at_after_eou": 1.717
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.254
+ },
+ "step_latencies": [
+  0.254,
+  1.988
+ ],
+ "gold_calls": [],
+ "gold_state": {},
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv03"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

@@ -1,0 +1,108 @@
+{
+ "id": "A_L4_0063",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
+ "slots_final": {
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
+ "revisions": [
+  {
+   "slot": "date",
+   "old": "May third",
+   "new": "June first",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.722
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Find a train from Boston to Atlanta on May third, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "June first — change it to June first.",
+   "gap_before": 0.722
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.735
+ },
+ "step_latencies": [
+  0.735,
+  0.435,
+  1.93
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Boston",
+    "destination": "Atlanta",
+    "date": "June first"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE42f574",
+    "seat_class": "coach"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO3b0d77",
+    "passenger": "Sam Rivera"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE42f574": {
+   "origin": "Boston",
+   "destination": "Atlanta",
+   "date": "June first"
+  },
+  "hold_seat#HO3b0d77": {
+   "train_id": "SE42f574",
+   "seat_class": "coach"
+  },
+  "purchase_ticket#PU248af7": {
+   "hold_id": "HO3b0d77",
+   "passenger": "Sam Rivera"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv06"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

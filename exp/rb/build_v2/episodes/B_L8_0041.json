@@ -1,0 +1,98 @@
+{
+ "id": "B_L8_0041",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "eight hundred",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "slots_final": {
+  "amount": "eight hundred",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "revisions": [],
+ "bystander": null,
+ "l8_action": "progress",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Get a quote for eight hundred dollars to yen, then transfer eight hundred from checking to savings.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Any progress?",
+   "at_after_eou": 2.115
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.882,
+   "action": "progress_query",
+   "role": "user",
+   "voice": "cv02",
+   "text": "Any progress?"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.601
+ },
+ "step_latencies": [
+  0.601,
+  2.438
+ ],
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": "eight hundred",
+    "from_cur": "dollars",
+    "to_cur": "yen"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "savings",
+    "amount": "eight hundred"
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GE0d8219": {
+   "amount": "eight hundred",
+   "from_cur": "dollars",
+   "to_cur": "yen"
+  },
+  "transfer_funds#TR0aefa7": {
+   "from_acct": "checking",
+   "to_acct": "savings",
+   "amount": "eight hundred"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

@@ -1,0 +1,67 @@
+{
+ "id": "A_L9_0020",
+ "arm": "A",
+ "layer": "L9",
+ "domain": "ecommerce",
+ "lang": "zh",
+ "scenario": "ecom_single",
+ "slots": {
+  "item_id": "C330",
+  "qty": "两"
+ },
+ "slots_final": {
+  "item_id": "C330",
+  "qty": "两"
+ },
+ "revisions": [],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "zh",
+   "text": "把编号C330的商品加两件到购物车。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "zh",
+   "text": "好了没？",
+   "at_after_eou": 22.464
+  }
+ ],
+ "events": [],
+ "profile": "heavy",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 34.707
+ },
+ "step_latencies": [
+  34.707
+ ],
+ "gold_calls": [
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "C330",
+    "qty": "两"
+   }
+  }
+ ],
+ "gold_state": {
+  "add_item#ADc23bfd": {
+   "item_id": "C330",
+   "qty": "两"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv09"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

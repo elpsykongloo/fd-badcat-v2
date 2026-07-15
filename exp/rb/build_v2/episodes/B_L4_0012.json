@@ -1,0 +1,109 @@
+{
+ "id": "B_L4_0012",
+ "arm": "B",
+ "layer": "L4",
+ "domain": "ecommerce",
+ "lang": "zh",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "跑步鞋",
+  "qty": "一",
+  "address": "浦东新区世纪大道八号"
+ },
+ "slots_final": {
+  "query": "跑步鞋",
+  "qty": "两",
+  "address": "浦东新区世纪大道八号"
+ },
+ "revisions": [
+  {
+   "slot": "qty",
+   "old": "一",
+   "new": "两",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.694
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "zh",
+   "text": "帮我搜跑步鞋，加一件进购物车，下单寄到浦东新区世纪大道八号。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "zh",
+   "text": "两，改成两。",
+   "gap_before": 0.694
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.325,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv06",
+   "text": "两，改成两。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.548
+ },
+ "step_latencies": [
+  0.548,
+  0.937,
+  2.049
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "跑步鞋"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE0216f0",
+    "qty": "两"
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD4c4f5e",
+    "address": "浦东新区世纪大道八号"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE0216f0": {
+   "query": "跑步鞋"
+  },
+  "add_item#AD4c4f5e": {
+   "item_id": "SE0216f0",
+   "qty": "两"
+  },
+  "place_order#PL89c53b": {
+   "cart_id": "AD4c4f5e",
+   "address": "浦东新区世纪大道八号"
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

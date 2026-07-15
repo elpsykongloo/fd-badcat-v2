@@ -1,0 +1,108 @@
+{
+ "id": "A_L3_0043",
+ "arm": "A",
+ "layer": "L3",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Boston",
+  "destination": "Denver",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "slots_final": {
+  "origin": "Boston",
+  "destination": "Denver",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "revisions": [
+  {
+   "slot": "date",
+   "old": "June first",
+   "new": "May third",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.662
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Find a train from Boston to Denver on June first, hold a coach seat, and buy the ticket for Alex Chen.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Wait — make it May third.",
+   "gap_before": 0.662
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.822
+ },
+ "step_latencies": [
+  0.822,
+  0.46,
+  2.738
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Boston",
+    "destination": "Denver",
+    "date": "May third"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEfc93b0",
+    "seat_class": "coach"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO78cadf",
+    "passenger": "Alex Chen"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEfc93b0": {
+   "origin": "Boston",
+   "destination": "Denver",
+   "date": "May third"
+  },
+  "hold_seat#HO78cadf": {
+   "train_id": "SEfc93b0",
+   "seat_class": "coach"
+  },
+  "purchase_ticket#PUb87b4c": {
+   "hold_id": "HO78cadf",
+   "passenger": "Alex Chen"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv09"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

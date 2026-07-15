@@ -1,0 +1,103 @@
+{
+ "id": "B_L8_0078",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "成都",
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周六上午"
+ },
+ "slots_final": {
+  "city": "成都",
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周日下午"
+ },
+ "revisions": [
+  {
+   "slot": "slot",
+   "old": "周六上午",
+   "new": "周日下午",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "l8_action": "revise",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "zh",
+   "text": "在成都找一居、租金不超过八千的房子，约周六上午看房。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "zh",
+   "text": "等等，改成周日下午。",
+   "at_after_eou": 1.824
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.694,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv08",
+   "text": "等等，改成周日下午。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.316
+ },
+ "step_latencies": [
+  0.316,
+  1.381
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "成都",
+    "beds": "一居",
+    "max_rent": "八千"
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SEc2dd80",
+    "slot": "周日下午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEc2dd80": {
+   "city": "成都",
+   "beds": "一居",
+   "max_rent": "八千"
+  },
+  "book_viewing#BO72379d": {
+   "listing_id": "SEc2dd80",
+   "slot": "周日下午"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv03"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

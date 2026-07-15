@@ -1,0 +1,99 @@
+{
+ "id": "A_L8_0023",
+ "arm": "A",
+ "layer": "L8",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "revisions": [],
+ "bystander": null,
+ "l8_action": "progress",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Find a train from Chicago to Austin on June first, hold a coach seat, and buy the ticket for Alex Chen.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Any progress?",
+   "at_after_eou": 1.908
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.375
+ },
+ "step_latencies": [
+  0.375,
+  0.449,
+  2.139
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Chicago",
+    "destination": "Austin",
+    "date": "June first"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE948204",
+    "seat_class": "coach"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO4c6501",
+    "passenger": "Alex Chen"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE948204": {
+   "origin": "Chicago",
+   "destination": "Austin",
+   "date": "June first"
+  },
+  "hold_seat#HO4c6501": {
+   "train_id": "SE948204",
+   "seat_class": "coach"
+  },
+  "purchase_ticket#PUf7f3ec": {
+   "hold_id": "HO4c6501",
+   "passenger": "Alex Chen"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

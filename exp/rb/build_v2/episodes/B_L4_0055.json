@@ -1,0 +1,117 @@
+{
+ "id": "B_L4_0055",
+ "arm": "B",
+ "layer": "L4",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Portland",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "Austin",
+   "new": "Portland",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.68
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Find a train from Chicago to Austin on June first, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Portland — change it to Portland.",
+   "gap_before": 0.68
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.115,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv08",
+   "text": "Portland — change it to Portland."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.26
+ },
+ "step_latencies": [
+  0.26,
+  0.498,
+  1.551
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Chicago",
+    "destination": "Portland",
+    "date": "June first"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE9bbd12",
+    "seat_class": "coach"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO272bc9",
+    "passenger": "Sam Rivera"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE9bbd12": {
+   "origin": "Chicago",
+   "destination": "Portland",
+   "date": "June first"
+  },
+  "hold_seat#HO272bc9": {
+   "train_id": "SE9bbd12",
+   "seat_class": "coach"
+  },
+  "purchase_ticket#PUcfb43e": {
+   "hold_id": "HO272bc9",
+   "passenger": "Sam Rivera"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv02"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

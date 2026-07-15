@@ -1,0 +1,76 @@
+{
+ "id": "A_L2_0024",
+ "arm": "A",
+ "layer": "L2",
+ "domain": "ecommerce",
+ "lang": "zh",
+ "scenario": "ecom_single",
+ "slots": {
+  "item_id": "B205",
+  "qty": "两"
+ },
+ "slots_final": {
+  "item_id": "B205",
+  "qty": "一"
+ },
+ "revisions": [
+  {
+   "slot": "qty",
+   "old": "两",
+   "new": "一",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.223
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "把编号B205的商品加两件到购物车。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "等等，改成一。",
+   "gap_before": 0.223
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.302
+ },
+ "step_latencies": [
+  0.302
+ ],
+ "gold_calls": [
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "B205",
+    "qty": "一"
+   }
+  }
+ ],
+ "gold_state": {
+  "add_item#AD2e010f": {
+   "item_id": "B205",
+   "qty": "一"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv05"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

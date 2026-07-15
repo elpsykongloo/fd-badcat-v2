@@ -1,0 +1,98 @@
+{
+ "id": "A_L3_0057",
+ "arm": "A",
+ "layer": "L3",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "five thousand",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "slots_final": {
+  "amount": "three thousand",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "revisions": [
+  {
+   "slot": "amount",
+   "old": "five thousand",
+   "new": "three thousand",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.66
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Get a quote for five thousand dollars to euros, then transfer five thousand from checking to rent account.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Wait — make it three thousand.",
+   "gap_before": 0.66
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.583
+ },
+ "step_latencies": [
+  0.583,
+  3.303
+ ],
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": "three thousand",
+    "from_cur": "dollars",
+    "to_cur": "euros"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "rent account",
+    "amount": "three thousand"
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GE4b7687": {
+   "amount": "three thousand",
+   "from_cur": "dollars",
+   "to_cur": "euros"
+  },
+  "transfer_funds#TRb5dbcf": {
+   "from_acct": "checking",
+   "to_acct": "rent account",
+   "amount": "three thousand"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

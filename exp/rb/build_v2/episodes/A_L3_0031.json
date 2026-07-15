@@ -1,0 +1,108 @@
+{
+ "id": "A_L3_0031",
+ "arm": "A",
+ "layer": "L3",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "May eighth",
+  "seat_class": "business",
+  "passenger": "Alex Chen"
+ },
+ "slots_final": {
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Alex Chen"
+ },
+ "revisions": [
+  {
+   "slot": "date",
+   "old": "May eighth",
+   "new": "May third",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.661
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Find a train from Boston to Atlanta on May eighth, hold a business seat, and buy the ticket for Alex Chen.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Wait — make it May third.",
+   "gap_before": 0.661
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.58
+ },
+ "step_latencies": [
+  0.58,
+  0.645,
+  5.633
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Boston",
+    "destination": "Atlanta",
+    "date": "May third"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEbbb19e",
+    "seat_class": "business"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO377bed",
+    "passenger": "Alex Chen"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEbbb19e": {
+   "origin": "Boston",
+   "destination": "Atlanta",
+   "date": "May third"
+  },
+  "hold_seat#HO377bed": {
+   "train_id": "SEbbb19e",
+   "seat_class": "business"
+  },
+  "purchase_ticket#PUb49495": {
+   "hold_id": "HO377bed",
+   "passenger": "Alex Chen"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv05"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

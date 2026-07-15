@@ -1,0 +1,103 @@
+{
+ "id": "B_L5_0022",
+ "arm": "B",
+ "layer": "L5",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "厦门",
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周日下午"
+ },
+ "slots_final": {
+  "city": "青岛",
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周日下午"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "厦门",
+   "new": "青岛",
+   "by": "user",
+   "kind": "default",
+   "gap": 3.134
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "zh",
+   "text": "在厦门找两居、租金不超过八千的房子，约周日下午看房。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "zh",
+   "text": "等等，改成青岛。",
+   "gap_before": 3.134
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 2.157,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv04",
+   "text": "等等，改成青岛。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.717
+ },
+ "step_latencies": [
+  0.717,
+  1.74
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "青岛",
+    "beds": "两居",
+    "max_rent": "八千"
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE05cb4c",
+    "slot": "周日下午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE05cb4c": {
+   "city": "青岛",
+   "beds": "两居",
+   "max_rent": "八千"
+  },
+  "book_viewing#BOf8fa79": {
+   "listing_id": "SE05cb4c",
+   "slot": "周日下午"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv02"
+ },
+ "split": "dev",
+ "config_hash": "586da9e6a8c4"
+}

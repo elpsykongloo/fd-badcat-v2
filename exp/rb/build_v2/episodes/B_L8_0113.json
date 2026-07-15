@@ -1,0 +1,98 @@
+{
+ "id": "B_L8_0113",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "five thousand",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "slots_final": {
+  "amount": "five thousand",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "revisions": [],
+ "bystander": null,
+ "l8_action": "progress",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Get a quote for five thousand dollars to euros, then transfer five thousand from checking to rent account.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Any progress?",
+   "at_after_eou": 1.866
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.892,
+   "action": "progress_query",
+   "role": "user",
+   "voice": "cv08",
+   "text": "Any progress?"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.589
+ },
+ "step_latencies": [
+  0.589,
+  1.697
+ ],
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": "five thousand",
+    "from_cur": "dollars",
+    "to_cur": "euros"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "rent account",
+    "amount": "five thousand"
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GEb1306e": {
+   "amount": "five thousand",
+   "from_cur": "dollars",
+   "to_cur": "euros"
+  },
+  "transfer_funds#TRf260b7": {
+   "from_acct": "checking",
+   "to_acct": "rent account",
+   "amount": "five thousand"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv03"
+ },
+ "split": "dev",
+ "config_hash": "586da9e6a8c4"
+}

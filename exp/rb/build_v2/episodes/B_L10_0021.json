@@ -1,0 +1,111 @@
+{
+ "id": "B_L10_0021",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "five thousand",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "slots_final": {
+  "amount": "five thousand",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "command",
+  "other": "euros",
+  "state": "inflight",
+  "frac": 0.144
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Get a quote for five thousand dollars to yen, then transfer five thousand from checking to rent account.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Change it to euros.",
+   "at_after_eou": 1.673
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.324,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv01",
+   "text": "Change it to euros."
+  },
+  {
+   "state": "tts",
+   "offset": 0.346,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv01",
+   "text": "Change it to euros."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.231
+ },
+ "step_latencies": [
+  0.231,
+  0.89
+ ],
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": "five thousand",
+    "from_cur": "dollars",
+    "to_cur": "yen"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "rent account",
+    "amount": "five thousand"
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GEaf69f9": {
+   "amount": "five thousand",
+   "from_cur": "dollars",
+   "to_cur": "yen"
+  },
+  "transfer_funds#TR8f5420": {
+   "from_acct": "checking",
+   "to_acct": "rent account",
+   "amount": "five thousand"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv01"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

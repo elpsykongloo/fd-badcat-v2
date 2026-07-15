@@ -1,0 +1,107 @@
+{
+ "id": "B_L4_0017",
+ "arm": "B",
+ "layer": "L4",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "eight hundred",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "slots_final": {
+  "amount": "three thousand",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "revisions": [
+  {
+   "slot": "amount",
+   "old": "eight hundred",
+   "new": "three thousand",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.774
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Get a quote for eight hundred dollars to euros, then transfer eight hundred from checking to savings.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "three thousand — change it to three thousand.",
+   "gap_before": 0.774
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.139,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv07",
+   "text": "three thousand — change it to three thousand."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.694
+ },
+ "step_latencies": [
+  0.694,
+  0.789
+ ],
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": "three thousand",
+    "from_cur": "dollars",
+    "to_cur": "euros"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "savings",
+    "amount": "three thousand"
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GE45e3aa": {
+   "amount": "three thousand",
+   "from_cur": "dollars",
+   "to_cur": "euros"
+  },
+  "transfer_funds#TRc4dfe4": {
+   "from_acct": "checking",
+   "to_acct": "savings",
+   "amount": "three thousand"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv09"
+ },
+ "split": "dev",
+ "config_hash": "586da9e6a8c4"
+}

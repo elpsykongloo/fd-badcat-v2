@@ -1,0 +1,123 @@
+{
+ "id": "A_L6_0015",
+ "arm": "A",
+ "layer": "L6",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
+ },
+ "slots_final": {
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "Atlanta",
+   "new": "Portland",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.777
+  },
+  {
+   "slot": "seat_class",
+   "old": "first class",
+   "new": "coach",
+   "by": "user",
+   "kind": "second",
+   "gap": 2.523
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Find a train from Seattle to Atlanta on June first, hold a first class seat, and buy the ticket for Alex Chen.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Wait — make it Portland.",
+   "gap_before": 0.777
+  },
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Also, one more change — coach.",
+   "gap_before": 2.523
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.415
+ },
+ "step_latencies": [
+  0.415,
+  0.41,
+  0.423
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Seattle",
+    "destination": "Portland",
+    "date": "June first"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEe9a0d3",
+    "seat_class": "coach"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HOea6443",
+    "passenger": "Alex Chen"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEe9a0d3": {
+   "origin": "Seattle",
+   "destination": "Portland",
+   "date": "June first"
+  },
+  "hold_seat#HOea6443": {
+   "train_id": "SEe9a0d3",
+   "seat_class": "coach"
+  },
+  "purchase_ticket#PU1b1691": {
+   "hold_id": "HOea6443",
+   "passenger": "Alex Chen"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv07"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

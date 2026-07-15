@@ -1,0 +1,98 @@
+{
+ "id": "A_L4_0041",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "three thousand",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "slots_final": {
+  "amount": "five thousand",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "revisions": [
+  {
+   "slot": "amount",
+   "old": "three thousand",
+   "new": "five thousand",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.79
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Get a quote for three thousand dollars to yen, then transfer three thousand from checking to savings.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "five thousand — change it to five thousand.",
+   "gap_before": 0.79
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 1.076
+ },
+ "step_latencies": [
+  1.076,
+  1.231
+ ],
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": "five thousand",
+    "from_cur": "dollars",
+    "to_cur": "yen"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "savings",
+    "amount": "five thousand"
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GE9d1626": {
+   "amount": "five thousand",
+   "from_cur": "dollars",
+   "to_cur": "yen"
+  },
+  "transfer_funds#TR4ea1d9": {
+   "from_acct": "checking",
+   "to_acct": "savings",
+   "amount": "five thousand"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

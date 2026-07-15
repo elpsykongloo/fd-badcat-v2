@@ -1,0 +1,117 @@
+{
+ "id": "B_L4_0015",
+ "arm": "B",
+ "layer": "L4",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
+ },
+ "slots_final": {
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
+ "revisions": [
+  {
+   "slot": "seat_class",
+   "old": "coach",
+   "new": "business",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.973
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Find a train from Seattle to Atlanta on June first, hold a coach seat, and buy the ticket for Jordan Lee.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "business — change it to business.",
+   "gap_before": 0.973
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.136,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv08",
+   "text": "business — change it to business."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.379
+ },
+ "step_latencies": [
+  0.379,
+  0.417,
+  5.872
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Seattle",
+    "destination": "Atlanta",
+    "date": "June first"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEd57426",
+    "seat_class": "business"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO4b35a2",
+    "passenger": "Jordan Lee"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEd57426": {
+   "origin": "Seattle",
+   "destination": "Atlanta",
+   "date": "June first"
+  },
+  "hold_seat#HO4b35a2": {
+   "train_id": "SEd57426",
+   "seat_class": "business"
+  },
+  "purchase_ticket#PUfb0adc": {
+   "hold_id": "HO4b35a2",
+   "passenger": "Jordan Lee"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

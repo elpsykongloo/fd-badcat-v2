@@ -1,0 +1,94 @@
+{
+ "id": "A_L10_0025",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "eight hundred",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "slots_final": {
+  "amount": "eight hundred",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "irrelevant",
+  "other": "savings",
+  "state": "inflight",
+  "frac": 0.148
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "Get a quote for eight hundred dollars to euros, then transfer eight hundred from checking to rent account.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "What do you want for dinner? Let's order in.",
+   "at_after_eou": 1.727
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.591
+ },
+ "step_latencies": [
+  0.591,
+  2.923
+ ],
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": "eight hundred",
+    "from_cur": "dollars",
+    "to_cur": "euros"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "rent account",
+    "amount": "eight hundred"
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GEc6177f": {
+   "amount": "eight hundred",
+   "from_cur": "dollars",
+   "to_cur": "euros"
+  },
+  "transfer_funds#TRfef1e9": {
+   "from_acct": "checking",
+   "to_acct": "rent account",
+   "amount": "eight hundred"
+  }
+ },
+ "voices": {
+  "user": "cv05",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

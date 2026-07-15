@@ -1,0 +1,96 @@
+{
+ "id": "A_L7_0022",
+ "arm": "A",
+ "layer": "L7",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_multi",
+ "slots": {
+  "city": "厦门",
+  "beds": "一居",
+  "max_rent": "八千",
+  "from_addr": "中关村",
+  "to_addr": "国贸"
+ },
+ "slots_final": {
+  "city": "厦门",
+  "beds": "一居",
+  "max_rent": "八千",
+  "from_addr": "中关村",
+  "to_addr": "西二旗"
+ },
+ "revisions": [
+  {
+   "slot": "to_addr",
+   "old": "国贸",
+   "new": "西二旗",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.653
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "在厦门找一居、不超过八千的房子，再算下从中关村到国贸的通勤时间。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "等等，改成西二旗。",
+   "gap_before": 1.653
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.259
+ },
+ "step_latencies": [
+  0.259,
+  0.598
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "厦门",
+    "beds": "一居",
+    "max_rent": "八千"
+   }
+  },
+  {
+   "fn": "get_commute_time",
+   "args": {
+    "from_addr": "中关村",
+    "to_addr": "西二旗"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE6191e9": {
+   "city": "厦门",
+   "beds": "一居",
+   "max_rent": "八千"
+  },
+  "get_commute_time#GEa6b26f": {
+   "from_addr": "中关村",
+   "to_addr": "西二旗"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv09"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

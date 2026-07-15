@@ -1,0 +1,71 @@
+{
+ "id": "A_L9_0027",
+ "arm": "A",
+ "layer": "L9",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_hotel",
+ "slots": {
+  "city": "Austin",
+  "checkin": "May tenth",
+  "nights": "three"
+ },
+ "slots_final": {
+  "city": "Austin",
+  "checkin": "May tenth",
+  "nights": "three"
+ },
+ "revisions": [],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "Book me a hotel in Austin, checking in May tenth, for three nights.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "Any progress?",
+   "at_after_eou": 8.754
+  }
+ ],
+ "events": [],
+ "profile": "heavy",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 11.856
+ },
+ "step_latencies": [
+  11.856
+ ],
+ "gold_calls": [
+  {
+   "fn": "reserve_hotel",
+   "args": {
+    "city": "Austin",
+    "checkin": "May tenth",
+    "nights": "three"
+   }
+  }
+ ],
+ "gold_state": {
+  "reserve_hotel#REcadd7d": {
+   "city": "Austin",
+   "checkin": "May tenth",
+   "nights": "three"
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv01"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

@@ -1,0 +1,107 @@
+{
+ "id": "B_L5_0013",
+ "arm": "B",
+ "layer": "L5",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "three thousand",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "slots_final": {
+  "amount": "five thousand",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "revisions": [
+  {
+   "slot": "amount",
+   "old": "three thousand",
+   "new": "five thousand",
+   "by": "user",
+   "kind": "default",
+   "gap": 3.078
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Get a quote for three thousand dollars to yen, then transfer three thousand from checking to savings.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Wait — make it five thousand.",
+   "gap_before": 3.078
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 1.448,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv09",
+   "text": "Wait — make it five thousand."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.67
+ },
+ "step_latencies": [
+  0.67,
+  2.011
+ ],
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": "five thousand",
+    "from_cur": "dollars",
+    "to_cur": "yen"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "savings",
+    "amount": "five thousand"
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GEca5c78": {
+   "amount": "five thousand",
+   "from_cur": "dollars",
+   "to_cur": "yen"
+  },
+  "transfer_funds#TR3b10fd": {
+   "from_acct": "checking",
+   "to_acct": "savings",
+   "amount": "five thousand"
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv05"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

@@ -1,0 +1,117 @@
+{
+ "id": "B_L8_0039",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "slots_final": {
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Alex Chen"
+ },
+ "revisions": [
+  {
+   "slot": "seat_class",
+   "old": "coach",
+   "new": "business",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "l8_action": "revise",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Find a train from Seattle to Atlanta on May third, hold a coach seat, and buy the ticket for Alex Chen.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Wait — make it business.",
+   "at_after_eou": 1.849
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.73,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv01",
+   "text": "Wait — make it business."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.477
+ },
+ "step_latencies": [
+  0.477,
+  0.456,
+  3.006
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Seattle",
+    "destination": "Atlanta",
+    "date": "May third"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEda7064",
+    "seat_class": "business"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO59efcc",
+    "passenger": "Alex Chen"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEda7064": {
+   "origin": "Seattle",
+   "destination": "Atlanta",
+   "date": "May third"
+  },
+  "hold_seat#HO59efcc": {
+   "train_id": "SEda7064",
+   "seat_class": "business"
+  },
+  "purchase_ticket#PUa0b63d": {
+   "hold_id": "HO59efcc",
+   "passenger": "Alex Chen"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv08"
+ },
+ "split": "dev",
+ "config_hash": "586da9e6a8c4"
+}

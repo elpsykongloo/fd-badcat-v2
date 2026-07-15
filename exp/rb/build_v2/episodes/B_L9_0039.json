@@ -1,0 +1,80 @@
+{
+ "id": "B_L9_0039",
+ "arm": "B",
+ "layer": "L9",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_hotel",
+ "slots": {
+  "city": "Boise",
+  "checkin": "May third",
+  "nights": "three"
+ },
+ "slots_final": {
+  "city": "Boise",
+  "checkin": "May third",
+  "nights": "three"
+ },
+ "revisions": [],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "Book me a hotel in Boise, checking in May third, for three nights.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "Any progress?",
+   "at_after_eou": 21.507
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.691,
+   "action": "progress_query",
+   "role": "user",
+   "voice": "cv06",
+   "text": "Any progress?"
+  }
+ ],
+ "profile": "heavy",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 33.112
+ },
+ "step_latencies": [
+  33.112
+ ],
+ "gold_calls": [
+  {
+   "fn": "reserve_hotel",
+   "args": {
+    "city": "Boise",
+    "checkin": "May third",
+    "nights": "three"
+   }
+  }
+ ],
+ "gold_state": {
+  "reserve_hotel#REb3471d": {
+   "city": "Boise",
+   "checkin": "May third",
+   "nights": "three"
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv09"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

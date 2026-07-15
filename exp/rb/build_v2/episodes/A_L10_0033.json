@@ -1,0 +1,94 @@
+{
+ "id": "A_L10_0033",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "three thousand",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "slots_final": {
+  "amount": "three thousand",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "command",
+  "other": "yen",
+  "state": "inflight",
+  "frac": 0.427
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Get a quote for three thousand dollars to euros, then transfer three thousand from checking to rent account.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Change it to yen.",
+   "at_after_eou": 2.018
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.885
+ },
+ "step_latencies": [
+  0.885,
+  1.364
+ ],
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": "three thousand",
+    "from_cur": "dollars",
+    "to_cur": "euros"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "rent account",
+    "amount": "three thousand"
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GEfe0fe2": {
+   "amount": "three thousand",
+   "from_cur": "dollars",
+   "to_cur": "euros"
+  },
+  "transfer_funds#TR515b90": {
+   "from_acct": "checking",
+   "to_acct": "rent account",
+   "amount": "three thousand"
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv03"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

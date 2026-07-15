@@ -1,0 +1,121 @@
+{
+ "id": "B_L10_0003",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "command",
+  "other": "Atlanta",
+  "state": "inflight",
+  "frac": 0.175
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "Find a train from Chicago to Denver on May third, hold a coach seat, and buy the ticket for Alex Chen.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Change it to Atlanta.",
+   "at_after_eou": 1.756
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.788,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv02",
+   "text": "Change it to Atlanta."
+  },
+  {
+   "state": "tts",
+   "offset": 0.526,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv02",
+   "text": "Change it to Atlanta."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.66
+ },
+ "step_latencies": [
+  0.66,
+  0.212,
+  0.644
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Chicago",
+    "destination": "Denver",
+    "date": "May third"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE211bc3",
+    "seat_class": "coach"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HOc64606",
+    "passenger": "Alex Chen"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE211bc3": {
+   "origin": "Chicago",
+   "destination": "Denver",
+   "date": "May third"
+  },
+  "hold_seat#HOc64606": {
+   "train_id": "SE211bc3",
+   "seat_class": "coach"
+  },
+  "purchase_ticket#PUa6e615": {
+   "hold_id": "HOc64606",
+   "passenger": "Alex Chen"
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv02"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

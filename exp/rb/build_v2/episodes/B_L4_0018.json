@@ -1,0 +1,103 @@
+{
+ "id": "B_L4_0018",
+ "arm": "B",
+ "layer": "L4",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "杭州",
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周日下午"
+ },
+ "slots_final": {
+  "city": "杭州",
+  "beds": "两居",
+  "max_rent": "六千",
+  "slot": "周日下午"
+ },
+ "revisions": [
+  {
+   "slot": "max_rent",
+   "old": "八千",
+   "new": "六千",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.877
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "zh",
+   "text": "在杭州找两居、租金不超过八千的房子，约周日下午看房。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "zh",
+   "text": "六千，改成六千。",
+   "gap_before": 0.877
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.361,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv08",
+   "text": "六千，改成六千。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.364
+ },
+ "step_latencies": [
+  0.364,
+  2.2
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "杭州",
+    "beds": "两居",
+    "max_rent": "六千"
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE4a831e",
+    "slot": "周日下午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE4a831e": {
+   "city": "杭州",
+   "beds": "两居",
+   "max_rent": "六千"
+  },
+  "book_viewing#BO05ef7c": {
+   "listing_id": "SE4a831e",
+   "slot": "周日下午"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv03"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

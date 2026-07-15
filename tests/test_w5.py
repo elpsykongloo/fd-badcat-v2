@@ -7,6 +7,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "src"))
+sys.path.insert(0, str(REPO / "scripts"))
 sys.path.insert(0, str(REPO))
 
 
@@ -27,6 +28,13 @@ def test_sg_gate_threshold():
                             "speech_ratio_5s"], "mean": [0] * 6, "std": [1] * 6,
                   "w": [1, 0, 0, 0, 0, 0], "b": 0.0, "theta": 0.5})
     assert g.allow([1.0, 0, 0, 0, 0, 0]) and not g.allow([-1.0, 0, 0, 0, 0, 0])
+
+
+def test_sg_census_language_field():
+    from w5sg_census import sample_language
+    assert sample_language({"language": "en"}) == "en"
+    assert sample_language({"lang": "en"}) == "en"       # legacy fallback
+    assert sample_language({}) == "zh"
 
 
 # ---- W5-FC ------------------------------------------------------------------

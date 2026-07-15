@@ -1,0 +1,117 @@
+{
+ "id": "B_L4_0023",
+ "arm": "B",
+ "layer": "L4",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Boston",
+  "destination": "Portland",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
+ "slots_final": {
+  "origin": "Boston",
+  "destination": "Portland",
+  "date": "June first",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
+ "revisions": [
+  {
+   "slot": "date",
+   "old": "May third",
+   "new": "June first",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.865
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Find a train from Boston to Portland on May third, hold a business seat, and buy the ticket for Sam Rivera.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "June first — change it to June first.",
+   "gap_before": 0.865
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.177,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv04",
+   "text": "June first — change it to June first."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.746
+ },
+ "step_latencies": [
+  0.746,
+  0.42,
+  1.902
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Boston",
+    "destination": "Portland",
+    "date": "June first"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE4747ad",
+    "seat_class": "business"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO12430f",
+    "passenger": "Sam Rivera"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE4747ad": {
+   "origin": "Boston",
+   "destination": "Portland",
+   "date": "June first"
+  },
+  "hold_seat#HO12430f": {
+   "train_id": "SE4747ad",
+   "seat_class": "business"
+  },
+  "purchase_ticket#PU1bb40d": {
+   "hold_id": "HO12430f",
+   "passenger": "Sam Rivera"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv02"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

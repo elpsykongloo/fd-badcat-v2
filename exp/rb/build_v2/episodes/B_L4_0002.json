@@ -1,0 +1,103 @@
+{
+ "id": "B_L4_0002",
+ "arm": "B",
+ "layer": "L4",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "厦门",
+  "beds": "两居",
+  "max_rent": "六千",
+  "slot": "周日下午"
+ },
+ "slots_final": {
+  "city": "成都",
+  "beds": "两居",
+  "max_rent": "六千",
+  "slot": "周日下午"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "厦门",
+   "new": "成都",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.682
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "zh",
+   "text": "在厦门找两居、租金不超过六千的房子，约周日下午看房。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "zh",
+   "text": "成都，改成成都。",
+   "gap_before": 0.682
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.404,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv03",
+   "text": "成都，改成成都。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.632
+ },
+ "step_latencies": [
+  0.632,
+  2.66
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "成都",
+    "beds": "两居",
+    "max_rent": "六千"
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SEb69850",
+    "slot": "周日下午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEb69850": {
+   "city": "成都",
+   "beds": "两居",
+   "max_rent": "六千"
+  },
+  "book_viewing#BOcdec40": {
+   "listing_id": "SEb69850",
+   "slot": "周日下午"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

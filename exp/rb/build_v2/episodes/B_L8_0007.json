@@ -1,0 +1,71 @@
+{
+ "id": "B_L8_0007",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
+ "revisions": [],
+ "bystander": null,
+ "l8_action": "cancel",
+ "cancelled": true,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Find a train from Chicago to Austin on May third, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Actually, hold off, don't do it yet.",
+   "at_after_eou": 1.778
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.645,
+   "action": "cancel",
+   "role": "user",
+   "voice": "cv02",
+   "text": "Actually, hold off, don't do it yet."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.233
+ },
+ "step_latencies": [
+  0.233,
+  0.285,
+  1.575
+ ],
+ "gold_calls": [],
+ "gold_state": {},
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv05"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

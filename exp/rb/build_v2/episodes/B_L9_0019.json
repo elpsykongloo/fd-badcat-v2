@@ -1,0 +1,80 @@
+{
+ "id": "B_L9_0019",
+ "arm": "B",
+ "layer": "L9",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_hotel",
+ "slots": {
+  "city": "Boise",
+  "checkin": "May tenth",
+  "nights": "two"
+ },
+ "slots_final": {
+  "city": "Boise",
+  "checkin": "May tenth",
+  "nights": "two"
+ },
+ "revisions": [],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Book me a hotel in Boise, checking in May tenth, for two nights.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Any progress?",
+   "at_after_eou": 33.625
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.596,
+   "action": "progress_query",
+   "role": "user",
+   "voice": "cv07",
+   "text": "Any progress?"
+  }
+ ],
+ "profile": "heavy",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 53.308
+ },
+ "step_latencies": [
+  53.308
+ ],
+ "gold_calls": [
+  {
+   "fn": "reserve_hotel",
+   "args": {
+    "city": "Boise",
+    "checkin": "May tenth",
+    "nights": "two"
+   }
+  }
+ ],
+ "gold_state": {
+  "reserve_hotel#REb4cfe6": {
+   "city": "Boise",
+   "checkin": "May tenth",
+   "nights": "two"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

@@ -1,0 +1,108 @@
+{
+ "id": "A_L4_0055",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Boston",
+  "destination": "Denver",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "slots_final": {
+  "origin": "Boston",
+  "destination": "Denver",
+  "date": "May third",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
+ },
+ "revisions": [
+  {
+   "slot": "seat_class",
+   "old": "coach",
+   "new": "first class",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.854
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Find a train from Boston to Denver on May third, hold a coach seat, and buy the ticket for Alex Chen.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "first class — change it to first class.",
+   "gap_before": 0.854
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.711
+ },
+ "step_latencies": [
+  0.711,
+  0.234,
+  8.403
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Boston",
+    "destination": "Denver",
+    "date": "May third"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE58c780",
+    "seat_class": "first class"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HOf78d8f",
+    "passenger": "Alex Chen"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE58c780": {
+   "origin": "Boston",
+   "destination": "Denver",
+   "date": "May third"
+  },
+  "hold_seat#HOf78d8f": {
+   "train_id": "SE58c780",
+   "seat_class": "first class"
+  },
+  "purchase_ticket#PUd2ce71": {
+   "hold_id": "HOf78d8f",
+   "passenger": "Alex Chen"
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv03"
+ },
+ "split": "dev",
+ "config_hash": "586da9e6a8c4"
+}

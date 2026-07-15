@@ -1,0 +1,103 @@
+{
+ "id": "B_L5_0030",
+ "arm": "B",
+ "layer": "L5",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "青岛",
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周六上午"
+ },
+ "slots_final": {
+  "city": "杭州",
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周六上午"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "青岛",
+   "new": "杭州",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.793
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "zh",
+   "text": "在青岛找一居、租金不超过八千的房子，约周六上午看房。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "zh",
+   "text": "等等，改成杭州。",
+   "gap_before": 2.793
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 3.173,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv09",
+   "text": "等等，改成杭州。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.463
+ },
+ "step_latencies": [
+  0.463,
+  1.424
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "杭州",
+    "beds": "一居",
+    "max_rent": "八千"
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE1a5574",
+    "slot": "周六上午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE1a5574": {
+   "city": "杭州",
+   "beds": "一居",
+   "max_rent": "八千"
+  },
+  "book_viewing#BO6d7a7d": {
+   "listing_id": "SE1a5574",
+   "slot": "周六上午"
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv05"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

@@ -1,0 +1,110 @@
+{
+ "id": "B_L10_0035",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "May third",
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
+ },
+ "slots_final": {
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "Portland",
+   "new": "Austin",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "Find a train from Seattle to Portland on May third, hold a first class seat, and buy the ticket for Jordan Lee.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.649,
+   "action": "benign_control",
+   "role": "user",
+   "voice": "cv05",
+   "text": "Wait — make it Austin."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.715
+ },
+ "step_latencies": [
+  0.715,
+  0.435,
+  0.991
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Seattle",
+    "destination": "Austin",
+    "date": "May third"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE759666",
+    "seat_class": "first class"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO67882b",
+    "passenger": "Jordan Lee"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE759666": {
+   "origin": "Seattle",
+   "destination": "Austin",
+   "date": "May third"
+  },
+  "hold_seat#HO67882b": {
+   "train_id": "SE759666",
+   "seat_class": "first class"
+  },
+  "purchase_ticket#PU991b4a": {
+   "hold_id": "HO67882b",
+   "passenger": "Jordan Lee"
+  }
+ },
+ "voices": {
+  "user": "cv05",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

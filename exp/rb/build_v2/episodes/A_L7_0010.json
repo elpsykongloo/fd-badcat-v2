@@ -1,0 +1,96 @@
+{
+ "id": "A_L7_0010",
+ "arm": "A",
+ "layer": "L7",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_multi",
+ "slots": {
+  "city": "杭州",
+  "beds": "一居",
+  "max_rent": "八千",
+  "from_addr": "望京",
+  "to_addr": "西二旗"
+ },
+ "slots_final": {
+  "city": "杭州",
+  "beds": "一居",
+  "max_rent": "八千",
+  "from_addr": "望京",
+  "to_addr": "国贸"
+ },
+ "revisions": [
+  {
+   "slot": "to_addr",
+   "old": "西二旗",
+   "new": "国贸",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.117
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "zh",
+   "text": "在杭州找一居、不超过八千的房子，再算下从望京到西二旗的通勤时间。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "zh",
+   "text": "等等，改成国贸。",
+   "gap_before": 1.117
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.418
+ },
+ "step_latencies": [
+  0.418,
+  0.453
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "杭州",
+    "beds": "一居",
+    "max_rent": "八千"
+   }
+  },
+  {
+   "fn": "get_commute_time",
+   "args": {
+    "from_addr": "望京",
+    "to_addr": "国贸"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE47c493": {
+   "city": "杭州",
+   "beds": "一居",
+   "max_rent": "八千"
+  },
+  "get_commute_time#GE3d0569": {
+   "from_addr": "望京",
+   "to_addr": "国贸"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv06"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

@@ -1,0 +1,96 @@
+{
+ "id": "A_L7_0023",
+ "arm": "A",
+ "layer": "L7",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_multi",
+ "slots": {
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "June first",
+  "country": "Thailand",
+  "nationality": "American"
+ },
+ "slots_final": {
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "June first",
+  "country": "Japan",
+  "nationality": "American"
+ },
+ "revisions": [
+  {
+   "slot": "country",
+   "old": "Thailand",
+   "new": "Japan",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.221
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Look up trains from Boston to Atlanta on June first, and also check if American citizens need a visa for Thailand.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Wait — make it Japan.",
+   "gap_before": 1.221
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.396
+ },
+ "step_latencies": [
+  0.396,
+  0.455
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Boston",
+    "destination": "Atlanta",
+    "date": "June first"
+   }
+  },
+  {
+   "fn": "check_visa_rule",
+   "args": {
+    "country": "Japan",
+    "nationality": "American"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEf915f8": {
+   "origin": "Boston",
+   "destination": "Atlanta",
+   "date": "June first"
+  },
+  "check_visa_rule#CH65e48b": {
+   "country": "Japan",
+   "nationality": "American"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv06"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

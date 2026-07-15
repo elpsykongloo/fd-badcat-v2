@@ -1,0 +1,117 @@
+{
+ "id": "B_L8_0111",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
+ "slots_final": {
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "Portland",
+   "new": "Atlanta",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "l8_action": "revise",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Find a train from Seattle to Portland on May third, hold a business seat, and buy the ticket for Sam Rivera.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Wait — make it Atlanta.",
+   "at_after_eou": 2.105
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.248,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv09",
+   "text": "Wait — make it Atlanta."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.729
+ },
+ "step_latencies": [
+  0.729,
+  0.295,
+  5.155
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Seattle",
+    "destination": "Atlanta",
+    "date": "May third"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEff1429",
+    "seat_class": "business"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO332468",
+    "passenger": "Sam Rivera"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEff1429": {
+   "origin": "Seattle",
+   "destination": "Atlanta",
+   "date": "May third"
+  },
+  "hold_seat#HO332468": {
+   "train_id": "SEff1429",
+   "seat_class": "business"
+  },
+  "purchase_ticket#PU3709aa": {
+   "hold_id": "HO332468",
+   "passenger": "Sam Rivera"
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv06"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

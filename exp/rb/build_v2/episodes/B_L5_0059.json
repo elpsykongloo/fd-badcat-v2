@@ -1,0 +1,117 @@
+{
+ "id": "B_L5_0059",
+ "arm": "B",
+ "layer": "L5",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
+ },
+ "revisions": [
+  {
+   "slot": "seat_class",
+   "old": "business",
+   "new": "coach",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.737
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Find a train from Chicago to Atlanta on May third, hold a business seat, and buy the ticket for Jordan Lee.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Wait — make it coach.",
+   "gap_before": 2.737
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 3.349,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv09",
+   "text": "Wait — make it coach."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.615
+ },
+ "step_latencies": [
+  0.615,
+  0.36,
+  2.157
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Chicago",
+    "destination": "Atlanta",
+    "date": "May third"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE0fd4a5",
+    "seat_class": "coach"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HOb5e0a7",
+    "passenger": "Jordan Lee"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE0fd4a5": {
+   "origin": "Chicago",
+   "destination": "Atlanta",
+   "date": "May third"
+  },
+  "hold_seat#HOb5e0a7": {
+   "train_id": "SE0fd4a5",
+   "seat_class": "coach"
+  },
+  "purchase_ticket#PUa6458a": {
+   "hold_id": "HOb5e0a7",
+   "passenger": "Jordan Lee"
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

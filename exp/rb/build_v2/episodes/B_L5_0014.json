@@ -1,0 +1,103 @@
+{
+ "id": "B_L5_0014",
+ "arm": "B",
+ "layer": "L5",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "成都",
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周六上午"
+ },
+ "slots_final": {
+  "city": "成都",
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周六上午"
+ },
+ "revisions": [
+  {
+   "slot": "beds",
+   "old": "两居",
+   "new": "一居",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.414
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "zh",
+   "text": "在成都找两居、租金不超过八千的房子，约周六上午看房。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "zh",
+   "text": "等等，改成一居。",
+   "gap_before": 1.414
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.889,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv06",
+   "text": "等等，改成一居。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.192
+ },
+ "step_latencies": [
+  0.192,
+  1.485
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "成都",
+    "beds": "一居",
+    "max_rent": "八千"
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SEf258ad",
+    "slot": "周六上午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEf258ad": {
+   "city": "成都",
+   "beds": "一居",
+   "max_rent": "八千"
+  },
+  "book_viewing#BO22ae57": {
+   "listing_id": "SEf258ad",
+   "slot": "周六上午"
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv02"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

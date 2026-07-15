@@ -1,0 +1,80 @@
+{
+ "id": "A_L2_0025",
+ "arm": "A",
+ "layer": "L2",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_payment",
+ "slots": {
+  "payee": "the property office",
+  "amount": "five thousand",
+  "date": "May eighth"
+ },
+ "slots_final": {
+  "payee": "the landlord",
+  "amount": "five thousand",
+  "date": "May eighth"
+ },
+ "revisions": [
+  {
+   "slot": "payee",
+   "old": "the property office",
+   "new": "the landlord",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.35
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Schedule a payment of five thousand to the property office on May eighth.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Wait — make it the landlord.",
+   "gap_before": 0.35
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 1.615
+ },
+ "step_latencies": [
+  1.615
+ ],
+ "gold_calls": [
+  {
+   "fn": "schedule_payment",
+   "args": {
+    "payee": "the landlord",
+    "amount": "five thousand",
+    "date": "May eighth"
+   }
+  }
+ ],
+ "gold_state": {
+  "schedule_payment#SCf85f8d": {
+   "payee": "the landlord",
+   "amount": "five thousand",
+   "date": "May eighth"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv06"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

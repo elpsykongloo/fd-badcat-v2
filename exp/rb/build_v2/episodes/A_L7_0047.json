@@ -1,0 +1,96 @@
+{
+ "id": "A_L7_0047",
+ "arm": "A",
+ "layer": "L7",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_multi",
+ "slots": {
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "May third",
+  "country": "Thailand",
+  "nationality": "American"
+ },
+ "slots_final": {
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "May third",
+  "country": "Thailand",
+  "nationality": "American"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "Atlanta",
+   "new": "Austin",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.963
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Look up trains from Seattle to Atlanta on May third, and also check if American citizens need a visa for Thailand.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Wait — make it Austin.",
+   "gap_before": 1.963
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.56
+ },
+ "step_latencies": [
+  0.56,
+  0.559
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Seattle",
+    "destination": "Austin",
+    "date": "May third"
+   }
+  },
+  {
+   "fn": "check_visa_rule",
+   "args": {
+    "country": "Thailand",
+    "nationality": "American"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE9ccd87": {
+   "origin": "Seattle",
+   "destination": "Austin",
+   "date": "May third"
+  },
+  "check_visa_rule#CHb7193b": {
+   "country": "Thailand",
+   "nationality": "American"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

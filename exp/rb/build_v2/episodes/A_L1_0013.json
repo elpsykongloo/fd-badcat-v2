@@ -1,0 +1,73 @@
+{
+ "id": "A_L1_0013",
+ "arm": "A",
+ "layer": "L1",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_payment",
+ "slots": {
+  "payee": "the property office",
+  "amount": "five thousand",
+  "date": "June first"
+ },
+ "slots_final": {
+  "payee": "the landlord",
+  "amount": "five thousand",
+  "date": "June first"
+ },
+ "revisions": [
+  {
+   "slot": "payee",
+   "old": "the property office",
+   "new": "the landlord",
+   "by": "user",
+   "kind": "inline",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Schedule a payment of five thousand to the property office on June first., oh no, make that the landlord",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 1.556
+ },
+ "step_latencies": [
+  1.556
+ ],
+ "gold_calls": [
+  {
+   "fn": "schedule_payment",
+   "args": {
+    "payee": "the landlord",
+    "amount": "five thousand",
+    "date": "June first"
+   }
+  }
+ ],
+ "gold_state": {
+  "schedule_payment#SCee1a65": {
+   "payee": "the landlord",
+   "amount": "five thousand",
+   "date": "June first"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv01"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

@@ -1,0 +1,72 @@
+{
+ "id": "B_L9_0078",
+ "arm": "B",
+ "layer": "L9",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_single",
+ "slots": {
+  "listing_id": "LST12"
+ },
+ "slots_final": {
+  "listing_id": "LST12"
+ },
+ "revisions": [],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "把编号LST12的房源收藏一下。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "好了没？",
+   "at_after_eou": 25.612
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.563,
+   "action": "progress_query",
+   "role": "user",
+   "voice": "cv07",
+   "text": "好了没？"
+  }
+ ],
+ "profile": "heavy",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 39.953
+ },
+ "step_latencies": [
+  39.953
+ ],
+ "gold_calls": [
+  {
+   "fn": "save_listing",
+   "args": {
+    "listing_id": "LST12"
+   }
+  }
+ ],
+ "gold_state": {
+  "save_listing#SAcfbb5d": {
+   "listing_id": "LST12"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv02"
+ },
+ "split": "dev",
+ "config_hash": "586da9e6a8c4"
+}

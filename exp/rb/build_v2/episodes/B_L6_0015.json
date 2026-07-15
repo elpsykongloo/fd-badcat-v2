@@ -1,0 +1,140 @@
+{
+ "id": "B_L6_0015",
+ "arm": "B",
+ "layer": "L6",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
+ },
+ "slots_final": {
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "June first",
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "Portland",
+   "new": "Austin",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.793
+  },
+  {
+   "slot": "seat_class",
+   "old": "coach",
+   "new": "first class",
+   "by": "user",
+   "kind": "second",
+   "gap": 2.674
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Find a train from Seattle to Portland on June first, hold a coach seat, and buy the ticket for Jordan Lee.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Wait — make it Austin.",
+   "gap_before": 0.793
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Also, one more change — first class.",
+   "gap_before": 2.674
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.685,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv07",
+   "text": "Wait — make it Austin."
+  },
+  {
+   "state": "committed",
+   "offset": 0.461,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv07",
+   "text": "Wait — make it Austin."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.522
+ },
+ "step_latencies": [
+  0.522,
+  0.261,
+  3.049
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Seattle",
+    "destination": "Austin",
+    "date": "June first"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE42822a",
+    "seat_class": "first class"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO3f308f",
+    "passenger": "Jordan Lee"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE42822a": {
+   "origin": "Seattle",
+   "destination": "Austin",
+   "date": "June first"
+  },
+  "hold_seat#HO3f308f": {
+   "train_id": "SE42822a",
+   "seat_class": "first class"
+  },
+  "purchase_ticket#PU011a6a": {
+   "hold_id": "HO3f308f",
+   "passenger": "Jordan Lee"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv03"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}

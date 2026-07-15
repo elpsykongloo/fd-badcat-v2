@@ -1,0 +1,140 @@
+{
+ "id": "B_L6_0027",
+ "arm": "B",
+ "layer": "L6",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
+ "slots_final": {
+  "origin": "Boston",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "Atlanta",
+   "new": "Austin",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.265
+  },
+  {
+   "slot": "seat_class",
+   "old": "coach",
+   "new": "business",
+   "by": "user",
+   "kind": "second",
+   "gap": 2.739
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Find a train from Boston to Atlanta on May third, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Wait — make it Austin.",
+   "gap_before": 1.265
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Also, one more change — business.",
+   "gap_before": 2.739
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.141,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv03",
+   "text": "Wait — make it Austin."
+  },
+  {
+   "state": "committed",
+   "offset": 1.107,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv03",
+   "text": "Wait — make it Austin."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.343
+ },
+ "step_latencies": [
+  0.343,
+  0.691,
+  1.417
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Boston",
+    "destination": "Austin",
+    "date": "May third"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEfff6cd",
+    "seat_class": "business"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HOf8969a",
+    "passenger": "Sam Rivera"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEfff6cd": {
+   "origin": "Boston",
+   "destination": "Austin",
+   "date": "May third"
+  },
+  "hold_seat#HOf8969a": {
+   "train_id": "SEfff6cd",
+   "seat_class": "business"
+  },
+  "purchase_ticket#PU086b45": {
+   "hold_id": "HOf8969a",
+   "passenger": "Sam Rivera"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv07"
+ },
+ "split": "dev",
+ "config_hash": "586da9e6a8c4"
+}

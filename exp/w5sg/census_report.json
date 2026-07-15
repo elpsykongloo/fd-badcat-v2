@@ -1,0 +1,47 @@
+{
+  "n_samples": 9988,
+  "n_events": 102194,
+  "k1_min_events": 20000,
+  "k1_pass": true,
+  "base_rate_confirm": 0.3961,
+  "gap_quantiles": {
+    "zh": {
+      "p10": 0.1,
+      "p25": 0.2,
+      "p50": 0.3,
+      "p75": 2.5,
+      "p90": 2.8
+    },
+    "en": {
+      "p10": 0.1,
+      "p25": 0.2,
+      "p50": 0.3,
+      "p75": 0.8,
+      "p90": 2.7
+    }
+  },
+  "gap_below_hold_frac": 0.6693,
+  "utt_dur_quantiles": {
+    "p10": 0.8,
+    "p25": 1.4,
+    "p50": 2.5,
+    "p75": 3.8,
+    "p90": 5.3
+  },
+  "asr_lag_audit": {
+    "rtf": 0.021,
+    "bar_s": 0.05,
+    "proj_lag_p50": 0.0525,
+    "f_text_admitted": false
+  },
+  "feats": [
+    "utt_dur",
+    "gap1",
+    "gap2",
+    "gap3",
+    "n_segs_10s",
+    "speech_ratio_5s"
+  ],
+  "hold_s": 0.64,
+  "vad": "VADIterator(defaults) SR16000 CHUNK256 feed=2xCHUNK (engine-identical)"
+}

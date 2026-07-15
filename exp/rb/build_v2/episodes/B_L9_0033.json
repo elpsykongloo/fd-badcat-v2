@@ -1,0 +1,80 @@
+{
+ "id": "B_L9_0033",
+ "arm": "B",
+ "layer": "L9",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_payment",
+ "slots": {
+  "payee": "the property office",
+  "amount": "eight hundred",
+  "date": "June first"
+ },
+ "slots_final": {
+  "payee": "the property office",
+  "amount": "eight hundred",
+  "date": "June first"
+ },
+ "revisions": [],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Schedule a payment of eight hundred to the property office on June first.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Any progress?",
+   "at_after_eou": 12.319
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.515,
+   "action": "progress_query",
+   "role": "user",
+   "voice": "cv03",
+   "text": "Any progress?"
+  }
+ ],
+ "profile": "heavy",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 17.798
+ },
+ "step_latencies": [
+  17.798
+ ],
+ "gold_calls": [
+  {
+   "fn": "schedule_payment",
+   "args": {
+    "payee": "the property office",
+    "amount": "eight hundred",
+    "date": "June first"
+   }
+  }
+ ],
+ "gold_state": {
+  "schedule_payment#SCd15a66": {
+   "payee": "the property office",
+   "amount": "eight hundred",
+   "date": "June first"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv04"
+ },
+ "split": "dev",
+ "config_hash": "586da9e6a8c4"
+}

@@ -1,0 +1,107 @@
+{
+ "id": "B_L4_0005",
+ "arm": "B",
+ "layer": "L4",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "eight hundred",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "slots_final": {
+  "amount": "eight hundred",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "revisions": [
+  {
+   "slot": "to_cur",
+   "old": "yen",
+   "new": "euros",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.683
+  }
+ ],
+ "bystander": null,
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Get a quote for eight hundred dollars to yen, then transfer eight hundred from checking to rent account.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "euros — change it to euros.",
+   "gap_before": 0.683
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.224,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv09",
+   "text": "euros — change it to euros."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.316
+ },
+ "step_latencies": [
+  0.316,
+  2.065
+ ],
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": "eight hundred",
+    "from_cur": "dollars",
+    "to_cur": "euros"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "rent account",
+    "amount": "eight hundred"
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GE49f5c7": {
+   "amount": "eight hundred",
+   "from_cur": "dollars",
+   "to_cur": "euros"
+  },
+  "transfer_funds#TR069fe8": {
+   "from_acct": "checking",
+   "to_acct": "rent account",
+   "amount": "eight hundred"
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv07"
+ },
+ "split": "dev",
+ "config_hash": "586da9e6a8c4"
+}

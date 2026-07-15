@@ -1,0 +1,94 @@
+{
+ "id": "B_L8_0050",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "成都",
+  "beds": "两居",
+  "max_rent": "六千",
+  "slot": "周六上午"
+ },
+ "slots_final": {
+  "city": "成都",
+  "beds": "两居",
+  "max_rent": "六千",
+  "slot": "周六上午"
+ },
+ "revisions": [],
+ "bystander": null,
+ "l8_action": "progress",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "在成都找两居、租金不超过六千的房子，约周六上午看房。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "好了没？",
+   "at_after_eou": 1.812
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.567,
+   "action": "progress_query",
+   "role": "user",
+   "voice": "cv02",
+   "text": "好了没？"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.498
+ },
+ "step_latencies": [
+  0.498,
+  3.87
+ ],
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "成都",
+    "beds": "两居",
+    "max_rent": "六千"
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SEb0e35e",
+    "slot": "周六上午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEb0e35e": {
+   "city": "成都",
+   "beds": "两居",
+   "max_rent": "六千"
+  },
+  "book_viewing#BO91516a": {
+   "listing_id": "SEb0e35e",
+   "slot": "周六上午"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "586da9e6a8c4"
+}
