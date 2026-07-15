@@ -1,7 +1,7 @@
 # AGENTS.md — fd-badcat 持久记忆（所有代理必读）
 
 > 单一真相源。CLAUDE.md 指向本文件。有重大事实变更时**更新本文件**，不要另开新文档。
-> 最后更新：2026-07-16 (SG v1 Phase-1 已实跑：15 维 OOF AUC 0.6646、precision@recall0.85=0.4419 < K2' 0.50 ⇒ **FAIL，按 §12 永久收口，零训练/FDB**；RB 已重建为 **rb_v2.1.1 / b30499ad9de7**，oracle dev 臂 A/B 完成且双跑逐字节一致；本轮纯文本/零 LLM，不依赖尚未就位的 TTS)
+> 最后更新：2026-07-16 (**SG 线永久收口**：v1 K2' FAIL〔AUC 0.6646 / prec@rec85 0.4419<0.50〕双探针负结果，判决 specgate §12.5，零训练零 FDB；**Qwen3-TTS 已接线**〔QwenTTSBackend=子进程+仓外缓存+16k 重采样；音色映射 exp/rb/tts_voices.json 待用户填 9 预设名〕；rb_run 臂 B live 音频 + 臂 B at_after_eou 语义修正；RB oracle 健全性 A 0.7119/B 0.5682；下一步=oracle by_layer 核对→dev 音频听检→LLM dev 冒烟→判分器冻结)
 
 ## 使命
 
