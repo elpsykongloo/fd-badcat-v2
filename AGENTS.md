@@ -1,7 +1,7 @@
 # AGENTS.md — fd-badcat 持久记忆（所有代理必读）
 
 > 单一真相源。CLAUDE.md 指向本文件。有重大事实变更时**更新本文件**，不要另开新文档。
-> 最后更新：2026-07-16 (**RB rb_v2.2.1 dev3 构建有效性门 PASS，dev 窗口可关闭；仍严禁擅跑 test 897**：config 265c7cd8f485、冻结 v3 哈希与 oracle A5/B5 .7966/.7273 位齐；Qwen 音频 600/600 全检过；LLM TACT/blocking exact .2034/.1356，L3 .0769/0、L4 .25/0 呈正确窗口方向；合法 blocking 同批引用与 28 edge/5 stale DAG 传播均实证；完整收据 `exp/rb/build_v2/rb_dev3_validity_receipt.json`。SG 线仍按 §12 永久收口)
+> 最后更新：2026-07-16 (**RB dev3 有效性门 PASS**〔TACT .2034 vs sblock .1356，L3/L4 窗口分化正确方向；L10 捕捉到窗口安全代价：TACT 0 vs blocking .5 = 第三方命令穿透异议窗 = SV 门控动机定量雏形；整层归零均可由缓存内模型行为解释〕；**dev 窗口关闭，test-897 单发协议已冻结 = docs/rb_test_protocol.md**〔第一批 15 个零训练 provider：主臂×2+屏障/DAG 消融+δ 网格+FC 三档+oracle 上界+臂 B 三臂；学习头臂第二批待 RB 适配层〕；待用户按协议执行 test day)
 
 ## 使命
 
