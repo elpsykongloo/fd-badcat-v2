@@ -6,20 +6,20 @@
  "lang": "en",
  "scenario": "travel_hotel",
  "slots": {
-  "city": "Austin",
-  "checkin": "May third",
-  "nights": "two"
+  "city": "Miami",
+  "checkin": "May tenth",
+  "nights": "three"
  },
  "slots_final": {
-  "city": "Austin",
+  "city": "Boise",
   "checkin": "May tenth",
-  "nights": "two"
+  "nights": "three"
  },
  "revisions": [
   {
-   "slot": "checkin",
-   "old": "May third",
-   "new": "May tenth",
+   "slot": "city",
+   "old": "Miami",
+   "new": "Boise",
    "by": "user",
    "kind": "inline",
    "gap": null
@@ -27,18 +27,18 @@
  ],
  "bystander": null,
  "slots_canon": {
-  "city": "Austin",
+  "city": "Boise",
   "checkin": "May 10",
-  "nights": 2
+  "nights": 3
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Book me a hotel in Austin, checking in May third, for two nights., oh no, make that May tenth",
+   "text": "Book me a hotel in Miami, checking in May tenth, for three nights., oh no, make that Boise",
    "gap_before": 0.5
   }
  ],
@@ -56,30 +56,30 @@
   {
    "fn": "reserve_hotel",
    "args": {
-    "city": "Austin",
+    "city": "Boise",
     "checkin": "May 10",
-    "nights": 2
+    "nights": 3
    }
   }
  ],
  "gold_state": {
   "reserve_hotel#RE28b156": {
-   "city": "Austin",
+   "city": "Boise",
    "checkin": "May 10",
-   "nights": 2
+   "nights": 3
   }
  },
  "voices": {
-  "user": "cv02",
+  "user": "cv03",
   "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.62,
+   "t_end": 7.46,
    "scheduled": "sequential"
   }
  ],

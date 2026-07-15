@@ -6,53 +6,53 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Austin",
-  "date": "May eighth",
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "June first",
   "seat_class": "first class",
-  "passenger": "Alex Chen"
+  "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Seattle",
+  "origin": "Chicago",
   "destination": "Portland",
-  "date": "May eighth",
+  "date": "June first",
   "seat_class": "first class",
-  "passenger": "Alex Chen"
+  "passenger": "Sam Rivera"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Austin",
+   "old": "Atlanta",
    "new": "Portland",
    "by": "user",
    "kind": "default",
-   "gap": 0.655
+   "gap": 0.656
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Seattle",
+  "origin": "Chicago",
   "destination": "Portland",
-  "date": "May 8",
+  "date": "June 1",
   "seat_class": "first class",
-  "passenger": "Alex Chen"
+  "passenger": "Sam Rivera"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Find a train from Seattle to Austin on May eighth, hold a first class seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Chicago to Atlanta on June first, hold a first class seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv04",
    "lang": "en",
    "text": "Wait — make it Portland.",
-   "gap_before": 0.655
+   "gap_before": 0.656
   }
  ],
  "events": [],
@@ -71,9 +71,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
+    "origin": "Chicago",
     "destination": "Portland",
-    "date": "May 8"
+    "date": "June 1"
    }
   },
   {
@@ -87,15 +87,15 @@
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HOde0124",
-    "passenger": "Alex Chen"
+    "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE21b1d7": {
-   "origin": "Seattle",
+   "origin": "Chicago",
    "destination": "Portland",
-   "date": "May 8"
+   "date": "June 1"
   },
   "hold_seat#HOde0124": {
    "train_id": "SE21b1d7",
@@ -103,30 +103,30 @@
   },
   "purchase_ticket#PU4882a8": {
    "hold_id": "HOde0124",
-   "passenger": "Alex Chen"
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv07"
+  "user": "cv04",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.62,
+   "t_end": 10.58,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.275,
-   "t_end": 10.915,
+   "t_start": 11.236,
+   "t_end": 13.236,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.655
+  0.656
  ]
 }

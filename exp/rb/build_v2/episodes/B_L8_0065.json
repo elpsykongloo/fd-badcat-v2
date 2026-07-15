@@ -6,53 +6,53 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "eight hundred",
+  "amount": "five thousand",
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "slots_final": {
-  "amount": "eight hundred",
+  "amount": "five thousand",
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
-  "amount": 800,
+  "amount": 5000,
   "from_cur": "USD",
   "to_cur": "EUR",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "l8_action": "progress",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Get a quote for eight hundred dollars to euros, then transfer eight hundred from checking to savings.",
+   "text": "Get a quote for five thousand dollars to euros, then transfer five thousand from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv02",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 1.915
+   "at_after_eou": 1.856
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.622,
+   "offset": 0.469,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv02",
    "text": "Any progress?"
   }
  ],
@@ -70,7 +70,7 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": 800,
+    "amount": 5000,
     "from_cur": "USD",
     "to_cur": "EUR"
    }
@@ -79,27 +79,27 @@
    "fn": "transfer_funds",
    "args": {
     "from_acct": "checking",
-    "to_acct": "savings",
-    "amount": 800
+    "to_acct": "rent account",
+    "amount": 5000
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GE203ff4": {
-   "amount": 800,
+   "amount": 5000,
    "from_cur": "USD",
    "to_cur": "EUR"
   },
   "transfer_funds#TR29a91d": {
    "from_acct": "checking",
-   "to_acct": "savings",
-   "amount": 800
+   "to_acct": "rent account",
+   "amount": 5000
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv08"
+  "user": "cv02",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

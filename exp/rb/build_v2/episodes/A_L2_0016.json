@@ -6,7 +6,7 @@
  "lang": "zh",
  "scenario": "ecom_single",
  "slots": {
-  "item_id": "A100",
+  "item_id": "C330",
   "qty": "一"
  },
  "slots_final": {
@@ -16,11 +16,11 @@
  "revisions": [
   {
    "slot": "item_id",
-   "old": "A100",
+   "old": "C330",
    "new": "B205",
    "by": "user",
    "kind": "default",
-   "gap": 0.229
+   "gap": 0.215
   }
  ],
  "bystander": null,
@@ -35,7 +35,7 @@
    "role": "user",
    "voice": "cv03",
    "lang": "zh",
-   "text": "把编号A100的商品加一件到购物车。",
+   "text": "把编号C330的商品加一件到购物车。",
    "gap_before": 0.5
   },
   {
@@ -43,7 +43,7 @@
    "voice": "cv03",
    "lang": "zh",
    "text": "等等，改成B205。",
-   "gap_before": 0.229
+   "gap_before": 0.215
   }
  ],
  "events": [],
@@ -73,25 +73,25 @@
  },
  "voices": {
   "user": "cv03",
-  "bystander": "cv07"
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 4.5,
+   "t_end": 4.26,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 4.729,
-   "t_end": 7.849,
+   "t_start": 4.475,
+   "t_end": 7.595,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.229
+  0.215
  ]
 }

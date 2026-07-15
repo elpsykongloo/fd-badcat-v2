@@ -1,0 +1,90 @@
+{
+ "id": "A_L6_0004",
+ "layer": "L6",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.639,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 11.78,
+   "ops": [],
+   "say": ""
+  },
+  {
+   "i": 1,
+   "t_eou": 15.515,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 2,
+   "t_eou": 21.604,
+   "ops": [
+    {
+     "type": "launch_dedup",
+     "fn": "search_catalog"
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 3
+    }
+   ],
+   "say": "正在为您添加两副蓝牙耳机。"
+  }
+ ],
+ "say_events": [
+  [
+   16.515,
+   "I'm on it."
+  ],
+  [
+   22.604,
+   "正在为您添加两副蓝牙耳机。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   11.14,
+   "user"
+  ],
+  [
+   12.395,
+   14.875,
+   "user"
+  ],
+  [
+   17.524,
+   20.964,
+   "user"
+  ]
+ ]
+}

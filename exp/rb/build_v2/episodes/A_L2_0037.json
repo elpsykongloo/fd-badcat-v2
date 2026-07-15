@@ -6,28 +6,28 @@
  "lang": "en",
  "scenario": "fin_payment",
  "slots": {
-  "payee": "the property office",
-  "amount": "five thousand",
-  "date": "May eighth"
+  "payee": "landlord",
+  "amount": "three thousand",
+  "date": "May third"
  },
  "slots_final": {
-  "payee": "the property office",
+  "payee": "landlord",
   "amount": "five thousand",
   "date": "May third"
  },
  "revisions": [
   {
-   "slot": "date",
-   "old": "May eighth",
-   "new": "May third",
+   "slot": "amount",
+   "old": "three thousand",
+   "new": "five thousand",
    "by": "user",
    "kind": "default",
-   "gap": 0.28
+   "gap": 0.235
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "payee": "the property office",
+  "payee": "landlord",
   "amount": 5000,
   "date": "May 3"
  },
@@ -36,17 +36,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Schedule a payment of five thousand to the property office on May eighth.",
+   "text": "Schedule a payment of three thousand to landlord on May third.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Wait — make it May third.",
-   "gap_before": 0.28
+   "text": "Wait — make it five thousand.",
+   "gap_before": 0.235
   }
  ],
  "events": [],
@@ -63,7 +63,7 @@
   {
    "fn": "schedule_payment",
    "args": {
-    "payee": "the property office",
+    "payee": "landlord",
     "amount": 5000,
     "date": "May 3"
    }
@@ -71,32 +71,32 @@
  ],
  "gold_state": {
   "schedule_payment#SCaa5ca1": {
-   "payee": "the property office",
+   "payee": "landlord",
    "amount": 5000,
    "date": "May 3"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv08"
+  "user": "cv09",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 4.66,
+   "t_end": 6.02,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 4.94,
-   "t_end": 6.62,
+   "t_start": 6.255,
+   "t_end": 7.935,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.28
+  0.235
  ]
 }

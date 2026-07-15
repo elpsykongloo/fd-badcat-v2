@@ -6,50 +6,50 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "成都",
+  "city": "厦门",
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周六上午"
+ },
+ "slots_final": {
+  "city": "厦门",
   "beds": "两居",
   "max_rent": "六千",
   "slot": "周六上午"
  },
- "slots_final": {
-  "city": "成都",
-  "beds": "两居",
-  "max_rent": "六千",
-  "slot": "周日下午"
- },
  "revisions": [
   {
-   "slot": "slot",
-   "old": "周六上午",
-   "new": "周日下午",
+   "slot": "max_rent",
+   "old": "八千",
+   "new": "六千",
    "by": "user",
    "kind": "value_first",
-   "gap": 1.113
+   "gap": 0.79
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "city": "成都",
+  "city": "厦门",
   "beds": 2,
   "max_rent": 6000,
-  "slot": "周日下午"
+  "slot": "周六上午"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "在成都找两居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在厦门找两居、租金不超过八千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "周日下午，改成周日下午。",
-   "gap_before": 1.113
+   "text": "六千，改成六千。",
+   "gap_before": 0.79
   }
  ],
  "events": [],
@@ -67,7 +67,7 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "成都",
+    "city": "厦门",
     "beds": 2,
     "max_rent": 6000
    }
@@ -76,42 +76,42 @@
    "fn": "book_viewing",
    "args": {
     "listing_id": "SE751401",
-    "slot": "周日下午"
+    "slot": "周六上午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SE751401": {
-   "city": "成都",
+   "city": "厦门",
    "beds": 2,
    "max_rent": 6000
   },
   "book_viewing#BO4b449a": {
    "listing_id": "SE751401",
-   "slot": "周日下午"
+   "slot": "周六上午"
   }
  },
  "voices": {
-  "user": "cv01",
+  "user": "cv03",
   "bystander": "cv06"
  },
  "split": "dev",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.02,
+   "t_end": 5.54,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.133,
-   "t_end": 13.693,
+   "t_start": 6.33,
+   "t_end": 8.41,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.113
+  0.79
  ]
 }

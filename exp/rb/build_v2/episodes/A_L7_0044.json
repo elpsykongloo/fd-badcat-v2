@@ -7,25 +7,25 @@
  "scenario": "ecom_multi",
  "slots": {
   "query": "跑步鞋",
-  "item_id": "A100"
+  "item_id": "C330"
  },
  "slots_final": {
-  "query": "蓝牙耳机",
+  "query": "跑步鞋",
   "item_id": "A100"
  },
  "revisions": [
   {
-   "slot": "query",
-   "old": "跑步鞋",
-   "new": "蓝牙耳机",
+   "slot": "item_id",
+   "old": "C330",
+   "new": "A100",
    "by": "user",
    "kind": "default",
-   "gap": 1.751
+   "gap": 2.406
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "query": "蓝牙耳机",
+  "query": "跑步鞋",
   "item_id": "A100"
  },
  "l8_action": null,
@@ -35,15 +35,15 @@
    "role": "user",
    "voice": "cv03",
    "lang": "zh",
-   "text": "搜一下跑步鞋，再看看编号A100还有没有货。",
+   "text": "搜一下跑步鞋，再看看编号C330还有没有货。",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv03",
    "lang": "zh",
-   "text": "等等，改成蓝牙耳机。",
-   "gap_before": 1.751
+   "text": "等等，改成A100。",
+   "gap_before": 2.406
   }
  ],
  "events": [],
@@ -61,7 +61,7 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "蓝牙耳机"
+    "query": "跑步鞋"
    }
   },
   {
@@ -73,7 +73,7 @@
  ],
  "gold_state": {
   "search_catalog#SEf06d64": {
-   "query": "蓝牙耳机"
+   "query": "跑步鞋"
   },
   "check_stock#CHebb441": {
    "item_id": "A100"
@@ -81,25 +81,25 @@
  },
  "voices": {
   "user": "cv03",
-  "bystander": "cv06"
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 5.3,
+   "t_end": 4.58,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 7.051,
-   "t_end": 10.251,
+   "t_start": 6.986,
+   "t_end": 9.866,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.751
+  2.406
  ]
 }

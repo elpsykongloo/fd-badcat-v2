@@ -6,18 +6,18 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
+  "origin": "Boston",
   "destination": "Austin",
-  "date": "May eighth",
+  "date": "May third",
   "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Seattle",
+  "origin": "Boston",
   "destination": "Denver",
-  "date": "May eighth",
+  "date": "May third",
   "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "passenger": "Alex Chen"
  },
  "revisions": [
   {
@@ -26,33 +26,33 @@
    "new": "Denver",
    "by": "user",
    "kind": "default",
-   "gap": 2.436
+   "gap": 1.237
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Seattle",
+  "origin": "Boston",
   "destination": "Denver",
-  "date": "May 8",
+  "date": "May 3",
   "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "passenger": "Alex Chen"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Find a train from Seattle to Austin on May eighth, hold a coach seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Boston to Austin on May third, hold a coach seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv03",
    "lang": "en",
    "text": "Wait — make it Denver.",
-   "gap_before": 2.436
+   "gap_before": 1.237
   }
  ],
  "events": [],
@@ -71,9 +71,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
+    "origin": "Boston",
     "destination": "Denver",
-    "date": "May 8"
+    "date": "May 3"
    }
   },
   {
@@ -87,15 +87,15 @@
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO431800",
-    "passenger": "Jordan Lee"
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE4a2ab1": {
-   "origin": "Seattle",
+   "origin": "Boston",
    "destination": "Denver",
-   "date": "May 8"
+   "date": "May 3"
   },
   "hold_seat#HO431800": {
    "train_id": "SE4a2ab1",
@@ -103,30 +103,30 @@
   },
   "purchase_ticket#PU77ebbd": {
    "hold_id": "HO431800",
-   "passenger": "Jordan Lee"
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv04"
+  "user": "cv03",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.14,
+   "t_end": 7.7,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.576,
-   "t_end": 11.496,
+   "t_start": 8.937,
+   "t_end": 11.097,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.436
+  1.237
  ]
 }

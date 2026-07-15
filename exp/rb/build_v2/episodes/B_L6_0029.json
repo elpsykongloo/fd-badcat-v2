@@ -8,14 +8,14 @@
  "slots": {
   "amount": "five thousand",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
   "to_acct": "savings"
  },
  "slots_final": {
   "amount": "three thousand",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
@@ -26,7 +26,7 @@
    "new": "three thousand",
    "by": "user",
    "kind": "default",
-   "gap": 0.856
+   "gap": 0.994
   },
   {
    "slot": "to_acct",
@@ -34,14 +34,14 @@
    "new": "rent account",
    "by": "user",
    "kind": "second",
-   "gap": 2.763
+   "gap": 2.67
   }
  ],
  "bystander": null,
  "slots_canon": {
   "amount": 3000,
   "from_cur": "USD",
-  "to_cur": "EUR",
+  "to_cur": "JPY",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
@@ -50,41 +50,41 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Get a quote for five thousand dollars to euros, then transfer five thousand from checking to savings.",
+   "text": "Get a quote for five thousand dollars to yen, then transfer five thousand from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv06",
    "lang": "en",
    "text": "Wait — make it three thousand.",
-   "gap_before": 0.856
+   "gap_before": 0.994
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv06",
    "lang": "en",
    "text": "Also, one more change — rent account.",
-   "gap_before": 2.763
+   "gap_before": 2.67
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.274,
+   "offset": 0.452,
    "action": "revise",
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv06",
    "text": "Wait — make it three thousand."
   },
   {
    "state": "committed",
-   "offset": 0.898,
+   "offset": 0.406,
    "action": "revise",
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv06",
    "text": "Wait — make it three thousand."
   }
  ],
@@ -104,7 +104,7 @@
    "args": {
     "amount": 3000,
     "from_cur": "USD",
-    "to_cur": "EUR"
+    "to_cur": "JPY"
    }
   },
   {
@@ -120,7 +120,7 @@
   "get_fx_quote#GEb2eaf2": {
    "amount": 3000,
    "from_cur": "USD",
-   "to_cur": "EUR"
+   "to_cur": "JPY"
   },
   "transfer_funds#TR3e18a7": {
    "from_acct": "checking",
@@ -129,9 +129,9 @@
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv07"
+  "user": "cv06",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

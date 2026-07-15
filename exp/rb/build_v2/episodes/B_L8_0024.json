@@ -6,20 +6,20 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "跑步鞋",
-  "qty": "两",
-  "address": "浦东新区世纪大道八号"
+  "query": "保温杯",
+  "qty": "一",
+  "address": "海淀区学院路一号"
  },
  "slots_final": {
-  "query": "跑步鞋",
-  "qty": "两",
+  "query": "蓝牙耳机",
+  "qty": "一",
   "address": "海淀区学院路一号"
  },
  "revisions": [
   {
-   "slot": "address",
-   "old": "浦东新区世纪大道八号",
-   "new": "海淀区学院路一号",
+   "slot": "query",
+   "old": "保温杯",
+   "new": "蓝牙耳机",
    "by": "user",
    "kind": "default",
    "gap": null
@@ -27,8 +27,8 @@
  ],
  "bystander": null,
  "slots_canon": {
-  "query": "跑步鞋",
-  "qty": 2,
+  "query": "蓝牙耳机",
+  "qty": 1,
   "address": "海淀区学院路一号"
  },
  "l8_action": "revise",
@@ -36,27 +36,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "帮我搜跑步鞋，加两件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜保温杯，加一件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "等等，改成海淀区学院路一号。",
-   "at_after_eou": 1.845
+   "text": "等等，改成蓝牙耳机。",
+   "at_after_eou": 1.995
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.214,
+   "offset": 0.201,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
-   "text": "等等，改成海淀区学院路一号。"
+   "voice": "cv06",
+   "text": "等等，改成蓝牙耳机。"
   }
  ],
  "profile": "default",
@@ -74,14 +74,14 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "跑步鞋"
+    "query": "蓝牙耳机"
    }
   },
   {
    "fn": "add_item",
    "args": {
     "item_id": "SEe2042c",
-    "qty": 2
+    "qty": 1
    }
   },
   {
@@ -94,11 +94,11 @@
  ],
  "gold_state": {
   "search_catalog#SEe2042c": {
-   "query": "跑步鞋"
+   "query": "蓝牙耳机"
   },
   "add_item#ADd4e4d7": {
    "item_id": "SEe2042c",
-   "qty": 2
+   "qty": 1
   },
   "place_order#PL4e3084": {
    "cart_id": "ADd4e4d7",
@@ -106,9 +106,9 @@
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv06"
+  "user": "cv06",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

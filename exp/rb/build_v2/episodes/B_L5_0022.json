@@ -6,32 +6,32 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "厦门",
+  "city": "成都",
+  "beds": "两居",
+  "max_rent": "六千",
+  "slot": "周六上午"
+ },
+ "slots_final": {
+  "city": "成都",
   "beds": "两居",
   "max_rent": "六千",
   "slot": "周日下午"
  },
- "slots_final": {
-  "city": "厦门",
-  "beds": "两居",
-  "max_rent": "八千",
-  "slot": "周日下午"
- },
  "revisions": [
   {
-   "slot": "max_rent",
-   "old": "六千",
-   "new": "八千",
+   "slot": "slot",
+   "old": "周六上午",
+   "new": "周日下午",
    "by": "user",
    "kind": "default",
-   "gap": 1.177
+   "gap": 2.842
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "city": "厦门",
+  "city": "成都",
   "beds": 2,
-  "max_rent": 8000,
+  "max_rent": 6000,
   "slot": "周日下午"
  },
  "l8_action": null,
@@ -39,27 +39,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "在厦门找两居、租金不超过六千的房子，约周日下午看房。",
+   "text": "在成都找两居、租金不超过六千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "等等，改成八千。",
-   "gap_before": 1.177
+   "text": "等等，改成周日下午。",
+   "gap_before": 2.842
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 1.387,
+   "offset": 2.489,
    "action": "revise",
    "role": "user",
-   "voice": "cv08",
-   "text": "等等，改成八千。"
+   "voice": "cv01",
+   "text": "等等，改成周日下午。"
   }
  ],
  "profile": "default",
@@ -76,9 +76,9 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "厦门",
+    "city": "成都",
     "beds": 2,
-    "max_rent": 8000
+    "max_rent": 6000
    }
   },
   {
@@ -91,9 +91,9 @@
  ],
  "gold_state": {
   "search_rentals#SE05cb4c": {
-   "city": "厦门",
+   "city": "成都",
    "beds": 2,
-   "max_rent": 8000
+   "max_rent": 6000
   },
   "book_viewing#BOa7787c": {
    "listing_id": "SE05cb4c",
@@ -101,9 +101,9 @@
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv01"
+  "user": "cv01",
+  "bystander": "cv03"
  },
  "split": "dev",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

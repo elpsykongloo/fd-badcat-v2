@@ -6,35 +6,35 @@
  "lang": "en",
  "scenario": "travel_multi",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Atlanta",
-  "date": "June first",
-  "country": "Thailand",
+  "origin": "Boston",
+  "destination": "Austin",
+  "date": "May eighth",
+  "country": "Japan",
   "nationality": "American"
  },
  "slots_final": {
-  "origin": "Chicago",
-  "destination": "Atlanta",
-  "date": "June first",
-  "country": "Japan",
+  "origin": "Boston",
+  "destination": "Austin",
+  "date": "May eighth",
+  "country": "Thailand",
   "nationality": "American"
  },
  "revisions": [
   {
    "slot": "country",
-   "old": "Thailand",
-   "new": "Japan",
+   "old": "Japan",
+   "new": "Thailand",
    "by": "user",
    "kind": "default",
-   "gap": 2.495
+   "gap": 2.462
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Chicago",
-  "destination": "Atlanta",
-  "date": "June 1",
-  "country": "Japan",
+  "origin": "Boston",
+  "destination": "Austin",
+  "date": "May 8",
+  "country": "Thailand",
   "nationality": "American"
  },
  "l8_action": null,
@@ -42,17 +42,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Look up trains from Chicago to Atlanta on June first, and also check if American citizens need a visa for Thailand.",
+   "text": "Look up trains from Boston to Austin on May eighth, and also check if American citizens need a visa for Japan.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Wait — make it Japan.",
-   "gap_before": 2.495
+   "text": "Wait — make it Thailand.",
+   "gap_before": 2.462
   }
  ],
  "events": [],
@@ -70,51 +70,51 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
-    "destination": "Atlanta",
-    "date": "June 1"
+    "origin": "Boston",
+    "destination": "Austin",
+    "date": "May 8"
    }
   },
   {
    "fn": "check_visa_rule",
    "args": {
-    "country": "Japan",
+    "country": "Thailand",
     "nationality": "American"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE53ccdb": {
-   "origin": "Chicago",
-   "destination": "Atlanta",
-   "date": "June 1"
+   "origin": "Boston",
+   "destination": "Austin",
+   "date": "May 8"
   },
   "check_visa_rule#CH58c0df": {
-   "country": "Japan",
+   "country": "Thailand",
    "nationality": "American"
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv06"
+  "user": "cv02",
+  "bystander": "cv09"
  },
  "split": "dev",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.94,
+   "t_end": 9.86,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.435,
-   "t_end": 12.115,
+   "t_start": 12.322,
+   "t_end": 14.162,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.495
+  2.462
  ]
 }

@@ -6,35 +6,35 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Austin",
+  "origin": "Seattle",
+  "destination": "Atlanta",
   "date": "June first",
-  "seat_class": "first class",
+  "seat_class": "business",
   "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Chicago",
+  "origin": "Seattle",
   "destination": "Austin",
   "date": "June first",
-  "seat_class": "coach",
+  "seat_class": "business",
   "passenger": "Jordan Lee"
  },
  "revisions": [
   {
-   "slot": "seat_class",
-   "old": "first class",
-   "new": "coach",
+   "slot": "destination",
+   "old": "Atlanta",
+   "new": "Austin",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.696
+   "gap": 0.786
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Chicago",
+  "origin": "Seattle",
   "destination": "Austin",
   "date": "June 1",
-  "seat_class": "coach",
+  "seat_class": "business",
   "passenger": "Jordan Lee"
  },
  "l8_action": null,
@@ -42,17 +42,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Find a train from Chicago to Austin on June first, hold a first class seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Seattle to Atlanta on June first, hold a business seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv05",
    "lang": "en",
-   "text": "coach — change it to coach.",
-   "gap_before": 0.696
+   "text": "Austin — change it to Austin.",
+   "gap_before": 0.786
   }
  ],
  "events": [],
@@ -71,7 +71,7 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
+    "origin": "Seattle",
     "destination": "Austin",
     "date": "June 1"
    }
@@ -80,7 +80,7 @@
    "fn": "hold_seat",
    "args": {
     "train_id": "SE020609",
-    "seat_class": "coach"
+    "seat_class": "business"
    }
   },
   {
@@ -93,13 +93,13 @@
  ],
  "gold_state": {
   "search_trains#SE020609": {
-   "origin": "Chicago",
+   "origin": "Seattle",
    "destination": "Austin",
    "date": "June 1"
   },
   "hold_seat#HO50a6c0": {
    "train_id": "SE020609",
-   "seat_class": "coach"
+   "seat_class": "business"
   },
   "purchase_ticket#PUf2404d": {
    "hold_id": "HO50a6c0",
@@ -107,26 +107,26 @@
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv01"
+  "user": "cv05",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.9,
+   "t_end": 7.38,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.596,
-   "t_end": 12.156,
+   "t_start": 8.166,
+   "t_end": 10.806,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.696
+  0.786
  ]
 }

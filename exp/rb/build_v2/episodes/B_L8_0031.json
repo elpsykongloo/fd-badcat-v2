@@ -6,53 +6,53 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Austin",
-  "date": "June first",
-  "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "origin": "Chicago",
+  "destination": "Portland",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Seattle",
-  "destination": "Austin",
-  "date": "June first",
-  "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "origin": "Chicago",
+  "destination": "Portland",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
-  "origin": "Seattle",
-  "destination": "Austin",
-  "date": "June 1",
-  "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "origin": "Chicago",
+  "destination": "Portland",
+  "date": "May 3",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
  },
  "l8_action": "cancel",
  "cancelled": true,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Find a train from Seattle to Austin on June first, hold a coach seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Chicago to Portland on May third, hold a business seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv05",
    "lang": "en",
    "text": "Actually, hold off, don't do it yet.",
-   "at_after_eou": 2.067
+   "at_after_eou": 2.135
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.793,
+   "offset": 0.543,
    "action": "cancel",
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv05",
    "text": "Actually, hold off, don't do it yet."
   }
  ],
@@ -70,9 +70,9 @@
  "gold_calls": [],
  "gold_state": {},
  "voices": {
-  "user": "cv06",
-  "bystander": "cv04"
+  "user": "cv05",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

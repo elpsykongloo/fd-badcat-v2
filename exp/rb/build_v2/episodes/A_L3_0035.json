@@ -7,34 +7,34 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Boston",
-  "destination": "Atlanta",
-  "date": "May eighth",
-  "seat_class": "business",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "coach",
   "passenger": "Alex Chen"
  },
  "slots_final": {
   "origin": "Boston",
-  "destination": "Atlanta",
-  "date": "May eighth",
-  "seat_class": "coach",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "first class",
   "passenger": "Alex Chen"
  },
  "revisions": [
   {
    "slot": "seat_class",
-   "old": "business",
-   "new": "coach",
+   "old": "coach",
+   "new": "first class",
    "by": "user",
    "kind": "default",
-   "gap": 0.739
+   "gap": 0.773
   }
  ],
  "bystander": null,
  "slots_canon": {
   "origin": "Boston",
-  "destination": "Atlanta",
-  "date": "May 8",
-  "seat_class": "coach",
+  "destination": "Austin",
+  "date": "May 3",
+  "seat_class": "first class",
   "passenger": "Alex Chen"
  },
  "l8_action": null,
@@ -44,15 +44,15 @@
    "role": "user",
    "voice": "cv01",
    "lang": "en",
-   "text": "Find a train from Boston to Atlanta on May eighth, hold a business seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Boston to Austin on May third, hold a coach seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv01",
    "lang": "en",
-   "text": "Wait — make it coach.",
-   "gap_before": 0.739
+   "text": "Wait — make it first class.",
+   "gap_before": 0.773
   }
  ],
  "events": [],
@@ -72,15 +72,15 @@
    "fn": "search_trains",
    "args": {
     "origin": "Boston",
-    "destination": "Atlanta",
-    "date": "May 8"
+    "destination": "Austin",
+    "date": "May 3"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE440330",
-    "seat_class": "coach"
+    "seat_class": "first class"
    }
   },
   {
@@ -94,12 +94,12 @@
  "gold_state": {
   "search_trains#SE440330": {
    "origin": "Boston",
-   "destination": "Atlanta",
-   "date": "May 8"
+   "destination": "Austin",
+   "date": "May 3"
   },
   "hold_seat#HObc9923": {
    "train_id": "SE440330",
-   "seat_class": "coach"
+   "seat_class": "first class"
   },
   "purchase_ticket#PU694403": {
    "hold_id": "HObc9923",
@@ -108,25 +108,25 @@
  },
  "voices": {
   "user": "cv01",
-  "bystander": "cv07"
+  "bystander": "cv04"
  },
  "split": "dev",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.9,
+   "t_end": 8.34,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.639,
-   "t_end": 12.359,
+   "t_start": 9.113,
+   "t_end": 10.953,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.739
+  0.773
  ]
 }

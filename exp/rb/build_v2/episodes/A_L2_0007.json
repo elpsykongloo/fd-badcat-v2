@@ -6,28 +6,28 @@
  "lang": "en",
  "scenario": "travel_hotel",
  "slots": {
-  "city": "Boise",
-  "checkin": "May third",
-  "nights": "three"
+  "city": "Miami",
+  "checkin": "May tenth",
+  "nights": "two"
  },
  "slots_final": {
-  "city": "Boise",
+  "city": "Miami",
   "checkin": "May third",
   "nights": "two"
  },
  "revisions": [
   {
-   "slot": "nights",
-   "old": "three",
-   "new": "two",
+   "slot": "checkin",
+   "old": "May tenth",
+   "new": "May third",
    "by": "user",
    "kind": "default",
-   "gap": 0.213
+   "gap": 0.38
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "city": "Boise",
+  "city": "Miami",
   "checkin": "May 3",
   "nights": 2
  },
@@ -36,17 +36,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Book me a hotel in Boise, checking in May third, for three nights.",
+   "text": "Book me a hotel in Miami, checking in May tenth, for two nights.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Wait — make it two.",
-   "gap_before": 0.213
+   "text": "Wait — make it May third.",
+   "gap_before": 0.38
   }
  ],
  "events": [],
@@ -63,7 +63,7 @@
   {
    "fn": "reserve_hotel",
    "args": {
-    "city": "Boise",
+    "city": "Miami",
     "checkin": "May 3",
     "nights": 2
    }
@@ -71,32 +71,32 @@
  ],
  "gold_state": {
   "reserve_hotel#RE3b1578": {
-   "city": "Boise",
+   "city": "Miami",
    "checkin": "May 3",
    "nights": 2
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv08"
+  "user": "cv08",
+  "bystander": "cv03"
  },
  "split": "dev",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.02,
+   "t_end": 5.3,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 6.233,
-   "t_end": 7.513,
+   "t_start": 5.68,
+   "t_end": 8.32,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.213
+  0.38
  ]
 }

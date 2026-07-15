@@ -6,15 +6,15 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "成都",
+  "city": "厦门",
   "beds": "一居",
-  "max_rent": "八千",
+  "max_rent": "六千",
   "slot": "周六上午"
  },
  "slots_final": {
-  "city": "成都",
+  "city": "厦门",
   "beds": "一居",
-  "max_rent": "八千",
+  "max_rent": "六千",
   "slot": "周日下午"
  },
  "revisions": [
@@ -24,14 +24,14 @@
    "new": "周日下午",
    "by": "user",
    "kind": "default",
-   "gap": 0.696
+   "gap": 0.87
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "city": "成都",
+  "city": "厦门",
   "beds": 1,
-  "max_rent": 8000,
+  "max_rent": 6000,
   "slot": "周日下午"
  },
  "l8_action": null,
@@ -39,17 +39,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "在成都找一居、租金不超过八千的房子，约周六上午看房。",
+   "text": "在厦门找一居、租金不超过六千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv09",
    "lang": "zh",
    "text": "等等，改成周日下午。",
-   "gap_before": 0.696
+   "gap_before": 0.87
   }
  ],
  "events": [],
@@ -67,9 +67,9 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "成都",
+    "city": "厦门",
     "beds": 1,
-    "max_rent": 8000
+    "max_rent": 6000
    }
   },
   {
@@ -82,9 +82,9 @@
  ],
  "gold_state": {
   "search_rentals#SE060137": {
-   "city": "成都",
+   "city": "厦门",
    "beds": 1,
-   "max_rent": 8000
+   "max_rent": 6000
   },
   "book_viewing#BOc0e28e": {
    "listing_id": "SE060137",
@@ -92,26 +92,26 @@
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv07"
+  "user": "cv09",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.26,
+   "t_end": 7.06,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 6.956,
-   "t_end": 9.116,
+   "t_start": 7.93,
+   "t_end": 9.93,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.696
+  0.87
  ]
 }

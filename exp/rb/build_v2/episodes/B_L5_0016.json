@@ -6,29 +6,29 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "蓝牙耳机",
+  "query": "保温杯",
   "qty": "一",
   "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
   "query": "蓝牙耳机",
-  "qty": "两",
+  "qty": "一",
   "address": "浦东新区世纪大道八号"
  },
  "revisions": [
   {
-   "slot": "qty",
-   "old": "一",
-   "new": "两",
+   "slot": "query",
+   "old": "保温杯",
+   "new": "蓝牙耳机",
    "by": "user",
    "kind": "default",
-   "gap": 3.097
+   "gap": 2.813
   }
  ],
  "bystander": null,
  "slots_canon": {
   "query": "蓝牙耳机",
-  "qty": 2,
+  "qty": 1,
   "address": "浦东新区世纪大道八号"
  },
  "l8_action": null,
@@ -36,27 +36,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜保温杯，加一件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "等等，改成两。",
-   "gap_before": 3.097
+   "text": "等等，改成蓝牙耳机。",
+   "gap_before": 2.813
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 2.468,
+   "offset": 1.457,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
-   "text": "等等，改成两。"
+   "voice": "cv04",
+   "text": "等等，改成蓝牙耳机。"
   }
  ],
  "profile": "default",
@@ -81,7 +81,7 @@
    "fn": "add_item",
    "args": {
     "item_id": "SEef669b",
-    "qty": 2
+    "qty": 1
    }
   },
   {
@@ -98,7 +98,7 @@
   },
   "add_item#ADc9ff40": {
    "item_id": "SEef669b",
-   "qty": 2
+   "qty": 1
   },
   "place_order#PLa74522": {
    "cart_id": "ADc9ff40",
@@ -106,9 +106,9 @@
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv02"
+  "user": "cv04",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

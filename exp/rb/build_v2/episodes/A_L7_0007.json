@@ -8,14 +8,14 @@
  "slots": {
   "origin": "Seattle",
   "destination": "Atlanta",
-  "date": "May eighth",
+  "date": "May third",
   "country": "Japan",
   "nationality": "American"
  },
  "slots_final": {
   "origin": "Seattle",
   "destination": "Atlanta",
-  "date": "May eighth",
+  "date": "May third",
   "country": "Thailand",
   "nationality": "American"
  },
@@ -26,14 +26,14 @@
    "new": "Thailand",
    "by": "user",
    "kind": "default",
-   "gap": 1.008
+   "gap": 1.25
   }
  ],
  "bystander": null,
  "slots_canon": {
   "origin": "Seattle",
   "destination": "Atlanta",
-  "date": "May 8",
+  "date": "May 3",
   "country": "Thailand",
   "nationality": "American"
  },
@@ -42,17 +42,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Look up trains from Seattle to Atlanta on May eighth, and also check if American citizens need a visa for Japan.",
+   "text": "Look up trains from Seattle to Atlanta on May third, and also check if American citizens need a visa for Japan.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv03",
    "lang": "en",
    "text": "Wait — make it Thailand.",
-   "gap_before": 1.008
+   "gap_before": 1.25
   }
  ],
  "events": [],
@@ -72,7 +72,7 @@
    "args": {
     "origin": "Seattle",
     "destination": "Atlanta",
-    "date": "May 8"
+    "date": "May 3"
    }
   },
   {
@@ -87,7 +87,7 @@
   "search_trains#SE486cde": {
    "origin": "Seattle",
    "destination": "Atlanta",
-   "date": "May 8"
+   "date": "May 3"
   },
   "check_visa_rule#CH43256e": {
    "country": "Thailand",
@@ -95,26 +95,26 @@
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv08"
+  "user": "cv03",
+  "bystander": "cv05"
  },
  "split": "dev",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.42,
+   "t_end": 8.74,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.428,
-   "t_end": 11.428,
+   "t_start": 9.99,
+   "t_end": 12.31,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.008
+  1.25
  ]
 }

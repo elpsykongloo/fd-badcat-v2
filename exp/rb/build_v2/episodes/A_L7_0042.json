@@ -6,53 +6,53 @@
  "lang": "zh",
  "scenario": "hou_multi",
  "slots": {
-  "city": "厦门",
-  "beds": "一居",
-  "max_rent": "六千",
-  "from_addr": "望京",
-  "to_addr": "西二旗"
+  "city": "成都",
+  "beds": "两居",
+  "max_rent": "八千",
+  "from_addr": "中关村",
+  "to_addr": "国贸"
  },
  "slots_final": {
-  "city": "厦门",
-  "beds": "一居",
-  "max_rent": "六千",
-  "from_addr": "望京",
-  "to_addr": "国贸"
+  "city": "成都",
+  "beds": "两居",
+  "max_rent": "八千",
+  "from_addr": "中关村",
+  "to_addr": "西二旗"
  },
  "revisions": [
   {
    "slot": "to_addr",
-   "old": "西二旗",
-   "new": "国贸",
+   "old": "国贸",
+   "new": "西二旗",
    "by": "user",
    "kind": "default",
-   "gap": 2.482
+   "gap": 2.487
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "city": "厦门",
-  "beds": 1,
-  "max_rent": 6000,
-  "from_addr": "望京",
-  "to_addr": "国贸"
+  "city": "成都",
+  "beds": 2,
+  "max_rent": 8000,
+  "from_addr": "中关村",
+  "to_addr": "西二旗"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "在厦门找一居、不超过六千的房子，再算下从望京到西二旗的通勤时间。",
+   "text": "在成都找两居、不超过八千的房子，再算下从中关村到国贸的通勤时间。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "等等，改成国贸。",
-   "gap_before": 2.482
+   "text": "等等，改成西二旗。",
+   "gap_before": 2.487
   }
  ],
  "events": [],
@@ -70,51 +70,51 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "厦门",
-    "beds": 1,
-    "max_rent": 6000
+    "city": "成都",
+    "beds": 2,
+    "max_rent": 8000
    }
   },
   {
    "fn": "get_commute_time",
    "args": {
-    "from_addr": "望京",
-    "to_addr": "国贸"
+    "from_addr": "中关村",
+    "to_addr": "西二旗"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SE075715": {
-   "city": "厦门",
-   "beds": 1,
-   "max_rent": 6000
+   "city": "成都",
+   "beds": 2,
+   "max_rent": 8000
   },
   "get_commute_time#GEe86ae5": {
-   "from_addr": "望京",
-   "to_addr": "国贸"
+   "from_addr": "中关村",
+   "to_addr": "西二旗"
   }
  },
  "voices": {
-  "user": "cv02",
+  "user": "cv03",
   "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.78,
+   "t_end": 6.74,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.262,
-   "t_end": 11.702,
+   "t_start": 9.227,
+   "t_end": 11.227,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.482
+  2.487
  ]
 }

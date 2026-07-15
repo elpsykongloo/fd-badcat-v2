@@ -6,7 +6,7 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "five thousand",
+  "amount": "eight hundred",
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
@@ -15,25 +15,25 @@
  "slots_final": {
   "amount": "five thousand",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
  "revisions": [
   {
-   "slot": "to_cur",
-   "old": "euros",
-   "new": "yen",
+   "slot": "amount",
+   "old": "eight hundred",
+   "new": "five thousand",
    "by": "user",
    "kind": "default",
-   "gap": 2.989
+   "gap": 3.062
   }
  ],
  "bystander": null,
  "slots_canon": {
   "amount": 5000,
   "from_cur": "USD",
-  "to_cur": "JPY",
+  "to_cur": "EUR",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
@@ -42,17 +42,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Get a quote for five thousand dollars to euros, then transfer five thousand from checking to rent account.",
+   "text": "Get a quote for eight hundred dollars to euros, then transfer eight hundred from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Wait — make it yen.",
-   "gap_before": 2.989
+   "text": "Wait — make it five thousand.",
+   "gap_before": 3.062
   }
  ],
  "events": [],
@@ -72,7 +72,7 @@
    "args": {
     "amount": 5000,
     "from_cur": "USD",
-    "to_cur": "JPY"
+    "to_cur": "EUR"
    }
   },
   {
@@ -88,7 +88,7 @@
   "get_fx_quote#GEb92d82": {
    "amount": 5000,
    "from_cur": "USD",
-   "to_cur": "JPY"
+   "to_cur": "EUR"
   },
   "transfer_funds#TR4b3dc1": {
    "from_acct": "checking",
@@ -97,26 +97,26 @@
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv04"
+  "user": "cv02",
+  "bystander": "cv06"
  },
  "split": "dev",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.26,
+   "t_end": 5.46,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.249,
-   "t_end": 10.449,
+   "t_start": 8.522,
+   "t_end": 12.122,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.989
+  3.062
  ]
 }

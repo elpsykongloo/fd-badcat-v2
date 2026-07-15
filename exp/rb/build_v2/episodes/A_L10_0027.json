@@ -6,49 +6,49 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Atlanta",
-  "date": "June first",
-  "seat_class": "coach",
-  "passenger": "Alex Chen"
+  "origin": "Boston",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Chicago",
-  "destination": "Atlanta",
-  "date": "June first",
-  "seat_class": "coach",
-  "passenger": "Alex Chen"
+  "origin": "Boston",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
  },
  "revisions": [],
  "bystander": {
   "kind": "command",
-  "other": "May eighth",
+  "other": "coach",
   "state": "inflight",
-  "frac": 0.417
+  "frac": 0.24
  },
  "slots_canon": {
-  "origin": "Chicago",
-  "destination": "Atlanta",
-  "date": "June 1",
-  "seat_class": "coach",
-  "passenger": "Alex Chen"
+  "origin": "Boston",
+  "destination": "Austin",
+  "date": "May 3",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Find a train from Chicago to Atlanta on June first, hold a coach seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Boston to Austin on May third, hold a business seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv08",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Change it to May eighth.",
-   "at_after_eou": 1.838
+   "text": "Change it to coach.",
+   "at_after_eou": 1.754
   }
  ],
  "events": [],
@@ -67,58 +67,58 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
-    "destination": "Atlanta",
-    "date": "June 1"
+    "origin": "Boston",
+    "destination": "Austin",
+    "date": "May 3"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE6c6d60",
-    "seat_class": "coach"
+    "seat_class": "business"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO7e406d",
-    "passenger": "Alex Chen"
+    "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE6c6d60": {
-   "origin": "Chicago",
-   "destination": "Atlanta",
-   "date": "June 1"
+   "origin": "Boston",
+   "destination": "Austin",
+   "date": "May 3"
   },
   "hold_seat#HO7e406d": {
    "train_id": "SE6c6d60",
-   "seat_class": "coach"
+   "seat_class": "business"
   },
   "purchase_ticket#PU134286": {
    "hold_id": "HO7e406d",
-   "passenger": "Alex Chen"
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv08"
+  "user": "cv09",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.1,
+   "t_end": 8.58,
    "scheduled": "sequential"
   },
   {
    "role": "bystander",
-   "t_start": 8.578,
-   "t_end": 10.098,
+   "t_start": 10.974,
+   "t_end": 12.814,
    "scheduled": "lifecycle_nominal"
   }
  ],

@@ -6,34 +6,34 @@
  "lang": "zh",
  "scenario": "hou_multi",
  "slots": {
-  "city": "成都",
+  "city": "厦门",
   "beds": "两居",
-  "max_rent": "八千",
+  "max_rent": "六千",
   "from_addr": "望京",
   "to_addr": "西二旗"
  },
  "slots_final": {
-  "city": "厦门",
+  "city": "杭州",
   "beds": "两居",
-  "max_rent": "八千",
+  "max_rent": "六千",
   "from_addr": "望京",
   "to_addr": "西二旗"
  },
  "revisions": [
   {
    "slot": "city",
-   "old": "成都",
-   "new": "厦门",
+   "old": "厦门",
+   "new": "杭州",
    "by": "user",
    "kind": "default",
-   "gap": 1.351
+   "gap": 1.704
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "city": "厦门",
+  "city": "杭州",
   "beds": 2,
-  "max_rent": 8000,
+  "max_rent": 6000,
   "from_addr": "望京",
   "to_addr": "西二旗"
  },
@@ -42,17 +42,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv02",
    "lang": "zh",
-   "text": "在成都找两居、不超过八千的房子，再算下从望京到西二旗的通勤时间。",
+   "text": "在厦门找两居、不超过六千的房子，再算下从望京到西二旗的通勤时间。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv02",
    "lang": "zh",
-   "text": "等等，改成厦门。",
-   "gap_before": 1.351
+   "text": "等等，改成杭州。",
+   "gap_before": 1.704
   }
  ],
  "events": [],
@@ -70,9 +70,9 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "厦门",
+    "city": "杭州",
     "beds": 2,
-    "max_rent": 8000
+    "max_rent": 6000
    }
   },
   {
@@ -85,9 +85,9 @@
  ],
  "gold_state": {
   "search_rentals#SE47c493": {
-   "city": "厦门",
+   "city": "杭州",
    "beds": 2,
-   "max_rent": 8000
+   "max_rent": 6000
   },
   "get_commute_time#GE380828": {
    "from_addr": "望京",
@@ -95,26 +95,26 @@
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv09"
+  "user": "cv02",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.82,
+   "t_end": 8.66,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.171,
-   "t_end": 10.171,
+   "t_start": 10.364,
+   "t_end": 12.684,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.351
+  1.704
  ]
 }

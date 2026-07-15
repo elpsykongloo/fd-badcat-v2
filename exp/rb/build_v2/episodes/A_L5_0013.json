@@ -6,14 +6,14 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "three thousand",
+  "amount": "five thousand",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "slots_final": {
-  "amount": "three thousand",
+  "amount": "five thousand",
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
@@ -21,17 +21,17 @@
  },
  "revisions": [
   {
-   "slot": "to_cur",
-   "old": "yen",
-   "new": "euros",
+   "slot": "to_acct",
+   "old": "rent account",
+   "new": "savings",
    "by": "user",
    "kind": "default",
-   "gap": 2.697
+   "gap": 2.487
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "amount": 3000,
+  "amount": 5000,
   "from_cur": "USD",
   "to_cur": "EUR",
   "from_acct": "checking",
@@ -42,17 +42,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Get a quote for three thousand dollars to yen, then transfer three thousand from checking to savings.",
+   "text": "Get a quote for five thousand dollars to euros, then transfer five thousand from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Wait — make it euros.",
-   "gap_before": 2.697
+   "text": "Wait — make it savings.",
+   "gap_before": 2.487
   }
  ],
  "events": [],
@@ -70,7 +70,7 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": 3000,
+    "amount": 5000,
     "from_cur": "USD",
     "to_cur": "EUR"
    }
@@ -80,43 +80,43 @@
    "args": {
     "from_acct": "checking",
     "to_acct": "savings",
-    "amount": 3000
+    "amount": 5000
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GEc12eff": {
-   "amount": 3000,
+   "amount": 5000,
    "from_cur": "USD",
    "to_cur": "EUR"
   },
   "transfer_funds#TR94bc7c": {
    "from_acct": "checking",
    "to_acct": "savings",
-   "amount": 3000
+   "amount": 5000
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv08"
+  "user": "cv09",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.42,
+   "t_end": 5.78,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.117,
-   "t_end": 11.757,
+   "t_start": 8.267,
+   "t_end": 9.947,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.697
+  2.487
  ]
 }

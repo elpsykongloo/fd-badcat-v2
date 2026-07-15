@@ -7,8 +7,8 @@
  "scenario": "ecom_chain",
  "slots": {
   "query": "蓝牙耳机",
-  "qty": "一",
-  "address": "浦东新区世纪大道八号"
+  "qty": "两",
+  "address": "海淀区学院路一号"
  },
  "slots_final": {
   "query": "蓝牙耳机",
@@ -17,12 +17,12 @@
  },
  "revisions": [
   {
-   "slot": "address",
-   "old": "浦东新区世纪大道八号",
-   "new": "海淀区学院路一号",
+   "slot": "qty",
+   "old": "两",
+   "new": "一",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.698
+   "gap": 0.71
   }
  ],
  "bystander": null,
@@ -36,27 +36,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "海淀区学院路一号，改成海淀区学院路一号。",
-   "gap_before": 0.698
+   "text": "一，改成一。",
+   "gap_before": 0.71
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.459,
+   "offset": 0.494,
    "action": "revise",
    "role": "user",
-   "voice": "cv06",
-   "text": "海淀区学院路一号，改成海淀区学院路一号。"
+   "voice": "cv05",
+   "text": "一，改成一。"
   }
  ],
  "profile": "default",
@@ -106,9 +106,9 @@
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv01"
+  "user": "cv05",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

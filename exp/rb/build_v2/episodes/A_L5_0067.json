@@ -6,53 +6,53 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
+  "origin": "Boston",
   "destination": "Denver",
   "date": "May third",
   "seat_class": "first class",
-  "passenger": "Jordan Lee"
+  "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Chicago",
+  "origin": "Boston",
   "destination": "Denver",
-  "date": "May third",
-  "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "date": "May eighth",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
  },
  "revisions": [
   {
-   "slot": "seat_class",
-   "old": "first class",
-   "new": "coach",
+   "slot": "date",
+   "old": "May third",
+   "new": "May eighth",
    "by": "user",
    "kind": "default",
-   "gap": 2.951
+   "gap": 2.655
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Chicago",
+  "origin": "Boston",
   "destination": "Denver",
-  "date": "May 3",
-  "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "date": "May 8",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Find a train from Chicago to Denver on May third, hold a first class seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Boston to Denver on May third, hold a first class seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Wait — make it coach.",
-   "gap_before": 2.951
+   "text": "Wait — make it May eighth.",
+   "gap_before": 2.655
   }
  ],
  "events": [],
@@ -71,62 +71,62 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
+    "origin": "Boston",
     "destination": "Denver",
-    "date": "May 3"
+    "date": "May 8"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SEfb3ef0",
-    "seat_class": "coach"
+    "seat_class": "first class"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO321f54",
-    "passenger": "Jordan Lee"
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEfb3ef0": {
-   "origin": "Chicago",
+   "origin": "Boston",
    "destination": "Denver",
-   "date": "May 3"
+   "date": "May 8"
   },
   "hold_seat#HO321f54": {
    "train_id": "SEfb3ef0",
-   "seat_class": "coach"
+   "seat_class": "first class"
   },
   "purchase_ticket#PU8b13af": {
    "hold_id": "HO321f54",
-   "passenger": "Jordan Lee"
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv04"
+  "user": "cv03",
+  "bystander": "cv01"
  },
  "split": "dev",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.18,
+   "t_end": 8.26,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.131,
-   "t_end": 10.171,
+   "t_start": 10.915,
+   "t_end": 13.715,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.951
+  2.655
  ]
 }

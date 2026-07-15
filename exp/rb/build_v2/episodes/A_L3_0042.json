@@ -6,32 +6,32 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "成都",
-  "beds": "一居",
+  "city": "厦门",
+  "beds": "两居",
   "max_rent": "六千",
   "slot": "周日下午"
  },
  "slots_final": {
-  "city": "成都",
+  "city": "厦门",
   "beds": "一居",
-  "max_rent": "八千",
+  "max_rent": "六千",
   "slot": "周日下午"
  },
  "revisions": [
   {
-   "slot": "max_rent",
-   "old": "六千",
-   "new": "八千",
+   "slot": "beds",
+   "old": "两居",
+   "new": "一居",
    "by": "user",
    "kind": "default",
-   "gap": 0.774
+   "gap": 0.693
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "city": "成都",
+  "city": "厦门",
   "beds": 1,
-  "max_rent": 8000,
+  "max_rent": 6000,
   "slot": "周日下午"
  },
  "l8_action": null,
@@ -39,17 +39,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "在成都找一居、租金不超过六千的房子，约周日下午看房。",
+   "text": "在厦门找两居、租金不超过六千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "等等，改成八千。",
-   "gap_before": 0.774
+   "text": "等等，改成一居。",
+   "gap_before": 0.693
   }
  ],
  "events": [],
@@ -67,9 +67,9 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "成都",
+    "city": "厦门",
     "beds": 1,
-    "max_rent": 8000
+    "max_rent": 6000
    }
   },
   {
@@ -82,9 +82,9 @@
  ],
  "gold_state": {
   "search_rentals#SEfd32cd": {
-   "city": "成都",
+   "city": "厦门",
    "beds": 1,
-   "max_rent": 8000
+   "max_rent": 6000
   },
   "book_viewing#BOc88216": {
    "listing_id": "SEfd32cd",
@@ -92,26 +92,26 @@
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv06"
+  "user": "cv04",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 9.14,
+   "t_end": 6.26,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.914,
-   "t_end": 11.834,
+   "t_start": 6.953,
+   "t_end": 9.033,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.774
+  0.693
  ]
 }

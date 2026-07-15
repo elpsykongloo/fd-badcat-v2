@@ -7,13 +7,13 @@
  "scenario": "hou_chain",
  "slots": {
   "city": "青岛",
-  "beds": "一居",
+  "beds": "两居",
   "max_rent": "八千",
   "slot": "周六上午"
  },
  "slots_final": {
   "city": "青岛",
-  "beds": "一居",
+  "beds": "两居",
   "max_rent": "八千",
   "slot": "周日下午"
  },
@@ -24,13 +24,13 @@
    "new": "周日下午",
    "by": "user",
    "kind": "default",
-   "gap": 0.804
+   "gap": 0.917
   }
  ],
  "bystander": null,
  "slots_canon": {
   "city": "青岛",
-  "beds": 1,
+  "beds": 2,
   "max_rent": 8000,
   "slot": "周日下午"
  },
@@ -39,17 +39,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "在青岛找一居、租金不超过八千的房子，约周六上午看房。",
+   "text": "在青岛找两居、租金不超过八千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv09",
    "lang": "zh",
    "text": "等等，改成周日下午。",
-   "gap_before": 0.804
+   "gap_before": 0.917
   }
  ],
  "events": [],
@@ -68,7 +68,7 @@
    "fn": "search_rentals",
    "args": {
     "city": "青岛",
-    "beds": 1,
+    "beds": 2,
     "max_rent": 8000
    }
   },
@@ -83,7 +83,7 @@
  "gold_state": {
   "search_rentals#SE94ec94": {
    "city": "青岛",
-   "beds": 1,
+   "beds": 2,
    "max_rent": 8000
   },
   "book_viewing#BOa661dc": {
@@ -92,26 +92,26 @@
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv02"
+  "user": "cv09",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.42,
+   "t_end": 7.38,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 7.224,
-   "t_end": 9.704,
+   "t_start": 8.297,
+   "t_end": 10.297,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.804
+  0.917
  ]
 }

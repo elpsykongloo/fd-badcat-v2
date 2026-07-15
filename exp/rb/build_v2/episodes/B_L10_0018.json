@@ -8,62 +8,62 @@
  "slots": {
   "city": "青岛",
   "beds": "两居",
-  "max_rent": "六千",
-  "slot": "周日下午"
+  "max_rent": "八千",
+  "slot": "周六上午"
  },
  "slots_final": {
   "city": "青岛",
   "beds": "两居",
-  "max_rent": "六千",
-  "slot": "周日下午"
+  "max_rent": "八千",
+  "slot": "周六上午"
  },
  "revisions": [],
  "bystander": {
   "kind": "command",
-  "other": "八千",
+  "other": "六千",
   "state": "inflight",
-  "frac": 0.322
+  "frac": 0.159
  },
  "slots_canon": {
   "city": "青岛",
   "beds": 2,
-  "max_rent": 6000,
-  "slot": "周日下午"
+  "max_rent": 8000,
+  "slot": "周六上午"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "在青岛找两居、租金不超过六千的房子，约周日下午看房。",
+   "text": "在青岛找两居、租金不超过八千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv04",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "改成八千吧。",
-   "at_after_eou": 1.821
+   "text": "改成六千吧。",
+   "at_after_eou": 1.73
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.572,
+   "offset": 0.75,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv04",
-   "text": "改成八千吧。"
+   "voice": "cv05",
+   "text": "改成六千吧。"
   },
   {
    "state": "tts",
-   "offset": 0.358,
+   "offset": 0.283,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv04",
-   "text": "改成八千吧。"
+   "voice": "cv05",
+   "text": "改成六千吧。"
   }
  ],
  "profile": "default",
@@ -82,14 +82,14 @@
    "args": {
     "city": "青岛",
     "beds": 2,
-    "max_rent": 6000
+    "max_rent": 8000
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SE210079",
-    "slot": "周日下午"
+    "slot": "周六上午"
    }
   }
  ],
@@ -97,17 +97,17 @@
   "search_rentals#SE210079": {
    "city": "青岛",
    "beds": 2,
-   "max_rent": 6000
+   "max_rent": 8000
   },
   "book_viewing#BOde6308": {
    "listing_id": "SE210079",
-   "slot": "周日下午"
+   "slot": "周六上午"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv04"
+  "user": "cv04",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

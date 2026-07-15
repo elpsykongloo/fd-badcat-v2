@@ -6,32 +6,32 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "青岛",
-  "beds": "一居",
-  "max_rent": "六千",
+  "city": "成都",
+  "beds": "两居",
+  "max_rent": "八千",
   "slot": "周六上午"
  },
  "slots_final": {
-  "city": "杭州",
-  "beds": "一居",
-  "max_rent": "六千",
+  "city": "厦门",
+  "beds": "两居",
+  "max_rent": "八千",
   "slot": "周六上午"
  },
  "revisions": [
   {
    "slot": "city",
-   "old": "青岛",
-   "new": "杭州",
+   "old": "成都",
+   "new": "厦门",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.692
+   "gap": 0.699
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "city": "杭州",
-  "beds": 1,
-  "max_rent": 6000,
+  "city": "厦门",
+  "beds": 2,
+  "max_rent": 8000,
   "slot": "周六上午"
  },
  "l8_action": null,
@@ -41,15 +41,15 @@
    "role": "user",
    "voice": "cv04",
    "lang": "zh",
-   "text": "在青岛找一居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在成都找两居、租金不超过八千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv04",
    "lang": "zh",
-   "text": "杭州，改成杭州。",
-   "gap_before": 0.692
+   "text": "厦门，改成厦门。",
+   "gap_before": 0.699
   }
  ],
  "events": [],
@@ -67,9 +67,9 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "杭州",
-    "beds": 1,
-    "max_rent": 6000
+    "city": "厦门",
+    "beds": 2,
+    "max_rent": 8000
    }
   },
   {
@@ -82,9 +82,9 @@
  ],
  "gold_state": {
   "search_rentals#SE26c457": {
-   "city": "杭州",
-   "beds": 1,
-   "max_rent": 6000
+   "city": "厦门",
+   "beds": 2,
+   "max_rent": 8000
   },
   "book_viewing#BO34c81f": {
    "listing_id": "SE26c457",
@@ -93,25 +93,25 @@
  },
  "voices": {
   "user": "cv04",
-  "bystander": "cv06"
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.42,
+   "t_end": 6.9,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 7.112,
-   "t_end": 9.432,
+   "t_start": 7.599,
+   "t_end": 10.399,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.692
+  0.699
  ]
 }

@@ -7,24 +7,24 @@
  "scenario": "ecom_chain",
  "slots": {
   "query": "蓝牙耳机",
-  "qty": "一",
+  "qty": "两",
   "address": "海淀区学院路一号"
  },
  "slots_final": {
   "query": "蓝牙耳机",
-  "qty": "一",
+  "qty": "两",
   "address": "海淀区学院路一号"
  },
  "revisions": [],
  "bystander": {
   "kind": "command",
-  "other": "两",
+  "other": "一",
   "state": "inflight",
-  "frac": 0.257
+  "frac": 0.752
  },
  "slots_canon": {
   "query": "蓝牙耳机",
-  "qty": 1,
+  "qty": 2,
   "address": "海淀区学院路一号"
  },
  "l8_action": null,
@@ -32,17 +32,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv05",
+   "voice": "cv08",
    "lang": "zh",
-   "text": "改成两吧。",
-   "at_after_eou": 1.735
+   "text": "改成一吧。",
+   "at_after_eou": 1.919
   }
  ],
  "events": [],
@@ -68,7 +68,7 @@
    "fn": "add_item",
    "args": {
     "item_id": "SE2591f9",
-    "qty": 1
+    "qty": 2
    }
   },
   {
@@ -85,7 +85,7 @@
   },
   "add_item#AD7b828a": {
    "item_id": "SE2591f9",
-   "qty": 1
+   "qty": 2
   },
   "place_order#PLaf0614": {
    "cart_id": "AD7b828a",
@@ -93,22 +93,22 @@
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv05"
+  "user": "cv05",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 5.78,
+   "t_end": 6.26,
    "scheduled": "sequential"
   },
   {
    "role": "bystander",
-   "t_start": 8.155,
-   "t_end": 9.275,
+   "t_start": 8.819,
+   "t_end": 9.859,
    "scheduled": "lifecycle_nominal"
   }
  ],

@@ -6,27 +6,27 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "成都",
-  "beds": "一居",
+  "city": "青岛",
+  "beds": "两居",
   "max_rent": "八千",
   "slot": "周日下午"
  },
  "slots_final": {
-  "city": "成都",
-  "beds": "一居",
+  "city": "青岛",
+  "beds": "两居",
   "max_rent": "八千",
   "slot": "周日下午"
  },
  "revisions": [],
  "bystander": {
   "kind": "command",
-  "other": "两居",
+  "other": "一居",
   "state": "inflight",
-  "frac": 0.174
+  "frac": 0.54
  },
  "slots_canon": {
-  "city": "成都",
-  "beds": 1,
+  "city": "青岛",
+  "beds": 2,
   "max_rent": 8000,
   "slot": "周日下午"
  },
@@ -35,35 +35,35 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "在成都找一居、租金不超过八千的房子，约周日下午看房。",
+   "text": "在青岛找两居、租金不超过八千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv03",
+   "voice": "cv08",
    "lang": "zh",
-   "text": "改成两居吧。",
-   "at_after_eou": 1.79
+   "text": "改成一居吧。",
+   "at_after_eou": 2.104
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.392,
+   "offset": 0.659,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv03",
-   "text": "改成两居吧。"
+   "voice": "cv08",
+   "text": "改成一居吧。"
   },
   {
    "state": "tts",
-   "offset": 0.321,
+   "offset": 0.459,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv03",
-   "text": "改成两居吧。"
+   "voice": "cv08",
+   "text": "改成一居吧。"
   }
  ],
  "profile": "default",
@@ -80,8 +80,8 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "成都",
-    "beds": 1,
+    "city": "青岛",
+    "beds": 2,
     "max_rent": 8000
    }
   },
@@ -95,8 +95,8 @@
  ],
  "gold_state": {
   "search_rentals#SE2a6ab1": {
-   "city": "成都",
-   "beds": 1,
+   "city": "青岛",
+   "beds": 2,
    "max_rent": 8000
   },
   "book_viewing#BO20b657": {
@@ -105,9 +105,9 @@
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv03"
+  "user": "cv05",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

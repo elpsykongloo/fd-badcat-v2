@@ -6,8 +6,8 @@
  "lang": "zh",
  "scenario": "ecom_multi",
  "slots": {
-  "query": "蓝牙耳机",
-  "item_id": "A100"
+  "query": "保温杯",
+  "item_id": "B205"
  },
  "slots_final": {
   "query": "保温杯",
@@ -15,12 +15,12 @@
  },
  "revisions": [
   {
-   "slot": "query",
-   "old": "蓝牙耳机",
-   "new": "保温杯",
+   "slot": "item_id",
+   "old": "B205",
+   "new": "A100",
    "by": "user",
    "kind": "default",
-   "gap": 1.219
+   "gap": 1.301
   }
  ],
  "bystander": null,
@@ -33,17 +33,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "搜一下蓝牙耳机，再看看编号A100还有没有货。",
+   "text": "搜一下保温杯，再看看编号B205还有没有货。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "等等，改成保温杯。",
-   "gap_before": 1.219
+   "text": "等等，改成A100。",
+   "gap_before": 1.301
   }
  ],
  "events": [],
@@ -80,26 +80,26 @@
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv07"
+  "user": "cv03",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 5.06,
+   "t_end": 4.9,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 6.279,
-   "t_end": 8.119,
+   "t_start": 6.201,
+   "t_end": 9.081,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.219
+  1.301
  ]
 }

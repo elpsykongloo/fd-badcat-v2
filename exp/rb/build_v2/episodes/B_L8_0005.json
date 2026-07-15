@@ -10,14 +10,14 @@
   "from_cur": "dollars",
   "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "slots_final": {
   "amount": "eight hundred",
   "from_cur": "dollars",
   "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "revisions": [],
  "bystander": null,
@@ -26,33 +26,33 @@
   "from_cur": "USD",
   "to_cur": "JPY",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "l8_action": "progress",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Get a quote for eight hundred dollars to yen, then transfer eight hundred from checking to savings.",
+   "text": "Get a quote for eight hundred dollars to yen, then transfer eight hundred from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv09",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 2.112
+   "at_after_eou": 1.856
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.501,
+   "offset": 0.399,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv09",
    "text": "Any progress?"
   }
  ],
@@ -79,7 +79,7 @@
    "fn": "transfer_funds",
    "args": {
     "from_acct": "checking",
-    "to_acct": "savings",
+    "to_acct": "rent account",
     "amount": 800
    }
   }
@@ -92,14 +92,14 @@
   },
   "transfer_funds#TR232097": {
    "from_acct": "checking",
-   "to_acct": "savings",
+   "to_acct": "rent account",
    "amount": 800
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv01"
+  "user": "cv09",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

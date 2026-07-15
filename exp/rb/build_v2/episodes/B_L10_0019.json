@@ -10,54 +10,54 @@
   "destination": "Austin",
   "date": "June first",
   "seat_class": "coach",
-  "passenger": "Sam Rivera"
+  "passenger": "Alex Chen"
  },
  "slots_final": {
   "origin": "Seattle",
   "destination": "Austin",
   "date": "June first",
   "seat_class": "coach",
-  "passenger": "Sam Rivera"
+  "passenger": "Alex Chen"
  },
  "revisions": [],
  "bystander": {
   "kind": "irrelevant",
-  "other": "first class",
+  "other": "Atlanta",
   "state": "inflight",
-  "frac": 0.76
+  "frac": 0.59
  },
  "slots_canon": {
   "origin": "Seattle",
   "destination": "Austin",
   "date": "June 1",
   "seat_class": "coach",
-  "passenger": "Sam Rivera"
+  "passenger": "Alex Chen"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Find a train from Seattle to Austin on June first, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Seattle to Austin on June first, hold a coach seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv01",
+   "voice": "cv09",
    "lang": "en",
    "text": "What do you want for dinner? Let's order in.",
-   "at_after_eou": 1.965
+   "at_after_eou": 1.893
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.341,
+   "offset": 0.296,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv01",
+   "voice": "cv09",
    "text": "What do you want for dinner? Let's order in."
   }
  ],
@@ -92,7 +92,7 @@
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO70a29a",
-    "passenger": "Sam Rivera"
+    "passenger": "Alex Chen"
    }
   }
  ],
@@ -108,13 +108,13 @@
   },
   "purchase_ticket#PU655f46": {
    "hold_id": "HO70a29a",
-   "passenger": "Sam Rivera"
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv01"
+  "user": "cv01",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

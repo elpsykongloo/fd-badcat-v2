@@ -7,13 +7,13 @@
  "scenario": "ecom_chain",
  "slots": {
   "query": "蓝牙耳机",
-  "qty": "两",
-  "address": "浦东新区世纪大道八号"
+  "qty": "一",
+  "address": "海淀区学院路一号"
  },
  "slots_final": {
   "query": "跑步鞋",
-  "qty": "一",
-  "address": "浦东新区世纪大道八号"
+  "qty": "两",
+  "address": "海淀区学院路一号"
  },
  "revisions": [
   {
@@ -22,63 +22,63 @@
    "new": "跑步鞋",
    "by": "user",
    "kind": "default",
-   "gap": 0.751
+   "gap": 0.784
   },
   {
    "slot": "qty",
-   "old": "两",
-   "new": "一",
+   "old": "一",
+   "new": "两",
    "by": "user",
    "kind": "second",
-   "gap": 2.892
+   "gap": 2.705
   }
  ],
  "bystander": null,
  "slots_canon": {
   "query": "跑步鞋",
-  "qty": 1,
-  "address": "浦东新区世纪大道八号"
+  "qty": 2,
+  "address": "海淀区学院路一号"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv09",
    "lang": "zh",
    "text": "等等，改成跑步鞋。",
-   "gap_before": 0.751
+   "gap_before": 0.784
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "还有，再改一下，要一。",
-   "gap_before": 2.892
+   "text": "还有，再改一下，要两。",
+   "gap_before": 2.705
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.443,
+   "offset": 0.295,
    "action": "revise",
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv09",
    "text": "等等，改成跑步鞋。"
   },
   {
    "state": "committed",
-   "offset": 0.881,
+   "offset": 0.836,
    "action": "revise",
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv09",
    "text": "等等，改成跑步鞋。"
   }
  ],
@@ -104,14 +104,14 @@
    "fn": "add_item",
    "args": {
     "item_id": "SEfdfd65",
-    "qty": 1
+    "qty": 2
    }
   },
   {
    "fn": "place_order",
    "args": {
     "cart_id": "AD1db5d2",
-    "address": "浦东新区世纪大道八号"
+    "address": "海淀区学院路一号"
    }
   }
  ],
@@ -121,17 +121,17 @@
   },
   "add_item#AD1db5d2": {
    "item_id": "SEfdfd65",
-   "qty": 1
+   "qty": 2
   },
   "place_order#PL6edee2": {
    "cart_id": "AD1db5d2",
-   "address": "浦东新区世纪大道八号"
+   "address": "海淀区学院路一号"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv07"
+  "user": "cv09",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

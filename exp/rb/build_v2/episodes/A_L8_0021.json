@@ -6,14 +6,14 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "eight hundred",
+  "amount": "three thousand",
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
  "slots_final": {
-  "amount": "five thousand",
+  "amount": "eight hundred",
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
@@ -22,8 +22,8 @@
  "revisions": [
   {
    "slot": "amount",
-   "old": "eight hundred",
-   "new": "five thousand",
+   "old": "three thousand",
+   "new": "eight hundred",
    "by": "user",
    "kind": "default",
    "gap": null
@@ -31,7 +31,7 @@
  ],
  "bystander": null,
  "slots_canon": {
-  "amount": 5000,
+  "amount": 800,
   "from_cur": "USD",
   "to_cur": "EUR",
   "from_acct": "checking",
@@ -44,15 +44,15 @@
    "role": "user",
    "voice": "cv09",
    "lang": "en",
-   "text": "Get a quote for eight hundred dollars to euros, then transfer eight hundred from checking to rent account.",
+   "text": "Get a quote for three thousand dollars to euros, then transfer three thousand from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv09",
    "lang": "en",
-   "text": "Wait — make it five thousand.",
-   "at_after_eou": 2.039
+   "text": "Wait — make it eight hundred.",
+   "at_after_eou": 1.879
   }
  ],
  "events": [],
@@ -70,7 +70,7 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": 5000,
+    "amount": 800,
     "from_cur": "USD",
     "to_cur": "EUR"
    }
@@ -80,39 +80,39 @@
    "args": {
     "from_acct": "checking",
     "to_acct": "rent account",
-    "amount": 5000
+    "amount": 800
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GE0c6aeb": {
-   "amount": 5000,
+   "amount": 800,
    "from_cur": "USD",
    "to_cur": "EUR"
   },
   "transfer_funds#TRd3e4eb": {
    "from_acct": "checking",
    "to_acct": "rent account",
-   "amount": 5000
+   "amount": 800
   }
  },
  "voices": {
   "user": "cv09",
-  "bystander": "cv04"
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.02,
+   "t_end": 7.54,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.699,
-   "t_end": 12.379,
+   "t_start": 10.059,
+   "t_end": 13.099,
    "scheduled": "lifecycle_nominal"
   }
  ],

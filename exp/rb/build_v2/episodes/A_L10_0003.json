@@ -7,29 +7,29 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Boston",
-  "destination": "Atlanta",
-  "date": "May eighth",
+  "destination": "Denver",
+  "date": "May third",
   "seat_class": "coach",
   "passenger": "Jordan Lee"
  },
  "slots_final": {
   "origin": "Boston",
-  "destination": "Atlanta",
-  "date": "May eighth",
+  "destination": "Denver",
+  "date": "May third",
   "seat_class": "coach",
   "passenger": "Jordan Lee"
  },
  "revisions": [],
  "bystander": {
   "kind": "command",
-  "other": "June first",
+  "other": "business",
   "state": "inflight",
-  "frac": 0.128
+  "frac": 0.104
  },
  "slots_canon": {
   "origin": "Boston",
-  "destination": "Atlanta",
-  "date": "May 8",
+  "destination": "Denver",
+  "date": "May 3",
   "seat_class": "coach",
   "passenger": "Jordan Lee"
  },
@@ -38,17 +38,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Find a train from Boston to Atlanta on May eighth, hold a coach seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Boston to Denver on May third, hold a coach seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv08",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Change it to June first.",
-   "at_after_eou": 1.729
+   "text": "Change it to business.",
+   "at_after_eou": 1.713
   }
  ],
  "events": [],
@@ -68,8 +68,8 @@
    "fn": "search_trains",
    "args": {
     "origin": "Boston",
-    "destination": "Atlanta",
-    "date": "May 8"
+    "destination": "Denver",
+    "date": "May 3"
    }
   },
   {
@@ -90,8 +90,8 @@
  "gold_state": {
   "search_trains#SE5557d9": {
    "origin": "Boston",
-   "destination": "Atlanta",
-   "date": "May 8"
+   "destination": "Denver",
+   "date": "May 3"
   },
   "hold_seat#HO44c85b": {
    "train_id": "SE5557d9",
@@ -103,22 +103,22 @@
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv08"
+  "user": "cv06",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.9,
+   "t_end": 6.26,
    "scheduled": "sequential"
   },
   {
    "role": "bystander",
-   "t_start": 9.269,
-   "t_end": 12.229,
+   "t_start": 8.613,
+   "t_end": 10.213,
    "scheduled": "lifecycle_nominal"
   }
  ],

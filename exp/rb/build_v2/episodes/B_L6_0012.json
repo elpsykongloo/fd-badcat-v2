@@ -6,37 +6,37 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "保温杯",
-  "qty": "两",
+  "query": "蓝牙耳机",
+  "qty": "一",
   "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
-  "query": "跑步鞋",
-  "qty": "一",
+  "query": "保温杯",
+  "qty": "两",
   "address": "浦东新区世纪大道八号"
  },
  "revisions": [
   {
    "slot": "query",
-   "old": "保温杯",
-   "new": "跑步鞋",
+   "old": "蓝牙耳机",
+   "new": "保温杯",
    "by": "user",
    "kind": "default",
-   "gap": 1.398
+   "gap": 0.776
   },
   {
    "slot": "qty",
-   "old": "两",
-   "new": "一",
+   "old": "一",
+   "new": "两",
    "by": "user",
    "kind": "second",
-   "gap": 2.624
+   "gap": 2.993
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "query": "跑步鞋",
-  "qty": 1,
+  "query": "保温杯",
+  "qty": 2,
   "address": "浦东新区世纪大道八号"
  },
  "l8_action": null,
@@ -46,40 +46,40 @@
    "role": "user",
    "voice": "cv07",
    "lang": "zh",
-   "text": "帮我搜保温杯，加两件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv07",
    "lang": "zh",
-   "text": "等等，改成跑步鞋。",
-   "gap_before": 1.398
+   "text": "等等，改成保温杯。",
+   "gap_before": 0.776
   },
   {
    "role": "user",
    "voice": "cv07",
    "lang": "zh",
-   "text": "还有，再改一下，要一。",
-   "gap_before": 2.624
+   "text": "还有，再改一下，要两。",
+   "gap_before": 2.993
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.643,
+   "offset": 0.728,
    "action": "revise",
    "role": "user",
    "voice": "cv07",
-   "text": "等等，改成跑步鞋。"
+   "text": "等等，改成保温杯。"
   },
   {
    "state": "committed",
-   "offset": 0.321,
+   "offset": 1.339,
    "action": "revise",
    "role": "user",
    "voice": "cv07",
-   "text": "等等，改成跑步鞋。"
+   "text": "等等，改成保温杯。"
   }
  ],
  "profile": "default",
@@ -97,14 +97,14 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "跑步鞋"
+    "query": "保温杯"
    }
   },
   {
    "fn": "add_item",
    "args": {
     "item_id": "SEe26dcc",
-    "qty": 1
+    "qty": 2
    }
   },
   {
@@ -117,11 +117,11 @@
  ],
  "gold_state": {
   "search_catalog#SEe26dcc": {
-   "query": "跑步鞋"
+   "query": "保温杯"
   },
   "add_item#AD1f298f": {
    "item_id": "SEe26dcc",
-   "qty": 1
+   "qty": 2
   },
   "place_order#PL447fe9": {
    "cart_id": "AD1f298f",
@@ -130,8 +130,8 @@
  },
  "voices": {
   "user": "cv07",
-  "bystander": "cv02"
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

@@ -8,22 +8,22 @@
  "slots": {
   "amount": "three thousand",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "savings"
  },
  "slots_final": {
   "amount": "three thousand",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
   "to_acct": "savings"
  },
  "revisions": [
   {
    "slot": "to_cur",
-   "old": "yen",
-   "new": "euros",
+   "old": "euros",
+   "new": "yen",
    "by": "user",
    "kind": "default",
    "gap": null
@@ -33,7 +33,7 @@
  "slots_canon": {
   "amount": 3000,
   "from_cur": "USD",
-  "to_cur": "EUR",
+  "to_cur": "JPY",
   "from_acct": "checking",
   "to_acct": "savings"
  },
@@ -42,27 +42,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Get a quote for three thousand dollars to yen, then transfer three thousand from checking to savings.",
+   "text": "Get a quote for three thousand dollars to euros, then transfer three thousand from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Wait — make it euros.",
-   "at_after_eou": 2.066
+   "text": "Wait — make it yen.",
+   "at_after_eou": 2.022
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.328,
+   "offset": 0.75,
    "action": "revise",
    "role": "user",
-   "voice": "cv05",
-   "text": "Wait — make it euros."
+   "voice": "cv09",
+   "text": "Wait — make it yen."
   }
  ],
  "profile": "default",
@@ -81,7 +81,7 @@
    "args": {
     "amount": 3000,
     "from_cur": "USD",
-    "to_cur": "EUR"
+    "to_cur": "JPY"
    }
   },
   {
@@ -97,7 +97,7 @@
   "get_fx_quote#GE398c29": {
    "amount": 3000,
    "from_cur": "USD",
-   "to_cur": "EUR"
+   "to_cur": "JPY"
   },
   "transfer_funds#TR47806b": {
    "from_acct": "checking",
@@ -106,9 +106,9 @@
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv03"
+  "user": "cv09",
+  "bystander": "cv08"
  },
  "split": "dev",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

@@ -6,60 +6,60 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "青岛",
+  "city": "杭州",
   "beds": "两居",
   "max_rent": "八千",
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "slots_final": {
   "city": "青岛",
   "beds": "两居",
-  "max_rent": "六千",
-  "slot": "周六上午"
+  "max_rent": "八千",
+  "slot": "周日下午"
  },
  "revisions": [
   {
-   "slot": "max_rent",
-   "old": "八千",
-   "new": "六千",
+   "slot": "city",
+   "old": "杭州",
+   "new": "青岛",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.77
+   "gap": 0.691
   }
  ],
  "bystander": null,
  "slots_canon": {
   "city": "青岛",
   "beds": 2,
-  "max_rent": 6000,
-  "slot": "周六上午"
+  "max_rent": 8000,
+  "slot": "周日下午"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "在青岛找两居、租金不超过八千的房子，约周六上午看房。",
+   "text": "在杭州找两居、租金不超过八千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "六千，改成六千。",
-   "gap_before": 0.77
+   "text": "青岛，改成青岛。",
+   "gap_before": 0.691
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.337,
+   "offset": 0.244,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
-   "text": "六千，改成六千。"
+   "voice": "cv09",
+   "text": "青岛，改成青岛。"
   }
  ],
  "profile": "default",
@@ -78,14 +78,14 @@
    "args": {
     "city": "青岛",
     "beds": 2,
-    "max_rent": 6000
+    "max_rent": 8000
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SE33f6b1",
-    "slot": "周六上午"
+    "slot": "周日下午"
    }
   }
  ],
@@ -93,17 +93,17 @@
   "search_rentals#SE33f6b1": {
    "city": "青岛",
    "beds": 2,
-   "max_rent": 6000
+   "max_rent": 8000
   },
   "book_viewing#BO919f8e": {
    "listing_id": "SE33f6b1",
-   "slot": "周六上午"
+   "slot": "周日下午"
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv08"
+  "user": "cv09",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

@@ -6,25 +6,25 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "杭州",
+  "city": "青岛",
   "beds": "一居",
-  "max_rent": "八千",
-  "slot": "周六上午"
+  "max_rent": "六千",
+  "slot": "周日下午"
  },
  "slots_final": {
-  "city": "青岛",
+  "city": "杭州",
   "beds": "两居",
-  "max_rent": "八千",
-  "slot": "周六上午"
+  "max_rent": "六千",
+  "slot": "周日下午"
  },
  "revisions": [
   {
    "slot": "city",
-   "old": "杭州",
-   "new": "青岛",
+   "old": "青岛",
+   "new": "杭州",
    "by": "user",
    "kind": "default",
-   "gap": 0.828
+   "gap": 0.855
   },
   {
    "slot": "beds",
@@ -32,57 +32,57 @@
    "new": "两居",
    "by": "user",
    "kind": "second",
-   "gap": 2.665
+   "gap": 2.939
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "city": "青岛",
+  "city": "杭州",
   "beds": 2,
-  "max_rent": 8000,
-  "slot": "周六上午"
+  "max_rent": 6000,
+  "slot": "周日下午"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv08",
    "lang": "zh",
-   "text": "在杭州找一居、租金不超过八千的房子，约周六上午看房。",
+   "text": "在青岛找一居、租金不超过六千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv08",
    "lang": "zh",
-   "text": "等等，改成青岛。",
-   "gap_before": 0.828
+   "text": "等等，改成杭州。",
+   "gap_before": 0.855
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv08",
    "lang": "zh",
    "text": "还有，再改一下，要两居。",
-   "gap_before": 2.665
+   "gap_before": 2.939
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.271,
+   "offset": 0.292,
    "action": "revise",
    "role": "user",
-   "voice": "cv01",
-   "text": "等等，改成青岛。"
+   "voice": "cv08",
+   "text": "等等，改成杭州。"
   },
   {
    "state": "committed",
-   "offset": 1.333,
+   "offset": 1.207,
    "action": "revise",
    "role": "user",
-   "voice": "cv01",
-   "text": "等等，改成青岛。"
+   "voice": "cv08",
+   "text": "等等，改成杭州。"
   }
  ],
  "profile": "default",
@@ -99,34 +99,34 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "青岛",
+    "city": "杭州",
     "beds": 2,
-    "max_rent": 8000
+    "max_rent": 6000
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SEfe54da",
-    "slot": "周六上午"
+    "slot": "周日下午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SEfe54da": {
-   "city": "青岛",
+   "city": "杭州",
    "beds": 2,
-   "max_rent": 8000
+   "max_rent": 6000
   },
   "book_viewing#BO49efd0": {
    "listing_id": "SEfe54da",
-   "slot": "周六上午"
+   "slot": "周日下午"
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv07"
+  "user": "cv08",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

@@ -6,36 +6,36 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
-  "destination": "Atlanta",
-  "date": "June first",
-  "seat_class": "first class",
-  "passenger": "Jordan Lee"
- },
- "slots_final": {
-  "origin": "Boston",
-  "destination": "Atlanta",
+  "origin": "Seattle",
+  "destination": "Austin",
   "date": "May eighth",
   "seat_class": "first class",
-  "passenger": "Jordan Lee"
+  "passenger": "Alex Chen"
+ },
+ "slots_final": {
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "June first",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
  },
  "revisions": [
   {
    "slot": "date",
-   "old": "June first",
-   "new": "May eighth",
+   "old": "May eighth",
+   "new": "June first",
    "by": "user",
    "kind": "default",
-   "gap": 2.649
+   "gap": 2.639
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Boston",
-  "destination": "Atlanta",
-  "date": "May 8",
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "June 1",
   "seat_class": "first class",
-  "passenger": "Jordan Lee"
+  "passenger": "Alex Chen"
  },
  "l8_action": null,
  "cancelled": false,
@@ -44,15 +44,15 @@
    "role": "user",
    "voice": "cv04",
    "lang": "en",
-   "text": "Find a train from Boston to Atlanta on June first, hold a first class seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Seattle to Austin on May eighth, hold a first class seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv04",
    "lang": "en",
-   "text": "Wait — make it May eighth.",
-   "gap_before": 2.649
+   "text": "Wait — make it June first.",
+   "gap_before": 2.639
   }
  ],
  "events": [],
@@ -71,9 +71,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
-    "destination": "Atlanta",
-    "date": "May 8"
+    "origin": "Seattle",
+    "destination": "Austin",
+    "date": "June 1"
    }
   },
   {
@@ -87,15 +87,15 @@
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO6d5caa",
-    "passenger": "Jordan Lee"
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE483331": {
-   "origin": "Boston",
-   "destination": "Atlanta",
-   "date": "May 8"
+   "origin": "Seattle",
+   "destination": "Austin",
+   "date": "June 1"
   },
   "hold_seat#HO6d5caa": {
    "train_id": "SE483331",
@@ -103,30 +103,30 @@
   },
   "purchase_ticket#PU07bba0": {
    "hold_id": "HO6d5caa",
-   "passenger": "Jordan Lee"
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
   "user": "cv04",
-  "bystander": "cv03"
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 10.18,
+   "t_end": 8.98,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 12.829,
-   "t_end": 14.429,
+   "t_start": 11.619,
+   "t_end": 13.539,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.649
+  2.639
  ]
 }

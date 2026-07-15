@@ -6,32 +6,32 @@
  "lang": "zh",
  "scenario": "ecom_single",
  "slots": {
-  "item_id": "B205",
-  "qty": "两"
+  "item_id": "C330",
+  "qty": "一"
  },
  "slots_final": {
-  "item_id": "B205",
-  "qty": "两"
+  "item_id": "C330",
+  "qty": "一"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
-  "item_id": "B205",
-  "qty": 2
+  "item_id": "C330",
+  "qty": 1
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "把编号B205的商品加两件到购物车。",
+   "text": "把编号C330的商品加一件到购物车。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv04",
    "lang": "zh",
    "text": "好了没？",
    "at_after_eou": 6.854
@@ -51,34 +51,34 @@
   {
    "fn": "add_item",
    "args": {
-    "item_id": "B205",
-    "qty": 2
+    "item_id": "C330",
+    "qty": 1
    }
   }
  ],
  "gold_state": {
   "add_item#ADfb596b": {
-   "item_id": "B205",
-   "qty": 2
+   "item_id": "C330",
+   "qty": 1
   }
  },
  "voices": {
-  "user": "cv02",
+  "user": "cv04",
   "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 4.34,
+   "t_end": 5.3,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 11.834,
-   "t_end": 13.114,
+   "t_start": 12.794,
+   "t_end": 13.674,
    "scheduled": "lifecycle_nominal"
   }
  ],

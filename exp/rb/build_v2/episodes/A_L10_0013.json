@@ -6,30 +6,30 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "five thousand",
+  "amount": "eight hundred",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "savings"
  },
  "slots_final": {
-  "amount": "five thousand",
+  "amount": "eight hundred",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "savings"
  },
  "revisions": [],
  "bystander": {
   "kind": "irrelevant",
-  "other": "euros",
+  "other": "yen",
   "state": "inflight",
-  "frac": 0.701
+  "frac": 0.178
  },
  "slots_canon": {
-  "amount": 5000,
+  "amount": 800,
   "from_cur": "USD",
-  "to_cur": "JPY",
+  "to_cur": "EUR",
   "from_acct": "checking",
   "to_acct": "savings"
  },
@@ -38,17 +38,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Get a quote for five thousand dollars to yen, then transfer five thousand from checking to savings.",
+   "text": "Get a quote for eight hundred dollars to euros, then transfer eight hundred from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv07",
+   "voice": "cv05",
    "lang": "en",
    "text": "What do you want for dinner? Let's order in.",
-   "at_after_eou": 2.162
+   "at_after_eou": 1.773
   }
  ],
  "events": [],
@@ -66,9 +66,9 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": 5000,
+    "amount": 800,
     "from_cur": "USD",
-    "to_cur": "JPY"
+    "to_cur": "EUR"
    }
   },
   {
@@ -76,39 +76,39 @@
    "args": {
     "from_acct": "checking",
     "to_acct": "savings",
-    "amount": 5000
+    "amount": 800
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GE3a7070": {
-   "amount": 5000,
+   "amount": 800,
    "from_cur": "USD",
-   "to_cur": "JPY"
+   "to_cur": "EUR"
   },
   "transfer_funds#TRbfac03": {
    "from_acct": "checking",
    "to_acct": "savings",
-   "amount": 5000
+   "amount": 800
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv07"
+  "user": "cv07",
+  "bystander": "cv05"
  },
  "split": "dev",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.54,
+   "t_end": 6.66,
    "scheduled": "sequential"
   },
   {
    "role": "bystander",
-   "t_start": 10.342,
-   "t_end": 12.502,
+   "t_start": 9.073,
+   "t_end": 11.153,
    "scheduled": "lifecycle_nominal"
   }
  ],

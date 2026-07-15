@@ -9,13 +9,13 @@
   "city": "杭州",
   "beds": "两居",
   "max_rent": "八千",
-  "slot": "周日下午"
+  "slot": "周六上午"
  },
  "slots_final": {
   "city": "杭州",
   "beds": "两居",
   "max_rent": "八千",
-  "slot": "周日下午"
+  "slot": "周六上午"
  },
  "revisions": [],
  "bystander": null,
@@ -23,33 +23,33 @@
   "city": "杭州",
   "beds": 2,
   "max_rent": 8000,
-  "slot": "周日下午"
+  "slot": "周六上午"
  },
  "l8_action": "cancel",
  "cancelled": true,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "在杭州找两居、租金不超过八千的房子，约周日下午看房。",
+   "text": "在杭州找两居、租金不超过八千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv06",
    "lang": "zh",
    "text": "算了，先别办了。",
-   "at_after_eou": 1.851
+   "at_after_eou": 1.89
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.707,
+   "offset": 0.689,
    "action": "cancel",
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv06",
    "text": "算了，先别办了。"
   }
  ],
@@ -66,9 +66,9 @@
  "gold_calls": [],
  "gold_state": {},
  "voices": {
-  "user": "cv07",
-  "bystander": "cv02"
+  "user": "cv06",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

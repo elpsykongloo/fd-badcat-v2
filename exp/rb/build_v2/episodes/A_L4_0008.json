@@ -7,46 +7,46 @@
  "scenario": "ecom_chain",
  "slots": {
   "query": "保温杯",
-  "qty": "一",
-  "address": "海淀区学院路一号"
+  "qty": "两",
+  "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
   "query": "保温杯",
-  "qty": "一",
-  "address": "浦东新区世纪大道八号"
+  "qty": "两",
+  "address": "海淀区学院路一号"
  },
  "revisions": [
   {
    "slot": "address",
-   "old": "海淀区学院路一号",
-   "new": "浦东新区世纪大道八号",
+   "old": "浦东新区世纪大道八号",
+   "new": "海淀区学院路一号",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.69
+   "gap": 0.773
   }
  ],
  "bystander": null,
  "slots_canon": {
   "query": "保温杯",
-  "qty": 1,
-  "address": "浦东新区世纪大道八号"
+  "qty": 2,
+  "address": "海淀区学院路一号"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "帮我搜保温杯，加一件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜保温杯，加两件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "浦东新区世纪大道八号，改成浦东新区世纪大道八号。",
-   "gap_before": 0.69
+   "text": "海淀区学院路一号，改成海淀区学院路一号。",
+   "gap_before": 0.773
   }
  ],
  "events": [],
@@ -72,14 +72,14 @@
    "fn": "add_item",
    "args": {
     "item_id": "SE80db5d",
-    "qty": 1
+    "qty": 2
    }
   },
   {
    "fn": "place_order",
    "args": {
     "cart_id": "ADb18330",
-    "address": "浦东新区世纪大道八号"
+    "address": "海淀区学院路一号"
    }
   }
  ],
@@ -89,34 +89,34 @@
   },
   "add_item#ADb18330": {
    "item_id": "SE80db5d",
-   "qty": 1
+   "qty": 2
   },
   "place_order#PL4145ff": {
    "cart_id": "ADb18330",
-   "address": "浦东新区世纪大道八号"
+   "address": "海淀区学院路一号"
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv06"
+  "user": "cv05",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 5.38,
+   "t_end": 6.5,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 6.07,
-   "t_end": 11.75,
+   "t_start": 7.273,
+   "t_end": 11.593,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.69
+  0.773
  ]
 }

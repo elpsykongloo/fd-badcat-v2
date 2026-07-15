@@ -6,32 +6,32 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Atlanta",
+  "origin": "Chicago",
+  "destination": "Austin",
   "date": "May eighth",
   "seat_class": "first class",
-  "passenger": "Jordan Lee"
+  "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Seattle",
-  "destination": "Atlanta",
+  "origin": "Chicago",
+  "destination": "Austin",
   "date": "May eighth",
   "seat_class": "first class",
-  "passenger": "Jordan Lee"
+  "passenger": "Sam Rivera"
  },
  "revisions": [],
  "bystander": {
   "kind": "irrelevant",
-  "other": "business",
+  "other": "Denver",
   "state": "inflight",
-  "frac": 0.458
+  "frac": 0.596
  },
  "slots_canon": {
-  "origin": "Seattle",
-  "destination": "Atlanta",
+  "origin": "Chicago",
+  "destination": "Austin",
   "date": "May 8",
   "seat_class": "first class",
-  "passenger": "Jordan Lee"
+  "passenger": "Sam Rivera"
  },
  "l8_action": null,
  "cancelled": false,
@@ -40,15 +40,15 @@
    "role": "user",
    "voice": "cv05",
    "lang": "en",
-   "text": "Find a train from Seattle to Atlanta on May eighth, hold a first class seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Chicago to Austin on May eighth, hold a first class seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv07",
+   "voice": "cv06",
    "lang": "en",
    "text": "What do you want for dinner? Let's order in.",
-   "at_after_eou": 1.964
+   "at_after_eou": 2.062
   }
  ],
  "events": [],
@@ -67,8 +67,8 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
-    "destination": "Atlanta",
+    "origin": "Chicago",
+    "destination": "Austin",
     "date": "May 8"
    }
   },
@@ -83,14 +83,14 @@
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO8c172b",
-    "passenger": "Jordan Lee"
+    "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEfc7f27": {
-   "origin": "Seattle",
-   "destination": "Atlanta",
+   "origin": "Chicago",
+   "destination": "Austin",
    "date": "May 8"
   },
   "hold_seat#HO8c172b": {
@@ -99,15 +99,15 @@
   },
   "purchase_ticket#PU72d2e7": {
    "hold_id": "HO8c172b",
-   "passenger": "Jordan Lee"
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
   "user": "cv05",
-  "bystander": "cv07"
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
@@ -117,8 +117,8 @@
   },
   {
    "role": "bystander",
-   "t_start": 10.864,
-   "t_end": 13.024,
+   "t_start": 10.962,
+   "t_end": 17.042,
    "scheduled": "lifecycle_nominal"
   }
  ],

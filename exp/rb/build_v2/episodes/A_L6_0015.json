@@ -6,43 +6,43 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Austin",
-  "date": "May third",
-  "seat_class": "business",
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "coach",
   "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Seattle",
-  "destination": "Atlanta",
-  "date": "May third",
-  "seat_class": "coach",
+  "origin": "Boston",
+  "destination": "Portland",
+  "date": "June first",
+  "seat_class": "first class",
   "passenger": "Sam Rivera"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Austin",
-   "new": "Atlanta",
+   "old": "Atlanta",
+   "new": "Portland",
    "by": "user",
    "kind": "default",
-   "gap": 0.76
+   "gap": 0.85
   },
   {
    "slot": "seat_class",
-   "old": "business",
-   "new": "coach",
+   "old": "coach",
+   "new": "first class",
    "by": "user",
    "kind": "second",
-   "gap": 2.833
+   "gap": 2.578
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Seattle",
-  "destination": "Atlanta",
-  "date": "May 3",
-  "seat_class": "coach",
+  "origin": "Boston",
+  "destination": "Portland",
+  "date": "June 1",
+  "seat_class": "first class",
   "passenger": "Sam Rivera"
  },
  "l8_action": null,
@@ -50,24 +50,24 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Find a train from Seattle to Austin on May third, hold a business seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Boston to Atlanta on June first, hold a coach seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Wait — make it Atlanta.",
-   "gap_before": 0.76
+   "text": "Wait — make it Portland.",
+   "gap_before": 0.85
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Also, one more change — coach.",
-   "gap_before": 2.833
+   "text": "Also, one more change — first class.",
+   "gap_before": 2.578
   }
  ],
  "events": [],
@@ -86,16 +86,16 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
-    "destination": "Atlanta",
-    "date": "May 3"
+    "origin": "Boston",
+    "destination": "Portland",
+    "date": "June 1"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SEe9a0d3",
-    "seat_class": "coach"
+    "seat_class": "first class"
    }
   },
   {
@@ -108,13 +108,13 @@
  ],
  "gold_state": {
   "search_trains#SEe9a0d3": {
-   "origin": "Seattle",
-   "destination": "Atlanta",
-   "date": "May 3"
+   "origin": "Boston",
+   "destination": "Portland",
+   "date": "June 1"
   },
   "hold_seat#HOc44252": {
    "train_id": "SEe9a0d3",
-   "seat_class": "coach"
+   "seat_class": "first class"
   },
   "purchase_ticket#PU6f8718": {
    "hold_id": "HOc44252",
@@ -122,33 +122,33 @@
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv05"
+  "user": "cv04",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 9.46,
+   "t_end": 7.62,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.22,
-   "t_end": 13.26,
+   "t_start": 8.47,
+   "t_end": 10.47,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 16.093,
-   "t_end": 18.333,
+   "t_start": 13.048,
+   "t_end": 18.408,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.76,
-  2.833
+  0.85,
+  2.578
  ]
 }

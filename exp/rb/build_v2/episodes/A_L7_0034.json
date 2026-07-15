@@ -7,14 +7,14 @@
  "scenario": "hou_multi",
  "slots": {
   "city": "青岛",
-  "beds": "两居",
+  "beds": "一居",
   "max_rent": "八千",
   "from_addr": "望京",
   "to_addr": "西二旗"
  },
  "slots_final": {
-  "city": "厦门",
-  "beds": "两居",
+  "city": "成都",
+  "beds": "一居",
   "max_rent": "八千",
   "from_addr": "望京",
   "to_addr": "西二旗"
@@ -23,16 +23,16 @@
   {
    "slot": "city",
    "old": "青岛",
-   "new": "厦门",
+   "new": "成都",
    "by": "user",
    "kind": "default",
-   "gap": 1.343
+   "gap": 1.203
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "city": "厦门",
-  "beds": 2,
+  "city": "成都",
+  "beds": 1,
   "max_rent": 8000,
   "from_addr": "望京",
   "to_addr": "西二旗"
@@ -42,17 +42,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "在青岛找两居、不超过八千的房子，再算下从望京到西二旗的通勤时间。",
+   "text": "在青岛找一居、不超过八千的房子，再算下从望京到西二旗的通勤时间。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "等等，改成厦门。",
-   "gap_before": 1.343
+   "text": "等等，改成成都。",
+   "gap_before": 1.203
   }
  ],
  "events": [],
@@ -70,8 +70,8 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "厦门",
-    "beds": 2,
+    "city": "成都",
+    "beds": 1,
     "max_rent": 8000
    }
   },
@@ -85,8 +85,8 @@
  ],
  "gold_state": {
   "search_rentals#SE8ccbb3": {
-   "city": "厦门",
-   "beds": 2,
+   "city": "成都",
+   "beds": 1,
    "max_rent": 8000
   },
   "get_commute_time#GE931fc8": {
@@ -95,26 +95,26 @@
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv07"
+  "user": "cv03",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 9.3,
+   "t_end": 8.1,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.643,
-   "t_end": 12.643,
+   "t_start": 9.303,
+   "t_end": 10.823,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.343
+  1.203
  ]
 }

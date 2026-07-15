@@ -6,16 +6,16 @@
  "lang": "en",
  "scenario": "travel_multi",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Austin",
-  "date": "May third",
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "June first",
   "country": "Thailand",
   "nationality": "American"
  },
  "slots_final": {
-  "origin": "Seattle",
-  "destination": "Austin",
-  "date": "May third",
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "June first",
   "country": "Japan",
   "nationality": "American"
  },
@@ -26,14 +26,14 @@
    "new": "Japan",
    "by": "user",
    "kind": "default",
-   "gap": 2.492
+   "gap": 2.24
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Seattle",
-  "destination": "Austin",
-  "date": "May 3",
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "June 1",
   "country": "Japan",
   "nationality": "American"
  },
@@ -42,17 +42,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Look up trains from Seattle to Austin on May third, and also check if American citizens need a visa for Thailand.",
+   "text": "Look up trains from Chicago to Denver on June first, and also check if American citizens need a visa for Thailand.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv07",
    "lang": "en",
    "text": "Wait — make it Japan.",
-   "gap_before": 2.492
+   "gap_before": 2.24
   }
  ],
  "events": [],
@@ -70,9 +70,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
-    "destination": "Austin",
-    "date": "May 3"
+    "origin": "Chicago",
+    "destination": "Denver",
+    "date": "June 1"
    }
   },
   {
@@ -85,9 +85,9 @@
  ],
  "gold_state": {
   "search_trains#SE30bb10": {
-   "origin": "Seattle",
-   "destination": "Austin",
-   "date": "May 3"
+   "origin": "Chicago",
+   "destination": "Denver",
+   "date": "June 1"
   },
   "check_visa_rule#CHabf420": {
    "country": "Japan",
@@ -95,26 +95,26 @@
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv05"
+  "user": "cv07",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.7,
+   "t_end": 7.46,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.192,
-   "t_end": 12.432,
+   "t_start": 9.7,
+   "t_end": 11.22,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.492
+  2.24
  ]
 }

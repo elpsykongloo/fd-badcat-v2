@@ -6,47 +6,47 @@
  "lang": "en",
  "scenario": "travel_hotel",
  "slots": {
-  "city": "Austin",
+  "city": "Boise",
   "checkin": "May third",
-  "nights": "two"
+  "nights": "three"
  },
  "slots_final": {
-  "city": "Miami",
+  "city": "Denver",
   "checkin": "May third",
-  "nights": "two"
+  "nights": "three"
  },
  "revisions": [
   {
    "slot": "city",
-   "old": "Austin",
-   "new": "Miami",
+   "old": "Boise",
+   "new": "Denver",
    "by": "user",
    "kind": "default",
-   "gap": 0.537
+   "gap": 0.277
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "city": "Miami",
+  "city": "Denver",
   "checkin": "May 3",
-  "nights": 2
+  "nights": 3
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Book me a hotel in Austin, checking in May third, for two nights.",
+   "text": "Book me a hotel in Boise, checking in May third, for three nights.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Wait — make it Miami.",
-   "gap_before": 0.537
+   "text": "Wait — make it Denver.",
+   "gap_before": 0.277
   }
  ],
  "events": [],
@@ -63,40 +63,40 @@
   {
    "fn": "reserve_hotel",
    "args": {
-    "city": "Miami",
+    "city": "Denver",
     "checkin": "May 3",
-    "nights": 2
+    "nights": 3
    }
   }
  ],
  "gold_state": {
   "reserve_hotel#RE99b261": {
-   "city": "Miami",
+   "city": "Denver",
    "checkin": "May 3",
-   "nights": 2
+   "nights": 3
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv05"
+  "user": "cv05",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 4.82,
+   "t_end": 5.46,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 5.357,
-   "t_end": 6.877,
+   "t_start": 5.737,
+   "t_end": 7.337,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.537
+  0.277
  ]
 }

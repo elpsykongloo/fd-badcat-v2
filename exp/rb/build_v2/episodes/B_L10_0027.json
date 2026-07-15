@@ -6,67 +6,67 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Austin",
-  "date": "June first",
+  "origin": "Boston",
+  "destination": "Denver",
+  "date": "May eighth",
   "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Chicago",
-  "destination": "Austin",
-  "date": "June first",
+  "origin": "Boston",
+  "destination": "Denver",
+  "date": "May eighth",
   "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "passenger": "Sam Rivera"
  },
  "revisions": [],
  "bystander": {
   "kind": "command",
-  "other": "May eighth",
+  "other": "first class",
   "state": "inflight",
-  "frac": 0.577
+  "frac": 0.491
  },
  "slots_canon": {
-  "origin": "Chicago",
-  "destination": "Austin",
-  "date": "June 1",
+  "origin": "Boston",
+  "destination": "Denver",
+  "date": "May 8",
   "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "passenger": "Sam Rivera"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Find a train from Chicago to Austin on June first, hold a coach seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Boston to Denver on May eighth, hold a coach seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv08",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Change it to May eighth.",
-   "at_after_eou": 1.978
+   "text": "Change it to first class.",
+   "at_after_eou": 1.927
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.645,
+   "offset": 0.564,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv08",
-   "text": "Change it to May eighth."
+   "voice": "cv03",
+   "text": "Change it to first class."
   },
   {
    "state": "tts",
-   "offset": 0.377,
+   "offset": 0.27,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv08",
-   "text": "Change it to May eighth."
+   "voice": "cv03",
+   "text": "Change it to first class."
   }
  ],
  "profile": "default",
@@ -84,9 +84,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
-    "destination": "Austin",
-    "date": "June 1"
+    "origin": "Boston",
+    "destination": "Denver",
+    "date": "May 8"
    }
   },
   {
@@ -100,15 +100,15 @@
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HOc81dd0",
-    "passenger": "Jordan Lee"
+    "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEab44bb": {
-   "origin": "Chicago",
-   "destination": "Austin",
-   "date": "June 1"
+   "origin": "Boston",
+   "destination": "Denver",
+   "date": "May 8"
   },
   "hold_seat#HOc81dd0": {
    "train_id": "SEab44bb",
@@ -116,13 +116,13 @@
   },
   "purchase_ticket#PU8687b4": {
    "hold_id": "HOc81dd0",
-   "passenger": "Jordan Lee"
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv08"
+  "user": "cv05",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

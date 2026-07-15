@@ -6,24 +6,24 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Portland",
-  "date": "May eighth",
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "June first",
   "seat_class": "business",
-  "passenger": "Alex Chen"
+  "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Seattle",
-  "destination": "Austin",
+  "origin": "Chicago",
+  "destination": "Atlanta",
   "date": "May eighth",
   "seat_class": "business",
-  "passenger": "Alex Chen"
+  "passenger": "Sam Rivera"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Portland",
-   "new": "Austin",
+   "slot": "date",
+   "old": "June first",
+   "new": "May eighth",
    "by": "user",
    "kind": "default",
    "gap": null
@@ -31,38 +31,38 @@
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Seattle",
-  "destination": "Austin",
+  "origin": "Chicago",
+  "destination": "Atlanta",
   "date": "May 8",
   "seat_class": "business",
-  "passenger": "Alex Chen"
+  "passenger": "Sam Rivera"
  },
  "l8_action": "revise",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Find a train from Seattle to Portland on May eighth, hold a business seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Chicago to Atlanta on June first, hold a business seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Wait — make it Austin.",
-   "at_after_eou": 1.726
+   "text": "Wait — make it May eighth.",
+   "at_after_eou": 1.86
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.751,
+   "offset": 0.728,
    "action": "revise",
    "role": "user",
-   "voice": "cv08",
-   "text": "Wait — make it Austin."
+   "voice": "cv03",
+   "text": "Wait — make it May eighth."
   }
  ],
  "profile": "default",
@@ -80,8 +80,8 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
-    "destination": "Austin",
+    "origin": "Chicago",
+    "destination": "Atlanta",
     "date": "May 8"
    }
   },
@@ -96,14 +96,14 @@
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO380d6f",
-    "passenger": "Alex Chen"
+    "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEb7c865": {
-   "origin": "Seattle",
-   "destination": "Austin",
+   "origin": "Chicago",
+   "destination": "Atlanta",
    "date": "May 8"
   },
   "hold_seat#HO380d6f": {
@@ -112,13 +112,13 @@
   },
   "purchase_ticket#PU81b29b": {
    "hold_id": "HO380d6f",
-   "passenger": "Alex Chen"
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv01"
+  "user": "cv03",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

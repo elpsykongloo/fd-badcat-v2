@@ -6,16 +6,16 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "three thousand",
+  "amount": "five thousand",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "savings"
  },
  "slots_final": {
-  "amount": "three thousand",
+  "amount": "five thousand",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
@@ -26,14 +26,14 @@
    "new": "rent account",
    "by": "user",
    "kind": "default",
-   "gap": 2.715
+   "gap": 2.642
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "amount": 3000,
+  "amount": 5000,
   "from_cur": "USD",
-  "to_cur": "JPY",
+  "to_cur": "EUR",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
@@ -42,17 +42,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Get a quote for three thousand dollars to yen, then transfer three thousand from checking to savings.",
+   "text": "Get a quote for five thousand dollars to euros, then transfer five thousand from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv01",
    "lang": "en",
    "text": "Wait — make it rent account.",
-   "gap_before": 2.715
+   "gap_before": 2.642
   }
  ],
  "events": [],
@@ -70,9 +70,9 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": 3000,
+    "amount": 5000,
     "from_cur": "USD",
-    "to_cur": "JPY"
+    "to_cur": "EUR"
    }
   },
   {
@@ -80,43 +80,43 @@
    "args": {
     "from_acct": "checking",
     "to_acct": "rent account",
-    "amount": 3000
+    "amount": 5000
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GEdff06e": {
-   "amount": 3000,
+   "amount": 5000,
    "from_cur": "USD",
-   "to_cur": "JPY"
+   "to_cur": "EUR"
   },
   "transfer_funds#TRcd952a": {
    "from_acct": "checking",
    "to_acct": "rent account",
-   "amount": 3000
+   "amount": 5000
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv09"
+  "user": "cv01",
+  "bystander": "cv05"
  },
  "split": "dev",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.34,
+   "t_end": 7.94,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.055,
-   "t_end": 10.255,
+   "t_start": 10.582,
+   "t_end": 12.822,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.715
+  2.642
  ]
 }

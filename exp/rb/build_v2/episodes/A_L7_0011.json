@@ -6,15 +6,15 @@
  "lang": "en",
  "scenario": "travel_multi",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Denver",
+  "origin": "Seattle",
+  "destination": "Austin",
   "date": "May eighth",
   "country": "Thailand",
   "nationality": "American"
  },
  "slots_final": {
-  "origin": "Chicago",
-  "destination": "Portland",
+  "origin": "Seattle",
+  "destination": "Denver",
   "date": "May eighth",
   "country": "Thailand",
   "nationality": "American"
@@ -22,17 +22,17 @@
  "revisions": [
   {
    "slot": "destination",
-   "old": "Denver",
-   "new": "Portland",
+   "old": "Austin",
+   "new": "Denver",
    "by": "user",
    "kind": "default",
-   "gap": 1.49
+   "gap": 1.089
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Chicago",
-  "destination": "Portland",
+  "origin": "Seattle",
+  "destination": "Denver",
   "date": "May 8",
   "country": "Thailand",
   "nationality": "American"
@@ -42,17 +42,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Look up trains from Chicago to Denver on May eighth, and also check if American citizens need a visa for Thailand.",
+   "text": "Look up trains from Seattle to Austin on May eighth, and also check if American citizens need a visa for Thailand.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Wait — make it Portland.",
-   "gap_before": 1.49
+   "text": "Wait — make it Denver.",
+   "gap_before": 1.089
   }
  ],
  "events": [],
@@ -70,8 +70,8 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
-    "destination": "Portland",
+    "origin": "Seattle",
+    "destination": "Denver",
     "date": "May 8"
    }
   },
@@ -85,8 +85,8 @@
  ],
  "gold_state": {
   "search_trains#SEc55351": {
-   "origin": "Chicago",
-   "destination": "Portland",
+   "origin": "Seattle",
+   "destination": "Denver",
    "date": "May 8"
   },
   "check_visa_rule#CH9b1f1c": {
@@ -95,26 +95,26 @@
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv07"
+  "user": "cv04",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 9.38,
+   "t_end": 8.82,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.87,
-   "t_end": 13.03,
+   "t_start": 9.909,
+   "t_end": 11.749,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.49
+  1.089
  ]
 }

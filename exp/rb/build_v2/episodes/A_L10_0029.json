@@ -26,7 +26,7 @@
    "new": "three thousand",
    "by": "user",
    "kind": "default",
-   "gap": 0.834
+   "gap": 1.134
   }
  ],
  "bystander": null,
@@ -42,17 +42,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv02",
    "lang": "en",
    "text": "Get a quote for five thousand dollars to yen, then transfer five thousand from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv02",
    "lang": "en",
    "text": "Wait — make it three thousand.",
-   "gap_before": 0.834
+   "gap_before": 1.134
   }
  ],
  "events": [],
@@ -97,26 +97,26 @@
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv05"
+  "user": "cv02",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.54,
+   "t_end": 6.34,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.374,
-   "t_end": 11.814,
+   "t_start": 7.474,
+   "t_end": 9.794,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.834
+  1.134
  ]
 }

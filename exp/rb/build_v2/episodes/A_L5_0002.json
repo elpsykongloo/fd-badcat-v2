@@ -7,13 +7,13 @@
  "scenario": "hou_chain",
  "slots": {
   "city": "厦门",
-  "beds": "两居",
+  "beds": "一居",
   "max_rent": "六千",
   "slot": "周六上午"
  },
  "slots_final": {
   "city": "厦门",
-  "beds": "两居",
+  "beds": "一居",
   "max_rent": "八千",
   "slot": "周六上午"
  },
@@ -24,13 +24,13 @@
    "new": "八千",
    "by": "user",
    "kind": "default",
-   "gap": 2.698
+   "gap": 2.773
   }
  ],
  "bystander": null,
  "slots_canon": {
   "city": "厦门",
-  "beds": 2,
+  "beds": 1,
   "max_rent": 8000,
   "slot": "周六上午"
  },
@@ -39,17 +39,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "在厦门找两居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在厦门找一居、租金不超过六千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv01",
    "lang": "zh",
    "text": "等等，改成八千。",
-   "gap_before": 2.698
+   "gap_before": 2.773
   }
  ],
  "events": [],
@@ -68,7 +68,7 @@
    "fn": "search_rentals",
    "args": {
     "city": "厦门",
-    "beds": 2,
+    "beds": 1,
     "max_rent": 8000
    }
   },
@@ -83,7 +83,7 @@
  "gold_state": {
   "search_rentals#SEbb6fec": {
    "city": "厦门",
-   "beds": 2,
+   "beds": 1,
    "max_rent": 8000
   },
   "book_viewing#BO85a193": {
@@ -92,26 +92,26 @@
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv06"
+  "user": "cv01",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.18,
+   "t_end": 5.14,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.878,
-   "t_end": 10.958,
+   "t_start": 7.913,
+   "t_end": 9.513,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.698
+  2.773
  ]
 }

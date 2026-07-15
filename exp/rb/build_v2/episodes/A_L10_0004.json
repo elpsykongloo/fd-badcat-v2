@@ -6,24 +6,24 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "保温杯",
+  "query": "蓝牙耳机",
   "qty": "一",
   "address": "海淀区学院路一号"
  },
  "slots_final": {
-  "query": "保温杯",
+  "query": "蓝牙耳机",
   "qty": "一",
   "address": "海淀区学院路一号"
  },
  "revisions": [],
  "bystander": {
   "kind": "irrelevant",
-  "other": "浦东新区世纪大道八号",
+  "other": "两",
   "state": "inflight",
-  "frac": 0.494
+  "frac": 0.674
  },
  "slots_canon": {
-  "query": "保温杯",
+  "query": "蓝牙耳机",
   "qty": 1,
   "address": "海淀区学院路一号"
  },
@@ -34,7 +34,7 @@
    "role": "user",
    "voice": "cv02",
    "lang": "zh",
-   "text": "帮我搜保温杯，加一件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
@@ -42,7 +42,7 @@
    "voice": "cv08",
    "lang": "zh",
    "text": "今晚想吃什么？我们点外卖吧。",
-   "at_after_eou": 2.188
+   "at_after_eou": 2.388
   }
  ],
  "events": [],
@@ -61,7 +61,7 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "保温杯"
+    "query": "蓝牙耳机"
    }
   },
   {
@@ -81,7 +81,7 @@
  ],
  "gold_state": {
   "search_catalog#SEeea096": {
-   "query": "保温杯"
+   "query": "蓝牙耳机"
   },
   "add_item#AD77acc1": {
    "item_id": "SEeea096",
@@ -97,18 +97,18 @@
   "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.46,
+   "t_end": 7.7,
    "scheduled": "sequential"
   },
   {
    "role": "bystander",
-   "t_start": 10.288,
-   "t_end": 12.688,
+   "t_start": 10.728,
+   "t_end": 13.128,
    "scheduled": "lifecycle_nominal"
   }
  ],

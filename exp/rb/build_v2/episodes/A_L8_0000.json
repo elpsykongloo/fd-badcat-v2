@@ -6,20 +6,20 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "保温杯",
-  "qty": "两",
+  "query": "蓝牙耳机",
+  "qty": "一",
   "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
   "query": "保温杯",
-  "qty": "两",
-  "address": "海淀区学院路一号"
+  "qty": "一",
+  "address": "浦东新区世纪大道八号"
  },
  "revisions": [
   {
-   "slot": "address",
-   "old": "浦东新区世纪大道八号",
-   "new": "海淀区学院路一号",
+   "slot": "query",
+   "old": "蓝牙耳机",
+   "new": "保温杯",
    "by": "user",
    "kind": "default",
    "gap": null
@@ -28,25 +28,25 @@
  "bystander": null,
  "slots_canon": {
   "query": "保温杯",
-  "qty": 2,
-  "address": "海淀区学院路一号"
+  "qty": 1,
+  "address": "浦东新区世纪大道八号"
  },
  "l8_action": "revise",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv08",
    "lang": "zh",
-   "text": "帮我搜保温杯，加两件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv08",
    "lang": "zh",
-   "text": "等等，改成海淀区学院路一号。",
-   "at_after_eou": 1.85
+   "text": "等等，改成保温杯。",
+   "at_after_eou": 1.753
   }
  ],
  "events": [],
@@ -72,14 +72,14 @@
    "fn": "add_item",
    "args": {
     "item_id": "SE9ae10b",
-    "qty": 2
+    "qty": 1
    }
   },
   {
    "fn": "place_order",
    "args": {
     "cart_id": "ADd913ee",
-    "address": "海淀区学院路一号"
+    "address": "浦东新区世纪大道八号"
    }
   }
  ],
@@ -89,30 +89,30 @@
   },
   "add_item#ADd913ee": {
    "item_id": "SE9ae10b",
-   "qty": 2
+   "qty": 1
   },
   "place_order#PLa8ae90": {
    "cart_id": "ADd913ee",
-   "address": "海淀区学院路一号"
+   "address": "浦东新区世纪大道八号"
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv09"
+  "user": "cv08",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.5,
+   "t_end": 5.62,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.99,
-   "t_end": 11.63,
+   "t_start": 8.013,
+   "t_end": 15.853,
    "scheduled": "lifecycle_nominal"
   }
  ],

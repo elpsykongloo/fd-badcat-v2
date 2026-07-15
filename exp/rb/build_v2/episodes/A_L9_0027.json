@@ -8,33 +8,33 @@
  "slots": {
   "city": "Austin",
   "checkin": "May tenth",
-  "nights": "three"
+  "nights": "two"
  },
  "slots_final": {
   "city": "Austin",
   "checkin": "May tenth",
-  "nights": "three"
+  "nights": "two"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
   "city": "Austin",
   "checkin": "May 10",
-  "nights": 3
+  "nights": 2
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Book me a hotel in Austin, checking in May tenth, for three nights.",
+   "text": "Book me a hotel in Austin, checking in May tenth, for two nights.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv06",
    "lang": "en",
    "text": "Any progress?",
    "at_after_eou": 8.754
@@ -56,7 +56,7 @@
    "args": {
     "city": "Austin",
     "checkin": "May 10",
-    "nights": 3
+    "nights": 2
    }
   }
  ],
@@ -64,26 +64,26 @@
   "reserve_hotel#REcadd7d": {
    "city": "Austin",
    "checkin": "May 10",
-   "nights": 3
+   "nights": 2
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv04"
+  "user": "cv06",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 4.18,
+   "t_end": 3.86,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 13.574,
-   "t_end": 14.534,
+   "t_start": 13.254,
+   "t_end": 14.454,
    "scheduled": "lifecycle_nominal"
   }
  ],

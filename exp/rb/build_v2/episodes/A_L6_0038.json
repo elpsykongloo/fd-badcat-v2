@@ -6,65 +6,65 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "杭州",
-  "beds": "两居",
+  "city": "成都",
+  "beds": "一居",
   "max_rent": "六千",
-  "slot": "周日下午"
+  "slot": "周六上午"
  },
  "slots_final": {
   "city": "厦门",
-  "beds": "一居",
+  "beds": "两居",
   "max_rent": "六千",
-  "slot": "周日下午"
+  "slot": "周六上午"
  },
  "revisions": [
   {
    "slot": "city",
-   "old": "杭州",
+   "old": "成都",
    "new": "厦门",
    "by": "user",
    "kind": "default",
-   "gap": 0.859
+   "gap": 0.703
   },
   {
    "slot": "beds",
-   "old": "两居",
-   "new": "一居",
+   "old": "一居",
+   "new": "两居",
    "by": "user",
    "kind": "second",
-   "gap": 2.578
+   "gap": 2.682
   }
  ],
  "bystander": null,
  "slots_canon": {
   "city": "厦门",
-  "beds": 1,
+  "beds": 2,
   "max_rent": 6000,
-  "slot": "周日下午"
+  "slot": "周六上午"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv02",
    "lang": "zh",
-   "text": "在杭州找两居、租金不超过六千的房子，约周日下午看房。",
+   "text": "在成都找一居、租金不超过六千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv02",
    "lang": "zh",
    "text": "等等，改成厦门。",
-   "gap_before": 0.859
+   "gap_before": 0.703
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv02",
    "lang": "zh",
-   "text": "还有，再改一下，要一居。",
-   "gap_before": 2.578
+   "text": "还有，再改一下，要两居。",
+   "gap_before": 2.682
   }
  ],
  "events": [],
@@ -83,7 +83,7 @@
    "fn": "search_rentals",
    "args": {
     "city": "厦门",
-    "beds": 1,
+    "beds": 2,
     "max_rent": 6000
    }
   },
@@ -91,49 +91,49 @@
    "fn": "book_viewing",
    "args": {
     "listing_id": "SE7ead52",
-    "slot": "周日下午"
+    "slot": "周六上午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SE7ead52": {
    "city": "厦门",
-   "beds": 1,
+   "beds": 2,
    "max_rent": 6000
   },
   "book_viewing#BOdef600": {
    "listing_id": "SE7ead52",
-   "slot": "周日下午"
+   "slot": "周六上午"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv02"
+  "user": "cv02",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.22,
+   "t_end": 10.82,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.079,
-   "t_end": 9.759,
+   "t_start": 11.523,
+   "t_end": 14.963,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 12.337,
-   "t_end": 15.457,
+   "t_start": 17.645,
+   "t_end": 22.445,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.859,
-  2.578
+  0.703,
+  2.682
  ]
 }

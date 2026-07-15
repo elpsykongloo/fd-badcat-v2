@@ -6,15 +6,15 @@
  "lang": "zh",
  "scenario": "hou_single",
  "slots": {
-  "listing_id": "LST47"
+  "listing_id": "LST12"
  },
  "slots_final": {
-  "listing_id": "LST47"
+  "listing_id": "LST12"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
-  "listing_id": "LST47"
+  "listing_id": "LST12"
  },
  "l8_action": null,
  "cancelled": false,
@@ -23,7 +23,7 @@
    "role": "user",
    "voice": "cv01",
    "lang": "zh",
-   "text": "把编号LST47的房源收藏一下。",
+   "text": "把编号LST12的房源收藏一下。",
    "gap_before": 0.5
   },
   {
@@ -48,32 +48,32 @@
   {
    "fn": "save_listing",
    "args": {
-    "listing_id": "LST47"
+    "listing_id": "LST12"
    }
   }
  ],
  "gold_state": {
   "save_listing#SA816f0f": {
-   "listing_id": "LST47"
+   "listing_id": "LST12"
   }
  },
  "voices": {
   "user": "cv01",
-  "bystander": "cv08"
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 5.06,
+   "t_end": 4.02,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 13.992,
-   "t_end": 14.632,
+   "t_start": 12.952,
+   "t_end": 13.592,
    "scheduled": "lifecycle_nominal"
   }
  ],

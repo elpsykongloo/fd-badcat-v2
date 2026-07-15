@@ -6,33 +6,33 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
-  "destination": "Denver",
-  "date": "May third",
-  "seat_class": "business",
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "May eighth",
+  "seat_class": "first class",
   "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Denver",
+  "origin": "Seattle",
+  "destination": "Austin",
   "date": "May eighth",
   "seat_class": "business",
   "passenger": "Jordan Lee"
  },
  "revisions": [
   {
-   "slot": "date",
-   "old": "May third",
-   "new": "May eighth",
+   "slot": "seat_class",
+   "old": "first class",
+   "new": "business",
    "by": "user",
    "kind": "default",
-   "gap": 2.531
+   "gap": 2.904
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Boston",
-  "destination": "Denver",
+  "origin": "Seattle",
+  "destination": "Austin",
   "date": "May 8",
   "seat_class": "business",
   "passenger": "Jordan Lee"
@@ -42,17 +42,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Find a train from Boston to Denver on May third, hold a business seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Seattle to Austin on May eighth, hold a first class seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Wait — make it May eighth.",
-   "gap_before": 2.531
+   "text": "Wait — make it business.",
+   "gap_before": 2.904
   }
  ],
  "events": [],
@@ -71,8 +71,8 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
-    "destination": "Denver",
+    "origin": "Seattle",
+    "destination": "Austin",
     "date": "May 8"
    }
   },
@@ -93,8 +93,8 @@
  ],
  "gold_state": {
   "search_trains#SE0e7998": {
-   "origin": "Boston",
-   "destination": "Denver",
+   "origin": "Seattle",
+   "destination": "Austin",
    "date": "May 8"
   },
   "hold_seat#HO536cd1": {
@@ -107,26 +107,26 @@
   }
  },
  "voices": {
-  "user": "cv08",
+  "user": "cv01",
   "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.34,
+   "t_end": 8.82,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.871,
-   "t_end": 10.791,
+   "t_start": 11.724,
+   "t_end": 14.204,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.531
+  2.904
  ]
 }

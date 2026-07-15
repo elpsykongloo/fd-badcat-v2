@@ -22,9 +22,9 @@
  "revisions": [],
  "bystander": {
   "kind": "command",
-  "other": "five thousand",
+  "other": "eight hundred",
   "state": "inflight",
-  "frac": 0.781
+  "frac": 0.508
  },
  "slots_canon": {
   "amount": 3000,
@@ -38,35 +38,35 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv06",
    "lang": "en",
    "text": "Get a quote for three thousand dollars to euros, then transfer three thousand from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv05",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Change it to five thousand.",
-   "at_after_eou": 2.05
+   "text": "Change it to eight hundred.",
+   "at_after_eou": 1.907
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.147,
+   "offset": 0.585,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv05",
-   "text": "Change it to five thousand."
+   "voice": "cv02",
+   "text": "Change it to eight hundred."
   },
   {
    "state": "tts",
-   "offset": 0.377,
+   "offset": 0.586,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv05",
-   "text": "Change it to five thousand."
+   "voice": "cv02",
+   "text": "Change it to eight hundred."
   }
  ],
  "profile": "default",
@@ -110,9 +110,9 @@
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv05"
+  "user": "cv06",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

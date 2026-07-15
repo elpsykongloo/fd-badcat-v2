@@ -6,34 +6,34 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "five thousand",
+  "amount": "three thousand",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "slots_final": {
   "amount": "three thousand",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "savings"
  },
  "revisions": [
   {
-   "slot": "amount",
-   "old": "five thousand",
-   "new": "three thousand",
+   "slot": "to_acct",
+   "old": "rent account",
+   "new": "savings",
    "by": "user",
    "kind": "default",
-   "gap": 0.722
+   "gap": 0.646
   }
  ],
  "bystander": null,
  "slots_canon": {
   "amount": 3000,
   "from_cur": "USD",
-  "to_cur": "JPY",
+  "to_cur": "EUR",
   "from_acct": "checking",
   "to_acct": "savings"
  },
@@ -42,17 +42,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Get a quote for five thousand dollars to yen, then transfer five thousand from checking to savings.",
+   "text": "Get a quote for three thousand dollars to euros, then transfer three thousand from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Wait — make it three thousand.",
-   "gap_before": 0.722
+   "text": "Wait — make it savings.",
+   "gap_before": 0.646
   }
  ],
  "events": [],
@@ -72,7 +72,7 @@
    "args": {
     "amount": 3000,
     "from_cur": "USD",
-    "to_cur": "JPY"
+    "to_cur": "EUR"
    }
   },
   {
@@ -88,7 +88,7 @@
   "get_fx_quote#GEb98220": {
    "amount": 3000,
    "from_cur": "USD",
-   "to_cur": "JPY"
+   "to_cur": "EUR"
   },
   "transfer_funds#TR0071ac": {
    "from_acct": "checking",
@@ -97,26 +97,26 @@
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv06"
+  "user": "cv04",
+  "bystander": "cv09"
  },
  "split": "dev",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.18,
+   "t_end": 7.54,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 6.902,
-   "t_end": 8.342,
+   "t_start": 8.186,
+   "t_end": 10.106,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.722
+  0.646
  ]
 }

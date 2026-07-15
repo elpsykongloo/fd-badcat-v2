@@ -7,31 +7,31 @@
  "scenario": "ecom_single",
  "slots": {
   "item_id": "A100",
-  "qty": "两"
+  "qty": "一"
  },
  "slots_final": {
   "item_id": "A100",
-  "qty": "两"
+  "qty": "一"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
   "item_id": "A100",
-  "qty": 2
+  "qty": 1
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "把编号A100的商品加两件到购物车。",
+   "text": "把编号A100的商品加一件到购物车。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv04",
    "lang": "zh",
    "text": "好了没？",
    "at_after_eou": 9.151
@@ -40,10 +40,10 @@
  "events": [
   {
    "state": "inflight",
-   "offset": 0.685,
+   "offset": 0.636,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv04",
    "text": "好了没？"
   }
  ],
@@ -61,20 +61,20 @@
    "fn": "add_item",
    "args": {
     "item_id": "A100",
-    "qty": 2
+    "qty": 1
    }
   }
  ],
  "gold_state": {
   "add_item#ADf32bde": {
    "item_id": "A100",
-   "qty": 2
+   "qty": 1
   }
  },
  "voices": {
-  "user": "cv03",
+  "user": "cv04",
   "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

@@ -6,25 +6,25 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "three thousand",
+  "amount": "five thousand",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
  "slots_final": {
-  "amount": "three thousand",
+  "amount": "five thousand",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
-  "amount": 3000,
+  "amount": 5000,
   "from_cur": "USD",
-  "to_cur": "JPY",
+  "to_cur": "EUR",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
@@ -33,26 +33,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Get a quote for three thousand dollars to yen, then transfer three thousand from checking to rent account.",
+   "text": "Get a quote for five thousand dollars to euros, then transfer five thousand from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv01",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 1.838
+   "at_after_eou": 1.823
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.565,
+   "offset": 0.324,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv01",
    "text": "Any progress?"
   }
  ],
@@ -70,9 +70,9 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": 3000,
+    "amount": 5000,
     "from_cur": "USD",
-    "to_cur": "JPY"
+    "to_cur": "EUR"
    }
   },
   {
@@ -80,26 +80,26 @@
    "args": {
     "from_acct": "checking",
     "to_acct": "rent account",
-    "amount": 3000
+    "amount": 5000
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GE15eda9": {
-   "amount": 3000,
+   "amount": 5000,
    "from_cur": "USD",
-   "to_cur": "JPY"
+   "to_cur": "EUR"
   },
   "transfer_funds#TRf3059b": {
    "from_acct": "checking",
    "to_acct": "rent account",
-   "amount": 3000
+   "amount": 5000
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv06"
+  "user": "cv01",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

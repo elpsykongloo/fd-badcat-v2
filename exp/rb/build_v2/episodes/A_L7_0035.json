@@ -6,35 +6,35 @@
  "lang": "en",
  "scenario": "travel_multi",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Denver",
-  "date": "June first",
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "May eighth",
   "country": "Thailand",
   "nationality": "American"
  },
  "slots_final": {
-  "origin": "Chicago",
-  "destination": "Atlanta",
-  "date": "June first",
-  "country": "Thailand",
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "May eighth",
+  "country": "Japan",
   "nationality": "American"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Denver",
-   "new": "Atlanta",
+   "slot": "country",
+   "old": "Thailand",
+   "new": "Japan",
    "by": "user",
    "kind": "default",
-   "gap": 1.42
+   "gap": 1.045
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Chicago",
-  "destination": "Atlanta",
-  "date": "June 1",
-  "country": "Thailand",
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "May 8",
+  "country": "Japan",
   "nationality": "American"
  },
  "l8_action": null,
@@ -42,17 +42,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Look up trains from Chicago to Denver on June first, and also check if American citizens need a visa for Thailand.",
+   "text": "Look up trains from Seattle to Portland on May eighth, and also check if American citizens need a visa for Thailand.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Wait — make it Atlanta.",
-   "gap_before": 1.42
+   "text": "Wait — make it Japan.",
+   "gap_before": 1.045
   }
  ],
  "events": [],
@@ -70,51 +70,51 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
-    "destination": "Atlanta",
-    "date": "June 1"
+    "origin": "Seattle",
+    "destination": "Portland",
+    "date": "May 8"
    }
   },
   {
    "fn": "check_visa_rule",
    "args": {
-    "country": "Thailand",
+    "country": "Japan",
     "nationality": "American"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE3ca4ea": {
-   "origin": "Chicago",
-   "destination": "Atlanta",
-   "date": "June 1"
+   "origin": "Seattle",
+   "destination": "Portland",
+   "date": "May 8"
   },
   "check_visa_rule#CH1b2b9d": {
-   "country": "Thailand",
+   "country": "Japan",
    "nationality": "American"
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv06"
+  "user": "cv06",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 9.7,
+   "t_end": 8.34,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 11.12,
-   "t_end": 13.76,
+   "t_start": 9.385,
+   "t_end": 11.625,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.42
+  1.045
  ]
 }

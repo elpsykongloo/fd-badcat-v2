@@ -6,29 +6,29 @@
  "lang": "en",
  "scenario": "travel_hotel",
  "slots": {
-  "city": "Denver",
-  "checkin": "May third",
+  "city": "Boise",
+  "checkin": "May tenth",
   "nights": "three"
  },
  "slots_final": {
-  "city": "Denver",
-  "checkin": "May tenth",
+  "city": "Boise",
+  "checkin": "May third",
   "nights": "three"
  },
  "revisions": [
   {
    "slot": "checkin",
-   "old": "May third",
-   "new": "May tenth",
+   "old": "May tenth",
+   "new": "May third",
    "by": "user",
    "kind": "default",
-   "gap": 0.321
+   "gap": 0.231
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "city": "Denver",
-  "checkin": "May 10",
+  "city": "Boise",
+  "checkin": "May 3",
   "nights": 3
  },
  "l8_action": null,
@@ -38,15 +38,15 @@
    "role": "user",
    "voice": "cv09",
    "lang": "en",
-   "text": "Book me a hotel in Denver, checking in May third, for three nights.",
+   "text": "Book me a hotel in Boise, checking in May tenth, for three nights.",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv09",
    "lang": "en",
-   "text": "Wait — make it May tenth.",
-   "gap_before": 0.321
+   "text": "Wait — make it May third.",
+   "gap_before": 0.231
   }
  ],
  "events": [],
@@ -63,40 +63,40 @@
   {
    "fn": "reserve_hotel",
    "args": {
-    "city": "Denver",
-    "checkin": "May 10",
+    "city": "Boise",
+    "checkin": "May 3",
     "nights": 3
    }
   }
  ],
  "gold_state": {
   "reserve_hotel#RE9c1b20": {
-   "city": "Denver",
-   "checkin": "May 10",
+   "city": "Boise",
+   "checkin": "May 3",
    "nights": 3
   }
  },
  "voices": {
   "user": "cv09",
-  "bystander": "cv02"
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.5,
+   "t_end": 6.02,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 6.821,
-   "t_end": 10.181,
+   "t_start": 6.251,
+   "t_end": 7.531,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.321
+  0.231
  ]
 }

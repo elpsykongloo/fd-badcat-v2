@@ -7,14 +7,14 @@
  "scenario": "travel_multi",
  "slots": {
   "origin": "Boston",
-  "destination": "Austin",
+  "destination": "Denver",
   "date": "June first",
   "country": "Thailand",
   "nationality": "American"
  },
  "slots_final": {
   "origin": "Boston",
-  "destination": "Denver",
+  "destination": "Portland",
   "date": "June first",
   "country": "Thailand",
   "nationality": "American"
@@ -22,17 +22,17 @@
  "revisions": [
   {
    "slot": "destination",
-   "old": "Austin",
-   "new": "Denver",
+   "old": "Denver",
+   "new": "Portland",
    "by": "user",
    "kind": "default",
-   "gap": 1.04
+   "gap": 1.75
   }
  ],
  "bystander": null,
  "slots_canon": {
   "origin": "Boston",
-  "destination": "Denver",
+  "destination": "Portland",
   "date": "June 1",
   "country": "Thailand",
   "nationality": "American"
@@ -42,17 +42,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Look up trains from Boston to Austin on June first, and also check if American citizens need a visa for Thailand.",
+   "text": "Look up trains from Boston to Denver on June first, and also check if American citizens need a visa for Thailand.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Wait — make it Denver.",
-   "gap_before": 1.04
+   "text": "Wait — make it Portland.",
+   "gap_before": 1.75
   }
  ],
  "events": [],
@@ -71,7 +71,7 @@
    "fn": "search_trains",
    "args": {
     "origin": "Boston",
-    "destination": "Denver",
+    "destination": "Portland",
     "date": "June 1"
    }
   },
@@ -86,7 +86,7 @@
  "gold_state": {
   "search_trains#SEe2c483": {
    "origin": "Boston",
-   "destination": "Denver",
+   "destination": "Portland",
    "date": "June 1"
   },
   "check_visa_rule#CHf94c79": {
@@ -95,26 +95,26 @@
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv08"
+  "user": "cv03",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 9.3,
+   "t_end": 9.62,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.34,
-   "t_end": 12.26,
+   "t_start": 11.37,
+   "t_end": 13.53,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.04
+  1.75
  ]
 }

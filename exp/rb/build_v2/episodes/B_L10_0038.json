@@ -8,23 +8,23 @@
  "slots": {
   "city": "杭州",
   "beds": "一居",
-  "max_rent": "八千",
+  "max_rent": "六千",
   "slot": "周日下午"
  },
  "slots_final": {
   "city": "杭州",
   "beds": "一居",
   "max_rent": "六千",
-  "slot": "周日下午"
+  "slot": "周六上午"
  },
  "revisions": [
   {
-   "slot": "max_rent",
-   "old": "八千",
-   "new": "六千",
+   "slot": "slot",
+   "old": "周日下午",
+   "new": "周六上午",
    "by": "user",
    "kind": "default",
-   "gap": 1.057
+   "gap": 0.781
   }
  ],
  "bystander": null,
@@ -32,34 +32,34 @@
   "city": "杭州",
   "beds": 1,
   "max_rent": 6000,
-  "slot": "周日下午"
+  "slot": "周六上午"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "在杭州找一居、租金不超过八千的房子，约周日下午看房。",
+   "text": "在杭州找一居、租金不超过六千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "等等，改成六千。",
-   "gap_before": 1.057
+   "text": "等等，改成周六上午。",
+   "gap_before": 0.781
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.718,
+   "offset": 0.597,
    "action": "benign_control",
    "role": "user",
-   "voice": "cv06",
-   "text": "等等，改成六千。"
+   "voice": "cv01",
+   "text": "等等，改成周六上午。"
   }
  ],
  "profile": "default",
@@ -85,7 +85,7 @@
    "fn": "book_viewing",
    "args": {
     "listing_id": "SEb2d1ec",
-    "slot": "周日下午"
+    "slot": "周六上午"
    }
   }
  ],
@@ -97,13 +97,13 @@
   },
   "book_viewing#BOfbdc70": {
    "listing_id": "SEb2d1ec",
-   "slot": "周日下午"
+   "slot": "周六上午"
   }
  },
  "voices": {
-  "user": "cv06",
+  "user": "cv01",
   "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

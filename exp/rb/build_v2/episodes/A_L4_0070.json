@@ -6,30 +6,30 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "厦门",
-  "beds": "两居",
+  "city": "杭州",
+  "beds": "一居",
   "max_rent": "六千",
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "slots_final": {
-  "city": "厦门",
+  "city": "杭州",
   "beds": "一居",
   "max_rent": "六千",
   "slot": "周六上午"
  },
  "revisions": [
   {
-   "slot": "beds",
-   "old": "两居",
-   "new": "一居",
+   "slot": "slot",
+   "old": "周日下午",
+   "new": "周六上午",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.696
+   "gap": 0.957
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "city": "厦门",
+  "city": "杭州",
   "beds": 1,
   "max_rent": 6000,
   "slot": "周六上午"
@@ -39,17 +39,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "在厦门找两居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在杭州找一居、租金不超过六千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "一居，改成一居。",
-   "gap_before": 0.696
+   "text": "周六上午，改成周六上午。",
+   "gap_before": 0.957
   }
  ],
  "events": [],
@@ -67,7 +67,7 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "厦门",
+    "city": "杭州",
     "beds": 1,
     "max_rent": 6000
    }
@@ -82,7 +82,7 @@
  ],
  "gold_state": {
   "search_rentals#SE2d5644": {
-   "city": "厦门",
+   "city": "杭州",
    "beds": 1,
    "max_rent": 6000
   },
@@ -92,26 +92,26 @@
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv08"
+  "user": "cv03",
+  "bystander": "cv06"
  },
  "split": "dev",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.86,
+   "t_end": 4.98,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.556,
-   "t_end": 11.596,
+   "t_start": 5.937,
+   "t_end": 8.657,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.696
+  0.957
  ]
 }

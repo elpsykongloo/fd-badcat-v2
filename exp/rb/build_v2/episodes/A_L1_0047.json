@@ -6,20 +6,20 @@
  "lang": "en",
  "scenario": "travel_hotel",
  "slots": {
-  "city": "Boise",
-  "checkin": "May tenth",
-  "nights": "two"
+  "city": "Denver",
+  "checkin": "May third",
+  "nights": "three"
  },
  "slots_final": {
-  "city": "Boise",
+  "city": "Denver",
   "checkin": "May third",
   "nights": "two"
  },
  "revisions": [
   {
-   "slot": "checkin",
-   "old": "May tenth",
-   "new": "May third",
+   "slot": "nights",
+   "old": "three",
+   "new": "two",
    "by": "user",
    "kind": "inline",
    "gap": null
@@ -27,7 +27,7 @@
  ],
  "bystander": null,
  "slots_canon": {
-  "city": "Boise",
+  "city": "Denver",
   "checkin": "May 3",
   "nights": 2
  },
@@ -36,9 +36,9 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Book me a hotel in Boise, checking in May tenth, for two nights., oh no, make that May third",
+   "text": "Book me a hotel in Denver, checking in May third, for three nights., oh no, make that two",
    "gap_before": 0.5
   }
  ],
@@ -56,7 +56,7 @@
   {
    "fn": "reserve_hotel",
    "args": {
-    "city": "Boise",
+    "city": "Denver",
     "checkin": "May 3",
     "nights": 2
    }
@@ -64,22 +64,22 @@
  ],
  "gold_state": {
   "reserve_hotel#REfbc5d2": {
-   "city": "Boise",
+   "city": "Denver",
    "checkin": "May 3",
    "nights": 2
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv04"
+  "user": "cv07",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.82,
+   "t_end": 6.42,
    "scheduled": "sequential"
   }
  ],

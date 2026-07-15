@@ -6,7 +6,7 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "three thousand",
+  "amount": "eight hundred",
   "from_cur": "dollars",
   "to_cur": "yen",
   "from_acct": "checking",
@@ -22,11 +22,11 @@
  "revisions": [
   {
    "slot": "amount",
-   "old": "three thousand",
+   "old": "eight hundred",
    "new": "five thousand",
    "by": "user",
    "kind": "default",
-   "gap": 0.772
+   "gap": 0.954
   },
   {
    "slot": "to_acct",
@@ -34,7 +34,7 @@
    "new": "rent account",
    "by": "user",
    "kind": "second",
-   "gap": 2.779
+   "gap": 2.729
   }
  ],
  "bystander": null,
@@ -50,24 +50,24 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Get a quote for three thousand dollars to yen, then transfer three thousand from checking to savings.",
+   "text": "Get a quote for eight hundred dollars to yen, then transfer eight hundred from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv09",
    "lang": "en",
    "text": "Wait — make it five thousand.",
-   "gap_before": 0.772
+   "gap_before": 0.954
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv09",
    "lang": "en",
    "text": "Also, one more change — rent account.",
-   "gap_before": 2.779
+   "gap_before": 2.729
   }
  ],
  "events": [],
@@ -112,33 +112,33 @@
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv06"
+  "user": "cv09",
+  "bystander": "cv01"
  },
  "split": "dev",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.42,
+   "t_end": 5.86,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 7.192,
-   "t_end": 9.432,
+   "t_start": 6.814,
+   "t_end": 8.494,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 12.211,
-   "t_end": 15.171,
+   "t_start": 11.223,
+   "t_end": 13.703,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.772,
-  2.779
+  0.954,
+  2.729
  ]
 }

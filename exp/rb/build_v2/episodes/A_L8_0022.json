@@ -6,23 +6,23 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "厦门",
+  "city": "青岛",
   "beds": "两居",
-  "max_rent": "六千",
+  "max_rent": "八千",
   "slot": "周日下午"
  },
  "slots_final": {
-  "city": "厦门",
+  "city": "青岛",
   "beds": "两居",
-  "max_rent": "六千",
+  "max_rent": "八千",
   "slot": "周日下午"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
-  "city": "厦门",
+  "city": "青岛",
   "beds": 2,
-  "max_rent": 6000,
+  "max_rent": 8000,
   "slot": "周日下午"
  },
  "l8_action": "cancel",
@@ -30,17 +30,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv07",
    "lang": "zh",
-   "text": "在厦门找两居、租金不超过六千的房子，约周日下午看房。",
+   "text": "在青岛找两居、租金不超过八千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv07",
    "lang": "zh",
    "text": "算了，先别办了。",
-   "at_after_eou": 1.807
+   "at_after_eou": 1.708
   }
  ],
  "events": [],
@@ -57,22 +57,22 @@
  "gold_calls": [],
  "gold_state": {},
  "voices": {
-  "user": "cv09",
-  "bystander": "cv05"
+  "user": "cv07",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.82,
+   "t_end": 6.1,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.267,
-   "t_end": 10.947,
+   "t_start": 8.448,
+   "t_end": 9.568,
    "scheduled": "lifecycle_nominal"
   }
  ],

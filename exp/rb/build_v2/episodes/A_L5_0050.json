@@ -9,30 +9,30 @@
   "city": "杭州",
   "beds": "一居",
   "max_rent": "六千",
-  "slot": "周日下午"
+  "slot": "周六上午"
  },
  "slots_final": {
-  "city": "成都",
+  "city": "厦门",
   "beds": "一居",
   "max_rent": "六千",
-  "slot": "周日下午"
+  "slot": "周六上午"
  },
  "revisions": [
   {
    "slot": "city",
    "old": "杭州",
-   "new": "成都",
+   "new": "厦门",
    "by": "user",
    "kind": "default",
-   "gap": 3.274
+   "gap": 2.514
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "city": "成都",
+  "city": "厦门",
   "beds": 1,
   "max_rent": 6000,
-  "slot": "周日下午"
+  "slot": "周六上午"
  },
  "l8_action": null,
  "cancelled": false,
@@ -41,15 +41,15 @@
    "role": "user",
    "voice": "cv03",
    "lang": "zh",
-   "text": "在杭州找一居、租金不超过六千的房子，约周日下午看房。",
+   "text": "在杭州找一居、租金不超过六千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv03",
    "lang": "zh",
-   "text": "等等，改成成都。",
-   "gap_before": 3.274
+   "text": "等等，改成厦门。",
+   "gap_before": 2.514
   }
  ],
  "events": [],
@@ -67,7 +67,7 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "成都",
+    "city": "厦门",
     "beds": 1,
     "max_rent": 6000
    }
@@ -76,42 +76,42 @@
    "fn": "book_viewing",
    "args": {
     "listing_id": "SE509a69",
-    "slot": "周日下午"
+    "slot": "周六上午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SE509a69": {
-   "city": "成都",
+   "city": "厦门",
    "beds": 1,
    "max_rent": 6000
   },
   "book_viewing#BO5a9c31": {
    "listing_id": "SE509a69",
-   "slot": "周日下午"
+   "slot": "周六上午"
   }
  },
  "voices": {
   "user": "cv03",
-  "bystander": "cv07"
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 4.98,
+   "t_end": 5.22,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.254,
-   "t_end": 9.774,
+   "t_start": 7.734,
+   "t_end": 9.174,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  3.274
+  2.514
  ]
 }

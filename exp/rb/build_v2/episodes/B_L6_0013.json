@@ -8,14 +8,14 @@
  "slots": {
   "amount": "eight hundred",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "savings"
  },
  "slots_final": {
-  "amount": "five thousand",
+  "amount": "three thousand",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
@@ -23,10 +23,10 @@
   {
    "slot": "amount",
    "old": "eight hundred",
-   "new": "five thousand",
+   "new": "three thousand",
    "by": "user",
    "kind": "default",
-   "gap": 0.755
+   "gap": 1.467
   },
   {
    "slot": "to_acct",
@@ -34,14 +34,14 @@
    "new": "rent account",
    "by": "user",
    "kind": "second",
-   "gap": 2.748
+   "gap": 2.621
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "amount": 5000,
+  "amount": 3000,
   "from_cur": "USD",
-  "to_cur": "JPY",
+  "to_cur": "EUR",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
@@ -50,42 +50,42 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Get a quote for eight hundred dollars to yen, then transfer eight hundred from checking to savings.",
+   "text": "Get a quote for eight hundred dollars to euros, then transfer eight hundred from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Wait — make it five thousand.",
-   "gap_before": 0.755
+   "text": "Wait — make it three thousand.",
+   "gap_before": 1.467
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv06",
    "lang": "en",
    "text": "Also, one more change — rent account.",
-   "gap_before": 2.748
+   "gap_before": 2.621
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.36,
+   "offset": 0.263,
    "action": "revise",
    "role": "user",
-   "voice": "cv09",
-   "text": "Wait — make it five thousand."
+   "voice": "cv06",
+   "text": "Wait — make it three thousand."
   },
   {
    "state": "committed",
-   "offset": 1.084,
+   "offset": 0.483,
    "action": "revise",
    "role": "user",
-   "voice": "cv09",
-   "text": "Wait — make it five thousand."
+   "voice": "cv06",
+   "text": "Wait — make it three thousand."
   }
  ],
  "profile": "default",
@@ -102,9 +102,9 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": 5000,
+    "amount": 3000,
     "from_cur": "USD",
-    "to_cur": "JPY"
+    "to_cur": "EUR"
    }
   },
   {
@@ -112,26 +112,26 @@
    "args": {
     "from_acct": "checking",
     "to_acct": "rent account",
-    "amount": 5000
+    "amount": 3000
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GE6a8bd5": {
-   "amount": 5000,
+   "amount": 3000,
    "from_cur": "USD",
-   "to_cur": "JPY"
+   "to_cur": "EUR"
   },
   "transfer_funds#TR381d6f": {
    "from_acct": "checking",
    "to_acct": "rent account",
-   "amount": 5000
+   "amount": 3000
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv04"
+  "user": "cv06",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

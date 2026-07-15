@@ -6,22 +6,22 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "厦门",
+  "city": "成都",
   "beds": "两居",
-  "max_rent": "六千",
-  "slot": "周六上午"
+  "max_rent": "八千",
+  "slot": "周日下午"
  },
  "slots_final": {
   "city": "成都",
-  "beds": "两居",
-  "max_rent": "六千",
-  "slot": "周六上午"
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周日下午"
  },
  "revisions": [
   {
-   "slot": "city",
-   "old": "厦门",
-   "new": "成都",
+   "slot": "beds",
+   "old": "两居",
+   "new": "一居",
    "by": "user",
    "kind": "default",
    "gap": null
@@ -30,26 +30,26 @@
  "bystander": null,
  "slots_canon": {
   "city": "成都",
-  "beds": 2,
-  "max_rent": 6000,
-  "slot": "周六上午"
+  "beds": 1,
+  "max_rent": 8000,
+  "slot": "周日下午"
  },
  "l8_action": "revise",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "在厦门找两居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在成都找两居、租金不超过八千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "等等，改成成都。",
-   "at_after_eou": 1.734
+   "text": "等等，改成一居。",
+   "at_after_eou": 1.831
   }
  ],
  "events": [],
@@ -68,46 +68,46 @@
    "fn": "search_rentals",
    "args": {
     "city": "成都",
-    "beds": 2,
-    "max_rent": 6000
+    "beds": 1,
+    "max_rent": 8000
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SE28c7bf",
-    "slot": "周六上午"
+    "slot": "周日下午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SE28c7bf": {
    "city": "成都",
-   "beds": 2,
-   "max_rent": 6000
+   "beds": 1,
+   "max_rent": 8000
   },
   "book_viewing#BO044589": {
    "listing_id": "SE28c7bf",
-   "slot": "周六上午"
+   "slot": "周日下午"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv01"
+  "user": "cv04",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.42,
+   "t_end": 6.66,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.794,
-   "t_end": 10.794,
+   "t_start": 9.131,
+   "t_end": 11.211,
    "scheduled": "lifecycle_nominal"
   }
  ],

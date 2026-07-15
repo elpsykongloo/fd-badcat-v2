@@ -6,19 +6,19 @@
  "lang": "en",
  "scenario": "fin_payment",
  "slots": {
-  "payee": "the landlord",
+  "payee": "landlord",
   "amount": "five thousand",
   "date": "June first"
  },
  "slots_final": {
-  "payee": "the landlord",
+  "payee": "landlord",
   "amount": "five thousand",
   "date": "June first"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
-  "payee": "the landlord",
+  "payee": "landlord",
   "amount": 5000,
   "date": "June 1"
  },
@@ -29,7 +29,7 @@
    "role": "user",
    "voice": "cv07",
    "lang": "en",
-   "text": "Schedule a payment of five thousand to the landlord on June first.",
+   "text": "Schedule a payment of five thousand to landlord on June first.",
    "gap_before": 0.5
   },
   {
@@ -54,7 +54,7 @@
   {
    "fn": "schedule_payment",
    "args": {
-    "payee": "the landlord",
+    "payee": "landlord",
     "amount": 5000,
     "date": "June 1"
    }
@@ -62,28 +62,28 @@
  ],
  "gold_state": {
   "schedule_payment#SC3c2287": {
-   "payee": "the landlord",
+   "payee": "landlord",
    "amount": 5000,
    "date": "June 1"
   }
  },
  "voices": {
   "user": "cv07",
-  "bystander": "cv02"
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 4.34,
+   "t_end": 4.02,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 15.201,
-   "t_end": 16.161,
+   "t_start": 14.881,
+   "t_end": 15.841,
    "scheduled": "lifecycle_nominal"
   }
  ],

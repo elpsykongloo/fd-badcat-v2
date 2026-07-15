@@ -6,24 +6,24 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Denver",
-  "date": "May eighth",
-  "seat_class": "first class",
-  "passenger": "Jordan Lee"
- },
- "slots_final": {
-  "origin": "Chicago",
-  "destination": "Denver",
+  "origin": "Boston",
+  "destination": "Portland",
   "date": "May eighth",
   "seat_class": "business",
-  "passenger": "Jordan Lee"
+  "passenger": "Sam Rivera"
+ },
+ "slots_final": {
+  "origin": "Boston",
+  "destination": "Portland",
+  "date": "May eighth",
+  "seat_class": "first class",
+  "passenger": "Sam Rivera"
  },
  "revisions": [
   {
    "slot": "seat_class",
-   "old": "first class",
-   "new": "business",
+   "old": "business",
+   "new": "first class",
    "by": "user",
    "kind": "default",
    "gap": null
@@ -31,38 +31,38 @@
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Chicago",
-  "destination": "Denver",
+  "origin": "Boston",
+  "destination": "Portland",
   "date": "May 8",
-  "seat_class": "business",
-  "passenger": "Jordan Lee"
+  "seat_class": "first class",
+  "passenger": "Sam Rivera"
  },
  "l8_action": "revise",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Find a train from Chicago to Denver on May eighth, hold a first class seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Boston to Portland on May eighth, hold a business seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Wait — make it business.",
-   "at_after_eou": 1.897
+   "text": "Wait — make it first class.",
+   "at_after_eou": 2.203
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.427,
+   "offset": 0.337,
    "action": "revise",
    "role": "user",
-   "voice": "cv03",
-   "text": "Wait — make it business."
+   "voice": "cv02",
+   "text": "Wait — make it first class."
   }
  ],
  "profile": "default",
@@ -80,8 +80,8 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
-    "destination": "Denver",
+    "origin": "Boston",
+    "destination": "Portland",
     "date": "May 8"
    }
   },
@@ -89,36 +89,36 @@
    "fn": "hold_seat",
    "args": {
     "train_id": "SEff1429",
-    "seat_class": "business"
+    "seat_class": "first class"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HOf7af93",
-    "passenger": "Jordan Lee"
+    "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEff1429": {
-   "origin": "Chicago",
-   "destination": "Denver",
+   "origin": "Boston",
+   "destination": "Portland",
    "date": "May 8"
   },
   "hold_seat#HOf7af93": {
    "train_id": "SEff1429",
-   "seat_class": "business"
+   "seat_class": "first class"
   },
   "purchase_ticket#PUdd32a1": {
    "hold_id": "HOf7af93",
-   "passenger": "Jordan Lee"
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv03",
+  "user": "cv02",
   "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

@@ -8,51 +8,51 @@
  "slots": {
   "origin": "Boston",
   "destination": "Denver",
-  "date": "June first",
+  "date": "May third",
   "seat_class": "first class",
-  "passenger": "Alex Chen"
+  "passenger": "Sam Rivera"
  },
  "slots_final": {
   "origin": "Boston",
-  "destination": "Austin",
+  "destination": "Denver",
   "date": "June first",
   "seat_class": "first class",
-  "passenger": "Alex Chen"
+  "passenger": "Sam Rivera"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Denver",
-   "new": "Austin",
+   "slot": "date",
+   "old": "May third",
+   "new": "June first",
    "by": "user",
    "kind": "default",
-   "gap": 0.744
+   "gap": 0.668
   }
  ],
  "bystander": null,
  "slots_canon": {
   "origin": "Boston",
-  "destination": "Austin",
+  "destination": "Denver",
   "date": "June 1",
   "seat_class": "first class",
-  "passenger": "Alex Chen"
+  "passenger": "Sam Rivera"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Find a train from Boston to Denver on June first, hold a first class seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Boston to Denver on May third, hold a first class seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Wait — make it Austin.",
-   "gap_before": 0.744
+   "text": "Wait — make it June first.",
+   "gap_before": 0.668
   }
  ],
  "events": [],
@@ -72,7 +72,7 @@
    "fn": "search_trains",
    "args": {
     "origin": "Boston",
-    "destination": "Austin",
+    "destination": "Denver",
     "date": "June 1"
    }
   },
@@ -87,14 +87,14 @@
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HOb1bc1e",
-    "passenger": "Alex Chen"
+    "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEf3e092": {
    "origin": "Boston",
-   "destination": "Austin",
+   "destination": "Denver",
    "date": "June 1"
   },
   "hold_seat#HOb1bc1e": {
@@ -103,30 +103,30 @@
   },
   "purchase_ticket#PU18a499": {
    "hold_id": "HOb1bc1e",
-   "passenger": "Alex Chen"
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv05"
+  "user": "cv05",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.66,
+   "t_end": 7.38,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 7.404,
-   "t_end": 9.644,
+   "t_start": 8.048,
+   "t_end": 9.808,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.744
+  0.668
  ]
 }

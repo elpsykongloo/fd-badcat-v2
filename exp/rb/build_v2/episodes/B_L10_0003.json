@@ -7,66 +7,66 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Chicago",
-  "destination": "Portland",
+  "destination": "Denver",
   "date": "June first",
-  "seat_class": "first class",
-  "passenger": "Alex Chen"
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
  },
  "slots_final": {
   "origin": "Chicago",
-  "destination": "Portland",
+  "destination": "Denver",
   "date": "June first",
-  "seat_class": "first class",
-  "passenger": "Alex Chen"
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
  },
  "revisions": [],
  "bystander": {
   "kind": "command",
-  "other": "Atlanta",
+  "other": "May eighth",
   "state": "inflight",
-  "frac": 0.65
+  "frac": 0.322
  },
  "slots_canon": {
   "origin": "Chicago",
-  "destination": "Portland",
+  "destination": "Denver",
   "date": "June 1",
-  "seat_class": "first class",
-  "passenger": "Alex Chen"
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Find a train from Chicago to Portland on June first, hold a first class seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Chicago to Denver on June first, hold a coach seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv02",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Change it to Atlanta.",
-   "at_after_eou": 2.069
+   "text": "Change it to May eighth.",
+   "at_after_eou": 1.853
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.43,
+   "offset": 0.117,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv02",
-   "text": "Change it to Atlanta."
+   "voice": "cv08",
+   "text": "Change it to May eighth."
   },
   {
    "state": "tts",
-   "offset": 0.451,
+   "offset": 0.549,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv02",
-   "text": "Change it to Atlanta."
+   "voice": "cv08",
+   "text": "Change it to May eighth."
   }
  ],
  "profile": "default",
@@ -85,7 +85,7 @@
    "fn": "search_trains",
    "args": {
     "origin": "Chicago",
-    "destination": "Portland",
+    "destination": "Denver",
     "date": "June 1"
    }
   },
@@ -93,36 +93,36 @@
    "fn": "hold_seat",
    "args": {
     "train_id": "SE211bc3",
-    "seat_class": "first class"
+    "seat_class": "coach"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO8ee7cd",
-    "passenger": "Alex Chen"
+    "passenger": "Jordan Lee"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE211bc3": {
    "origin": "Chicago",
-   "destination": "Portland",
+   "destination": "Denver",
    "date": "June 1"
   },
   "hold_seat#HO8ee7cd": {
    "train_id": "SE211bc3",
-   "seat_class": "first class"
+   "seat_class": "coach"
   },
   "purchase_ticket#PUd79214": {
    "hold_id": "HO8ee7cd",
-   "passenger": "Alex Chen"
+   "passenger": "Jordan Lee"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv02"
+  "user": "cv07",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

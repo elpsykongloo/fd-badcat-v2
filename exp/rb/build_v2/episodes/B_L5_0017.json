@@ -10,10 +10,10 @@
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "slots_final": {
-  "amount": "three thousand",
+  "amount": "five thousand",
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
@@ -21,17 +21,17 @@
  },
  "revisions": [
   {
-   "slot": "to_acct",
-   "old": "savings",
-   "new": "rent account",
+   "slot": "amount",
+   "old": "three thousand",
+   "new": "five thousand",
    "by": "user",
    "kind": "default",
-   "gap": 2.9
+   "gap": 2.516
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "amount": 3000,
+  "amount": 5000,
   "from_cur": "USD",
   "to_cur": "EUR",
   "from_acct": "checking",
@@ -42,27 +42,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Get a quote for three thousand dollars to euros, then transfer three thousand from checking to savings.",
+   "text": "Get a quote for three thousand dollars to euros, then transfer three thousand from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Wait — make it rent account.",
-   "gap_before": 2.9
+   "text": "Wait — make it five thousand.",
+   "gap_before": 2.516
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 1.398,
+   "offset": 1.088,
    "action": "revise",
    "role": "user",
-   "voice": "cv03",
-   "text": "Wait — make it rent account."
+   "voice": "cv02",
+   "text": "Wait — make it five thousand."
   }
  ],
  "profile": "default",
@@ -79,7 +79,7 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": 3000,
+    "amount": 5000,
     "from_cur": "USD",
     "to_cur": "EUR"
    }
@@ -89,26 +89,26 @@
    "args": {
     "from_acct": "checking",
     "to_acct": "rent account",
-    "amount": 3000
+    "amount": 5000
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GE32049c": {
-   "amount": 3000,
+   "amount": 5000,
    "from_cur": "USD",
    "to_cur": "EUR"
   },
   "transfer_funds#TR68650e": {
    "from_acct": "checking",
    "to_acct": "rent account",
-   "amount": 3000
+   "amount": 5000
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv08"
+  "user": "cv02",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

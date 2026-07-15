@@ -8,9 +8,9 @@
  "slots": {
   "amount": "three thousand",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "rent account"
+  "to_acct": "savings"
  },
  "slots_final": {
   "amount": "three thousand",
@@ -21,12 +21,12 @@
  },
  "revisions": [
   {
-   "slot": "to_acct",
-   "old": "rent account",
-   "new": "savings",
+   "slot": "to_cur",
+   "old": "yen",
+   "new": "euros",
    "by": "user",
    "kind": "default",
-   "gap": 3.035
+   "gap": 2.695
   }
  ],
  "bystander": null,
@@ -42,17 +42,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Get a quote for three thousand dollars to euros, then transfer three thousand from checking to rent account.",
+   "text": "Get a quote for three thousand dollars to yen, then transfer three thousand from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Wait — make it savings.",
-   "gap_before": 3.035
+   "text": "Wait — make it euros.",
+   "gap_before": 2.695
   }
  ],
  "events": [],
@@ -97,26 +97,26 @@
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv01"
+  "user": "cv06",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.18,
+   "t_end": 5.22,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.215,
-   "t_end": 11.215,
+   "t_start": 7.915,
+   "t_end": 9.435,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  3.035
+  2.695
  ]
 }

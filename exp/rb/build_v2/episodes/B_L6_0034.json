@@ -12,7 +12,7 @@
   "slot": "周六上午"
  },
  "slots_final": {
-  "city": "青岛",
+  "city": "成都",
   "beds": "两居",
   "max_rent": "六千",
   "slot": "周六上午"
@@ -21,10 +21,10 @@
   {
    "slot": "city",
    "old": "杭州",
-   "new": "青岛",
+   "new": "成都",
    "by": "user",
    "kind": "default",
-   "gap": 0.764
+   "gap": 1.069
   },
   {
    "slot": "beds",
@@ -32,12 +32,12 @@
    "new": "两居",
    "by": "user",
    "kind": "second",
-   "gap": 2.899
+   "gap": 2.823
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "city": "青岛",
+  "city": "成都",
   "beds": 2,
   "max_rent": 6000,
   "slot": "周六上午"
@@ -47,42 +47,42 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv05",
    "lang": "zh",
    "text": "在杭州找一居、租金不超过六千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "等等，改成青岛。",
-   "gap_before": 0.764
+   "text": "等等，改成成都。",
+   "gap_before": 1.069
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv05",
    "lang": "zh",
    "text": "还有，再改一下，要两居。",
-   "gap_before": 2.899
+   "gap_before": 2.823
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.683,
+   "offset": 0.246,
    "action": "revise",
    "role": "user",
-   "voice": "cv01",
-   "text": "等等，改成青岛。"
+   "voice": "cv05",
+   "text": "等等，改成成都。"
   },
   {
    "state": "committed",
-   "offset": 1.449,
+   "offset": 0.56,
    "action": "revise",
    "role": "user",
-   "voice": "cv01",
-   "text": "等等，改成青岛。"
+   "voice": "cv05",
+   "text": "等等，改成成都。"
   }
  ],
  "profile": "default",
@@ -99,7 +99,7 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "青岛",
+    "city": "成都",
     "beds": 2,
     "max_rent": 6000
    }
@@ -114,7 +114,7 @@
  ],
  "gold_state": {
   "search_rentals#SEc3442c": {
-   "city": "青岛",
+   "city": "成都",
    "beds": 2,
    "max_rent": 6000
   },
@@ -124,9 +124,9 @@
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv06"
+  "user": "cv05",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

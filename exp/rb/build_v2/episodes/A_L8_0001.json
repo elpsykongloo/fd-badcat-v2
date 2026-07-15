@@ -6,25 +6,25 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "three thousand",
+  "amount": "eight hundred",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
  "slots_final": {
-  "amount": "three thousand",
+  "amount": "eight hundred",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
-  "amount": 3000,
+  "amount": 800,
   "from_cur": "USD",
-  "to_cur": "EUR",
+  "to_cur": "JPY",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
@@ -33,17 +33,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Get a quote for three thousand dollars to euros, then transfer three thousand from checking to rent account.",
+   "text": "Get a quote for eight hundred dollars to yen, then transfer eight hundred from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv01",
    "lang": "en",
    "text": "Actually, hold off, don't do it yet.",
-   "at_after_eou": 1.886
+   "at_after_eou": 1.736
   }
  ],
  "events": [],
@@ -60,22 +60,22 @@
  "gold_calls": [],
  "gold_state": {},
  "voices": {
-  "user": "cv02",
-  "bystander": "cv05"
+  "user": "cv01",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.42,
+   "t_end": 5.86,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.946,
-   "t_end": 14.066,
+   "t_start": 8.236,
+   "t_end": 11.596,
    "scheduled": "lifecycle_nominal"
   }
  ],

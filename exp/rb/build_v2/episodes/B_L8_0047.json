@@ -7,15 +7,15 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Seattle",
-  "destination": "Austin",
-  "date": "May eighth",
+  "destination": "Denver",
+  "date": "May third",
   "seat_class": "first class",
   "passenger": "Alex Chen"
  },
  "slots_final": {
   "origin": "Seattle",
-  "destination": "Austin",
-  "date": "May eighth",
+  "destination": "Denver",
+  "date": "May third",
   "seat_class": "first class",
   "passenger": "Alex Chen"
  },
@@ -23,8 +23,8 @@
  "bystander": null,
  "slots_canon": {
   "origin": "Seattle",
-  "destination": "Austin",
-  "date": "May 8",
+  "destination": "Denver",
+  "date": "May 3",
   "seat_class": "first class",
   "passenger": "Alex Chen"
  },
@@ -33,26 +33,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Find a train from Seattle to Austin on May eighth, hold a first class seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Seattle to Denver on May third, hold a first class seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv08",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 1.817
+   "at_after_eou": 1.828
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.544,
+   "offset": 0.896,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv08",
    "text": "Any progress?"
   }
  ],
@@ -72,8 +72,8 @@
    "fn": "search_trains",
    "args": {
     "origin": "Seattle",
-    "destination": "Austin",
-    "date": "May 8"
+    "destination": "Denver",
+    "date": "May 3"
    }
   },
   {
@@ -94,8 +94,8 @@
  "gold_state": {
   "search_trains#SEfe6721": {
    "origin": "Seattle",
-   "destination": "Austin",
-   "date": "May 8"
+   "destination": "Denver",
+   "date": "May 3"
   },
   "hold_seat#HO19ea86": {
    "train_id": "SEfe6721",
@@ -107,9 +107,9 @@
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv05"
+  "user": "cv08",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

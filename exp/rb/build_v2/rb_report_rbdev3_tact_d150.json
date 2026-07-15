@@ -1,0 +1,76 @@
+{
+  "n": 59,
+  "exact": 0.2034,
+  "state_verbatim": 0.2034,
+  "state_normalized": 0.2203,
+  "U_mean": 0.1459,
+  "wrong_commits": 0,
+  "unrepaired": 0,
+  "first_p50": 1.64,
+  "done_p50": 3.929,
+  "by_layer": {
+    "L1": {
+      "n": 3,
+      "exact": 0.3333,
+      "U": 0.2603
+    },
+    "L10": {
+      "n": 2,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L2": {
+      "n": 1,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L3": {
+      "n": 13,
+      "exact": 0.0769,
+      "U": 0.0507
+    },
+    "L4": {
+      "n": 8,
+      "exact": 0.25,
+      "U": 0.2046
+    },
+    "L5": {
+      "n": 14,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L6": {
+      "n": 4,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L7": {
+      "n": 4,
+      "exact": 0.25,
+      "U": 0.2096
+    },
+    "L8": {
+      "n": 3,
+      "exact": 0.3333,
+      "U": 0.3333
+    },
+    "L9": {
+      "n": 7,
+      "exact": 0.8571,
+      "U": 0.5276
+    }
+  },
+  "provider": "rbdev3_tact_d150",
+  "config": {
+    "arm": "A",
+    "system": "tact",
+    "delta": 1.5,
+    "commit_barrier": "on",
+    "input": "audio",
+    "decider": "llm",
+    "floor_commit_tiers": null,
+    "split": "dev",
+    "infer_nominal": 1.0,
+    "dag": "on"
+  }
+}

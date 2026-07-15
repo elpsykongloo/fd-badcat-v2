@@ -6,63 +6,63 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Atlanta",
-  "date": "May eighth",
-  "seat_class": "business",
-  "passenger": "Alex Chen"
+  "origin": "Boston",
+  "destination": "Portland",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Seattle",
-  "destination": "Portland",
-  "date": "May eighth",
-  "seat_class": "business",
-  "passenger": "Alex Chen"
+  "origin": "Boston",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Atlanta",
-   "new": "Portland",
+   "old": "Portland",
+   "new": "Austin",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.855
+   "gap": 0.734
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Seattle",
-  "destination": "Portland",
-  "date": "May 8",
-  "seat_class": "business",
-  "passenger": "Alex Chen"
+  "origin": "Boston",
+  "destination": "Austin",
+  "date": "May 3",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Find a train from Seattle to Atlanta on May eighth, hold a business seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Boston to Portland on May third, hold a coach seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Portland — change it to Portland.",
-   "gap_before": 0.855
+   "text": "Austin — change it to Austin.",
+   "gap_before": 0.734
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.325,
+   "offset": 0.138,
    "action": "revise",
    "role": "user",
-   "voice": "cv05",
-   "text": "Portland — change it to Portland."
+   "voice": "cv08",
+   "text": "Austin — change it to Austin."
   }
  ],
  "profile": "default",
@@ -80,45 +80,45 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
-    "destination": "Portland",
-    "date": "May 8"
+    "origin": "Boston",
+    "destination": "Austin",
+    "date": "May 3"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SEba99bf",
-    "seat_class": "business"
+    "seat_class": "coach"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HOfa5509",
-    "passenger": "Alex Chen"
+    "passenger": "Jordan Lee"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEba99bf": {
-   "origin": "Seattle",
-   "destination": "Portland",
-   "date": "May 8"
+   "origin": "Boston",
+   "destination": "Austin",
+   "date": "May 3"
   },
   "hold_seat#HOfa5509": {
    "train_id": "SEba99bf",
-   "seat_class": "business"
+   "seat_class": "coach"
   },
   "purchase_ticket#PU5104d5": {
    "hold_id": "HOfa5509",
-   "passenger": "Alex Chen"
+   "passenger": "Jordan Lee"
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv07"
+  "user": "cv08",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

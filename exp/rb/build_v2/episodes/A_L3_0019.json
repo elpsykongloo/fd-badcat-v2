@@ -7,52 +7,52 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Chicago",
-  "destination": "Portland",
+  "destination": "Denver",
   "date": "May eighth",
   "seat_class": "first class",
-  "passenger": "Sam Rivera"
+  "passenger": "Alex Chen"
  },
  "slots_final": {
   "origin": "Chicago",
-  "destination": "Portland",
+  "destination": "Atlanta",
   "date": "May eighth",
-  "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
  },
  "revisions": [
   {
-   "slot": "seat_class",
-   "old": "first class",
-   "new": "business",
+   "slot": "destination",
+   "old": "Denver",
+   "new": "Atlanta",
    "by": "user",
    "kind": "default",
-   "gap": 0.663
+   "gap": 0.657
   }
  ],
  "bystander": null,
  "slots_canon": {
   "origin": "Chicago",
-  "destination": "Portland",
+  "destination": "Atlanta",
   "date": "May 8",
-  "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Find a train from Chicago to Portland on May eighth, hold a first class seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Chicago to Denver on May eighth, hold a first class seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Wait — make it business.",
-   "gap_before": 0.663
+   "text": "Wait — make it Atlanta.",
+   "gap_before": 0.657
   }
  ],
  "events": [],
@@ -72,7 +72,7 @@
    "fn": "search_trains",
    "args": {
     "origin": "Chicago",
-    "destination": "Portland",
+    "destination": "Atlanta",
     "date": "May 8"
    }
   },
@@ -80,53 +80,53 @@
    "fn": "hold_seat",
    "args": {
     "train_id": "SEcea5eb",
-    "seat_class": "business"
+    "seat_class": "first class"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO6fc7ea",
-    "passenger": "Sam Rivera"
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEcea5eb": {
    "origin": "Chicago",
-   "destination": "Portland",
+   "destination": "Atlanta",
    "date": "May 8"
   },
   "hold_seat#HO6fc7ea": {
    "train_id": "SEcea5eb",
-   "seat_class": "business"
+   "seat_class": "first class"
   },
   "purchase_ticket#PU82f173": {
    "hold_id": "HO6fc7ea",
-   "passenger": "Sam Rivera"
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv03"
+  "user": "cv05",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.02,
+   "t_end": 7.46,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.683,
-   "t_end": 10.923,
+   "t_start": 8.117,
+   "t_end": 10.597,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.663
+  0.657
  ]
 }

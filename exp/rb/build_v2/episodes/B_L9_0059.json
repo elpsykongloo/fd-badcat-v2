@@ -6,20 +6,20 @@
  "lang": "en",
  "scenario": "travel_hotel",
  "slots": {
-  "city": "Austin",
-  "checkin": "May third",
+  "city": "Denver",
+  "checkin": "May tenth",
   "nights": "two"
  },
  "slots_final": {
-  "city": "Austin",
-  "checkin": "May third",
+  "city": "Denver",
+  "checkin": "May tenth",
   "nights": "two"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
-  "city": "Austin",
-  "checkin": "May 3",
+  "city": "Denver",
+  "checkin": "May 10",
   "nights": 2
  },
  "l8_action": null,
@@ -27,14 +27,14 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Book me a hotel in Austin, checking in May third, for two nights.",
+   "text": "Book me a hotel in Denver, checking in May tenth, for two nights.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv02",
    "lang": "en",
    "text": "Any progress?",
    "at_after_eou": 8.599
@@ -43,10 +43,10 @@
  "events": [
   {
    "state": "inflight",
-   "offset": 0.513,
+   "offset": 0.506,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv02",
    "text": "Any progress?"
   }
  ],
@@ -63,23 +63,23 @@
   {
    "fn": "reserve_hotel",
    "args": {
-    "city": "Austin",
-    "checkin": "May 3",
+    "city": "Denver",
+    "checkin": "May 10",
     "nights": 2
    }
   }
  ],
  "gold_state": {
   "reserve_hotel#RE97124d": {
-   "city": "Austin",
-   "checkin": "May 3",
+   "city": "Denver",
+   "checkin": "May 10",
    "nights": 2
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv08"
+  "user": "cv02",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

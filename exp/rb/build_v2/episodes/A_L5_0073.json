@@ -6,23 +6,23 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "five thousand",
+  "amount": "eight hundred",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "slots_final": {
   "amount": "three thousand",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "revisions": [
   {
    "slot": "amount",
-   "old": "five thousand",
+   "old": "eight hundred",
    "new": "three thousand",
    "by": "user",
    "kind": "default",
@@ -33,9 +33,9 @@
  "slots_canon": {
   "amount": 3000,
   "from_cur": "USD",
-  "to_cur": "EUR",
+  "to_cur": "JPY",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "l8_action": null,
  "cancelled": false,
@@ -44,7 +44,7 @@
    "role": "user",
    "voice": "cv03",
    "lang": "en",
-   "text": "Get a quote for five thousand dollars to euros, then transfer five thousand from checking to savings.",
+   "text": "Get a quote for eight hundred dollars to yen, then transfer eight hundred from checking to rent account.",
    "gap_before": 0.5
   },
   {
@@ -72,14 +72,14 @@
    "args": {
     "amount": 3000,
     "from_cur": "USD",
-    "to_cur": "EUR"
+    "to_cur": "JPY"
    }
   },
   {
    "fn": "transfer_funds",
    "args": {
     "from_acct": "checking",
-    "to_acct": "savings",
+    "to_acct": "rent account",
     "amount": 3000
    }
   }
@@ -88,31 +88,31 @@
   "get_fx_quote#GEe16e6a": {
    "amount": 3000,
    "from_cur": "USD",
-   "to_cur": "EUR"
+   "to_cur": "JPY"
   },
   "transfer_funds#TR261b0a": {
    "from_acct": "checking",
-   "to_acct": "savings",
+   "to_acct": "rent account",
    "amount": 3000
   }
  },
  "voices": {
   "user": "cv03",
-  "bystander": "cv01"
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.38,
+   "t_end": 7.22,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.26,
-   "t_end": 12.66,
+   "t_start": 10.1,
+   "t_end": 12.5,
    "scheduled": "sequential"
   }
  ],

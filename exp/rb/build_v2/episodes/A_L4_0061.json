@@ -13,46 +13,46 @@
   "to_acct": "rent account"
  },
  "slots_final": {
-  "amount": "eight hundred",
+  "amount": "three thousand",
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "revisions": [
   {
-   "slot": "to_acct",
-   "old": "rent account",
-   "new": "savings",
+   "slot": "amount",
+   "old": "eight hundred",
+   "new": "three thousand",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.697
+   "gap": 1.114
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "amount": 800,
+  "amount": 3000,
   "from_cur": "USD",
   "to_cur": "EUR",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv03",
    "lang": "en",
    "text": "Get a quote for eight hundred dollars to euros, then transfer eight hundred from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv03",
    "lang": "en",
-   "text": "savings — change it to savings.",
-   "gap_before": 0.697
+   "text": "three thousand — change it to three thousand.",
+   "gap_before": 1.114
   }
  ],
  "events": [],
@@ -70,7 +70,7 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": 800,
+    "amount": 3000,
     "from_cur": "USD",
     "to_cur": "EUR"
    }
@@ -79,44 +79,44 @@
    "fn": "transfer_funds",
    "args": {
     "from_acct": "checking",
-    "to_acct": "savings",
-    "amount": 800
+    "to_acct": "rent account",
+    "amount": 3000
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GE14a5e5": {
-   "amount": 800,
+   "amount": 3000,
    "from_cur": "USD",
    "to_cur": "EUR"
   },
   "transfer_funds#TRbeef16": {
    "from_acct": "checking",
-   "to_acct": "savings",
-   "amount": 800
+   "to_acct": "rent account",
+   "amount": 3000
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv04"
+  "user": "cv03",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.02,
+   "t_end": 7.14,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.717,
-   "t_end": 10.957,
+   "t_start": 8.254,
+   "t_end": 11.294,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.697
+  1.114
  ]
 }

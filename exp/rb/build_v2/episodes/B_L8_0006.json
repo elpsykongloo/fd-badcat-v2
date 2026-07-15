@@ -6,22 +6,22 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "成都",
-  "beds": "两居",
+  "city": "青岛",
+  "beds": "一居",
   "max_rent": "八千",
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "slots_final": {
-  "city": "杭州",
-  "beds": "两居",
-  "max_rent": "八千",
-  "slot": "周六上午"
+  "city": "青岛",
+  "beds": "一居",
+  "max_rent": "六千",
+  "slot": "周日下午"
  },
  "revisions": [
   {
-   "slot": "city",
-   "old": "成都",
-   "new": "杭州",
+   "slot": "max_rent",
+   "old": "八千",
+   "new": "六千",
    "by": "user",
    "kind": "default",
    "gap": null
@@ -29,37 +29,37 @@
  ],
  "bystander": null,
  "slots_canon": {
-  "city": "杭州",
-  "beds": 2,
-  "max_rent": 8000,
-  "slot": "周六上午"
+  "city": "青岛",
+  "beds": 1,
+  "max_rent": 6000,
+  "slot": "周日下午"
  },
  "l8_action": "revise",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "在成都找两居、租金不超过八千的房子，约周六上午看房。",
+   "text": "在青岛找一居、租金不超过八千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "等等，改成杭州。",
-   "at_after_eou": 2.136
+   "text": "等等，改成六千。",
+   "at_after_eou": 1.815
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.75,
+   "offset": 0.525,
    "action": "revise",
    "role": "user",
-   "voice": "cv08",
-   "text": "等等，改成杭州。"
+   "voice": "cv03",
+   "text": "等等，改成六千。"
   }
  ],
  "profile": "default",
@@ -76,34 +76,34 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "杭州",
-    "beds": 2,
-    "max_rent": 8000
+    "city": "青岛",
+    "beds": 1,
+    "max_rent": 6000
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SE59641b",
-    "slot": "周六上午"
+    "slot": "周日下午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SE59641b": {
-   "city": "杭州",
-   "beds": 2,
-   "max_rent": 8000
+   "city": "青岛",
+   "beds": 1,
+   "max_rent": 6000
   },
   "book_viewing#BO98f105": {
    "listing_id": "SE59641b",
-   "slot": "周六上午"
+   "slot": "周日下午"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv01"
+  "user": "cv03",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

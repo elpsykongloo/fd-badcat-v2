@@ -6,30 +6,30 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "跑步鞋",
-  "qty": "两",
-  "address": "浦东新区世纪大道八号"
+  "query": "保温杯",
+  "qty": "一",
+  "address": "海淀区学院路一号"
  },
  "slots_final": {
   "query": "蓝牙耳机",
-  "qty": "两",
-  "address": "浦东新区世纪大道八号"
+  "qty": "一",
+  "address": "海淀区学院路一号"
  },
  "revisions": [
   {
    "slot": "query",
-   "old": "跑步鞋",
+   "old": "保温杯",
    "new": "蓝牙耳机",
    "by": "user",
    "kind": "default",
-   "gap": 1.144
+   "gap": 3.117
   }
  ],
  "bystander": null,
  "slots_canon": {
   "query": "蓝牙耳机",
-  "qty": 2,
-  "address": "浦东新区世纪大道八号"
+  "qty": 1,
+  "address": "海淀区学院路一号"
  },
  "l8_action": null,
  "cancelled": false,
@@ -38,7 +38,7 @@
    "role": "user",
    "voice": "cv01",
    "lang": "zh",
-   "text": "帮我搜跑步鞋，加两件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜保温杯，加一件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
@@ -46,7 +46,7 @@
    "voice": "cv01",
    "lang": "zh",
    "text": "等等，改成蓝牙耳机。",
-   "gap_before": 1.144
+   "gap_before": 3.117
   }
  ],
  "events": [],
@@ -72,14 +72,14 @@
    "fn": "add_item",
    "args": {
     "item_id": "SEbfb28e",
-    "qty": 2
+    "qty": 1
    }
   },
   {
    "fn": "place_order",
    "args": {
     "cart_id": "AD7d3411",
-    "address": "浦东新区世纪大道八号"
+    "address": "海淀区学院路一号"
    }
   }
  ],
@@ -89,34 +89,34 @@
   },
   "add_item#AD7d3411": {
    "item_id": "SEbfb28e",
-   "qty": 2
+   "qty": 1
   },
   "place_order#PL44f51f": {
    "cart_id": "AD7d3411",
-   "address": "浦东新区世纪大道八号"
+   "address": "海淀区学院路一号"
   }
  },
  "voices": {
   "user": "cv01",
-  "bystander": "cv05"
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.02,
+   "t_end": 6.34,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 7.164,
-   "t_end": 9.644,
+   "t_start": 9.457,
+   "t_end": 11.937,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.144
+  3.117
  ]
 }

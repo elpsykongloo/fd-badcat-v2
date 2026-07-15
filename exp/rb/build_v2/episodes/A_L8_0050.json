@@ -6,41 +6,41 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "青岛",
-  "beds": "两居",
-  "max_rent": "六千",
-  "slot": "周日下午"
+  "city": "杭州",
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周六上午"
  },
  "slots_final": {
-  "city": "青岛",
-  "beds": "两居",
-  "max_rent": "六千",
-  "slot": "周日下午"
+  "city": "杭州",
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周六上午"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
-  "city": "青岛",
-  "beds": 2,
-  "max_rent": 6000,
-  "slot": "周日下午"
+  "city": "杭州",
+  "beds": 1,
+  "max_rent": 8000,
+  "slot": "周六上午"
  },
  "l8_action": "progress",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv07",
    "lang": "zh",
-   "text": "在青岛找两居、租金不超过六千的房子，约周日下午看房。",
+   "text": "在杭州找一居、租金不超过八千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv07",
    "lang": "zh",
    "text": "好了没？",
-   "at_after_eou": 1.951
+   "at_after_eou": 2.069
   }
  ],
  "events": [],
@@ -58,47 +58,47 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "青岛",
-    "beds": 2,
-    "max_rent": 6000
+    "city": "杭州",
+    "beds": 1,
+    "max_rent": 8000
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SEb8dfee",
-    "slot": "周日下午"
+    "slot": "周六上午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SEb8dfee": {
-   "city": "青岛",
-   "beds": 2,
-   "max_rent": 6000
+   "city": "杭州",
+   "beds": 1,
+   "max_rent": 8000
   },
   "book_viewing#BO0b544c": {
    "listing_id": "SEb8dfee",
-   "slot": "周日下午"
+   "slot": "周六上午"
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv02"
+  "user": "cv07",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.18,
+   "t_end": 5.86,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.771,
-   "t_end": 9.891,
+   "t_start": 8.569,
+   "t_end": 9.129,
    "scheduled": "lifecycle_nominal"
   }
  ],

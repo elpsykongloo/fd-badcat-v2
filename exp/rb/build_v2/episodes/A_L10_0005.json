@@ -8,7 +8,7 @@
  "slots": {
   "amount": "three thousand",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "savings"
  },
@@ -17,16 +17,16 @@
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "revisions": [
   {
-   "slot": "to_cur",
-   "old": "yen",
-   "new": "euros",
+   "slot": "to_acct",
+   "old": "savings",
+   "new": "rent account",
    "by": "user",
    "kind": "default",
-   "gap": 0.8
+   "gap": 0.686
   }
  ],
  "bystander": null,
@@ -35,24 +35,24 @@
   "from_cur": "USD",
   "to_cur": "EUR",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Get a quote for three thousand dollars to yen, then transfer three thousand from checking to savings.",
+   "text": "Get a quote for three thousand dollars to euros, then transfer three thousand from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Wait — make it euros.",
-   "gap_before": 0.8
+   "text": "Wait — make it rent account.",
+   "gap_before": 0.686
   }
  ],
  "events": [],
@@ -79,7 +79,7 @@
    "fn": "transfer_funds",
    "args": {
     "from_acct": "checking",
-    "to_acct": "savings",
+    "to_acct": "rent account",
     "amount": 3000
    }
   }
@@ -92,31 +92,31 @@
   },
   "transfer_funds#TR29f177": {
    "from_acct": "checking",
-   "to_acct": "savings",
+   "to_acct": "rent account",
    "amount": 3000
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv08"
+  "user": "cv07",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.14,
+   "t_end": 6.1,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 7.94,
-   "t_end": 9.46,
+   "t_start": 6.786,
+   "t_end": 7.986,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.8
+  0.686
  ]
 }

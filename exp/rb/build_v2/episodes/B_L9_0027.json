@@ -6,19 +6,19 @@
  "lang": "en",
  "scenario": "travel_hotel",
  "slots": {
-  "city": "Boise",
+  "city": "Denver",
   "checkin": "May third",
   "nights": "two"
  },
  "slots_final": {
-  "city": "Boise",
+  "city": "Denver",
   "checkin": "May third",
   "nights": "two"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
-  "city": "Boise",
+  "city": "Denver",
   "checkin": "May 3",
   "nights": 2
  },
@@ -27,14 +27,14 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Book me a hotel in Boise, checking in May third, for two nights.",
+   "text": "Book me a hotel in Denver, checking in May third, for two nights.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv02",
    "lang": "en",
    "text": "Any progress?",
    "at_after_eou": 10.261
@@ -43,10 +43,10 @@
  "events": [
   {
    "state": "inflight",
-   "offset": 0.683,
+   "offset": 0.602,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv02",
    "text": "Any progress?"
   }
  ],
@@ -63,7 +63,7 @@
   {
    "fn": "reserve_hotel",
    "args": {
-    "city": "Boise",
+    "city": "Denver",
     "checkin": "May 3",
     "nights": 2
    }
@@ -71,15 +71,15 @@
  ],
  "gold_state": {
   "reserve_hotel#RE5c2e2a": {
-   "city": "Boise",
+   "city": "Denver",
    "checkin": "May 3",
    "nights": 2
   }
  },
  "voices": {
-  "user": "cv01",
+  "user": "cv02",
   "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

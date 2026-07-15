@@ -6,18 +6,18 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "eight hundred",
+  "amount": "three thousand",
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "slots_final": {
-  "amount": "eight hundred",
+  "amount": "three thousand",
   "from_cur": "dollars",
   "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "revisions": [
   {
@@ -26,33 +26,33 @@
    "new": "yen",
    "by": "user",
    "kind": "default",
-   "gap": 0.663
+   "gap": 0.754
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "amount": 800,
+  "amount": 3000,
   "from_cur": "USD",
   "to_cur": "JPY",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Get a quote for eight hundred dollars to euros, then transfer eight hundred from checking to savings.",
+   "text": "Get a quote for three thousand dollars to euros, then transfer three thousand from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv09",
    "lang": "en",
    "text": "Wait — make it yen.",
-   "gap_before": 0.663
+   "gap_before": 0.754
   }
  ],
  "events": [],
@@ -70,7 +70,7 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": 800,
+    "amount": 3000,
     "from_cur": "USD",
     "to_cur": "JPY"
    }
@@ -79,44 +79,44 @@
    "fn": "transfer_funds",
    "args": {
     "from_acct": "checking",
-    "to_acct": "savings",
-    "amount": 800
+    "to_acct": "rent account",
+    "amount": 3000
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GE1692af": {
-   "amount": 800,
+   "amount": 3000,
    "from_cur": "USD",
    "to_cur": "JPY"
   },
   "transfer_funds#TRf81284": {
    "from_acct": "checking",
-   "to_acct": "savings",
-   "amount": 800
+   "to_acct": "rent account",
+   "amount": 3000
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv09"
+  "user": "cv09",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.38,
+   "t_end": 7.54,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.043,
-   "t_end": 9.643,
+   "t_start": 8.294,
+   "t_end": 9.894,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.663
+  0.754
  ]
 }

@@ -6,44 +6,44 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
-  "destination": "Portland",
-  "date": "May third",
-  "seat_class": "coach",
-  "passenger": "Sam Rivera"
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "June first",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Portland",
-  "date": "May third",
-  "seat_class": "coach",
-  "passenger": "Sam Rivera"
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "June first",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
-  "origin": "Boston",
-  "destination": "Portland",
-  "date": "May 3",
-  "seat_class": "coach",
-  "passenger": "Sam Rivera"
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "June 1",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
  },
  "l8_action": "cancel",
  "cancelled": true,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Find a train from Boston to Portland on May third, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Chicago to Austin on June first, hold a first class seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv08",
    "lang": "en",
    "text": "Actually, hold off, don't do it yet.",
-   "at_after_eou": 1.947
+   "at_after_eou": 1.829
   }
  ],
  "events": [],
@@ -61,22 +61,22 @@
  "gold_calls": [],
  "gold_state": {},
  "voices": {
-  "user": "cv06",
-  "bystander": "cv09"
+  "user": "cv08",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.9,
+   "t_end": 6.82,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.487,
-   "t_end": 15.087,
+   "t_start": 9.289,
+   "t_end": 11.369,
    "scheduled": "lifecycle_nominal"
   }
  ],

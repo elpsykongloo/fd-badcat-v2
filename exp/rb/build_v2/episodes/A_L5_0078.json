@@ -6,50 +6,50 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "杭州",
-  "beds": "两居",
-  "max_rent": "六千",
+  "city": "成都",
+  "beds": "一居",
+  "max_rent": "八千",
   "slot": "周日下午"
  },
  "slots_final": {
   "city": "成都",
-  "beds": "两居",
-  "max_rent": "六千",
-  "slot": "周日下午"
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周六上午"
  },
  "revisions": [
   {
-   "slot": "city",
-   "old": "杭州",
-   "new": "成都",
+   "slot": "slot",
+   "old": "周日下午",
+   "new": "周六上午",
    "by": "user",
    "kind": "default",
-   "gap": 2.84
+   "gap": 2.711
   }
  ],
  "bystander": null,
  "slots_canon": {
   "city": "成都",
-  "beds": 2,
-  "max_rent": 6000,
-  "slot": "周日下午"
+  "beds": 1,
+  "max_rent": 8000,
+  "slot": "周六上午"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv07",
    "lang": "zh",
-   "text": "在杭州找两居、租金不超过六千的房子，约周日下午看房。",
+   "text": "在成都找一居、租金不超过八千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv07",
    "lang": "zh",
-   "text": "等等，改成成都。",
-   "gap_before": 2.84
+   "text": "等等，改成周六上午。",
+   "gap_before": 2.711
   }
  ],
  "events": [],
@@ -68,50 +68,50 @@
    "fn": "search_rentals",
    "args": {
     "city": "成都",
-    "beds": 2,
-    "max_rent": 6000
+    "beds": 1,
+    "max_rent": 8000
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SE8d23a0",
-    "slot": "周日下午"
+    "slot": "周六上午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SE8d23a0": {
    "city": "成都",
-   "beds": 2,
-   "max_rent": 6000
+   "beds": 1,
+   "max_rent": 8000
   },
   "book_viewing#BO06d61a": {
    "listing_id": "SE8d23a0",
-   "slot": "周日下午"
+   "slot": "周六上午"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv09"
+  "user": "cv07",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.22,
+   "t_end": 5.7,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.06,
-   "t_end": 11.98,
+   "t_start": 8.411,
+   "t_end": 10.891,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.84
+  2.711
  ]
 }

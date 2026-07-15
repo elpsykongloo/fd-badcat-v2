@@ -6,35 +6,35 @@
  "lang": "en",
  "scenario": "fin_payment",
  "slots": {
-  "payee": "the property office",
-  "amount": "eight hundred",
-  "date": "May third"
+  "payee": "property office",
+  "amount": "three thousand",
+  "date": "June first"
  },
  "slots_final": {
-  "payee": "the property office",
-  "amount": "eight hundred",
-  "date": "May third"
+  "payee": "property office",
+  "amount": "three thousand",
+  "date": "June first"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
-  "payee": "the property office",
-  "amount": 800,
-  "date": "May 3"
+  "payee": "property office",
+  "amount": 3000,
+  "date": "June 1"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Schedule a payment of eight hundred to the property office on May third.",
+   "text": "Schedule a payment of three thousand to property office on June first.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv08",
    "lang": "en",
    "text": "Any progress?",
    "at_after_eou": 22.131
@@ -54,36 +54,36 @@
   {
    "fn": "schedule_payment",
    "args": {
-    "payee": "the property office",
-    "amount": 800,
-    "date": "May 3"
+    "payee": "property office",
+    "amount": 3000,
+    "date": "June 1"
    }
   }
  ],
  "gold_state": {
   "schedule_payment#SC8327f1": {
-   "payee": "the property office",
-   "amount": 800,
-   "date": "May 3"
+   "payee": "property office",
+   "amount": 3000,
+   "date": "June 1"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv05"
+  "user": "cv08",
+  "bystander": "cv01"
  },
  "split": "dev",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 5.62,
+   "t_end": 4.42,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 28.391,
-   "t_end": 29.591,
+   "t_start": 27.191,
+   "t_end": 28.151,
    "scheduled": "lifecycle_nominal"
   }
  ],

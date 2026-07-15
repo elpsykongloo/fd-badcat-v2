@@ -8,14 +8,14 @@
  "slots": {
   "origin": "Boston",
   "destination": "Portland",
-  "date": "June first",
+  "date": "May third",
   "seat_class": "business",
   "passenger": "Sam Rivera"
  },
  "slots_final": {
   "origin": "Boston",
   "destination": "Portland",
-  "date": "June first",
+  "date": "May third",
   "seat_class": "business",
   "passenger": "Sam Rivera"
  },
@@ -24,7 +24,7 @@
  "slots_canon": {
   "origin": "Boston",
   "destination": "Portland",
-  "date": "June 1",
+  "date": "May 3",
   "seat_class": "business",
   "passenger": "Sam Rivera"
  },
@@ -33,26 +33,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Find a train from Boston to Portland on June first, hold a business seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Boston to Portland on May third, hold a business seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv05",
    "lang": "en",
    "text": "Actually, hold off, don't do it yet.",
-   "at_after_eou": 1.81
+   "at_after_eou": 1.713
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.408,
+   "offset": 0.304,
    "action": "cancel",
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv05",
    "text": "Actually, hold off, don't do it yet."
   }
  ],
@@ -70,9 +70,9 @@
  "gold_calls": [],
  "gold_state": {},
  "voices": {
-  "user": "cv03",
-  "bystander": "cv06"
+  "user": "cv05",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

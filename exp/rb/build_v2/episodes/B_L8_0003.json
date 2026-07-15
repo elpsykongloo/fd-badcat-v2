@@ -6,24 +6,24 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Atlanta",
-  "date": "May third",
+  "origin": "Chicago",
+  "destination": "Portland",
+  "date": "June first",
   "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Seattle",
-  "destination": "Denver",
+  "origin": "Chicago",
+  "destination": "Portland",
   "date": "May third",
   "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "passenger": "Jordan Lee"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Atlanta",
-   "new": "Denver",
+   "slot": "date",
+   "old": "June first",
+   "new": "May third",
    "by": "user",
    "kind": "default",
    "gap": null
@@ -31,38 +31,38 @@
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Seattle",
-  "destination": "Denver",
+  "origin": "Chicago",
+  "destination": "Portland",
   "date": "May 3",
   "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "passenger": "Jordan Lee"
  },
  "l8_action": "revise",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Find a train from Seattle to Atlanta on May third, hold a business seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Chicago to Portland on June first, hold a business seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Wait — make it Denver.",
-   "at_after_eou": 1.786
+   "text": "Wait — make it May third.",
+   "at_after_eou": 1.948
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.33,
+   "offset": 0.45,
    "action": "revise",
    "role": "user",
-   "voice": "cv05",
-   "text": "Wait — make it Denver."
+   "voice": "cv02",
+   "text": "Wait — make it May third."
   }
  ],
  "profile": "default",
@@ -80,8 +80,8 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
-    "destination": "Denver",
+    "origin": "Chicago",
+    "destination": "Portland",
     "date": "May 3"
    }
   },
@@ -96,14 +96,14 @@
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO9c48d3",
-    "passenger": "Sam Rivera"
+    "passenger": "Jordan Lee"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE7b10cd": {
-   "origin": "Seattle",
-   "destination": "Denver",
+   "origin": "Chicago",
+   "destination": "Portland",
    "date": "May 3"
   },
   "hold_seat#HO9c48d3": {
@@ -112,13 +112,13 @@
   },
   "purchase_ticket#PU77c0ad": {
    "hold_id": "HO9c48d3",
-   "passenger": "Sam Rivera"
+   "passenger": "Jordan Lee"
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv01"
+  "user": "cv02",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

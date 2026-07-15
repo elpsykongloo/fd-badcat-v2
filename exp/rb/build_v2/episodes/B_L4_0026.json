@@ -7,59 +7,59 @@
  "scenario": "hou_chain",
  "slots": {
   "city": "厦门",
-  "beds": "两居",
+  "beds": "一居",
   "max_rent": "六千",
   "slot": "周六上午"
  },
  "slots_final": {
   "city": "厦门",
-  "beds": "两居",
-  "max_rent": "六千",
-  "slot": "周日下午"
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周六上午"
  },
  "revisions": [
   {
-   "slot": "slot",
-   "old": "周六上午",
-   "new": "周日下午",
+   "slot": "max_rent",
+   "old": "六千",
+   "new": "八千",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.785
+   "gap": 0.692
   }
  ],
  "bystander": null,
  "slots_canon": {
   "city": "厦门",
-  "beds": 2,
-  "max_rent": 6000,
-  "slot": "周日下午"
+  "beds": 1,
+  "max_rent": 8000,
+  "slot": "周六上午"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "在厦门找两居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在厦门找一居、租金不超过六千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "周日下午，改成周日下午。",
-   "gap_before": 0.785
+   "text": "八千，改成八千。",
+   "gap_before": 0.692
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.306,
+   "offset": 0.469,
    "action": "revise",
    "role": "user",
-   "voice": "cv02",
-   "text": "周日下午，改成周日下午。"
+   "voice": "cv09",
+   "text": "八千，改成八千。"
   }
  ],
  "profile": "default",
@@ -77,33 +77,33 @@
    "fn": "search_rentals",
    "args": {
     "city": "厦门",
-    "beds": 2,
-    "max_rent": 6000
+    "beds": 1,
+    "max_rent": 8000
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SEa0c887",
-    "slot": "周日下午"
+    "slot": "周六上午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SEa0c887": {
    "city": "厦门",
-   "beds": 2,
-   "max_rent": 6000
+   "beds": 1,
+   "max_rent": 8000
   },
   "book_viewing#BOa4d059": {
    "listing_id": "SEa0c887",
-   "slot": "周日下午"
+   "slot": "周六上午"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv08"
+  "user": "cv09",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

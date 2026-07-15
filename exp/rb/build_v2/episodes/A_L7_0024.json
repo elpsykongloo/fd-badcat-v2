@@ -6,44 +6,44 @@
  "lang": "zh",
  "scenario": "ecom_multi",
  "slots": {
-  "query": "保温杯",
-  "item_id": "A100"
+  "query": "跑步鞋",
+  "item_id": "C330"
  },
  "slots_final": {
-  "query": "保温杯",
-  "item_id": "B205"
+  "query": "跑步鞋",
+  "item_id": "A100"
  },
  "revisions": [
   {
    "slot": "item_id",
-   "old": "A100",
-   "new": "B205",
+   "old": "C330",
+   "new": "A100",
    "by": "user",
    "kind": "default",
-   "gap": 1.298
+   "gap": 1.411
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "query": "保温杯",
-  "item_id": "B205"
+  "query": "跑步鞋",
+  "item_id": "A100"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "搜一下保温杯，再看看编号A100还有没有货。",
+   "text": "搜一下跑步鞋，再看看编号C330还有没有货。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "等等，改成B205。",
-   "gap_before": 1.298
+   "text": "等等，改成A100。",
+   "gap_before": 1.411
   }
  ],
  "events": [],
@@ -61,45 +61,45 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "保温杯"
+    "query": "跑步鞋"
    }
   },
   {
    "fn": "check_stock",
    "args": {
-    "item_id": "B205"
+    "item_id": "A100"
    }
   }
  ],
  "gold_state": {
   "search_catalog#SE3c7bbd": {
-   "query": "保温杯"
+   "query": "跑步鞋"
   },
   "check_stock#CHe0fc95": {
-   "item_id": "B205"
+   "item_id": "A100"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv04"
+  "user": "cv03",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.58,
+   "t_end": 4.58,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 7.878,
-   "t_end": 12.918,
+   "t_start": 5.991,
+   "t_end": 8.871,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.298
+  1.411
  ]
 }

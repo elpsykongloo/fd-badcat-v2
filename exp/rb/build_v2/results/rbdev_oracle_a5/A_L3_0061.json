@@ -1,0 +1,89 @@
+{
+ "id": "A_L3_0061",
+ "layer": "L3",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 8.12,
+ "U": 0.6593,
+ "U_sens": {
+  "0.5": 0.6593,
+  "1.0": 0.6593,
+  "2.0": 0.6593
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 8.94,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 3
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 11.883,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "amount": 3000
+     }
+    },
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "amount": 3000
+     }
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   9.94,
+   "好的，马上办。"
+  ],
+  [
+   12.883,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   8.3,
+   "user"
+  ],
+  [
+   8.993,
+   11.243,
+   "user"
+  ]
+ ]
+}

@@ -6,14 +6,14 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "eight hundred",
+  "amount": "three thousand",
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "savings"
  },
  "slots_final": {
-  "amount": "eight hundred",
+  "amount": "three thousand",
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
@@ -22,7 +22,7 @@
  "revisions": [],
  "bystander": null,
  "slots_canon": {
-  "amount": 800,
+  "amount": 3000,
   "from_cur": "USD",
   "to_cur": "EUR",
   "from_acct": "checking",
@@ -33,17 +33,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Get a quote for eight hundred dollars to euros, then transfer eight hundred from checking to savings.",
+   "text": "Get a quote for three thousand dollars to euros, then transfer three thousand from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv05",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 2.073
+   "at_after_eou": 2.127
   }
  ],
  "events": [],
@@ -61,7 +61,7 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": 800,
+    "amount": 3000,
     "from_cur": "USD",
     "to_cur": "EUR"
    }
@@ -71,28 +71,28 @@
    "args": {
     "from_acct": "checking",
     "to_acct": "savings",
-    "amount": 800
+    "amount": 3000
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GEcaa712": {
-   "amount": 800,
+   "amount": 3000,
    "from_cur": "USD",
    "to_cur": "EUR"
   },
   "transfer_funds#TR02d05b": {
    "from_acct": "checking",
    "to_acct": "savings",
-   "amount": 800
+   "amount": 3000
   }
  },
  "voices": {
-  "user": "cv09",
+  "user": "cv05",
   "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
@@ -102,8 +102,8 @@
   },
   {
    "role": "user",
-   "t_start": 8.813,
-   "t_end": 10.173,
+   "t_start": 8.867,
+   "t_end": 9.987,
    "scheduled": "lifecycle_nominal"
   }
  ],

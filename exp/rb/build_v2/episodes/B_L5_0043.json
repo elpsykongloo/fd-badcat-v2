@@ -6,63 +6,63 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Atlanta",
-  "date": "May third",
-  "seat_class": "business",
-  "passenger": "Alex Chen"
- },
- "slots_final": {
-  "origin": "Seattle",
+  "origin": "Chicago",
   "destination": "Atlanta",
   "date": "May third",
   "seat_class": "first class",
-  "passenger": "Alex Chen"
+  "passenger": "Jordan Lee"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May eighth",
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
  },
  "revisions": [
   {
-   "slot": "seat_class",
-   "old": "business",
-   "new": "first class",
+   "slot": "date",
+   "old": "May third",
+   "new": "May eighth",
    "by": "user",
    "kind": "default",
-   "gap": 2.813
+   "gap": 2.483
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Seattle",
+  "origin": "Chicago",
   "destination": "Atlanta",
-  "date": "May 3",
+  "date": "May 8",
   "seat_class": "first class",
-  "passenger": "Alex Chen"
+  "passenger": "Jordan Lee"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Find a train from Seattle to Atlanta on May third, hold a business seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Chicago to Atlanta on May third, hold a first class seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Wait — make it first class.",
-   "gap_before": 2.813
+   "text": "Wait — make it May eighth.",
+   "gap_before": 2.483
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 3.347,
+   "offset": 0.918,
    "action": "revise",
    "role": "user",
-   "voice": "cv01",
-   "text": "Wait — make it first class."
+   "voice": "cv07",
+   "text": "Wait — make it May eighth."
   }
  ],
  "profile": "default",
@@ -80,9 +80,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
+    "origin": "Chicago",
     "destination": "Atlanta",
-    "date": "May 3"
+    "date": "May 8"
    }
   },
   {
@@ -96,15 +96,15 @@
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HObac4cc",
-    "passenger": "Alex Chen"
+    "passenger": "Jordan Lee"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEdfeaec": {
-   "origin": "Seattle",
+   "origin": "Chicago",
    "destination": "Atlanta",
-   "date": "May 3"
+   "date": "May 8"
   },
   "hold_seat#HObac4cc": {
    "train_id": "SEdfeaec",
@@ -112,13 +112,13 @@
   },
   "purchase_ticket#PUd96c02": {
    "hold_id": "HObac4cc",
-   "passenger": "Alex Chen"
+   "passenger": "Jordan Lee"
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv08"
+  "user": "cv07",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

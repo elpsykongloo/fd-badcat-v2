@@ -6,14 +6,14 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "保温杯",
+  "query": "蓝牙耳机",
   "qty": "两",
-  "address": "浦东新区世纪大道八号"
+  "address": "海淀区学院路一号"
  },
  "slots_final": {
-  "query": "保温杯",
+  "query": "蓝牙耳机",
   "qty": "一",
-  "address": "浦东新区世纪大道八号"
+  "address": "海淀区学院路一号"
  },
  "revisions": [
   {
@@ -22,14 +22,14 @@
    "new": "一",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.687
+   "gap": 0.719
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "query": "保温杯",
+  "query": "蓝牙耳机",
   "qty": 1,
-  "address": "浦东新区世纪大道八号"
+  "address": "海淀区学院路一号"
  },
  "l8_action": null,
  "cancelled": false,
@@ -38,7 +38,7 @@
    "role": "user",
    "voice": "cv04",
    "lang": "zh",
-   "text": "帮我搜保温杯，加两件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
@@ -46,7 +46,7 @@
    "voice": "cv04",
    "lang": "zh",
    "text": "一，改成一。",
-   "gap_before": 0.687
+   "gap_before": 0.719
   }
  ],
  "events": [],
@@ -65,7 +65,7 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "保温杯"
+    "query": "蓝牙耳机"
    }
   },
   {
@@ -79,13 +79,13 @@
    "fn": "place_order",
    "args": {
     "cart_id": "AD0c5395",
-    "address": "浦东新区世纪大道八号"
+    "address": "海淀区学院路一号"
    }
   }
  ],
  "gold_state": {
   "search_catalog#SEe23fa7": {
-   "query": "保温杯"
+   "query": "蓝牙耳机"
   },
   "add_item#AD0c5395": {
    "item_id": "SEe23fa7",
@@ -93,30 +93,30 @@
   },
   "place_order#PLb61108": {
    "cart_id": "AD0c5395",
-   "address": "浦东新区世纪大道八号"
+   "address": "海淀区学院路一号"
   }
  },
  "voices": {
   "user": "cv04",
-  "bystander": "cv03"
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.58,
+   "t_end": 7.06,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.267,
-   "t_end": 10.787,
+   "t_start": 7.779,
+   "t_end": 9.299,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.687
+  0.719
  ]
 }

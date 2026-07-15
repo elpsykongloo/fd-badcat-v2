@@ -6,62 +6,62 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "跑步鞋",
-  "qty": "一",
-  "address": "海淀区学院路一号"
+  "query": "蓝牙耳机",
+  "qty": "两",
+  "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
-  "query": "保温杯",
-  "qty": "两",
-  "address": "海淀区学院路一号"
+  "query": "跑步鞋",
+  "qty": "一",
+  "address": "浦东新区世纪大道八号"
  },
  "revisions": [
   {
    "slot": "query",
-   "old": "跑步鞋",
-   "new": "保温杯",
+   "old": "蓝牙耳机",
+   "new": "跑步鞋",
    "by": "user",
    "kind": "default",
-   "gap": 1.055
+   "gap": 0.721
   },
   {
    "slot": "qty",
-   "old": "一",
-   "new": "两",
+   "old": "两",
+   "new": "一",
    "by": "user",
    "kind": "second",
-   "gap": 2.947
+   "gap": 2.624
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "query": "保温杯",
-  "qty": 2,
-  "address": "海淀区学院路一号"
+  "query": "跑步鞋",
+  "qty": 1,
+  "address": "浦东新区世纪大道八号"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "帮我搜跑步鞋，加一件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "等等，改成保温杯。",
-   "gap_before": 1.055
+   "text": "等等，改成跑步鞋。",
+   "gap_before": 0.721
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "还有，再改一下，要两。",
-   "gap_before": 2.947
+   "text": "还有，再改一下，要一。",
+   "gap_before": 2.624
   }
  ],
  "events": [],
@@ -80,65 +80,65 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "保温杯"
+    "query": "跑步鞋"
    }
   },
   {
    "fn": "add_item",
    "args": {
     "item_id": "SE68c752",
-    "qty": 2
+    "qty": 1
    }
   },
   {
    "fn": "place_order",
    "args": {
     "cart_id": "AD0f4af6",
-    "address": "海淀区学院路一号"
+    "address": "浦东新区世纪大道八号"
    }
   }
  ],
  "gold_state": {
   "search_catalog#SE68c752": {
-   "query": "保温杯"
+   "query": "跑步鞋"
   },
   "add_item#AD0f4af6": {
    "item_id": "SE68c752",
-   "qty": 2
+   "qty": 1
   },
   "place_order#PLfe2c02": {
    "cart_id": "AD0f4af6",
-   "address": "海淀区学院路一号"
+   "address": "浦东新区世纪大道八号"
   }
  },
  "voices": {
-  "user": "cv08",
+  "user": "cv05",
   "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 11.14,
+   "t_end": 9.06,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 12.195,
-   "t_end": 20.035,
+   "t_start": 9.781,
+   "t_end": 11.861,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 22.982,
-   "t_end": 26.422,
+   "t_start": 14.485,
+   "t_end": 17.685,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.055,
-  2.947
+  0.721,
+  2.624
  ]
 }

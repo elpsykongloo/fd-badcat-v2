@@ -7,33 +7,33 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Chicago",
-  "destination": "Austin",
-  "date": "June first",
-  "seat_class": "business",
+  "destination": "Denver",
+  "date": "May third",
+  "seat_class": "coach",
   "passenger": "Jordan Lee"
  },
  "slots_final": {
   "origin": "Chicago",
   "destination": "Denver",
-  "date": "June first",
+  "date": "May third",
   "seat_class": "business",
   "passenger": "Jordan Lee"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Austin",
-   "new": "Denver",
+   "slot": "seat_class",
+   "old": "coach",
+   "new": "business",
    "by": "user",
    "kind": "default",
-   "gap": 2.71
+   "gap": 3.031
   }
  ],
  "bystander": null,
  "slots_canon": {
   "origin": "Chicago",
   "destination": "Denver",
-  "date": "June 1",
+  "date": "May 3",
   "seat_class": "business",
   "passenger": "Jordan Lee"
  },
@@ -42,27 +42,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Find a train from Chicago to Austin on June first, hold a business seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Chicago to Denver on May third, hold a coach seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Wait — make it Denver.",
-   "gap_before": 2.71
+   "text": "Wait — make it business.",
+   "gap_before": 3.031
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.738,
+   "offset": 3.153,
    "action": "revise",
    "role": "user",
-   "voice": "cv04",
-   "text": "Wait — make it Denver."
+   "voice": "cv09",
+   "text": "Wait — make it business."
   }
  ],
  "profile": "default",
@@ -82,7 +82,7 @@
    "args": {
     "origin": "Chicago",
     "destination": "Denver",
-    "date": "June 1"
+    "date": "May 3"
    }
   },
   {
@@ -104,7 +104,7 @@
   "search_trains#SEb6cfe4": {
    "origin": "Chicago",
    "destination": "Denver",
-   "date": "June 1"
+   "date": "May 3"
   },
   "hold_seat#HO0911fc": {
    "train_id": "SEb6cfe4",
@@ -116,9 +116,9 @@
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv01"
+  "user": "cv09",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

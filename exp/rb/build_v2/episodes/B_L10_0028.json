@@ -6,24 +6,24 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "蓝牙耳机",
+  "query": "保温杯",
   "qty": "一",
   "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
-  "query": "蓝牙耳机",
+  "query": "保温杯",
   "qty": "一",
   "address": "浦东新区世纪大道八号"
  },
  "revisions": [],
  "bystander": {
   "kind": "irrelevant",
-  "other": "保温杯",
+  "other": "跑步鞋",
   "state": "inflight",
-  "frac": 0.766
+  "frac": 0.246
  },
  "slots_canon": {
-  "query": "蓝牙耳机",
+  "query": "保温杯",
   "qty": 1,
   "address": "浦东新区世纪大道八号"
  },
@@ -32,26 +32,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv07",
    "lang": "zh",
-   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜保温杯，加一件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv09",
+   "voice": "cv02",
    "lang": "zh",
    "text": "今晚想吃什么？我们点外卖吧。",
-   "at_after_eou": 2.006
+   "at_after_eou": 1.758
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.358,
+   "offset": 0.343,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv09",
+   "voice": "cv02",
    "text": "今晚想吃什么？我们点外卖吧。"
   }
  ],
@@ -70,7 +70,7 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "蓝牙耳机"
+    "query": "保温杯"
    }
   },
   {
@@ -90,7 +90,7 @@
  ],
  "gold_state": {
   "search_catalog#SE9e1267": {
-   "query": "蓝牙耳机"
+   "query": "保温杯"
   },
   "add_item#ADdbfba2": {
    "item_id": "SE9e1267",
@@ -102,9 +102,9 @@
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv09"
+  "user": "cv07",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

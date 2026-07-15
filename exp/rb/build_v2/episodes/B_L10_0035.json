@@ -6,35 +6,35 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Atlanta",
+  "origin": "Boston",
+  "destination": "Austin",
   "date": "June first",
-  "seat_class": "business",
+  "seat_class": "coach",
   "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Chicago",
-  "destination": "Denver",
+  "origin": "Boston",
+  "destination": "Portland",
   "date": "June first",
-  "seat_class": "business",
+  "seat_class": "coach",
   "passenger": "Alex Chen"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Atlanta",
-   "new": "Denver",
+   "old": "Austin",
+   "new": "Portland",
    "by": "user",
    "kind": "default",
-   "gap": 0.692
+   "gap": 0.684
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Chicago",
-  "destination": "Denver",
+  "origin": "Boston",
+  "destination": "Portland",
   "date": "June 1",
-  "seat_class": "business",
+  "seat_class": "coach",
   "passenger": "Alex Chen"
  },
  "l8_action": null,
@@ -42,27 +42,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Find a train from Chicago to Atlanta on June first, hold a business seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Boston to Austin on June first, hold a coach seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Wait — make it Denver.",
-   "gap_before": 0.692
+   "text": "Wait — make it Portland.",
+   "gap_before": 0.684
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.728,
+   "offset": 0.669,
    "action": "benign_control",
    "role": "user",
-   "voice": "cv01",
-   "text": "Wait — make it Denver."
+   "voice": "cv06",
+   "text": "Wait — make it Portland."
   }
  ],
  "profile": "default",
@@ -80,8 +80,8 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
-    "destination": "Denver",
+    "origin": "Boston",
+    "destination": "Portland",
     "date": "June 1"
    }
   },
@@ -89,7 +89,7 @@
    "fn": "hold_seat",
    "args": {
     "train_id": "SE759666",
-    "seat_class": "business"
+    "seat_class": "coach"
    }
   },
   {
@@ -102,13 +102,13 @@
  ],
  "gold_state": {
   "search_trains#SE759666": {
-   "origin": "Chicago",
-   "destination": "Denver",
+   "origin": "Boston",
+   "destination": "Portland",
    "date": "June 1"
   },
   "hold_seat#HOc01ba3": {
    "train_id": "SE759666",
-   "seat_class": "business"
+   "seat_class": "coach"
   },
   "purchase_ticket#PUfc5988": {
    "hold_id": "HOc01ba3",
@@ -116,9 +116,9 @@
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv07"
+  "user": "cv06",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

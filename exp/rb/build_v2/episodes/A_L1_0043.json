@@ -7,8 +7,8 @@
  "scenario": "travel_hotel",
  "slots": {
   "city": "Miami",
-  "checkin": "May third",
-  "nights": "three"
+  "checkin": "May tenth",
+  "nights": "two"
  },
  "slots_final": {
   "city": "Miami",
@@ -17,9 +17,9 @@
  },
  "revisions": [
   {
-   "slot": "nights",
-   "old": "three",
-   "new": "two",
+   "slot": "checkin",
+   "old": "May tenth",
+   "new": "May third",
    "by": "user",
    "kind": "inline",
    "gap": null
@@ -36,9 +36,9 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Book me a hotel in Miami, checking in May third, for three nights., oh no, make that two",
+   "text": "Book me a hotel in Miami, checking in May tenth, for two nights., oh no, make that May third",
    "gap_before": 0.5
   }
  ],
@@ -70,16 +70,16 @@
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv01"
+  "user": "cv06",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.5,
+   "t_end": 8.74,
    "scheduled": "sequential"
   }
  ],

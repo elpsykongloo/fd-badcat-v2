@@ -6,27 +6,27 @@
  "lang": "zh",
  "scenario": "ecom_multi",
  "slots": {
-  "query": "跑步鞋",
-  "item_id": "C330"
+  "query": "保温杯",
+  "item_id": "A100"
  },
  "slots_final": {
   "query": "蓝牙耳机",
-  "item_id": "C330"
+  "item_id": "A100"
  },
  "revisions": [
   {
    "slot": "query",
-   "old": "跑步鞋",
+   "old": "保温杯",
    "new": "蓝牙耳机",
    "by": "user",
    "kind": "default",
-   "gap": 2.345
+   "gap": 1.049
   }
  ],
  "bystander": null,
  "slots_canon": {
   "query": "蓝牙耳机",
-  "item_id": "C330"
+  "item_id": "A100"
  },
  "l8_action": null,
  "cancelled": false,
@@ -35,7 +35,7 @@
    "role": "user",
    "voice": "cv07",
    "lang": "zh",
-   "text": "搜一下跑步鞋，再看看编号C330还有没有货。",
+   "text": "搜一下保温杯，再看看编号A100还有没有货。",
    "gap_before": 0.5
   },
   {
@@ -43,7 +43,7 @@
    "voice": "cv07",
    "lang": "zh",
    "text": "等等，改成蓝牙耳机。",
-   "gap_before": 2.345
+   "gap_before": 1.049
   }
  ],
  "events": [],
@@ -67,7 +67,7 @@
   {
    "fn": "check_stock",
    "args": {
-    "item_id": "C330"
+    "item_id": "A100"
    }
   }
  ],
@@ -76,30 +76,30 @@
    "query": "蓝牙耳机"
   },
   "check_stock#CH3be8af": {
-   "item_id": "C330"
+   "item_id": "A100"
   }
  },
  "voices": {
   "user": "cv07",
-  "bystander": "cv01"
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 4.66,
+   "t_end": 4.74,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 7.005,
-   "t_end": 8.845,
+   "t_start": 5.789,
+   "t_end": 7.629,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.345
+  1.049
  ]
 }

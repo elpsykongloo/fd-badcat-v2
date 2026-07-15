@@ -6,13 +6,13 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "青岛",
+  "city": "杭州",
   "beds": "两居",
   "max_rent": "八千",
   "slot": "周日下午"
  },
  "slots_final": {
-  "city": "青岛",
+  "city": "杭州",
   "beds": "两居",
   "max_rent": "八千",
   "slot": "周日下午"
@@ -20,12 +20,12 @@
  "revisions": [],
  "bystander": {
   "kind": "command",
-  "other": "六千",
+  "other": "周六上午",
   "state": "inflight",
-  "frac": 0.335
+  "frac": 0.223
  },
  "slots_canon": {
-  "city": "青岛",
+  "city": "杭州",
   "beds": 2,
   "max_rent": 8000,
   "slot": "周日下午"
@@ -35,35 +35,35 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv07",
    "lang": "zh",
-   "text": "在青岛找两居、租金不超过八千的房子，约周日下午看房。",
+   "text": "在杭州找两居、租金不超过八千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv06",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "改成六千吧。",
-   "at_after_eou": 1.826
+   "text": "改成周六上午吧。",
+   "at_after_eou": 1.764
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.683,
+   "offset": 0.433,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv06",
-   "text": "改成六千吧。"
+   "voice": "cv09",
+   "text": "改成周六上午吧。"
   },
   {
    "state": "tts",
-   "offset": 0.253,
+   "offset": 0.101,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv06",
-   "text": "改成六千吧。"
+   "voice": "cv09",
+   "text": "改成周六上午吧。"
   }
  ],
  "profile": "default",
@@ -80,7 +80,7 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "青岛",
+    "city": "杭州",
     "beds": 2,
     "max_rent": 8000
    }
@@ -95,7 +95,7 @@
  ],
  "gold_state": {
   "search_rentals#SEdb1f2c": {
-   "city": "青岛",
+   "city": "杭州",
    "beds": 2,
    "max_rent": 8000
   },
@@ -105,9 +105,9 @@
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv06"
+  "user": "cv07",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

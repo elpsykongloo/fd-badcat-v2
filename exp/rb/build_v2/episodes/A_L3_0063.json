@@ -7,7 +7,7 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Seattle",
-  "destination": "Austin",
+  "destination": "Portland",
   "date": "June first",
   "seat_class": "first class",
   "passenger": "Alex Chen"
@@ -15,25 +15,25 @@
  "slots_final": {
   "origin": "Seattle",
   "destination": "Austin",
-  "date": "May eighth",
+  "date": "June first",
   "seat_class": "first class",
   "passenger": "Alex Chen"
  },
  "revisions": [
   {
-   "slot": "date",
-   "old": "June first",
-   "new": "May eighth",
+   "slot": "destination",
+   "old": "Portland",
+   "new": "Austin",
    "by": "user",
    "kind": "default",
-   "gap": 0.685
+   "gap": 0.678
   }
  ],
  "bystander": null,
  "slots_canon": {
   "origin": "Seattle",
   "destination": "Austin",
-  "date": "May 8",
+  "date": "June 1",
   "seat_class": "first class",
   "passenger": "Alex Chen"
  },
@@ -42,17 +42,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Find a train from Seattle to Austin on June first, hold a first class seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Seattle to Portland on June first, hold a first class seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Wait — make it May eighth.",
-   "gap_before": 0.685
+   "text": "Wait — make it Austin.",
+   "gap_before": 0.678
   }
  ],
  "events": [],
@@ -73,7 +73,7 @@
    "args": {
     "origin": "Seattle",
     "destination": "Austin",
-    "date": "May 8"
+    "date": "June 1"
    }
   },
   {
@@ -95,7 +95,7 @@
   "search_trains#SE4503dd": {
    "origin": "Seattle",
    "destination": "Austin",
-   "date": "May 8"
+   "date": "June 1"
   },
   "hold_seat#HO417d80": {
    "train_id": "SE4503dd",
@@ -107,26 +107,26 @@
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv04"
+  "user": "cv04",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 9.22,
+   "t_end": 7.3,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.905,
-   "t_end": 11.825,
+   "t_start": 7.978,
+   "t_end": 9.978,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.685
+  0.678
  ]
 }

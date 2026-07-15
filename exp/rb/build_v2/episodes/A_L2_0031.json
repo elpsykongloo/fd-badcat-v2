@@ -6,47 +6,47 @@
  "lang": "en",
  "scenario": "travel_hotel",
  "slots": {
-  "city": "Austin",
-  "checkin": "May tenth",
-  "nights": "three"
+  "city": "Boise",
+  "checkin": "May third",
+  "nights": "two"
  },
  "slots_final": {
-  "city": "Austin",
-  "checkin": "May third",
-  "nights": "three"
+  "city": "Boise",
+  "checkin": "May tenth",
+  "nights": "two"
  },
  "revisions": [
   {
    "slot": "checkin",
-   "old": "May tenth",
-   "new": "May third",
+   "old": "May third",
+   "new": "May tenth",
    "by": "user",
    "kind": "default",
-   "gap": 0.224
+   "gap": 0.252
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "city": "Austin",
-  "checkin": "May 3",
-  "nights": 3
+  "city": "Boise",
+  "checkin": "May 10",
+  "nights": 2
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Book me a hotel in Austin, checking in May tenth, for three nights.",
+   "text": "Book me a hotel in Boise, checking in May third, for two nights.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Wait — make it May third.",
-   "gap_before": 0.224
+   "text": "Wait — make it May tenth.",
+   "gap_before": 0.252
   }
  ],
  "events": [],
@@ -63,40 +63,40 @@
   {
    "fn": "reserve_hotel",
    "args": {
-    "city": "Austin",
-    "checkin": "May 3",
-    "nights": 3
+    "city": "Boise",
+    "checkin": "May 10",
+    "nights": 2
    }
   }
  ],
  "gold_state": {
   "reserve_hotel#REcda543": {
-   "city": "Austin",
-   "checkin": "May 3",
-   "nights": 3
+   "city": "Boise",
+   "checkin": "May 10",
+   "nights": 2
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv08"
+  "user": "cv06",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 5.3,
+   "t_end": 5.06,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 5.524,
-   "t_end": 8.164,
+   "t_start": 5.312,
+   "t_end": 6.912,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.224
+  0.252
  ]
 }

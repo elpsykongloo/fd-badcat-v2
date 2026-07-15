@@ -6,53 +6,53 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
+  "origin": "Chicago",
   "destination": "Austin",
   "date": "May third",
   "seat_class": "coach",
-  "passenger": "Alex Chen"
+  "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Seattle",
+  "origin": "Chicago",
   "destination": "Austin",
   "date": "May third",
   "seat_class": "coach",
-  "passenger": "Alex Chen"
+  "passenger": "Jordan Lee"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
-  "origin": "Seattle",
+  "origin": "Chicago",
   "destination": "Austin",
   "date": "May 3",
   "seat_class": "coach",
-  "passenger": "Alex Chen"
+  "passenger": "Jordan Lee"
  },
  "l8_action": "progress",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Find a train from Seattle to Austin on May third, hold a coach seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Chicago to Austin on May third, hold a coach seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv06",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 1.805
+   "at_after_eou": 1.94
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.33,
+   "offset": 0.895,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv06",
    "text": "Any progress?"
   }
  ],
@@ -71,7 +71,7 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
+    "origin": "Chicago",
     "destination": "Austin",
     "date": "May 3"
    }
@@ -87,13 +87,13 @@
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HOc26c03",
-    "passenger": "Alex Chen"
+    "passenger": "Jordan Lee"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEee6ae0": {
-   "origin": "Seattle",
+   "origin": "Chicago",
    "destination": "Austin",
    "date": "May 3"
   },
@@ -103,13 +103,13 @@
   },
   "purchase_ticket#PUa8c0f5": {
    "hold_id": "HOc26c03",
-   "passenger": "Alex Chen"
+   "passenger": "Jordan Lee"
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv06"
+  "user": "cv06",
+  "bystander": "cv02"
  },
  "split": "dev",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

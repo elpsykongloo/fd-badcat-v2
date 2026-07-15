@@ -6,26 +6,26 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
-  "destination": "Denver",
-  "date": "June first",
-  "seat_class": "business",
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "coach",
   "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Denver",
-  "date": "June first",
-  "seat_class": "business",
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "coach",
   "passenger": "Alex Chen"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
-  "origin": "Boston",
-  "destination": "Denver",
-  "date": "June 1",
-  "seat_class": "business",
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "May 3",
+  "seat_class": "coach",
   "passenger": "Alex Chen"
  },
  "l8_action": "progress",
@@ -35,7 +35,7 @@
    "role": "user",
    "voice": "cv02",
    "lang": "en",
-   "text": "Find a train from Boston to Denver on June first, hold a business seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Chicago to Austin on May third, hold a coach seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
@@ -43,13 +43,13 @@
    "voice": "cv02",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 1.952
+   "at_after_eou": 1.822
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.873,
+   "offset": 0.367,
    "action": "progress_query",
    "role": "user",
    "voice": "cv02",
@@ -71,16 +71,16 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
-    "destination": "Denver",
-    "date": "June 1"
+    "origin": "Chicago",
+    "destination": "Austin",
+    "date": "May 3"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE0e1dce",
-    "seat_class": "business"
+    "seat_class": "coach"
    }
   },
   {
@@ -93,13 +93,13 @@
  ],
  "gold_state": {
   "search_trains#SE0e1dce": {
-   "origin": "Boston",
-   "destination": "Denver",
-   "date": "June 1"
+   "origin": "Chicago",
+   "destination": "Austin",
+   "date": "May 3"
   },
   "hold_seat#HO73178c": {
    "train_id": "SE0e1dce",
-   "seat_class": "business"
+   "seat_class": "coach"
   },
   "purchase_ticket#PUcc391a": {
    "hold_id": "HO73178c",
@@ -108,8 +108,8 @@
  },
  "voices": {
   "user": "cv02",
-  "bystander": "cv03"
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

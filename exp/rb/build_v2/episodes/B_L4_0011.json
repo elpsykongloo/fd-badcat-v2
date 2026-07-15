@@ -8,61 +8,61 @@
  "slots": {
   "origin": "Boston",
   "destination": "Austin",
-  "date": "May third",
-  "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
  },
  "slots_final": {
   "origin": "Boston",
-  "destination": "Austin",
+  "destination": "Atlanta",
   "date": "June first",
-  "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
  },
  "revisions": [
   {
-   "slot": "date",
-   "old": "May third",
-   "new": "June first",
+   "slot": "destination",
+   "old": "Austin",
+   "new": "Atlanta",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.687
+   "gap": 0.694
   }
  ],
  "bystander": null,
  "slots_canon": {
   "origin": "Boston",
-  "destination": "Austin",
+  "destination": "Atlanta",
   "date": "June 1",
-  "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Find a train from Boston to Austin on May third, hold a business seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Boston to Austin on June first, hold a coach seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv01",
    "lang": "en",
-   "text": "June first — change it to June first.",
-   "gap_before": 0.687
+   "text": "Atlanta — change it to Atlanta.",
+   "gap_before": 0.694
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.48,
+   "offset": 0.064,
    "action": "revise",
    "role": "user",
-   "voice": "cv05",
-   "text": "June first — change it to June first."
+   "voice": "cv01",
+   "text": "Atlanta — change it to Atlanta."
   }
  ],
  "profile": "default",
@@ -81,7 +81,7 @@
    "fn": "search_trains",
    "args": {
     "origin": "Boston",
-    "destination": "Austin",
+    "destination": "Atlanta",
     "date": "June 1"
    }
   },
@@ -89,36 +89,36 @@
    "fn": "hold_seat",
    "args": {
     "train_id": "SEd9d9d0",
-    "seat_class": "business"
+    "seat_class": "coach"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HO2b609f",
-    "passenger": "Sam Rivera"
+    "passenger": "Jordan Lee"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEd9d9d0": {
    "origin": "Boston",
-   "destination": "Austin",
+   "destination": "Atlanta",
    "date": "June 1"
   },
   "hold_seat#HO2b609f": {
    "train_id": "SEd9d9d0",
-   "seat_class": "business"
+   "seat_class": "coach"
   },
   "purchase_ticket#PUb71282": {
    "hold_id": "HO2b609f",
-   "passenger": "Sam Rivera"
+   "passenger": "Jordan Lee"
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv03"
+  "user": "cv01",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

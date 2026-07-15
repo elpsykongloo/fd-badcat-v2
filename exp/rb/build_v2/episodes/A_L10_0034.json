@@ -7,45 +7,45 @@
  "scenario": "hou_chain",
  "slots": {
   "city": "厦门",
-  "beds": "两居",
+  "beds": "一居",
   "max_rent": "六千",
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "slots_final": {
   "city": "厦门",
-  "beds": "两居",
+  "beds": "一居",
   "max_rent": "六千",
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "revisions": [],
  "bystander": {
   "kind": "irrelevant",
-  "other": "一居",
+  "other": "周六上午",
   "state": "inflight",
-  "frac": 0.478
+  "frac": 0.571
  },
  "slots_canon": {
   "city": "厦门",
-  "beds": 2,
+  "beds": 1,
   "max_rent": 6000,
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "在厦门找两居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在厦门找一居、租金不超过六千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv08",
+   "voice": "cv03",
    "lang": "zh",
    "text": "今晚想吃什么？我们点外卖吧。",
-   "at_after_eou": 1.948
+   "at_after_eou": 2.008
   }
  ],
  "events": [],
@@ -64,7 +64,7 @@
    "fn": "search_rentals",
    "args": {
     "city": "厦门",
-    "beds": 2,
+    "beds": 1,
     "max_rent": 6000
    }
   },
@@ -72,38 +72,38 @@
    "fn": "book_viewing",
    "args": {
     "listing_id": "SE4ff50c",
-    "slot": "周六上午"
+    "slot": "周日下午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SE4ff50c": {
    "city": "厦门",
-   "beds": 2,
+   "beds": 1,
    "max_rent": 6000
   },
   "book_viewing#BOe2a221": {
    "listing_id": "SE4ff50c",
-   "slot": "周六上午"
+   "slot": "周日下午"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv08"
+  "user": "cv05",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.42,
+   "t_end": 6.1,
    "scheduled": "sequential"
   },
   {
    "role": "bystander",
-   "t_start": 9.008,
-   "t_end": 11.408,
+   "t_start": 8.748,
+   "t_end": 10.748,
    "scheduled": "lifecycle_nominal"
   }
  ],

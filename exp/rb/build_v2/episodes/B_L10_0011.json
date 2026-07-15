@@ -6,63 +6,63 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Portland",
-  "date": "May third",
-  "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "origin": "Boston",
+  "destination": "Austin",
+  "date": "June first",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Chicago",
+  "origin": "Boston",
   "destination": "Austin",
   "date": "May third",
-  "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Portland",
-   "new": "Austin",
+   "slot": "date",
+   "old": "June first",
+   "new": "May third",
    "by": "user",
    "kind": "default",
-   "gap": 0.685
+   "gap": 1.137
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Chicago",
+  "origin": "Boston",
   "destination": "Austin",
   "date": "May 3",
-  "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Find a train from Chicago to Portland on May third, hold a coach seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Boston to Austin on June first, hold a business seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Wait — make it Austin.",
-   "gap_before": 0.685
+   "text": "Wait — make it May third.",
+   "gap_before": 1.137
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.535,
+   "offset": 0.376,
    "action": "benign_control",
    "role": "user",
-   "voice": "cv08",
-   "text": "Wait — make it Austin."
+   "voice": "cv02",
+   "text": "Wait — make it May third."
   }
  ],
  "profile": "default",
@@ -80,7 +80,7 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
+    "origin": "Boston",
     "destination": "Austin",
     "date": "May 3"
    }
@@ -89,36 +89,36 @@
    "fn": "hold_seat",
    "args": {
     "train_id": "SE24d92c",
-    "seat_class": "coach"
+    "seat_class": "business"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HOeed168",
-    "passenger": "Jordan Lee"
+    "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE24d92c": {
-   "origin": "Chicago",
+   "origin": "Boston",
    "destination": "Austin",
    "date": "May 3"
   },
   "hold_seat#HOeed168": {
    "train_id": "SE24d92c",
-   "seat_class": "coach"
+   "seat_class": "business"
   },
   "purchase_ticket#PUde21fe": {
    "hold_id": "HOeed168",
-   "passenger": "Jordan Lee"
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv06"
+  "user": "cv02",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

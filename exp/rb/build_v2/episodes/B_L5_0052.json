@@ -6,29 +6,29 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "蓝牙耳机",
-  "qty": "两",
-  "address": "海淀区学院路一号"
+  "query": "跑步鞋",
+  "qty": "一",
+  "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
-  "query": "保温杯",
-  "qty": "两",
+  "query": "跑步鞋",
+  "qty": "一",
   "address": "海淀区学院路一号"
  },
  "revisions": [
   {
-   "slot": "query",
-   "old": "蓝牙耳机",
-   "new": "保温杯",
+   "slot": "address",
+   "old": "浦东新区世纪大道八号",
+   "new": "海淀区学院路一号",
    "by": "user",
    "kind": "default",
-   "gap": 2.546
+   "gap": 2.776
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "query": "保温杯",
-  "qty": 2,
+  "query": "跑步鞋",
+  "qty": 1,
   "address": "海淀区学院路一号"
  },
  "l8_action": null,
@@ -36,27 +36,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜跑步鞋，加一件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "等等，改成保温杯。",
-   "gap_before": 2.546
+   "text": "等等，改成海淀区学院路一号。",
+   "gap_before": 2.776
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 1.714,
+   "offset": 2.495,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
-   "text": "等等，改成保温杯。"
+   "voice": "cv01",
+   "text": "等等，改成海淀区学院路一号。"
   }
  ],
  "profile": "default",
@@ -74,14 +74,14 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "保温杯"
+    "query": "跑步鞋"
    }
   },
   {
    "fn": "add_item",
    "args": {
     "item_id": "SEe0a319",
-    "qty": 2
+    "qty": 1
    }
   },
   {
@@ -94,11 +94,11 @@
  ],
  "gold_state": {
   "search_catalog#SEe0a319": {
-   "query": "保温杯"
+   "query": "跑步鞋"
   },
   "add_item#AD015a81": {
    "item_id": "SEe0a319",
-   "qty": 2
+   "qty": 1
   },
   "place_order#PL77109c": {
    "cart_id": "AD015a81",
@@ -106,9 +106,9 @@
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv05"
+  "user": "cv01",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

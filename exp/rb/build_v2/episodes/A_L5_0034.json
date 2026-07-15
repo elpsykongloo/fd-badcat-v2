@@ -6,7 +6,7 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "青岛",
+  "city": "杭州",
   "beds": "一居",
   "max_rent": "六千",
   "slot": "周日下午"
@@ -14,24 +14,24 @@
  "slots_final": {
   "city": "杭州",
   "beds": "一居",
-  "max_rent": "六千",
+  "max_rent": "八千",
   "slot": "周日下午"
  },
  "revisions": [
   {
-   "slot": "city",
-   "old": "青岛",
-   "new": "杭州",
+   "slot": "max_rent",
+   "old": "六千",
+   "new": "八千",
    "by": "user",
    "kind": "default",
-   "gap": 1.104
+   "gap": 1.642
   }
  ],
  "bystander": null,
  "slots_canon": {
   "city": "杭州",
   "beds": 1,
-  "max_rent": 6000,
+  "max_rent": 8000,
   "slot": "周日下午"
  },
  "l8_action": null,
@@ -39,17 +39,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv07",
    "lang": "zh",
-   "text": "在青岛找一居、租金不超过六千的房子，约周日下午看房。",
+   "text": "在杭州找一居、租金不超过六千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv07",
    "lang": "zh",
-   "text": "等等，改成杭州。",
-   "gap_before": 1.104
+   "text": "等等，改成八千。",
+   "gap_before": 1.642
   }
  ],
  "events": [],
@@ -69,7 +69,7 @@
    "args": {
     "city": "杭州",
     "beds": 1,
-    "max_rent": 6000
+    "max_rent": 8000
    }
   },
   {
@@ -84,7 +84,7 @@
   "search_rentals#SEd6a082": {
    "city": "杭州",
    "beds": 1,
-   "max_rent": 6000
+   "max_rent": 8000
   },
   "book_viewing#BOf7201f": {
    "listing_id": "SEd6a082",
@@ -92,26 +92,26 @@
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv07"
+  "user": "cv07",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.14,
+   "t_end": 6.02,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.244,
-   "t_end": 11.284,
+   "t_start": 7.662,
+   "t_end": 9.742,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.104
+  1.642
  ]
 }

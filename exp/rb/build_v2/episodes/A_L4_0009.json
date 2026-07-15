@@ -10,14 +10,14 @@
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
-  "to_acct": "rent account"
+  "to_acct": "savings"
  },
  "slots_final": {
   "amount": "eight hundred",
   "from_cur": "dollars",
   "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "rent account"
+  "to_acct": "savings"
  },
  "revisions": [
   {
@@ -26,7 +26,7 @@
    "new": "yen",
    "by": "user",
    "kind": "value_first",
-   "gap": 1.062
+   "gap": 1.054
   }
  ],
  "bystander": null,
@@ -35,24 +35,24 @@
   "from_cur": "USD",
   "to_cur": "JPY",
   "from_acct": "checking",
-  "to_acct": "rent account"
+  "to_acct": "savings"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Get a quote for eight hundred dollars to euros, then transfer eight hundred from checking to rent account.",
+   "text": "Get a quote for eight hundred dollars to euros, then transfer eight hundred from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv02",
    "lang": "en",
    "text": "yen — change it to yen.",
-   "gap_before": 1.062
+   "gap_before": 1.054
   }
  ],
  "events": [],
@@ -79,7 +79,7 @@
    "fn": "transfer_funds",
    "args": {
     "from_acct": "checking",
-    "to_acct": "rent account",
+    "to_acct": "savings",
     "amount": 800
    }
   }
@@ -92,31 +92,31 @@
   },
   "transfer_funds#TR2d4a69": {
    "from_acct": "checking",
-   "to_acct": "rent account",
+   "to_acct": "savings",
    "amount": 800
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv02"
+  "user": "cv02",
+  "bystander": "cv09"
  },
  "split": "dev",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 4.9,
+   "t_end": 5.46,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 5.962,
-   "t_end": 7.242,
+   "t_start": 6.514,
+   "t_end": 8.754,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.062
+  1.054
  ]
 }

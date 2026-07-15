@@ -1,0 +1,289 @@
+{
+  "schema_version": 2,
+  "date_utc": "2026-07-16",
+  "source_commit": "8312904277b662ad71a30d0d52dbd6bbfc15dc3d",
+  "build": {
+    "version": "rb_v2.2.1",
+    "config_hash": "265c7cd8f485",
+    "content_hash": "216b79de9cee",
+    "ids_hash": "f70727a59d9f",
+    "n": 1000,
+    "dev": 103,
+    "test": 897,
+    "audio": "qwen",
+    "pause_prior": true,
+    "audio_audit": {
+      "status": "PASS",
+      "arm_a_wavs": 600,
+      "arm_b_text_only": 400,
+      "format": "mono PCM16 16000 Hz",
+      "cue_count": 1200,
+      "duration_s": {"min": 11.592, "p50": 17.179, "max": 50.62},
+      "tail_s_min": 5.999937,
+      "current_tts_cache_keys": 870,
+      "missing_cache_keys": 0,
+      "tmp_cache_files": 0,
+      "cache_format": "mono PCM16 24000 Hz"
+    }
+  },
+  "status": "DEV_VALIDITY_GATE_PASS",
+  "criterion": "No whole-layer zero may be attributable to a benchmark-side structural cause in the cached raw outputs. Low score, malformed JSON, salvage, omitted/extra tools, missing required args, stale values, and invalid self/future result references are measured system behavior.",
+  "test_split_run": false,
+  "oracle_gate": {
+    "status": "PASS",
+    "freeze_version": 3,
+    "freeze_hashes_verified": true,
+    "arm_a": {
+      "provider": "rbdev_oracle_a5",
+      "n": 59,
+      "exact": 0.7966,
+      "gate_layers_exact_1": ["L1", "L2", "L3", "L4", "L7", "L8", "L9", "L10"],
+      "ceiling_layers": {"L5": 0.4286, "L6": 0.0}
+    },
+    "arm_b": {
+      "provider": "rbdev_oracle_b5",
+      "n": 44,
+      "exact": 0.7273,
+      "gate_layers_exact_1": ["L4", "L8", "L9", "L10"],
+      "ceiling_layers": {"L5": 0.0909, "L6": 0.0}
+    }
+  },
+  "llm_dev": {
+    "tact": {
+      "provider": "rbdev3_tact_d150",
+      "report": "exp/rb/build_v2/rb_report_rbdev3_tact_d150.json",
+      "n": 59,
+      "exact": 0.2034,
+      "state_verbatim": 0.2034,
+      "state_normalized": 0.2203,
+      "U_mean": 0.1459,
+      "first_p50": 1.64,
+      "done_p50": 3.929,
+      "wrong_commits": 0,
+      "unrepaired": 0,
+      "by_layer": {
+        "L1": {"n": 3, "exact": 0.3333, "U": 0.2603},
+        "L10": {"n": 2, "exact": 0.0, "U": 0.0},
+        "L2": {"n": 1, "exact": 0.0, "U": 0.0},
+        "L3": {"n": 13, "exact": 0.0769, "U": 0.0507},
+        "L4": {"n": 8, "exact": 0.25, "U": 0.2046},
+        "L5": {"n": 14, "exact": 0.0, "U": 0.0},
+        "L6": {"n": 4, "exact": 0.0, "U": 0.0},
+        "L7": {"n": 4, "exact": 0.25, "U": 0.2096},
+        "L8": {"n": 3, "exact": 0.3333, "U": 0.3333},
+        "L9": {"n": 7, "exact": 0.8571, "U": 0.5276}
+      },
+      "first_run_cache": {"hits": 0, "misses": 157, "unique_entries": 157},
+      "offline_replay": {"hits": 157, "misses": 0, "byte_identical": true},
+      "parse_path": {
+        "logical_decisions": 118,
+        "raw_calls": 157,
+        "initial_strict_json": 79,
+        "initial_parse_error": 39,
+        "repair_strict_success": 4,
+        "salvaged_after_failed_repair": 35,
+        "final_unrecoverable_parse": 0
+      },
+      "episode_outcome_taxonomy": {
+        "definition": "Exclusive priority: exact; any sandbox-rejected attempt (legacy invalid_required_args key, including unknown-tool shapes); successful net tool-inventory mismatch; unresolved literal result reference with matching inventory; remaining argument-value mismatch.",
+        "exact": 12,
+        "invalid_required_args": 18,
+        "tool_inventory_mismatch": 17,
+        "unresolved_result_reference": 5,
+        "argument_value_mismatch": 7
+      },
+      "overlapping_failure_signatures": {
+        "tool_inventory_mismatch": 35,
+        "invalid_required_args": 18,
+        "unresolved_result_reference": 11,
+        "canonical_call_mismatch": 47
+      }
+    },
+    "blocking": {
+      "provider": "rbdev3_sblock",
+      "report": "exp/rb/build_v2/rb_report_rbdev3_sblock.json",
+      "n": 59,
+      "exact": 0.1356,
+      "state_verbatim": 0.1356,
+      "state_normalized": 0.1695,
+      "U_mean": 0.0659,
+      "first_p50": 2.127,
+      "done_p50": 2.242,
+      "wrong_commits": 0,
+      "unrepaired": 0,
+      "by_layer": {
+        "L1": {"n": 3, "exact": 0.3333, "U": 0.2811},
+        "L10": {"n": 2, "exact": 0.5, "U": 0.3377},
+        "L2": {"n": 1, "exact": 0.0, "U": 0.0},
+        "L3": {"n": 13, "exact": 0.0, "U": 0.0},
+        "L4": {"n": 8, "exact": 0.0, "U": 0.0},
+        "L5": {"n": 14, "exact": 0.0, "U": 0.0},
+        "L6": {"n": 4, "exact": 0.0, "U": 0.0},
+        "L7": {"n": 4, "exact": 0.0, "U": 0.0},
+        "L8": {"n": 3, "exact": 0.3333, "U": 0.3333},
+        "L9": {"n": 7, "exact": 0.7143, "U": 0.1958}
+      },
+      "first_run_cache": {"hits": 0, "misses": 85, "unique_entries": 85},
+      "offline_replay": {"hits": 85, "misses": 0, "byte_identical": true},
+      "parse_path": {
+        "logical_decisions": 59,
+        "raw_calls": 85,
+        "initial_strict_json": 33,
+        "initial_parse_error": 26,
+        "repair_strict_success": 2,
+        "salvaged_after_failed_repair": 24,
+        "final_unrecoverable_parse": 0
+      },
+      "episode_outcome_taxonomy": {
+        "definition": "Same exclusive priority as TACT.",
+        "exact": 8,
+        "invalid_required_args": 8,
+        "tool_inventory_mismatch": 38,
+        "unresolved_result_reference": 1,
+        "argument_value_mismatch": 4
+      },
+      "overlapping_failure_signatures": {
+        "tool_inventory_mismatch": 46,
+        "invalid_required_args": 8,
+        "unresolved_result_reference": 3,
+        "canonical_call_mismatch": 51
+      }
+    },
+    "paired_exact": {
+      "tact_only": ["A_L3_0061", "A_L4_0009", "A_L4_0037", "A_L7_0017", "A_L9_0045"],
+      "blocking_only": ["A_L10_0013"],
+      "both_pass": ["A_L1_0031", "A_L8_0037", "A_L9_0023", "A_L9_0043", "A_L9_0067", "A_L9_0068", "A_L9_0070"],
+      "both_fail_n": 46
+    }
+  },
+  "zero_layer_validity_audit": {
+    "tact": {
+      "L10": {"n": 2, "invalid_required_args": 1, "unresolved_result_reference": 1},
+      "L2": {"n": 1, "argument_value_mismatch": 1},
+      "L5": {"n": 14, "tool_inventory_mismatch": 5, "invalid_required_args": 5, "unresolved_result_reference": 2, "argument_value_mismatch": 2},
+      "L6": {"n": 4, "tool_inventory_mismatch": 2, "invalid_required_args": 1, "argument_value_mismatch": 1}
+    },
+    "blocking": {
+      "L2": {"n": 1, "argument_value_mismatch": 1},
+      "L3": {"n": 13, "tool_inventory_mismatch": 10, "invalid_required_args": 2, "unresolved_result_reference": 1},
+      "L4": {"n": 8, "tool_inventory_mismatch": 5, "invalid_required_args": 2, "argument_value_mismatch": 1},
+      "L5": {"n": 14, "tool_inventory_mismatch": 12, "invalid_required_args": 2},
+      "L6": {"n": 4, "tool_inventory_mismatch": 4},
+      "L7": {"n": 4, "tool_inventory_mismatch": 3, "invalid_required_args": 1}
+    },
+    "finding": "All whole-layer zeros are fully accounted for by cached model outputs. No zero layer contains an unmatchable gold representation, an unresolved legal prior-launch reference, or a missing RB DAG declaration. TACT is above blocking in the intended window-sensitive layers L3 (0.0769 vs 0) and L4 (0.25 vs 0)."
+  },
+  "construction_fix_receipts": {
+    "blocking_same_batch_result_reference": {
+      "status": "PASS",
+      "runner_selftests": ["blocking_chain_refs_resolve", "resolver_base_fallback"],
+      "observed_legal_case": {
+        "episode": "A_L6_0004",
+        "cache_key": "95863c3ed7b9b42df26009052bd366d3a6b5b908972ca0a2c96664fefdfbe03a",
+        "raw": "{\"dialogue\": \"listen\", \"ops\": [{\"type\":\"launch\",\"fn\":\"search_catalog\",\"args\":{\"query\":\"蓝牙耳机\"}},{\"type\":\"launch\",\"fn\":\"add_item\",\"args\":{\"item_id\":\"$RESULT_0.products[0].product_id\",\"qty\":2}}],\"say\": \"正在为您查找并添加两副蓝牙耳机。\"}",
+        "committed_item_id": "SE9046dd",
+        "literal_reference_remaining": false
+      },
+      "remaining_blocking_literal_refs": [
+        {"episode": "A_L3_0055", "shape": "first launch self-references $RESULT_0.date", "bench_side": false},
+        {"episode": "A_L3_0061", "shape": "second launch self/future-references $RESULT_1.from_acct and $RESULT_1.to_acct instead of using heard account values", "bench_side": false},
+        {"episode": "A_L5_0047", "shape": "first launch self-references $RESULT_0 origin/destination/date", "bench_side": false}
+      ],
+      "blocking_l4_unresolved_reference_count": 0
+    },
+    "rb_opdag": {
+      "status": "PASS",
+      "dag_edge_events": 28,
+      "dag_edge_episodes": 22,
+      "dag_stale_events": 5,
+      "dag_stale_episodes": ["A_L10_0026", "A_L3_0026", "A_L3_0060", "A_L3_0062", "A_L5_0052"],
+      "oracle_a_l5_before": 0.2857,
+      "oracle_a_l5_after": 0.4286,
+      "note": "Each dag_stale event restarted a pending RB child window after a key-field patch; child functions were book_viewing or add_item."
+    },
+    "catalog_and_gold": {
+      "status": "PASS",
+      "all_episode_config_hashes": ["265c7cd8f485"],
+      "gold_leading_the": 0,
+      "gold_bare_first_seat_class": 0,
+      "gold_full_first_class": 55,
+      "actual_bare_first": {"tact": 0, "blocking": 0},
+      "actual_leading_the": {"tact": 0, "blocking": 0},
+      "declared_verbatim_language_violations": {
+        "tact": ["A_L10_0026 city 厦门->Xiamen", "A_L4_0002 city 厦门->Xiamen", "A_L4_0054 city 青岛->Qingdao", "A_L4_0070 slot 周六上午->Saturday morning", "A_L5_0014 slot 周六上午->Saturday morning"],
+        "blocking": []
+      },
+      "note": "These remaining translations are model violations of the now-explicit verbatim catalog rule, not ambiguous gold."
+    }
+  },
+  "non_gating_value_shape_residuals": {
+    "combined_catalog_example_literal": {
+      "episodes": {"tact": ["A_L2_0007"], "blocking": ["A_L2_0007"]},
+      "gold": "May 3",
+      "system": "May 3 / 5月3日",
+      "interpretation": "The model copied the bilingual format example literally instead of selecting the heard English value. This is matchable and therefore system behavior, but explains the n=1 L2 zero in both systems."
+    },
+    "case_only_payee": {
+      "tact": ["A_L9_0025 property office->Property Office"],
+      "blocking": ["A_L9_0025 property office->Property Office", "A_L9_0045 landlord->Landlord"],
+      "interpretation": "Non-structural exact-vs-normalized delta; reported, not silently forgiven."
+    }
+  },
+  "raw_cache_samples": [
+    {
+      "provider": "both (identical cache key)",
+      "episode": "A_L2_0007",
+      "cache_key": "47d77631c625aa557904019a10fd8083acafcf39a71fae83e46923285558e30f",
+      "strict_json": true,
+      "raw": "{\"dialogue\": \"listen\", \"ops\": [{\"type\":\"launch\",\"fn\":\"reserve_hotel\",\"args\":{\"city\":\"Miami\",\"checkin\":\"May 3 / 5月3日\",\"nights\":2}}], \"say\": \"\"}",
+      "outcome": "Correct tool inventory; literal bilingual example value makes the single L2 episode fail in both systems."
+    },
+    {
+      "provider": "rbdev3_sblock",
+      "episode": "A_L4_0009",
+      "cache_key": "9528425ee7ae4296e690f948a0a803a6935abecee7ddabf420529494ff186c60",
+      "strict_json": true,
+      "raw": "{\"dialogue\": \"listen\", \"ops\": [{\"type\":\"launch\",\"fn\":\"get_fx_quote\",\"args\":{\"amount\":800,\"from_cur\":\"USD\",\"to_cur\":\"EUR\"}},{\"type\":\"launch\",\"fn\":\"transfer_funds\",\"args\":{\"from_acct\":\"checking\",\"to_acct\":\"savings\",\"amount\":800}}], \"say\": \"\"}",
+      "outcome": "The model retained stale EUR while gold is heard revision JPY; no runner or reference failure."
+    },
+    {
+      "provider": "rbdev3_sblock",
+      "episode": "A_L3_0061",
+      "cache_key": "2dcbbdd827bf822f8f0afd0c0386f98c2ecb424cf62007ff1c83d3376afe23e6",
+      "strict_json": false,
+      "repair_key": "ad255b5e6999700646f5dbba302569101b7604046bfcacd5203508017e3e1267",
+      "salvaged": true,
+      "raw_summary": "get_fx_quote is correct; transfer_funds uses $RESULT_1.from_acct/$RESULT_1.to_acct in the second launch.",
+      "outcome": "$RESULT_1 is a self/future reference (only launch position 0 precedes it), so literal submission is the declared system failure, not the fixed legal-$RESULT_0 path."
+    },
+    {
+      "provider": "rbdev3_sblock",
+      "episode": "A_L4_0055",
+      "cache_key": "d7ccbacaa14bef2724406fe3d6f22b0913546a949f0cb2cc648cbcb6a9d89bff",
+      "strict_json": false,
+      "repair_key": "63e4bb3d46eb91d7e26b52f6de496f712278045660e299c50ce414b1559cb0a9",
+      "salvaged": true,
+      "raw_summary": "search_trains is valid; hold_seat/purchase_ticket are malformed tuple/@placeholder fragments.",
+      "outcome": "Salvage keeps only search_trains, yielding a genuine tool-inventory mismatch."
+    }
+  ],
+  "regression": {
+    "pytest": {"passed": 156, "warnings": 4, "failed": 0},
+    "w3_barrier_probe": {"verdict": "ALL EXPECTATIONS MET", "parity": "21/21", "cache_misses": 0},
+    "rb_build_selftest": "12/12 PASS",
+    "rb_run_selftest": "14/14 PASS",
+    "rb_build_selftest_false_positive_fix": "Changed L10 bystander assertion from JSON-substring search to exact gold-argument-value comparison; the value 一 had collided with address 学院路一号. No generated content, config hash, scorer, or freeze hash changed."
+  },
+  "artifact_sha256": {
+    "manifest": "1793cd10529dc14ad4f92ea3c27c62066727c96eefc43420f033f4b60159e94f",
+    "scorer_freeze_v3": "311e74a68d321e964c4af9834db3a2ccfe91e84911a3dd66d8c8a8fbd1c28d43",
+    "oracle_a5_report": "6bbba97b7a091d49da722f10afbb9786715858755bd1f79c12f0447809d3fb66",
+    "oracle_b5_report": "6a329c001021bcaea4e6f6d07d483d97cda1ee477ff991e2778e0f351220d7df",
+    "tact_report": "93f14f25b87a890597d62a26beae3e4b06c1fb8791308c8cb91b0b16222a0a6f",
+    "tact_cache": "3a0c3e13b64b8f26ff189f4e16a9d1d63f11d445d80214406f070206d8e9dff2",
+    "blocking_report": "ca43c6c0cd6542b353a8754c6013b4d19aeb811cd4a7618434ea9aef469bbe0a",
+    "blocking_cache": "8d78334dcec5b8a1d7056e42aa0a533808d79e9b9da9f353d492586e92db8148",
+    "golden_manifest": "74fe6c7102ebef89e61e7cecd2c63992eab38a66c6917e6fbac0c901ae5feaf3"
+  },
+  "conclusion": "Frozen oracle parity, audio integrity, deterministic cache replay, blocking legal same-batch reference resolution, and live RB DAG propagation all pass. The LLM level remains low, but every whole-layer zero is explained by cached model behavior rather than a benchmark construction defect. The dev validity gate passes; the dev iteration window may close. No test-897 observation occurred in this run."
+}

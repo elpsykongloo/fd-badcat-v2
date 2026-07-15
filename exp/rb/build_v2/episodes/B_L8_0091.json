@@ -6,53 +6,53 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
-  "destination": "Denver",
-  "date": "May eighth",
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "June first",
   "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Denver",
-  "date": "May eighth",
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "June first",
   "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "passenger": "Alex Chen"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
-  "origin": "Boston",
-  "destination": "Denver",
-  "date": "May 8",
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "June 1",
   "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "passenger": "Alex Chen"
  },
  "l8_action": "cancel",
  "cancelled": true,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Find a train from Boston to Denver on May eighth, hold a business seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Seattle to Portland on June first, hold a business seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv05",
    "lang": "en",
    "text": "Actually, hold off, don't do it yet.",
-   "at_after_eou": 1.879
+   "at_after_eou": 1.818
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.219,
+   "offset": 0.555,
    "action": "cancel",
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv05",
    "text": "Actually, hold off, don't do it yet."
   }
  ],
@@ -70,9 +70,9 @@
  "gold_calls": [],
  "gold_state": {},
  "voices": {
-  "user": "cv02",
-  "bystander": "cv08"
+  "user": "cv05",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

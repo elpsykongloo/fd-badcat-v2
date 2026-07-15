@@ -10,14 +10,14 @@
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
-  "to_acct": "rent account"
+  "to_acct": "savings"
  },
  "slots_final": {
   "amount": "five thousand",
   "from_cur": "dollars",
   "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "rent account"
+  "to_acct": "savings"
  },
  "revisions": [
   {
@@ -26,7 +26,7 @@
    "new": "yen",
    "by": "user",
    "kind": "default",
-   "gap": 3.013
+   "gap": 3.137
   }
  ],
  "bystander": null,
@@ -35,33 +35,33 @@
   "from_cur": "USD",
   "to_cur": "JPY",
   "from_acct": "checking",
-  "to_acct": "rent account"
+  "to_acct": "savings"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Get a quote for five thousand dollars to euros, then transfer five thousand from checking to rent account.",
+   "text": "Get a quote for five thousand dollars to euros, then transfer five thousand from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv07",
    "lang": "en",
    "text": "Wait — make it yen.",
-   "gap_before": 3.013
+   "gap_before": 3.137
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 1.086,
+   "offset": 1.573,
    "action": "revise",
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv07",
    "text": "Wait — make it yen."
   }
  ],
@@ -88,7 +88,7 @@
    "fn": "transfer_funds",
    "args": {
     "from_acct": "checking",
-    "to_acct": "rent account",
+    "to_acct": "savings",
     "amount": 5000
    }
   }
@@ -101,14 +101,14 @@
   },
   "transfer_funds#TRb26190": {
    "from_acct": "checking",
-   "to_acct": "rent account",
+   "to_acct": "savings",
    "amount": 5000
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv09"
+  "user": "cv07",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

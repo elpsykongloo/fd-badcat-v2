@@ -6,47 +6,47 @@
  "lang": "en",
  "scenario": "fin_payment",
  "slots": {
-  "payee": "the property office",
-  "amount": "three thousand",
-  "date": "June first"
+  "payee": "property office",
+  "amount": "eight hundred",
+  "date": "May third"
  },
  "slots_final": {
-  "payee": "the landlord",
-  "amount": "three thousand",
-  "date": "June first"
+  "payee": "landlord",
+  "amount": "eight hundred",
+  "date": "May third"
  },
  "revisions": [
   {
    "slot": "payee",
-   "old": "the property office",
-   "new": "the landlord",
+   "old": "property office",
+   "new": "landlord",
    "by": "user",
    "kind": "default",
-   "gap": 0.523
+   "gap": 0.209
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "payee": "the landlord",
-  "amount": 3000,
-  "date": "June 1"
+  "payee": "landlord",
+  "amount": 800,
+  "date": "May 3"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Schedule a payment of three thousand to the property office on June first.",
+   "text": "Schedule a payment of eight hundred to property office on May third.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Wait — make it the landlord.",
-   "gap_before": 0.523
+   "text": "Wait — make it landlord.",
+   "gap_before": 0.209
   }
  ],
  "events": [],
@@ -63,40 +63,40 @@
   {
    "fn": "schedule_payment",
    "args": {
-    "payee": "the landlord",
-    "amount": 3000,
-    "date": "June 1"
+    "payee": "landlord",
+    "amount": 800,
+    "date": "May 3"
    }
   }
  ],
  "gold_state": {
   "schedule_payment#SCba6bf9": {
-   "payee": "the landlord",
-   "amount": 3000,
-   "date": "June 1"
+   "payee": "landlord",
+   "amount": 800,
+   "date": "May 3"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv08"
+  "user": "cv09",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.1,
+   "t_end": 5.46,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 6.623,
-   "t_end": 8.783,
+   "t_start": 5.669,
+   "t_end": 8.629,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.523
+  0.209
  ]
 }

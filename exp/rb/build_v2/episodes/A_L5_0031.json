@@ -7,34 +7,34 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Chicago",
-  "destination": "Denver",
-  "date": "June first",
-  "seat_class": "business",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "coach",
   "passenger": "Alex Chen"
  },
  "slots_final": {
   "origin": "Chicago",
-  "destination": "Denver",
-  "date": "May eighth",
-  "seat_class": "business",
+  "destination": "Portland",
+  "date": "May third",
+  "seat_class": "coach",
   "passenger": "Alex Chen"
  },
  "revisions": [
   {
-   "slot": "date",
-   "old": "June first",
-   "new": "May eighth",
+   "slot": "destination",
+   "old": "Austin",
+   "new": "Portland",
    "by": "user",
    "kind": "default",
-   "gap": 2.542
+   "gap": 2.657
   }
  ],
  "bystander": null,
  "slots_canon": {
   "origin": "Chicago",
-  "destination": "Denver",
-  "date": "May 8",
-  "seat_class": "business",
+  "destination": "Portland",
+  "date": "May 3",
+  "seat_class": "coach",
   "passenger": "Alex Chen"
  },
  "l8_action": null,
@@ -42,17 +42,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Find a train from Chicago to Denver on June first, hold a business seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Chicago to Austin on May third, hold a coach seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Wait — make it May eighth.",
-   "gap_before": 2.542
+   "text": "Wait — make it Portland.",
+   "gap_before": 2.657
   }
  ],
  "events": [],
@@ -72,15 +72,15 @@
    "fn": "search_trains",
    "args": {
     "origin": "Chicago",
-    "destination": "Denver",
-    "date": "May 8"
+    "destination": "Portland",
+    "date": "May 3"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE489225",
-    "seat_class": "business"
+    "seat_class": "coach"
    }
   },
   {
@@ -94,12 +94,12 @@
  "gold_state": {
   "search_trains#SE489225": {
    "origin": "Chicago",
-   "destination": "Denver",
-   "date": "May 8"
+   "destination": "Portland",
+   "date": "May 3"
   },
   "hold_seat#HO4161bd": {
    "train_id": "SE489225",
-   "seat_class": "business"
+   "seat_class": "coach"
   },
   "purchase_ticket#PU0db3ca": {
    "hold_id": "HO4161bd",
@@ -107,26 +107,26 @@
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv08"
+  "user": "cv02",
+  "bystander": "cv06"
  },
  "split": "dev",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.86,
+   "t_end": 7.54,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 10.402,
-   "t_end": 12.002,
+   "t_start": 10.197,
+   "t_end": 12.197,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  2.542
+  2.657
  ]
 }

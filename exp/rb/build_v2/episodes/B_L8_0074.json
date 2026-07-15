@@ -6,23 +6,23 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "青岛",
-  "beds": "两居",
-  "max_rent": "八千",
+  "city": "成都",
+  "beds": "一居",
+  "max_rent": "六千",
   "slot": "周日下午"
  },
  "slots_final": {
-  "city": "青岛",
-  "beds": "两居",
-  "max_rent": "八千",
+  "city": "成都",
+  "beds": "一居",
+  "max_rent": "六千",
   "slot": "周日下午"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
-  "city": "青岛",
-  "beds": 2,
-  "max_rent": 8000,
+  "city": "成都",
+  "beds": 1,
+  "max_rent": 6000,
   "slot": "周日下午"
  },
  "l8_action": "progress",
@@ -30,26 +30,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv07",
    "lang": "zh",
-   "text": "在青岛找两居、租金不超过八千的房子，约周日下午看房。",
+   "text": "在成都找一居、租金不超过六千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv07",
    "lang": "zh",
    "text": "好了没？",
-   "at_after_eou": 2.359
+   "at_after_eou": 2.344
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.327,
+   "offset": 0.36,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv07",
    "text": "好了没？"
   }
  ],
@@ -67,9 +67,9 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "青岛",
-    "beds": 2,
-    "max_rent": 8000
+    "city": "成都",
+    "beds": 1,
+    "max_rent": 6000
    }
   },
   {
@@ -82,9 +82,9 @@
  ],
  "gold_state": {
   "search_rentals#SEbbd3b0": {
-   "city": "青岛",
-   "beds": 2,
-   "max_rent": 8000
+   "city": "成都",
+   "beds": 1,
+   "max_rent": 6000
   },
   "book_viewing#BOc440a1": {
    "listing_id": "SEbbd3b0",
@@ -92,9 +92,9 @@
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv06"
+  "user": "cv07",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

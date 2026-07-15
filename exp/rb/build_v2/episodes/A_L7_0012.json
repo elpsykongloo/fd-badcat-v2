@@ -6,44 +6,44 @@
  "lang": "zh",
  "scenario": "ecom_multi",
  "slots": {
-  "query": "跑步鞋",
+  "query": "保温杯",
   "item_id": "C330"
  },
  "slots_final": {
-  "query": "跑步鞋",
-  "item_id": "B205"
+  "query": "蓝牙耳机",
+  "item_id": "C330"
  },
  "revisions": [
   {
-   "slot": "item_id",
-   "old": "C330",
-   "new": "B205",
+   "slot": "query",
+   "old": "保温杯",
+   "new": "蓝牙耳机",
    "by": "user",
    "kind": "default",
-   "gap": 1.388
+   "gap": 2.481
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "query": "跑步鞋",
-  "item_id": "B205"
+  "query": "蓝牙耳机",
+  "item_id": "C330"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "搜一下跑步鞋，再看看编号C330还有没有货。",
+   "text": "搜一下保温杯，再看看编号C330还有没有货。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "等等，改成B205。",
-   "gap_before": 1.388
+   "text": "等等，改成蓝牙耳机。",
+   "gap_before": 2.481
   }
  ],
  "events": [],
@@ -61,45 +61,45 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "跑步鞋"
+    "query": "蓝牙耳机"
    }
   },
   {
    "fn": "check_stock",
    "args": {
-    "item_id": "B205"
+    "item_id": "C330"
    }
   }
  ],
  "gold_state": {
   "search_catalog#SE9d85fb": {
-   "query": "跑步鞋"
+   "query": "蓝牙耳机"
   },
   "check_stock#CHfce326": {
-   "item_id": "B205"
+   "item_id": "C330"
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv02"
+  "user": "cv06",
+  "bystander": "cv09"
  },
  "split": "dev",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.26,
+   "t_end": 5.14,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 7.648,
-   "t_end": 10.688,
+   "t_start": 7.621,
+   "t_end": 10.101,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.388
+  2.481
  ]
 }

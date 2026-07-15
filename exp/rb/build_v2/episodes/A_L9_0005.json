@@ -6,35 +6,35 @@
  "lang": "en",
  "scenario": "fin_payment",
  "slots": {
-  "payee": "the property office",
-  "amount": "eight hundred",
-  "date": "June first"
+  "payee": "property office",
+  "amount": "five thousand",
+  "date": "May eighth"
  },
  "slots_final": {
-  "payee": "the property office",
-  "amount": "eight hundred",
-  "date": "June first"
+  "payee": "property office",
+  "amount": "five thousand",
+  "date": "May eighth"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
-  "payee": "the property office",
-  "amount": 800,
-  "date": "June 1"
+  "payee": "property office",
+  "amount": 5000,
+  "date": "May 8"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Schedule a payment of eight hundred to the property office on June first.",
+   "text": "Schedule a payment of five thousand to property office on May eighth.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv02",
    "lang": "en",
    "text": "Any progress?",
    "at_after_eou": 26.59
@@ -54,36 +54,36 @@
   {
    "fn": "schedule_payment",
    "args": {
-    "payee": "the property office",
-    "amount": 800,
-    "date": "June 1"
+    "payee": "property office",
+    "amount": 5000,
+    "date": "May 8"
    }
   }
  ],
  "gold_state": {
   "schedule_payment#SC5f17b7": {
-   "payee": "the property office",
-   "amount": 800,
-   "date": "June 1"
+   "payee": "property office",
+   "amount": 5000,
+   "date": "May 8"
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv06"
+  "user": "cv02",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 5.22,
+   "t_end": 8.02,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 32.45,
-   "t_end": 33.41,
+   "t_start": 35.25,
+   "t_end": 36.29,
    "scheduled": "lifecycle_nominal"
   }
  ],

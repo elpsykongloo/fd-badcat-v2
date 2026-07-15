@@ -6,41 +6,41 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "杭州",
-  "beds": "一居",
+  "city": "成都",
+  "beds": "两居",
   "max_rent": "六千",
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "slots_final": {
-  "city": "杭州",
-  "beds": "一居",
+  "city": "成都",
+  "beds": "两居",
   "max_rent": "六千",
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
-  "city": "杭州",
-  "beds": 1,
+  "city": "成都",
+  "beds": 2,
   "max_rent": 6000,
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "l8_action": "progress",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "在杭州找一居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在成都找两居、租金不超过六千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv04",
    "lang": "zh",
    "text": "好了没？",
-   "at_after_eou": 1.87
+   "at_after_eou": 2.059
   }
  ],
  "events": [],
@@ -58,8 +58,8 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "杭州",
-    "beds": 1,
+    "city": "成都",
+    "beds": 2,
     "max_rent": 6000
    }
   },
@@ -67,38 +67,38 @@
    "fn": "book_viewing",
    "args": {
     "listing_id": "SEa8b786",
-    "slot": "周六上午"
+    "slot": "周日下午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SEa8b786": {
-   "city": "杭州",
-   "beds": 1,
+   "city": "成都",
+   "beds": 2,
    "max_rent": 6000
   },
   "book_viewing#BObbe089": {
    "listing_id": "SEa8b786",
-   "slot": "周六上午"
+   "slot": "周日下午"
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv04"
+  "user": "cv04",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 5.38,
+   "t_end": 7.54,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 7.89,
-   "t_end": 9.01,
+   "t_start": 10.239,
+   "t_end": 11.119,
    "scheduled": "lifecycle_nominal"
   }
  ],

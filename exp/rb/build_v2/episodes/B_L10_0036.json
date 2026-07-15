@@ -6,24 +6,24 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "蓝牙耳机",
+  "query": "跑步鞋",
   "qty": "两",
   "address": "海淀区学院路一号"
  },
  "slots_final": {
-  "query": "蓝牙耳机",
+  "query": "跑步鞋",
   "qty": "两",
   "address": "海淀区学院路一号"
  },
  "revisions": [],
  "bystander": {
   "kind": "command",
-  "other": "保温杯",
+  "other": "蓝牙耳机",
   "state": "inflight",
-  "frac": 0.541
+  "frac": 0.53
  },
  "slots_canon": {
-  "query": "蓝牙耳机",
+  "query": "跑步鞋",
   "qty": 2,
   "address": "海淀区学院路一号"
  },
@@ -32,35 +32,35 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜跑步鞋，加两件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv04",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "改成保温杯吧。",
-   "at_after_eou": 1.975
+   "text": "改成蓝牙耳机吧。",
+   "at_after_eou": 1.968
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.374,
+   "offset": 0.486,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv04",
-   "text": "改成保温杯吧。"
+   "voice": "cv06",
+   "text": "改成蓝牙耳机吧。"
   },
   {
    "state": "tts",
-   "offset": 0.535,
+   "offset": 0.266,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv04",
-   "text": "改成保温杯吧。"
+   "voice": "cv06",
+   "text": "改成蓝牙耳机吧。"
   }
  ],
  "profile": "default",
@@ -78,7 +78,7 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "蓝牙耳机"
+    "query": "跑步鞋"
    }
   },
   {
@@ -98,7 +98,7 @@
  ],
  "gold_state": {
   "search_catalog#SEf73ebe": {
-   "query": "蓝牙耳机"
+   "query": "跑步鞋"
   },
   "add_item#AD71204e": {
    "item_id": "SEf73ebe",
@@ -110,9 +110,9 @@
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv04"
+  "user": "cv09",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

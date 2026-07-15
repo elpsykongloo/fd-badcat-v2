@@ -8,13 +8,13 @@
  "slots": {
   "city": "杭州",
   "beds": "一居",
-  "max_rent": "六千",
+  "max_rent": "八千",
   "slot": "周六上午"
  },
  "slots_final": {
   "city": "杭州",
   "beds": "一居",
-  "max_rent": "六千",
+  "max_rent": "八千",
   "slot": "周六上午"
  },
  "revisions": [],
@@ -22,7 +22,7 @@
  "slots_canon": {
   "city": "杭州",
   "beds": 1,
-  "max_rent": 6000,
+  "max_rent": 8000,
   "slot": "周六上午"
  },
  "l8_action": "progress",
@@ -30,26 +30,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv08",
    "lang": "zh",
-   "text": "在杭州找一居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在杭州找一居、租金不超过八千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv08",
    "lang": "zh",
    "text": "好了没？",
-   "at_after_eou": 2.101
+   "at_after_eou": 1.824
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.885,
+   "offset": 0.324,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv08",
    "text": "好了没？"
   }
  ],
@@ -69,7 +69,7 @@
    "args": {
     "city": "杭州",
     "beds": 1,
-    "max_rent": 6000
+    "max_rent": 8000
    }
   },
   {
@@ -84,7 +84,7 @@
   "search_rentals#SE9e4ba8": {
    "city": "杭州",
    "beds": 1,
-   "max_rent": 6000
+   "max_rent": 8000
   },
   "book_viewing#BO23e676": {
    "listing_id": "SE9e4ba8",
@@ -92,9 +92,9 @@
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv04"
+  "user": "cv08",
+  "bystander": "cv01"
  },
  "split": "dev",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

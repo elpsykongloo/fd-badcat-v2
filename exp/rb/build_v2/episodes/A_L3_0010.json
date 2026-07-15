@@ -6,10 +6,10 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "成都",
+  "city": "青岛",
   "beds": "两居",
   "max_rent": "八千",
-  "slot": "周日下午"
+  "slot": "周六上午"
  },
  "slots_final": {
   "city": "青岛",
@@ -19,12 +19,12 @@
  },
  "revisions": [
   {
-   "slot": "city",
-   "old": "成都",
-   "new": "青岛",
+   "slot": "slot",
+   "old": "周六上午",
+   "new": "周日下午",
    "by": "user",
    "kind": "default",
-   "gap": 0.692
+   "gap": 0.748
   }
  ],
  "bystander": null,
@@ -39,17 +39,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv02",
    "lang": "zh",
-   "text": "在成都找两居、租金不超过八千的房子，约周日下午看房。",
+   "text": "在青岛找两居、租金不超过八千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv02",
    "lang": "zh",
-   "text": "等等，改成青岛。",
-   "gap_before": 0.692
+   "text": "等等，改成周日下午。",
+   "gap_before": 0.748
   }
  ],
  "events": [],
@@ -92,26 +92,26 @@
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv03"
+  "user": "cv02",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.02,
+   "t_end": 9.86,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 6.712,
-   "t_end": 8.392,
+   "t_start": 10.608,
+   "t_end": 12.768,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.692
+  0.748
  ]
 }

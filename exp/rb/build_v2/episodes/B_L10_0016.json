@@ -8,50 +8,50 @@
  "slots": {
   "query": "蓝牙耳机",
   "qty": "两",
-  "address": "浦东新区世纪大道八号"
+  "address": "海淀区学院路一号"
  },
  "slots_final": {
   "query": "蓝牙耳机",
   "qty": "两",
-  "address": "浦东新区世纪大道八号"
+  "address": "海淀区学院路一号"
  },
  "revisions": [],
  "bystander": {
   "kind": "irrelevant",
-  "other": "跑步鞋",
+  "other": "浦东新区世纪大道八号",
   "state": "inflight",
-  "frac": 0.298
+  "frac": 0.698
  },
  "slots_canon": {
   "query": "蓝牙耳机",
   "qty": 2,
-  "address": "浦东新区世纪大道八号"
+  "address": "海淀区学院路一号"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv04",
+   "voice": "cv02",
    "lang": "zh",
    "text": "今晚想吃什么？我们点外卖吧。",
-   "at_after_eou": 1.794
+   "at_after_eou": 2.002
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.615,
+   "offset": 0.409,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv04",
+   "voice": "cv02",
    "text": "今晚想吃什么？我们点外卖吧。"
   }
  ],
@@ -84,7 +84,7 @@
    "fn": "place_order",
    "args": {
     "cart_id": "AD988772",
-    "address": "浦东新区世纪大道八号"
+    "address": "海淀区学院路一号"
    }
   }
  ],
@@ -98,13 +98,13 @@
   },
   "place_order#PL906428": {
    "cart_id": "AD988772",
-   "address": "浦东新区世纪大道八号"
+   "address": "海淀区学院路一号"
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv04"
+  "user": "cv09",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

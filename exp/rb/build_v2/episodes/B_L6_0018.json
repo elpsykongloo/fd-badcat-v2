@@ -6,39 +6,39 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "成都",
-  "beds": "两居",
+  "city": "杭州",
+  "beds": "一居",
   "max_rent": "八千",
   "slot": "周六上午"
  },
  "slots_final": {
   "city": "青岛",
-  "beds": "一居",
+  "beds": "两居",
   "max_rent": "八千",
   "slot": "周六上午"
  },
  "revisions": [
   {
    "slot": "city",
-   "old": "成都",
+   "old": "杭州",
    "new": "青岛",
    "by": "user",
    "kind": "default",
-   "gap": 1.207
+   "gap": 0.843
   },
   {
    "slot": "beds",
-   "old": "两居",
-   "new": "一居",
+   "old": "一居",
+   "new": "两居",
    "by": "user",
    "kind": "second",
-   "gap": 2.826
+   "gap": 2.631
   }
  ],
  "bystander": null,
  "slots_canon": {
   "city": "青岛",
-  "beds": 1,
+  "beds": 2,
   "max_rent": 8000,
   "slot": "周六上午"
  },
@@ -47,41 +47,41 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "在成都找两居、租金不超过八千的房子，约周六上午看房。",
+   "text": "在杭州找一居、租金不超过八千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv05",
    "lang": "zh",
    "text": "等等，改成青岛。",
-   "gap_before": 1.207
+   "gap_before": 0.843
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "还有，再改一下，要一居。",
-   "gap_before": 2.826
+   "text": "还有，再改一下，要两居。",
+   "gap_before": 2.631
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.228,
+   "offset": 0.273,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv05",
    "text": "等等，改成青岛。"
   },
   {
    "state": "committed",
-   "offset": 0.749,
+   "offset": 0.335,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv05",
    "text": "等等，改成青岛。"
   }
  ],
@@ -100,7 +100,7 @@
    "fn": "search_rentals",
    "args": {
     "city": "青岛",
-    "beds": 1,
+    "beds": 2,
     "max_rent": 8000
    }
   },
@@ -115,7 +115,7 @@
  "gold_state": {
   "search_rentals#SE6b9466": {
    "city": "青岛",
-   "beds": 1,
+   "beds": 2,
    "max_rent": 8000
   },
   "book_viewing#BO332cc4": {
@@ -124,9 +124,9 @@
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv05"
+  "user": "cv05",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

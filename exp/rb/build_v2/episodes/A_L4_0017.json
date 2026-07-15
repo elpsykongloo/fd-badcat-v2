@@ -13,27 +13,27 @@
   "to_acct": "rent account"
  },
  "slots_final": {
-  "amount": "eight hundred",
+  "amount": "three thousand",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
  "revisions": [
   {
-   "slot": "amount",
-   "old": "three thousand",
-   "new": "eight hundred",
+   "slot": "to_cur",
+   "old": "euros",
+   "new": "yen",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.682
+   "gap": 0.981
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "amount": 800,
+  "amount": 3000,
   "from_cur": "USD",
-  "to_cur": "EUR",
+  "to_cur": "JPY",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
@@ -42,17 +42,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv02",
    "lang": "en",
    "text": "Get a quote for three thousand dollars to euros, then transfer three thousand from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv02",
    "lang": "en",
-   "text": "eight hundred — change it to eight hundred.",
-   "gap_before": 0.682
+   "text": "yen — change it to yen.",
+   "gap_before": 0.981
   }
  ],
  "events": [],
@@ -70,9 +70,9 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": 800,
+    "amount": 3000,
     "from_cur": "USD",
-    "to_cur": "EUR"
+    "to_cur": "JPY"
    }
   },
   {
@@ -80,43 +80,43 @@
    "args": {
     "from_acct": "checking",
     "to_acct": "rent account",
-    "amount": 800
+    "amount": 3000
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GEc53d74": {
-   "amount": 800,
+   "amount": 3000,
    "from_cur": "USD",
-   "to_cur": "EUR"
+   "to_cur": "JPY"
   },
   "transfer_funds#TRbfc88e": {
    "from_acct": "checking",
    "to_acct": "rent account",
-   "amount": 800
+   "amount": 3000
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv08"
+  "user": "cv02",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.34,
+   "t_end": 8.42,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 7.022,
-   "t_end": 10.782,
+   "t_start": 9.401,
+   "t_end": 11.641,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.682
+  0.981
  ]
 }

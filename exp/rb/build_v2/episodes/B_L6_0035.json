@@ -6,16 +6,16 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
+  "origin": "Chicago",
   "destination": "Portland",
-  "date": "June first",
-  "seat_class": "coach",
+  "date": "May eighth",
+  "seat_class": "first class",
   "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Seattle",
+  "origin": "Chicago",
   "destination": "Atlanta",
-  "date": "June first",
+  "date": "May eighth",
   "seat_class": "business",
   "passenger": "Alex Chen"
  },
@@ -26,22 +26,22 @@
    "new": "Atlanta",
    "by": "user",
    "kind": "default",
-   "gap": 0.899
+   "gap": 0.739
   },
   {
    "slot": "seat_class",
-   "old": "coach",
+   "old": "first class",
    "new": "business",
    "by": "user",
    "kind": "second",
-   "gap": 2.706
+   "gap": 1.002
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Seattle",
+  "origin": "Chicago",
   "destination": "Atlanta",
-  "date": "June 1",
+  "date": "May 8",
   "seat_class": "business",
   "passenger": "Alex Chen"
  },
@@ -50,41 +50,41 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Find a train from Seattle to Portland on June first, hold a coach seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Chicago to Portland on May eighth, hold a first class seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv09",
    "lang": "en",
    "text": "Wait — make it Atlanta.",
-   "gap_before": 0.899
+   "gap_before": 0.739
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv09",
    "lang": "en",
    "text": "Also, one more change — business.",
-   "gap_before": 2.706
+   "gap_before": 1.002
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.362,
+   "offset": 0.608,
    "action": "revise",
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv09",
    "text": "Wait — make it Atlanta."
   },
   {
    "state": "committed",
-   "offset": 1.29,
+   "offset": 0.479,
    "action": "revise",
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv09",
    "text": "Wait — make it Atlanta."
   }
  ],
@@ -103,9 +103,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
+    "origin": "Chicago",
     "destination": "Atlanta",
-    "date": "June 1"
+    "date": "May 8"
    }
   },
   {
@@ -125,9 +125,9 @@
  ],
  "gold_state": {
   "search_trains#SEe2b04b": {
-   "origin": "Seattle",
+   "origin": "Chicago",
    "destination": "Atlanta",
-   "date": "June 1"
+   "date": "May 8"
   },
   "hold_seat#HO449853": {
    "train_id": "SEe2b04b",
@@ -139,9 +139,9 @@
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv09"
+  "user": "cv09",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

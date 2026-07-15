@@ -6,23 +6,23 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Austin",
-  "date": "June first",
-  "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "origin": "Seattle",
+  "destination": "Denver",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Chicago",
+  "origin": "Seattle",
   "destination": "Portland",
-  "date": "June first",
-  "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Austin",
+   "old": "Denver",
    "new": "Portland",
    "by": "user",
    "kind": "default",
@@ -31,37 +31,37 @@
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Chicago",
+  "origin": "Seattle",
   "destination": "Portland",
-  "date": "June 1",
-  "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "date": "May 3",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
  },
  "l8_action": "revise",
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Find a train from Chicago to Austin on June first, hold a business seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Seattle to Denver on May third, hold a coach seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv09",
    "lang": "en",
    "text": "Wait — make it Portland.",
-   "at_after_eou": 2.159
+   "at_after_eou": 2.019
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.434,
+   "offset": 0.529,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv09",
    "text": "Wait — make it Portland."
   }
  ],
@@ -80,45 +80,45 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
+    "origin": "Seattle",
     "destination": "Portland",
-    "date": "June 1"
+    "date": "May 3"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE1623d9",
-    "seat_class": "business"
+    "seat_class": "coach"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
     "hold_id": "HOa9842b",
-    "passenger": "Sam Rivera"
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE1623d9": {
-   "origin": "Chicago",
+   "origin": "Seattle",
    "destination": "Portland",
-   "date": "June 1"
+   "date": "May 3"
   },
   "hold_seat#HOa9842b": {
    "train_id": "SE1623d9",
-   "seat_class": "business"
+   "seat_class": "coach"
   },
   "purchase_ticket#PU4dbac8": {
    "hold_id": "HOa9842b",
-   "passenger": "Sam Rivera"
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv04"
+  "user": "cv09",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

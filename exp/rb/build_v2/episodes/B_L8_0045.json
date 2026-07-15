@@ -6,11 +6,11 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "eight hundred",
+  "amount": "three thousand",
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "slots_final": {
   "amount": "eight hundred",
@@ -21,9 +21,9 @@
  },
  "revisions": [
   {
-   "slot": "to_acct",
-   "old": "savings",
-   "new": "rent account",
+   "slot": "amount",
+   "old": "three thousand",
+   "new": "eight hundred",
    "by": "user",
    "kind": "default",
    "gap": null
@@ -42,27 +42,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Get a quote for eight hundred dollars to euros, then transfer eight hundred from checking to savings.",
+   "text": "Get a quote for three thousand dollars to euros, then transfer three thousand from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Wait — make it rent account.",
-   "at_after_eou": 1.767
+   "text": "Wait — make it eight hundred.",
+   "at_after_eou": 1.929
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.477,
+   "offset": 0.515,
    "action": "revise",
    "role": "user",
-   "voice": "cv02",
-   "text": "Wait — make it rent account."
+   "voice": "cv03",
+   "text": "Wait — make it eight hundred."
   }
  ],
  "profile": "default",
@@ -106,9 +106,9 @@
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv06"
+  "user": "cv03",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

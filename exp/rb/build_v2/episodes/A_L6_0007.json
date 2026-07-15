@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
-  "destination": "Atlanta",
-  "date": "June first",
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "May third",
   "seat_class": "first class",
   "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Denver",
-  "date": "June first",
+  "origin": "Chicago",
+  "destination": "Portland",
+  "date": "May third",
   "seat_class": "coach",
   "passenger": "Sam Rivera"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Atlanta",
-   "new": "Denver",
+   "old": "Austin",
+   "new": "Portland",
    "by": "user",
    "kind": "default",
-   "gap": 0.856
+   "gap": 0.99
   },
   {
    "slot": "seat_class",
@@ -34,14 +34,14 @@
    "new": "coach",
    "by": "user",
    "kind": "second",
-   "gap": 2.69
+   "gap": 2.968
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Boston",
-  "destination": "Denver",
-  "date": "June 1",
+  "origin": "Chicago",
+  "destination": "Portland",
+  "date": "May 3",
   "seat_class": "coach",
   "passenger": "Sam Rivera"
  },
@@ -50,24 +50,24 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Find a train from Boston to Atlanta on June first, hold a first class seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Chicago to Austin on May third, hold a first class seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Wait — make it Denver.",
-   "gap_before": 0.856
+   "text": "Wait — make it Portland.",
+   "gap_before": 0.99
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv05",
    "lang": "en",
    "text": "Also, one more change — coach.",
-   "gap_before": 2.69
+   "gap_before": 2.968
   }
  ],
  "events": [],
@@ -86,9 +86,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
-    "destination": "Denver",
-    "date": "June 1"
+    "origin": "Chicago",
+    "destination": "Portland",
+    "date": "May 3"
    }
   },
   {
@@ -108,9 +108,9 @@
  ],
  "gold_state": {
   "search_trains#SE4e0248": {
-   "origin": "Boston",
-   "destination": "Denver",
-   "date": "June 1"
+   "origin": "Chicago",
+   "destination": "Portland",
+   "date": "May 3"
   },
   "hold_seat#HO34e0ba": {
    "train_id": "SE4e0248",
@@ -122,33 +122,33 @@
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv07"
+  "user": "cv05",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.86,
+   "t_end": 9.86,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.716,
-   "t_end": 10.636,
+   "t_start": 10.85,
+   "t_end": 12.93,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 13.326,
-   "t_end": 16.926,
+   "t_start": 15.898,
+   "t_end": 19.018,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.856,
-  2.69
+  0.99,
+  2.968
  ]
 }

@@ -6,26 +6,26 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Atlanta",
+  "origin": "Boston",
+  "destination": "Portland",
   "date": "June first",
-  "seat_class": "business",
+  "seat_class": "first class",
   "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Seattle",
-  "destination": "Atlanta",
+  "origin": "Boston",
+  "destination": "Portland",
   "date": "June first",
-  "seat_class": "business",
+  "seat_class": "first class",
   "passenger": "Jordan Lee"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
-  "origin": "Seattle",
-  "destination": "Atlanta",
+  "origin": "Boston",
+  "destination": "Portland",
   "date": "June 1",
-  "seat_class": "business",
+  "seat_class": "first class",
   "passenger": "Jordan Lee"
  },
  "l8_action": "cancel",
@@ -33,26 +33,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Find a train from Seattle to Atlanta on June first, hold a business seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Boston to Portland on June first, hold a first class seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv05",
    "lang": "en",
    "text": "Actually, hold off, don't do it yet.",
-   "at_after_eou": 1.868
+   "at_after_eou": 1.882
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.531,
+   "offset": 0.203,
    "action": "cancel",
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv05",
    "text": "Actually, hold off, don't do it yet."
   }
  ],
@@ -70,9 +70,9 @@
  "gold_calls": [],
  "gold_state": {},
  "voices": {
-  "user": "cv04",
-  "bystander": "cv09"
+  "user": "cv05",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

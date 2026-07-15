@@ -6,26 +6,26 @@
  "lang": "zh",
  "scenario": "ecom_multi",
  "slots": {
-  "query": "蓝牙耳机",
+  "query": "保温杯",
   "item_id": "A100"
  },
  "slots_final": {
-  "query": "保温杯",
+  "query": "蓝牙耳机",
   "item_id": "A100"
  },
  "revisions": [
   {
    "slot": "query",
-   "old": "蓝牙耳机",
-   "new": "保温杯",
+   "old": "保温杯",
+   "new": "蓝牙耳机",
    "by": "user",
    "kind": "default",
-   "gap": 1.495
+   "gap": 2.416
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "query": "保温杯",
+  "query": "蓝牙耳机",
   "item_id": "A100"
  },
  "l8_action": null,
@@ -33,17 +33,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "搜一下蓝牙耳机，再看看编号A100还有没有货。",
+   "text": "搜一下保温杯，再看看编号A100还有没有货。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "等等，改成保温杯。",
-   "gap_before": 1.495
+   "text": "等等，改成蓝牙耳机。",
+   "gap_before": 2.416
   }
  ],
  "events": [],
@@ -61,7 +61,7 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "保温杯"
+    "query": "蓝牙耳机"
    }
   },
   {
@@ -73,33 +73,33 @@
  ],
  "gold_state": {
   "search_catalog#SE82caaf": {
-   "query": "保温杯"
+   "query": "蓝牙耳机"
   },
   "check_stock#CH18c5af": {
    "item_id": "A100"
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv02"
+  "user": "cv09",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.9,
+   "t_end": 5.62,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.395,
-   "t_end": 10.475,
+   "t_start": 8.036,
+   "t_end": 9.956,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  1.495
+  2.416
  ]
 }

@@ -6,35 +6,35 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Denver",
-  "date": "June first",
-  "seat_class": "first class",
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May third",
+  "seat_class": "business",
   "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Seattle",
-  "destination": "Denver",
-  "date": "May eighth",
-  "seat_class": "first class",
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "business",
   "passenger": "Sam Rivera"
  },
  "revisions": [
   {
    "slot": "date",
-   "old": "June first",
-   "new": "May eighth",
+   "old": "May third",
+   "new": "June first",
    "by": "user",
    "kind": "default",
-   "gap": 3.081
+   "gap": 1.795
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Seattle",
-  "destination": "Denver",
-  "date": "May 8",
-  "seat_class": "first class",
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "June 1",
+  "seat_class": "business",
   "passenger": "Sam Rivera"
  },
  "l8_action": null,
@@ -42,17 +42,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Find a train from Seattle to Denver on June first, hold a first class seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Chicago to Atlanta on May third, hold a business seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Wait — make it May eighth.",
-   "gap_before": 3.081
+   "text": "Wait — make it June first.",
+   "gap_before": 1.795
   }
  ],
  "events": [],
@@ -71,16 +71,16 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
-    "destination": "Denver",
-    "date": "May 8"
+    "origin": "Chicago",
+    "destination": "Atlanta",
+    "date": "June 1"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE4facca",
-    "seat_class": "first class"
+    "seat_class": "business"
    }
   },
   {
@@ -93,13 +93,13 @@
  ],
  "gold_state": {
   "search_trains#SE4facca": {
-   "origin": "Seattle",
-   "destination": "Denver",
-   "date": "May 8"
+   "origin": "Chicago",
+   "destination": "Atlanta",
+   "date": "June 1"
   },
   "hold_seat#HOa068ea": {
    "train_id": "SE4facca",
-   "seat_class": "first class"
+   "seat_class": "business"
   },
   "purchase_ticket#PUd209e3": {
    "hold_id": "HOa068ea",
@@ -107,26 +107,26 @@
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv05"
+  "user": "cv09",
+  "bystander": "cv08"
  },
  "split": "dev",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.5,
+   "t_end": 7.54,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 9.581,
-   "t_end": 11.501,
+   "t_start": 9.335,
+   "t_end": 12.055,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  3.081
+  1.795
  ]
 }

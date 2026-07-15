@@ -7,56 +7,56 @@
  "scenario": "ecom_chain",
  "slots": {
   "query": "蓝牙耳机",
-  "qty": "一",
+  "qty": "两",
   "address": "海淀区学院路一号"
  },
  "slots_final": {
   "query": "蓝牙耳机",
   "qty": "两",
-  "address": "海淀区学院路一号"
+  "address": "浦东新区世纪大道八号"
  },
  "revisions": [
   {
-   "slot": "qty",
-   "old": "一",
-   "new": "两",
+   "slot": "address",
+   "old": "海淀区学院路一号",
+   "new": "浦东新区世纪大道八号",
    "by": "user",
    "kind": "value_first",
-   "gap": 1.112
+   "gap": 0.683
   }
  ],
  "bystander": null,
  "slots_canon": {
   "query": "蓝牙耳机",
   "qty": 2,
-  "address": "海淀区学院路一号"
+  "address": "浦东新区世纪大道八号"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "两，改成两。",
-   "gap_before": 1.112
+   "text": "浦东新区世纪大道八号，改成浦东新区世纪大道八号。",
+   "gap_before": 0.683
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.341,
+   "offset": 0.284,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
-   "text": "两，改成两。"
+   "voice": "cv09",
+   "text": "浦东新区世纪大道八号，改成浦东新区世纪大道八号。"
   }
  ],
  "profile": "default",
@@ -88,7 +88,7 @@
    "fn": "place_order",
    "args": {
     "cart_id": "AD942f7b",
-    "address": "海淀区学院路一号"
+    "address": "浦东新区世纪大道八号"
    }
   }
  ],
@@ -102,13 +102,13 @@
   },
   "place_order#PL9eee22": {
    "cart_id": "AD942f7b",
-   "address": "海淀区学院路一号"
+   "address": "浦东新区世纪大道八号"
   }
  },
  "voices": {
-  "user": "cv07",
+  "user": "cv09",
   "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

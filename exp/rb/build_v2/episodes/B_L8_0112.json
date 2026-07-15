@@ -7,46 +7,46 @@
  "scenario": "ecom_chain",
  "slots": {
   "query": "保温杯",
-  "qty": "两",
-  "address": "海淀区学院路一号"
+  "qty": "一",
+  "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
   "query": "保温杯",
-  "qty": "两",
-  "address": "海淀区学院路一号"
+  "qty": "一",
+  "address": "浦东新区世纪大道八号"
  },
  "revisions": [],
  "bystander": null,
  "slots_canon": {
   "query": "保温杯",
-  "qty": 2,
-  "address": "海淀区学院路一号"
+  "qty": 1,
+  "address": "浦东新区世纪大道八号"
  },
  "l8_action": "cancel",
  "cancelled": true,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "帮我搜保温杯，加两件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜保温杯，加一件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv06",
    "lang": "zh",
    "text": "算了，先别办了。",
-   "at_after_eou": 2.181
+   "at_after_eou": 2.117
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.493,
+   "offset": 0.725,
    "action": "cancel",
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv06",
    "text": "算了，先别办了。"
   }
  ],
@@ -64,9 +64,9 @@
  "gold_calls": [],
  "gold_state": {},
  "voices": {
-  "user": "cv02",
-  "bystander": "cv05"
+  "user": "cv06",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

@@ -7,7 +7,7 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Boston",
-  "destination": "Austin",
+  "destination": "Denver",
   "date": "May third",
   "seat_class": "business",
   "passenger": "Jordan Lee"
@@ -15,15 +15,15 @@
  "slots_final": {
   "origin": "Boston",
   "destination": "Denver",
-  "date": "May third",
+  "date": "June first",
   "seat_class": "business",
   "passenger": "Jordan Lee"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Austin",
-   "new": "Denver",
+   "slot": "date",
+   "old": "May third",
+   "new": "June first",
    "by": "user",
    "kind": "default",
    "gap": null
@@ -33,7 +33,7 @@
  "slots_canon": {
   "origin": "Boston",
   "destination": "Denver",
-  "date": "May 3",
+  "date": "June 1",
   "seat_class": "business",
   "passenger": "Jordan Lee"
  },
@@ -42,27 +42,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Find a train from Boston to Austin on May third, hold a business seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Boston to Denver on May third, hold a business seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Wait — make it Denver.",
-   "at_after_eou": 1.838
+   "text": "Wait — make it June first.",
+   "at_after_eou": 1.93
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.518,
+   "offset": 0.614,
    "action": "revise",
    "role": "user",
-   "voice": "cv08",
-   "text": "Wait — make it Denver."
+   "voice": "cv07",
+   "text": "Wait — make it June first."
   }
  ],
  "profile": "default",
@@ -82,7 +82,7 @@
    "args": {
     "origin": "Boston",
     "destination": "Denver",
-    "date": "May 3"
+    "date": "June 1"
    }
   },
   {
@@ -104,7 +104,7 @@
   "search_trains#SEb13c39": {
    "origin": "Boston",
    "destination": "Denver",
-   "date": "May 3"
+   "date": "June 1"
   },
   "hold_seat#HO886bfd": {
    "train_id": "SEb13c39",
@@ -116,9 +116,9 @@
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv01"
+  "user": "cv07",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }

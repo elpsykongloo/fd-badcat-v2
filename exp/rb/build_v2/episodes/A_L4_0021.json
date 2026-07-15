@@ -15,44 +15,44 @@
  "slots_final": {
   "amount": "eight hundred",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "rent account"
+  "to_acct": "savings"
  },
  "revisions": [
   {
-   "slot": "to_cur",
-   "old": "yen",
-   "new": "euros",
+   "slot": "to_acct",
+   "old": "rent account",
+   "new": "savings",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.685
+   "gap": 0.694
   }
  ],
  "bystander": null,
  "slots_canon": {
   "amount": 800,
   "from_cur": "USD",
-  "to_cur": "EUR",
+  "to_cur": "JPY",
   "from_acct": "checking",
-  "to_acct": "rent account"
+  "to_acct": "savings"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv06",
    "lang": "en",
    "text": "Get a quote for eight hundred dollars to yen, then transfer eight hundred from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv06",
    "lang": "en",
-   "text": "euros — change it to euros.",
-   "gap_before": 0.685
+   "text": "savings — change it to savings.",
+   "gap_before": 0.694
   }
  ],
  "events": [],
@@ -72,14 +72,14 @@
    "args": {
     "amount": 800,
     "from_cur": "USD",
-    "to_cur": "EUR"
+    "to_cur": "JPY"
    }
   },
   {
    "fn": "transfer_funds",
    "args": {
     "from_acct": "checking",
-    "to_acct": "rent account",
+    "to_acct": "savings",
     "amount": 800
    }
   }
@@ -88,35 +88,35 @@
   "get_fx_quote#GE88e57e": {
    "amount": 800,
    "from_cur": "USD",
-   "to_cur": "EUR"
+   "to_cur": "JPY"
   },
   "transfer_funds#TR423cd7": {
    "from_acct": "checking",
-   "to_acct": "rent account",
+   "to_acct": "savings",
    "amount": 800
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv05"
+  "user": "cv06",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 5.86,
+   "t_end": 6.42,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 6.545,
-   "t_end": 11.105,
+   "t_start": 7.114,
+   "t_end": 10.474,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.685
+  0.694
  ]
 }

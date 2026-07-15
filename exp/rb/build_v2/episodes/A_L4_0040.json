@@ -6,47 +6,47 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "保温杯",
-  "qty": "两",
-  "address": "海淀区学院路一号"
+  "query": "跑步鞋",
+  "qty": "一",
+  "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
-  "query": "保温杯",
-  "qty": "两",
-  "address": "浦东新区世纪大道八号"
+  "query": "跑步鞋",
+  "qty": "一",
+  "address": "海淀区学院路一号"
  },
  "revisions": [
   {
    "slot": "address",
-   "old": "海淀区学院路一号",
-   "new": "浦东新区世纪大道八号",
+   "old": "浦东新区世纪大道八号",
+   "new": "海淀区学院路一号",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.695
+   "gap": 0.874
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "query": "保温杯",
-  "qty": 2,
-  "address": "浦东新区世纪大道八号"
+  "query": "跑步鞋",
+  "qty": 1,
+  "address": "海淀区学院路一号"
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "帮我搜保温杯，加两件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜跑步鞋，加一件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "浦东新区世纪大道八号，改成浦东新区世纪大道八号。",
-   "gap_before": 0.695
+   "text": "海淀区学院路一号，改成海淀区学院路一号。",
+   "gap_before": 0.874
   }
  ],
  "events": [],
@@ -65,58 +65,58 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "保温杯"
+    "query": "跑步鞋"
    }
   },
   {
    "fn": "add_item",
    "args": {
     "item_id": "SEbd5681",
-    "qty": 2
+    "qty": 1
    }
   },
   {
    "fn": "place_order",
    "args": {
     "cart_id": "AD3fd925",
-    "address": "浦东新区世纪大道八号"
+    "address": "海淀区学院路一号"
    }
   }
  ],
  "gold_state": {
   "search_catalog#SEbd5681": {
-   "query": "保温杯"
+   "query": "跑步鞋"
   },
   "add_item#AD3fd925": {
    "item_id": "SEbd5681",
-   "qty": 2
+   "qty": 1
   },
   "place_order#PLdcab0e": {
    "cart_id": "AD3fd925",
-   "address": "浦东新区世纪大道八号"
+   "address": "海淀区学院路一号"
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv08"
+  "user": "cv05",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 6.02,
+   "t_end": 6.98,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 6.715,
-   "t_end": 12.395,
+   "t_start": 7.854,
+   "t_end": 12.174,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.695
+  0.874
  ]
 }

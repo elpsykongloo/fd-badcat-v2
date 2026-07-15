@@ -7,32 +7,32 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Seattle",
-  "destination": "Austin",
+  "destination": "Denver",
   "date": "May eighth",
-  "seat_class": "first class",
+  "seat_class": "business",
   "passenger": "Jordan Lee"
  },
  "slots_final": {
   "origin": "Seattle",
-  "destination": "Atlanta",
+  "destination": "Denver",
   "date": "May eighth",
   "seat_class": "first class",
   "passenger": "Jordan Lee"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Austin",
-   "new": "Atlanta",
+   "slot": "seat_class",
+   "old": "business",
+   "new": "first class",
    "by": "user",
    "kind": "default",
-   "gap": 0.731
+   "gap": 0.747
   }
  ],
  "bystander": null,
  "slots_canon": {
   "origin": "Seattle",
-  "destination": "Atlanta",
+  "destination": "Denver",
   "date": "May 8",
   "seat_class": "first class",
   "passenger": "Jordan Lee"
@@ -42,17 +42,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Find a train from Seattle to Austin on May eighth, hold a first class seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Seattle to Denver on May eighth, hold a business seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Wait — make it Atlanta.",
-   "gap_before": 0.731
+   "text": "Wait — make it first class.",
+   "gap_before": 0.747
   }
  ],
  "events": [],
@@ -72,7 +72,7 @@
    "fn": "search_trains",
    "args": {
     "origin": "Seattle",
-    "destination": "Atlanta",
+    "destination": "Denver",
     "date": "May 8"
    }
   },
@@ -94,7 +94,7 @@
  "gold_state": {
   "search_trains#SEbbb19e": {
    "origin": "Seattle",
-   "destination": "Atlanta",
+   "destination": "Denver",
    "date": "May 8"
   },
   "hold_seat#HO0b0c99": {
@@ -107,26 +107,26 @@
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv07"
+  "user": "cv04",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 8.02,
+   "t_end": 7.22,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.751,
-   "t_end": 11.231,
+   "t_start": 7.967,
+   "t_end": 10.367,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.731
+  0.747
  ]
 }

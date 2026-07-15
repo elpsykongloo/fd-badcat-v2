@@ -90,8 +90,9 @@ def selftest():
     ck["gold_uses_new_value"] = e["revisions"][0]["new"] in json.dumps(
         e["gold_calls"], ensure_ascii=False)
     e10 = next(x for x in eps1 if x["layer"] == "L10" and x["bystander"])
-    ck["bystander_not_in_gold"] = e10["bystander"]["other"] not in json.dumps(
-        e10["gold_calls"], ensure_ascii=False) or \
+    gold_arg_values = [v for call in e10["gold_calls"]
+                       for v in call["args"].values()]
+    ck["bystander_not_in_gold"] = e10["bystander"]["other"] not in gold_arg_values or \
         e10["bystander"]["other"] in [v for v in e10["slots_final"].values()]
     e8c = make_episode("A", "L8", 1, ch)          # idx 1 -> cancel
     ck["l8_cancel_gold_empty"] = e8c["cancelled"] and e8c["gold_calls"] == []

@@ -6,43 +6,43 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Austin",
-  "date": "June first",
-  "seat_class": "business",
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "May third",
+  "seat_class": "coach",
   "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Chicago",
-  "destination": "Denver",
-  "date": "June first",
-  "seat_class": "coach",
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "business",
   "passenger": "Alex Chen"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Austin",
-   "new": "Denver",
+   "old": "Portland",
+   "new": "Austin",
    "by": "user",
    "kind": "default",
-   "gap": 0.854
+   "gap": 0.839
   },
   {
    "slot": "seat_class",
-   "old": "business",
-   "new": "coach",
+   "old": "coach",
+   "new": "business",
    "by": "user",
    "kind": "second",
-   "gap": 2.693
+   "gap": 2.762
   }
  ],
  "bystander": null,
  "slots_canon": {
-  "origin": "Chicago",
-  "destination": "Denver",
-  "date": "June 1",
-  "seat_class": "coach",
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "May 3",
+  "seat_class": "business",
   "passenger": "Alex Chen"
  },
  "l8_action": null,
@@ -50,24 +50,24 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Find a train from Chicago to Austin on June first, hold a business seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Seattle to Portland on May third, hold a coach seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Wait — make it Denver.",
-   "gap_before": 0.854
+   "text": "Wait — make it Austin.",
+   "gap_before": 0.839
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Also, one more change — coach.",
-   "gap_before": 2.693
+   "text": "Also, one more change — business.",
+   "gap_before": 2.762
   }
  ],
  "events": [],
@@ -86,16 +86,16 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
-    "destination": "Denver",
-    "date": "June 1"
+    "origin": "Seattle",
+    "destination": "Austin",
+    "date": "May 3"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE9b8bd9",
-    "seat_class": "coach"
+    "seat_class": "business"
    }
   },
   {
@@ -108,13 +108,13 @@
  ],
  "gold_state": {
   "search_trains#SE9b8bd9": {
-   "origin": "Chicago",
-   "destination": "Denver",
-   "date": "June 1"
+   "origin": "Seattle",
+   "destination": "Austin",
+   "date": "May 3"
   },
   "hold_seat#HO0686da": {
    "train_id": "SE9b8bd9",
-   "seat_class": "coach"
+   "seat_class": "business"
   },
   "purchase_ticket#PU8c9b96": {
    "hold_id": "HO0686da",
@@ -122,33 +122,33 @@
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv04"
+  "user": "cv06",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8",
+ "config_hash": "265c7cd8f485",
  "cues": [
   {
    "role": "user",
    "t_start": 0.5,
-   "t_end": 7.86,
+   "t_end": 7.46,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 8.714,
-   "t_end": 10.154,
+   "t_start": 8.299,
+   "t_end": 11.259,
    "scheduled": "sequential"
   },
   {
    "role": "user",
-   "t_start": 12.847,
-   "t_end": 15.647,
+   "t_start": 14.021,
+   "t_end": 17.381,
    "scheduled": "sequential"
   }
  ],
  "measured_gaps": [
-  0.854,
-  2.693
+  0.839,
+  2.762
  ]
 }

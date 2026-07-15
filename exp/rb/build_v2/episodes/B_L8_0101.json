@@ -33,26 +33,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv04",
    "lang": "en",
    "text": "Get a quote for five thousand dollars to yen, then transfer five thousand from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv04",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 1.827
+   "at_after_eou": 1.844
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.852,
+   "offset": 0.822,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv04",
    "text": "Any progress?"
   }
  ],
@@ -97,9 +97,9 @@
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv01"
+  "user": "cv04",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "9f8f4ae9edc8"
+ "config_hash": "265c7cd8f485"
 }
