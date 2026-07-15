@@ -1,0 +1,864 @@
+{
+ "fixed": {
+  "provider": "w3p31_tact_d150",
+  "n": 100,
+  "exact": 0.65,
+  "state": 0.67,
+  "done_p50": 3.455,
+  "premium": {
+   "n_paired": 98,
+   "sum_s": 109.6,
+   "p50_s": 1.5
+  }
+ },
+ "blocking": {
+  "provider": "w3p31_sblock",
+  "n": 100,
+  "exact": 0.67,
+  "done_p50": 1.955
+ },
+ "arms": [
+  {
+   "provider": "w4v3c1_pi020_tact",
+   "n": 100,
+   "exact": 0.57,
+   "state": 0.61,
+   "done_p50": 2.031,
+   "premium": {
+    "n_paired": 98,
+    "sum_s": -37.3,
+    "p50_s": 0.019
+   },
+   "recovery_vs_fixed_s": 150.3,
+   "recovery_frac_of_fixed_premium": 1.371,
+   "recovery_frac_strict_common_support": 1.341,
+   "n_strict_common": 98,
+   "d_exact_vs_fixed": -0.08,
+   "flips_vs_fixed": {
+    "gain": [],
+    "loss": [
+     [
+      "ecommerce_01",
+      1
+     ],
+     [
+      "ecommerce_19",
+      0
+     ],
+     [
+      "ecommerce_25",
+      1
+     ],
+     [
+      "finance_02",
+      0
+     ],
+     [
+      "finance_12",
+      1
+     ],
+     [
+      "housing_17",
+      1
+     ],
+     [
+      "housing_25",
+      0
+     ],
+     [
+      "travel_07",
+      1
+     ]
+    ]
+   },
+   "kappa_stats": {
+    "n_policy_windows": 152,
+    "policy_window_counts": {
+     "0.0": 141,
+     "1.5": 11
+    },
+    "policy_window_counts_by_kappa": {
+     "COMP": {
+      "0.0": 14
+     },
+     "IRR": {
+      "0.0": 12
+     },
+     "READ": {
+      "0.0": 97,
+      "1.5": 11
+     },
+     "REV": {
+      "0.0": 18
+     }
+    },
+    "protect_fraction": 0.072,
+    "policy_window_mean": {
+     "READ": 0.153,
+     "REV": 0.0,
+     "COMP": 0.0,
+     "IRR": 0.0
+    },
+    "commit_delay_mean": {
+     "READ": 1.381,
+     "REV": 2.005,
+     "COMP": 0.328,
+     "IRR": 0.382
+    },
+    "commit_delay_p50": {
+     "READ": 0.0,
+     "REV": 0.0,
+     "COMP": 0.0,
+     "IRR": 0.0
+    },
+    "n_commits_by_kappa": {
+     "READ": 100,
+     "REV": 18,
+     "COMP": 14,
+     "IRR": 12
+    },
+    "finality": {
+     "labels_all": {
+      "final": 117,
+      "unfinished": 62,
+      "hesitant": 38
+     },
+     "labels_rollback_clips": {
+      "hesitant": 2,
+      "final": 22,
+      "unfinished": 6
+     },
+     "infer_p50": 0.672,
+     "infer_p90": 0.99,
+     "unparsed": 0
+    }
+   },
+   "verdicts": {
+    "G2iii_exact_ge_minus1pt": false,
+    "premium_below_fixed": true,
+    "delay_monotone_in_kappa": false
+   }
+  },
+  {
+   "provider": "w4v3c1_pi040_tact",
+   "n": 100,
+   "exact": 0.57,
+   "state": 0.62,
+   "done_p50": 2.033,
+   "premium": {
+    "n_paired": 98,
+    "sum_s": -18.4,
+    "p50_s": 0.074
+   },
+   "recovery_vs_fixed_s": 131.3,
+   "recovery_frac_of_fixed_premium": 1.198,
+   "recovery_frac_strict_common_support": 1.167,
+   "n_strict_common": 98,
+   "d_exact_vs_fixed": -0.08,
+   "flips_vs_fixed": {
+    "gain": [],
+    "loss": [
+     [
+      "ecommerce_01",
+      1
+     ],
+     [
+      "ecommerce_19",
+      0
+     ],
+     [
+      "ecommerce_25",
+      1
+     ],
+     [
+      "finance_02",
+      0
+     ],
+     [
+      "finance_12",
+      1
+     ],
+     [
+      "housing_17",
+      1
+     ],
+     [
+      "housing_25",
+      0
+     ],
+     [
+      "travel_07",
+      1
+     ]
+    ]
+   },
+   "kappa_stats": {
+    "n_policy_windows": 155,
+    "policy_window_counts": {
+     "0.0": 125,
+     "1.5": 30
+    },
+    "policy_window_counts_by_kappa": {
+     "COMP": {
+      "0.0": 14
+     },
+     "IRR": {
+      "0.0": 12
+     },
+     "READ": {
+      "0.0": 83,
+      "1.5": 28
+     },
+     "REV": {
+      "0.0": 16,
+      "1.5": 2
+     }
+    },
+    "protect_fraction": 0.194,
+    "policy_window_mean": {
+     "READ": 0.378,
+     "REV": 0.167,
+     "COMP": 0.0,
+     "IRR": 0.0
+    },
+    "commit_delay_mean": {
+     "READ": 1.71,
+     "REV": 2.541,
+     "COMP": 0.328,
+     "IRR": 0.382
+    },
+    "commit_delay_p50": {
+     "READ": 0.0,
+     "REV": 0.984,
+     "COMP": 0.0,
+     "IRR": 0.0
+    },
+    "n_commits_by_kappa": {
+     "READ": 100,
+     "REV": 18,
+     "COMP": 14,
+     "IRR": 12
+    },
+    "finality": {
+     "labels_all": {
+      "final": 117,
+      "unfinished": 62,
+      "hesitant": 38
+     },
+     "labels_rollback_clips": {
+      "hesitant": 2,
+      "final": 22,
+      "unfinished": 6
+     },
+     "infer_p50": 0.672,
+     "infer_p90": 0.99,
+     "unparsed": 0
+    }
+   },
+   "verdicts": {
+    "G2iii_exact_ge_minus1pt": false,
+    "premium_below_fixed": true,
+    "delay_monotone_in_kappa": false
+   }
+  },
+  {
+   "provider": "w4v3c1_pi060_tact",
+   "n": 100,
+   "exact": 0.6,
+   "state": 0.63,
+   "done_p50": 2.037,
+   "premium": {
+    "n_paired": 98,
+    "sum_s": -5.5,
+    "p50_s": 0.081
+   },
+   "recovery_vs_fixed_s": 118.4,
+   "recovery_frac_of_fixed_premium": 1.08,
+   "recovery_frac_strict_common_support": 1.05,
+   "n_strict_common": 98,
+   "d_exact_vs_fixed": -0.05,
+   "flips_vs_fixed": {
+    "gain": [],
+    "loss": [
+     [
+      "ecommerce_01",
+      1
+     ],
+     [
+      "ecommerce_19",
+      0
+     ],
+     [
+      "ecommerce_25",
+      1
+     ],
+     [
+      "finance_12",
+      1
+     ],
+     [
+      "housing_25",
+      0
+     ]
+    ]
+   },
+   "kappa_stats": {
+    "n_policy_windows": 157,
+    "policy_window_counts": {
+     "0.0": 105,
+     "1.5": 52
+    },
+    "policy_window_counts_by_kappa": {
+     "COMP": {
+      "0.0": 13,
+      "1.5": 1
+     },
+     "IRR": {
+      "0.0": 11,
+      "1.5": 1
+     },
+     "READ": {
+      "0.0": 66,
+      "1.5": 47
+     },
+     "REV": {
+      "0.0": 15,
+      "1.5": 3
+     }
+    },
+    "protect_fraction": 0.331,
+    "policy_window_mean": {
+     "READ": 0.624,
+     "REV": 0.25,
+     "COMP": 0.107,
+     "IRR": 0.125
+    },
+    "commit_delay_mean": {
+     "READ": 2.151,
+     "REV": 2.625,
+     "COMP": 0.885,
+     "IRR": 0.912
+    },
+    "commit_delay_p50": {
+     "READ": 1.5,
+     "REV": 0.984,
+     "COMP": 0.0,
+     "IRR": 0.0
+    },
+    "n_commits_by_kappa": {
+     "READ": 98,
+     "REV": 18,
+     "COMP": 14,
+     "IRR": 11
+    },
+    "finality": {
+     "labels_all": {
+      "final": 117,
+      "unfinished": 62,
+      "hesitant": 38
+     },
+     "labels_rollback_clips": {
+      "hesitant": 2,
+      "final": 22,
+      "unfinished": 6
+     },
+     "infer_p50": 0.672,
+     "infer_p90": 0.99,
+     "unparsed": 0
+    }
+   },
+   "verdicts": {
+    "G2iii_exact_ge_minus1pt": false,
+    "premium_below_fixed": true,
+    "delay_monotone_in_kappa": false
+   }
+  },
+  {
+   "provider": "w4v3c1_pi080_tact",
+   "n": 100,
+   "exact": 0.6,
+   "state": 0.63,
+   "done_p50": 2.037,
+   "premium": {
+    "n_paired": 98,
+    "sum_s": 3.4,
+    "p50_s": 0.079
+   },
+   "recovery_vs_fixed_s": 109.5,
+   "recovery_frac_of_fixed_premium": 0.999,
+   "recovery_frac_strict_common_support": 0.97,
+   "n_strict_common": 98,
+   "d_exact_vs_fixed": -0.05,
+   "flips_vs_fixed": {
+    "gain": [],
+    "loss": [
+     [
+      "ecommerce_01",
+      1
+     ],
+     [
+      "ecommerce_19",
+      0
+     ],
+     [
+      "ecommerce_25",
+      1
+     ],
+     [
+      "finance_12",
+      1
+     ],
+     [
+      "housing_25",
+      0
+     ]
+    ]
+   },
+   "kappa_stats": {
+    "n_policy_windows": 160,
+    "policy_window_counts": {
+     "0.0": 100,
+     "1.5": 60
+    },
+    "policy_window_counts_by_kappa": {
+     "COMP": {
+      "0.0": 13,
+      "1.5": 1
+     },
+     "IRR": {
+      "0.0": 11,
+      "1.5": 1
+     },
+     "READ": {
+      "0.0": 62,
+      "1.5": 53
+     },
+     "REV": {
+      "0.0": 14,
+      "1.5": 5
+     }
+    },
+    "protect_fraction": 0.375,
+    "policy_window_mean": {
+     "READ": 0.691,
+     "REV": 0.395,
+     "COMP": 0.107,
+     "IRR": 0.125
+    },
+    "commit_delay_mean": {
+     "READ": 2.303,
+     "REV": 2.882,
+     "COMP": 0.885,
+     "IRR": 0.912
+    },
+    "commit_delay_p50": {
+     "READ": 1.5,
+     "REV": 1.5,
+     "COMP": 0.0,
+     "IRR": 0.0
+    },
+    "n_commits_by_kappa": {
+     "READ": 99,
+     "REV": 18,
+     "COMP": 14,
+     "IRR": 11
+    },
+    "finality": {
+     "labels_all": {
+      "final": 117,
+      "unfinished": 62,
+      "hesitant": 38
+     },
+     "labels_rollback_clips": {
+      "hesitant": 2,
+      "final": 22,
+      "unfinished": 6
+     },
+     "infer_p50": 0.672,
+     "infer_p90": 0.99,
+     "unparsed": 0
+    }
+   },
+   "verdicts": {
+    "G2iii_exact_ge_minus1pt": false,
+    "premium_below_fixed": true,
+    "delay_monotone_in_kappa": false
+   }
+  },
+  {
+   "provider": "w4v3c1_pi100_tact",
+   "n": 100,
+   "exact": 0.62,
+   "state": 0.65,
+   "done_p50": 2.048,
+   "premium": {
+    "n_paired": 98,
+    "sum_s": 31.8,
+    "p50_s": 0.086
+   },
+   "recovery_vs_fixed_s": 81.2,
+   "recovery_frac_of_fixed_premium": 0.741,
+   "recovery_frac_strict_common_support": 0.711,
+   "n_strict_common": 98,
+   "d_exact_vs_fixed": -0.03,
+   "flips_vs_fixed": {
+    "gain": [],
+    "loss": [
+     [
+      "ecommerce_01",
+      1
+     ],
+     [
+      "ecommerce_25",
+      1
+     ],
+     [
+      "housing_25",
+      0
+     ]
+    ]
+   },
+   "kappa_stats": {
+    "n_policy_windows": 164,
+    "policy_window_counts": {
+     "0.0": 80,
+     "1.5": 84
+    },
+    "policy_window_counts_by_kappa": {
+     "COMP": {
+      "0.0": 12,
+      "1.5": 2
+     },
+     "IRR": {
+      "0.0": 10,
+      "1.5": 2
+     },
+     "READ": {
+      "0.0": 44,
+      "1.5": 73
+     },
+     "REV": {
+      "0.0": 14,
+      "1.5": 7
+     }
+    },
+    "protect_fraction": 0.512,
+    "policy_window_mean": {
+     "READ": 0.936,
+     "REV": 0.5,
+     "COMP": 0.214,
+     "IRR": 0.25
+    },
+    "commit_delay_mean": {
+     "READ": 2.861,
+     "REV": 3.267,
+     "COMP": 0.992,
+     "IRR": 1.048
+    },
+    "commit_delay_p50": {
+     "READ": 1.5,
+     "REV": 1.5,
+     "COMP": 0.0,
+     "IRR": 0.0
+    },
+    "n_commits_by_kappa": {
+     "READ": 99,
+     "REV": 19,
+     "COMP": 14,
+     "IRR": 11
+    },
+    "finality": {
+     "labels_all": {
+      "final": 117,
+      "unfinished": 62,
+      "hesitant": 38
+     },
+     "labels_rollback_clips": {
+      "hesitant": 2,
+      "final": 22,
+      "unfinished": 6
+     },
+     "infer_p50": 0.672,
+     "infer_p90": 0.99,
+     "unparsed": 0
+    }
+   },
+   "verdicts": {
+    "G2iii_exact_ge_minus1pt": false,
+    "premium_below_fixed": true,
+    "delay_monotone_in_kappa": false
+   }
+  },
+  {
+   "provider": "w4v3c1_pi150_tact",
+   "n": 100,
+   "exact": 0.64,
+   "state": 0.66,
+   "done_p50": 3.538,
+   "premium": {
+    "n_paired": 98,
+    "sum_s": 102.9,
+    "p50_s": 1.575
+   },
+   "recovery_vs_fixed_s": 6.5,
+   "recovery_frac_of_fixed_premium": 0.059,
+   "recovery_frac_strict_common_support": 0.062,
+   "n_strict_common": 98,
+   "d_exact_vs_fixed": -0.01,
+   "flips_vs_fixed": {
+    "gain": [],
+    "loss": [
+     [
+      "ecommerce_25",
+      1
+     ]
+    ]
+   },
+   "kappa_stats": {
+    "n_policy_windows": 169,
+    "policy_window_counts": {
+     "0.0": 16,
+     "1.5": 153
+    },
+    "policy_window_counts_by_kappa": {
+     "COMP": {
+      "1.5": 15
+     },
+     "IRR": {
+      "0.0": 4,
+      "1.5": 10
+     },
+     "READ": {
+      "0.0": 10,
+      "1.5": 108
+     },
+     "REV": {
+      "0.0": 2,
+      "1.5": 20
+     }
+    },
+    "protect_fraction": 0.905,
+    "policy_window_mean": {
+     "READ": 1.373,
+     "REV": 1.364,
+     "COMP": 1.5,
+     "IRR": 1.071
+    },
+    "commit_delay_mean": {
+     "READ": 3.323,
+     "REV": 4.301,
+     "COMP": 3.267,
+     "IRR": 2.802
+    },
+    "commit_delay_p50": {
+     "READ": 1.5,
+     "REV": 1.5,
+     "COMP": 1.5,
+     "IRR": 1.5
+    },
+    "n_commits_by_kappa": {
+     "READ": 99,
+     "REV": 19,
+     "COMP": 14,
+     "IRR": 12
+    },
+    "finality": {
+     "labels_all": {
+      "final": 117,
+      "unfinished": 62,
+      "hesitant": 38
+     },
+     "labels_rollback_clips": {
+      "hesitant": 2,
+      "final": 22,
+      "unfinished": 6
+     },
+     "infer_p50": 0.672,
+     "infer_p90": 0.99,
+     "unparsed": 0
+    }
+   },
+   "verdicts": {
+    "G2iii_exact_ge_minus1pt": true,
+    "premium_below_fixed": true,
+    "delay_monotone_in_kappa": false
+   }
+  },
+  {
+   "provider": "w4v3c1_pi200_tact",
+   "n": 100,
+   "exact": 0.65,
+   "state": 0.66,
+   "done_p50": 3.455,
+   "premium": {
+    "n_paired": 98,
+    "sum_s": 103.0,
+    "p50_s": 1.5
+   },
+   "recovery_vs_fixed_s": 6.8,
+   "recovery_frac_of_fixed_premium": 0.062,
+   "recovery_frac_strict_common_support": 0.061,
+   "n_strict_common": 98,
+   "d_exact_vs_fixed": 0.0,
+   "flips_vs_fixed": {
+    "gain": [],
+    "loss": []
+   },
+   "kappa_stats": {
+    "n_policy_windows": 172,
+    "policy_window_counts": {
+     "0.0": 9,
+     "1.5": 163
+    },
+    "policy_window_counts_by_kappa": {
+     "COMP": {
+      "1.5": 15
+     },
+     "IRR": {
+      "0.0": 3,
+      "1.5": 11
+     },
+     "READ": {
+      "0.0": 4,
+      "1.5": 116
+     },
+     "REV": {
+      "0.0": 2,
+      "1.5": 21
+     }
+    },
+    "protect_fraction": 0.948,
+    "policy_window_mean": {
+     "READ": 1.45,
+     "REV": 1.37,
+     "COMP": 1.5,
+     "IRR": 1.179
+    },
+    "commit_delay_mean": {
+     "READ": 3.438,
+     "REV": 4.161,
+     "COMP": 3.267,
+     "IRR": 2.927
+    },
+    "commit_delay_p50": {
+     "READ": 1.5,
+     "REV": 1.5,
+     "COMP": 1.5,
+     "IRR": 1.5
+    },
+    "n_commits_by_kappa": {
+     "READ": 99,
+     "REV": 20,
+     "COMP": 14,
+     "IRR": 12
+    },
+    "finality": {
+     "labels_all": {
+      "final": 117,
+      "unfinished": 62,
+      "hesitant": 38
+     },
+     "labels_rollback_clips": {
+      "hesitant": 2,
+      "final": 22,
+      "unfinished": 6
+     },
+     "infer_p50": 0.672,
+     "infer_p90": 0.99,
+     "unparsed": 0
+    }
+   },
+   "verdicts": {
+    "G2iii_exact_ge_minus1pt": true,
+    "premium_below_fixed": true,
+    "delay_monotone_in_kappa": false
+   }
+  },
+  {
+   "provider": "w4v3c1_pi300_tact",
+   "n": 100,
+   "exact": 0.65,
+   "state": 0.67,
+   "done_p50": 3.536,
+   "premium": {
+    "n_paired": 98,
+    "sum_s": 113.9,
+    "p50_s": 1.576
+   },
+   "recovery_vs_fixed_s": -4.4,
+   "recovery_frac_of_fixed_premium": -0.04,
+   "recovery_frac_strict_common_support": -0.038,
+   "n_strict_common": 98,
+   "d_exact_vs_fixed": 0.0,
+   "flips_vs_fixed": {
+    "gain": [],
+    "loss": []
+   },
+   "kappa_stats": {
+    "n_policy_windows": 172,
+    "policy_window_counts": {
+     "1.5": 172
+    },
+    "policy_window_counts_by_kappa": {
+     "COMP": {
+      "1.5": 15
+     },
+     "IRR": {
+      "1.5": 14
+     },
+     "READ": {
+      "1.5": 120
+     },
+     "REV": {
+      "1.5": 23
+     }
+    },
+    "protect_fraction": 1.0,
+    "policy_window_mean": {
+     "READ": 1.5,
+     "REV": 1.5,
+     "COMP": 1.5,
+     "IRR": 1.5
+    },
+    "commit_delay_mean": {
+     "READ": 3.514,
+     "REV": 4.311,
+     "COMP": 3.267,
+     "IRR": 3.302
+    },
+    "commit_delay_p50": {
+     "READ": 1.5,
+     "REV": 1.5,
+     "COMP": 1.5,
+     "IRR": 1.5
+    },
+    "n_commits_by_kappa": {
+     "READ": 99,
+     "REV": 20,
+     "COMP": 14,
+     "IRR": 12
+    },
+    "finality": {
+     "labels_all": {
+      "final": 117,
+      "unfinished": 62,
+      "hesitant": 38
+     },
+     "labels_rollback_clips": {
+      "hesitant": 2,
+      "final": 22,
+      "unfinished": 6
+     },
+     "infer_p50": 0.672,
+     "infer_p90": 0.99,
+     "unparsed": 0
+    }
+   },
+   "verdicts": {
+    "G2iii_exact_ge_minus1pt": true,
+    "premium_below_fixed": false,
+    "delay_monotone_in_kappa": false
+   }
+  }
+ ]
+}

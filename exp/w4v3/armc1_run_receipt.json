@@ -1,0 +1,218 @@
+{
+  "schema": "w4v3-armc1-phase2-receipt-v1",
+  "as_of": "2026-07-15",
+  "input_commit": "8b9ae9a0a26de27e4dca4c276536a51c7f8d3269",
+  "stack": {
+    "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition 97887 MiB",
+    "config": "exp/w3/qwen3_omni_text_only_84g.yaml",
+    "config_sha256": "793d1ef0e14cb33d4333062ab8a5516357b7fbc08b7f91b1b99704ef7a486677",
+    "workers": 12,
+    "nominal_infer_s": 1.0,
+    "prompt": "v3.1",
+    "delta_policy": "learned:v2",
+    "result_manifest_algorithm": "sha256(concat(relative_path || NUL || raw_sha256_digest), paths sorted)"
+  },
+  "freeze_guard": {
+    "v2_config_hash": "b62a069cd900",
+    "v2_dialogues_sha256_archive": "428a5b7453f896dfba0b22174c9a5767184cc50dfae9e46f5aa6332aa87bd04b",
+    "v2_dialogues_sha256_regenerated": "428a5b7453f896dfba0b22174c9a5767184cc50dfae9e46f5aa6332aa87bd04b",
+    "byte_cmp_equal": true
+  },
+  "world": {
+    "anchor": "v3c1",
+    "tag": "v3c1",
+    "config_hash": "cca0eb049af8",
+    "dialogues": 8000,
+    "ops": 19312,
+    "revised": 4675,
+    "revised_fraction": 0.2421,
+    "pause_pool_n": 748,
+    "pause_pool_p10_p50_p90_s": [0.484, 0.964, 1.828],
+    "gap_silence_p10_p50_p90_s": [2.124, 2.604, 3.468],
+    "rescuable_le_2_5": [2014, 4675],
+    "rescuable_fraction": 0.43080213903743314,
+    "revision_kinds": {
+      "cutoff_continuation": 1083,
+      "slot_completion": 1214,
+      "upstream": 290,
+      "hesitant_revision": 977,
+      "afterthought": 1111
+    },
+    "finality_by_style_counts": {
+      "complete": {"final": 8151, "hesitant": 0, "unfinished": 3697},
+      "cutoff": {"final": 464, "hesitant": 0, "unfinished": 2585},
+      "hesitant": {"final": 1152, "hesitant": 2593, "unfinished": 670}
+    },
+    "cuts_sha256": "325f898b639d4cdf6dd5f3e19735799ef51d029f70cecda2d5873558dcbf1f93",
+    "dialogues_sha256": "9b013081e353115ae3912d28160eab30d297d8bf0e15b5d84f161aed4ccb28a7"
+  },
+  "label": {
+    "ops": 19312,
+    "rescue_states": 4675,
+    "hazard_samples": 400887,
+    "positives": 4627,
+    "positive_fraction": 0.011542,
+    "dims": 7,
+    "features": ["t", "eou_idx", "utt_dur", "slots_missing", "f_final", "f_hesitant", "f_unfinished"],
+    "ops_sha256": "e8802df1f827f75614470090e16958c03915daf53166e049463caca9fb6ab54f",
+    "hazard_sha256": "409c7ddb55435567e9b26fdee4bb8756383389c83081c16061676234cbf0afb5"
+  },
+  "train": {
+    "lr_val_auc": 0.748471945514,
+    "mlp_val_auc_stdout_3dp": 0.902,
+    "selected_head": "lr",
+    "trainer_selected_theta": 0.02,
+    "trainer_theta_ignored_by_armc": true,
+    "theta_anchor": 0.03,
+    "selftest": "11/11 PASS",
+    "selected_and_lr_sha256": "5e4210cc212b1df73d0a2db996c19f63c264aef70474d2deb976c8ea48abe319",
+    "mlp_sha256": "70b5fdd09e25b0aa9d53d40c8295a5ae25fe7aeb93f7112f68a2dd61092a405f"
+  },
+  "calibration": {
+    "q_h": [731, 748],
+    "m_train": [2014, 19312],
+    "m_train_decimal": 0.104287489644,
+    "theta_anchor": 0.03,
+    "formula": "sigmoid(logit(theta)-logit(pi*q_H)+logit(m_train))"
+  },
+  "grid": [
+    {
+      "pi": 0.02,
+      "provider": "w4v3c1_pi020_tact",
+      "theta": 0.152996,
+      "model_sha256": "c5f696e6989622aa027ae15702bbce1847127832a15ecc146889f033a41ecbd4",
+      "result_files": 100,
+      "status_completed": 100,
+      "decisions": 217,
+      "decision_cache": {"hits": 217, "misses": 0},
+      "finality_cache": {"hits": 217, "misses": 0},
+      "policy_window_counts": {"0.0": 141, "1.5": 11},
+      "result_manifest_sha256": "951fafc7029277913805f47fa2425160f7d01e202acbb5348d7a15be94be238d"
+    },
+    {
+      "pi": 0.04,
+      "provider": "w4v3c1_pi040_tact",
+      "theta": 0.081318,
+      "model_sha256": "9500111c25a3400ea518bb9e30cbe4dbbad0e2ae1337a3d3966e2b4f7d35ba7e",
+      "result_files": 100,
+      "status_completed": 100,
+      "decisions": 217,
+      "decision_cache": {"hits": 217, "misses": 0},
+      "finality_cache": {"hits": 217, "misses": 0},
+      "policy_window_counts": {"0.0": 125, "1.5": 30},
+      "result_manifest_sha256": "a0715f7c4b2bd0386cba4d3c21d28ef6200c0180b950a47a0ef14b0116928a7e"
+    },
+    {
+      "pi": 0.06,
+      "provider": "w4v3c1_pi060_tact",
+      "theta": 0.054651,
+      "model_sha256": "ff97a108bb1f6049c50a7d568ca94fec3af278b5747b2747e0f1087f4eeb6d7c",
+      "result_files": 100,
+      "status_completed": 100,
+      "decisions": 217,
+      "decision_cache": {"hits": 217, "misses": 0},
+      "finality_cache": {"hits": 217, "misses": 0},
+      "policy_window_counts": {"0.0": 105, "1.5": 52},
+      "result_manifest_sha256": "e25d8a1323fdfa74a8592001f01cae944d5db541e17f7328e7b6d3df35eb9ef5"
+    },
+    {
+      "pi": 0.08,
+      "provider": "w4v3c1_pi080_tact",
+      "theta": 0.040728,
+      "model_sha256": "2b4b6b4b3537938481e3cebce0bf45f4e0c223c4ef462eb4eb2cb8531182202d",
+      "result_files": 100,
+      "status_completed": 100,
+      "decisions": 217,
+      "decision_cache": {"hits": 218, "misses": 0},
+      "finality_cache": {"hits": 217, "misses": 0},
+      "policy_window_counts": {"0.0": 100, "1.5": 60},
+      "result_manifest_sha256": "982107af082b69686120abfdfda335deddec5e259d6764cd0d3e152962a2681c"
+    },
+    {
+      "pi": 0.1,
+      "provider": "w4v3c1_pi100_tact",
+      "theta": 0.032176,
+      "model_sha256": "25bf29ba61967193c9f86e21806357aa3faade1fb26d56b2f2073481a7ee4be2",
+      "result_files": 100,
+      "status_completed": 100,
+      "decisions": 217,
+      "decision_cache": {"hits": 218, "misses": 0},
+      "finality_cache": {"hits": 217, "misses": 0},
+      "policy_window_counts": {"0.0": 80, "1.5": 84},
+      "result_manifest_sha256": "1157cfab205bff08668034d7819872016abc3bafa1268a63fcc1367dc89dbd78"
+    },
+    {
+      "pi": 0.15,
+      "provider": "w4v3c1_pi150_tact",
+      "theta": 0.020533,
+      "model_sha256": "268b3a234b0028e98cee411c36ddd781ee1361f11050628d22bf765975d3abdc",
+      "result_files": 100,
+      "status_completed": 100,
+      "decisions": 217,
+      "decision_cache": {"hits": 218, "misses": 0},
+      "finality_cache": {"hits": 217, "misses": 0},
+      "policy_window_counts": {"0.0": 16, "1.5": 153},
+      "result_manifest_sha256": "5ebf96526bcb611c8e7ac41f8658e507c8f6ebc029305dc23227a69628ba1352"
+    },
+    {
+      "pi": 0.2,
+      "provider": "w4v3c1_pi200_tact",
+      "theta": 0.014606,
+      "model_sha256": "2f9cbb42657760814488d1105a84fc497c9f4b7452c720250f1f49e1a27328c6",
+      "result_files": 100,
+      "status_completed": 100,
+      "decisions": 217,
+      "decision_cache": {"hits": 217, "misses": 1},
+      "finality_cache": {"hits": 217, "misses": 0},
+      "policy_window_counts": {"0.0": 9, "1.5": 163},
+      "result_manifest_sha256": "1f485a0b0e243a21f23649e2d335dc321b988e28e5e15332df9ced457e214c11",
+      "completion_note": "Initial service-off pass produced 99/100; one new trajectory key was served HTTP 200, then the arm was rerun full with --force."
+    },
+    {
+      "pi": 0.3,
+      "provider": "w4v3c1_pi300_tact",
+      "theta": 0.008607,
+      "model_sha256": "209a9f6ec98dbcdb024686a86243e35c59e2f3f8073e4ec37eabf7f336be157f",
+      "result_files": 100,
+      "status_completed": 100,
+      "decisions": 217,
+      "decision_cache": {"hits": 218, "misses": 0},
+      "finality_cache": {"hits": 217, "misses": 0},
+      "policy_window_counts": {"0.0": 0, "1.5": 172},
+      "result_manifest_sha256": "32fa4850f12cf91230f82c7bbb2ccd898bc023f670869ac64ee117174bdad67d"
+    }
+  ],
+  "cache_totals": {
+    "decision": {"hits": 1740, "misses": 1},
+    "finality": {"hits": 1736, "misses": 0},
+    "decision_repair_retry_calls": 5,
+    "decision_entries_before": 1013,
+    "decision_entries_after": 1014,
+    "decision_cache_sha256_before": "3a240d8306810a6e0244a511fc6a5a716257fc2c12f8b0661775253163f5c7a9",
+    "decision_cache_sha256_after": "a93656603707fe36795b9a32809d3f5d452a2387bbe5625d2b3e0f18c3ef6f4a",
+    "new_key": "36aacba120d1a5d3dd6d924ce39ce235f09f90db365f929f88bacbd404c285db",
+    "finality_cache_sha256": "4e926b402fd5d20400371bdc655fb27e7b3ed3be42c6fe1513fdcc2c835041d9"
+  },
+  "artifacts": {
+    "ladder": "exp/w4v3/ladder_armc1.json",
+    "ladder_sha256": "5b556ba7870424f823d3f72419445acf5881e8b85d0300c5f5e6e7c810dcdee4",
+    "combined_800_result_manifest_sha256": "d4160456a0c47fe73586bed1804680e37ff5c76c5c04f1f6eced709bfac13ca8",
+    "c0_ladder_sha256_unchanged": "cf0bc15a13324faaacfabf5e4e79eb5a1d53181806c48653618e456060fa7f17",
+    "c0_receipt_sha256_unchanged": "4d2fb122f18dbdc2fde6d6ab02b4469d00cca7a83f795ff679c5d2aa4d1319ef",
+    "historical_ladder_v0_sha256_unchanged": "2715e3e6dadf4ad71ce4ba645aa6c5eeb93938d77678f75edfe4b5f626748c87"
+  },
+  "validation": {
+    "all_arms_100_of_100_completed": true,
+    "all_arms_217_decisions": true,
+    "all_arms_217_finality": true,
+    "finality_unparsed_total": 0,
+    "policy_window_support": [0.0, 1.5],
+    "model_fields_equal_except_theta_and_armc": true,
+    "theta_formula_recomputed": true,
+    "occurrence_aware_flips_recomputed": true,
+    "reporter_strict_rounding_max_difference_fraction": 0.001,
+    "humdial_transcript_check": "PASS",
+    "services_stopped_and_gpu_released": true,
+    "p5_and_c1_p4_adjudication": "intentionally deferred to user"
+  }
+}

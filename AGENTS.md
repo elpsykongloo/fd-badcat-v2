@@ -1,7 +1,7 @@
 # AGENTS.md — fd-badcat 持久记忆（所有代理必读）
 
 > 单一真相源。CLAUDE.md 指向本文件。有重大事实变更时**更新本文件**，不要另开新文档。
-> 最后更新：2026-07-15 (W4-V3 Arm C0 判读收口：P1/P2 兑现、P3 三子带 MISS、P4 落点 33%<75% FAIL ⇒ C1 按冻结规则触发；C1 代码三段验证交付，待用户跑 §11.4)
+> 最后更新：2026-07-15 (W4-V3 Arm C1 §11.4 已完整实跑：8×100 completed，gen/train/cache/ladder 收据归档；P5 与 C1 版 P4 待用户裁决，C1 后无 C2)
 
 ## 使命
 
@@ -62,7 +62,7 @@
   - **DeepSeek judge 并发**：官方 `llm_judge.py` 原生支持 `FDB_LLM_WORKERS`；judge 是纯 API 调用。v3.1 正式三判采用 strict runner、workers=32，避免把并发/解析失败与 judge 判决混合。`scripts/run_fdb_with_deepseek.sh` 仍指向连续 metrics 轨，不可用于论文 binary judge-pass 主轨。
   - vLLM 侧：准确度回归可临时把 audio 配置 `max_num_seqs` 调高（重启分钟级）配合 --workers 压满；HumDial 管线自带 `--gen-workers/--clean-workers/--asr-workers/--judge-workers` 旋钮。
 
-## 当前状态（W3 全部收口；W4 rung 4 收枪；W4-V3 C0 已判读、C1 触发待跑，2026-07-15）
+## 当前状态（W3 全部收口；W4 rung 4 收枪；W4-V3 C1 实跑完成、待终局判读，2026-07-15）
 
 - **D6 标准卡串行复测已清（7/09，W3 最后一个 GPU 项）**——三臂全量 100、音频标准栈、`--workers 1`、每臂全新缓存（0 hit，锚干净）、A 档双跑决策逐位（pass/tool calls/signature/transcript diff 全 0）。**主表最终数字（v3.1 口径，live 串行档）**：
   - **准确性**：TACT d150 exact **0.640** / sblock **0.660**（差 −2pt 不变）。**7/13 DeepSeek semantic-argument 三判已闭合**：TACT **0.710±0.010**、spec **0.723±0.005**、sblock **0.730±0.010**（±=三次半极差；逐轮 TACT−sblock = −3/0/−3pt，均值仍 −2pt；spec−sblock = −2/0/0pt）。judge 语义宽恕把三臂各抬约 7–8pt，但不反转主结论；报告 `exp/w3/fdb_v31_deepseek_judge3_summary.json`。live state 同栈复算为 verbatim TACT/sblock **0.66/0.66**、normalized **0.77/0.79**；此前 0.79/0.82 是 text 栈，不得混入 live 主表。⚠️ live 音频栈 vs 前日 text 栈 exact 存在 **−1pt/臂 电平差**；主表引 live 档，δ 曲线保留 text 栈产物作形状主张。
@@ -98,6 +98,8 @@
 - **W4-V3 Arm C0 Phase-2 实跑（7/15；原始收据 `docs/w4v3_design.md` §10.6，尚不代做 P1–P5/P4 裁决）**：输入提交 `22b1610`，84g text-only stage-0 / workers12 / nominal infer；生成器常量复验 **q_H=731/748、m_train=3307/19288**，selftest 8/8。π\*=.10 冒烟 30/30 completed、58 decisions，启动 θ=.055792、decision/Finality cache **58/0 + 58/0**、windows `{0×31,1.5×17}` ⇒ 三项机制门全过。8 点均 **100/100 completed、217 decisions、Finality 217/0**；decision cache 仅新增 4 键且全部在线 200 成功。π=.02→.30：θ `.243022→.015195`，protect `.066→.988`，exact `.570→.650`，state `.610→.670`，done50 `1.955→3.455`，主回收 `143.3%→6.5%`；π\*=.10 行 exact/state/done50=`.600/.630/1.955`、premium sum 1.6s、回收主/strict=`101.6%/98.5%`、windows `{0×96,1.5×64}`、0 gain/5 loss。完整 ladder=`exp/w4v3/ladder_armc.json`，机器运行收据=`exp/w4v3/armc_run_receipt.json`；reporter 已补 raw window counts/protect/n，且显式输出新路径，历史 `exp/w4/ladder_v0.json` SHA 不变。原始结果/模型/θ/窗口/score/单调性已独立断言通过；服务已停、GPU 归零。**下一步 = 用户做 P1–P5/P4 落点裁决；在裁决前不触发 C1。**
 
 - **W4-V3 Arm C0 判读（7/15；完整判读+落点表 = `docs/w4v3_design.md` §11，对 ladder_armc.json 逐位重算核验）**：**P1 空带预测兑现**（全网格无 AND 点：.20 = .640✓/14.7%✗、.15 = 60.8%✓/.630✗、.30 = .650✓/6.5%✗——G2R 门按预注册失败）；**P2 单调性兑现**（0 违例）；**P3 π\* 点 3/4 子带 MISS**（protect .400 vs [.55,.75]、回收 101.6% vs [26,42]、exact .600 vs [.615,.645]）——根因 = risk 读数**质量悬崖**（θ∈(.0152,.0558] 内 protect 98.8%→40.0%，~59% op 挤在窄带）；**P4 落点检验 FAIL：合格点 3 个（lost≤4），过带 1/3=33.3%<75%**（.15/lost2：60.8 vs 56.2 = +4.6 PASS；.20/lost1：14.7 vs 38.4 = −23.7 FAIL；.30/lost0：6.5 vs 15.1 = −8.6 FAIL）⇒ **C1 按冻结规则触发**。机制读数：loss 阶梯完全嵌套（v0 七夹超集），网格夹逼给出 **eco25#1 risk∈[.0152,.0257)、eco01#1 risk∈[.0257,.030)**（v2 loss 集的闭式解释；护 eco01 的成本 ≈46 回收点=释放 44 个中间安全 op）；P4 失败分解 = 网格粗化（lost=1 仅在 protect .911 采样）× 参照系误差（诊断模拟器前沿低 lost 端系统性高于 live 记账 +8.6/+23.7pt——protect@θ 互证过但中间工作点保费映射不互证）⇒ **不构成校准公式失败的充分证据**，C1 职责即剥离世界锚成分。**正结果（前沿更新）**：**C0@π=.30 弱帕累托支配 fixed**（exact 相等、0 loss、premium 102.7<109.6）= W4 首个无损支配 fixed 的臂；**C0@π=.15 (60.8%,−2) 严格支配零 shot safe (30%,−2)**；可用前沿更新为 C0π.30(6.5,0)/C0π.15(60.8,−2)/pf(84,−4)。**C1 代码已交付并三段验证**：`w4_synth_gen.py --anchor v3c1`（默认路径**逐字节不动**：config_hash b62a069cd900 复现 + 本地重生成 8000 对话与归档 cmp 相同；600 冒烟 σ_pre p10/50/90=0.452/0.996/1.924 复现实测、发射行落实测±jitter、**rescuable≤2.5 = 42.6% vs v2 69.7%** = 世界锚差异实体）+ `w4v3_make_armc.py --variant v3c1 --ops`（m_train 重算入溯源、trainer-θ 豁免；selftest 扩 **11/11**）。运行命令 §11.4（providers `w4v3c1_pi*_tact`，报告显式落 `ladder_armc1.json`）。判读 = P5（C1≈C0 = 世界锚零假设）+ C1 版 P4 落点表；**C1 之后 v3 无条件收口，不再有 C2。**
+
+- **W4-V3 Arm C1 Phase-2 实跑（7/15；原始收据 `docs/w4v3_design.md` §11.5；本条只记观测，不代做 P5/C1 版 P4 裁决）**：输入提交 `8b9ae9a`；默认 v2 路径复验 `config_hash=b62a069cd900` 且重生成 8,000 dialogues 与归档逐字节相等。C1 世界 `config_hash=cca0eb049af8`，8,000 dialogues / 19,312 ops / 4,675 revised；经验 pause pool p10/50/90=`.484/.964/1.828s`，生成 `gap_silence`=`2.124/2.604/3.468s`，horizon rescuable **2014/4675=43.08%**，故 **m_train=2014/19312=.10428749**；发射混淆 complete(final/hesitant/unfinished)=`8151/0/3697`、cutoff=`464/0/2585`、hesitant=`1152/2593/670`。标签 400,887 hazards / 4,627 positives / 7 dims；LR val AUC **.74847195**（MLP stdout .902），冻结规范选 LR，selftest **11/11**。同 84g text-only / prompt v3.1 / workers12 的 8 点均 **100/100 completed**、每臂 217 decisions 与 217 Finality；合计 decision cache **1740H/1M**、Finality **1736H/0M**，仅新增 1 个 decision key、既有键 0 改/0 删，π=.20 恢复 GPU 后全量 `--force` 补齐。π=.02→.30：θ `.152996→.008607`、protect `.072→1.000`、exact `.570→.650`、state `.610→.670`、主回收 `137.1%→−4.0%`；π\*=.10 行 exact/state/done50=`.620/.650/2.048`、回收主/strict=`74.1%/71.1%`、windows `{0×80,1.5×84}`。所有臂 gain=0，loss 集严格嵌套；π=.20/.30 均 0 loss。完整 ladder=`exp/w4v3/ladder_armc1.json`，机器收据=`exp/w4v3/armc1_run_receipt.json`；800 份 raw result 不入仓，仅保存逐臂可复验 manifest。独立复算、原文/密钥扫描均通过，服务已停、GPU 已释放。**下一步仅剩用户做 P5 与 C1 版 P4 对账；C1 后无 C2。**
 
 ### 既往（W3 D4–D6 代码批，2026-07-07）
 
