@@ -27,6 +27,13 @@ def _rid(episode_id, fn, idx):
         f"{episode_id}:{fn}:{idx}".encode()).hexdigest()[:6]
 
 
+def mint_id(episode_id, fn, k=0):
+    """Public deterministic id minting: k-th call OF THIS FN in the episode.
+    Independent of global call order, so window-policy reordering (patch
+    restarts) cannot shift ids away from the build-time gold."""
+    return _rid(episode_id, fn, k)
+
+
 class Sandbox:
     """One episode's tool world. execute() mutates state and returns the FDB-
     style envelope {"status","result"}. State keys are '<fn>#<rid>' -> args
@@ -40,7 +47,7 @@ class Sandbox:
         self.calls = []            # committed calls in order: {fn, args, rid}
         self.fees = 0
         self._idem = {}
-        self._n = 0
+        self._n_fn = {}
 
     def latency_of(self, fn):
         cls = "heavy" if self.profile == "heavy" and TOOLS[fn]["kappa"] != "READ" \
@@ -57,8 +64,9 @@ class Sandbox:
             return {"status": "error", "error": f"missing {missing}"}
         if idem_key and idem_key in self._idem:
             return self._idem[idem_key]
-        rid = _rid(self.episode_id, fn, self._n)
-        self._n += 1
+        k = self._n_fn.get(fn, 0)
+        self._n_fn[fn] = k + 1
+        rid = _rid(self.episode_id, fn, k)
         self.state[f"{fn}#{rid}"] = dict(args)
         self.calls.append({"fn": fn, "args": dict(args), "rid": rid})
         res = {"status": "success", "result": {"id": rid, "fn": fn}}

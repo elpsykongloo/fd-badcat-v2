@@ -44,7 +44,10 @@ def load_events(path):
         X.append(r["f"])
         y.append(r["y"])
         g.append(r["g"])
-    return np.asarray(X, float), np.asarray(y, int), g
+    meta_p = Path(str(path).replace(".jsonl", "_meta.json"))
+    feats = (json.loads(meta_p.read_text())["feats"] if meta_p.exists()
+             else list(FEATS_SG))
+    return np.asarray(X, float), np.asarray(y, int), g, feats
 
 
 def precision_at_recall(y, p, recall_floor=RECALL_FLOOR):
@@ -113,7 +116,7 @@ def predict_mlp(m, X):
 
 def probe(events_path, out_path):
     import numpy as np
-    X, y, g = load_events(events_path)
+    X, y, g, feats = load_events(events_path)
     folds = np.asarray([group_fold(x) for x in g])
     oof = np.zeros(len(y))
     for k in range(5):
@@ -127,7 +130,7 @@ def probe(events_path, out_path):
               "precision_at_recall85": par,
               "k2_bar": K2_PREC_BAR,
               "k2_pass": bool(par and par["precision"] >= K2_PREC_BAR),
-              "feats": list(FEATS_SG)}
+              "feats": feats}
     Path(out_path).write_text(json.dumps(report, indent=2))
     print(json.dumps(report, indent=2))
     return 0
@@ -135,7 +138,7 @@ def probe(events_path, out_path):
 
 def train(events_path, out_path):
     import numpy as np
-    X, y, g = load_events(events_path)
+    X, y, g, feats = load_events(events_path)
     folds = np.asarray([group_fold(x) for x in g])
     tr, va = folds != VAL_FOLD, folds == VAL_FOLD
     w, b, mu, sd = fit_lr(X[tr], y[tr])
@@ -147,7 +150,7 @@ def train(events_path, out_path):
     a_lr, a_mlp = auc(y[va], p_va), auc(y[va], p_mlp)
     print(f"val AUC lr={a_lr:.4f} mlp={a_mlp:.4f}; "
           f"prec@rec85 lr={par['precision']} mlp={par_mlp['precision']}")
-    model = {"feats": list(FEATS_SG), "w": w.tolist(), "b": float(b),
+    model = {"feats": feats, "w": w.tolist(), "b": float(b),
              "mean": mu.tolist(), "std": sd.tolist(), "theta": par["theta"],
              "specgate": {"design": "docs/w5_specgate_design.md",
                           "rule": f"argmax precision s.t. recall>={RECALL_FLOOR} on HumDial val",

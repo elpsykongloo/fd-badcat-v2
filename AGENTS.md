@@ -1,7 +1,7 @@
 # AGENTS.md — fd-badcat 持久记忆（所有代理必读）
 
 > 单一真相源。CLAUDE.md 指向本文件。有重大事实变更时**更新本文件**，不要另开新文档。
-> 最后更新：2026-07-16 (W5-SG Phase-1 判决已入册：**K2 FAIL ⇒ v0 按冻结规则取消**〔AUC 0.6425 / prec@rec85 0.4228<0.50；F_text 被 ASR 时滞 52.5ms>50ms 排除〕，w5_specgate_design §9.1；负结果并入双分离分析章〔finality=内容承载，被 ASR 墙挡在部署时点外〕；后继 SG v1〔ASR 同步门控，79ms 地板余量算术〕待用户裁；RB v2 正式构建 hash 586da9e6a8c4 完成；下一步=RB runner 关键路径)
+> 最后更新：2026-07-16 (SG v1 已立项预注册〔specgate §12：ASR 同步门控，K2' 同门 0.50，`w5sg_asr_features.py` 交付，ASR 缓存仓外〕；**RB runner 交付**〔`rb_run.py`：臂 A+臂 B co-sim、oracle/llm 双决策器、OpDag 默认 on、FC 挂点，selftest 10/10〕；runner selftest 抓出生成器两 bug 已修 ⇒ **GEN_VERSION rb_v2.1.1、新构建目标 hash b30499ad9de7，旧 586da9e6a8c4 作废须重建（音频未合成，零浪费）**；沙盒 id 改按工具名内序铸造；待用户：重建 RB + SG v1 Phase-1 + TTS 接线)
 
 ## 使命
 

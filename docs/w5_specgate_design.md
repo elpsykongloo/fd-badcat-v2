@@ -79,7 +79,8 @@
 - **census**：9,988 samples / **102,194 vad-end 事件**（K1 PASS，5× 于 20k 门）；确认基率 **0.3961**（FDB live 32.6% 的同数量级邻域）；gap 分位 zh p10/25/50/75/90 = 0.1/0.2/0.3/2.5/2.8s、en = 0.1/0.2/0.3/0.8/2.7s——**负类主体是 ≤0.3s 微停顿**；ASR 可用性审计：投影时滞 p50 **52.5ms > 50ms 冻结门 ⇒ F_text 排除**（以 2.5ms 之差；按冻结规则执行，不弯折）。数据修复记录：英文样本误标 zh 的字段映射修复后全链重跑，K2 数值不变。
 - **probe（F_time 6 维，分组 OOF）**：AUC **0.6425**；precision@recall0.85 = **0.4228**（仅高出基率 +2.7pt）**< 0.50 ⇒ K2 FAIL**。
 - **判决（冻结规则机械执行）**：v0 取消，零训练浪费、FDB 零接触。负结果定性：**"本次静默会持续多久"在纯时序历史上不可判**——话语时长/前序间隙/局部密度对 0.64s 恢复预测只携带弱信号（AUC 0.64）。与 w4v3 探针（内容结构族对"停顿-终止"判别近饱和 AUC 0.984）合成更锋利的图景：**finality 信号是内容承载的（content-borne），而部署时点（vad-end 即刻）的可观测集里只有时序——内容恰好被 ASR 时滞墙挡在外面（52.5ms）**。双分离主张措辞相应收窄："finality 可学"限定为离线内容探针口径；在线 timing-only 版不可达经济工作点。
-- **后继路径（不属本预注册，须另开）**：地板余量算术给出干净的候选假设——首响地板对派发延迟的容忍度 = 0.64 − infer p50 0.561 = **79ms ≥ ASR 时滞 p50 52.5ms**：**"派发等 ASR 前缀"的架构改造在 p50 上结构性保住地板**（first = max(0.64, lag+infer)，lag+infer p50 ≈ 0.614 < 0.64）。任何此类 SG v1（ASR 同步门控 + F_text）必须新预注册：新 Phase-1 = 对 census 102k 事件补 ASR 结构特征（SenseVoice 全量 ≈2.3h，RTF 0.021×106.9h）+ 重跑分组 OOF 探针 + **同门 K2'（precision@recall0.85 ≥ 0.50，不得放宽）**；合规：ASR 转写缓存必须落在仓外（如 /root/autodl-tmp/w5sg_asr_cache），入仓产物仍数字 only。若 K2' 亦败，SG 线以双探针负结果永久收口（timing 与 ASR-content 双轨均不可达），分析章素材完整。
+- 〔后继已立项：见 §12 SG v1 预注册（2026-07-16，用户裁定"完整彻底立 v1"）。〕
+- **后继路径（v0 判决时的原始记载）**：地板余量算术给出干净的候选假设——首响地板对派发延迟的容忍度 = 0.64 − infer p50 0.561 = **79ms ≥ ASR 时滞 p50 52.5ms**：**"派发等 ASR 前缀"的架构改造在 p50 上结构性保住地板**（first = max(0.64, lag+infer)，lag+infer p50 ≈ 0.614 < 0.64）。任何此类 SG v1（ASR 同步门控 + F_text）必须新预注册：新 Phase-1 = 对 census 102k 事件补 ASR 结构特征（SenseVoice 全量 ≈2.3h，RTF 0.021×106.9h）+ 重跑分组 OOF 探针 + **同门 K2'（precision@recall0.85 ≥ 0.50，不得放宽）**；合规：ASR 转写缓存必须落在仓外（如 /root/autodl-tmp/w5sg_asr_cache），入仓产物仍数字 only。若 K2' 亦败，SG 线以双探针负结果永久收口（timing 与 ASR-content 双轨均不可达），分析章素材完整。
 
 ## §10 相关工作定位（写作素材，非判据）
 
@@ -95,3 +96,33 @@
 2. 引擎 VAD 参数与 HumDial 录音信道差（近讲 vs 远场）：Phase-1 分布对照条目专查。
 3. F_text 可用性失败 ⇒ 只剩 F_time：探针裁定，可行域空则 K2 干净退出。
 4. live 实测与账面投影漂移：workers 口径墙钟非权威（已知），收口批走串行 GPU 日。
+
+---
+
+## §12 SG v1 —— ASR 同步门控（新预注册，Phase-0 结构冻结 2026-07-16）
+
+> 立项依据：用户 2026-07-16 裁定。v0 判决（§9.1）保持不变；v1 是**新预注册**，不是 v0 重跑。
+
+### §12.1 与 v0 的唯一结构差异（冻结）
+
+**派发时点从 vad-end 即刻改为 vad-end + 当段 ASR 到达**（实测投影 p50 52.5ms）。地板余量算术：`first = max(0.64, lag+infer)`，lag p50 0.0525 + infer p50 0.561 = 0.614 < 0.64 ⇒ **p50 首响地板结构性保住**；代价在 infer 慢尾（p90 侧 +lag 线性）。特征族 = **F_time（6 维，同 v0）+ F_text_asr**：当前话语 ASR 前缀的结构统计——n_chars、n_tokens + w4v3 词表族 `t1_features`（尾 token 词类；与 w4v3 探针同源实现）。F_pros 仍默认排除（w4v3 双 FAIL）。
+
+### §12.2 门与判据（冻结；与 v0 同门，不放宽）
+
+- **K2'**（Phase-1 探针，训练前）：HumDial 分组 OOF `precision@recall0.85 ≥ 0.50`，否则取消——**SG 线以双探针负结果永久收口，无 v2**。
+- G1/G2a/G2b/G2c 与 §5 逐字不变（G2b 的 p50==0.640 依 §12.1 算术仍可达）。θ 选点规则 §6 不变（HumDial val，FDB 单发，K3 不变）。
+- 诚实预测（Phase-1 前锁定）：w4v3 内容探针 0.984 要打两重折扣（干净标注文本→带噪 ASR；配对判别→全事件打分）。**赌点 = 折扣后仍 ≥0.50**；预期带：OOF AUC ∈ [0.72, 0.90]，prec@rec85 ∈ [0.45, 0.75]——带下沿意味着可能恰好双输，如实接受。
+
+### §12.3 合规（冻结）
+
+ASR 转写缓存**仓外落盘**（默认 `/root/autodl-tmp/w5sg_asr_cache/`，逐段 JSON，键=sha256(wav:seg)）；入仓产物（events_v1.jsonl / meta / 报告）**数字 only**（`assert_no_text` 强制）。HumDial 许可与红线同 §3。
+
+### §12.4 Phase-1 执行（零训练）
+
+```
+$PY scripts/w5sg_asr_features.py --root /root/autodl-tmp/HumDial_train \
+    --model-dir <SenseVoice 模型目录>            # ≈2.3h（RTF 0.021 × 106.9h）
+$PY scripts/w5sg_train.py --events exp/w5sg/events_v1.jsonl --probe \
+    --out exp/w5sg/probe_report_v1.json
+```
+K2' 过 ⇒ 回填 §12.5 数值冻结（θ 网格预期、P-SG 点预测、G 表复确认）→ train → FDB 单发记账 → 引擎 ASR 同步派发路径接线（此前不写引擎代码——死代码纪律）。K2' 败 ⇒ SG 线收口，双探针负结果进分析章。

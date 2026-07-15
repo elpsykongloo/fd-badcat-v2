@@ -28,7 +28,7 @@ ARM_A_QUOTA = {"L1": 48, "L2": 42, "L3": 72, "L4": 72, "L5": 96,
 ARM_B_QUOTA = {"L4": 60, "L5": 60, "L6": 40, "L8": 120, "L9": 80, "L10": 40}
 LEAD_IN_S = 0.5
 VOICES = tuple(f"cv{i:02d}" for i in range(1, 10))     # Qwen3-TTS CustomVoice presets
-GEN_VERSION = "rb_v2.1"
+GEN_VERSION = "rb_v2.1.1"
 
 
 def config_hash():
@@ -91,11 +91,13 @@ def make_episode(arm, layer, idx, cfg_hash, pause_prior=None, content_hook=None)
         new = _pick(rng, SLOT_POOLS[lang][slot], avoid=slots[slot])
         kind = ("value_first" if layer == "L4"
                 else "inline" if layer == "L1" else "default")
+        # L1 is in-utterance (inline appended to the intent text, no separate
+        # piece); L8's timing is lifecycle-projected; benign L10 uses the L5 bin.
         revisions.append({"slot": slot, "old": slots[slot], "new": new,
                           "by": "user", "kind": kind,
-                          "gap": gap_for_layer(layer if layer != "L1" else "L5",
-                                               rng, pause_prior)
-                          if layer not in ("L1", "L8") else None})
+                          "gap": None if layer in ("L1", "L8") else
+                          gap_for_layer("L5" if layer == "L10" else layer,
+                                        rng, pause_prior)})
     if layer == "L6":
         s1 = scn["revisable"][0]
         s2 = scn["revisable"][1 % len(scn["revisable"])]
