@@ -1,0 +1,109 @@
+{
+ "id": "A_L6_0025",
+ "layer": "L6",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 2.422,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 7.54,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 10.113,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "amount": 5000
+     }
+    },
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "amount": 5000
+     }
+    }
+   ],
+   "say": "Updating both the quote and transfer to $5,000."
+  },
+  {
+   "i": 2,
+   "t_eou": 15.157,
+   "ops": [
+    {
+     "type": "launch_dedup",
+     "fn": "get_fx_quote"
+    }
+   ],
+   "say": "Updating the transfer to savings and fetching a new quote for 5,000 USD."
+  }
+ ],
+ "say_events": [
+  [
+   8.54,
+   "I'm on it."
+  ],
+  [
+   11.113,
+   "Updating both the quote and transfer to $5,000."
+  ],
+  [
+   16.157,
+   "Updating the transfer to savings and fetching a new quote for 5,000 USD."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.9,
+   "user"
+  ],
+  [
+   8.193,
+   9.473,
+   "user"
+  ],
+  [
+   12.037,
+   14.517,
+   "user"
+  ]
+ ]
+}

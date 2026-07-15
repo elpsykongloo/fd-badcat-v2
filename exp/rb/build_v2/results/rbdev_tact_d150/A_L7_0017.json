@@ -1,0 +1,82 @@
+{
+ "id": "A_L7_0017",
+ "layer": "L7",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.436,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 5.14,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_balance",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "set_alert",
+     "op_id": 3
+    }
+   ],
+   "say": "Checking your balance and setting up an alert now."
+  },
+  {
+   "i": 1,
+   "t_eou": 9.757,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "threshold": 1000
+     }
+    }
+   ],
+   "say": "Updating the alert threshold to $1,000."
+  }
+ ],
+ "say_events": [
+  [
+   6.14,
+   "Checking your balance and setting up an alert now."
+  ],
+  [
+   10.757,
+   "Updating the alert threshold to $1,000."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   4.5,
+   "user"
+  ],
+  [
+   6.957,
+   9.117,
+   "user"
+  ]
+ ]
+}

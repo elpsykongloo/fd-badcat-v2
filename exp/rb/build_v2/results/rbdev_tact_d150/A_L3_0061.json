@@ -1,0 +1,89 @@
+{
+ "id": "A_L3_0061",
+ "layer": "L3",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 8.12,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.9,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 9.506,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "amount": 3000
+     }
+    },
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "amount": 3000
+     }
+    }
+   ],
+   "say": "Updating both the quote and transfer to $3,000."
+  }
+ ],
+ "say_events": [
+  [
+   7.9,
+   "I'm on it."
+  ],
+  [
+   10.506,
+   "Updating both the quote and transfer to $3,000."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.26,
+   "user"
+  ],
+  [
+   7.026,
+   8.866,
+   "user"
+  ]
+ ]
+}

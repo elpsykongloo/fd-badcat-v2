@@ -1,0 +1,80 @@
+{
+ "id": "A_L8_0011",
+ "layer": "L8",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 4.866,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 9.06,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    }
+   ],
+   "say": "Searching for trains from Chicago to Austin on June 1st."
+  },
+  {
+   "i": 1,
+   "t_eou": 12.816,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "hold_seat",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "purchase_ticket",
+     "op_id": 4
+    }
+   ],
+   "say": "Searching for a train and holding the seat now."
+  }
+ ],
+ "say_events": [
+  [
+   10.06,
+   "Searching for trains from Chicago to Austin on June 1st."
+  ],
+  [
+   13.816,
+   "Searching for a train and holding the seat now."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   8.42,
+   "user"
+  ],
+  [
+   10.896,
+   12.176,
+   "user"
+  ]
+ ]
+}

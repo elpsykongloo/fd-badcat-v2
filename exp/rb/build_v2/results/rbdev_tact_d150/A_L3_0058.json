@@ -1,0 +1,77 @@
+{
+ "id": "A_L3_0058",
+ "layer": "L3",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.408,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.42,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_rentals",
+     "op_id": 2
+    }
+   ],
+   "say": "正在为您查找符合条件的房源。"
+  },
+  {
+   "i": 1,
+   "t_eou": 8.7,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "max_rent": 6000
+     }
+    }
+   ],
+   "say": "已将租金上限调整为六千。"
+  }
+ ],
+ "say_events": [
+  [
+   7.42,
+   "正在为您查找符合条件的房源。"
+  ],
+  [
+   9.7,
+   "已将租金上限调整为六千。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.78,
+   "user"
+  ],
+  [
+   6.46,
+   8.06,
+   "user"
+  ]
+ ]
+}
