@@ -1,7 +1,7 @@
 # AGENTS.md — fd-badcat 持久记忆（所有代理必读）
 
 > 单一真相源。CLAUDE.md 指向本文件。有重大事实变更时**更新本文件**，不要另开新文档。
-> 最后更新：2026-07-16 (**SG 线永久收口**：v1 K2' FAIL〔AUC 0.6646 / prec@rec85 0.4419<0.50〕双探针负结果，判决 specgate §12.5，零训练零 FDB；**Qwen3-TTS 已接线**〔QwenTTSBackend=子进程+仓外缓存+16k 重采样；音色映射 exp/rb/tts_voices.json 待用户填 9 预设名〕；rb_run 臂 B live 音频 + 臂 B at_after_eou 语义修正；RB oracle 健全性 A 0.7119/B 0.5682；下一步=oracle by_layer 核对→dev 音频听检→LLM dev 冒烟→判分器冻结)
+> 最后更新：2026-07-16 (**臂 A Qwen 音频已构建**：600/600、9 音色、880 仓外缓存、全量校验 0 error；**臂 B 语义修正 oracle B2** exact 0.7045，L8 0.9412；但冻结前 by_layer 门**未过**：B-L4 0.8333，且 A-L3/L4 非满，根因是 OracleDecider 对多 step 共用 slot 只保留最后一个映射；判分器未冻结、决策 vLLM 未启动。SG 线仍按 §12 永久收口)
 
 ## 使命
 
@@ -129,6 +129,8 @@
   - **剩余 GPU 项**（交用户，命令在 handoff §3）：30 子集现实档冒烟、现实档全量+δ 网格 A 档、投机 A/B+HumDial 门、DAG 链式冒烟、prompt v3 30 子集→冻结→全量+双档网格、分句 TTS live 增益（E5）。
 
 - **W5 SG v1 + RB v2.1.1 实跑归档（7/16；基线 b05e963）**：w5sg_asr_features.py 补齐与 backend 同款的 SenseVoice model.int8.onnx 优先/model.onnx fallback，并新增默认关闭的样本级 --workers 多进程路径与原子仓外缓存；6 样本/90 事件串行 vs 4 worker 输出逐字节同哈希，全量 64 worker。SG v1 得 **9,988 samples / 102,194 events / 15 维**；与 v0 的标签、gap、语言、group、前 6 维逐行 **0 mismatch**，schema/有限数/前缀单调违规均 0；events SHA256 79b8c3ed84a12f7766c10cd11ce49d99ab1c55ceda74d42e26f693427cb6f52d；仓外 ASR cache **102,194 全可解析 / 26 空 / 0 坏**。OOF probe：AUC **0.6646**、recall .8500 时 precision **0.4419 < K2' .50**（信息性 θ=0.3864257762969059，dispatch 77,872 / positives 40,482）⇒ **K2' FAIL；SG 线按 §12 永久收口，无 v2、零训练/stophead/引擎接线/FDB**。RB 重建 manifest：**rb_v2.1.1 / config b30499ad9de7 / content 9a735aecc07d**，1000 episodes（dev103/test897，revision .673，ids f70727a59d9f），1000/1000 episode hash 新值、旧 586... 残留 0，golden **144**，无音频（TTS 本轮不需要）。runner selftest **10/10**；oracle text dev A：n59/exact .7119/U .5518，B：n44/exact .5682/U .4503，两臂 wrong/unrepaired=0；低分集中在时序受限的 L5/L6/L8（oracle 只替代决策内容，δ/屏障/可逆性压力保留，不要求全金），报告+103 逐夹双跑逐字节一致。最终回归 **156 passed / 4 既有 warnings / 0 FAIL**；屏障探针 **VERDICT MET / 21-21 / 0 cache miss**。正式新增产物：exp/w5sg/{events_v1.jsonl,events_v1_meta.json,probe_report_v1.json}、exp/rb/build_v2/{manifest.json,rb_report_rbdev_oracle.json,rb_report_rbdev_oracle_b.json,results/{rbdev_oracle,rbdev_oracle_b}/} 与更新后的 exp/rb/golden/。
+
+- **RB 臂 A 音频 + B2 冻结前核对（7/16）**：用用户给定 9 音色映射运行 rb_build --audio qwen exit 0；600/600 臂 A WAV 均为 mono PCM16/16k，missing/extra=0，cue 数/measured gap/边界/6s tail 全量一致，音频 340MiB 已由 .gitignore 排除；仓外 /root/autodl-tmp/rb_tts_cache 共 **880/880** 个 24k 原始 WAV、187MiB、0 坏/0 tmp，9 音色实际片段覆盖 cv01..09=98/132/142/135/124/150/168/124/127。manifest 仍为 config b30499ad9de7 / rb_v2.1.1 / n1000 / dev103-test897，audio=qwen，content hash **8a2ae43c7e10**。臂 B 语义修正后 provider rbdev_oracle_b2：n44、exact/state **0.7045**、U .5638、wrong/unrepaired=0；L10 1.0 / L4 .8333 / L5 .1818 / L6 0 / L8 .9412 / L9 1.0；相对旧 B .5682 的主增益来自 L8 .5882→.9412。B2 报告 SHA256 6a1d05415d596f8b8978ca0663ff57aaffd5b2188a695a0cb6213e3d029764b3，双跑报告+44 逐夹逐字节一致；runner selftest 10/10、全套 **156 passed / 4 既有 warnings**。**冻结核对未通过，严禁此时哈希入册或起决策 vLLM**：唯一 B-L4 miss B_L4_0005 的 amount 同时进入 get_fx_quote 与 transfer_funds，但 OracleDecider.slot_arg 是 slot→单一 (step,arg)，循环覆盖后只 patch transfer，前者保留旧值；A_L3_0061/A_L4_0009 同源。下一步须先把 oracle 改为 slot→[(step,arg),...] 并重跑 A/B oracle，再按 by_layer 决定是否冻结 scorer；这属于 oracle harness 修复，不改 scorer。
 
 ### 既往（W3 D1–D3 + D1.5/D2 定界批，2026-07-06）
 
