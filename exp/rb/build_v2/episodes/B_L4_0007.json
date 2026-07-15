@@ -7,26 +7,26 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Chicago",
-  "destination": "Denver",
+  "destination": "Portland",
   "date": "June first",
-  "seat_class": "coach",
-  "passenger": "Alex Chen"
+  "seat_class": "first class",
+  "passenger": "Sam Rivera"
  },
  "slots_final": {
   "origin": "Chicago",
-  "destination": "Denver",
+  "destination": "Portland",
   "date": "June first",
   "seat_class": "business",
-  "passenger": "Alex Chen"
+  "passenger": "Sam Rivera"
  },
  "revisions": [
   {
    "slot": "seat_class",
-   "old": "coach",
+   "old": "first class",
    "new": "business",
    "by": "user",
    "kind": "value_first",
-   "gap": 1.104
+   "gap": 0.735
   }
  ],
  "bystander": null,
@@ -35,26 +35,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Find a train from Chicago to Denver on June first, hold a coach seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Chicago to Portland on June first, hold a first class seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv03",
    "lang": "en",
    "text": "business — change it to business.",
-   "gap_before": 1.104
+   "gap_before": 0.735
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.149,
+   "offset": 0.174,
    "action": "revise",
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv03",
    "text": "business — change it to business."
   }
  ],
@@ -74,7 +74,7 @@
    "fn": "search_trains",
    "args": {
     "origin": "Chicago",
-    "destination": "Denver",
+    "destination": "Portland",
     "date": "June first"
    }
   },
@@ -88,30 +88,30 @@
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HOdf8047",
-    "passenger": "Alex Chen"
+    "hold_id": "HO55c86c",
+    "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEc9f4dc": {
    "origin": "Chicago",
-   "destination": "Denver",
+   "destination": "Portland",
    "date": "June first"
   },
-  "hold_seat#HOdf8047": {
+  "hold_seat#HO55c86c": {
    "train_id": "SEc9f4dc",
    "seat_class": "business"
   },
-  "purchase_ticket#PUf132e0": {
-   "hold_id": "HOdf8047",
-   "passenger": "Alex Chen"
+  "purchase_ticket#PU0ab919": {
+   "hold_id": "HO55c86c",
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv09"
+  "user": "cv03",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

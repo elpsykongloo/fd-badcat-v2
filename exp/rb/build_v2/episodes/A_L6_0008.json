@@ -7,30 +7,30 @@
  "scenario": "ecom_chain",
  "slots": {
   "query": "保温杯",
-  "qty": "两",
+  "qty": "一",
   "address": "海淀区学院路一号"
  },
  "slots_final": {
-  "query": "跑步鞋",
-  "qty": "一",
+  "query": "蓝牙耳机",
+  "qty": "两",
   "address": "海淀区学院路一号"
  },
  "revisions": [
   {
    "slot": "query",
    "old": "保温杯",
-   "new": "跑步鞋",
+   "new": "蓝牙耳机",
    "by": "user",
    "kind": "default",
-   "gap": 0.775
+   "gap": 0.777
   },
   {
    "slot": "qty",
-   "old": "两",
-   "new": "一",
+   "old": "一",
+   "new": "两",
    "by": "user",
    "kind": "second",
-   "gap": 2.754
+   "gap": 2.65
   }
  ],
  "bystander": null,
@@ -39,24 +39,24 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "帮我搜保温杯，加两件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜保温杯，加一件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "等等，改成跑步鞋。",
-   "gap_before": 0.775
+   "text": "等等，改成蓝牙耳机。",
+   "gap_before": 0.777
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "还有，再改一下，要一。",
-   "gap_before": 2.754
+   "text": "还有，再改一下，要两。",
+   "gap_before": 2.65
   }
  ],
  "events": [],
@@ -75,41 +75,41 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "跑步鞋"
+    "query": "蓝牙耳机"
    }
   },
   {
    "fn": "add_item",
    "args": {
     "item_id": "SE35a823",
-    "qty": "一"
+    "qty": "两"
    }
   },
   {
    "fn": "place_order",
    "args": {
-    "cart_id": "AD5d5c22",
+    "cart_id": "ADc685a4",
     "address": "海淀区学院路一号"
    }
   }
  ],
  "gold_state": {
   "search_catalog#SE35a823": {
-   "query": "跑步鞋"
+   "query": "蓝牙耳机"
   },
-  "add_item#AD5d5c22": {
+  "add_item#ADc685a4": {
    "item_id": "SE35a823",
-   "qty": "一"
+   "qty": "两"
   },
-  "place_order#PL0d42ee": {
-   "cart_id": "AD5d5c22",
+  "place_order#PL946d7d": {
+   "cart_id": "ADc685a4",
    "address": "海淀区学院路一号"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv04"
+  "user": "cv06",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

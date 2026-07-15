@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "eight hundred",
+  "amount": "five thousand",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
  "slots_final": {
-  "amount": "three thousand",
+  "amount": "five thousand",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "rent account"
+  "to_acct": "savings"
  },
  "revisions": [
   {
-   "slot": "amount",
-   "old": "eight hundred",
-   "new": "three thousand",
+   "slot": "to_acct",
+   "old": "rent account",
+   "new": "savings",
    "by": "user",
    "kind": "value_first",
-   "gap": 1.139
+   "gap": 0.796
   }
  ],
  "bystander": null,
@@ -35,27 +35,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Get a quote for eight hundred dollars to euros, then transfer eight hundred from checking to rent account.",
+   "text": "Get a quote for five thousand dollars to yen, then transfer five thousand from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv01",
    "lang": "en",
-   "text": "three thousand — change it to three thousand.",
-   "gap_before": 1.139
+   "text": "savings — change it to savings.",
+   "gap_before": 0.796
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.395,
+   "offset": 0.346,
    "action": "revise",
    "role": "user",
-   "voice": "cv04",
-   "text": "three thousand — change it to three thousand."
+   "voice": "cv01",
+   "text": "savings — change it to savings."
   }
  ],
  "profile": "default",
@@ -72,36 +72,36 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": "three thousand",
+    "amount": "five thousand",
     "from_cur": "dollars",
-    "to_cur": "euros"
+    "to_cur": "yen"
    }
   },
   {
    "fn": "transfer_funds",
    "args": {
     "from_acct": "checking",
-    "to_acct": "rent account",
-    "amount": "three thousand"
+    "to_acct": "savings",
+    "amount": "five thousand"
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GEe32ca5": {
-   "amount": "three thousand",
+   "amount": "five thousand",
    "from_cur": "dollars",
-   "to_cur": "euros"
+   "to_cur": "yen"
   },
-  "transfer_funds#TRc154c7": {
+  "transfer_funds#TR2a3375": {
    "from_acct": "checking",
-   "to_acct": "rent account",
-   "amount": "three thousand"
+   "to_acct": "savings",
+   "amount": "five thousand"
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv03"
+  "user": "cv01",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

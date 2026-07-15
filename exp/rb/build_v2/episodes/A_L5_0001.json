@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "five thousand",
+  "amount": "eight hundred",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "savings"
  },
  "slots_final": {
-  "amount": "three thousand",
+  "amount": "eight hundred",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "revisions": [
   {
-   "slot": "amount",
-   "old": "five thousand",
-   "new": "three thousand",
+   "slot": "to_acct",
+   "old": "savings",
+   "new": "rent account",
    "by": "user",
    "kind": "default",
-   "gap": 2.516
+   "gap": 2.571
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Get a quote for five thousand dollars to yen, then transfer five thousand from checking to savings.",
+   "text": "Get a quote for eight hundred dollars to euros, then transfer eight hundred from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Wait — make it three thousand.",
-   "gap_before": 2.516
+   "text": "Wait — make it rent account.",
+   "gap_before": 2.571
   }
  ],
  "events": [],
@@ -63,36 +63,36 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": "three thousand",
+    "amount": "eight hundred",
     "from_cur": "dollars",
-    "to_cur": "yen"
+    "to_cur": "euros"
    }
   },
   {
    "fn": "transfer_funds",
    "args": {
     "from_acct": "checking",
-    "to_acct": "savings",
-    "amount": "three thousand"
+    "to_acct": "rent account",
+    "amount": "eight hundred"
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GEda2b0a": {
-   "amount": "three thousand",
+   "amount": "eight hundred",
    "from_cur": "dollars",
-   "to_cur": "yen"
+   "to_cur": "euros"
   },
-  "transfer_funds#TR0c3177": {
+  "transfer_funds#TRabeb1d": {
    "from_acct": "checking",
-   "to_acct": "savings",
-   "amount": "three thousand"
+   "to_acct": "rent account",
+   "amount": "eight hundred"
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv04"
+  "user": "cv05",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

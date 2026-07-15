@@ -9,13 +9,13 @@
   "city": "青岛",
   "beds": "一居",
   "max_rent": "六千",
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "slots_final": {
   "city": "青岛",
   "beds": "两居",
   "max_rent": "六千",
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "revisions": [
   {
@@ -24,7 +24,7 @@
    "new": "两居",
    "by": "user",
    "kind": "default",
-   "gap": 2.973
+   "gap": 2.715
   }
  ],
  "bystander": null,
@@ -33,26 +33,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv02",
    "lang": "zh",
-   "text": "在青岛找一居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在青岛找一居、租金不超过六千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv02",
    "lang": "zh",
    "text": "等等，改成两居。",
-   "gap_before": 2.973
+   "gap_before": 2.715
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.502,
+   "offset": 1.005,
    "action": "revise",
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv02",
    "text": "等等，改成两居。"
   }
  ],
@@ -79,7 +79,7 @@
    "fn": "book_viewing",
    "args": {
     "listing_id": "SE07394e",
-    "slot": "周六上午"
+    "slot": "周日下午"
    }
   }
  ],
@@ -89,15 +89,15 @@
    "beds": "两居",
    "max_rent": "六千"
   },
-  "book_viewing#BO378afa": {
+  "book_viewing#BO2ad5fb": {
    "listing_id": "SE07394e",
-   "slot": "周六上午"
+   "slot": "周日下午"
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv05"
+  "user": "cv02",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -7,23 +7,23 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Boston",
-  "destination": "Portland",
+  "destination": "Atlanta",
   "date": "June first",
-  "seat_class": "coach",
+  "seat_class": "business",
   "passenger": "Sam Rivera"
  },
  "slots_final": {
   "origin": "Boston",
-  "destination": "Portland",
-  "date": "May third",
-  "seat_class": "coach",
+  "destination": "Denver",
+  "date": "June first",
+  "seat_class": "business",
   "passenger": "Sam Rivera"
  },
  "revisions": [
   {
-   "slot": "date",
-   "old": "June first",
-   "new": "May third",
+   "slot": "destination",
+   "old": "Atlanta",
+   "new": "Denver",
    "by": "user",
    "kind": "default",
    "gap": null
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Find a train from Boston to Portland on June first, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Boston to Atlanta on June first, hold a business seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Wait — make it May third.",
-   "at_after_eou": 1.709
+   "text": "Wait — make it Denver.",
+   "at_after_eou": 1.713
   }
  ],
  "events": [],
@@ -65,21 +65,21 @@
    "fn": "search_trains",
    "args": {
     "origin": "Boston",
-    "destination": "Portland",
-    "date": "May third"
+    "destination": "Denver",
+    "date": "June first"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE506dc0",
-    "seat_class": "coach"
+    "seat_class": "business"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HOd2f98e",
+    "hold_id": "HOba1b19",
     "passenger": "Sam Rivera"
    }
   }
@@ -87,22 +87,22 @@
  "gold_state": {
   "search_trains#SE506dc0": {
    "origin": "Boston",
-   "destination": "Portland",
-   "date": "May third"
+   "destination": "Denver",
+   "date": "June first"
   },
-  "hold_seat#HOd2f98e": {
+  "hold_seat#HOba1b19": {
    "train_id": "SE506dc0",
-   "seat_class": "coach"
+   "seat_class": "business"
   },
-  "purchase_ticket#PU10d71b": {
-   "hold_id": "HOd2f98e",
+  "purchase_ticket#PU17c925": {
+   "hold_id": "HOba1b19",
    "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv08"
+  "user": "cv05",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -6,23 +6,23 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "跑步鞋",
-  "qty": "两",
-  "address": "浦东新区世纪大道八号"
+  "query": "蓝牙耳机",
+  "qty": "一",
+  "address": "海淀区学院路一号"
  },
  "slots_final": {
-  "query": "跑步鞋",
+  "query": "蓝牙耳机",
   "qty": "一",
   "address": "浦东新区世纪大道八号"
  },
  "revisions": [
   {
-   "slot": "qty",
-   "old": "两",
-   "new": "一",
+   "slot": "address",
+   "old": "海淀区学院路一号",
+   "new": "浦东新区世纪大道八号",
    "by": "user",
    "kind": "default",
-   "gap": 2.782
+   "gap": 2.986
   }
  ],
  "bystander": null,
@@ -31,27 +31,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv07",
    "lang": "zh",
-   "text": "帮我搜跑步鞋，加两件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv07",
    "lang": "zh",
-   "text": "等等，改成一。",
-   "gap_before": 2.782
+   "text": "等等，改成浦东新区世纪大道八号。",
+   "gap_before": 2.986
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 2.605,
+   "offset": 1.019,
    "action": "revise",
    "role": "user",
-   "voice": "cv09",
-   "text": "等等，改成一。"
+   "voice": "cv07",
+   "text": "等等，改成浦东新区世纪大道八号。"
   }
  ],
  "profile": "default",
@@ -69,7 +69,7 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "跑步鞋"
+    "query": "蓝牙耳机"
    }
   },
   {
@@ -82,28 +82,28 @@
   {
    "fn": "place_order",
    "args": {
-    "cart_id": "AD768f17",
+    "cart_id": "ADada134",
     "address": "浦东新区世纪大道八号"
    }
   }
  ],
  "gold_state": {
   "search_catalog#SEc5adb8": {
-   "query": "跑步鞋"
+   "query": "蓝牙耳机"
   },
-  "add_item#AD768f17": {
+  "add_item#ADada134": {
    "item_id": "SEc5adb8",
    "qty": "一"
   },
-  "place_order#PL19b1bc": {
-   "cart_id": "AD768f17",
+  "place_order#PLd47755": {
+   "cart_id": "ADada134",
    "address": "浦东新区世纪大道八号"
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv03"
+  "user": "cv07",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

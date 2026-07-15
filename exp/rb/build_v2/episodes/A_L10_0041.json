@@ -6,16 +6,16 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "five thousand",
+  "amount": "three thousand",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
  "slots_final": {
-  "amount": "five thousand",
+  "amount": "three thousand",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "savings"
  },
@@ -26,7 +26,7 @@
    "new": "savings",
    "by": "user",
    "kind": "default",
-   "gap": null
+   "gap": 2.643
   }
  ],
  "bystander": null,
@@ -37,8 +37,15 @@
    "role": "user",
    "voice": "cv05",
    "lang": "en",
-   "text": "Get a quote for five thousand dollars to yen, then transfer five thousand from checking to rent account.",
+   "text": "Get a quote for three thousand dollars to euros, then transfer three thousand from checking to rent account.",
    "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "Wait — make it savings.",
+   "gap_before": 2.643
   }
  ],
  "events": [],
@@ -56,9 +63,9 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": "five thousand",
+    "amount": "three thousand",
     "from_cur": "dollars",
-    "to_cur": "yen"
+    "to_cur": "euros"
    }
   },
   {
@@ -66,26 +73,26 @@
    "args": {
     "from_acct": "checking",
     "to_acct": "savings",
-    "amount": "five thousand"
+    "amount": "three thousand"
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GEbe6fe0": {
-   "amount": "five thousand",
+   "amount": "three thousand",
    "from_cur": "dollars",
-   "to_cur": "yen"
+   "to_cur": "euros"
   },
-  "transfer_funds#TR777b6c": {
+  "transfer_funds#TR7ba52f": {
    "from_acct": "checking",
    "to_acct": "savings",
-   "amount": "five thousand"
+   "amount": "three thousand"
   }
  },
  "voices": {
   "user": "cv05",
-  "bystander": "cv03"
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

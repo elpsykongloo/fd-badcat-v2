@@ -7,11 +7,11 @@
  "scenario": "ecom_single",
  "slots": {
   "item_id": "A100",
-  "qty": "一"
+  "qty": "两"
  },
  "slots_final": {
   "item_id": "A100",
-  "qty": "一"
+  "qty": "两"
  },
  "revisions": [],
  "bystander": null,
@@ -20,14 +20,14 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv08",
    "lang": "zh",
-   "text": "把编号A100的商品加一件到购物车。",
+   "text": "把编号A100的商品加两件到购物车。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv08",
    "lang": "zh",
    "text": "好了没？",
    "at_after_eou": 13.832
@@ -48,20 +48,20 @@
    "fn": "add_item",
    "args": {
     "item_id": "A100",
-    "qty": "一"
+    "qty": "两"
    }
   }
  ],
  "gold_state": {
   "add_item#ADb1591b": {
    "item_id": "A100",
-   "qty": "一"
+   "qty": "两"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv09"
+  "user": "cv08",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

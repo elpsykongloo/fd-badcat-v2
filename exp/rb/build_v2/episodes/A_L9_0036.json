@@ -7,11 +7,11 @@
  "scenario": "ecom_single",
  "slots": {
   "item_id": "C330",
-  "qty": "两"
+  "qty": "一"
  },
  "slots_final": {
   "item_id": "C330",
-  "qty": "两"
+  "qty": "一"
  },
  "revisions": [],
  "bystander": null,
@@ -20,14 +20,14 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv07",
    "lang": "zh",
-   "text": "把编号C330的商品加两件到购物车。",
+   "text": "把编号C330的商品加一件到购物车。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv07",
    "lang": "zh",
    "text": "好了没？",
    "at_after_eou": 37.64
@@ -48,20 +48,20 @@
    "fn": "add_item",
    "args": {
     "item_id": "C330",
-    "qty": "两"
+    "qty": "一"
    }
   }
  ],
  "gold_state": {
   "add_item#AD7f59b8": {
    "item_id": "C330",
-   "qty": "两"
+   "qty": "一"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv06"
+  "user": "cv07",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

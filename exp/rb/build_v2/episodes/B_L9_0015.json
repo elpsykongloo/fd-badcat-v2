@@ -6,12 +6,12 @@
  "lang": "en",
  "scenario": "travel_hotel",
  "slots": {
-  "city": "Boise",
+  "city": "Austin",
   "checkin": "May tenth",
   "nights": "two"
  },
  "slots_final": {
-  "city": "Boise",
+  "city": "Austin",
   "checkin": "May tenth",
   "nights": "two"
  },
@@ -22,14 +22,14 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Book me a hotel in Boise, checking in May tenth, for two nights.",
+   "text": "Book me a hotel in Austin, checking in May tenth, for two nights.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv01",
    "lang": "en",
    "text": "Any progress?",
    "at_after_eou": 12.012
@@ -38,10 +38,10 @@
  "events": [
   {
    "state": "inflight",
-   "offset": 0.612,
+   "offset": 0.615,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv01",
    "text": "Any progress?"
   }
  ],
@@ -58,7 +58,7 @@
   {
    "fn": "reserve_hotel",
    "args": {
-    "city": "Boise",
+    "city": "Austin",
     "checkin": "May tenth",
     "nights": "two"
    }
@@ -66,15 +66,15 @@
  ],
  "gold_state": {
   "reserve_hotel#RE2754e8": {
-   "city": "Boise",
+   "city": "Austin",
    "checkin": "May tenth",
    "nights": "two"
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv02"
+  "user": "cv01",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

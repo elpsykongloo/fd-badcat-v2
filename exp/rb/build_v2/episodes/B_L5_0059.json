@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Atlanta",
+  "origin": "Boston",
+  "destination": "Austin",
   "date": "May third",
-  "seat_class": "business",
+  "seat_class": "coach",
   "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Chicago",
-  "destination": "Atlanta",
+  "origin": "Boston",
+  "destination": "Portland",
   "date": "May third",
   "seat_class": "coach",
   "passenger": "Jordan Lee"
  },
  "revisions": [
   {
-   "slot": "seat_class",
-   "old": "business",
-   "new": "coach",
+   "slot": "destination",
+   "old": "Austin",
+   "new": "Portland",
    "by": "user",
    "kind": "default",
-   "gap": 2.737
+   "gap": 2.655
   }
  ],
  "bystander": null,
@@ -35,27 +35,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Find a train from Chicago to Atlanta on May third, hold a business seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Boston to Austin on May third, hold a coach seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Wait — make it coach.",
-   "gap_before": 2.737
+   "text": "Wait — make it Portland.",
+   "gap_before": 2.655
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 3.349,
+   "offset": 1.256,
    "action": "revise",
    "role": "user",
-   "voice": "cv09",
-   "text": "Wait — make it coach."
+   "voice": "cv02",
+   "text": "Wait — make it Portland."
   }
  ],
  "profile": "default",
@@ -73,8 +73,8 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
-    "destination": "Atlanta",
+    "origin": "Boston",
+    "destination": "Portland",
     "date": "May third"
    }
   },
@@ -88,30 +88,30 @@
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HOb5e0a7",
+    "hold_id": "HO6ffbe4",
     "passenger": "Jordan Lee"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE0fd4a5": {
-   "origin": "Chicago",
-   "destination": "Atlanta",
+   "origin": "Boston",
+   "destination": "Portland",
    "date": "May third"
   },
-  "hold_seat#HOb5e0a7": {
+  "hold_seat#HO6ffbe4": {
    "train_id": "SE0fd4a5",
    "seat_class": "coach"
   },
-  "purchase_ticket#PUa6458a": {
-   "hold_id": "HOb5e0a7",
+  "purchase_ticket#PU69f9d5": {
+   "hold_id": "HO6ffbe4",
    "passenger": "Jordan Lee"
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv08"
+  "user": "cv02",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

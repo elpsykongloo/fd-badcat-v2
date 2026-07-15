@@ -6,25 +6,25 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "成都",
+  "city": "杭州",
   "beds": "两居",
-  "max_rent": "八千",
+  "max_rent": "六千",
   "slot": "周六上午"
  },
  "slots_final": {
-  "city": "青岛",
+  "city": "成都",
   "beds": "一居",
-  "max_rent": "八千",
+  "max_rent": "六千",
   "slot": "周六上午"
  },
  "revisions": [
   {
    "slot": "city",
-   "old": "成都",
-   "new": "青岛",
+   "old": "杭州",
+   "new": "成都",
    "by": "user",
    "kind": "default",
-   "gap": 0.821
+   "gap": 1.126
   },
   {
    "slot": "beds",
@@ -32,7 +32,7 @@
    "new": "一居",
    "by": "user",
    "kind": "second",
-   "gap": 2.529
+   "gap": 2.609
   }
  ],
  "bystander": null,
@@ -41,24 +41,24 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "在成都找两居、租金不超过八千的房子，约周六上午看房。",
+   "text": "在杭州找两居、租金不超过六千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "等等，改成青岛。",
-   "gap_before": 0.821
+   "text": "等等，改成成都。",
+   "gap_before": 1.126
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv03",
    "lang": "zh",
    "text": "还有，再改一下，要一居。",
-   "gap_before": 2.529
+   "gap_before": 2.609
   }
  ],
  "events": [],
@@ -76,9 +76,9 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "青岛",
+    "city": "成都",
     "beds": "一居",
-    "max_rent": "八千"
+    "max_rent": "六千"
    }
   },
   {
@@ -91,19 +91,19 @@
  ],
  "gold_state": {
   "search_rentals#SE6c06a8": {
-   "city": "青岛",
+   "city": "成都",
    "beds": "一居",
-   "max_rent": "八千"
+   "max_rent": "六千"
   },
-  "book_viewing#BO7aa52c": {
+  "book_viewing#BOba65d8": {
    "listing_id": "SE6c06a8",
    "slot": "周六上午"
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv08"
+  "user": "cv03",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

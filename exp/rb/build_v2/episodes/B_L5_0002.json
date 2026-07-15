@@ -7,24 +7,24 @@
  "scenario": "hou_chain",
  "slots": {
   "city": "青岛",
-  "beds": "两居",
+  "beds": "一居",
   "max_rent": "六千",
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "slots_final": {
-  "city": "厦门",
-  "beds": "两居",
-  "max_rent": "六千",
-  "slot": "周六上午"
+  "city": "青岛",
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周日下午"
  },
  "revisions": [
   {
-   "slot": "city",
-   "old": "青岛",
-   "new": "厦门",
+   "slot": "max_rent",
+   "old": "六千",
+   "new": "八千",
    "by": "user",
    "kind": "default",
-   "gap": 2.98
+   "gap": 2.73
   }
  ],
  "bystander": null,
@@ -33,27 +33,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "在青岛找两居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在青岛找一居、租金不超过六千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "等等，改成厦门。",
-   "gap_before": 2.98
+   "text": "等等，改成八千。",
+   "gap_before": 2.73
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.552,
+   "offset": 1.74,
    "action": "revise",
    "role": "user",
-   "voice": "cv02",
-   "text": "等等，改成厦门。"
+   "voice": "cv01",
+   "text": "等等，改成八千。"
   }
  ],
  "profile": "default",
@@ -70,34 +70,34 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "厦门",
-    "beds": "两居",
-    "max_rent": "六千"
+    "city": "青岛",
+    "beds": "一居",
+    "max_rent": "八千"
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SEe217d6",
-    "slot": "周六上午"
+    "slot": "周日下午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SEe217d6": {
-   "city": "厦门",
-   "beds": "两居",
-   "max_rent": "六千"
+   "city": "青岛",
+   "beds": "一居",
+   "max_rent": "八千"
   },
-  "book_viewing#BO2fb8ef": {
+  "book_viewing#BO66e37f": {
    "listing_id": "SEe217d6",
-   "slot": "周六上午"
+   "slot": "周日下午"
   }
  },
  "voices": {
-  "user": "cv02",
+  "user": "cv01",
   "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

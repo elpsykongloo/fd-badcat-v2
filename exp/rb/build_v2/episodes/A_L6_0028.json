@@ -22,7 +22,7 @@
    "new": "保温杯",
    "by": "user",
    "kind": "default",
-   "gap": 0.967
+   "gap": 0.722
   },
   {
    "slot": "qty",
@@ -30,7 +30,7 @@
    "new": "两",
    "by": "user",
    "kind": "second",
-   "gap": 1.565
+   "gap": 2.736
   }
  ],
  "bystander": null,
@@ -39,24 +39,24 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv03",
    "lang": "zh",
    "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv03",
    "lang": "zh",
    "text": "等等，改成保温杯。",
-   "gap_before": 0.967
+   "gap_before": 0.722
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv03",
    "lang": "zh",
    "text": "还有，再改一下，要两。",
-   "gap_before": 1.565
+   "gap_before": 2.736
   }
  ],
  "events": [],
@@ -88,7 +88,7 @@
   {
    "fn": "place_order",
    "args": {
-    "cart_id": "AD416362",
+    "cart_id": "AD864e23",
     "address": "浦东新区世纪大道八号"
    }
   }
@@ -97,19 +97,19 @@
   "search_catalog#SE599317": {
    "query": "保温杯"
   },
-  "add_item#AD416362": {
+  "add_item#AD864e23": {
    "item_id": "SE599317",
    "qty": "两"
   },
-  "place_order#PLafd269": {
-   "cart_id": "AD416362",
+  "place_order#PLd1690c": {
+   "cart_id": "AD864e23",
    "address": "浦东新区世纪大道八号"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv05"
+  "user": "cv03",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

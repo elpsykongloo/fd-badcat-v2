@@ -7,14 +7,14 @@
  "scenario": "hou_chain",
  "slots": {
   "city": "成都",
-  "beds": "两居",
-  "max_rent": "八千",
+  "beds": "一居",
+  "max_rent": "六千",
   "slot": "周日下午"
  },
  "slots_final": {
   "city": "青岛",
-  "beds": "两居",
-  "max_rent": "八千",
+  "beds": "一居",
+  "max_rent": "六千",
   "slot": "周日下午"
  },
  "revisions": [
@@ -24,7 +24,7 @@
    "new": "青岛",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.933
+   "gap": 1.119
   }
  ],
  "bystander": null,
@@ -33,17 +33,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv07",
    "lang": "zh",
-   "text": "在成都找两居、租金不超过八千的房子，约周日下午看房。",
+   "text": "在成都找一居、租金不超过六千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv07",
    "lang": "zh",
    "text": "青岛，改成青岛。",
-   "gap_before": 0.933
+   "gap_before": 1.119
   }
  ],
  "events": [],
@@ -62,8 +62,8 @@
    "fn": "search_rentals",
    "args": {
     "city": "青岛",
-    "beds": "两居",
-    "max_rent": "八千"
+    "beds": "一居",
+    "max_rent": "六千"
    }
   },
   {
@@ -77,18 +77,18 @@
  "gold_state": {
   "search_rentals#SEd1da43": {
    "city": "青岛",
-   "beds": "两居",
-   "max_rent": "八千"
+   "beds": "一居",
+   "max_rent": "六千"
   },
-  "book_viewing#BO7ab35d": {
+  "book_viewing#BO1e0b97": {
    "listing_id": "SEd1da43",
    "slot": "周日下午"
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv09"
+  "user": "cv07",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

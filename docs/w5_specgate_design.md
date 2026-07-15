@@ -126,3 +126,27 @@ $PY scripts/w5sg_train.py --events exp/w5sg/events_v1.jsonl --probe \
     --out exp/w5sg/probe_report_v1.json
 ```
 K2' 过 ⇒ 回填 §12.5 数值冻结（θ 网格预期、P-SG 点预测、G 表复确认）→ train → FDB 单发记账 → 引擎 ASR 同步派发路径接线（此前不写引擎代码——死代码纪律）。K2' 败 ⇒ SG 线收口，双探针负结果进分析章。
+
+### §12.5 Phase-1 判决（2026-07-16，实跑）——**K2' FAIL，SG 线永久收口**
+
+- **提取与同源核验**：SenseVoice 实际资产为仓内忽略目录下的
+  model.int8.onnx（提取器补齐与 backend 同款的 int8 优先、full fallback，
+  不改特征/标签定义）；6 样本串行与 4 worker 对照的 90 行事件逐字节同
+  SHA-256。全量以 64 worker 跑完：**9,988 samples / 102,194 events**；
+  与 v0 census 的标签、gap、语言、group 与前 6 维时序特征逐行
+  **0 mismatch**，新增后每行固定 15 维有限数值。
+- **合规与完整性**：入仓 events_v1.jsonl SHA-256 =
+  79b8c3ed84a12f7766c10cd11ce49d99ab1c55ceda74d42e26f693427cb6f52d，
+  数字-only schema 检查 0 例违规；仓外
+  /root/autodl-tmp/w5sg_asr_cache/ 共 102,194 个可解析段缓存，0 坏文件、
+  26 个空转写。原始转写不入仓。
+- **OOF probe（15 维 F_time+F_text_asr）**：n=102,194，确认基率
+  **0.3961**；AUC **0.6646**；在 recall **0.8500** 时 precision
+  **0.4419**（信息性 probe 阈值 0.3864257762969059，dispatch 77,872 /
+  positives 40,482）**< K2' 0.50**。相对 v0 的 AUC 0.6425 /
+  precision 0.4228 仅提升 +0.0221 / +0.0191，仍差门 0.0581；预注册的
+  AUC [0.72, 0.90] 诚实预测未命中，precision 也略低于预测下沿 0.45。
+- **机械裁决**：K2' 触发。该 probe 阈值不是部署 θ*，不做 §6 训练、
+  不写 stophead、不接 ASR 同步引擎路径、不触碰 FDB/RB 测试集；按
+  §12.2 **SG 无 v2、双探针负结果永久收口**。结论边界为：ASR 前缀结构
+  对 0.64s 恢复预测有小幅增量，但不足以在 recall 0.85 下达到可用精度。

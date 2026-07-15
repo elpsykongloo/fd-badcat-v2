@@ -1,0 +1,76 @@
+{
+  "n": 59,
+  "exact": 0.7119,
+  "state_verbatim": 0.7119,
+  "state_normalized": 0.7119,
+  "U_mean": 0.5518,
+  "wrong_commits": 0,
+  "unrepaired": 0,
+  "first_p50": 1.64,
+  "done_p50": 3.739,
+  "by_layer": {
+    "L1": {
+      "n": 3,
+      "exact": 1.0,
+      "U": 0.809
+    },
+    "L10": {
+      "n": 2,
+      "exact": 1.0,
+      "U": 0.721
+    },
+    "L2": {
+      "n": 1,
+      "exact": 1.0,
+      "U": 0.7475
+    },
+    "L3": {
+      "n": 13,
+      "exact": 0.9231,
+      "U": 0.7414
+    },
+    "L4": {
+      "n": 8,
+      "exact": 0.875,
+      "U": 0.7045
+    },
+    "L5": {
+      "n": 14,
+      "exact": 0.2143,
+      "U": 0.1743
+    },
+    "L6": {
+      "n": 4,
+      "exact": 0.25,
+      "U": 0.2077
+    },
+    "L7": {
+      "n": 4,
+      "exact": 1.0,
+      "U": 0.8286
+    },
+    "L8": {
+      "n": 3,
+      "exact": 0.6667,
+      "U": 0.6282
+    },
+    "L9": {
+      "n": 7,
+      "exact": 1.0,
+      "U": 0.5993
+    }
+  },
+  "provider": "rbdev_oracle",
+  "config": {
+    "arm": "A",
+    "system": "tact",
+    "delta": 1.5,
+    "commit_barrier": "on",
+    "input": "text",
+    "decider": "oracle",
+    "floor_commit_tiers": null,
+    "split": "dev",
+    "infer_nominal": 1.0,
+    "dag": "on"
+  }
+}

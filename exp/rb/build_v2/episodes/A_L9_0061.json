@@ -7,13 +7,13 @@
  "scenario": "fin_payment",
  "slots": {
   "payee": "the property office",
-  "amount": "eight hundred",
-  "date": "May third"
+  "amount": "five thousand",
+  "date": "June first"
  },
  "slots_final": {
   "payee": "the property office",
-  "amount": "eight hundred",
-  "date": "May third"
+  "amount": "five thousand",
+  "date": "June first"
  },
  "revisions": [],
  "bystander": null,
@@ -22,14 +22,14 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Schedule a payment of eight hundred to the property office on May third.",
+   "text": "Schedule a payment of five thousand to the property office on June first.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv08",
    "lang": "en",
    "text": "Any progress?",
    "at_after_eou": 19.369
@@ -50,22 +50,22 @@
    "fn": "schedule_payment",
    "args": {
     "payee": "the property office",
-    "amount": "eight hundred",
-    "date": "May third"
+    "amount": "five thousand",
+    "date": "June first"
    }
   }
  ],
  "gold_state": {
   "schedule_payment#SC4a49fc": {
    "payee": "the property office",
-   "amount": "eight hundred",
-   "date": "May third"
+   "amount": "five thousand",
+   "date": "June first"
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv06"
+  "user": "cv08",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -6,7 +6,7 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "three thousand",
+  "amount": "five thousand",
   "from_cur": "dollars",
   "to_cur": "yen",
   "from_acct": "checking",
@@ -15,18 +15,18 @@
  "slots_final": {
   "amount": "five thousand",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "savings"
  },
  "revisions": [
   {
-   "slot": "amount",
-   "old": "three thousand",
-   "new": "five thousand",
+   "slot": "to_cur",
+   "old": "yen",
+   "new": "euros",
    "by": "user",
    "kind": "default",
-   "gap": 3.078
+   "gap": 2.604
   }
  ],
  "bystander": null,
@@ -35,27 +35,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Get a quote for three thousand dollars to yen, then transfer three thousand from checking to savings.",
+   "text": "Get a quote for five thousand dollars to yen, then transfer five thousand from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Wait — make it five thousand.",
-   "gap_before": 3.078
+   "text": "Wait — make it euros.",
+   "gap_before": 2.604
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 1.448,
+   "offset": 1.764,
    "action": "revise",
    "role": "user",
-   "voice": "cv09",
-   "text": "Wait — make it five thousand."
+   "voice": "cv06",
+   "text": "Wait — make it euros."
   }
  ],
  "profile": "default",
@@ -74,7 +74,7 @@
    "args": {
     "amount": "five thousand",
     "from_cur": "dollars",
-    "to_cur": "yen"
+    "to_cur": "euros"
    }
   },
   {
@@ -90,18 +90,18 @@
   "get_fx_quote#GEca5c78": {
    "amount": "five thousand",
    "from_cur": "dollars",
-   "to_cur": "yen"
+   "to_cur": "euros"
   },
-  "transfer_funds#TR3b10fd": {
+  "transfer_funds#TR0e13bc": {
    "from_acct": "checking",
    "to_acct": "savings",
    "amount": "five thousand"
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv05"
+  "user": "cv06",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

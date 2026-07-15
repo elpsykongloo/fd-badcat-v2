@@ -6,23 +6,23 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "保温杯",
+  "query": "跑步鞋",
   "qty": "两",
-  "address": "海淀区学院路一号"
+  "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
-  "query": "跑步鞋",
+  "query": "保温杯",
   "qty": "一",
-  "address": "海淀区学院路一号"
+  "address": "浦东新区世纪大道八号"
  },
  "revisions": [
   {
    "slot": "query",
-   "old": "保温杯",
-   "new": "跑步鞋",
+   "old": "跑步鞋",
+   "new": "保温杯",
    "by": "user",
    "kind": "default",
-   "gap": 0.891
+   "gap": 1.132
   },
   {
    "slot": "qty",
@@ -30,7 +30,7 @@
    "new": "一",
    "by": "user",
    "kind": "second",
-   "gap": 2.701
+   "gap": 1.949
   }
  ],
  "bystander": null,
@@ -41,22 +41,22 @@
    "role": "user",
    "voice": "cv02",
    "lang": "zh",
-   "text": "帮我搜保温杯，加两件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜跑步鞋，加两件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv02",
    "lang": "zh",
-   "text": "等等，改成跑步鞋。",
-   "gap_before": 0.891
+   "text": "等等，改成保温杯。",
+   "gap_before": 1.132
   },
   {
    "role": "user",
    "voice": "cv02",
    "lang": "zh",
    "text": "还有，再改一下，要一。",
-   "gap_before": 2.701
+   "gap_before": 1.949
   }
  ],
  "events": [],
@@ -75,7 +75,7 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "跑步鞋"
+    "query": "保温杯"
    }
   },
   {
@@ -88,28 +88,28 @@
   {
    "fn": "place_order",
    "args": {
-    "cart_id": "ADd790b0",
-    "address": "海淀区学院路一号"
+    "cart_id": "ADbaada2",
+    "address": "浦东新区世纪大道八号"
    }
   }
  ],
  "gold_state": {
   "search_catalog#SE93c274": {
-   "query": "跑步鞋"
+   "query": "保温杯"
   },
-  "add_item#ADd790b0": {
+  "add_item#ADbaada2": {
    "item_id": "SE93c274",
    "qty": "一"
   },
-  "place_order#PLcd795c": {
-   "cart_id": "ADd790b0",
-   "address": "海淀区学院路一号"
+  "place_order#PL740965": {
+   "cart_id": "ADbaada2",
+   "address": "浦东新区世纪大道八号"
   }
  },
  "voices": {
   "user": "cv02",
-  "bystander": "cv01"
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

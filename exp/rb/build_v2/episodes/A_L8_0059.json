@@ -7,17 +7,17 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Boston",
-  "destination": "Denver",
-  "date": "June first",
+  "destination": "Austin",
+  "date": "May third",
   "seat_class": "first class",
-  "passenger": "Alex Chen"
+  "passenger": "Sam Rivera"
  },
  "slots_final": {
   "origin": "Boston",
-  "destination": "Denver",
-  "date": "June first",
+  "destination": "Austin",
+  "date": "May third",
   "seat_class": "first class",
-  "passenger": "Alex Chen"
+  "passenger": "Sam Rivera"
  },
  "revisions": [],
  "bystander": null,
@@ -26,17 +26,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Find a train from Boston to Denver on June first, hold a first class seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Boston to Austin on May third, hold a first class seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv03",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 2.148
+   "at_after_eou": 2.265
   }
  ],
  "events": [],
@@ -56,8 +56,8 @@
    "fn": "search_trains",
    "args": {
     "origin": "Boston",
-    "destination": "Denver",
-    "date": "June first"
+    "destination": "Austin",
+    "date": "May third"
    }
   },
   {
@@ -70,30 +70,30 @@
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HOb69550",
-    "passenger": "Alex Chen"
+    "hold_id": "HO3cc33a",
+    "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEb5bb65": {
    "origin": "Boston",
-   "destination": "Denver",
-   "date": "June first"
+   "destination": "Austin",
+   "date": "May third"
   },
-  "hold_seat#HOb69550": {
+  "hold_seat#HO3cc33a": {
    "train_id": "SEb5bb65",
    "seat_class": "first class"
   },
-  "purchase_ticket#PUbd5117": {
-   "hold_id": "HOb69550",
-   "passenger": "Alex Chen"
+  "purchase_ticket#PU5f71ca": {
+   "hold_id": "HO3cc33a",
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv01"
+  "user": "cv03",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

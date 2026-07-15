@@ -6,24 +6,24 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "three thousand",
-  "from_cur": "dollars",
-  "to_cur": "euros",
-  "from_acct": "checking",
-  "to_acct": "rent account"
- },
- "slots_final": {
-  "amount": "three thousand",
+  "amount": "eight hundred",
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "savings"
  },
+ "slots_final": {
+  "amount": "eight hundred",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
  "revisions": [
   {
    "slot": "to_acct",
-   "old": "rent account",
-   "new": "savings",
+   "old": "savings",
+   "new": "rent account",
    "by": "user",
    "kind": "default",
    "gap": null
@@ -35,27 +35,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Get a quote for three thousand dollars to euros, then transfer three thousand from checking to rent account.",
+   "text": "Get a quote for eight hundred dollars to euros, then transfer eight hundred from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Wait — make it savings.",
-   "at_after_eou": 1.773
+   "text": "Wait — make it rent account.",
+   "at_after_eou": 1.756
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.535,
+   "offset": 0.523,
    "action": "revise",
    "role": "user",
-   "voice": "cv01",
-   "text": "Wait — make it savings."
+   "voice": "cv02",
+   "text": "Wait — make it rent account."
   }
  ],
  "profile": "default",
@@ -72,7 +72,7 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": "three thousand",
+    "amount": "eight hundred",
     "from_cur": "dollars",
     "to_cur": "euros"
    }
@@ -81,27 +81,27 @@
    "fn": "transfer_funds",
    "args": {
     "from_acct": "checking",
-    "to_acct": "savings",
-    "amount": "three thousand"
+    "to_acct": "rent account",
+    "amount": "eight hundred"
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GE44b6c5": {
-   "amount": "three thousand",
+   "amount": "eight hundred",
    "from_cur": "dollars",
    "to_cur": "euros"
   },
-  "transfer_funds#TR5cfb27": {
+  "transfer_funds#TRea8df3": {
    "from_acct": "checking",
-   "to_acct": "savings",
-   "amount": "three thousand"
+   "to_acct": "rent account",
+   "amount": "eight hundred"
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv08"
+  "user": "cv02",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

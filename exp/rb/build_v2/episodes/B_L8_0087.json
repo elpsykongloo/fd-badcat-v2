@@ -6,24 +6,24 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Atlanta",
-  "date": "May third",
-  "seat_class": "first class",
+  "origin": "Seattle",
+  "destination": "Denver",
+  "date": "May eighth",
+  "seat_class": "coach",
   "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Chicago",
-  "destination": "Atlanta",
-  "date": "May third",
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "May eighth",
   "seat_class": "coach",
   "passenger": "Alex Chen"
  },
  "revisions": [
   {
-   "slot": "seat_class",
-   "old": "first class",
-   "new": "coach",
+   "slot": "destination",
+   "old": "Denver",
+   "new": "Portland",
    "by": "user",
    "kind": "default",
    "gap": null
@@ -35,27 +35,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Find a train from Chicago to Atlanta on May third, hold a first class seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Seattle to Denver on May eighth, hold a coach seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Wait — make it coach.",
-   "at_after_eou": 1.802
+   "text": "Wait — make it Portland.",
+   "at_after_eou": 1.765
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.445,
+   "offset": 0.646,
    "action": "revise",
    "role": "user",
-   "voice": "cv05",
-   "text": "Wait — make it coach."
+   "voice": "cv07",
+   "text": "Wait — make it Portland."
   }
  ],
  "profile": "default",
@@ -73,9 +73,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
-    "destination": "Atlanta",
-    "date": "May third"
+    "origin": "Seattle",
+    "destination": "Portland",
+    "date": "May eighth"
    }
   },
   {
@@ -88,30 +88,30 @@
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HOf2a9d1",
+    "hold_id": "HO380d6f",
     "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEb7c865": {
-   "origin": "Chicago",
-   "destination": "Atlanta",
-   "date": "May third"
+   "origin": "Seattle",
+   "destination": "Portland",
+   "date": "May eighth"
   },
-  "hold_seat#HOf2a9d1": {
+  "hold_seat#HO380d6f": {
    "train_id": "SEb7c865",
    "seat_class": "coach"
   },
-  "purchase_ticket#PU3c2818": {
-   "hold_id": "HOf2a9d1",
+  "purchase_ticket#PU81b29b": {
+   "hold_id": "HO380d6f",
    "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv06"
+  "user": "cv07",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

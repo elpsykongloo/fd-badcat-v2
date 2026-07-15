@@ -6,18 +6,18 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
+  "origin": "Seattle",
   "destination": "Austin",
-  "date": "June first",
-  "seat_class": "coach",
-  "passenger": "Alex Chen"
+  "date": "May eighth",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Chicago",
+  "origin": "Seattle",
   "destination": "Austin",
-  "date": "June first",
-  "seat_class": "coach",
-  "passenger": "Alex Chen"
+  "date": "May eighth",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
  },
  "revisions": [],
  "bystander": null,
@@ -26,17 +26,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Find a train from Chicago to Austin on June first, hold a coach seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Seattle to Austin on May eighth, hold a business seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv07",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 1.908
+   "at_after_eou": 1.782
   }
  ],
  "events": [],
@@ -55,45 +55,45 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
+    "origin": "Seattle",
     "destination": "Austin",
-    "date": "June first"
+    "date": "May eighth"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE948204",
-    "seat_class": "coach"
+    "seat_class": "business"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO4c6501",
-    "passenger": "Alex Chen"
+    "hold_id": "HO37e6c3",
+    "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE948204": {
-   "origin": "Chicago",
+   "origin": "Seattle",
    "destination": "Austin",
-   "date": "June first"
+   "date": "May eighth"
   },
-  "hold_seat#HO4c6501": {
+  "hold_seat#HO37e6c3": {
    "train_id": "SE948204",
-   "seat_class": "coach"
+   "seat_class": "business"
   },
-  "purchase_ticket#PUf7f3ec": {
-   "hold_id": "HO4c6501",
-   "passenger": "Alex Chen"
+  "purchase_ticket#PUc3b8ca": {
+   "hold_id": "HO37e6c3",
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv08"
+  "user": "cv07",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

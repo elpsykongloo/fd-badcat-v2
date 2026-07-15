@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
+  "origin": "Seattle",
   "destination": "Austin",
-  "date": "June first",
+  "date": "May third",
   "seat_class": "coach",
   "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Chicago",
-  "destination": "Portland",
-  "date": "June first",
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "May eighth",
   "seat_class": "coach",
   "passenger": "Sam Rivera"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Austin",
-   "new": "Portland",
+   "slot": "date",
+   "old": "May third",
+   "new": "May eighth",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.68
+   "gap": 0.695
   }
  ],
  "bystander": null,
@@ -35,27 +35,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Find a train from Chicago to Austin on June first, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Seattle to Austin on May third, hold a coach seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Portland — change it to Portland.",
-   "gap_before": 0.68
+   "text": "May eighth — change it to May eighth.",
+   "gap_before": 0.695
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.115,
+   "offset": 0.316,
    "action": "revise",
    "role": "user",
-   "voice": "cv08",
-   "text": "Portland — change it to Portland."
+   "voice": "cv05",
+   "text": "May eighth — change it to May eighth."
   }
  ],
  "profile": "default",
@@ -73,9 +73,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
-    "destination": "Portland",
-    "date": "June first"
+    "origin": "Seattle",
+    "destination": "Austin",
+    "date": "May eighth"
    }
   },
   {
@@ -88,30 +88,30 @@
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO272bc9",
+    "hold_id": "HOa1d0a7",
     "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE9bbd12": {
-   "origin": "Chicago",
-   "destination": "Portland",
-   "date": "June first"
+   "origin": "Seattle",
+   "destination": "Austin",
+   "date": "May eighth"
   },
-  "hold_seat#HO272bc9": {
+  "hold_seat#HOa1d0a7": {
    "train_id": "SE9bbd12",
    "seat_class": "coach"
   },
-  "purchase_ticket#PUcfb43e": {
-   "hold_id": "HO272bc9",
+  "purchase_ticket#PU3e6081": {
+   "hold_id": "HOa1d0a7",
    "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv02"
+  "user": "cv05",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -8,58 +8,58 @@
  "slots": {
   "origin": "Chicago",
   "destination": "Denver",
-  "date": "May third",
+  "date": "May eighth",
   "seat_class": "coach",
-  "passenger": "Alex Chen"
+  "passenger": "Sam Rivera"
  },
  "slots_final": {
   "origin": "Chicago",
   "destination": "Denver",
-  "date": "May third",
+  "date": "May eighth",
   "seat_class": "coach",
-  "passenger": "Alex Chen"
+  "passenger": "Sam Rivera"
  },
  "revisions": [],
  "bystander": {
   "kind": "command",
-  "other": "Atlanta",
+  "other": "June first",
   "state": "inflight",
-  "frac": 0.175
+  "frac": 0.459
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Find a train from Chicago to Denver on May third, hold a coach seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Chicago to Denver on May eighth, hold a coach seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv02",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Change it to Atlanta.",
-   "at_after_eou": 1.756
+   "text": "Change it to June first.",
+   "at_after_eou": 1.943
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.788,
+   "offset": 0.653,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv02",
-   "text": "Change it to Atlanta."
+   "voice": "cv07",
+   "text": "Change it to June first."
   },
   {
    "state": "tts",
-   "offset": 0.526,
+   "offset": 0.366,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv02",
-   "text": "Change it to Atlanta."
+   "voice": "cv07",
+   "text": "Change it to June first."
   }
  ],
  "profile": "default",
@@ -79,7 +79,7 @@
    "args": {
     "origin": "Chicago",
     "destination": "Denver",
-    "date": "May third"
+    "date": "May eighth"
    }
   },
   {
@@ -92,8 +92,8 @@
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HOc64606",
-    "passenger": "Alex Chen"
+    "hold_id": "HO8ee7cd",
+    "passenger": "Sam Rivera"
    }
   }
  ],
@@ -101,21 +101,21 @@
   "search_trains#SE211bc3": {
    "origin": "Chicago",
    "destination": "Denver",
-   "date": "May third"
+   "date": "May eighth"
   },
-  "hold_seat#HOc64606": {
+  "hold_seat#HO8ee7cd": {
    "train_id": "SE211bc3",
    "seat_class": "coach"
   },
-  "purchase_ticket#PUa6e615": {
-   "hold_id": "HOc64606",
-   "passenger": "Alex Chen"
+  "purchase_ticket#PUd79214": {
+   "hold_id": "HO8ee7cd",
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv02"
+  "user": "cv09",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

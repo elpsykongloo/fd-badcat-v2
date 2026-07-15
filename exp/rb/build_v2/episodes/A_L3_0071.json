@@ -10,23 +10,23 @@
   "destination": "Portland",
   "date": "May eighth",
   "seat_class": "first class",
-  "passenger": "Alex Chen"
+  "passenger": "Sam Rivera"
  },
  "slots_final": {
   "origin": "Boston",
   "destination": "Portland",
-  "date": "June first",
+  "date": "May third",
   "seat_class": "first class",
-  "passenger": "Alex Chen"
+  "passenger": "Sam Rivera"
  },
  "revisions": [
   {
    "slot": "date",
    "old": "May eighth",
-   "new": "June first",
+   "new": "May third",
    "by": "user",
    "kind": "default",
-   "gap": 0.667
+   "gap": 0.646
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Find a train from Boston to Portland on May eighth, hold a first class seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Boston to Portland on May eighth, hold a first class seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Wait — make it June first.",
-   "gap_before": 0.667
+   "text": "Wait — make it May third.",
+   "gap_before": 0.646
   }
  ],
  "events": [],
@@ -66,7 +66,7 @@
    "args": {
     "origin": "Boston",
     "destination": "Portland",
-    "date": "June first"
+    "date": "May third"
    }
   },
   {
@@ -79,8 +79,8 @@
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO4b9137",
-    "passenger": "Alex Chen"
+    "hold_id": "HO0db19c",
+    "passenger": "Sam Rivera"
    }
   }
  ],
@@ -88,21 +88,21 @@
   "search_trains#SE73eb98": {
    "origin": "Boston",
    "destination": "Portland",
-   "date": "June first"
+   "date": "May third"
   },
-  "hold_seat#HO4b9137": {
+  "hold_seat#HO0db19c": {
    "train_id": "SE73eb98",
    "seat_class": "first class"
   },
-  "purchase_ticket#PU0950ee": {
-   "hold_id": "HO4b9137",
-   "passenger": "Alex Chen"
+  "purchase_ticket#PU36378b": {
+   "hold_id": "HO0db19c",
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv07"
+  "user": "cv01",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

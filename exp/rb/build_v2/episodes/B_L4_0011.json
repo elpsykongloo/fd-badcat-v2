@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
-  "destination": "Atlanta",
-  "date": "June first",
-  "seat_class": "coach",
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "business",
   "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Denver",
-  "date": "June first",
-  "seat_class": "coach",
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "first class",
   "passenger": "Sam Rivera"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Atlanta",
-   "new": "Denver",
+   "slot": "seat_class",
+   "old": "business",
+   "new": "first class",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.697
+   "gap": 0.686
   }
  ],
  "bystander": null,
@@ -35,27 +35,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Find a train from Boston to Atlanta on June first, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Seattle to Austin on May third, hold a business seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Denver — change it to Denver.",
-   "gap_before": 0.697
+   "text": "first class — change it to first class.",
+   "gap_before": 0.686
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.333,
+   "offset": 0.359,
    "action": "revise",
    "role": "user",
-   "voice": "cv05",
-   "text": "Denver — change it to Denver."
+   "voice": "cv07",
+   "text": "first class — change it to first class."
   }
  ],
  "profile": "default",
@@ -73,45 +73,45 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
-    "destination": "Denver",
-    "date": "June first"
+    "origin": "Seattle",
+    "destination": "Austin",
+    "date": "May third"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SEd9d9d0",
-    "seat_class": "coach"
+    "seat_class": "first class"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO513e2c",
+    "hold_id": "HO2b609f",
     "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEd9d9d0": {
-   "origin": "Boston",
-   "destination": "Denver",
-   "date": "June first"
+   "origin": "Seattle",
+   "destination": "Austin",
+   "date": "May third"
   },
-  "hold_seat#HO513e2c": {
+  "hold_seat#HO2b609f": {
    "train_id": "SEd9d9d0",
-   "seat_class": "coach"
+   "seat_class": "first class"
   },
-  "purchase_ticket#PU097695": {
-   "hold_id": "HO513e2c",
+  "purchase_ticket#PUb71282": {
+   "hold_id": "HO2b609f",
    "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv02"
+  "user": "cv07",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

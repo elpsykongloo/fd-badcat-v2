@@ -8,22 +8,22 @@
  "slots": {
   "amount": "eight hundred",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "slots_final": {
   "amount": "eight hundred",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "rent account"
+  "to_acct": "savings"
  },
  "revisions": [
   {
    "slot": "to_acct",
-   "old": "savings",
-   "new": "rent account",
+   "old": "rent account",
+   "new": "savings",
    "by": "user",
    "kind": "default",
    "gap": null
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Get a quote for eight hundred dollars to euros, then transfer eight hundred from checking to savings.",
+   "text": "Get a quote for eight hundred dollars to yen, then transfer eight hundred from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Wait — make it rent account.",
-   "at_after_eou": 2.076
+   "text": "Wait — make it savings.",
+   "at_after_eou": 1.81
   }
  ],
  "events": [],
@@ -65,14 +65,14 @@
    "args": {
     "amount": "eight hundred",
     "from_cur": "dollars",
-    "to_cur": "euros"
+    "to_cur": "yen"
    }
   },
   {
    "fn": "transfer_funds",
    "args": {
     "from_acct": "checking",
-    "to_acct": "rent account",
+    "to_acct": "savings",
     "amount": "eight hundred"
    }
   }
@@ -81,18 +81,18 @@
   "get_fx_quote#GE4d4bb6": {
    "amount": "eight hundred",
    "from_cur": "dollars",
-   "to_cur": "euros"
+   "to_cur": "yen"
   },
-  "transfer_funds#TR23c0ea": {
+  "transfer_funds#TR13d9e6": {
    "from_acct": "checking",
-   "to_acct": "rent account",
+   "to_acct": "savings",
    "amount": "eight hundred"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv02"
+  "user": "cv04",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "eight hundred",
+  "amount": "three thousand",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "slots_final": {
   "amount": "eight hundred",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
  "revisions": [
   {
-   "slot": "to_acct",
-   "old": "savings",
-   "new": "rent account",
+   "slot": "amount",
+   "old": "three thousand",
+   "new": "eight hundred",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.699
+   "gap": 0.796
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Get a quote for eight hundred dollars to yen, then transfer eight hundred from checking to savings.",
+   "text": "Get a quote for three thousand dollars to euros, then transfer three thousand from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv09",
    "lang": "en",
-   "text": "rent account — change it to rent account.",
-   "gap_before": 0.699
+   "text": "eight hundred — change it to eight hundred.",
+   "gap_before": 0.796
   }
  ],
  "events": [],
@@ -65,7 +65,7 @@
    "args": {
     "amount": "eight hundred",
     "from_cur": "dollars",
-    "to_cur": "yen"
+    "to_cur": "euros"
    }
   },
   {
@@ -81,18 +81,18 @@
   "get_fx_quote#GE2be643": {
    "amount": "eight hundred",
    "from_cur": "dollars",
-   "to_cur": "yen"
+   "to_cur": "euros"
   },
-  "transfer_funds#TRae141e": {
+  "transfer_funds#TR2d4a69": {
    "from_acct": "checking",
    "to_acct": "rent account",
    "amount": "eight hundred"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv03"
+  "user": "cv09",
+  "bystander": "cv02"
  },
  "split": "dev",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

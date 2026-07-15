@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Atlanta",
+  "origin": "Boston",
+  "destination": "Austin",
   "date": "May eighth",
-  "seat_class": "coach",
+  "seat_class": "first class",
   "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Chicago",
-  "destination": "Denver",
+  "origin": "Boston",
+  "destination": "Austin",
   "date": "May eighth",
-  "seat_class": "coach",
+  "seat_class": "business",
   "passenger": "Alex Chen"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Atlanta",
-   "new": "Denver",
+   "slot": "seat_class",
+   "old": "first class",
+   "new": "business",
    "by": "user",
    "kind": "default",
-   "gap": 2.998
+   "gap": 2.96
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Find a train from Chicago to Atlanta on May eighth, hold a coach seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Boston to Austin on May eighth, hold a first class seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Wait — make it Denver.",
-   "gap_before": 2.998
+   "text": "Wait — make it business.",
+   "gap_before": 2.96
   }
  ],
  "events": [],
@@ -64,8 +64,8 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
-    "destination": "Denver",
+    "origin": "Boston",
+    "destination": "Austin",
     "date": "May eighth"
    }
   },
@@ -73,36 +73,36 @@
    "fn": "hold_seat",
    "args": {
     "train_id": "SE0c2543",
-    "seat_class": "coach"
+    "seat_class": "business"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO698110",
+    "hold_id": "HOb4d261",
     "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE0c2543": {
-   "origin": "Chicago",
-   "destination": "Denver",
+   "origin": "Boston",
+   "destination": "Austin",
    "date": "May eighth"
   },
-  "hold_seat#HO698110": {
+  "hold_seat#HOb4d261": {
    "train_id": "SE0c2543",
-   "seat_class": "coach"
+   "seat_class": "business"
   },
-  "purchase_ticket#PUc85e52": {
-   "hold_id": "HO698110",
+  "purchase_ticket#PU57f35f": {
+   "hold_id": "HOb4d261",
    "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv03"
+  "user": "cv08",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -6,27 +6,27 @@
  "lang": "zh",
  "scenario": "hou_multi",
  "slots": {
-  "city": "杭州",
+  "city": "成都",
   "beds": "一居",
-  "max_rent": "八千",
-  "from_addr": "望京",
-  "to_addr": "西二旗"
+  "max_rent": "六千",
+  "from_addr": "中关村",
+  "to_addr": "国贸"
  },
  "slots_final": {
   "city": "杭州",
   "beds": "一居",
-  "max_rent": "八千",
-  "from_addr": "望京",
+  "max_rent": "六千",
+  "from_addr": "中关村",
   "to_addr": "国贸"
  },
  "revisions": [
   {
-   "slot": "to_addr",
-   "old": "西二旗",
-   "new": "国贸",
+   "slot": "city",
+   "old": "成都",
+   "new": "杭州",
    "by": "user",
    "kind": "default",
-   "gap": 1.117
+   "gap": 1.93
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "在杭州找一居、不超过八千的房子，再算下从望京到西二旗的通勤时间。",
+   "text": "在成都找一居、不超过六千的房子，再算下从中关村到国贸的通勤时间。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "等等，改成国贸。",
-   "gap_before": 1.117
+   "text": "等等，改成杭州。",
+   "gap_before": 1.93
   }
  ],
  "events": [],
@@ -65,13 +65,13 @@
    "args": {
     "city": "杭州",
     "beds": "一居",
-    "max_rent": "八千"
+    "max_rent": "六千"
    }
   },
   {
    "fn": "get_commute_time",
    "args": {
-    "from_addr": "望京",
+    "from_addr": "中关村",
     "to_addr": "国贸"
    }
   }
@@ -80,17 +80,17 @@
   "search_rentals#SE47c493": {
    "city": "杭州",
    "beds": "一居",
-   "max_rent": "八千"
+   "max_rent": "六千"
   },
-  "get_commute_time#GE3d0569": {
-   "from_addr": "望京",
+  "get_commute_time#GE380828": {
+   "from_addr": "中关村",
    "to_addr": "国贸"
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv06"
+  "user": "cv06",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

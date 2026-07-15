@@ -6,35 +6,35 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
-  "destination": "Atlanta",
-  "date": "May third",
-  "seat_class": "first class",
-  "passenger": "Alex Chen"
+  "origin": "Seattle",
+  "destination": "Denver",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Portland",
-  "date": "May third",
-  "seat_class": "business",
-  "passenger": "Alex Chen"
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Atlanta",
-   "new": "Portland",
+   "old": "Denver",
+   "new": "Atlanta",
    "by": "user",
    "kind": "default",
-   "gap": 0.843
+   "gap": 1.42
   },
   {
    "slot": "seat_class",
-   "old": "first class",
-   "new": "business",
+   "old": "coach",
+   "new": "first class",
    "by": "user",
    "kind": "second",
-   "gap": 2.82
+   "gap": 2.802
   }
  ],
  "bystander": null,
@@ -43,24 +43,24 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Find a train from Boston to Atlanta on May third, hold a first class seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Seattle to Denver on June first, hold a coach seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Wait — make it Portland.",
-   "gap_before": 0.843
+   "text": "Wait — make it Atlanta.",
+   "gap_before": 1.42
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Also, one more change — business.",
-   "gap_before": 2.82
+   "text": "Also, one more change — first class.",
+   "gap_before": 2.802
   }
  ],
  "events": [],
@@ -79,45 +79,45 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
-    "destination": "Portland",
-    "date": "May third"
+    "origin": "Seattle",
+    "destination": "Atlanta",
+    "date": "June first"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE869ee6",
-    "seat_class": "business"
+    "seat_class": "first class"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO3cb442",
-    "passenger": "Alex Chen"
+    "hold_id": "HO8bb9e2",
+    "passenger": "Jordan Lee"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE869ee6": {
-   "origin": "Boston",
-   "destination": "Portland",
-   "date": "May third"
+   "origin": "Seattle",
+   "destination": "Atlanta",
+   "date": "June first"
   },
-  "hold_seat#HO3cb442": {
+  "hold_seat#HO8bb9e2": {
    "train_id": "SE869ee6",
-   "seat_class": "business"
+   "seat_class": "first class"
   },
-  "purchase_ticket#PUd5b98f": {
-   "hold_id": "HO3cb442",
-   "passenger": "Alex Chen"
+  "purchase_ticket#PUd8a087": {
+   "hold_id": "HO8bb9e2",
+   "passenger": "Jordan Lee"
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv03"
+  "user": "cv02",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

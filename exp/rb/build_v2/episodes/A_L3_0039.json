@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
-  "destination": "Austin",
+  "origin": "Chicago",
+  "destination": "Portland",
   "date": "June first",
   "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Atlanta",
+  "origin": "Chicago",
+  "destination": "Portland",
   "date": "June first",
-  "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "seat_class": "business",
+  "passenger": "Alex Chen"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Austin",
-   "new": "Atlanta",
+   "slot": "seat_class",
+   "old": "coach",
+   "new": "business",
    "by": "user",
    "kind": "default",
-   "gap": 0.787
+   "gap": 0.688
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Find a train from Boston to Austin on June first, hold a coach seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Chicago to Portland on June first, hold a coach seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Wait — make it Atlanta.",
-   "gap_before": 0.787
+   "text": "Wait — make it business.",
+   "gap_before": 0.688
   }
  ],
  "events": [],
@@ -64,8 +64,8 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
-    "destination": "Atlanta",
+    "origin": "Chicago",
+    "destination": "Portland",
     "date": "June first"
    }
   },
@@ -73,36 +73,36 @@
    "fn": "hold_seat",
    "args": {
     "train_id": "SEc339ad",
-    "seat_class": "coach"
+    "seat_class": "business"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO2f4354",
-    "passenger": "Jordan Lee"
+    "hold_id": "HO8fad24",
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEc339ad": {
-   "origin": "Boston",
-   "destination": "Atlanta",
+   "origin": "Chicago",
+   "destination": "Portland",
    "date": "June first"
   },
-  "hold_seat#HO2f4354": {
+  "hold_seat#HO8fad24": {
    "train_id": "SEc339ad",
-   "seat_class": "coach"
+   "seat_class": "business"
   },
-  "purchase_ticket#PUfde775": {
-   "hold_id": "HO2f4354",
-   "passenger": "Jordan Lee"
+  "purchase_ticket#PUa957ed": {
+   "hold_id": "HO8fad24",
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv02"
+  "user": "cv05",
+  "bystander": "cv01"
  },
  "split": "dev",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

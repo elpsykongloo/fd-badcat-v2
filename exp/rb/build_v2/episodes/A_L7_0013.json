@@ -20,7 +20,7 @@
    "new": "five hundred",
    "by": "user",
    "kind": "default",
-   "gap": 2.478
+   "gap": 1.303
   }
  ],
  "bystander": null,
@@ -29,17 +29,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv04",
    "lang": "en",
    "text": "Check my checking balance, and set an alert if it drops below one thousand.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv04",
    "lang": "en",
    "text": "Wait — make it five hundred.",
-   "gap_before": 2.478
+   "gap_before": 1.303
   }
  ],
  "events": [],
@@ -72,15 +72,15 @@
   "get_balance#GE918379": {
    "account": "checking"
   },
-  "set_alert#SE873f04": {
+  "set_alert#SEc7c545": {
    "threshold": "five hundred",
    "account": "checking"
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv08"
+  "user": "cv04",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

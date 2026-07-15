@@ -6,23 +6,23 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "跑步鞋",
-  "qty": "一",
-  "address": "浦东新区世纪大道八号"
- },
- "slots_final": {
-  "query": "跑步鞋",
+  "query": "保温杯",
   "qty": "两",
   "address": "浦东新区世纪大道八号"
  },
+ "slots_final": {
+  "query": "保温杯",
+  "qty": "两",
+  "address": "海淀区学院路一号"
+ },
  "revisions": [
   {
-   "slot": "qty",
-   "old": "一",
-   "new": "两",
+   "slot": "address",
+   "old": "浦东新区世纪大道八号",
+   "new": "海淀区学院路一号",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.694
+   "gap": 0.793
   }
  ],
  "bystander": null,
@@ -31,27 +31,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "帮我搜跑步鞋，加一件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜保温杯，加两件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "两，改成两。",
-   "gap_before": 0.694
+   "text": "海淀区学院路一号，改成海淀区学院路一号。",
+   "gap_before": 0.793
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.325,
+   "offset": 0.343,
    "action": "revise",
    "role": "user",
-   "voice": "cv06",
-   "text": "两，改成两。"
+   "voice": "cv03",
+   "text": "海淀区学院路一号，改成海淀区学院路一号。"
   }
  ],
  "profile": "default",
@@ -69,7 +69,7 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "跑步鞋"
+    "query": "保温杯"
    }
   },
   {
@@ -82,28 +82,28 @@
   {
    "fn": "place_order",
    "args": {
-    "cart_id": "AD4c4f5e",
-    "address": "浦东新区世纪大道八号"
+    "cart_id": "ADf74007",
+    "address": "海淀区学院路一号"
    }
   }
  ],
  "gold_state": {
   "search_catalog#SE0216f0": {
-   "query": "跑步鞋"
+   "query": "保温杯"
   },
-  "add_item#AD4c4f5e": {
+  "add_item#ADf74007": {
    "item_id": "SE0216f0",
    "qty": "两"
   },
-  "place_order#PL89c53b": {
-   "cart_id": "AD4c4f5e",
-   "address": "浦东新区世纪大道八号"
+  "place_order#PL4e9330": {
+   "cart_id": "ADf74007",
+   "address": "海淀区学院路一号"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv08"
+  "user": "cv03",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

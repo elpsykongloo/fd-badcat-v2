@@ -6,12 +6,12 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "蓝牙耳机",
+  "query": "保温杯",
   "qty": "两",
   "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
-  "query": "蓝牙耳机",
+  "query": "保温杯",
   "qty": "一",
   "address": "浦东新区世纪大道八号"
  },
@@ -22,7 +22,7 @@
    "new": "一",
    "by": "user",
    "kind": "default",
-   "gap": 2.756
+   "gap": 3.109
   }
  ],
  "bystander": null,
@@ -31,17 +31,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜保温杯，加两件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv01",
    "lang": "zh",
    "text": "等等，改成一。",
-   "gap_before": 2.756
+   "gap_before": 3.109
   }
  ],
  "events": [],
@@ -60,7 +60,7 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "蓝牙耳机"
+    "query": "保温杯"
    }
   },
   {
@@ -73,28 +73,28 @@
   {
    "fn": "place_order",
    "args": {
-    "cart_id": "ADd5dad5",
+    "cart_id": "AD19cc5d",
     "address": "浦东新区世纪大道八号"
    }
   }
  ],
  "gold_state": {
   "search_catalog#SE564b1b": {
-   "query": "蓝牙耳机"
+   "query": "保温杯"
   },
-  "add_item#ADd5dad5": {
+  "add_item#AD19cc5d": {
    "item_id": "SE564b1b",
    "qty": "一"
   },
-  "place_order#PL589c9c": {
-   "cart_id": "ADd5dad5",
+  "place_order#PL0d668c": {
+   "cart_id": "AD19cc5d",
    "address": "浦东新区世纪大道八号"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv08"
+  "user": "cv01",
+  "bystander": "cv09"
  },
  "split": "dev",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

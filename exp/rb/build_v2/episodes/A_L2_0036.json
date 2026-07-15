@@ -10,17 +10,17 @@
   "qty": "一"
  },
  "slots_final": {
-  "item_id": "A100",
-  "qty": "一"
+  "item_id": "B205",
+  "qty": "两"
  },
  "revisions": [
   {
-   "slot": "item_id",
-   "old": "B205",
-   "new": "A100",
+   "slot": "qty",
+   "old": "一",
+   "new": "两",
    "by": "user",
    "kind": "default",
-   "gap": 0.273
+   "gap": 0.241
   }
  ],
  "bystander": null,
@@ -38,8 +38,8 @@
    "role": "user",
    "voice": "cv08",
    "lang": "zh",
-   "text": "等等，改成A100。",
-   "gap_before": 0.273
+   "text": "等等，改成两。",
+   "gap_before": 0.241
   }
  ],
  "events": [],
@@ -56,21 +56,21 @@
   {
    "fn": "add_item",
    "args": {
-    "item_id": "A100",
-    "qty": "一"
+    "item_id": "B205",
+    "qty": "两"
    }
   }
  ],
  "gold_state": {
   "add_item#AD3de748": {
-   "item_id": "A100",
-   "qty": "一"
+   "item_id": "B205",
+   "qty": "两"
   }
  },
  "voices": {
   "user": "cv08",
-  "bystander": "cv07"
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -6,16 +6,16 @@
  "lang": "en",
  "scenario": "travel_multi",
  "slots": {
-  "origin": "Boston",
+  "origin": "Chicago",
   "destination": "Austin",
-  "date": "May third",
+  "date": "May eighth",
   "country": "Thailand",
   "nationality": "American"
  },
  "slots_final": {
-  "origin": "Boston",
+  "origin": "Chicago",
   "destination": "Portland",
-  "date": "May third",
+  "date": "May eighth",
   "country": "Thailand",
   "nationality": "American"
  },
@@ -26,7 +26,7 @@
    "new": "Portland",
    "by": "user",
    "kind": "default",
-   "gap": 2.031
+   "gap": 2.085
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Look up trains from Boston to Austin on May third, and also check if American citizens need a visa for Thailand.",
+   "text": "Look up trains from Chicago to Austin on May eighth, and also check if American citizens need a visa for Thailand.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv01",
    "lang": "en",
    "text": "Wait — make it Portland.",
-   "gap_before": 2.031
+   "gap_before": 2.085
   }
  ],
  "events": [],
@@ -63,9 +63,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
+    "origin": "Chicago",
     "destination": "Portland",
-    "date": "May third"
+    "date": "May eighth"
    }
   },
   {
@@ -78,19 +78,19 @@
  ],
  "gold_state": {
   "search_trains#SE1b0582": {
-   "origin": "Boston",
+   "origin": "Chicago",
    "destination": "Portland",
-   "date": "May third"
+   "date": "May eighth"
   },
-  "check_visa_rule#CH98c8ce": {
+  "check_visa_rule#CHfefb1f": {
    "country": "Thailand",
    "nationality": "American"
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv03"
+  "user": "cv01",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -6,10 +6,10 @@
  "lang": "zh",
  "scenario": "hou_single",
  "slots": {
-  "listing_id": "LST47"
+  "listing_id": "LST12"
  },
  "slots_final": {
-  "listing_id": "LST47"
+  "listing_id": "LST12"
  },
  "revisions": [],
  "bystander": null,
@@ -18,14 +18,14 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "把编号LST47的房源收藏一下。",
+   "text": "把编号LST12的房源收藏一下。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv06",
    "lang": "zh",
    "text": "好了没？",
    "at_after_eou": 10.419
@@ -45,19 +45,19 @@
   {
    "fn": "save_listing",
    "args": {
-    "listing_id": "LST47"
+    "listing_id": "LST12"
    }
   }
  ],
  "gold_state": {
   "save_listing#SA85c533": {
-   "listing_id": "LST47"
+   "listing_id": "LST12"
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv02"
+  "user": "cv06",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

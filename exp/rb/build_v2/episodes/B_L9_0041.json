@@ -8,12 +8,12 @@
  "slots": {
   "payee": "the landlord",
   "amount": "three thousand",
-  "date": "May eighth"
+  "date": "May third"
  },
  "slots_final": {
   "payee": "the landlord",
   "amount": "three thousand",
-  "date": "May eighth"
+  "date": "May third"
  },
  "revisions": [],
  "bystander": null,
@@ -22,14 +22,14 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Schedule a payment of three thousand to the landlord on May eighth.",
+   "text": "Schedule a payment of three thousand to the landlord on May third.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv05",
    "lang": "en",
    "text": "Any progress?",
    "at_after_eou": 9.009
@@ -38,10 +38,10 @@
  "events": [
   {
    "state": "inflight",
-   "offset": 0.505,
+   "offset": 0.589,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv05",
    "text": "Any progress?"
   }
  ],
@@ -60,7 +60,7 @@
    "args": {
     "payee": "the landlord",
     "amount": "three thousand",
-    "date": "May eighth"
+    "date": "May third"
    }
   }
  ],
@@ -68,13 +68,13 @@
   "schedule_payment#SC82e5cc": {
    "payee": "the landlord",
    "amount": "three thousand",
-   "date": "May eighth"
+   "date": "May third"
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv01"
+  "user": "cv05",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

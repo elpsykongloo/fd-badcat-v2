@@ -6,27 +6,27 @@
  "lang": "zh",
  "scenario": "hou_multi",
  "slots": {
-  "city": "杭州",
-  "beds": "一居",
+  "city": "青岛",
+  "beds": "两居",
   "max_rent": "八千",
   "from_addr": "望京",
-  "to_addr": "西二旗"
+  "to_addr": "国贸"
  },
  "slots_final": {
-  "city": "厦门",
-  "beds": "一居",
+  "city": "青岛",
+  "beds": "两居",
   "max_rent": "八千",
   "from_addr": "望京",
   "to_addr": "西二旗"
  },
  "revisions": [
   {
-   "slot": "city",
-   "old": "杭州",
-   "new": "厦门",
+   "slot": "to_addr",
+   "old": "国贸",
+   "new": "西二旗",
    "by": "user",
    "kind": "default",
-   "gap": 2.476
+   "gap": 2.438
   }
  ],
  "bystander": null,
@@ -37,15 +37,15 @@
    "role": "user",
    "voice": "cv03",
    "lang": "zh",
-   "text": "在杭州找一居、不超过八千的房子，再算下从望京到西二旗的通勤时间。",
+   "text": "在青岛找两居、不超过八千的房子，再算下从望京到国贸的通勤时间。",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv03",
    "lang": "zh",
-   "text": "等等，改成厦门。",
-   "gap_before": 2.476
+   "text": "等等，改成西二旗。",
+   "gap_before": 2.438
   }
  ],
  "events": [],
@@ -63,8 +63,8 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "厦门",
-    "beds": "一居",
+    "city": "青岛",
+    "beds": "两居",
     "max_rent": "八千"
    }
   },
@@ -78,19 +78,19 @@
  ],
  "gold_state": {
   "search_rentals#SEfb7c65": {
-   "city": "厦门",
-   "beds": "一居",
+   "city": "青岛",
+   "beds": "两居",
    "max_rent": "八千"
   },
-  "get_commute_time#GE63d24d": {
+  "get_commute_time#GE522710": {
    "from_addr": "望京",
    "to_addr": "西二旗"
   }
  },
  "voices": {
   "user": "cv03",
-  "bystander": "cv01"
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -10,23 +10,23 @@
   "from_cur": "dollars",
   "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "slots_final": {
   "amount": "five thousand",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
   "to_acct": "savings"
  },
  "revisions": [
   {
-   "slot": "to_cur",
-   "old": "yen",
-   "new": "euros",
+   "slot": "to_acct",
+   "old": "rent account",
+   "new": "savings",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.7
+   "gap": 0.965
   }
  ],
  "bystander": null,
@@ -35,27 +35,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Get a quote for five thousand dollars to yen, then transfer five thousand from checking to savings.",
+   "text": "Get a quote for five thousand dollars to yen, then transfer five thousand from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv09",
    "lang": "en",
-   "text": "euros — change it to euros.",
-   "gap_before": 0.7
+   "text": "savings — change it to savings.",
+   "gap_before": 0.965
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.108,
+   "offset": 0.479,
    "action": "revise",
    "role": "user",
-   "voice": "cv04",
-   "text": "euros — change it to euros."
+   "voice": "cv09",
+   "text": "savings — change it to savings."
   }
  ],
  "profile": "default",
@@ -74,7 +74,7 @@
    "args": {
     "amount": "five thousand",
     "from_cur": "dollars",
-    "to_cur": "euros"
+    "to_cur": "yen"
    }
   },
   {
@@ -90,18 +90,18 @@
   "get_fx_quote#GE17ee94": {
    "amount": "five thousand",
    "from_cur": "dollars",
-   "to_cur": "euros"
+   "to_cur": "yen"
   },
-  "transfer_funds#TRbb55f5": {
+  "transfer_funds#TR9a39ee": {
    "from_acct": "checking",
    "to_acct": "savings",
    "amount": "five thousand"
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv02"
+  "user": "cv09",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

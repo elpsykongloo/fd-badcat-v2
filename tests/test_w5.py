@@ -37,6 +37,15 @@ def test_sg_census_language_field():
     assert sample_language({}) == "zh"
 
 
+def test_sg_asr_model_resolution(tmp_path):
+    from w5sg_asr_features import resolve_model_files
+    (tmp_path / "model.onnx").touch()
+    (tmp_path / "tokens.txt").touch()
+    assert resolve_model_files(tmp_path)[0].name == "model.onnx"
+    (tmp_path / "model.int8.onnx").touch()
+    assert resolve_model_files(tmp_path)[0].name == "model.int8.onnx"
+
+
 # ---- W5-FC ------------------------------------------------------------------
 
 def test_fc_tier_rule():

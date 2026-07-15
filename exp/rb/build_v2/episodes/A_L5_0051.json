@@ -6,14 +6,14 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
+  "origin": "Chicago",
   "destination": "Portland",
   "date": "May third",
   "seat_class": "coach",
   "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Boston",
+  "origin": "Chicago",
   "destination": "Portland",
   "date": "May third",
   "seat_class": "first class",
@@ -26,7 +26,7 @@
    "new": "first class",
    "by": "user",
    "kind": "default",
-   "gap": 2.761
+   "gap": 3.009
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Find a train from Boston to Portland on May third, hold a coach seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Chicago to Portland on May third, hold a coach seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv04",
    "lang": "en",
    "text": "Wait — make it first class.",
-   "gap_before": 2.761
+   "gap_before": 3.009
   }
  ],
  "events": [],
@@ -64,7 +64,7 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
+    "origin": "Chicago",
     "destination": "Portland",
     "date": "May third"
    }
@@ -79,30 +79,30 @@
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO5ce838",
+    "hold_id": "HO431800",
     "passenger": "Jordan Lee"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE4a2ab1": {
-   "origin": "Boston",
+   "origin": "Chicago",
    "destination": "Portland",
    "date": "May third"
   },
-  "hold_seat#HO5ce838": {
+  "hold_seat#HO431800": {
    "train_id": "SE4a2ab1",
    "seat_class": "first class"
   },
-  "purchase_ticket#PU6adacd": {
-   "hold_id": "HO5ce838",
+  "purchase_ticket#PU77ebbd": {
+   "hold_id": "HO431800",
    "passenger": "Jordan Lee"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv04"
+  "user": "cv04",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

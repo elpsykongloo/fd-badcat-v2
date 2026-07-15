@@ -6,14 +6,14 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "five thousand",
+  "amount": "eight hundred",
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "savings"
  },
  "slots_final": {
-  "amount": "five thousand",
+  "amount": "eight hundred",
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
@@ -22,9 +22,9 @@
  "revisions": [],
  "bystander": {
   "kind": "irrelevant",
-  "other": "rent account",
+  "other": "yen",
   "state": "inflight",
-  "frac": 0.286
+  "frac": 0.111
  },
  "l8_action": null,
  "cancelled": false,
@@ -33,15 +33,15 @@
    "role": "user",
    "voice": "cv07",
    "lang": "en",
-   "text": "Get a quote for five thousand dollars to euros, then transfer five thousand from checking to savings.",
+   "text": "Get a quote for eight hundred dollars to euros, then transfer eight hundred from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv01",
+   "voice": "cv05",
    "lang": "en",
    "text": "What do you want for dinner? Let's order in.",
-   "at_after_eou": 1.853
+   "at_after_eou": 1.723
   }
  ],
  "events": [],
@@ -59,7 +59,7 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": "five thousand",
+    "amount": "eight hundred",
     "from_cur": "dollars",
     "to_cur": "euros"
    }
@@ -69,26 +69,26 @@
    "args": {
     "from_acct": "checking",
     "to_acct": "savings",
-    "amount": "five thousand"
+    "amount": "eight hundred"
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GE3a7070": {
-   "amount": "five thousand",
+   "amount": "eight hundred",
    "from_cur": "dollars",
    "to_cur": "euros"
   },
-  "transfer_funds#TR03e2bc": {
+  "transfer_funds#TRbfac03": {
    "from_acct": "checking",
    "to_acct": "savings",
-   "amount": "five thousand"
+   "amount": "eight hundred"
   }
  },
  "voices": {
   "user": "cv07",
-  "bystander": "cv01"
+  "bystander": "cv05"
  },
  "split": "dev",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

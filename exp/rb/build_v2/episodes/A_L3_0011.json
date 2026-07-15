@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Denver",
+  "origin": "Boston",
+  "destination": "Austin",
   "date": "May third",
-  "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Seattle",
-  "destination": "Denver",
-  "date": "May third",
-  "seat_class": "coach",
-  "passenger": "Sam Rivera"
+  "origin": "Boston",
+  "destination": "Austin",
+  "date": "June first",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
  },
  "revisions": [
   {
-   "slot": "seat_class",
-   "old": "business",
-   "new": "coach",
+   "slot": "date",
+   "old": "May third",
+   "new": "June first",
    "by": "user",
    "kind": "default",
-   "gap": 0.695
+   "gap": 0.715
   }
  ],
  "bystander": null,
@@ -37,15 +37,15 @@
    "role": "user",
    "voice": "cv01",
    "lang": "en",
-   "text": "Find a train from Seattle to Denver on May third, hold a business seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Boston to Austin on May third, hold a first class seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv01",
    "lang": "en",
-   "text": "Wait — make it coach.",
-   "gap_before": 0.695
+   "text": "Wait — make it June first.",
+   "gap_before": 0.715
   }
  ],
  "events": [],
@@ -64,45 +64,45 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
-    "destination": "Denver",
-    "date": "May third"
+    "origin": "Boston",
+    "destination": "Austin",
+    "date": "June first"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SEfd17a3",
-    "seat_class": "coach"
+    "seat_class": "first class"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO92866b",
-    "passenger": "Sam Rivera"
+    "hold_id": "HOad160e",
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEfd17a3": {
-   "origin": "Seattle",
-   "destination": "Denver",
-   "date": "May third"
+   "origin": "Boston",
+   "destination": "Austin",
+   "date": "June first"
   },
-  "hold_seat#HO92866b": {
+  "hold_seat#HOad160e": {
    "train_id": "SEfd17a3",
-   "seat_class": "coach"
+   "seat_class": "first class"
   },
-  "purchase_ticket#PU978331": {
-   "hold_id": "HO92866b",
-   "passenger": "Sam Rivera"
+  "purchase_ticket#PU5b410c": {
+   "hold_id": "HOad160e",
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
   "user": "cv01",
-  "bystander": "cv03"
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

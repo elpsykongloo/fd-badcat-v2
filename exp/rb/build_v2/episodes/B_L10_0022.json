@@ -8,47 +8,47 @@
  "slots": {
   "city": "青岛",
   "beds": "一居",
-  "max_rent": "六千",
-  "slot": "周六上午"
+  "max_rent": "八千",
+  "slot": "周日下午"
  },
  "slots_final": {
   "city": "青岛",
   "beds": "一居",
-  "max_rent": "六千",
-  "slot": "周六上午"
+  "max_rent": "八千",
+  "slot": "周日下午"
  },
  "revisions": [],
  "bystander": {
   "kind": "irrelevant",
-  "other": "周日下午",
+  "other": "周六上午",
   "state": "inflight",
-  "frac": 0.74
+  "frac": 0.127
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "在青岛找一居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在青岛找一居、租金不超过八千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv09",
+   "voice": "cv08",
    "lang": "zh",
    "text": "今晚想吃什么？我们点外卖吧。",
-   "at_after_eou": 2.038
+   "at_after_eou": 1.708
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.39,
+   "offset": 0.386,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv09",
+   "voice": "cv08",
    "text": "今晚想吃什么？我们点外卖吧。"
   }
  ],
@@ -68,14 +68,14 @@
    "args": {
     "city": "青岛",
     "beds": "一居",
-    "max_rent": "六千"
+    "max_rent": "八千"
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SE5eab7e",
-    "slot": "周六上午"
+    "slot": "周日下午"
    }
   }
  ],
@@ -83,17 +83,17 @@
   "search_rentals#SE5eab7e": {
    "city": "青岛",
    "beds": "一居",
-   "max_rent": "六千"
+   "max_rent": "八千"
   },
-  "book_viewing#BO57c1ba": {
+  "book_viewing#BO9a16b4": {
    "listing_id": "SE5eab7e",
-   "slot": "周六上午"
+   "slot": "周日下午"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv09"
+  "user": "cv04",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

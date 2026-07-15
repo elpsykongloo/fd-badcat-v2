@@ -6,13 +6,13 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "成都",
+  "city": "杭州",
   "beds": "一居",
   "max_rent": "八千",
   "slot": "周日下午"
  },
  "slots_final": {
-  "city": "成都",
+  "city": "杭州",
   "beds": "一居",
   "max_rent": "八千",
   "slot": "周六上午"
@@ -35,7 +35,7 @@
    "role": "user",
    "voice": "cv02",
    "lang": "zh",
-   "text": "在成都找一居、租金不超过八千的房子，约周日下午看房。",
+   "text": "在杭州找一居、租金不超过八千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
@@ -43,13 +43,13 @@
    "voice": "cv02",
    "lang": "zh",
    "text": "等等，改成周六上午。",
-   "at_after_eou": 1.813
+   "at_after_eou": 1.818
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.512,
+   "offset": 0.451,
    "action": "revise",
    "role": "user",
    "voice": "cv02",
@@ -70,7 +70,7 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "成都",
+    "city": "杭州",
     "beds": "一居",
     "max_rent": "八千"
    }
@@ -85,11 +85,11 @@
  ],
  "gold_state": {
   "search_rentals#SE8318b0": {
-   "city": "成都",
+   "city": "杭州",
    "beds": "一居",
    "max_rent": "八千"
   },
-  "book_viewing#BO371efe": {
+  "book_viewing#BOba49fc": {
    "listing_id": "SE8318b0",
    "slot": "周六上午"
   }
@@ -99,5 +99,5 @@
   "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

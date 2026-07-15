@@ -8,23 +8,23 @@
  "slots": {
   "city": "杭州",
   "beds": "两居",
-  "max_rent": "六千",
+  "max_rent": "八千",
   "slot": "周日下午"
  },
  "slots_final": {
-  "city": "青岛",
+  "city": "成都",
   "beds": "一居",
-  "max_rent": "六千",
+  "max_rent": "八千",
   "slot": "周日下午"
  },
  "revisions": [
   {
    "slot": "city",
    "old": "杭州",
-   "new": "青岛",
+   "new": "成都",
    "by": "user",
    "kind": "default",
-   "gap": 0.856
+   "gap": 1.289
   },
   {
    "slot": "beds",
@@ -32,7 +32,7 @@
    "new": "一居",
    "by": "user",
    "kind": "second",
-   "gap": 2.649
+   "gap": 2.764
   }
  ],
  "bystander": null,
@@ -41,42 +41,42 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv08",
    "lang": "zh",
-   "text": "在杭州找两居、租金不超过六千的房子，约周日下午看房。",
+   "text": "在杭州找两居、租金不超过八千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv08",
    "lang": "zh",
-   "text": "等等，改成青岛。",
-   "gap_before": 0.856
+   "text": "等等，改成成都。",
+   "gap_before": 1.289
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv08",
    "lang": "zh",
    "text": "还有，再改一下，要一居。",
-   "gap_before": 2.649
+   "gap_before": 2.764
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.114,
+   "offset": 0.807,
    "action": "revise",
    "role": "user",
-   "voice": "cv03",
-   "text": "等等，改成青岛。"
+   "voice": "cv08",
+   "text": "等等，改成成都。"
   },
   {
    "state": "committed",
-   "offset": 0.728,
+   "offset": 1.004,
    "action": "revise",
    "role": "user",
-   "voice": "cv03",
-   "text": "等等，改成青岛。"
+   "voice": "cv08",
+   "text": "等等，改成成都。"
   }
  ],
  "profile": "default",
@@ -93,9 +93,9 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "青岛",
+    "city": "成都",
     "beds": "一居",
-    "max_rent": "六千"
+    "max_rent": "八千"
    }
   },
   {
@@ -108,19 +108,19 @@
  ],
  "gold_state": {
   "search_rentals#SEf793f2": {
-   "city": "青岛",
+   "city": "成都",
    "beds": "一居",
-   "max_rent": "六千"
+   "max_rent": "八千"
   },
-  "book_viewing#BO15a2cd": {
+  "book_viewing#BOb30dba": {
    "listing_id": "SEf793f2",
    "slot": "周日下午"
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv04"
+  "user": "cv08",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

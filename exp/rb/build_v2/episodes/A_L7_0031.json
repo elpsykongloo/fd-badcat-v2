@@ -6,14 +6,14 @@
  "lang": "en",
  "scenario": "travel_multi",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Denver",
+  "origin": "Boston",
+  "destination": "Portland",
   "date": "May third",
-  "country": "Thailand",
+  "country": "Japan",
   "nationality": "American"
  },
  "slots_final": {
-  "origin": "Seattle",
+  "origin": "Boston",
   "destination": "Portland",
   "date": "May third",
   "country": "Thailand",
@@ -21,12 +21,12 @@
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Denver",
-   "new": "Portland",
+   "slot": "country",
+   "old": "Japan",
+   "new": "Thailand",
    "by": "user",
    "kind": "default",
-   "gap": 1.77
+   "gap": 1.297
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Look up trains from Seattle to Denver on May third, and also check if American citizens need a visa for Thailand.",
+   "text": "Look up trains from Boston to Portland on May third, and also check if American citizens need a visa for Japan.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Wait — make it Portland.",
-   "gap_before": 1.77
+   "text": "Wait — make it Thailand.",
+   "gap_before": 1.297
   }
  ],
  "events": [],
@@ -63,7 +63,7 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
+    "origin": "Boston",
     "destination": "Portland",
     "date": "May third"
    }
@@ -78,19 +78,19 @@
  ],
  "gold_state": {
   "search_trains#SE1b014d": {
-   "origin": "Seattle",
+   "origin": "Boston",
    "destination": "Portland",
    "date": "May third"
   },
-  "check_visa_rule#CHec0b97": {
+  "check_visa_rule#CH73b0c0": {
    "country": "Thailand",
    "nationality": "American"
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv08"
+  "user": "cv09",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

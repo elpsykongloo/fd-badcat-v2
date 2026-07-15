@@ -7,12 +7,12 @@
  "scenario": "travel_hotel",
  "slots": {
   "city": "Denver",
-  "checkin": "May third",
+  "checkin": "May tenth",
   "nights": "two"
  },
  "slots_final": {
   "city": "Denver",
-  "checkin": "May third",
+  "checkin": "May tenth",
   "nights": "two"
  },
  "revisions": [],
@@ -22,14 +22,14 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Book me a hotel in Denver, checking in May third, for two nights.",
+   "text": "Book me a hotel in Denver, checking in May tenth, for two nights.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv03",
    "lang": "en",
    "text": "Any progress?",
    "at_after_eou": 13.66
@@ -38,10 +38,10 @@
  "events": [
   {
    "state": "inflight",
-   "offset": 0.674,
+   "offset": 0.646,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv03",
    "text": "Any progress?"
   }
  ],
@@ -59,7 +59,7 @@
    "fn": "reserve_hotel",
    "args": {
     "city": "Denver",
-    "checkin": "May third",
+    "checkin": "May tenth",
     "nights": "two"
    }
   }
@@ -67,14 +67,14 @@
  "gold_state": {
   "reserve_hotel#RE78091b": {
    "city": "Denver",
-   "checkin": "May third",
+   "checkin": "May tenth",
    "nights": "two"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv01"
+  "user": "cv03",
+  "bystander": "cv09"
  },
  "split": "dev",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

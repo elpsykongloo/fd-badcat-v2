@@ -7,34 +7,34 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Chicago",
-  "destination": "Portland",
+  "destination": "Atlanta",
   "date": "May third",
-  "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
  },
  "slots_final": {
   "origin": "Chicago",
-  "destination": "Denver",
+  "destination": "Portland",
   "date": "May third",
-  "seat_class": "first class",
-  "passenger": "Sam Rivera"
+  "seat_class": "business",
+  "passenger": "Alex Chen"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Portland",
-   "new": "Denver",
+   "old": "Atlanta",
+   "new": "Portland",
    "by": "user",
    "kind": "default",
-   "gap": 0.864
+   "gap": 1.095
   },
   {
    "slot": "seat_class",
-   "old": "business",
-   "new": "first class",
+   "old": "first class",
+   "new": "business",
    "by": "user",
    "kind": "second",
-   "gap": 2.635
+   "gap": 2.529
   }
  ],
  "bystander": null,
@@ -43,42 +43,42 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Find a train from Chicago to Portland on May third, hold a business seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Chicago to Atlanta on May third, hold a first class seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Wait — make it Denver.",
-   "gap_before": 0.864
+   "text": "Wait — make it Portland.",
+   "gap_before": 1.095
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Also, one more change — first class.",
-   "gap_before": 2.635
+   "text": "Also, one more change — business.",
+   "gap_before": 2.529
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.188,
+   "offset": 0.708,
    "action": "revise",
    "role": "user",
-   "voice": "cv03",
-   "text": "Wait — make it Denver."
+   "voice": "cv07",
+   "text": "Wait — make it Portland."
   },
   {
    "state": "committed",
-   "offset": 1.14,
+   "offset": 1.255,
    "action": "revise",
    "role": "user",
-   "voice": "cv03",
-   "text": "Wait — make it Denver."
+   "voice": "cv07",
+   "text": "Wait — make it Portland."
   }
  ],
  "profile": "default",
@@ -97,7 +97,7 @@
    "fn": "search_trains",
    "args": {
     "origin": "Chicago",
-    "destination": "Denver",
+    "destination": "Portland",
     "date": "May third"
    }
   },
@@ -105,36 +105,36 @@
    "fn": "hold_seat",
    "args": {
     "train_id": "SEd028ab",
-    "seat_class": "first class"
+    "seat_class": "business"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HOc7f127",
-    "passenger": "Sam Rivera"
+    "hold_id": "HO26d08b",
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEd028ab": {
    "origin": "Chicago",
-   "destination": "Denver",
+   "destination": "Portland",
    "date": "May third"
   },
-  "hold_seat#HOc7f127": {
+  "hold_seat#HO26d08b": {
    "train_id": "SEd028ab",
-   "seat_class": "first class"
+   "seat_class": "business"
   },
-  "purchase_ticket#PU0d59e9": {
-   "hold_id": "HOc7f127",
-   "passenger": "Sam Rivera"
+  "purchase_ticket#PU2eb556": {
+   "hold_id": "HO26d08b",
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv07"
+  "user": "cv07",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

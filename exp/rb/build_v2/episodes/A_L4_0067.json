@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Portland",
-  "date": "June first",
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "May eighth",
   "seat_class": "business",
   "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Seattle",
-  "destination": "Portland",
-  "date": "June first",
-  "seat_class": "coach",
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "May eighth",
+  "seat_class": "first class",
   "passenger": "Sam Rivera"
  },
  "revisions": [
   {
    "slot": "seat_class",
    "old": "business",
-   "new": "coach",
+   "new": "first class",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.683
+   "gap": 0.714
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Find a train from Seattle to Portland on June first, hold a business seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Chicago to Denver on May eighth, hold a business seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv02",
    "lang": "en",
-   "text": "coach — change it to coach.",
-   "gap_before": 0.683
+   "text": "first class — change it to first class.",
+   "gap_before": 0.714
   }
  ],
  "events": [],
@@ -64,45 +64,45 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
-    "destination": "Portland",
-    "date": "June first"
+    "origin": "Chicago",
+    "destination": "Denver",
+    "date": "May eighth"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SEc1d988",
-    "seat_class": "coach"
+    "seat_class": "first class"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HOfc07e6",
+    "hold_id": "HO9c95c8",
     "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEc1d988": {
-   "origin": "Seattle",
-   "destination": "Portland",
-   "date": "June first"
+   "origin": "Chicago",
+   "destination": "Denver",
+   "date": "May eighth"
   },
-  "hold_seat#HOfc07e6": {
+  "hold_seat#HO9c95c8": {
    "train_id": "SEc1d988",
-   "seat_class": "coach"
+   "seat_class": "first class"
   },
-  "purchase_ticket#PUc8e417": {
-   "hold_id": "HOfc07e6",
+  "purchase_ticket#PU6c5a6a": {
+   "hold_id": "HO9c95c8",
    "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv04"
+  "user": "cv02",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

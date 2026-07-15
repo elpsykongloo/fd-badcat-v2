@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "five thousand",
+  "amount": "eight hundred",
   "from_cur": "dollars",
   "to_cur": "yen",
   "from_acct": "checking",
   "to_acct": "savings"
  },
  "slots_final": {
-  "amount": "five thousand",
+  "amount": "three thousand",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
   "to_acct": "savings"
  },
  "revisions": [
   {
-   "slot": "to_cur",
-   "old": "yen",
-   "new": "euros",
+   "slot": "amount",
+   "old": "eight hundred",
+   "new": "three thousand",
    "by": "user",
    "kind": "default",
-   "gap": 0.738
+   "gap": 0.766
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Get a quote for five thousand dollars to yen, then transfer five thousand from checking to savings.",
+   "text": "Get a quote for eight hundred dollars to yen, then transfer eight hundred from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Wait — make it euros.",
-   "gap_before": 0.738
+   "text": "Wait — make it three thousand.",
+   "gap_before": 0.766
   }
  ],
  "events": [],
@@ -63,9 +63,9 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": "five thousand",
+    "amount": "three thousand",
     "from_cur": "dollars",
-    "to_cur": "euros"
+    "to_cur": "yen"
    }
   },
   {
@@ -73,26 +73,26 @@
    "args": {
     "from_acct": "checking",
     "to_acct": "savings",
-    "amount": "five thousand"
+    "amount": "three thousand"
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GEc86b3b": {
-   "amount": "five thousand",
+   "amount": "three thousand",
    "from_cur": "dollars",
-   "to_cur": "euros"
+   "to_cur": "yen"
   },
-  "transfer_funds#TR9abb73": {
+  "transfer_funds#TR3bc852": {
    "from_acct": "checking",
    "to_acct": "savings",
-   "amount": "five thousand"
+   "amount": "three thousand"
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv05"
+  "user": "cv05",
+  "bystander": "cv08"
  },
  "split": "dev",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

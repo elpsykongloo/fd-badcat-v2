@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "three thousand",
+  "amount": "five thousand",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
  "slots_final": {
   "amount": "three thousand",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "revisions": [
   {
-   "slot": "to_acct",
-   "old": "rent account",
-   "new": "savings",
+   "slot": "amount",
+   "old": "five thousand",
+   "new": "three thousand",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.845
+   "gap": 0.817
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Get a quote for three thousand dollars to euros, then transfer three thousand from checking to rent account.",
+   "text": "Get a quote for five thousand dollars to yen, then transfer five thousand from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv03",
    "lang": "en",
-   "text": "savings — change it to savings.",
-   "gap_before": 0.845
+   "text": "three thousand — change it to three thousand.",
+   "gap_before": 0.817
   }
  ],
  "events": [],
@@ -65,14 +65,14 @@
    "args": {
     "amount": "three thousand",
     "from_cur": "dollars",
-    "to_cur": "euros"
+    "to_cur": "yen"
    }
   },
   {
    "fn": "transfer_funds",
    "args": {
     "from_acct": "checking",
-    "to_acct": "savings",
+    "to_acct": "rent account",
     "amount": "three thousand"
    }
   }
@@ -81,18 +81,18 @@
   "get_fx_quote#GE86d02b": {
    "amount": "three thousand",
    "from_cur": "dollars",
-   "to_cur": "euros"
+   "to_cur": "yen"
   },
-  "transfer_funds#TRaac44a": {
+  "transfer_funds#TRa7d3f6": {
    "from_acct": "checking",
-   "to_acct": "savings",
+   "to_acct": "rent account",
    "amount": "three thousand"
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv01"
+  "user": "cv03",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

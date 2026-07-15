@@ -8,8 +8,8 @@
  "slots": {
   "city": "厦门",
   "beds": "两居",
-  "max_rent": "六千",
-  "slot": "周日下午"
+  "max_rent": "八千",
+  "slot": "周六上午"
  },
  "slots_final": {
   "city": "厦门",
@@ -19,9 +19,9 @@
  },
  "revisions": [
   {
-   "slot": "slot",
-   "old": "周日下午",
-   "new": "周六上午",
+   "slot": "max_rent",
+   "old": "八千",
+   "new": "六千",
    "by": "user",
    "kind": "default",
    "gap": null
@@ -33,27 +33,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "在厦门找两居、租金不超过六千的房子，约周日下午看房。",
+   "text": "在厦门找两居、租金不超过八千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "等等，改成周六上午。",
-   "at_after_eou": 1.936
+   "text": "等等，改成六千。",
+   "at_after_eou": 1.948
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.759,
+   "offset": 0.642,
    "action": "revise",
    "role": "user",
-   "voice": "cv05",
-   "text": "等等，改成周六上午。"
+   "voice": "cv03",
+   "text": "等等，改成六千。"
   }
  ],
  "profile": "default",
@@ -89,15 +89,15 @@
    "beds": "两居",
    "max_rent": "六千"
   },
-  "book_viewing#BO9ea925": {
+  "book_viewing#BO85c3eb": {
    "listing_id": "SE08edb5",
    "slot": "周六上午"
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv04"
+  "user": "cv03",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

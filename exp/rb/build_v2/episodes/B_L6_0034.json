@@ -6,25 +6,25 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "成都",
+  "city": "青岛",
   "beds": "一居",
   "max_rent": "八千",
-  "slot": "周日下午"
+  "slot": "周六上午"
  },
  "slots_final": {
-  "city": "青岛",
+  "city": "厦门",
   "beds": "两居",
   "max_rent": "八千",
-  "slot": "周日下午"
+  "slot": "周六上午"
  },
  "revisions": [
   {
    "slot": "city",
-   "old": "成都",
-   "new": "青岛",
+   "old": "青岛",
+   "new": "厦门",
    "by": "user",
    "kind": "default",
-   "gap": 0.72
+   "gap": 0.728
   },
   {
    "slot": "beds",
@@ -32,7 +32,7 @@
    "new": "两居",
    "by": "user",
    "kind": "second",
-   "gap": 2.945
+   "gap": 2.695
   }
  ],
  "bystander": null,
@@ -41,42 +41,42 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "在成都找一居、租金不超过八千的房子，约周日下午看房。",
+   "text": "在青岛找一居、租金不超过八千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "等等，改成青岛。",
-   "gap_before": 0.72
+   "text": "等等，改成厦门。",
+   "gap_before": 0.728
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv05",
    "lang": "zh",
    "text": "还有，再改一下，要两居。",
-   "gap_before": 2.945
+   "gap_before": 2.695
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.338,
+   "offset": 0.239,
    "action": "revise",
    "role": "user",
-   "voice": "cv08",
-   "text": "等等，改成青岛。"
+   "voice": "cv05",
+   "text": "等等，改成厦门。"
   },
   {
    "state": "committed",
-   "offset": 0.694,
+   "offset": 1.378,
    "action": "revise",
    "role": "user",
-   "voice": "cv08",
-   "text": "等等，改成青岛。"
+   "voice": "cv05",
+   "text": "等等，改成厦门。"
   }
  ],
  "profile": "default",
@@ -93,7 +93,7 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "青岛",
+    "city": "厦门",
     "beds": "两居",
     "max_rent": "八千"
    }
@@ -102,25 +102,25 @@
    "fn": "book_viewing",
    "args": {
     "listing_id": "SEc3442c",
-    "slot": "周日下午"
+    "slot": "周六上午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SEc3442c": {
-   "city": "青岛",
+   "city": "厦门",
    "beds": "两居",
    "max_rent": "八千"
   },
-  "book_viewing#BOe77fe2": {
+  "book_viewing#BOd99a3e": {
    "listing_id": "SEc3442c",
-   "slot": "周日下午"
+   "slot": "周六上午"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv07"
+  "user": "cv05",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

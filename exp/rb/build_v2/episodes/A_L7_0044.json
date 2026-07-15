@@ -6,21 +6,21 @@
  "lang": "zh",
  "scenario": "ecom_multi",
  "slots": {
-  "query": "蓝牙耳机",
+  "query": "跑步鞋",
   "item_id": "A100"
  },
  "slots_final": {
-  "query": "蓝牙耳机",
-  "item_id": "B205"
+  "query": "保温杯",
+  "item_id": "A100"
  },
  "revisions": [
   {
-   "slot": "item_id",
-   "old": "A100",
-   "new": "B205",
+   "slot": "query",
+   "old": "跑步鞋",
+   "new": "保温杯",
    "by": "user",
    "kind": "default",
-   "gap": 1.787
+   "gap": 1.066
   }
  ],
  "bystander": null,
@@ -29,17 +29,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "搜一下蓝牙耳机，再看看编号A100还有没有货。",
+   "text": "搜一下跑步鞋，再看看编号A100还有没有货。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "等等，改成B205。",
-   "gap_before": 1.787
+   "text": "等等，改成保温杯。",
+   "gap_before": 1.066
   }
  ],
  "events": [],
@@ -57,28 +57,28 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "蓝牙耳机"
+    "query": "保温杯"
    }
   },
   {
    "fn": "check_stock",
    "args": {
-    "item_id": "B205"
+    "item_id": "A100"
    }
   }
  ],
  "gold_state": {
   "search_catalog#SEf06d64": {
-   "query": "蓝牙耳机"
+   "query": "保温杯"
   },
-  "check_stock#CH8043b1": {
-   "item_id": "B205"
+  "check_stock#CHebb441": {
+   "item_id": "A100"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv05"
+  "user": "cv04",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

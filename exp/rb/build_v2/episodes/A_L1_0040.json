@@ -7,17 +7,17 @@
  "scenario": "ecom_single",
  "slots": {
   "item_id": "B205",
-  "qty": "两"
+  "qty": "一"
  },
  "slots_final": {
-  "item_id": "C330",
+  "item_id": "B205",
   "qty": "两"
  },
  "revisions": [
   {
-   "slot": "item_id",
-   "old": "B205",
-   "new": "C330",
+   "slot": "qty",
+   "old": "一",
+   "new": "两",
    "by": "user",
    "kind": "inline",
    "gap": null
@@ -29,9 +29,9 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "把编号B205的商品加两件到购物车。，哦不对，改成C330",
+   "text": "把编号B205的商品加一件到购物车。，哦不对，改成两",
    "gap_before": 0.5
   }
  ],
@@ -49,21 +49,21 @@
   {
    "fn": "add_item",
    "args": {
-    "item_id": "C330",
+    "item_id": "B205",
     "qty": "两"
    }
   }
  ],
  "gold_state": {
   "add_item#ADef2ace": {
-   "item_id": "C330",
+   "item_id": "B205",
    "qty": "两"
   }
  },
  "voices": {
-  "user": "cv08",
+  "user": "cv05",
   "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

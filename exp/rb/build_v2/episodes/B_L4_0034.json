@@ -6,25 +6,25 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "青岛",
+  "city": "厦门",
   "beds": "两居",
   "max_rent": "八千",
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "slots_final": {
   "city": "青岛",
   "beds": "两居",
-  "max_rent": "六千",
-  "slot": "周六上午"
+  "max_rent": "八千",
+  "slot": "周日下午"
  },
  "revisions": [
   {
-   "slot": "max_rent",
-   "old": "八千",
-   "new": "六千",
+   "slot": "city",
+   "old": "厦门",
+   "new": "青岛",
    "by": "user",
    "kind": "value_first",
-   "gap": 1.021
+   "gap": 0.72
   }
  ],
  "bystander": null,
@@ -35,25 +35,25 @@
    "role": "user",
    "voice": "cv08",
    "lang": "zh",
-   "text": "在青岛找两居、租金不超过八千的房子，约周六上午看房。",
+   "text": "在厦门找两居、租金不超过八千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv08",
    "lang": "zh",
-   "text": "六千，改成六千。",
-   "gap_before": 1.021
+   "text": "青岛，改成青岛。",
+   "gap_before": 0.72
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.088,
+   "offset": 0.478,
    "action": "revise",
    "role": "user",
    "voice": "cv08",
-   "text": "六千，改成六千。"
+   "text": "青岛，改成青岛。"
   }
  ],
  "profile": "default",
@@ -72,14 +72,14 @@
    "args": {
     "city": "青岛",
     "beds": "两居",
-    "max_rent": "六千"
+    "max_rent": "八千"
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SE8b85f9",
-    "slot": "周六上午"
+    "slot": "周日下午"
    }
   }
  ],
@@ -87,17 +87,17 @@
   "search_rentals#SE8b85f9": {
    "city": "青岛",
    "beds": "两居",
-   "max_rent": "六千"
+   "max_rent": "八千"
   },
-  "book_viewing#BO036231": {
+  "book_viewing#BO7f5287": {
    "listing_id": "SE8b85f9",
-   "slot": "周六上午"
+   "slot": "周日下午"
   }
  },
  "voices": {
   "user": "cv08",
-  "bystander": "cv04"
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

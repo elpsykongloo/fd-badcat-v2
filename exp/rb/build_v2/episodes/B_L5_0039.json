@@ -7,26 +7,26 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Boston",
-  "destination": "Austin",
+  "destination": "Atlanta",
   "date": "June first",
-  "seat_class": "first class",
-  "passenger": "Jordan Lee"
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
  },
  "slots_final": {
   "origin": "Boston",
-  "destination": "Austin",
+  "destination": "Portland",
   "date": "June first",
   "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "passenger": "Sam Rivera"
  },
  "revisions": [
   {
-   "slot": "seat_class",
-   "old": "first class",
-   "new": "coach",
+   "slot": "destination",
+   "old": "Atlanta",
+   "new": "Portland",
    "by": "user",
    "kind": "default",
-   "gap": 3.192
+   "gap": 1.186
   }
  ],
  "bystander": null,
@@ -35,27 +35,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Find a train from Boston to Austin on June first, hold a first class seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Boston to Atlanta on June first, hold a coach seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Wait — make it coach.",
-   "gap_before": 3.192
+   "text": "Wait — make it Portland.",
+   "gap_before": 1.186
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 2.006,
+   "offset": 2.08,
    "action": "revise",
    "role": "user",
-   "voice": "cv04",
-   "text": "Wait — make it coach."
+   "voice": "cv06",
+   "text": "Wait — make it Portland."
   }
  ],
  "profile": "default",
@@ -74,7 +74,7 @@
    "fn": "search_trains",
    "args": {
     "origin": "Boston",
-    "destination": "Austin",
+    "destination": "Portland",
     "date": "June first"
    }
   },
@@ -88,30 +88,30 @@
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO3348a9",
-    "passenger": "Jordan Lee"
+    "hold_id": "HOdf167f",
+    "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE54f73f": {
    "origin": "Boston",
-   "destination": "Austin",
+   "destination": "Portland",
    "date": "June first"
   },
-  "hold_seat#HO3348a9": {
+  "hold_seat#HOdf167f": {
    "train_id": "SE54f73f",
    "seat_class": "coach"
   },
-  "purchase_ticket#PU93f342": {
-   "hold_id": "HO3348a9",
-   "passenger": "Jordan Lee"
+  "purchase_ticket#PU37a7f5": {
+   "hold_id": "HOdf167f",
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv08"
+  "user": "cv06",
+  "bystander": "cv04"
  },
  "split": "dev",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

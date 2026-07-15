@@ -6,18 +6,18 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "three thousand",
+  "amount": "five thousand",
   "from_cur": "dollars",
   "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "slots_final": {
-  "amount": "three thousand",
+  "amount": "five thousand",
   "from_cur": "dollars",
   "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "revisions": [],
  "bystander": null,
@@ -26,17 +26,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Get a quote for three thousand dollars to yen, then transfer three thousand from checking to savings.",
+   "text": "Get a quote for five thousand dollars to yen, then transfer five thousand from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv01",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 1.965
+   "at_after_eou": 1.933
   }
  ],
  "events": [],
@@ -54,7 +54,7 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": "three thousand",
+    "amount": "five thousand",
     "from_cur": "dollars",
     "to_cur": "yen"
    }
@@ -63,27 +63,27 @@
    "fn": "transfer_funds",
    "args": {
     "from_acct": "checking",
-    "to_acct": "savings",
-    "amount": "three thousand"
+    "to_acct": "rent account",
+    "amount": "five thousand"
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GEcaa712": {
-   "amount": "three thousand",
+   "amount": "five thousand",
    "from_cur": "dollars",
    "to_cur": "yen"
   },
-  "transfer_funds#TRc73ed6": {
+  "transfer_funds#TR02d05b": {
    "from_acct": "checking",
-   "to_acct": "savings",
-   "amount": "three thousand"
+   "to_acct": "rent account",
+   "amount": "five thousand"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv02"
+  "user": "cv01",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

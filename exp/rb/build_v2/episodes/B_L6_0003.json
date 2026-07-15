@@ -6,17 +6,17 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
+  "origin": "Chicago",
   "destination": "Austin",
-  "date": "June first",
-  "seat_class": "business",
+  "date": "May third",
+  "seat_class": "first class",
   "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Boston",
+  "origin": "Chicago",
   "destination": "Atlanta",
-  "date": "June first",
-  "seat_class": "coach",
+  "date": "May third",
+  "seat_class": "business",
   "passenger": "Jordan Lee"
  },
  "revisions": [
@@ -26,15 +26,15 @@
    "new": "Atlanta",
    "by": "user",
    "kind": "default",
-   "gap": 0.84
+   "gap": 1.233
   },
   {
    "slot": "seat_class",
-   "old": "business",
-   "new": "coach",
+   "old": "first class",
+   "new": "business",
    "by": "user",
    "kind": "second",
-   "gap": 2.755
+   "gap": 2.674
   }
  ],
  "bystander": null,
@@ -43,41 +43,41 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Find a train from Boston to Austin on June first, hold a business seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Chicago to Austin on May third, hold a first class seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv07",
    "lang": "en",
    "text": "Wait — make it Atlanta.",
-   "gap_before": 0.84
+   "gap_before": 1.233
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Also, one more change — coach.",
-   "gap_before": 2.755
+   "text": "Also, one more change — business.",
+   "gap_before": 2.674
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.091,
+   "offset": 0.672,
    "action": "revise",
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv07",
    "text": "Wait — make it Atlanta."
   },
   {
    "state": "committed",
-   "offset": 0.443,
+   "offset": 0.521,
    "action": "revise",
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv07",
    "text": "Wait — make it Atlanta."
   }
  ],
@@ -96,45 +96,45 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
+    "origin": "Chicago",
     "destination": "Atlanta",
-    "date": "June first"
+    "date": "May third"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE6e8477",
-    "seat_class": "coach"
+    "seat_class": "business"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO469840",
+    "hold_id": "HO7cf2ed",
     "passenger": "Jordan Lee"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE6e8477": {
-   "origin": "Boston",
+   "origin": "Chicago",
    "destination": "Atlanta",
-   "date": "June first"
+   "date": "May third"
   },
-  "hold_seat#HO469840": {
+  "hold_seat#HO7cf2ed": {
    "train_id": "SE6e8477",
-   "seat_class": "coach"
+   "seat_class": "business"
   },
-  "purchase_ticket#PUefb37e": {
-   "hold_id": "HO469840",
+  "purchase_ticket#PUd50ae1": {
+   "hold_id": "HO7cf2ed",
    "passenger": "Jordan Lee"
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv06"
+  "user": "cv07",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

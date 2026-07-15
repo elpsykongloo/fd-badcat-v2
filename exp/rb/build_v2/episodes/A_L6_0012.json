@@ -6,31 +6,31 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "蓝牙耳机",
-  "qty": "一",
-  "address": "浦东新区世纪大道八号"
+  "query": "保温杯",
+  "qty": "两",
+  "address": "海淀区学院路一号"
  },
  "slots_final": {
   "query": "跑步鞋",
-  "qty": "两",
-  "address": "浦东新区世纪大道八号"
+  "qty": "一",
+  "address": "海淀区学院路一号"
  },
  "revisions": [
   {
    "slot": "query",
-   "old": "蓝牙耳机",
+   "old": "保温杯",
    "new": "跑步鞋",
    "by": "user",
    "kind": "default",
-   "gap": 0.863
+   "gap": 0.876
   },
   {
    "slot": "qty",
-   "old": "一",
-   "new": "两",
+   "old": "两",
+   "new": "一",
    "by": "user",
    "kind": "second",
-   "gap": 1.038
+   "gap": 2.58
   }
  ],
  "bystander": null,
@@ -41,7 +41,7 @@
    "role": "user",
    "voice": "cv07",
    "lang": "zh",
-   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜保温杯，加两件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
@@ -49,14 +49,14 @@
    "voice": "cv07",
    "lang": "zh",
    "text": "等等，改成跑步鞋。",
-   "gap_before": 0.863
+   "gap_before": 0.876
   },
   {
    "role": "user",
    "voice": "cv07",
    "lang": "zh",
-   "text": "还有，再改一下，要两。",
-   "gap_before": 1.038
+   "text": "还有，再改一下，要一。",
+   "gap_before": 2.58
   }
  ],
  "events": [],
@@ -82,14 +82,14 @@
    "fn": "add_item",
    "args": {
     "item_id": "SE8b1e83",
-    "qty": "两"
+    "qty": "一"
    }
   },
   {
    "fn": "place_order",
    "args": {
-    "cart_id": "AD13a78b",
-    "address": "浦东新区世纪大道八号"
+    "cart_id": "AD67a6f0",
+    "address": "海淀区学院路一号"
    }
   }
  ],
@@ -97,19 +97,19 @@
   "search_catalog#SE8b1e83": {
    "query": "跑步鞋"
   },
-  "add_item#AD13a78b": {
+  "add_item#AD67a6f0": {
    "item_id": "SE8b1e83",
-   "qty": "两"
+   "qty": "一"
   },
-  "place_order#PLab4f4f": {
-   "cart_id": "AD13a78b",
-   "address": "浦东新区世纪大道八号"
+  "place_order#PL6d0a66": {
+   "cart_id": "AD67a6f0",
+   "address": "海淀区学院路一号"
   }
  },
  "voices": {
   "user": "cv07",
-  "bystander": "cv01"
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -7,13 +7,13 @@
  "scenario": "ecom_chain",
  "slots": {
   "query": "保温杯",
-  "qty": "一",
-  "address": "海淀区学院路一号"
+  "qty": "两",
+  "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
   "query": "保温杯",
-  "qty": "一",
-  "address": "海淀区学院路一号"
+  "qty": "两",
+  "address": "浦东新区世纪大道八号"
  },
  "revisions": [],
  "bystander": null,
@@ -22,17 +22,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "帮我搜保温杯，加一件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜保温杯，加两件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv09",
    "lang": "zh",
    "text": "算了，先别办了。",
-   "at_after_eou": 1.76
+   "at_after_eou": 1.998
   }
  ],
  "events": [],
@@ -50,9 +50,9 @@
  "gold_calls": [],
  "gold_state": {},
  "voices": {
-  "user": "cv02",
-  "bystander": "cv01"
+  "user": "cv09",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

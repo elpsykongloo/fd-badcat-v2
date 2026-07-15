@@ -8,16 +8,16 @@
  "slots": {
   "amount": "three thousand",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "slots_final": {
   "amount": "three thousand",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "revisions": [],
  "bystander": null,
@@ -26,26 +26,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Get a quote for three thousand dollars to yen, then transfer three thousand from checking to savings.",
+   "text": "Get a quote for three thousand dollars to euros, then transfer three thousand from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv02",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 1.737
+   "at_after_eou": 1.818
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.831,
+   "offset": 0.406,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv02",
    "text": "Any progress?"
   }
  ],
@@ -65,14 +65,14 @@
    "args": {
     "amount": "three thousand",
     "from_cur": "dollars",
-    "to_cur": "yen"
+    "to_cur": "euros"
    }
   },
   {
    "fn": "transfer_funds",
    "args": {
     "from_acct": "checking",
-    "to_acct": "savings",
+    "to_acct": "rent account",
     "amount": "three thousand"
    }
   }
@@ -81,18 +81,18 @@
   "get_fx_quote#GEd12a25": {
    "amount": "three thousand",
    "from_cur": "dollars",
-   "to_cur": "yen"
+   "to_cur": "euros"
   },
-  "transfer_funds#TR65707d": {
+  "transfer_funds#TR524a1c": {
    "from_acct": "checking",
-   "to_acct": "savings",
+   "to_acct": "rent account",
    "amount": "three thousand"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv02"
+  "user": "cv02",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

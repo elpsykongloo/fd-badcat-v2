@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
+  "origin": "Boston",
   "destination": "Atlanta",
-  "date": "June first",
-  "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Seattle",
+  "origin": "Boston",
   "destination": "Atlanta",
-  "date": "June first",
-  "seat_class": "business",
-  "passenger": "Jordan Lee"
+  "date": "May third",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
  },
  "revisions": [
   {
    "slot": "seat_class",
-   "old": "coach",
-   "new": "business",
+   "old": "business",
+   "new": "first class",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.973
+   "gap": 0.936
   }
  ],
  "bystander": null,
@@ -35,27 +35,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Find a train from Seattle to Atlanta on June first, hold a coach seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Boston to Atlanta on May third, hold a business seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv03",
    "lang": "en",
-   "text": "business — change it to business.",
-   "gap_before": 0.973
+   "text": "first class — change it to first class.",
+   "gap_before": 0.936
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.136,
+   "offset": 0.152,
    "action": "revise",
    "role": "user",
-   "voice": "cv08",
-   "text": "business — change it to business."
+   "voice": "cv03",
+   "text": "first class — change it to first class."
   }
  ],
  "profile": "default",
@@ -73,45 +73,45 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
+    "origin": "Boston",
     "destination": "Atlanta",
-    "date": "June first"
+    "date": "May third"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SEd57426",
-    "seat_class": "business"
+    "seat_class": "first class"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO4b35a2",
-    "passenger": "Jordan Lee"
+    "hold_id": "HObc47db",
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEd57426": {
-   "origin": "Seattle",
+   "origin": "Boston",
    "destination": "Atlanta",
-   "date": "June first"
+   "date": "May third"
   },
-  "hold_seat#HO4b35a2": {
+  "hold_seat#HObc47db": {
    "train_id": "SEd57426",
-   "seat_class": "business"
+   "seat_class": "first class"
   },
-  "purchase_ticket#PUfb0adc": {
-   "hold_id": "HO4b35a2",
-   "passenger": "Jordan Lee"
+  "purchase_ticket#PUa18dc7": {
+   "hold_id": "HObc47db",
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv04"
+  "user": "cv03",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

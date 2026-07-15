@@ -12,14 +12,14 @@
  },
  "slots_final": {
   "payee": "the landlord",
-  "amount": "three thousand",
-  "date": "June first"
+  "amount": "five thousand",
+  "date": "May eighth"
  },
  "revisions": [
   {
-   "slot": "date",
-   "old": "May eighth",
-   "new": "June first",
+   "slot": "amount",
+   "old": "three thousand",
+   "new": "five thousand",
    "by": "user",
    "kind": "inline",
    "gap": null
@@ -31,9 +31,9 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Schedule a payment of three thousand to the landlord on May eighth., oh no, make that June first",
+   "text": "Schedule a payment of three thousand to the landlord on May eighth., oh no, make that five thousand",
    "gap_before": 0.5
   }
  ],
@@ -52,22 +52,22 @@
    "fn": "schedule_payment",
    "args": {
     "payee": "the landlord",
-    "amount": "three thousand",
-    "date": "June first"
+    "amount": "five thousand",
+    "date": "May eighth"
    }
   }
  ],
  "gold_state": {
   "schedule_payment#SC8edd6a": {
    "payee": "the landlord",
-   "amount": "three thousand",
-   "date": "June first"
+   "amount": "five thousand",
+   "date": "May eighth"
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv09"
+  "user": "cv08",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

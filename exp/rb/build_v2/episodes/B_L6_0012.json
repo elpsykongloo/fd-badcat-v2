@@ -6,23 +6,23 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "保温杯",
+  "query": "蓝牙耳机",
   "qty": "两",
-  "address": "浦东新区世纪大道八号"
+  "address": "海淀区学院路一号"
  },
  "slots_final": {
   "query": "跑步鞋",
   "qty": "一",
-  "address": "浦东新区世纪大道八号"
+  "address": "海淀区学院路一号"
  },
  "revisions": [
   {
    "slot": "query",
-   "old": "保温杯",
+   "old": "蓝牙耳机",
    "new": "跑步鞋",
    "by": "user",
    "kind": "default",
-   "gap": 0.849
+   "gap": 0.735
   },
   {
    "slot": "qty",
@@ -30,7 +30,7 @@
    "new": "一",
    "by": "user",
    "kind": "second",
-   "gap": 2.27
+   "gap": 2.656
   }
  ],
  "bystander": null,
@@ -39,41 +39,41 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "帮我搜保温杯，加两件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv04",
    "lang": "zh",
    "text": "等等，改成跑步鞋。",
-   "gap_before": 0.849
+   "gap_before": 0.735
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv04",
    "lang": "zh",
    "text": "还有，再改一下，要一。",
-   "gap_before": 2.27
+   "gap_before": 2.656
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.818,
+   "offset": 0.643,
    "action": "revise",
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv04",
    "text": "等等，改成跑步鞋。"
   },
   {
    "state": "committed",
-   "offset": 1.257,
+   "offset": 1.201,
    "action": "revise",
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv04",
    "text": "等等，改成跑步鞋。"
   }
  ],
@@ -105,8 +105,8 @@
   {
    "fn": "place_order",
    "args": {
-    "cart_id": "AD80f97b",
-    "address": "浦东新区世纪大道八号"
+    "cart_id": "AD1f298f",
+    "address": "海淀区学院路一号"
    }
   }
  ],
@@ -114,19 +114,19 @@
   "search_catalog#SEe26dcc": {
    "query": "跑步鞋"
   },
-  "add_item#AD80f97b": {
+  "add_item#AD1f298f": {
    "item_id": "SEe26dcc",
    "qty": "一"
   },
-  "place_order#PLdb0287": {
-   "cart_id": "AD80f97b",
-   "address": "浦东新区世纪大道八号"
+  "place_order#PL447fe9": {
+   "cart_id": "AD1f298f",
+   "address": "海淀区学院路一号"
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv05"
+  "user": "cv04",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -6,27 +6,27 @@
  "lang": "zh",
  "scenario": "hou_multi",
  "slots": {
-  "city": "青岛",
-  "beds": "两居",
+  "city": "厦门",
+  "beds": "一居",
   "max_rent": "八千",
   "from_addr": "中关村",
   "to_addr": "西二旗"
  },
  "slots_final": {
   "city": "厦门",
-  "beds": "两居",
+  "beds": "一居",
   "max_rent": "八千",
   "from_addr": "中关村",
-  "to_addr": "西二旗"
+  "to_addr": "国贸"
  },
  "revisions": [
   {
-   "slot": "city",
-   "old": "青岛",
-   "new": "厦门",
+   "slot": "to_addr",
+   "old": "西二旗",
+   "new": "国贸",
    "by": "user",
    "kind": "default",
-   "gap": 2.418
+   "gap": 1.996
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "在青岛找两居、不超过八千的房子，再算下从中关村到西二旗的通勤时间。",
+   "text": "在厦门找一居、不超过八千的房子，再算下从中关村到西二旗的通勤时间。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "等等，改成厦门。",
-   "gap_before": 2.418
+   "text": "等等，改成国贸。",
+   "gap_before": 1.996
   }
  ],
  "events": [],
@@ -64,7 +64,7 @@
    "fn": "search_rentals",
    "args": {
     "city": "厦门",
-    "beds": "两居",
+    "beds": "一居",
     "max_rent": "八千"
    }
   },
@@ -72,25 +72,25 @@
    "fn": "get_commute_time",
    "args": {
     "from_addr": "中关村",
-    "to_addr": "西二旗"
+    "to_addr": "国贸"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SE0848e0": {
    "city": "厦门",
-   "beds": "两居",
+   "beds": "一居",
    "max_rent": "八千"
   },
-  "get_commute_time#GEd21baa": {
+  "get_commute_time#GE90180c": {
    "from_addr": "中关村",
-   "to_addr": "西二旗"
+   "to_addr": "国贸"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv01"
+  "user": "cv04",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

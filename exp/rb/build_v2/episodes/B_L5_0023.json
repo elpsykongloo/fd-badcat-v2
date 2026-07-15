@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
-  "destination": "Portland",
-  "date": "June first",
-  "seat_class": "coach",
-  "passenger": "Alex Chen"
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Denver",
-  "date": "June first",
-  "seat_class": "coach",
-  "passenger": "Alex Chen"
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "May eighth",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Portland",
-   "new": "Denver",
+   "slot": "date",
+   "old": "May third",
+   "new": "May eighth",
    "by": "user",
    "kind": "default",
-   "gap": 3.043
+   "gap": 2.565
   }
  ],
  "bystander": null,
@@ -35,27 +35,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Find a train from Boston to Portland on June first, hold a coach seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Seattle to Atlanta on May third, hold a business seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Wait — make it Denver.",
-   "gap_before": 3.043
+   "text": "Wait — make it May eighth.",
+   "gap_before": 2.565
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 1.319,
+   "offset": 2.821,
    "action": "revise",
    "role": "user",
-   "voice": "cv03",
-   "text": "Wait — make it Denver."
+   "voice": "cv01",
+   "text": "Wait — make it May eighth."
   }
  ],
  "profile": "default",
@@ -73,45 +73,45 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
-    "destination": "Denver",
-    "date": "June first"
+    "origin": "Seattle",
+    "destination": "Atlanta",
+    "date": "May eighth"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE6e4aef",
-    "seat_class": "coach"
+    "seat_class": "business"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO6ed68d",
-    "passenger": "Alex Chen"
+    "hold_id": "HOb9b5cc",
+    "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE6e4aef": {
-   "origin": "Boston",
-   "destination": "Denver",
-   "date": "June first"
+   "origin": "Seattle",
+   "destination": "Atlanta",
+   "date": "May eighth"
   },
-  "hold_seat#HO6ed68d": {
+  "hold_seat#HOb9b5cc": {
    "train_id": "SE6e4aef",
-   "seat_class": "coach"
+   "seat_class": "business"
   },
-  "purchase_ticket#PUe118fd": {
-   "hold_id": "HO6ed68d",
-   "passenger": "Alex Chen"
+  "purchase_ticket#PU2488e1": {
+   "hold_id": "HOb9b5cc",
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv04"
+  "user": "cv01",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

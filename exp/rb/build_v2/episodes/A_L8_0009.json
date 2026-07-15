@@ -8,22 +8,22 @@
  "slots": {
   "amount": "five thousand",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "rent account"
+  "to_acct": "savings"
  },
  "slots_final": {
-  "amount": "eight hundred",
+  "amount": "five thousand",
   "from_cur": "dollars",
   "to_cur": "euros",
   "from_acct": "checking",
-  "to_acct": "rent account"
+  "to_acct": "savings"
  },
  "revisions": [
   {
-   "slot": "amount",
-   "old": "five thousand",
-   "new": "eight hundred",
+   "slot": "to_cur",
+   "old": "yen",
+   "new": "euros",
    "by": "user",
    "kind": "default",
    "gap": null
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Get a quote for five thousand dollars to euros, then transfer five thousand from checking to rent account.",
+   "text": "Get a quote for five thousand dollars to yen, then transfer five thousand from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Wait — make it eight hundred.",
-   "at_after_eou": 2.106
+   "text": "Wait — make it euros.",
+   "at_after_eou": 1.902
   }
  ],
  "events": [],
@@ -63,7 +63,7 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": "eight hundred",
+    "amount": "five thousand",
     "from_cur": "dollars",
     "to_cur": "euros"
    }
@@ -72,27 +72,27 @@
    "fn": "transfer_funds",
    "args": {
     "from_acct": "checking",
-    "to_acct": "rent account",
-    "amount": "eight hundred"
+    "to_acct": "savings",
+    "amount": "five thousand"
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GE66b3be": {
-   "amount": "eight hundred",
+   "amount": "five thousand",
    "from_cur": "dollars",
    "to_cur": "euros"
   },
-  "transfer_funds#TR467bed": {
+  "transfer_funds#TR6b61d5": {
    "from_acct": "checking",
-   "to_acct": "rent account",
-   "amount": "eight hundred"
+   "to_acct": "savings",
+   "amount": "five thousand"
   }
  },
  "voices": {
-  "user": "cv08",
+  "user": "cv06",
   "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

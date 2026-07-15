@@ -9,22 +9,22 @@
   "city": "青岛",
   "beds": "两居",
   "max_rent": "六千",
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "slots_final": {
-  "city": "青岛",
+  "city": "成都",
   "beds": "两居",
   "max_rent": "六千",
   "slot": "周日下午"
  },
  "revisions": [
   {
-   "slot": "slot",
-   "old": "周六上午",
-   "new": "周日下午",
+   "slot": "city",
+   "old": "青岛",
+   "new": "成都",
    "by": "user",
    "kind": "default",
-   "gap": 3.026
+   "gap": 2.637
   }
  ],
  "bystander": null,
@@ -33,27 +33,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "在青岛找两居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在青岛找两居、租金不超过六千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "等等，改成周日下午。",
-   "gap_before": 3.026
+   "text": "等等，改成成都。",
+   "gap_before": 2.637
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 3.153,
+   "offset": 2.697,
    "action": "revise",
    "role": "user",
-   "voice": "cv03",
-   "text": "等等，改成周日下午。"
+   "voice": "cv09",
+   "text": "等等，改成成都。"
   }
  ],
  "profile": "default",
@@ -70,7 +70,7 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "青岛",
+    "city": "成都",
     "beds": "两居",
     "max_rent": "六千"
    }
@@ -85,19 +85,19 @@
  ],
  "gold_state": {
   "search_rentals#SE72163f": {
-   "city": "青岛",
+   "city": "成都",
    "beds": "两居",
    "max_rent": "六千"
   },
-  "book_viewing#BO1d0142": {
+  "book_viewing#BO3df9d7": {
    "listing_id": "SE72163f",
    "slot": "周日下午"
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv09"
+  "user": "cv09",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

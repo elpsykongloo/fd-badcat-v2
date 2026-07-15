@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "travel_multi",
  "slots": {
-  "origin": "Boston",
-  "destination": "Atlanta",
-  "date": "June first",
-  "country": "Thailand",
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "May eighth",
+  "country": "Japan",
   "nationality": "American"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Atlanta",
-  "date": "June first",
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "May eighth",
   "country": "Japan",
   "nationality": "American"
  },
  "revisions": [
   {
-   "slot": "country",
-   "old": "Thailand",
-   "new": "Japan",
+   "slot": "destination",
+   "old": "Austin",
+   "new": "Portland",
    "by": "user",
    "kind": "default",
-   "gap": 1.221
+   "gap": 2.216
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Look up trains from Boston to Atlanta on June first, and also check if American citizens need a visa for Thailand.",
+   "text": "Look up trains from Seattle to Austin on May eighth, and also check if American citizens need a visa for Japan.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Wait — make it Japan.",
-   "gap_before": 1.221
+   "text": "Wait — make it Portland.",
+   "gap_before": 2.216
   }
  ],
  "events": [],
@@ -63,9 +63,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
-    "destination": "Atlanta",
-    "date": "June first"
+    "origin": "Seattle",
+    "destination": "Portland",
+    "date": "May eighth"
    }
   },
   {
@@ -78,19 +78,19 @@
  ],
  "gold_state": {
   "search_trains#SEf915f8": {
-   "origin": "Boston",
-   "destination": "Atlanta",
-   "date": "June first"
+   "origin": "Seattle",
+   "destination": "Portland",
+   "date": "May eighth"
   },
-  "check_visa_rule#CH65e48b": {
+  "check_visa_rule#CHc6c062": {
    "country": "Japan",
    "nationality": "American"
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv06"
+  "user": "cv07",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

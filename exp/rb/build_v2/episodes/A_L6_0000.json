@@ -7,13 +7,13 @@
  "scenario": "ecom_chain",
  "slots": {
   "query": "保温杯",
-  "qty": "一",
-  "address": "海淀区学院路一号"
+  "qty": "两",
+  "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
   "query": "跑步鞋",
-  "qty": "两",
-  "address": "海淀区学院路一号"
+  "qty": "一",
+  "address": "浦东新区世纪大道八号"
  },
  "revisions": [
   {
@@ -22,15 +22,15 @@
    "new": "跑步鞋",
    "by": "user",
    "kind": "default",
-   "gap": 0.797
+   "gap": 0.804
   },
   {
    "slot": "qty",
-   "old": "一",
-   "new": "两",
+   "old": "两",
+   "new": "一",
    "by": "user",
    "kind": "second",
-   "gap": 2.794
+   "gap": 2.771
   }
  ],
  "bystander": null,
@@ -39,24 +39,24 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "帮我搜保温杯，加一件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜保温杯，加两件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv03",
    "lang": "zh",
    "text": "等等，改成跑步鞋。",
-   "gap_before": 0.797
+   "gap_before": 0.804
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "还有，再改一下，要两。",
-   "gap_before": 2.794
+   "text": "还有，再改一下，要一。",
+   "gap_before": 2.771
   }
  ],
  "events": [],
@@ -82,14 +82,14 @@
    "fn": "add_item",
    "args": {
     "item_id": "SE68c752",
-    "qty": "两"
+    "qty": "一"
    }
   },
   {
    "fn": "place_order",
    "args": {
-    "cart_id": "AD5ea104",
-    "address": "海淀区学院路一号"
+    "cart_id": "AD0f4af6",
+    "address": "浦东新区世纪大道八号"
    }
   }
  ],
@@ -97,19 +97,19 @@
   "search_catalog#SE68c752": {
    "query": "跑步鞋"
   },
-  "add_item#AD5ea104": {
+  "add_item#AD0f4af6": {
    "item_id": "SE68c752",
-   "qty": "两"
+   "qty": "一"
   },
-  "place_order#PLf5068e": {
-   "cart_id": "AD5ea104",
-   "address": "海淀区学院路一号"
+  "place_order#PLfe2c02": {
+   "cart_id": "AD0f4af6",
+   "address": "浦东新区世纪大道八号"
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv05"
+  "user": "cv03",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -6,18 +6,18 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Portland",
+  "origin": "Seattle",
+  "destination": "Atlanta",
   "date": "May third",
-  "seat_class": "coach",
-  "passenger": "Alex Chen"
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Chicago",
-  "destination": "Portland",
+  "origin": "Seattle",
+  "destination": "Atlanta",
   "date": "May third",
-  "seat_class": "coach",
-  "passenger": "Alex Chen"
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
  },
  "revisions": [],
  "bystander": null,
@@ -26,17 +26,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Find a train from Chicago to Portland on May third, hold a coach seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Seattle to Atlanta on May third, hold a first class seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv07",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 1.969
+   "at_after_eou": 2.085
   }
  ],
  "events": [],
@@ -55,8 +55,8 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
-    "destination": "Portland",
+    "origin": "Seattle",
+    "destination": "Atlanta",
     "date": "May third"
    }
   },
@@ -64,36 +64,36 @@
    "fn": "hold_seat",
    "args": {
     "train_id": "SE67646a",
-    "seat_class": "coach"
+    "seat_class": "first class"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO1f80dd",
-    "passenger": "Alex Chen"
+    "hold_id": "HO0e998a",
+    "passenger": "Jordan Lee"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE67646a": {
-   "origin": "Chicago",
-   "destination": "Portland",
+   "origin": "Seattle",
+   "destination": "Atlanta",
    "date": "May third"
   },
-  "hold_seat#HO1f80dd": {
+  "hold_seat#HO0e998a": {
    "train_id": "SE67646a",
-   "seat_class": "coach"
+   "seat_class": "first class"
   },
-  "purchase_ticket#PUef2fbb": {
-   "hold_id": "HO1f80dd",
-   "passenger": "Alex Chen"
+  "purchase_ticket#PUb0c711": {
+   "hold_id": "HO0e998a",
+   "passenger": "Jordan Lee"
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv04"
+  "user": "cv07",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
+  "origin": "Seattle",
   "destination": "Portland",
   "date": "May third",
-  "seat_class": "first class",
-  "passenger": "Sam Rivera"
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Denver",
+  "origin": "Seattle",
+  "destination": "Portland",
   "date": "May third",
-  "seat_class": "first class",
-  "passenger": "Sam Rivera"
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Portland",
-   "new": "Denver",
+   "slot": "seat_class",
+   "old": "business",
+   "new": "coach",
    "by": "user",
    "kind": "default",
-   "gap": 2.804
+   "gap": 2.868
   }
  ],
  "bystander": null,
@@ -35,27 +35,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Find a train from Boston to Portland on May third, hold a first class seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Seattle to Portland on May third, hold a business seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Wait — make it Denver.",
-   "gap_before": 2.804
+   "text": "Wait — make it coach.",
+   "gap_before": 2.868
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 1.562,
+   "offset": 2.874,
    "action": "revise",
    "role": "user",
-   "voice": "cv01",
-   "text": "Wait — make it Denver."
+   "voice": "cv09",
+   "text": "Wait — make it coach."
   }
  ],
  "profile": "default",
@@ -73,8 +73,8 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
-    "destination": "Denver",
+    "origin": "Seattle",
+    "destination": "Portland",
     "date": "May third"
    }
   },
@@ -82,36 +82,36 @@
    "fn": "hold_seat",
    "args": {
     "train_id": "SEbdb48e",
-    "seat_class": "first class"
+    "seat_class": "coach"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO6b39c4",
-    "passenger": "Sam Rivera"
+    "hold_id": "HOc53060",
+    "passenger": "Jordan Lee"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEbdb48e": {
-   "origin": "Boston",
-   "destination": "Denver",
+   "origin": "Seattle",
+   "destination": "Portland",
    "date": "May third"
   },
-  "hold_seat#HO6b39c4": {
+  "hold_seat#HOc53060": {
    "train_id": "SEbdb48e",
-   "seat_class": "first class"
+   "seat_class": "coach"
   },
-  "purchase_ticket#PUa4510a": {
-   "hold_id": "HO6b39c4",
-   "passenger": "Sam Rivera"
+  "purchase_ticket#PUdb52ab": {
+   "hold_id": "HOc53060",
+   "passenger": "Jordan Lee"
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv07"
+  "user": "cv09",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

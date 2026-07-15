@@ -6,23 +6,23 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "蓝牙耳机",
-  "qty": "一",
-  "address": "海淀区学院路一号"
- },
- "slots_final": {
   "query": "跑步鞋",
   "qty": "一",
-  "address": "海淀区学院路一号"
+  "address": "浦东新区世纪大道八号"
+ },
+ "slots_final": {
+  "query": "保温杯",
+  "qty": "一",
+  "address": "浦东新区世纪大道八号"
  },
  "revisions": [
   {
    "slot": "query",
-   "old": "蓝牙耳机",
-   "new": "跑步鞋",
+   "old": "跑步鞋",
+   "new": "保温杯",
    "by": "user",
    "kind": "default",
-   "gap": 3.146
+   "gap": 3.091
   }
  ],
  "bystander": null,
@@ -31,27 +31,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜跑步鞋，加一件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "等等，改成跑步鞋。",
-   "gap_before": 3.146
+   "text": "等等，改成保温杯。",
+   "gap_before": 3.091
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 2.614,
+   "offset": 2.641,
    "action": "revise",
    "role": "user",
-   "voice": "cv05",
-   "text": "等等，改成跑步鞋。"
+   "voice": "cv01",
+   "text": "等等，改成保温杯。"
   }
  ],
  "profile": "default",
@@ -69,7 +69,7 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "跑步鞋"
+    "query": "保温杯"
    }
   },
   {
@@ -82,28 +82,28 @@
   {
    "fn": "place_order",
    "args": {
-    "cart_id": "AD0fee9d",
-    "address": "海淀区学院路一号"
+    "cart_id": "AD641507",
+    "address": "浦东新区世纪大道八号"
    }
   }
  ],
  "gold_state": {
   "search_catalog#SEd4d5e4": {
-   "query": "跑步鞋"
+   "query": "保温杯"
   },
-  "add_item#AD0fee9d": {
+  "add_item#AD641507": {
    "item_id": "SEd4d5e4",
    "qty": "一"
   },
-  "place_order#PLb7fa48": {
-   "cart_id": "AD0fee9d",
-   "address": "海淀区学院路一号"
+  "place_order#PL3bda2a": {
+   "cart_id": "AD641507",
+   "address": "浦东新区世纪大道八号"
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv08"
+  "user": "cv01",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

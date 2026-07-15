@@ -7,26 +7,26 @@
  "scenario": "travel_multi",
  "slots": {
   "origin": "Chicago",
-  "destination": "Denver",
-  "date": "May third",
+  "destination": "Portland",
+  "date": "June first",
   "country": "Japan",
   "nationality": "American"
  },
  "slots_final": {
   "origin": "Chicago",
   "destination": "Atlanta",
-  "date": "May third",
+  "date": "June first",
   "country": "Japan",
   "nationality": "American"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Denver",
+   "old": "Portland",
    "new": "Atlanta",
    "by": "user",
    "kind": "default",
-   "gap": 1.176
+   "gap": 2.122
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Look up trains from Chicago to Denver on May third, and also check if American citizens need a visa for Japan.",
+   "text": "Look up trains from Chicago to Portland on June first, and also check if American citizens need a visa for Japan.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv05",
    "lang": "en",
    "text": "Wait — make it Atlanta.",
-   "gap_before": 1.176
+   "gap_before": 2.122
   }
  ],
  "events": [],
@@ -65,7 +65,7 @@
    "args": {
     "origin": "Chicago",
     "destination": "Atlanta",
-    "date": "May third"
+    "date": "June first"
    }
   },
   {
@@ -80,17 +80,17 @@
   "search_trains#SE53ccdb": {
    "origin": "Chicago",
    "destination": "Atlanta",
-   "date": "May third"
+   "date": "June first"
   },
-  "check_visa_rule#CHad1a26": {
+  "check_visa_rule#CH58c0df": {
    "country": "Japan",
    "nationality": "American"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv04"
+  "user": "cv05",
+  "bystander": "cv09"
  },
  "split": "dev",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

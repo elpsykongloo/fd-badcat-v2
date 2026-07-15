@@ -14,14 +14,18 @@ COMPLIANCE (§12.3): raw transcripts are cached OUT OF REPO
 (events_v1.jsonl + events_v1_meta.json) are numeric-only (assert_no_text).
 
   $PY scripts/w5sg_asr_features.py --root /root/autodl-tmp/HumDial_train \\
-      --model-dir /root/autodl-tmp/models/sensevoice   # dir with model.onnx + tokens.txt
+      --model-dir /root/autodl-tmp/models/sensevoice --workers 32
+      # dir with model.int8.onnx (preferred) or model.onnx + tokens.txt
   $PY scripts/w5sg_asr_features.py --selftest
 """
 from __future__ import annotations
 
 import argparse
+import concurrent.futures
 import hashlib
 import json
+import multiprocessing
+import os
 import sys
 from pathlib import Path
 
@@ -39,6 +43,8 @@ T1_KEYS = ("ends_filler", "ends_conn", "ends_prep", "ends_det_or_part",
            "ends_aux", "ends_num", "single_token")
 F_TEXT_NAMES = ["n_chars", "n_tokens"] + [f"t1_{k}" for k in T1_KEYS]
 
+_WORKER_DEPS = None
+
 
 def text_feats(prefix_text, lang):
     toks = prefix_text.split() if lang == "en" else list(prefix_text)
@@ -47,19 +53,42 @@ def text_feats(prefix_text, lang):
         float(t1[k]) for k in T1_KEYS]
 
 
+def resolve_model_files(model_dir):
+    """Resolve the same SenseVoice asset variants accepted by src/module.py."""
+    model_dir = Path(model_dir)
+    model_path = model_dir / "model.int8.onnx"
+    if not model_path.exists():
+        model_path = model_dir / "model.onnx"
+    tokens_path = model_dir / "tokens.txt"
+    missing = [str(p) for p in (model_path, tokens_path) if not p.exists()]
+    if missing:
+        raise FileNotFoundError(
+            "SenseVoice model missing (need model.int8.onnx or model.onnx "
+            f"plus tokens.txt). Missing: {', '.join(missing)}")
+    return model_path, tokens_path
+
+
 def make_sherpa_asr(model_dir, threads=2):
     import sherpa_onnx
     import soundfile as sf
-    model_dir = Path(model_dir)
+    model_path, tokens_path = resolve_model_files(model_dir)
     rec = sherpa_onnx.OfflineRecognizer.from_sense_voice(
-        model=str(model_dir / "model.onnx"),
-        tokens=str(model_dir / "tokens.txt"),
+        model=str(model_path),
+        tokens=str(tokens_path),
         num_threads=threads, use_itn=True)
 
+    # A sample commonly has many VAD segments. Retaining the most recently
+    # opened waveform avoids decoding that same file once per segment.
+    wav_cache = {"path": None, "audio": None, "sr": None}
+
     def asr(wav_path, s, e):
-        a, sr = sf.read(str(wav_path), dtype="float32")
-        if a.ndim == 2:
-            a = a.mean(axis=1)
+        wav_path = str(wav_path)
+        if wav_cache["path"] != wav_path:
+            a, sr = sf.read(wav_path, dtype="float32")
+            if a.ndim == 2:
+                a = a.mean(axis=1)
+            wav_cache.update(path=wav_path, audio=a, sr=sr)
+        a, sr = wav_cache["audio"], wav_cache["sr"]
         seg = a[int(s * sr): int(e * sr)]
         st = rec.create_stream()
         st.accept_waveform(sr, seg)
@@ -80,63 +109,123 @@ class SegASR:
         k = hashlib.sha256(f"{wav}:{s:.3f}:{e:.3f}".encode()).hexdigest()[:24]
         p = self.dir / f"{k}.json"
         if p.exists():
-            return json.loads(p.read_text())["text"]
+            try:
+                return json.loads(p.read_text())["text"]
+            except (OSError, KeyError, TypeError, json.JSONDecodeError):
+                # An interrupted pre-atomic run may have left a partial entry.
+                p.unlink(missing_ok=True)
         t = self.asr(wav, s, e)
-        p.write_text(json.dumps({"text": t}, ensure_ascii=False))
+        tmp = p.with_name(f".{p.name}.{os.getpid()}.tmp")
+        tmp.write_text(json.dumps({"text": t}, ensure_ascii=False))
+        os.replace(tmp, p)
         return t
 
 
-def build(root, out_dir, model_dir, cache_dir, limit=None):
+def _process_sample(task, deps):
+    """VAD + ASR one sample; only numeric rows leave the worker."""
+    from w5sg_census import vad_segments
+
+    seq, wav, lang, group = task
+    model, VADIterator, torch, sf, np, seg_asr = deps
+    try:
+        segs = vad_segments(Path(wav), model, VADIterator, torch, sf, np)
+    except Exception as exc:
+        return seq, wav, [], f"{type(exc).__name__}: {exc}", []
+
+    prefix = ""
+    records, asr_errors = [], []
+    for k, ((s, e), (feats, y, gap)) in enumerate(
+            zip(segs, events_to_rows(segs))):
+        try:
+            seg_text = seg_asr.get(wav, s, e)
+        except Exception as exc:
+            asr_errors.append((k, f"{type(exc).__name__}: {exc}"))
+            seg_text = ""
+        prefix = (prefix + " " + seg_text).strip() if lang == "en" \
+            else prefix + seg_text
+        records.append({"f": feats + text_feats(prefix, lang), "y": y,
+                        "gap": gap, "lang": lang, "g": group})
+    return seq, wav, records, None, asr_errors
+
+
+def _init_worker(model_dir, cache_dir):
+    """Load independent VAD/ASR instances per process (thread-safe scaling)."""
+    global _WORKER_DEPS
+    import numpy as np
+    import soundfile as sf
+    import torch
+    from silero_vad import load_silero_vad, VADIterator
+
+    torch.set_num_threads(1)
+    _WORKER_DEPS = (load_silero_vad(), VADIterator, torch, sf, np,
+                    SegASR(make_sherpa_asr(model_dir, threads=1), cache_dir))
+
+
+def _process_sample_worker(task):
+    if _WORKER_DEPS is None:
+        raise RuntimeError("ASR feature worker was not initialized")
+    return _process_sample(task, _WORKER_DEPS)
+
+
+def build(root, out_dir, model_dir, cache_dir, limit=None, workers=1):
     import numpy as np
     import soundfile as sf
     import torch
     from silero_vad import load_silero_vad, VADIterator
     from w4v3_common import resolve_root, iter_train_samples, assert_no_text
-    from w5sg_census import vad_segments, sample_language
+    from w5sg_census import sample_language
 
-    torch.set_num_threads(2)
-    model = load_silero_vad()
-    seg_asr = SegASR(make_sherpa_asr(model_dir), cache_dir)
     root = resolve_root(root)
     out_dir.mkdir(parents=True, exist_ok=True)
-    rows_f = (out_dir / "events_v1.jsonl").open("w")
-    n_ev = n_smp = 0
-    feat_names = None
+    tasks = []
     for smp in iter_train_samples(root):
-        if limit and n_smp >= limit:
+        if limit and len(tasks) >= limit:
             break
         wav = smp.get("wav")
         if not wav or not Path(wav).exists():
             continue
-        n_smp += 1
         lang = sample_language(smp)
         group = hashlib.sha256(str(smp.get("key", wav)).encode()).hexdigest()[:12]
-        try:
-            segs = vad_segments(Path(wav), model, VADIterator, torch, sf, np)
-        except Exception as e:
-            print(f"skip {wav}: {e}")
-            continue
-        prefix = ""
-        trows = events_to_rows(segs)
-        for k, ((s, e), (feats, y, gap)) in enumerate(zip(segs, trows)):
-            try:
-                seg_text = seg_asr.get(wav, s, e)
-            except Exception as ex:
-                print(f"asr fail {wav}[{k}]: {ex}")
-                seg_text = ""
-            prefix = (prefix + " " + seg_text).strip() if lang == "en" \
-                else prefix + seg_text
-            tf = text_feats(prefix, lang)
-            if feat_names is None:
-                feat_names = list(FEATS_SG) + F_TEXT_NAMES
-            rec = {"f": feats + tf, "y": y, "gap": gap, "lang": lang, "g": group}
-            assert_no_text(rec)
-            rows_f.write(json.dumps(rec) + "\n")
-            n_ev += 1
-        if n_smp % 200 == 0:
-            print(f"  {n_smp} samples / {n_ev} events")
-    rows_f.close()
-    meta = {"feats": feat_names, "n_events": n_ev, "n_samples": n_smp,
+        tasks.append((len(tasks), str(wav), lang, group))
+
+    workers = max(1, int(workers))
+    if workers == 1:
+        torch.set_num_threads(2)
+        deps = (load_silero_vad(), VADIterator, torch, sf, np,
+                SegASR(make_sherpa_asr(model_dir), cache_dir))
+        results = (_process_sample(task, deps) for task in tasks)
+        pool = None
+    else:
+        # spawn avoids inheriting unsafe torch/onnx runtime state. pool.map
+        # preserves loader order, so output is byte-stable across worker counts.
+        ctx = multiprocessing.get_context("spawn")
+        pool = concurrent.futures.ProcessPoolExecutor(
+            max_workers=workers, mp_context=ctx, initializer=_init_worker,
+            initargs=(str(model_dir), str(cache_dir)))
+        results = pool.map(_process_sample_worker, tasks, chunksize=1)
+
+    n_ev = 0
+    rows_f = (out_dir / "events_v1.jsonl").open("w")
+    try:
+        for done, (_seq, wav, records, error, asr_errors) in enumerate(results, 1):
+            if error is not None:
+                print(f"skip {wav}: {error}")
+                continue
+            for k, error in asr_errors:
+                print(f"asr fail {wav}[{k}]: {error}")
+            for rec in records:
+                assert_no_text(rec)
+                rows_f.write(json.dumps(rec) + "\n")
+                n_ev += 1
+            if done % 200 == 0:
+                print(f"  {done} samples / {n_ev} events")
+    finally:
+        if pool is not None:
+            pool.shutdown(wait=True, cancel_futures=True)
+        rows_f.close()
+
+    feat_names = list(FEATS_SG) + F_TEXT_NAMES
+    meta = {"feats": feat_names, "n_events": n_ev, "n_samples": len(tasks),
             "design": "w5_specgate_design.md §12", "cache_dir": str(cache_dir)}
     (out_dir / "events_v1_meta.json").write_text(json.dumps(meta, indent=2))
     print(json.dumps({k: v for k, v in meta.items() if k != "feats"}, indent=2))
@@ -159,6 +248,15 @@ def selftest():
     a1 = sa.get("w.wav", 0.0, 1.0)
     a2 = sa.get("w.wav", 0.0, 1.0)
     ck["cache_hit"] = a1 == a2 and len(calls) == 1
+    model_dir = Path(tempfile.mkdtemp())
+    (model_dir / "model.onnx").touch()
+    (model_dir / "model.int8.onnx").touch()
+    (model_dir / "tokens.txt").touch()
+    model_path, tokens_path = resolve_model_files(model_dir)
+    ck["int8_preferred"] = (model_path.name == "model.int8.onnx" and
+                             tokens_path.name == "tokens.txt")
+    (model_dir / "model.int8.onnx").unlink()
+    ck["full_fallback"] = resolve_model_files(model_dir)[0].name == "model.onnx"
     for k, v in ck.items():
         print(f"  selftest {k}: {'PASS' if v else 'FAIL'}")
     print("SELFTEST", "PASS" if all(ck.values()) else "FAIL")
@@ -169,17 +267,21 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--root", default="/root/autodl-tmp/HumDial_train")
     ap.add_argument("--out", default="exp/w5sg")
-    ap.add_argument("--model-dir", help="SenseVoice dir (model.onnx + tokens.txt)")
+    ap.add_argument("--model-dir", help="SenseVoice dir (model.int8.onnx or "
+                                        "model.onnx + tokens.txt)")
     ap.add_argument("--cache-dir", default="/root/autodl-tmp/w5sg_asr_cache")
     ap.add_argument("--limit", type=int)
+    ap.add_argument("--workers", type=int, default=1,
+                    help="sample processes (default 1; use 32 on a large CPU host)")
     ap.add_argument("--selftest", action="store_true")
     args = ap.parse_args()
     if args.selftest:
         return selftest()
     if not args.model_dir:
-        ap.error("--model-dir required (SenseVoice model.onnx + tokens.txt)")
+        ap.error("--model-dir required (SenseVoice model.int8.onnx or "
+                 "model.onnx + tokens.txt)")
     return build(args.root, Path(args.out), args.model_dir, args.cache_dir,
-                 args.limit)
+                 args.limit, args.workers)
 
 
 if __name__ == "__main__":

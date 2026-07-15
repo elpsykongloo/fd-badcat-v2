@@ -7,20 +7,20 @@
  "scenario": "fin_multi",
  "slots": {
   "account": "checking",
-  "threshold": "five hundred"
+  "threshold": "one thousand"
  },
  "slots_final": {
   "account": "checking",
-  "threshold": "one thousand"
+  "threshold": "five hundred"
  },
  "revisions": [
   {
    "slot": "threshold",
-   "old": "five hundred",
-   "new": "one thousand",
+   "old": "one thousand",
+   "new": "five hundred",
    "by": "user",
    "kind": "default",
-   "gap": 1.007
+   "gap": 2.387
   }
  ],
  "bystander": null,
@@ -29,17 +29,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Check my checking balance, and set an alert if it drops below five hundred.",
+   "text": "Check my checking balance, and set an alert if it drops below one thousand.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Wait — make it one thousand.",
-   "gap_before": 1.007
+   "text": "Wait — make it five hundred.",
+   "gap_before": 2.387
   }
  ],
  "events": [],
@@ -63,7 +63,7 @@
   {
    "fn": "set_alert",
    "args": {
-    "threshold": "one thousand",
+    "threshold": "five hundred",
     "account": "checking"
    }
   }
@@ -72,15 +72,15 @@
   "get_balance#GE197cf8": {
    "account": "checking"
   },
-  "set_alert#SEaf9704": {
-   "threshold": "one thousand",
+  "set_alert#SEe02b00": {
+   "threshold": "five hundred",
    "account": "checking"
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv01"
+  "user": "cv06",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -6,23 +6,23 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "蓝牙耳机",
+  "query": "跑步鞋",
   "qty": "两",
   "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
   "query": "跑步鞋",
   "qty": "两",
-  "address": "浦东新区世纪大道八号"
+  "address": "海淀区学院路一号"
  },
  "revisions": [
   {
-   "slot": "query",
-   "old": "蓝牙耳机",
-   "new": "跑步鞋",
+   "slot": "address",
+   "old": "浦东新区世纪大道八号",
+   "new": "海淀区学院路一号",
    "by": "user",
    "kind": "default",
-   "gap": 2.917
+   "gap": 2.726
   }
  ],
  "bystander": null,
@@ -31,27 +31,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv02",
    "lang": "zh",
-   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜跑步鞋，加两件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv02",
    "lang": "zh",
-   "text": "等等，改成跑步鞋。",
-   "gap_before": 2.917
+   "text": "等等，改成海淀区学院路一号。",
+   "gap_before": 2.726
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 1.348,
+   "offset": 2.779,
    "action": "revise",
    "role": "user",
-   "voice": "cv09",
-   "text": "等等，改成跑步鞋。"
+   "voice": "cv02",
+   "text": "等等，改成海淀区学院路一号。"
   }
  ],
  "profile": "default",
@@ -82,8 +82,8 @@
   {
    "fn": "place_order",
    "args": {
-    "cart_id": "AD757d29",
-    "address": "浦东新区世纪大道八号"
+    "cart_id": "ADb78713",
+    "address": "海淀区学院路一号"
    }
   }
  ],
@@ -91,19 +91,19 @@
   "search_catalog#SE28bd02": {
    "query": "跑步鞋"
   },
-  "add_item#AD757d29": {
+  "add_item#ADb78713": {
    "item_id": "SE28bd02",
    "qty": "两"
   },
-  "place_order#PL65bc85": {
-   "cart_id": "AD757d29",
-   "address": "浦东新区世纪大道八号"
+  "place_order#PL9713c2": {
+   "cart_id": "ADb78713",
+   "address": "海淀区学院路一号"
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv01"
+  "user": "cv02",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

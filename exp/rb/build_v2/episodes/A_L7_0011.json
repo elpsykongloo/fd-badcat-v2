@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "travel_multi",
  "slots": {
-  "origin": "Boston",
-  "destination": "Austin",
-  "date": "May third",
-  "country": "Japan",
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "May eighth",
+  "country": "Thailand",
   "nationality": "American"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Denver",
-  "date": "May third",
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "May eighth",
   "country": "Japan",
   "nationality": "American"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Austin",
-   "new": "Denver",
+   "slot": "country",
+   "old": "Thailand",
+   "new": "Japan",
    "by": "user",
    "kind": "default",
-   "gap": 1.292
+   "gap": 1.831
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Look up trains from Boston to Austin on May third, and also check if American citizens need a visa for Japan.",
+   "text": "Look up trains from Seattle to Atlanta on May eighth, and also check if American citizens need a visa for Thailand.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Wait — make it Denver.",
-   "gap_before": 1.292
+   "text": "Wait — make it Japan.",
+   "gap_before": 1.831
   }
  ],
  "events": [],
@@ -63,9 +63,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
-    "destination": "Denver",
-    "date": "May third"
+    "origin": "Seattle",
+    "destination": "Atlanta",
+    "date": "May eighth"
    }
   },
   {
@@ -78,19 +78,19 @@
  ],
  "gold_state": {
   "search_trains#SEc55351": {
-   "origin": "Boston",
-   "destination": "Denver",
-   "date": "May third"
+   "origin": "Seattle",
+   "destination": "Atlanta",
+   "date": "May eighth"
   },
-  "check_visa_rule#CH77c99d": {
+  "check_visa_rule#CH9b1f1c": {
    "country": "Japan",
    "nationality": "American"
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv04"
+  "user": "cv06",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

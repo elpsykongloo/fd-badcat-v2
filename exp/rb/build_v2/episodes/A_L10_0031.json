@@ -6,42 +6,42 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
-  "destination": "Austin",
+  "origin": "Chicago",
+  "destination": "Denver",
   "date": "May eighth",
   "seat_class": "first class",
-  "passenger": "Sam Rivera"
+  "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Austin",
+  "origin": "Chicago",
+  "destination": "Denver",
   "date": "May eighth",
   "seat_class": "first class",
-  "passenger": "Sam Rivera"
+  "passenger": "Alex Chen"
  },
  "revisions": [],
  "bystander": {
   "kind": "irrelevant",
-  "other": "Denver",
+  "other": "Atlanta",
   "state": "inflight",
-  "frac": 0.334
+  "frac": 0.137
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Find a train from Boston to Austin on May eighth, hold a first class seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Chicago to Denver on May eighth, hold a first class seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv04",
+   "voice": "cv01",
    "lang": "en",
    "text": "What do you want for dinner? Let's order in.",
-   "at_after_eou": 1.876
+   "at_after_eou": 1.737
   }
  ],
  "events": [],
@@ -60,8 +60,8 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
-    "destination": "Austin",
+    "origin": "Chicago",
+    "destination": "Denver",
     "date": "May eighth"
    }
   },
@@ -75,30 +75,30 @@
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HOa3394f",
-    "passenger": "Sam Rivera"
+    "hold_id": "HO8c172b",
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEfc7f27": {
-   "origin": "Boston",
-   "destination": "Austin",
+   "origin": "Chicago",
+   "destination": "Denver",
    "date": "May eighth"
   },
-  "hold_seat#HOa3394f": {
+  "hold_seat#HO8c172b": {
    "train_id": "SEfc7f27",
    "seat_class": "first class"
   },
-  "purchase_ticket#PUcb3a5c": {
-   "hold_id": "HOa3394f",
-   "passenger": "Sam Rivera"
+  "purchase_ticket#PU72d2e7": {
+   "hold_id": "HO8c172b",
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv04"
+  "user": "cv03",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

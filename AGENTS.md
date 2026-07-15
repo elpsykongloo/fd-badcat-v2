@@ -1,7 +1,7 @@
 # AGENTS.md — fd-badcat 持久记忆（所有代理必读）
 
 > 单一真相源。CLAUDE.md 指向本文件。有重大事实变更时**更新本文件**，不要另开新文档。
-> 最后更新：2026-07-16 (SG v1 已立项预注册〔specgate §12：ASR 同步门控，K2' 同门 0.50，`w5sg_asr_features.py` 交付，ASR 缓存仓外〕；**RB runner 交付**〔`rb_run.py`：臂 A+臂 B co-sim、oracle/llm 双决策器、OpDag 默认 on、FC 挂点，selftest 10/10〕；runner selftest 抓出生成器两 bug 已修 ⇒ **GEN_VERSION rb_v2.1.1、新构建目标 hash b30499ad9de7，旧 586da9e6a8c4 作废须重建（音频未合成，零浪费）**；沙盒 id 改按工具名内序铸造；待用户：重建 RB + SG v1 Phase-1 + TTS 接线)
+> 最后更新：2026-07-16 (SG v1 Phase-1 已实跑：15 维 OOF AUC 0.6646、precision@recall0.85=0.4419 < K2' 0.50 ⇒ **FAIL，按 §12 永久收口，零训练/FDB**；RB 已重建为 **rb_v2.1.1 / b30499ad9de7**，oracle dev 臂 A/B 完成且双跑逐字节一致；本轮纯文本/零 LLM，不依赖尚未就位的 TTS)
 
 ## 使命
 
@@ -125,6 +125,8 @@
   - **prompt v3 五靶**：`PROMPT_V3_ADDENDUM`（规则 10–14：后提交瘫痪/宣告即撤销/patch 对字段/自我打断替换/实体规范形态）`--prompt v3` 或 engine_cfg `prompt:"v3"` 显式装配；**30 调优子集已预注册** `exp/w3/tuning30.json`（21 rollback + 9 证据夹），协议 `docs/prompt_v3_five_targets.md`。驱动器新增 `--ids-file`。
   - **R18 缓存键审计闭合**：sha256(messages) 无 δ/档位/barrier 文本耦合；快照差异均属轨迹性合法臂差。
   - **剩余 GPU 项**（交用户，命令在 handoff §3）：30 子集现实档冒烟、现实档全量+δ 网格 A 档、投机 A/B+HumDial 门、DAG 链式冒烟、prompt v3 30 子集→冻结→全量+双档网格、分句 TTS live 增益（E5）。
+
+- **W5 SG v1 + RB v2.1.1 实跑归档（7/16；基线 b05e963）**：w5sg_asr_features.py 补齐与 backend 同款的 SenseVoice model.int8.onnx 优先/model.onnx fallback，并新增默认关闭的样本级 --workers 多进程路径与原子仓外缓存；6 样本/90 事件串行 vs 4 worker 输出逐字节同哈希，全量 64 worker。SG v1 得 **9,988 samples / 102,194 events / 15 维**；与 v0 的标签、gap、语言、group、前 6 维逐行 **0 mismatch**，schema/有限数/前缀单调违规均 0；events SHA256 79b8c3ed84a12f7766c10cd11ce49d99ab1c55ceda74d42e26f693427cb6f52d；仓外 ASR cache **102,194 全可解析 / 26 空 / 0 坏**。OOF probe：AUC **0.6646**、recall .8500 时 precision **0.4419 < K2' .50**（信息性 θ=0.3864257762969059，dispatch 77,872 / positives 40,482）⇒ **K2' FAIL；SG 线按 §12 永久收口，无 v2、零训练/stophead/引擎接线/FDB**。RB 重建 manifest：**rb_v2.1.1 / config b30499ad9de7 / content 9a735aecc07d**，1000 episodes（dev103/test897，revision .673，ids f70727a59d9f），1000/1000 episode hash 新值、旧 586... 残留 0，golden **144**，无音频（TTS 本轮不需要）。runner selftest **10/10**；oracle text dev A：n59/exact .7119/U .5518，B：n44/exact .5682/U .4503，两臂 wrong/unrepaired=0；低分集中在时序受限的 L5/L6/L8（oracle 只替代决策内容，δ/屏障/可逆性压力保留，不要求全金），报告+103 逐夹双跑逐字节一致。最终回归 **156 passed / 4 既有 warnings / 0 FAIL**；屏障探针 **VERDICT MET / 21-21 / 0 cache miss**。正式新增产物：exp/w5sg/{events_v1.jsonl,events_v1_meta.json,probe_report_v1.json}、exp/rb/build_v2/{manifest.json,rb_report_rbdev_oracle.json,rb_report_rbdev_oracle_b.json,results/{rbdev_oracle,rbdev_oracle_b}/} 与更新后的 exp/rb/golden/。
 
 ### 既往（W3 D1–D3 + D1.5/D2 定界批，2026-07-06）
 

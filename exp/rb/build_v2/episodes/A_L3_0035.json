@@ -8,25 +8,25 @@
  "slots": {
   "origin": "Chicago",
   "destination": "Austin",
-  "date": "May eighth",
-  "seat_class": "business",
+  "date": "June first",
+  "seat_class": "first class",
   "passenger": "Jordan Lee"
  },
  "slots_final": {
   "origin": "Chicago",
-  "destination": "Portland",
-  "date": "May eighth",
-  "seat_class": "business",
+  "destination": "Austin",
+  "date": "June first",
+  "seat_class": "coach",
   "passenger": "Jordan Lee"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Austin",
-   "new": "Portland",
+   "slot": "seat_class",
+   "old": "first class",
+   "new": "coach",
    "by": "user",
    "kind": "default",
-   "gap": 0.784
+   "gap": 0.672
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Find a train from Chicago to Austin on May eighth, hold a business seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Chicago to Austin on June first, hold a first class seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Wait — make it Portland.",
-   "gap_before": 0.784
+   "text": "Wait — make it coach.",
+   "gap_before": 0.672
   }
  ],
  "events": [],
@@ -65,21 +65,21 @@
    "fn": "search_trains",
    "args": {
     "origin": "Chicago",
-    "destination": "Portland",
-    "date": "May eighth"
+    "destination": "Austin",
+    "date": "June first"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE440330",
-    "seat_class": "business"
+    "seat_class": "coach"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO3192a3",
+    "hold_id": "HObc9923",
     "passenger": "Jordan Lee"
    }
   }
@@ -87,22 +87,22 @@
  "gold_state": {
   "search_trains#SE440330": {
    "origin": "Chicago",
-   "destination": "Portland",
-   "date": "May eighth"
+   "destination": "Austin",
+   "date": "June first"
   },
-  "hold_seat#HO3192a3": {
+  "hold_seat#HObc9923": {
    "train_id": "SE440330",
-   "seat_class": "business"
+   "seat_class": "coach"
   },
-  "purchase_ticket#PU3cae06": {
-   "hold_id": "HO3192a3",
+  "purchase_ticket#PU694403": {
+   "hold_id": "HObc9923",
    "passenger": "Jordan Lee"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv03"
+  "user": "cv05",
+  "bystander": "cv09"
  },
  "split": "dev",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -7,13 +7,13 @@
  "scenario": "ecom_chain",
  "slots": {
   "query": "保温杯",
-  "qty": "两",
-  "address": "海淀区学院路一号"
+  "qty": "一",
+  "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
   "query": "蓝牙耳机",
-  "qty": "两",
-  "address": "海淀区学院路一号"
+  "qty": "一",
+  "address": "浦东新区世纪大道八号"
  },
  "revisions": [
   {
@@ -22,7 +22,7 @@
    "new": "蓝牙耳机",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.736
+   "gap": 0.988
   }
  ],
  "bystander": null,
@@ -33,7 +33,7 @@
    "role": "user",
    "voice": "cv06",
    "lang": "zh",
-   "text": "帮我搜保温杯，加两件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜保温杯，加一件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
@@ -41,7 +41,7 @@
    "voice": "cv06",
    "lang": "zh",
    "text": "蓝牙耳机，改成蓝牙耳机。",
-   "gap_before": 0.736
+   "gap_before": 0.988
   }
  ],
  "events": [],
@@ -67,14 +67,14 @@
    "fn": "add_item",
    "args": {
     "item_id": "SEf7b6dc",
-    "qty": "两"
+    "qty": "一"
    }
   },
   {
    "fn": "place_order",
    "args": {
-    "cart_id": "ADec93ca",
-    "address": "海淀区学院路一号"
+    "cart_id": "ADa15f32",
+    "address": "浦东新区世纪大道八号"
    }
   }
  ],
@@ -82,19 +82,19 @@
   "search_catalog#SEf7b6dc": {
    "query": "蓝牙耳机"
   },
-  "add_item#ADec93ca": {
+  "add_item#ADa15f32": {
    "item_id": "SEf7b6dc",
-   "qty": "两"
+   "qty": "一"
   },
-  "place_order#PLa96358": {
-   "cart_id": "ADec93ca",
-   "address": "海淀区学院路一号"
+  "place_order#PL3569ca": {
+   "cart_id": "ADa15f32",
+   "address": "浦东新区世纪大道八号"
   }
  },
  "voices": {
   "user": "cv06",
-  "bystander": "cv05"
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

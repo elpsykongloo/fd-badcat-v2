@@ -6,10 +6,10 @@
  "lang": "zh",
  "scenario": "hou_single",
  "slots": {
-  "listing_id": "LST47"
+  "listing_id": "LST12"
  },
  "slots_final": {
-  "listing_id": "LST47"
+  "listing_id": "LST12"
  },
  "revisions": [],
  "bystander": null,
@@ -18,14 +18,14 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv07",
    "lang": "zh",
-   "text": "把编号LST47的房源收藏一下。",
+   "text": "把编号LST12的房源收藏一下。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv07",
    "lang": "zh",
    "text": "好了没？",
    "at_after_eou": 6.223
@@ -34,10 +34,10 @@
  "events": [
   {
    "state": "inflight",
-   "offset": 0.517,
+   "offset": 0.657,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv07",
    "text": "好了没？"
   }
  ],
@@ -54,19 +54,19 @@
   {
    "fn": "save_listing",
    "args": {
-    "listing_id": "LST47"
+    "listing_id": "LST12"
    }
   }
  ],
  "gold_state": {
   "save_listing#SAaeea52": {
-   "listing_id": "LST47"
+   "listing_id": "LST12"
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv07"
+  "user": "cv07",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

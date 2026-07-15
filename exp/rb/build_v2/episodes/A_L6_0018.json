@@ -6,33 +6,33 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "杭州",
-  "beds": "两居",
+  "city": "厦门",
+  "beds": "一居",
   "max_rent": "八千",
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "slots_final": {
   "city": "青岛",
-  "beds": "一居",
+  "beds": "两居",
   "max_rent": "八千",
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "revisions": [
   {
    "slot": "city",
-   "old": "杭州",
+   "old": "厦门",
    "new": "青岛",
    "by": "user",
    "kind": "default",
-   "gap": 1.489
+   "gap": 0.971
   },
   {
    "slot": "beds",
-   "old": "两居",
-   "new": "一居",
+   "old": "一居",
+   "new": "两居",
    "by": "user",
    "kind": "second",
-   "gap": 2.701
+   "gap": 2.54
   }
  ],
  "bystander": null,
@@ -41,24 +41,24 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "在杭州找两居、租金不超过八千的房子，约周六上午看房。",
+   "text": "在厦门找一居、租金不超过八千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv03",
    "lang": "zh",
    "text": "等等，改成青岛。",
-   "gap_before": 1.489
+   "gap_before": 0.971
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "还有，再改一下，要一居。",
-   "gap_before": 2.701
+   "text": "还有，再改一下，要两居。",
+   "gap_before": 2.54
   }
  ],
  "events": [],
@@ -77,7 +77,7 @@
    "fn": "search_rentals",
    "args": {
     "city": "青岛",
-    "beds": "一居",
+    "beds": "两居",
     "max_rent": "八千"
    }
   },
@@ -85,25 +85,25 @@
    "fn": "book_viewing",
    "args": {
     "listing_id": "SE70e0a1",
-    "slot": "周六上午"
+    "slot": "周日下午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SE70e0a1": {
    "city": "青岛",
-   "beds": "一居",
+   "beds": "两居",
    "max_rent": "八千"
   },
-  "book_viewing#BOdafca2": {
+  "book_viewing#BOd9f9da": {
    "listing_id": "SE70e0a1",
-   "slot": "周六上午"
+   "slot": "周日下午"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv05"
+  "user": "cv03",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Austin",
-  "date": "June first",
+  "origin": "Boston",
+  "destination": "Denver",
+  "date": "May third",
   "seat_class": "coach",
-  "passenger": "Sam Rivera"
+  "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Seattle",
-  "destination": "Atlanta",
+  "origin": "Boston",
+  "destination": "Denver",
   "date": "June first",
   "seat_class": "coach",
-  "passenger": "Sam Rivera"
+  "passenger": "Jordan Lee"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Austin",
-   "new": "Atlanta",
+   "slot": "date",
+   "old": "May third",
+   "new": "June first",
    "by": "user",
    "kind": "default",
-   "gap": 2.428
+   "gap": 2.874
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Find a train from Seattle to Austin on June first, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Boston to Denver on May third, hold a coach seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Wait — make it Atlanta.",
-   "gap_before": 2.428
+   "text": "Wait — make it June first.",
+   "gap_before": 2.874
   }
  ],
  "events": [],
@@ -64,8 +64,8 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
-    "destination": "Atlanta",
+    "origin": "Boston",
+    "destination": "Denver",
     "date": "June first"
    }
   },
@@ -79,30 +79,30 @@
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO755ace",
-    "passenger": "Sam Rivera"
+    "hold_id": "HO90d825",
+    "passenger": "Jordan Lee"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEffaa56": {
-   "origin": "Seattle",
-   "destination": "Atlanta",
+   "origin": "Boston",
+   "destination": "Denver",
    "date": "June first"
   },
-  "hold_seat#HO755ace": {
+  "hold_seat#HO90d825": {
    "train_id": "SEffaa56",
    "seat_class": "coach"
   },
-  "purchase_ticket#PUf36147": {
-   "hold_id": "HO755ace",
-   "passenger": "Sam Rivera"
+  "purchase_ticket#PU8aea3c": {
+   "hold_id": "HO90d825",
+   "passenger": "Jordan Lee"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv08"
+  "user": "cv03",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

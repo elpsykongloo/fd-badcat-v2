@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
-  "destination": "Denver",
+  "origin": "Chicago",
+  "destination": "Portland",
   "date": "May third",
   "seat_class": "coach",
   "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Denver",
+  "origin": "Chicago",
+  "destination": "Austin",
   "date": "May third",
-  "seat_class": "first class",
+  "seat_class": "coach",
   "passenger": "Alex Chen"
  },
  "revisions": [
   {
-   "slot": "seat_class",
-   "old": "coach",
-   "new": "first class",
+   "slot": "destination",
+   "old": "Portland",
+   "new": "Austin",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.854
+   "gap": 0.7
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Find a train from Boston to Denver on May third, hold a coach seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Chicago to Portland on May third, hold a coach seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv07",
    "lang": "en",
-   "text": "first class — change it to first class.",
-   "gap_before": 0.854
+   "text": "Austin — change it to Austin.",
+   "gap_before": 0.7
   }
  ],
  "events": [],
@@ -64,8 +64,8 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
-    "destination": "Denver",
+    "origin": "Chicago",
+    "destination": "Austin",
     "date": "May third"
    }
   },
@@ -73,36 +73,36 @@
    "fn": "hold_seat",
    "args": {
     "train_id": "SE58c780",
-    "seat_class": "first class"
+    "seat_class": "coach"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HOf78d8f",
+    "hold_id": "HO9b1faa",
     "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE58c780": {
-   "origin": "Boston",
-   "destination": "Denver",
+   "origin": "Chicago",
+   "destination": "Austin",
    "date": "May third"
   },
-  "hold_seat#HOf78d8f": {
+  "hold_seat#HO9b1faa": {
    "train_id": "SE58c780",
-   "seat_class": "first class"
+   "seat_class": "coach"
   },
-  "purchase_ticket#PUd2ce71": {
-   "hold_id": "HOf78d8f",
+  "purchase_ticket#PUdc2709": {
+   "hold_id": "HO9b1faa",
    "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv09",
+  "user": "cv07",
   "bystander": "cv03"
  },
  "split": "dev",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

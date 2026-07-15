@@ -9,13 +9,13 @@
   "city": "厦门",
   "beds": "一居",
   "max_rent": "六千",
-  "slot": "周日下午"
+  "slot": "周六上午"
  },
  "slots_final": {
   "city": "厦门",
   "beds": "一居",
   "max_rent": "六千",
-  "slot": "周日下午"
+  "slot": "周六上午"
  },
  "revisions": [],
  "bystander": null,
@@ -24,26 +24,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv07",
    "lang": "zh",
-   "text": "在厦门找一居、租金不超过六千的房子，约周日下午看房。",
+   "text": "在厦门找一居、租金不超过六千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv07",
    "lang": "zh",
    "text": "算了，先别办了。",
-   "at_after_eou": 1.862
+   "at_after_eou": 1.787
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.202,
+   "offset": 0.338,
    "action": "cancel",
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv07",
    "text": "算了，先别办了。"
   }
  ],
@@ -60,9 +60,9 @@
  "gold_calls": [],
  "gold_state": {},
  "voices": {
-  "user": "cv01",
-  "bystander": "cv03"
+  "user": "cv07",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

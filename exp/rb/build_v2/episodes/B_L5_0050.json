@@ -6,25 +6,25 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "厦门",
-  "beds": "一居",
+  "city": "杭州",
+  "beds": "两居",
   "max_rent": "六千",
-  "slot": "周六上午"
+  "slot": "周日下午"
  },
  "slots_final": {
-  "city": "厦门",
+  "city": "杭州",
   "beds": "一居",
-  "max_rent": "八千",
-  "slot": "周六上午"
+  "max_rent": "六千",
+  "slot": "周日下午"
  },
  "revisions": [
   {
-   "slot": "max_rent",
-   "old": "六千",
-   "new": "八千",
+   "slot": "beds",
+   "old": "两居",
+   "new": "一居",
    "by": "user",
    "kind": "default",
-   "gap": 2.929
+   "gap": 2.951
   }
  ],
  "bystander": null,
@@ -33,27 +33,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "在厦门找一居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在杭州找两居、租金不超过六千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "等等，改成八千。",
-   "gap_before": 2.929
+   "text": "等等，改成一居。",
+   "gap_before": 2.951
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 2.599,
+   "offset": 2.0,
    "action": "revise",
    "role": "user",
-   "voice": "cv03",
-   "text": "等等，改成八千。"
+   "voice": "cv04",
+   "text": "等等，改成一居。"
   }
  ],
  "profile": "default",
@@ -70,34 +70,34 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "厦门",
+    "city": "杭州",
     "beds": "一居",
-    "max_rent": "八千"
+    "max_rent": "六千"
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SE393864",
-    "slot": "周六上午"
+    "slot": "周日下午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SE393864": {
-   "city": "厦门",
+   "city": "杭州",
    "beds": "一居",
-   "max_rent": "八千"
+   "max_rent": "六千"
   },
-  "book_viewing#BOa3193c": {
+  "book_viewing#BO6322e3": {
    "listing_id": "SE393864",
-   "slot": "周六上午"
+   "slot": "周日下午"
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv08"
+  "user": "cv04",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

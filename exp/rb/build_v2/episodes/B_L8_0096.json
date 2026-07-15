@@ -7,19 +7,19 @@
  "scenario": "ecom_chain",
  "slots": {
   "query": "蓝牙耳机",
-  "qty": "两",
-  "address": "海淀区学院路一号"
+  "qty": "一",
+  "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
-  "query": "保温杯",
-  "qty": "两",
-  "address": "海淀区学院路一号"
+  "query": "跑步鞋",
+  "qty": "一",
+  "address": "浦东新区世纪大道八号"
  },
  "revisions": [
   {
    "slot": "query",
    "old": "蓝牙耳机",
-   "new": "保温杯",
+   "new": "跑步鞋",
    "by": "user",
    "kind": "default",
    "gap": null
@@ -31,27 +31,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "等等，改成保温杯。",
-   "at_after_eou": 1.964
+   "text": "等等，改成跑步鞋。",
+   "at_after_eou": 1.746
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.366,
+   "offset": 0.53,
    "action": "revise",
    "role": "user",
-   "voice": "cv07",
-   "text": "等等，改成保温杯。"
+   "voice": "cv06",
+   "text": "等等，改成跑步鞋。"
   }
  ],
  "profile": "default",
@@ -69,41 +69,41 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "保温杯"
+    "query": "跑步鞋"
    }
   },
   {
    "fn": "add_item",
    "args": {
     "item_id": "SEb05c53",
-    "qty": "两"
+    "qty": "一"
    }
   },
   {
    "fn": "place_order",
    "args": {
-    "cart_id": "AD72adce",
-    "address": "海淀区学院路一号"
+    "cart_id": "ADdaa91f",
+    "address": "浦东新区世纪大道八号"
    }
   }
  ],
  "gold_state": {
   "search_catalog#SEb05c53": {
-   "query": "保温杯"
+   "query": "跑步鞋"
   },
-  "add_item#AD72adce": {
+  "add_item#ADdaa91f": {
    "item_id": "SEb05c53",
-   "qty": "两"
+   "qty": "一"
   },
-  "place_order#PL2ea556": {
-   "cart_id": "AD72adce",
-   "address": "海淀区学院路一号"
+  "place_order#PLe6c263": {
+   "cart_id": "ADdaa91f",
+   "address": "浦东新区世纪大道八号"
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv08"
+  "user": "cv06",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

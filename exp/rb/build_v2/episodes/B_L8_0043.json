@@ -6,18 +6,18 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
-  "destination": "Denver",
+  "origin": "Chicago",
+  "destination": "Atlanta",
   "date": "June first",
   "seat_class": "business",
-  "passenger": "Alex Chen"
+  "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Denver",
+  "origin": "Chicago",
+  "destination": "Atlanta",
   "date": "June first",
   "seat_class": "business",
-  "passenger": "Alex Chen"
+  "passenger": "Jordan Lee"
  },
  "revisions": [],
  "bystander": null,
@@ -26,26 +26,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Find a train from Boston to Denver on June first, hold a business seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Chicago to Atlanta on June first, hold a business seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv05",
    "lang": "en",
    "text": "Actually, hold off, don't do it yet.",
-   "at_after_eou": 1.758
+   "at_after_eou": 1.722
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.717,
+   "offset": 0.339,
    "action": "cancel",
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv05",
    "text": "Actually, hold off, don't do it yet."
   }
  ],
@@ -63,9 +63,9 @@
  "gold_calls": [],
  "gold_state": {},
  "voices": {
-  "user": "cv09",
-  "bystander": "cv01"
+  "user": "cv05",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

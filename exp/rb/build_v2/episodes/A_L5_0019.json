@@ -7,26 +7,26 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Chicago",
-  "destination": "Atlanta",
+  "destination": "Denver",
   "date": "May eighth",
-  "seat_class": "first class",
-  "passenger": "Jordan Lee"
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
  },
  "slots_final": {
   "origin": "Chicago",
-  "destination": "Atlanta",
-  "date": "June first",
-  "seat_class": "first class",
-  "passenger": "Jordan Lee"
+  "destination": "Denver",
+  "date": "May eighth",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
  },
  "revisions": [
   {
-   "slot": "date",
-   "old": "May eighth",
-   "new": "June first",
+   "slot": "seat_class",
+   "old": "business",
+   "new": "coach",
    "by": "user",
    "kind": "default",
-   "gap": 2.92
+   "gap": 2.65
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Find a train from Chicago to Atlanta on May eighth, hold a first class seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Chicago to Denver on May eighth, hold a business seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Wait — make it June first.",
-   "gap_before": 2.92
+   "text": "Wait — make it coach.",
+   "gap_before": 2.65
   }
  ],
  "events": [],
@@ -65,44 +65,44 @@
    "fn": "search_trains",
    "args": {
     "origin": "Chicago",
-    "destination": "Atlanta",
-    "date": "June first"
+    "destination": "Denver",
+    "date": "May eighth"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SE820fef",
-    "seat_class": "first class"
+    "seat_class": "coach"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HOf2272d",
-    "passenger": "Jordan Lee"
+    "hold_id": "HO203da3",
+    "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE820fef": {
    "origin": "Chicago",
-   "destination": "Atlanta",
-   "date": "June first"
+   "destination": "Denver",
+   "date": "May eighth"
   },
-  "hold_seat#HOf2272d": {
+  "hold_seat#HO203da3": {
    "train_id": "SE820fef",
-   "seat_class": "first class"
+   "seat_class": "coach"
   },
-  "purchase_ticket#PU82327a": {
-   "hold_id": "HOf2272d",
-   "passenger": "Jordan Lee"
+  "purchase_ticket#PUb4c378": {
+   "hold_id": "HO203da3",
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv08"
+  "user": "cv09",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

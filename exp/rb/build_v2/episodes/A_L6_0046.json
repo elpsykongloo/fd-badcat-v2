@@ -7,32 +7,32 @@
  "scenario": "hou_chain",
  "slots": {
   "city": "厦门",
-  "beds": "一居",
-  "max_rent": "六千",
-  "slot": "周六上午"
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周日下午"
  },
  "slots_final": {
-  "city": "成都",
-  "beds": "两居",
-  "max_rent": "六千",
-  "slot": "周六上午"
+  "city": "青岛",
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周日下午"
  },
  "revisions": [
   {
    "slot": "city",
    "old": "厦门",
-   "new": "成都",
+   "new": "青岛",
    "by": "user",
    "kind": "default",
-   "gap": 1.493
+   "gap": 1.061
   },
   {
    "slot": "beds",
-   "old": "一居",
-   "new": "两居",
+   "old": "两居",
+   "new": "一居",
    "by": "user",
    "kind": "second",
-   "gap": 2.519
+   "gap": 2.648
   }
  ],
  "bystander": null,
@@ -41,24 +41,24 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv08",
    "lang": "zh",
-   "text": "在厦门找一居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在厦门找两居、租金不超过八千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv08",
    "lang": "zh",
-   "text": "等等，改成成都。",
-   "gap_before": 1.493
+   "text": "等等，改成青岛。",
+   "gap_before": 1.061
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv08",
    "lang": "zh",
-   "text": "还有，再改一下，要两居。",
-   "gap_before": 2.519
+   "text": "还有，再改一下，要一居。",
+   "gap_before": 2.648
   }
  ],
  "events": [],
@@ -76,34 +76,34 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "成都",
-    "beds": "两居",
-    "max_rent": "六千"
+    "city": "青岛",
+    "beds": "一居",
+    "max_rent": "八千"
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SEeab041",
-    "slot": "周六上午"
+    "slot": "周日下午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SEeab041": {
-   "city": "成都",
-   "beds": "两居",
-   "max_rent": "六千"
+   "city": "青岛",
+   "beds": "一居",
+   "max_rent": "八千"
   },
-  "book_viewing#BO783077": {
+  "book_viewing#BOaad4c0": {
    "listing_id": "SEeab041",
-   "slot": "周六上午"
+   "slot": "周日下午"
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv07"
+  "user": "cv08",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

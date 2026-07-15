@@ -7,7 +7,7 @@
  "scenario": "ecom_multi",
  "slots": {
   "query": "保温杯",
-  "item_id": "B205"
+  "item_id": "A100"
  },
  "slots_final": {
   "query": "保温杯",
@@ -16,11 +16,11 @@
  "revisions": [
   {
    "slot": "item_id",
-   "old": "B205",
+   "old": "A100",
    "new": "C330",
    "by": "user",
    "kind": "default",
-   "gap": 1.886
+   "gap": 2.413
   }
  ],
  "bystander": null,
@@ -29,17 +29,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "搜一下保温杯，再看看编号B205还有没有货。",
+   "text": "搜一下保温杯，再看看编号A100还有没有货。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv06",
    "lang": "zh",
    "text": "等等，改成C330。",
-   "gap_before": 1.886
+   "gap_before": 2.413
   }
  ],
  "events": [],
@@ -71,14 +71,14 @@
   "search_catalog#SE66822c": {
    "query": "保温杯"
   },
-  "check_stock#CH9c15aa": {
+  "check_stock#CH3e96e0": {
    "item_id": "C330"
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv07"
+  "user": "cv06",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

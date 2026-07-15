@@ -7,26 +7,26 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Boston",
-  "destination": "Denver",
-  "date": "May third",
-  "seat_class": "first class",
-  "passenger": "Alex Chen"
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
  },
  "slots_final": {
   "origin": "Boston",
   "destination": "Atlanta",
   "date": "May third",
-  "seat_class": "first class",
-  "passenger": "Alex Chen"
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Denver",
-   "new": "Atlanta",
+   "slot": "date",
+   "old": "June first",
+   "new": "May third",
    "by": "user",
    "kind": "default",
-   "gap": 3.308
+   "gap": 2.777
   }
  ],
  "bystander": null,
@@ -35,27 +35,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Find a train from Boston to Denver on May third, hold a first class seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Boston to Atlanta on June first, hold a coach seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Wait — make it Atlanta.",
-   "gap_before": 3.308
+   "text": "Wait — make it May third.",
+   "gap_before": 2.777
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.768,
+   "offset": 0.646,
    "action": "revise",
    "role": "user",
-   "voice": "cv08",
-   "text": "Wait — make it Atlanta."
+   "voice": "cv02",
+   "text": "Wait — make it May third."
   }
  ],
  "profile": "default",
@@ -82,14 +82,14 @@
    "fn": "hold_seat",
    "args": {
     "train_id": "SE80cecd",
-    "seat_class": "first class"
+    "seat_class": "coach"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO3c1eb0",
-    "passenger": "Alex Chen"
+    "hold_id": "HOfb7452",
+    "passenger": "Sam Rivera"
    }
   }
  ],
@@ -99,19 +99,19 @@
    "destination": "Atlanta",
    "date": "May third"
   },
-  "hold_seat#HO3c1eb0": {
+  "hold_seat#HOfb7452": {
    "train_id": "SE80cecd",
-   "seat_class": "first class"
+   "seat_class": "coach"
   },
-  "purchase_ticket#PU90083a": {
-   "hold_id": "HO3c1eb0",
-   "passenger": "Alex Chen"
+  "purchase_ticket#PU47abb0": {
+   "hold_id": "HOfb7452",
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv01"
+  "user": "cv02",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

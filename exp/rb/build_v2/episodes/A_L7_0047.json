@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "travel_multi",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Atlanta",
+  "origin": "Chicago",
+  "destination": "Portland",
   "date": "May third",
-  "country": "Thailand",
+  "country": "Japan",
   "nationality": "American"
  },
  "slots_final": {
-  "origin": "Seattle",
-  "destination": "Austin",
+  "origin": "Chicago",
+  "destination": "Portland",
   "date": "May third",
   "country": "Thailand",
   "nationality": "American"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Atlanta",
-   "new": "Austin",
+   "slot": "country",
+   "old": "Japan",
+   "new": "Thailand",
    "by": "user",
    "kind": "default",
-   "gap": 1.963
+   "gap": 1.187
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Look up trains from Seattle to Atlanta on May third, and also check if American citizens need a visa for Thailand.",
+   "text": "Look up trains from Chicago to Portland on May third, and also check if American citizens need a visa for Japan.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Wait — make it Austin.",
-   "gap_before": 1.963
+   "text": "Wait — make it Thailand.",
+   "gap_before": 1.187
   }
  ],
  "events": [],
@@ -63,8 +63,8 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
-    "destination": "Austin",
+    "origin": "Chicago",
+    "destination": "Portland",
     "date": "May third"
    }
   },
@@ -78,19 +78,19 @@
  ],
  "gold_state": {
   "search_trains#SE9ccd87": {
-   "origin": "Seattle",
-   "destination": "Austin",
+   "origin": "Chicago",
+   "destination": "Portland",
    "date": "May third"
   },
-  "check_visa_rule#CHb7193b": {
+  "check_visa_rule#CH4f47cc": {
    "country": "Thailand",
    "nationality": "American"
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv08"
+  "user": "cv02",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

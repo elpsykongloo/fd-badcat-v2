@@ -7,23 +7,23 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Seattle",
-  "destination": "Portland",
+  "destination": "Austin",
   "date": "May third",
   "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "passenger": "Alex Chen"
  },
  "slots_final": {
   "origin": "Seattle",
-  "destination": "Atlanta",
+  "destination": "Denver",
   "date": "May third",
   "seat_class": "business",
-  "passenger": "Sam Rivera"
+  "passenger": "Alex Chen"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Portland",
-   "new": "Atlanta",
+   "old": "Austin",
+   "new": "Denver",
    "by": "user",
    "kind": "default",
    "gap": null
@@ -35,27 +35,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Find a train from Seattle to Portland on May third, hold a business seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Seattle to Austin on May third, hold a business seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Wait — make it Atlanta.",
-   "at_after_eou": 2.105
+   "text": "Wait — make it Denver.",
+   "at_after_eou": 2.07
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.248,
+   "offset": 0.257,
    "action": "revise",
    "role": "user",
-   "voice": "cv09",
-   "text": "Wait — make it Atlanta."
+   "voice": "cv05",
+   "text": "Wait — make it Denver."
   }
  ],
  "profile": "default",
@@ -74,7 +74,7 @@
    "fn": "search_trains",
    "args": {
     "origin": "Seattle",
-    "destination": "Atlanta",
+    "destination": "Denver",
     "date": "May third"
    }
   },
@@ -88,30 +88,30 @@
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO332468",
-    "passenger": "Sam Rivera"
+    "hold_id": "HOf7af93",
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEff1429": {
    "origin": "Seattle",
-   "destination": "Atlanta",
+   "destination": "Denver",
    "date": "May third"
   },
-  "hold_seat#HO332468": {
+  "hold_seat#HOf7af93": {
    "train_id": "SEff1429",
    "seat_class": "business"
   },
-  "purchase_ticket#PU3709aa": {
-   "hold_id": "HO332468",
-   "passenger": "Sam Rivera"
+  "purchase_ticket#PUdd32a1": {
+   "hold_id": "HOf7af93",
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv09",
+  "user": "cv05",
   "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

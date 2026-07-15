@@ -6,14 +6,14 @@
  "lang": "zh",
  "scenario": "hou_multi",
  "slots": {
-  "city": "青岛",
+  "city": "厦门",
   "beds": "两居",
   "max_rent": "八千",
   "from_addr": "中关村",
-  "to_addr": "西二旗"
+  "to_addr": "国贸"
  },
  "slots_final": {
-  "city": "青岛",
+  "city": "成都",
   "beds": "两居",
   "max_rent": "八千",
   "from_addr": "中关村",
@@ -21,12 +21,12 @@
  },
  "revisions": [
   {
-   "slot": "to_addr",
-   "old": "西二旗",
-   "new": "国贸",
+   "slot": "city",
+   "old": "厦门",
+   "new": "成都",
    "by": "user",
    "kind": "default",
-   "gap": 2.483
+   "gap": 1.182
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "在青岛找两居、不超过八千的房子，再算下从中关村到西二旗的通勤时间。",
+   "text": "在厦门找两居、不超过八千的房子，再算下从中关村到国贸的通勤时间。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "等等，改成国贸。",
-   "gap_before": 2.483
+   "text": "等等，改成成都。",
+   "gap_before": 1.182
   }
  ],
  "events": [],
@@ -63,7 +63,7 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "青岛",
+    "city": "成都",
     "beds": "两居",
     "max_rent": "八千"
    }
@@ -78,19 +78,19 @@
  ],
  "gold_state": {
   "search_rentals#SE9829b7": {
-   "city": "青岛",
+   "city": "成都",
    "beds": "两居",
    "max_rent": "八千"
   },
-  "get_commute_time#GE45f6e5": {
+  "get_commute_time#GE9028b3": {
    "from_addr": "中关村",
    "to_addr": "国贸"
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv06"
+  "user": "cv04",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "travel_multi",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Denver",
-  "date": "May eighth",
-  "country": "Thailand",
-  "nationality": "American"
- },
- "slots_final": {
-  "origin": "Seattle",
+  "origin": "Boston",
   "destination": "Denver",
   "date": "May eighth",
   "country": "Japan",
   "nationality": "American"
  },
+ "slots_final": {
+  "origin": "Boston",
+  "destination": "Denver",
+  "date": "May eighth",
+  "country": "Thailand",
+  "nationality": "American"
+ },
  "revisions": [
   {
    "slot": "country",
-   "old": "Thailand",
-   "new": "Japan",
+   "old": "Japan",
+   "new": "Thailand",
    "by": "user",
    "kind": "default",
-   "gap": 2.275
+   "gap": 2.131
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Look up trains from Seattle to Denver on May eighth, and also check if American citizens need a visa for Thailand.",
+   "text": "Look up trains from Boston to Denver on May eighth, and also check if American citizens need a visa for Japan.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Wait — make it Japan.",
-   "gap_before": 2.275
+   "text": "Wait — make it Thailand.",
+   "gap_before": 2.131
   }
  ],
  "events": [],
@@ -63,7 +63,7 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
+    "origin": "Boston",
     "destination": "Denver",
     "date": "May eighth"
    }
@@ -71,26 +71,26 @@
   {
    "fn": "check_visa_rule",
    "args": {
-    "country": "Japan",
+    "country": "Thailand",
     "nationality": "American"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE49d0a7": {
-   "origin": "Seattle",
+   "origin": "Boston",
    "destination": "Denver",
    "date": "May eighth"
   },
-  "check_visa_rule#CHcd84b9": {
-   "country": "Japan",
+  "check_visa_rule#CH4a1211": {
+   "country": "Thailand",
    "nationality": "American"
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv08"
+  "user": "cv05",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

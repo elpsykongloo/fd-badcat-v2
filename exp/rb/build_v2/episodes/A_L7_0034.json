@@ -6,15 +6,15 @@
  "lang": "zh",
  "scenario": "hou_multi",
  "slots": {
-  "city": "杭州",
-  "beds": "两居",
+  "city": "成都",
+  "beds": "一居",
   "max_rent": "八千",
   "from_addr": "望京",
   "to_addr": "国贸"
  },
  "slots_final": {
-  "city": "杭州",
-  "beds": "两居",
+  "city": "成都",
+  "beds": "一居",
   "max_rent": "八千",
   "from_addr": "望京",
   "to_addr": "西二旗"
@@ -26,7 +26,7 @@
    "new": "西二旗",
    "by": "user",
    "kind": "default",
-   "gap": 1.862
+   "gap": 1.484
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv07",
    "lang": "zh",
-   "text": "在杭州找两居、不超过八千的房子，再算下从望京到国贸的通勤时间。",
+   "text": "在成都找一居、不超过八千的房子，再算下从望京到国贸的通勤时间。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv07",
    "lang": "zh",
    "text": "等等，改成西二旗。",
-   "gap_before": 1.862
+   "gap_before": 1.484
   }
  ],
  "events": [],
@@ -63,8 +63,8 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "杭州",
-    "beds": "两居",
+    "city": "成都",
+    "beds": "一居",
     "max_rent": "八千"
    }
   },
@@ -78,19 +78,19 @@
  ],
  "gold_state": {
   "search_rentals#SE8ccbb3": {
-   "city": "杭州",
-   "beds": "两居",
+   "city": "成都",
+   "beds": "一居",
    "max_rent": "八千"
   },
-  "get_commute_time#GE719fdc": {
+  "get_commute_time#GE931fc8": {
    "from_addr": "望京",
    "to_addr": "西二旗"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv07"
+  "user": "cv07",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

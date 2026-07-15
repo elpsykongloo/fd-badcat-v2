@@ -10,14 +10,14 @@
   "from_cur": "dollars",
   "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "slots_final": {
   "amount": "eight hundred",
   "from_cur": "dollars",
   "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "savings"
+  "to_acct": "rent account"
  },
  "revisions": [
   {
@@ -35,26 +35,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Get a quote for three thousand dollars to yen, then transfer three thousand from checking to savings.",
+   "text": "Get a quote for three thousand dollars to yen, then transfer three thousand from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv04",
    "lang": "en",
    "text": "Wait — make it eight hundred.",
-   "at_after_eou": 1.954
+   "at_after_eou": 1.816
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.644,
+   "offset": 0.412,
    "action": "revise",
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv04",
    "text": "Wait — make it eight hundred."
   }
  ],
@@ -81,7 +81,7 @@
    "fn": "transfer_funds",
    "args": {
     "from_acct": "checking",
-    "to_acct": "savings",
+    "to_acct": "rent account",
     "amount": "eight hundred"
    }
   }
@@ -92,16 +92,16 @@
    "from_cur": "dollars",
    "to_cur": "yen"
   },
-  "transfer_funds#TR10c5ee": {
+  "transfer_funds#TR0f03d9": {
    "from_acct": "checking",
-   "to_acct": "savings",
+   "to_acct": "rent account",
    "amount": "eight hundred"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv06"
+  "user": "cv04",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

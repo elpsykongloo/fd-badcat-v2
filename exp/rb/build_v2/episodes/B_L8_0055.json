@@ -6,18 +6,18 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
-  "destination": "Austin",
-  "date": "May third",
-  "seat_class": "coach",
-  "passenger": "Sam Rivera"
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Austin",
-  "date": "May third",
-  "seat_class": "coach",
-  "passenger": "Sam Rivera"
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
  },
  "revisions": [],
  "bystander": null,
@@ -26,26 +26,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Find a train from Boston to Austin on May third, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Chicago to Atlanta on June first, hold a first class seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv09",
    "lang": "en",
    "text": "Actually, hold off, don't do it yet.",
-   "at_after_eou": 1.904
+   "at_after_eou": 1.953
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.725,
+   "offset": 0.493,
    "action": "cancel",
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv09",
    "text": "Actually, hold off, don't do it yet."
   }
  ],
@@ -63,9 +63,9 @@
  "gold_calls": [],
  "gold_state": {},
  "voices": {
-  "user": "cv05",
-  "bystander": "cv07"
+  "user": "cv09",
+  "bystander": "cv06"
  },
  "split": "dev",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

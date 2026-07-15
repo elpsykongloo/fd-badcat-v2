@@ -7,12 +7,12 @@
  "scenario": "ecom_chain",
  "slots": {
   "query": "跑步鞋",
-  "qty": "一",
+  "qty": "两",
   "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
   "query": "蓝牙耳机",
-  "qty": "两",
+  "qty": "一",
   "address": "浦东新区世纪大道八号"
  },
  "revisions": [
@@ -22,15 +22,15 @@
    "new": "蓝牙耳机",
    "by": "user",
    "kind": "default",
-   "gap": 0.746
+   "gap": 1.041
   },
   {
    "slot": "qty",
-   "old": "一",
-   "new": "两",
+   "old": "两",
+   "new": "一",
    "by": "user",
    "kind": "second",
-   "gap": 2.848
+   "gap": 2.759
   }
  ],
  "bystander": null,
@@ -39,41 +39,41 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "帮我搜跑步鞋，加一件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜跑步鞋，加两件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv05",
    "lang": "zh",
    "text": "等等，改成蓝牙耳机。",
-   "gap_before": 0.746
+   "gap_before": 1.041
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv05",
    "lang": "zh",
-   "text": "还有，再改一下，要两。",
-   "gap_before": 2.848
+   "text": "还有，再改一下，要一。",
+   "gap_before": 2.759
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.738,
+   "offset": 0.807,
    "action": "revise",
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv05",
    "text": "等等，改成蓝牙耳机。"
   },
   {
    "state": "committed",
-   "offset": 1.114,
+   "offset": 0.634,
    "action": "revise",
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv05",
    "text": "等等，改成蓝牙耳机。"
   }
  ],
@@ -99,13 +99,13 @@
    "fn": "add_item",
    "args": {
     "item_id": "SE154785",
-    "qty": "两"
+    "qty": "一"
    }
   },
   {
    "fn": "place_order",
    "args": {
-    "cart_id": "ADd3cea3",
+    "cart_id": "AD2dce47",
     "address": "浦东新区世纪大道八号"
    }
   }
@@ -114,19 +114,19 @@
   "search_catalog#SE154785": {
    "query": "蓝牙耳机"
   },
-  "add_item#ADd3cea3": {
+  "add_item#AD2dce47": {
    "item_id": "SE154785",
-   "qty": "两"
+   "qty": "一"
   },
-  "place_order#PL6c0d79": {
-   "cart_id": "ADd3cea3",
+  "place_order#PLa5be43": {
+   "cart_id": "AD2dce47",
    "address": "浦东新区世纪大道八号"
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv05"
+  "user": "cv05",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

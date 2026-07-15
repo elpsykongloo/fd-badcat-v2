@@ -6,23 +6,23 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "蓝牙耳机",
-  "qty": "两",
+  "query": "跑步鞋",
+  "qty": "一",
   "address": "海淀区学院路一号"
  },
  "slots_final": {
-  "query": "保温杯",
-  "qty": "两",
+  "query": "蓝牙耳机",
+  "qty": "一",
   "address": "海淀区学院路一号"
  },
  "revisions": [
   {
    "slot": "query",
-   "old": "蓝牙耳机",
-   "new": "保温杯",
+   "old": "跑步鞋",
+   "new": "蓝牙耳机",
    "by": "user",
    "kind": "value_first",
-   "gap": 1.125
+   "gap": 1.12
   }
  ],
  "bystander": null,
@@ -31,17 +31,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜跑步鞋，加一件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv06",
    "lang": "zh",
-   "text": "保温杯，改成保温杯。",
-   "gap_before": 1.125
+   "text": "蓝牙耳机，改成蓝牙耳机。",
+   "gap_before": 1.12
   }
  ],
  "events": [],
@@ -60,41 +60,41 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "保温杯"
+    "query": "蓝牙耳机"
    }
   },
   {
    "fn": "add_item",
    "args": {
     "item_id": "SEe23fa7",
-    "qty": "两"
+    "qty": "一"
    }
   },
   {
    "fn": "place_order",
    "args": {
-    "cart_id": "ADc13557",
+    "cart_id": "AD0c5395",
     "address": "海淀区学院路一号"
    }
   }
  ],
  "gold_state": {
   "search_catalog#SEe23fa7": {
-   "query": "保温杯"
+   "query": "蓝牙耳机"
   },
-  "add_item#ADc13557": {
+  "add_item#AD0c5395": {
    "item_id": "SEe23fa7",
-   "qty": "两"
+   "qty": "一"
   },
-  "place_order#PL51a739": {
-   "cart_id": "ADc13557",
+  "place_order#PLb61108": {
+   "cart_id": "AD0c5395",
    "address": "海淀区学院路一号"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv02"
+  "user": "cv06",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

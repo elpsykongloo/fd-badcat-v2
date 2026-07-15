@@ -6,23 +6,23 @@
  "lang": "en",
  "scenario": "fin_payment",
  "slots": {
-  "payee": "the landlord",
-  "amount": "eight hundred",
-  "date": "May third"
- },
- "slots_final": {
-  "payee": "the landlord",
+  "payee": "the property office",
   "amount": "five thousand",
   "date": "May third"
  },
+ "slots_final": {
+  "payee": "the property office",
+  "amount": "five thousand",
+  "date": "June first"
+ },
  "revisions": [
   {
-   "slot": "amount",
-   "old": "eight hundred",
-   "new": "five thousand",
+   "slot": "date",
+   "old": "May third",
+   "new": "June first",
    "by": "user",
    "kind": "default",
-   "gap": 0.521
+   "gap": 0.39
   }
  ],
  "bystander": null,
@@ -31,17 +31,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Schedule a payment of eight hundred to the landlord on May third.",
+   "text": "Schedule a payment of five thousand to the property office on May third.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Wait — make it five thousand.",
-   "gap_before": 0.521
+   "text": "Wait — make it June first.",
+   "gap_before": 0.39
   }
  ],
  "events": [],
@@ -58,23 +58,23 @@
   {
    "fn": "schedule_payment",
    "args": {
-    "payee": "the landlord",
+    "payee": "the property office",
     "amount": "five thousand",
-    "date": "May third"
+    "date": "June first"
    }
   }
  ],
  "gold_state": {
   "schedule_payment#SC38610e": {
-   "payee": "the landlord",
+   "payee": "the property office",
    "amount": "five thousand",
-   "date": "May third"
+   "date": "June first"
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv02"
+  "user": "cv04",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

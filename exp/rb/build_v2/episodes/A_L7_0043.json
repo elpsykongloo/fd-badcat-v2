@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "travel_multi",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Portland",
-  "date": "June first",
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "May third",
   "country": "Japan",
   "nationality": "American"
  },
  "slots_final": {
-  "origin": "Seattle",
+  "origin": "Boston",
   "destination": "Portland",
-  "date": "June first",
-  "country": "Thailand",
+  "date": "May third",
+  "country": "Japan",
   "nationality": "American"
  },
  "revisions": [
   {
-   "slot": "country",
-   "old": "Japan",
-   "new": "Thailand",
+   "slot": "destination",
+   "old": "Atlanta",
+   "new": "Portland",
    "by": "user",
    "kind": "default",
-   "gap": 1.06
+   "gap": 1.448
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Look up trains from Seattle to Portland on June first, and also check if American citizens need a visa for Japan.",
+   "text": "Look up trains from Boston to Atlanta on May third, and also check if American citizens need a visa for Japan.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Wait — make it Thailand.",
-   "gap_before": 1.06
+   "text": "Wait — make it Portland.",
+   "gap_before": 1.448
   }
  ],
  "events": [],
@@ -63,34 +63,34 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
+    "origin": "Boston",
     "destination": "Portland",
-    "date": "June first"
+    "date": "May third"
    }
   },
   {
    "fn": "check_visa_rule",
    "args": {
-    "country": "Thailand",
+    "country": "Japan",
     "nationality": "American"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEe2c483": {
-   "origin": "Seattle",
+   "origin": "Boston",
    "destination": "Portland",
-   "date": "June first"
+   "date": "May third"
   },
-  "check_visa_rule#CHb9d7b1": {
-   "country": "Thailand",
+  "check_visa_rule#CHf94c79": {
+   "country": "Japan",
    "nationality": "American"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv06"
+  "user": "cv05",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

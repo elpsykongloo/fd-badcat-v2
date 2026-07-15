@@ -12,17 +12,17 @@
  },
  "slots_final": {
   "city": "Miami",
-  "checkin": "May third",
-  "nights": "three"
+  "checkin": "May tenth",
+  "nights": "two"
  },
  "revisions": [
   {
-   "slot": "nights",
-   "old": "two",
-   "new": "three",
+   "slot": "checkin",
+   "old": "May third",
+   "new": "May tenth",
    "by": "user",
    "kind": "default",
-   "gap": 0.23
+   "gap": 0.409
   }
  ],
  "bystander": null,
@@ -31,17 +31,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv04",
    "lang": "en",
    "text": "Book me a hotel in Miami, checking in May third, for two nights.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Wait — make it three.",
-   "gap_before": 0.23
+   "text": "Wait — make it May tenth.",
+   "gap_before": 0.409
   }
  ],
  "events": [],
@@ -59,22 +59,22 @@
    "fn": "reserve_hotel",
    "args": {
     "city": "Miami",
-    "checkin": "May third",
-    "nights": "three"
+    "checkin": "May tenth",
+    "nights": "two"
    }
   }
  ],
  "gold_state": {
   "reserve_hotel#REeb8eb3": {
    "city": "Miami",
-   "checkin": "May third",
-   "nights": "three"
+   "checkin": "May tenth",
+   "nights": "two"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv09"
+  "user": "cv04",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

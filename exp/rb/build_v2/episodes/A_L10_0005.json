@@ -6,9 +6,9 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "three thousand",
+  "amount": "eight hundred",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "savings"
  },
@@ -21,12 +21,12 @@
  },
  "revisions": [
   {
-   "slot": "to_cur",
-   "old": "yen",
-   "new": "euros",
+   "slot": "amount",
+   "old": "eight hundred",
+   "new": "three thousand",
    "by": "user",
    "kind": "default",
-   "gap": null
+   "gap": 2.914
   }
  ],
  "bystander": null,
@@ -35,10 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Get a quote for three thousand dollars to yen, then transfer three thousand from checking to savings.",
+   "text": "Get a quote for eight hundred dollars to euros, then transfer eight hundred from checking to savings.",
    "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Wait — make it three thousand.",
+   "gap_before": 2.914
   }
  ],
  "events": [],
@@ -76,16 +83,16 @@
    "from_cur": "dollars",
    "to_cur": "euros"
   },
-  "transfer_funds#TRfc57e8": {
+  "transfer_funds#TR29f177": {
    "from_acct": "checking",
    "to_acct": "savings",
    "amount": "three thousand"
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv04"
+  "user": "cv07",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

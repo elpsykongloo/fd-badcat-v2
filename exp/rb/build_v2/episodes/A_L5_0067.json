@@ -9,24 +9,24 @@
   "origin": "Chicago",
   "destination": "Austin",
   "date": "May third",
-  "seat_class": "business",
+  "seat_class": "first class",
   "passenger": "Sam Rivera"
  },
  "slots_final": {
   "origin": "Chicago",
   "destination": "Austin",
-  "date": "June first",
+  "date": "May third",
   "seat_class": "business",
   "passenger": "Sam Rivera"
  },
  "revisions": [
   {
-   "slot": "date",
-   "old": "May third",
-   "new": "June first",
+   "slot": "seat_class",
+   "old": "first class",
+   "new": "business",
    "by": "user",
    "kind": "default",
-   "gap": 2.504
+   "gap": 2.857
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Find a train from Chicago to Austin on May third, hold a business seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Chicago to Austin on May third, hold a first class seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Wait — make it June first.",
-   "gap_before": 2.504
+   "text": "Wait — make it business.",
+   "gap_before": 2.857
   }
  ],
  "events": [],
@@ -66,7 +66,7 @@
    "args": {
     "origin": "Chicago",
     "destination": "Austin",
-    "date": "June first"
+    "date": "May third"
    }
   },
   {
@@ -79,7 +79,7 @@
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO9184d4",
+    "hold_id": "HO321f54",
     "passenger": "Sam Rivera"
    }
   }
@@ -88,21 +88,21 @@
   "search_trains#SEfb3ef0": {
    "origin": "Chicago",
    "destination": "Austin",
-   "date": "June first"
+   "date": "May third"
   },
-  "hold_seat#HO9184d4": {
+  "hold_seat#HO321f54": {
    "train_id": "SEfb3ef0",
    "seat_class": "business"
   },
-  "purchase_ticket#PUf7e5d2": {
-   "hold_id": "HO9184d4",
+  "purchase_ticket#PU8b13af": {
+   "hold_id": "HO321f54",
    "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv04"
+  "user": "cv03",
+  "bystander": "cv02"
  },
  "split": "dev",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -8,25 +8,25 @@
  "slots": {
   "origin": "Boston",
   "destination": "Denver",
-  "date": "May eighth",
+  "date": "June first",
   "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "passenger": "Sam Rivera"
  },
  "slots_final": {
   "origin": "Boston",
   "destination": "Denver",
   "date": "May third",
   "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "passenger": "Sam Rivera"
  },
  "revisions": [
   {
    "slot": "date",
-   "old": "May eighth",
+   "old": "June first",
    "new": "May third",
    "by": "user",
    "kind": "default",
-   "gap": 3.482
+   "gap": 2.613
   }
  ],
  "bystander": null,
@@ -35,26 +35,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Find a train from Boston to Denver on May eighth, hold a coach seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Boston to Denver on June first, hold a coach seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv01",
    "lang": "en",
    "text": "Wait — make it May third.",
-   "gap_before": 3.482
+   "gap_before": 2.613
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 1.214,
+   "offset": 3.09,
    "action": "revise",
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv01",
    "text": "Wait — make it May third."
   }
  ],
@@ -88,8 +88,8 @@
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO4c0fda",
-    "passenger": "Jordan Lee"
+    "hold_id": "HO027b70",
+    "passenger": "Sam Rivera"
    }
   }
  ],
@@ -99,19 +99,19 @@
    "destination": "Denver",
    "date": "May third"
   },
-  "hold_seat#HO4c0fda": {
+  "hold_seat#HO027b70": {
    "train_id": "SE1f1cef",
    "seat_class": "coach"
   },
-  "purchase_ticket#PUf6524d": {
-   "hold_id": "HO4c0fda",
-   "passenger": "Jordan Lee"
+  "purchase_ticket#PU23efad": {
+   "hold_id": "HO027b70",
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv07"
+  "user": "cv01",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -22,7 +22,7 @@
    "new": "海淀区学院路一号",
    "by": "user",
    "kind": "default",
-   "gap": 2.555
+   "gap": 2.623
   }
  ],
  "bystander": null,
@@ -31,26 +31,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv06",
    "lang": "zh",
    "text": "帮我搜保温杯，加一件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv06",
    "lang": "zh",
    "text": "等等，改成海淀区学院路一号。",
-   "gap_before": 2.555
+   "gap_before": 2.623
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 2.069,
+   "offset": 2.794,
    "action": "revise",
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv06",
    "text": "等等，改成海淀区学院路一号。"
   }
  ],
@@ -82,7 +82,7 @@
   {
    "fn": "place_order",
    "args": {
-    "cart_id": "ADdedae0",
+    "cart_id": "ADe9cb9d",
     "address": "海淀区学院路一号"
    }
   }
@@ -91,19 +91,19 @@
   "search_catalog#SE024334": {
    "query": "保温杯"
   },
-  "add_item#ADdedae0": {
+  "add_item#ADe9cb9d": {
    "item_id": "SE024334",
    "qty": "一"
   },
-  "place_order#PL3d05d3": {
-   "cart_id": "ADdedae0",
+  "place_order#PL6a7ecd": {
+   "cart_id": "ADe9cb9d",
    "address": "海淀区学院路一号"
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv03"
+  "user": "cv06",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

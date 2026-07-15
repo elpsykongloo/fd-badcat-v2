@@ -6,60 +6,60 @@
  "lang": "en",
  "scenario": "fin_transfer",
  "slots": {
-  "amount": "eight hundred",
+  "amount": "five thousand",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
  "slots_final": {
-  "amount": "eight hundred",
+  "amount": "five thousand",
   "from_cur": "dollars",
-  "to_cur": "euros",
+  "to_cur": "yen",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
  "revisions": [],
  "bystander": {
   "kind": "command",
-  "other": "yen",
+  "other": "euros",
   "state": "inflight",
-  "frac": 0.343
+  "frac": 0.103
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Get a quote for eight hundred dollars to euros, then transfer eight hundred from checking to rent account.",
+   "text": "Get a quote for five thousand dollars to yen, then transfer five thousand from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv07",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Change it to yen.",
-   "at_after_eou": 1.82
+   "text": "Change it to euros.",
+   "at_after_eou": 1.694
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.469,
+   "offset": 0.409,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv07",
-   "text": "Change it to yen."
+   "voice": "cv04",
+   "text": "Change it to euros."
   },
   {
    "state": "tts",
-   "offset": 0.132,
+   "offset": 0.242,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv07",
-   "text": "Change it to yen."
+   "voice": "cv04",
+   "text": "Change it to euros."
   }
  ],
  "profile": "default",
@@ -76,9 +76,9 @@
   {
    "fn": "get_fx_quote",
    "args": {
-    "amount": "eight hundred",
+    "amount": "five thousand",
     "from_cur": "dollars",
-    "to_cur": "euros"
+    "to_cur": "yen"
    }
   },
   {
@@ -86,26 +86,26 @@
    "args": {
     "from_acct": "checking",
     "to_acct": "rent account",
-    "amount": "eight hundred"
+    "amount": "five thousand"
    }
   }
  ],
  "gold_state": {
   "get_fx_quote#GE7b6543": {
-   "amount": "eight hundred",
+   "amount": "five thousand",
    "from_cur": "dollars",
-   "to_cur": "euros"
+   "to_cur": "yen"
   },
-  "transfer_funds#TRcc8581": {
+  "transfer_funds#TR03ce77": {
    "from_acct": "checking",
    "to_acct": "rent account",
-   "amount": "eight hundred"
+   "amount": "five thousand"
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv07"
+  "user": "cv07",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

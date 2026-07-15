@@ -6,16 +6,16 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
+  "origin": "Chicago",
   "destination": "Atlanta",
-  "date": "May third",
+  "date": "May eighth",
   "seat_class": "coach",
   "passenger": "Sam Rivera"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Austin",
-  "date": "May third",
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "May eighth",
   "seat_class": "business",
   "passenger": "Sam Rivera"
  },
@@ -23,10 +23,10 @@
   {
    "slot": "destination",
    "old": "Atlanta",
-   "new": "Austin",
+   "new": "Denver",
    "by": "user",
    "kind": "default",
-   "gap": 1.265
+   "gap": 1.128
   },
   {
    "slot": "seat_class",
@@ -34,7 +34,7 @@
    "new": "business",
    "by": "user",
    "kind": "second",
-   "gap": 2.739
+   "gap": 2.843
   }
  ],
  "bystander": null,
@@ -43,42 +43,42 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Find a train from Boston to Atlanta on May third, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Chicago to Atlanta on May eighth, hold a coach seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv07",
    "lang": "en",
-   "text": "Wait — make it Austin.",
-   "gap_before": 1.265
+   "text": "Wait — make it Denver.",
+   "gap_before": 1.128
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv07",
    "lang": "en",
    "text": "Also, one more change — business.",
-   "gap_before": 2.739
+   "gap_before": 2.843
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.141,
+   "offset": 0.712,
    "action": "revise",
    "role": "user",
-   "voice": "cv03",
-   "text": "Wait — make it Austin."
+   "voice": "cv07",
+   "text": "Wait — make it Denver."
   },
   {
    "state": "committed",
-   "offset": 1.107,
+   "offset": 0.795,
    "action": "revise",
    "role": "user",
-   "voice": "cv03",
-   "text": "Wait — make it Austin."
+   "voice": "cv07",
+   "text": "Wait — make it Denver."
   }
  ],
  "profile": "default",
@@ -96,9 +96,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
-    "destination": "Austin",
-    "date": "May third"
+    "origin": "Chicago",
+    "destination": "Denver",
+    "date": "May eighth"
    }
   },
   {
@@ -111,30 +111,30 @@
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HOf8969a",
+    "hold_id": "HO73c0e4",
     "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEfff6cd": {
-   "origin": "Boston",
-   "destination": "Austin",
-   "date": "May third"
+   "origin": "Chicago",
+   "destination": "Denver",
+   "date": "May eighth"
   },
-  "hold_seat#HOf8969a": {
+  "hold_seat#HO73c0e4": {
    "train_id": "SEfff6cd",
    "seat_class": "business"
   },
-  "purchase_ticket#PU086b45": {
-   "hold_id": "HOf8969a",
+  "purchase_ticket#PU905afb": {
+   "hold_id": "HO73c0e4",
    "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv07"
+  "user": "cv07",
+  "bystander": "cv06"
  },
  "split": "dev",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

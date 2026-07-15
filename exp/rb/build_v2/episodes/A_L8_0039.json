@@ -9,21 +9,21 @@
   "origin": "Chicago",
   "destination": "Austin",
   "date": "May eighth",
-  "seat_class": "business",
+  "seat_class": "first class",
   "passenger": "Sam Rivera"
  },
  "slots_final": {
   "origin": "Chicago",
   "destination": "Austin",
   "date": "May eighth",
-  "seat_class": "coach",
+  "seat_class": "business",
   "passenger": "Sam Rivera"
  },
  "revisions": [
   {
    "slot": "seat_class",
-   "old": "business",
-   "new": "coach",
+   "old": "first class",
+   "new": "business",
    "by": "user",
    "kind": "default",
    "gap": null
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Find a train from Chicago to Austin on May eighth, hold a business seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Chicago to Austin on May eighth, hold a first class seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Wait — make it coach.",
-   "at_after_eou": 1.908
+   "text": "Wait — make it business.",
+   "at_after_eou": 1.73
   }
  ],
  "events": [],
@@ -73,13 +73,13 @@
    "fn": "hold_seat",
    "args": {
     "train_id": "SEb54e2b",
-    "seat_class": "coach"
+    "seat_class": "business"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO12b8cb",
+    "hold_id": "HOa56f36",
     "passenger": "Sam Rivera"
    }
   }
@@ -90,19 +90,19 @@
    "destination": "Austin",
    "date": "May eighth"
   },
-  "hold_seat#HO12b8cb": {
+  "hold_seat#HOa56f36": {
    "train_id": "SEb54e2b",
-   "seat_class": "coach"
+   "seat_class": "business"
   },
-  "purchase_ticket#PU2615b7": {
-   "hold_id": "HO12b8cb",
+  "purchase_ticket#PU967be9": {
+   "hold_id": "HOa56f36",
    "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv06"
+  "user": "cv06",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -7,12 +7,12 @@
  "scenario": "ecom_chain",
  "slots": {
   "query": "蓝牙耳机",
-  "qty": "一",
+  "qty": "两",
   "address": "海淀区学院路一号"
  },
  "slots_final": {
   "query": "蓝牙耳机",
-  "qty": "一",
+  "qty": "两",
   "address": "海淀区学院路一号"
  },
  "revisions": [],
@@ -22,26 +22,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到海淀区学院路一号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv03",
    "lang": "zh",
    "text": "算了，先别办了。",
-   "at_after_eou": 1.946
+   "at_after_eou": 2.181
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.641,
+   "offset": 0.793,
    "action": "cancel",
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv03",
    "text": "算了，先别办了。"
   }
  ],
@@ -59,9 +59,9 @@
  "gold_calls": [],
  "gold_state": {},
  "voices": {
-  "user": "cv01",
-  "bystander": "cv07"
+  "user": "cv03",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

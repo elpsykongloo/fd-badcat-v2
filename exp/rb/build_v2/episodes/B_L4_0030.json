@@ -7,24 +7,24 @@
  "scenario": "hou_chain",
  "slots": {
   "city": "成都",
-  "beds": "一居",
-  "max_rent": "六千",
-  "slot": "周日下午"
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周六上午"
  },
  "slots_final": {
   "city": "成都",
   "beds": "一居",
   "max_rent": "八千",
-  "slot": "周日下午"
+  "slot": "周六上午"
  },
  "revisions": [
   {
-   "slot": "max_rent",
-   "old": "六千",
-   "new": "八千",
+   "slot": "beds",
+   "old": "两居",
+   "new": "一居",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.751
+   "gap": 0.685
   }
  ],
  "bystander": null,
@@ -33,27 +33,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "在成都找一居、租金不超过六千的房子，约周日下午看房。",
+   "text": "在成都找两居、租金不超过八千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "八千，改成八千。",
-   "gap_before": 0.751
+   "text": "一居，改成一居。",
+   "gap_before": 0.685
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.146,
+   "offset": 0.339,
    "action": "revise",
    "role": "user",
-   "voice": "cv06",
-   "text": "八千，改成八千。"
+   "voice": "cv01",
+   "text": "一居，改成一居。"
   }
  ],
  "profile": "default",
@@ -79,7 +79,7 @@
    "fn": "book_viewing",
    "args": {
     "listing_id": "SEae2579",
-    "slot": "周日下午"
+    "slot": "周六上午"
    }
   }
  ],
@@ -89,15 +89,15 @@
    "beds": "一居",
    "max_rent": "八千"
   },
-  "book_viewing#BOcc7455": {
+  "book_viewing#BO9425f2": {
    "listing_id": "SEae2579",
-   "slot": "周日下午"
+   "slot": "周六上午"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv04"
+  "user": "cv01",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

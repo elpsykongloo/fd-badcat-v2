@@ -7,26 +7,26 @@
  "scenario": "travel_multi",
  "slots": {
   "origin": "Boston",
-  "destination": "Atlanta",
+  "destination": "Denver",
   "date": "May eighth",
-  "country": "Thailand",
+  "country": "Japan",
   "nationality": "American"
  },
  "slots_final": {
   "origin": "Boston",
-  "destination": "Atlanta",
+  "destination": "Denver",
   "date": "May eighth",
-  "country": "Japan",
+  "country": "Thailand",
   "nationality": "American"
  },
  "revisions": [
   {
    "slot": "country",
-   "old": "Thailand",
-   "new": "Japan",
+   "old": "Japan",
+   "new": "Thailand",
    "by": "user",
    "kind": "default",
-   "gap": 1.684
+   "gap": 1.289
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Look up trains from Boston to Atlanta on May eighth, and also check if American citizens need a visa for Thailand.",
+   "text": "Look up trains from Boston to Denver on May eighth, and also check if American citizens need a visa for Japan.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Wait — make it Japan.",
-   "gap_before": 1.684
+   "text": "Wait — make it Thailand.",
+   "gap_before": 1.289
   }
  ],
  "events": [],
@@ -64,14 +64,14 @@
    "fn": "search_trains",
    "args": {
     "origin": "Boston",
-    "destination": "Atlanta",
+    "destination": "Denver",
     "date": "May eighth"
    }
   },
   {
    "fn": "check_visa_rule",
    "args": {
-    "country": "Japan",
+    "country": "Thailand",
     "nationality": "American"
    }
   }
@@ -79,18 +79,18 @@
  "gold_state": {
   "search_trains#SEbe356f": {
    "origin": "Boston",
-   "destination": "Atlanta",
+   "destination": "Denver",
    "date": "May eighth"
   },
-  "check_visa_rule#CHb71ff7": {
-   "country": "Japan",
+  "check_visa_rule#CHd907d3": {
+   "country": "Thailand",
    "nationality": "American"
   }
  },
  "voices": {
-  "user": "cv02",
+  "user": "cv09",
   "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

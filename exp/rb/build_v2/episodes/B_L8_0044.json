@@ -6,12 +6,12 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "保温杯",
+  "query": "跑步鞋",
   "qty": "两",
   "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
-  "query": "保温杯",
+  "query": "跑步鞋",
   "qty": "两",
   "address": "浦东新区世纪大道八号"
  },
@@ -22,26 +22,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv02",
    "lang": "zh",
-   "text": "帮我搜保温杯，加两件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜跑步鞋，加两件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv02",
    "lang": "zh",
    "text": "好了没？",
-   "at_after_eou": 1.765
+   "at_after_eou": 1.816
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.712,
+   "offset": 0.384,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv02",
    "text": "好了没？"
   }
  ],
@@ -60,7 +60,7 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "保温杯"
+    "query": "跑步鞋"
    }
   },
   {
@@ -73,28 +73,28 @@
   {
    "fn": "place_order",
    "args": {
-    "cart_id": "AD129bb4",
+    "cart_id": "AD9405b5",
     "address": "浦东新区世纪大道八号"
    }
   }
  ],
  "gold_state": {
   "search_catalog#SEa4a780": {
-   "query": "保温杯"
+   "query": "跑步鞋"
   },
-  "add_item#AD129bb4": {
+  "add_item#AD9405b5": {
    "item_id": "SEa4a780",
    "qty": "两"
   },
-  "place_order#PL2f01d9": {
-   "cart_id": "AD129bb4",
+  "place_order#PL863cd8": {
+   "cart_id": "AD9405b5",
    "address": "浦东新区世纪大道八号"
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv02"
+  "user": "cv02",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

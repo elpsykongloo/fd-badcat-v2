@@ -7,13 +7,13 @@
  "scenario": "hou_chain",
  "slots": {
   "city": "成都",
-  "beds": "两居",
+  "beds": "一居",
   "max_rent": "六千",
   "slot": "周六上午"
  },
  "slots_final": {
   "city": "成都",
-  "beds": "两居",
+  "beds": "一居",
   "max_rent": "六千",
   "slot": "周日下午"
  },
@@ -24,7 +24,7 @@
    "new": "周日下午",
    "by": "user",
    "kind": "default",
-   "gap": null
+   "gap": 2.59
   }
  ],
  "bystander": null,
@@ -35,14 +35,21 @@
    "role": "user",
    "voice": "cv03",
    "lang": "zh",
-   "text": "在成都找两居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在成都找一居、租金不超过六千的房子，约周六上午看房。",
    "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "zh",
+   "text": "等等，改成周日下午。",
+   "gap_before": 2.59
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.36,
+   "offset": 0.762,
    "action": "benign_control",
    "role": "user",
    "voice": "cv03",
@@ -64,7 +71,7 @@
    "fn": "search_rentals",
    "args": {
     "city": "成都",
-    "beds": "两居",
+    "beds": "一居",
     "max_rent": "六千"
    }
   },
@@ -79,18 +86,18 @@
  "gold_state": {
   "search_rentals#SE2b62cb": {
    "city": "成都",
-   "beds": "两居",
+   "beds": "一居",
    "max_rent": "六千"
   },
-  "book_viewing#BOb5dc56": {
+  "book_viewing#BO1a0ca7": {
    "listing_id": "SE2b62cb",
    "slot": "周日下午"
   }
  },
  "voices": {
   "user": "cv03",
-  "bystander": "cv05"
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

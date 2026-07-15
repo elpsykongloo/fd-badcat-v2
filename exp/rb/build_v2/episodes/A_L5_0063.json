@@ -7,26 +7,26 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Boston",
-  "destination": "Atlanta",
+  "destination": "Denver",
   "date": "May eighth",
-  "seat_class": "first class",
-  "passenger": "Sam Rivera"
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
  },
  "slots_final": {
   "origin": "Boston",
-  "destination": "Atlanta",
+  "destination": "Denver",
   "date": "May eighth",
-  "seat_class": "coach",
-  "passenger": "Sam Rivera"
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
  },
  "revisions": [
   {
    "slot": "seat_class",
-   "old": "first class",
-   "new": "coach",
+   "old": "coach",
+   "new": "first class",
    "by": "user",
    "kind": "default",
-   "gap": 1.143
+   "gap": 2.9
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Find a train from Boston to Atlanta on May eighth, hold a first class seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Boston to Denver on May eighth, hold a coach seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Wait — make it coach.",
-   "gap_before": 1.143
+   "text": "Wait — make it first class.",
+   "gap_before": 2.9
   }
  ],
  "events": [],
@@ -65,7 +65,7 @@
    "fn": "search_trains",
    "args": {
     "origin": "Boston",
-    "destination": "Atlanta",
+    "destination": "Denver",
     "date": "May eighth"
    }
   },
@@ -73,36 +73,36 @@
    "fn": "hold_seat",
    "args": {
     "train_id": "SE1cb564",
-    "seat_class": "coach"
+    "seat_class": "first class"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO02bc51",
-    "passenger": "Sam Rivera"
+    "hold_id": "HO505a57",
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE1cb564": {
    "origin": "Boston",
-   "destination": "Atlanta",
+   "destination": "Denver",
    "date": "May eighth"
   },
-  "hold_seat#HO02bc51": {
+  "hold_seat#HO505a57": {
    "train_id": "SE1cb564",
-   "seat_class": "coach"
+   "seat_class": "first class"
   },
-  "purchase_ticket#PUbe744f": {
-   "hold_id": "HO02bc51",
-   "passenger": "Sam Rivera"
+  "purchase_ticket#PU9ea589": {
+   "hold_id": "HO505a57",
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv03"
+  "user": "cv06",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

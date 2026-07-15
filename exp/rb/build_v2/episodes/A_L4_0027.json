@@ -7,26 +7,26 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Seattle",
-  "destination": "Austin",
-  "date": "June first",
+  "destination": "Denver",
+  "date": "May eighth",
   "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "passenger": "Sam Rivera"
  },
  "slots_final": {
   "origin": "Seattle",
-  "destination": "Austin",
+  "destination": "Denver",
   "date": "May third",
   "seat_class": "coach",
-  "passenger": "Jordan Lee"
+  "passenger": "Sam Rivera"
  },
  "revisions": [
   {
    "slot": "date",
-   "old": "June first",
+   "old": "May eighth",
    "new": "May third",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.741
+   "gap": 1.101
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Find a train from Seattle to Austin on June first, hold a coach seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Seattle to Denver on May eighth, hold a coach seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv04",
    "lang": "en",
    "text": "May third — change it to May third.",
-   "gap_before": 0.741
+   "gap_before": 1.101
   }
  ],
  "events": [],
@@ -65,7 +65,7 @@
    "fn": "search_trains",
    "args": {
     "origin": "Seattle",
-    "destination": "Austin",
+    "destination": "Denver",
     "date": "May third"
    }
   },
@@ -79,30 +79,30 @@
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO44cb6b",
-    "passenger": "Jordan Lee"
+    "hold_id": "HOd665ae",
+    "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEc2f196": {
    "origin": "Seattle",
-   "destination": "Austin",
+   "destination": "Denver",
    "date": "May third"
   },
-  "hold_seat#HO44cb6b": {
+  "hold_seat#HOd665ae": {
    "train_id": "SEc2f196",
    "seat_class": "coach"
   },
-  "purchase_ticket#PUb14e5c": {
-   "hold_id": "HO44cb6b",
-   "passenger": "Jordan Lee"
+  "purchase_ticket#PU785e54": {
+   "hold_id": "HOd665ae",
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv05"
+  "user": "cv04",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -7,32 +7,32 @@
  "scenario": "hou_chain",
  "slots": {
   "city": "成都",
-  "beds": "两居",
-  "max_rent": "六千",
-  "slot": "周日下午"
- },
- "slots_final": {
-  "city": "杭州",
   "beds": "一居",
   "max_rent": "六千",
-  "slot": "周日下午"
+  "slot": "周六上午"
+ },
+ "slots_final": {
+  "city": "青岛",
+  "beds": "两居",
+  "max_rent": "六千",
+  "slot": "周六上午"
  },
  "revisions": [
   {
    "slot": "city",
    "old": "成都",
-   "new": "杭州",
+   "new": "青岛",
    "by": "user",
    "kind": "default",
-   "gap": 0.754
+   "gap": 0.755
   },
   {
    "slot": "beds",
-   "old": "两居",
-   "new": "一居",
+   "old": "一居",
+   "new": "两居",
    "by": "user",
    "kind": "second",
-   "gap": 2.615
+   "gap": 2.619
   }
  ],
  "bystander": null,
@@ -41,24 +41,24 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "在成都找两居、租金不超过六千的房子，约周日下午看房。",
+   "text": "在成都找一居、租金不超过六千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "等等，改成杭州。",
-   "gap_before": 0.754
+   "text": "等等，改成青岛。",
+   "gap_before": 0.755
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "还有，再改一下，要一居。",
-   "gap_before": 2.615
+   "text": "还有，再改一下，要两居。",
+   "gap_before": 2.619
   }
  ],
  "events": [],
@@ -76,8 +76,8 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "杭州",
-    "beds": "一居",
+    "city": "青岛",
+    "beds": "两居",
     "max_rent": "六千"
    }
   },
@@ -85,25 +85,25 @@
    "fn": "book_viewing",
    "args": {
     "listing_id": "SE0f0cfc",
-    "slot": "周日下午"
+    "slot": "周六上午"
    }
   }
  ],
  "gold_state": {
   "search_rentals#SE0f0cfc": {
-   "city": "杭州",
-   "beds": "一居",
+   "city": "青岛",
+   "beds": "两居",
    "max_rent": "六千"
   },
-  "book_viewing#BO351750": {
+  "book_viewing#BO4b9a8a": {
    "listing_id": "SE0f0cfc",
-   "slot": "周日下午"
+   "slot": "周六上午"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv08"
+  "user": "cv04",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

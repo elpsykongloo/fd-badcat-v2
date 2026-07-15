@@ -6,42 +6,42 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Atlanta",
-  "date": "June first",
+  "origin": "Seattle",
+  "destination": "Denver",
+  "date": "May eighth",
   "seat_class": "business",
-  "passenger": "Alex Chen"
+  "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Chicago",
-  "destination": "Atlanta",
-  "date": "June first",
+  "origin": "Seattle",
+  "destination": "Denver",
+  "date": "May eighth",
   "seat_class": "business",
-  "passenger": "Alex Chen"
+  "passenger": "Jordan Lee"
  },
  "revisions": [],
  "bystander": {
   "kind": "command",
   "other": "first class",
   "state": "inflight",
-  "frac": 0.614
+  "frac": 0.297
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Find a train from Chicago to Atlanta on June first, hold a business seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Seattle to Denver on May eighth, hold a business seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv01",
+   "voice": "cv06",
    "lang": "en",
    "text": "Change it to first class.",
-   "at_after_eou": 1.987
+   "at_after_eou": 1.808
   }
  ],
  "events": [],
@@ -60,9 +60,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
-    "destination": "Atlanta",
-    "date": "June first"
+    "origin": "Seattle",
+    "destination": "Denver",
+    "date": "May eighth"
    }
   },
   {
@@ -75,30 +75,30 @@
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO74cdb8",
-    "passenger": "Alex Chen"
+    "hold_id": "HO70a012",
+    "passenger": "Jordan Lee"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEc72bfb": {
-   "origin": "Chicago",
-   "destination": "Atlanta",
-   "date": "June first"
+   "origin": "Seattle",
+   "destination": "Denver",
+   "date": "May eighth"
   },
-  "hold_seat#HO74cdb8": {
+  "hold_seat#HO70a012": {
    "train_id": "SEc72bfb",
    "seat_class": "business"
   },
-  "purchase_ticket#PU91de97": {
-   "hold_id": "HO74cdb8",
-   "passenger": "Alex Chen"
+  "purchase_ticket#PU6988a0": {
+   "hold_id": "HO70a012",
+   "passenger": "Jordan Lee"
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv01"
+  "user": "cv04",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

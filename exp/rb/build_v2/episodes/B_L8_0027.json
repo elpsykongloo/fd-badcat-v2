@@ -7,23 +7,23 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Boston",
-  "destination": "Denver",
-  "date": "May eighth",
-  "seat_class": "first class",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "coach",
   "passenger": "Jordan Lee"
  },
  "slots_final": {
   "origin": "Boston",
-  "destination": "Denver",
+  "destination": "Austin",
   "date": "May eighth",
   "seat_class": "coach",
   "passenger": "Jordan Lee"
  },
  "revisions": [
   {
-   "slot": "seat_class",
-   "old": "first class",
-   "new": "coach",
+   "slot": "date",
+   "old": "May third",
+   "new": "May eighth",
    "by": "user",
    "kind": "default",
    "gap": null
@@ -35,27 +35,27 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Find a train from Boston to Denver on May eighth, hold a first class seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Boston to Austin on May third, hold a coach seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv06",
    "lang": "en",
-   "text": "Wait — make it coach.",
-   "at_after_eou": 1.836
+   "text": "Wait — make it May eighth.",
+   "at_after_eou": 1.788
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.717,
+   "offset": 0.525,
    "action": "revise",
    "role": "user",
-   "voice": "cv04",
-   "text": "Wait — make it coach."
+   "voice": "cv06",
+   "text": "Wait — make it May eighth."
   }
  ],
  "profile": "default",
@@ -74,7 +74,7 @@
    "fn": "search_trains",
    "args": {
     "origin": "Boston",
-    "destination": "Denver",
+    "destination": "Austin",
     "date": "May eighth"
    }
   },
@@ -88,7 +88,7 @@
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HOf2fbfd",
+    "hold_id": "HO886bfd",
     "passenger": "Jordan Lee"
    }
   }
@@ -96,22 +96,22 @@
  "gold_state": {
   "search_trains#SEb13c39": {
    "origin": "Boston",
-   "destination": "Denver",
+   "destination": "Austin",
    "date": "May eighth"
   },
-  "hold_seat#HOf2fbfd": {
+  "hold_seat#HO886bfd": {
    "train_id": "SEb13c39",
    "seat_class": "coach"
   },
-  "purchase_ticket#PUe59e7e": {
-   "hold_id": "HOf2fbfd",
+  "purchase_ticket#PUaae2ed": {
+   "hold_id": "HO886bfd",
    "passenger": "Jordan Lee"
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv05"
+  "user": "cv06",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

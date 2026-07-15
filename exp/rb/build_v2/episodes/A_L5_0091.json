@@ -7,26 +7,26 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Chicago",
-  "destination": "Atlanta",
-  "date": "May third",
-  "seat_class": "first class",
+  "destination": "Portland",
+  "date": "May eighth",
+  "seat_class": "business",
   "passenger": "Sam Rivera"
  },
  "slots_final": {
   "origin": "Chicago",
-  "destination": "Austin",
-  "date": "May third",
+  "destination": "Portland",
+  "date": "May eighth",
   "seat_class": "first class",
   "passenger": "Sam Rivera"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Atlanta",
-   "new": "Austin",
+   "slot": "seat_class",
+   "old": "business",
+   "new": "first class",
    "by": "user",
    "kind": "default",
-   "gap": 2.783
+   "gap": 2.714
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Find a train from Chicago to Atlanta on May third, hold a first class seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Chicago to Portland on May eighth, hold a business seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Wait — make it Austin.",
-   "gap_before": 2.783
+   "text": "Wait — make it first class.",
+   "gap_before": 2.714
   }
  ],
  "events": [],
@@ -65,8 +65,8 @@
    "fn": "search_trains",
    "args": {
     "origin": "Chicago",
-    "destination": "Austin",
-    "date": "May third"
+    "destination": "Portland",
+    "date": "May eighth"
    }
   },
   {
@@ -79,7 +79,7 @@
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO96f1d8",
+    "hold_id": "HO70fac4",
     "passenger": "Sam Rivera"
    }
   }
@@ -87,22 +87,22 @@
  "gold_state": {
   "search_trains#SE261dca": {
    "origin": "Chicago",
-   "destination": "Austin",
-   "date": "May third"
+   "destination": "Portland",
+   "date": "May eighth"
   },
-  "hold_seat#HO96f1d8": {
+  "hold_seat#HO70fac4": {
    "train_id": "SE261dca",
    "seat_class": "first class"
   },
-  "purchase_ticket#PU3eec37": {
-   "hold_id": "HO96f1d8",
+  "purchase_ticket#PU78b84d": {
+   "hold_id": "HO70fac4",
    "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv03"
+  "user": "cv01",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

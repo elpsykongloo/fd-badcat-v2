@@ -7,26 +7,26 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Boston",
-  "destination": "Atlanta",
+  "destination": "Portland",
   "date": "June first",
-  "seat_class": "coach",
-  "passenger": "Sam Rivera"
+  "seat_class": "business",
+  "passenger": "Alex Chen"
  },
  "slots_final": {
   "origin": "Boston",
-  "destination": "Portland",
+  "destination": "Atlanta",
   "date": "June first",
-  "seat_class": "coach",
-  "passenger": "Sam Rivera"
+  "seat_class": "business",
+  "passenger": "Alex Chen"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Atlanta",
-   "new": "Portland",
+   "old": "Portland",
+   "new": "Atlanta",
    "by": "user",
    "kind": "default",
-   "gap": 2.723
+   "gap": 3.274
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Find a train from Boston to Atlanta on June first, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Boston to Portland on June first, hold a business seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Wait — make it Portland.",
-   "gap_before": 2.723
+   "text": "Wait — make it Atlanta.",
+   "gap_before": 3.274
   }
  ],
  "events": [],
@@ -65,7 +65,7 @@
    "fn": "search_trains",
    "args": {
     "origin": "Boston",
-    "destination": "Portland",
+    "destination": "Atlanta",
     "date": "June first"
    }
   },
@@ -73,36 +73,36 @@
    "fn": "hold_seat",
    "args": {
     "train_id": "SEbbb234",
-    "seat_class": "coach"
+    "seat_class": "business"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO60f209",
-    "passenger": "Sam Rivera"
+    "hold_id": "HOcaa31e",
+    "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEbbb234": {
    "origin": "Boston",
-   "destination": "Portland",
+   "destination": "Atlanta",
    "date": "June first"
   },
-  "hold_seat#HO60f209": {
+  "hold_seat#HOcaa31e": {
    "train_id": "SEbbb234",
-   "seat_class": "coach"
+   "seat_class": "business"
   },
-  "purchase_ticket#PU986f95": {
-   "hold_id": "HO60f209",
-   "passenger": "Sam Rivera"
+  "purchase_ticket#PU48de30": {
+   "hold_id": "HOcaa31e",
+   "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv03"
+  "user": "cv09",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

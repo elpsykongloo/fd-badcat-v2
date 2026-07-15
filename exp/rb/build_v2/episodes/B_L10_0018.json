@@ -6,13 +6,13 @@
  "lang": "zh",
  "scenario": "hou_chain",
  "slots": {
-  "city": "成都",
+  "city": "杭州",
   "beds": "一居",
   "max_rent": "六千",
   "slot": "周六上午"
  },
  "slots_final": {
-  "city": "成都",
+  "city": "杭州",
   "beds": "一居",
   "max_rent": "六千",
   "slot": "周六上午"
@@ -20,44 +20,44 @@
  "revisions": [],
  "bystander": {
   "kind": "command",
-  "other": "杭州",
+  "other": "厦门",
   "state": "inflight",
-  "frac": 0.221
+  "frac": 0.736
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv08",
    "lang": "zh",
-   "text": "在成都找一居、租金不超过六千的房子，约周六上午看房。",
+   "text": "在杭州找一居、租金不超过六千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv01",
+   "voice": "cv09",
    "lang": "zh",
-   "text": "改成杭州吧。",
-   "at_after_eou": 1.764
+   "text": "改成厦门吧。",
+   "at_after_eou": 2.054
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.491,
+   "offset": 0.195,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv01",
-   "text": "改成杭州吧。"
+   "voice": "cv09",
+   "text": "改成厦门吧。"
   },
   {
    "state": "tts",
-   "offset": 0.246,
+   "offset": 0.442,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv01",
-   "text": "改成杭州吧。"
+   "voice": "cv09",
+   "text": "改成厦门吧。"
   }
  ],
  "profile": "default",
@@ -74,7 +74,7 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "成都",
+    "city": "杭州",
     "beds": "一居",
     "max_rent": "六千"
    }
@@ -89,19 +89,19 @@
  ],
  "gold_state": {
   "search_rentals#SE210079": {
-   "city": "成都",
+   "city": "杭州",
    "beds": "一居",
    "max_rent": "六千"
   },
-  "book_viewing#BO89a279": {
+  "book_viewing#BOde6308": {
    "listing_id": "SE210079",
    "slot": "周六上午"
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv01"
+  "user": "cv08",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

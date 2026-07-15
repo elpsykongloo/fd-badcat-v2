@@ -7,48 +7,48 @@
  "scenario": "hou_chain",
  "slots": {
   "city": "厦门",
-  "beds": "一居",
-  "max_rent": "八千",
+  "beds": "两居",
+  "max_rent": "六千",
   "slot": "周日下午"
  },
  "slots_final": {
   "city": "厦门",
-  "beds": "一居",
-  "max_rent": "八千",
+  "beds": "两居",
+  "max_rent": "六千",
   "slot": "周日下午"
  },
  "revisions": [],
  "bystander": {
   "kind": "irrelevant",
-  "other": "成都",
+  "other": "八千",
   "state": "inflight",
-  "frac": 0.554
+  "frac": 0.747
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv04",
    "lang": "zh",
-   "text": "在厦门找一居、租金不超过八千的房子，约周日下午看房。",
+   "text": "在厦门找两居、租金不超过六千的房子，约周日下午看房。",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv09",
+   "voice": "cv01",
    "lang": "zh",
    "text": "今晚想吃什么？我们点外卖吧。",
-   "at_after_eou": 2.106
+   "at_after_eou": 2.269
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.348,
+   "offset": 0.223,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv09",
+   "voice": "cv01",
    "text": "今晚想吃什么？我们点外卖吧。"
   }
  ],
@@ -67,8 +67,8 @@
    "fn": "search_rentals",
    "args": {
     "city": "厦门",
-    "beds": "一居",
-    "max_rent": "八千"
+    "beds": "两居",
+    "max_rent": "六千"
    }
   },
   {
@@ -82,18 +82,18 @@
  "gold_state": {
   "search_rentals#SE8ea938": {
    "city": "厦门",
-   "beds": "一居",
-   "max_rent": "八千"
+   "beds": "两居",
+   "max_rent": "六千"
   },
-  "book_viewing#BO86589b": {
+  "book_viewing#BO78e64a": {
    "listing_id": "SE8ea938",
    "slot": "周日下午"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv09"
+  "user": "cv04",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

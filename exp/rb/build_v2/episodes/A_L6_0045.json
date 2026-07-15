@@ -26,7 +26,7 @@
    "new": "five thousand",
    "by": "user",
    "kind": "default",
-   "gap": 1.242
+   "gap": 0.881
   },
   {
    "slot": "to_acct",
@@ -34,7 +34,7 @@
    "new": "savings",
    "by": "user",
    "kind": "second",
-   "gap": 2.839
+   "gap": 2.599
   }
  ],
  "bystander": null,
@@ -43,24 +43,24 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv08",
    "lang": "en",
    "text": "Get a quote for eight hundred dollars to yen, then transfer eight hundred from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv08",
    "lang": "en",
    "text": "Wait — make it five thousand.",
-   "gap_before": 1.242
+   "gap_before": 0.881
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv08",
    "lang": "en",
    "text": "Also, one more change — savings.",
-   "gap_before": 2.839
+   "gap_before": 2.599
   }
  ],
  "events": [],
@@ -98,16 +98,16 @@
    "from_cur": "dollars",
    "to_cur": "yen"
   },
-  "transfer_funds#TR90fa55": {
+  "transfer_funds#TRa425da": {
    "from_acct": "checking",
    "to_acct": "savings",
    "amount": "five thousand"
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv05"
+  "user": "cv08",
+  "bystander": "cv02"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

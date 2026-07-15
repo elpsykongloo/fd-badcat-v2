@@ -26,7 +26,7 @@
    "new": "three thousand",
    "by": "user",
    "kind": "default",
-   "gap": 0.922
+   "gap": 0.85
   },
   {
    "slot": "to_acct",
@@ -34,7 +34,7 @@
    "new": "rent account",
    "by": "user",
    "kind": "second",
-   "gap": 2.685
+   "gap": 2.726
   }
  ],
  "bystander": null,
@@ -43,24 +43,24 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv02",
    "lang": "en",
    "text": "Get a quote for eight hundred dollars to euros, then transfer eight hundred from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv02",
    "lang": "en",
    "text": "Wait — make it three thousand.",
-   "gap_before": 0.922
+   "gap_before": 0.85
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv02",
    "lang": "en",
    "text": "Also, one more change — rent account.",
-   "gap_before": 2.685
+   "gap_before": 2.726
   }
  ],
  "events": [],
@@ -98,16 +98,16 @@
    "from_cur": "dollars",
    "to_cur": "euros"
   },
-  "transfer_funds#TRd51695": {
+  "transfer_funds#TR59fb03": {
    "from_acct": "checking",
    "to_acct": "rent account",
    "amount": "three thousand"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv05"
+  "user": "cv02",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

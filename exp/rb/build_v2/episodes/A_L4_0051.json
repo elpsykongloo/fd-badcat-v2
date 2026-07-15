@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Austin",
-  "date": "June first",
-  "seat_class": "first class",
-  "passenger": "Sam Rivera"
- },
- "slots_final": {
-  "origin": "Chicago",
-  "destination": "Austin",
+  "origin": "Seattle",
+  "destination": "Denver",
   "date": "May eighth",
   "seat_class": "first class",
   "passenger": "Sam Rivera"
  },
+ "slots_final": {
+  "origin": "Seattle",
+  "destination": "Denver",
+  "date": "May eighth",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
  "revisions": [
   {
-   "slot": "date",
-   "old": "June first",
-   "new": "May eighth",
+   "slot": "seat_class",
+   "old": "first class",
+   "new": "business",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.746
+   "gap": 0.742
   }
  ],
  "bystander": null,
@@ -37,15 +37,15 @@
    "role": "user",
    "voice": "cv09",
    "lang": "en",
-   "text": "Find a train from Chicago to Austin on June first, hold a first class seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Seattle to Denver on May eighth, hold a first class seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv09",
    "lang": "en",
-   "text": "May eighth — change it to May eighth.",
-   "gap_before": 0.746
+   "text": "business — change it to business.",
+   "gap_before": 0.742
   }
  ],
  "events": [],
@@ -64,8 +64,8 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
-    "destination": "Austin",
+    "origin": "Seattle",
+    "destination": "Denver",
     "date": "May eighth"
    }
   },
@@ -73,36 +73,36 @@
    "fn": "hold_seat",
    "args": {
     "train_id": "SE107372",
-    "seat_class": "first class"
+    "seat_class": "business"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO869be5",
+    "hold_id": "HOa6887b",
     "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE107372": {
-   "origin": "Chicago",
-   "destination": "Austin",
+   "origin": "Seattle",
+   "destination": "Denver",
    "date": "May eighth"
   },
-  "hold_seat#HO869be5": {
+  "hold_seat#HOa6887b": {
    "train_id": "SE107372",
-   "seat_class": "first class"
+   "seat_class": "business"
   },
-  "purchase_ticket#PU102c4e": {
-   "hold_id": "HO869be5",
+  "purchase_ticket#PU75d0f4": {
+   "hold_id": "HOa6887b",
    "passenger": "Sam Rivera"
   }
  },
  "voices": {
   "user": "cv09",
-  "bystander": "cv05"
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

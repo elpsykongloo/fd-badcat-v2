@@ -6,15 +6,15 @@
  "lang": "en",
  "scenario": "travel_multi",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Portland",
+  "origin": "Boston",
+  "destination": "Austin",
   "date": "May third",
   "country": "Thailand",
   "nationality": "American"
  },
  "slots_final": {
-  "origin": "Seattle",
-  "destination": "Austin",
+  "origin": "Boston",
+  "destination": "Denver",
   "date": "May third",
   "country": "Thailand",
   "nationality": "American"
@@ -22,11 +22,11 @@
  "revisions": [
   {
    "slot": "destination",
-   "old": "Portland",
-   "new": "Austin",
+   "old": "Austin",
+   "new": "Denver",
    "by": "user",
    "kind": "default",
-   "gap": 1.668
+   "gap": 1.109
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Look up trains from Seattle to Portland on May third, and also check if American citizens need a visa for Thailand.",
+   "text": "Look up trains from Boston to Austin on May third, and also check if American citizens need a visa for Thailand.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Wait — make it Austin.",
-   "gap_before": 1.668
+   "text": "Wait — make it Denver.",
+   "gap_before": 1.109
   }
  ],
  "events": [],
@@ -63,8 +63,8 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
-    "destination": "Austin",
+    "origin": "Boston",
+    "destination": "Denver",
     "date": "May third"
    }
   },
@@ -78,19 +78,19 @@
  ],
  "gold_state": {
   "search_trains#SE30bb10": {
-   "origin": "Seattle",
-   "destination": "Austin",
+   "origin": "Boston",
+   "destination": "Denver",
    "date": "May third"
   },
-  "check_visa_rule#CHc5cfde": {
+  "check_visa_rule#CHabf420": {
    "country": "Thailand",
    "nationality": "American"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv02"
+  "user": "cv01",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

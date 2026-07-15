@@ -6,17 +6,17 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
-  "destination": "Austin",
-  "date": "June first",
-  "seat_class": "first class",
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "May third",
+  "seat_class": "coach",
   "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Seattle",
-  "destination": "Austin",
-  "date": "June first",
-  "seat_class": "first class",
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "May third",
+  "seat_class": "coach",
   "passenger": "Alex Chen"
  },
  "revisions": [],
@@ -26,26 +26,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Find a train from Seattle to Austin on June first, hold a first class seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Boston to Atlanta on May third, hold a coach seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv03",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 2.001
+   "at_after_eou": 1.851
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.51,
+   "offset": 0.722,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv01",
+   "voice": "cv03",
    "text": "Any progress?"
   }
  ],
@@ -64,45 +64,45 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
-    "destination": "Austin",
-    "date": "June first"
+    "origin": "Boston",
+    "destination": "Atlanta",
+    "date": "May third"
    }
   },
   {
    "fn": "hold_seat",
    "args": {
     "train_id": "SEaa7ec4",
-    "seat_class": "first class"
+    "seat_class": "coach"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO40dc2b",
+    "hold_id": "HO0ae0ba",
     "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEaa7ec4": {
-   "origin": "Seattle",
-   "destination": "Austin",
-   "date": "June first"
+   "origin": "Boston",
+   "destination": "Atlanta",
+   "date": "May third"
   },
-  "hold_seat#HO40dc2b": {
+  "hold_seat#HO0ae0ba": {
    "train_id": "SEaa7ec4",
-   "seat_class": "first class"
+   "seat_class": "coach"
   },
-  "purchase_ticket#PU4f8a6e": {
-   "hold_id": "HO40dc2b",
+  "purchase_ticket#PUdce6c6": {
+   "hold_id": "HO0ae0ba",
    "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv01",
-  "bystander": "cv05"
+  "user": "cv03",
+  "bystander": "cv04"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

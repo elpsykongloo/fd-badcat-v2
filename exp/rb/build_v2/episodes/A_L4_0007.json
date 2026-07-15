@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
+  "origin": "Boston",
   "destination": "Portland",
   "date": "June first",
-  "seat_class": "business",
+  "seat_class": "coach",
   "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Chicago",
-  "destination": "Atlanta",
+  "origin": "Boston",
+  "destination": "Portland",
   "date": "June first",
   "seat_class": "business",
   "passenger": "Jordan Lee"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Portland",
-   "new": "Atlanta",
+   "slot": "seat_class",
+   "old": "coach",
+   "new": "business",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.952
+   "gap": 1.03
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Find a train from Chicago to Portland on June first, hold a business seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Boston to Portland on June first, hold a coach seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv04",
    "lang": "en",
-   "text": "Atlanta — change it to Atlanta.",
-   "gap_before": 0.952
+   "text": "business — change it to business.",
+   "gap_before": 1.03
   }
  ],
  "events": [],
@@ -64,8 +64,8 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
-    "destination": "Atlanta",
+    "origin": "Boston",
+    "destination": "Portland",
     "date": "June first"
    }
   },
@@ -79,30 +79,30 @@
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HOef224a",
+    "hold_id": "HOa562de",
     "passenger": "Jordan Lee"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEbb3d32": {
-   "origin": "Chicago",
-   "destination": "Atlanta",
+   "origin": "Boston",
+   "destination": "Portland",
    "date": "June first"
   },
-  "hold_seat#HOef224a": {
+  "hold_seat#HOa562de": {
    "train_id": "SEbb3d32",
    "seat_class": "business"
   },
-  "purchase_ticket#PU7e258e": {
-   "hold_id": "HOef224a",
+  "purchase_ticket#PU0cbfc6": {
+   "hold_id": "HOa562de",
    "passenger": "Jordan Lee"
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv02"
+  "user": "cv04",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

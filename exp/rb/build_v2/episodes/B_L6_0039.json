@@ -6,27 +6,27 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Chicago",
-  "destination": "Austin",
-  "date": "June first",
-  "seat_class": "first class",
-  "passenger": "Jordan Lee"
- },
- "slots_final": {
-  "origin": "Chicago",
+  "origin": "Boston",
   "destination": "Portland",
   "date": "June first",
+  "seat_class": "first class",
+  "passenger": "Sam Rivera"
+ },
+ "slots_final": {
+  "origin": "Boston",
+  "destination": "Denver",
+  "date": "June first",
   "seat_class": "business",
-  "passenger": "Jordan Lee"
+  "passenger": "Sam Rivera"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Austin",
-   "new": "Portland",
+   "old": "Portland",
+   "new": "Denver",
    "by": "user",
    "kind": "default",
-   "gap": 0.801
+   "gap": 1.175
   },
   {
    "slot": "seat_class",
@@ -34,7 +34,7 @@
    "new": "business",
    "by": "user",
    "kind": "second",
-   "gap": 1.046
+   "gap": 2.955
   }
  ],
  "bystander": null,
@@ -43,42 +43,42 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Find a train from Chicago to Austin on June first, hold a first class seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Boston to Portland on June first, hold a first class seat, and buy the ticket for Sam Rivera.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv03",
    "lang": "en",
-   "text": "Wait — make it Portland.",
-   "gap_before": 0.801
+   "text": "Wait — make it Denver.",
+   "gap_before": 1.175
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv03",
    "lang": "en",
    "text": "Also, one more change — business.",
-   "gap_before": 1.046
+   "gap_before": 2.955
   }
  ],
  "events": [
   {
    "state": "eou",
-   "offset": 0.549,
+   "offset": 0.679,
    "action": "revise",
    "role": "user",
-   "voice": "cv09",
-   "text": "Wait — make it Portland."
+   "voice": "cv03",
+   "text": "Wait — make it Denver."
   },
   {
    "state": "committed",
-   "offset": 1.396,
+   "offset": 0.405,
    "action": "revise",
    "role": "user",
-   "voice": "cv09",
-   "text": "Wait — make it Portland."
+   "voice": "cv03",
+   "text": "Wait — make it Denver."
   }
  ],
  "profile": "default",
@@ -96,8 +96,8 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Chicago",
-    "destination": "Portland",
+    "origin": "Boston",
+    "destination": "Denver",
     "date": "June first"
    }
   },
@@ -111,30 +111,30 @@
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO33a2e9",
-    "passenger": "Jordan Lee"
+    "hold_id": "HO4016d5",
+    "passenger": "Sam Rivera"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE5f8fab": {
-   "origin": "Chicago",
-   "destination": "Portland",
+   "origin": "Boston",
+   "destination": "Denver",
    "date": "June first"
   },
-  "hold_seat#HO33a2e9": {
+  "hold_seat#HO4016d5": {
    "train_id": "SE5f8fab",
    "seat_class": "business"
   },
-  "purchase_ticket#PU075c68": {
-   "hold_id": "HO33a2e9",
-   "passenger": "Jordan Lee"
+  "purchase_ticket#PU23543c": {
+   "hold_id": "HO4016d5",
+   "passenger": "Sam Rivera"
   }
  },
  "voices": {
-  "user": "cv09",
-  "bystander": "cv05"
+  "user": "cv03",
+  "bystander": "cv08"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -8,14 +8,14 @@
  "slots": {
   "amount": "five thousand",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
  "slots_final": {
   "amount": "five thousand",
   "from_cur": "dollars",
-  "to_cur": "yen",
+  "to_cur": "euros",
   "from_acct": "checking",
   "to_acct": "rent account"
  },
@@ -26,26 +26,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv02",
    "lang": "en",
-   "text": "Get a quote for five thousand dollars to yen, then transfer five thousand from checking to rent account.",
+   "text": "Get a quote for five thousand dollars to euros, then transfer five thousand from checking to rent account.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv02",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 1.689
+   "at_after_eou": 1.726
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.508,
+   "offset": 0.379,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv09",
+   "voice": "cv02",
    "text": "Any progress?"
   }
  ],
@@ -65,7 +65,7 @@
    "args": {
     "amount": "five thousand",
     "from_cur": "dollars",
-    "to_cur": "yen"
+    "to_cur": "euros"
    }
   },
   {
@@ -81,18 +81,18 @@
   "get_fx_quote#GE49f87d": {
    "amount": "five thousand",
    "from_cur": "dollars",
-   "to_cur": "yen"
+   "to_cur": "euros"
   },
-  "transfer_funds#TR13f890": {
+  "transfer_funds#TRd48f02": {
    "from_acct": "checking",
    "to_acct": "rent account",
    "amount": "five thousand"
   }
  },
  "voices": {
-  "user": "cv09",
+  "user": "cv02",
   "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

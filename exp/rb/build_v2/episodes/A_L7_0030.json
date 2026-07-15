@@ -6,27 +6,27 @@
  "lang": "zh",
  "scenario": "hou_multi",
  "slots": {
-  "city": "杭州",
-  "beds": "一居",
-  "max_rent": "六千",
+  "city": "成都",
+  "beds": "两居",
+  "max_rent": "八千",
   "from_addr": "中关村",
   "to_addr": "国贸"
  },
  "slots_final": {
-  "city": "成都",
-  "beds": "一居",
-  "max_rent": "六千",
+  "city": "杭州",
+  "beds": "两居",
+  "max_rent": "八千",
   "from_addr": "中关村",
   "to_addr": "国贸"
  },
  "revisions": [
   {
    "slot": "city",
-   "old": "杭州",
-   "new": "成都",
+   "old": "成都",
+   "new": "杭州",
    "by": "user",
    "kind": "default",
-   "gap": 1.082
+   "gap": 1.095
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "在杭州找一居、不超过六千的房子，再算下从中关村到国贸的通勤时间。",
+   "text": "在成都找两居、不超过八千的房子，再算下从中关村到国贸的通勤时间。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv08",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "等等，改成成都。",
-   "gap_before": 1.082
+   "text": "等等，改成杭州。",
+   "gap_before": 1.095
   }
  ],
  "events": [],
@@ -63,9 +63,9 @@
   {
    "fn": "search_rentals",
    "args": {
-    "city": "成都",
-    "beds": "一居",
-    "max_rent": "六千"
+    "city": "杭州",
+    "beds": "两居",
+    "max_rent": "八千"
    }
   },
   {
@@ -78,19 +78,19 @@
  ],
  "gold_state": {
   "search_rentals#SEb6e0f1": {
-   "city": "成都",
-   "beds": "一居",
-   "max_rent": "六千"
+   "city": "杭州",
+   "beds": "两居",
+   "max_rent": "八千"
   },
-  "get_commute_time#GE722406": {
+  "get_commute_time#GE4c93d4": {
    "from_addr": "中关村",
    "to_addr": "国贸"
   }
  },
  "voices": {
-  "user": "cv08",
-  "bystander": "cv01"
+  "user": "cv01",
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

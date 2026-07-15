@@ -8,23 +8,23 @@
  "slots": {
   "city": "厦门",
   "beds": "一居",
-  "max_rent": "六千",
-  "slot": "周日下午"
+  "max_rent": "八千",
+  "slot": "周六上午"
  },
  "slots_final": {
   "city": "厦门",
   "beds": "一居",
-  "max_rent": "八千",
-  "slot": "周日下午"
+  "max_rent": "六千",
+  "slot": "周六上午"
  },
  "revisions": [
   {
    "slot": "max_rent",
-   "old": "六千",
-   "new": "八千",
+   "old": "八千",
+   "new": "六千",
    "by": "user",
    "kind": "default",
-   "gap": 1.011
+   "gap": 2.735
   }
  ],
  "bystander": null,
@@ -33,17 +33,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "在厦门找一居、租金不超过六千的房子，约周日下午看房。",
+   "text": "在厦门找一居、租金不超过八千的房子，约周六上午看房。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv04",
+   "voice": "cv01",
    "lang": "zh",
-   "text": "等等，改成八千。",
-   "gap_before": 1.011
+   "text": "等等，改成六千。",
+   "gap_before": 2.735
   }
  ],
  "events": [],
@@ -63,14 +63,14 @@
    "args": {
     "city": "厦门",
     "beds": "一居",
-    "max_rent": "八千"
+    "max_rent": "六千"
    }
   },
   {
    "fn": "book_viewing",
    "args": {
     "listing_id": "SEbd8599",
-    "slot": "周日下午"
+    "slot": "周六上午"
    }
   }
  ],
@@ -78,17 +78,17 @@
   "search_rentals#SEbd8599": {
    "city": "厦门",
    "beds": "一居",
-   "max_rent": "八千"
+   "max_rent": "六千"
   },
-  "book_viewing#BO600b2b": {
+  "book_viewing#BOa132b1": {
    "listing_id": "SEbd8599",
-   "slot": "周日下午"
+   "slot": "周六上午"
   }
  },
  "voices": {
-  "user": "cv04",
-  "bystander": "cv02"
+  "user": "cv01",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

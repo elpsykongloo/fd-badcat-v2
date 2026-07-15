@@ -35,26 +35,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv04",
    "lang": "en",
    "text": "Get a quote for five thousand dollars to euros, then transfer five thousand from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv04",
    "lang": "en",
    "text": "Wait — make it yen.",
-   "at_after_eou": 1.982
+   "at_after_eou": 2.035
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.391,
+   "offset": 0.647,
    "action": "revise",
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv04",
    "text": "Wait — make it yen."
   }
  ],
@@ -92,16 +92,16 @@
    "from_cur": "dollars",
    "to_cur": "yen"
   },
-  "transfer_funds#TRfe3aeb": {
+  "transfer_funds#TRfee0ca": {
    "from_acct": "checking",
    "to_acct": "savings",
    "amount": "five thousand"
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv07"
+  "user": "cv04",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

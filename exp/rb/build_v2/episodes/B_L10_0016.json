@@ -6,47 +6,47 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "跑步鞋",
-  "qty": "两",
+  "query": "蓝牙耳机",
+  "qty": "一",
   "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
-  "query": "跑步鞋",
-  "qty": "两",
+  "query": "蓝牙耳机",
+  "qty": "一",
   "address": "浦东新区世纪大道八号"
  },
  "revisions": [],
  "bystander": {
   "kind": "irrelevant",
-  "other": "蓝牙耳机",
+  "other": "保温杯",
   "state": "inflight",
-  "frac": 0.524
+  "frac": 0.632
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv03",
    "lang": "zh",
-   "text": "帮我搜跑步鞋，加两件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv04",
+   "voice": "cv06",
    "lang": "zh",
    "text": "今晚想吃什么？我们点外卖吧。",
-   "at_after_eou": 1.911
+   "at_after_eou": 1.967
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.606,
+   "offset": 0.157,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv04",
+   "voice": "cv06",
    "text": "今晚想吃什么？我们点外卖吧。"
   }
  ],
@@ -65,41 +65,41 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "跑步鞋"
+    "query": "蓝牙耳机"
    }
   },
   {
    "fn": "add_item",
    "args": {
     "item_id": "SE239a0e",
-    "qty": "两"
+    "qty": "一"
    }
   },
   {
    "fn": "place_order",
    "args": {
-    "cart_id": "AD1c7fc9",
+    "cart_id": "AD988772",
     "address": "浦东新区世纪大道八号"
    }
   }
  ],
  "gold_state": {
   "search_catalog#SE239a0e": {
-   "query": "跑步鞋"
+   "query": "蓝牙耳机"
   },
-  "add_item#AD1c7fc9": {
+  "add_item#AD988772": {
    "item_id": "SE239a0e",
-   "qty": "两"
+   "qty": "一"
   },
-  "place_order#PL364c69": {
-   "cart_id": "AD1c7fc9",
+  "place_order#PL906428": {
+   "cart_id": "AD988772",
    "address": "浦东新区世纪大道八号"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv04"
+  "user": "cv03",
+  "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

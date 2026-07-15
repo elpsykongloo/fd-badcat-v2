@@ -8,12 +8,12 @@
  "slots": {
   "payee": "the landlord",
   "amount": "five thousand",
-  "date": "May eighth"
+  "date": "June first"
  },
  "slots_final": {
   "payee": "the landlord",
   "amount": "three thousand",
-  "date": "May eighth"
+  "date": "June first"
  },
  "revisions": [
   {
@@ -31,9 +31,9 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv05",
+   "voice": "cv09",
    "lang": "en",
-   "text": "Schedule a payment of five thousand to the landlord on May eighth., oh no, make that three thousand",
+   "text": "Schedule a payment of five thousand to the landlord on June first., oh no, make that three thousand",
    "gap_before": 0.5
   }
  ],
@@ -53,7 +53,7 @@
    "args": {
     "payee": "the landlord",
     "amount": "three thousand",
-    "date": "May eighth"
+    "date": "June first"
    }
   }
  ],
@@ -61,13 +61,13 @@
   "schedule_payment#SC4c0c84": {
    "payee": "the landlord",
    "amount": "three thousand",
-   "date": "May eighth"
+   "date": "June first"
   }
  },
  "voices": {
-  "user": "cv05",
-  "bystander": "cv08"
+  "user": "cv09",
+  "bystander": "cv03"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

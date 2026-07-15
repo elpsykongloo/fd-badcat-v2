@@ -7,8 +7,8 @@
  "scenario": "travel_hotel",
  "slots": {
   "city": "Boise",
-  "checkin": "May tenth",
-  "nights": "three"
+  "checkin": "May third",
+  "nights": "two"
  },
  "slots_final": {
   "city": "Boise",
@@ -17,12 +17,12 @@
  },
  "revisions": [
   {
-   "slot": "nights",
-   "old": "three",
-   "new": "two",
+   "slot": "checkin",
+   "old": "May third",
+   "new": "May tenth",
    "by": "user",
    "kind": "default",
-   "gap": 0.392
+   "gap": 0.408
   }
  ],
  "bystander": null,
@@ -31,17 +31,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Book me a hotel in Boise, checking in May tenth, for three nights.",
+   "text": "Book me a hotel in Boise, checking in May third, for two nights.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv01",
    "lang": "en",
-   "text": "Wait — make it two.",
-   "gap_before": 0.392
+   "text": "Wait — make it May tenth.",
+   "gap_before": 0.408
   }
  ],
  "events": [],
@@ -72,9 +72,9 @@
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv06"
+  "user": "cv01",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

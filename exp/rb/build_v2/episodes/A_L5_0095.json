@@ -7,26 +7,26 @@
  "scenario": "travel_chain",
  "slots": {
   "origin": "Boston",
-  "destination": "Austin",
+  "destination": "Portland",
   "date": "May third",
-  "seat_class": "first class",
-  "passenger": "Sam Rivera"
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
  },
  "slots_final": {
   "origin": "Boston",
-  "destination": "Denver",
+  "destination": "Portland",
   "date": "May third",
-  "seat_class": "first class",
-  "passenger": "Sam Rivera"
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
  },
  "revisions": [
   {
-   "slot": "destination",
-   "old": "Austin",
-   "new": "Denver",
+   "slot": "seat_class",
+   "old": "business",
+   "new": "coach",
    "by": "user",
    "kind": "default",
-   "gap": 2.893
+   "gap": 2.854
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Find a train from Boston to Austin on May third, hold a first class seat, and buy the ticket for Sam Rivera.",
+   "text": "Find a train from Boston to Portland on May third, hold a business seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv03",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Wait — make it Denver.",
-   "gap_before": 2.893
+   "text": "Wait — make it coach.",
+   "gap_before": 2.854
   }
  ],
  "events": [],
@@ -65,7 +65,7 @@
    "fn": "search_trains",
    "args": {
     "origin": "Boston",
-    "destination": "Denver",
+    "destination": "Portland",
     "date": "May third"
    }
   },
@@ -73,36 +73,36 @@
    "fn": "hold_seat",
    "args": {
     "train_id": "SE483331",
-    "seat_class": "first class"
+    "seat_class": "coach"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HOa96f61",
-    "passenger": "Sam Rivera"
+    "hold_id": "HO6d5caa",
+    "passenger": "Jordan Lee"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE483331": {
    "origin": "Boston",
-   "destination": "Denver",
+   "destination": "Portland",
    "date": "May third"
   },
-  "hold_seat#HOa96f61": {
+  "hold_seat#HO6d5caa": {
    "train_id": "SE483331",
-   "seat_class": "first class"
+   "seat_class": "coach"
   },
-  "purchase_ticket#PU59f55e": {
-   "hold_id": "HOa96f61",
-   "passenger": "Sam Rivera"
+  "purchase_ticket#PU07bba0": {
+   "hold_id": "HO6d5caa",
+   "passenger": "Jordan Lee"
   }
  },
  "voices": {
-  "user": "cv03",
-  "bystander": "cv02"
+  "user": "cv05",
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

@@ -7,30 +7,30 @@
  "scenario": "ecom_chain",
  "slots": {
   "query": "蓝牙耳机",
-  "qty": "一",
+  "qty": "两",
   "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
-  "query": "跑步鞋",
-  "qty": "两",
+  "query": "保温杯",
+  "qty": "一",
   "address": "浦东新区世纪大道八号"
  },
  "revisions": [
   {
    "slot": "query",
    "old": "蓝牙耳机",
-   "new": "跑步鞋",
+   "new": "保温杯",
    "by": "user",
    "kind": "default",
-   "gap": 1.154
+   "gap": 1.005
   },
   {
    "slot": "qty",
-   "old": "一",
-   "new": "两",
+   "old": "两",
+   "new": "一",
    "by": "user",
    "kind": "second",
-   "gap": 2.848
+   "gap": 2.864
   }
  ],
  "bystander": null,
@@ -41,22 +41,22 @@
    "role": "user",
    "voice": "cv02",
    "lang": "zh",
-   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到浦东新区世纪大道八号。",
+   "text": "帮我搜蓝牙耳机，加两件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv02",
    "lang": "zh",
-   "text": "等等，改成跑步鞋。",
-   "gap_before": 1.154
+   "text": "等等，改成保温杯。",
+   "gap_before": 1.005
   },
   {
    "role": "user",
    "voice": "cv02",
    "lang": "zh",
-   "text": "还有，再改一下，要两。",
-   "gap_before": 2.848
+   "text": "还有，再改一下，要一。",
+   "gap_before": 2.864
   }
  ],
  "events": [],
@@ -75,34 +75,34 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "跑步鞋"
+    "query": "保温杯"
    }
   },
   {
    "fn": "add_item",
    "args": {
     "item_id": "SE42a6a6",
-    "qty": "两"
+    "qty": "一"
    }
   },
   {
    "fn": "place_order",
    "args": {
-    "cart_id": "ADcff55c",
+    "cart_id": "ADecf102",
     "address": "浦东新区世纪大道八号"
    }
   }
  ],
  "gold_state": {
   "search_catalog#SE42a6a6": {
-   "query": "跑步鞋"
+   "query": "保温杯"
   },
-  "add_item#ADcff55c": {
+  "add_item#ADecf102": {
    "item_id": "SE42a6a6",
-   "qty": "两"
+   "qty": "一"
   },
-  "place_order#PLce7c80": {
-   "cart_id": "ADcff55c",
+  "place_order#PLa60a70": {
+   "cart_id": "ADecf102",
    "address": "浦东新区世纪大道八号"
   }
  },
@@ -111,5 +111,5 @@
   "bystander": "cv06"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

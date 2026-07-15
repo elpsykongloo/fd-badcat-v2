@@ -10,47 +10,47 @@
   "from_cur": "dollars",
   "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "rent account"
+  "to_acct": "savings"
  },
  "slots_final": {
   "amount": "eight hundred",
   "from_cur": "dollars",
   "to_cur": "yen",
   "from_acct": "checking",
-  "to_acct": "rent account"
+  "to_acct": "savings"
  },
  "revisions": [],
  "bystander": {
   "kind": "irrelevant",
-  "other": "euros",
+  "other": "rent account",
   "state": "inflight",
-  "frac": 0.344
+  "frac": 0.137
  },
  "l8_action": null,
  "cancelled": false,
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Get a quote for eight hundred dollars to yen, then transfer eight hundred from checking to rent account.",
+   "text": "Get a quote for eight hundred dollars to yen, then transfer eight hundred from checking to savings.",
    "gap_before": 0.5
   },
   {
    "role": "bystander",
-   "voice": "cv03",
+   "voice": "cv09",
    "lang": "en",
    "text": "What do you want for dinner? Let's order in.",
-   "at_after_eou": 1.815
+   "at_after_eou": 1.71
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.408,
+   "offset": 0.423,
    "action": "bystander",
    "role": "bystander",
-   "voice": "cv03",
+   "voice": "cv09",
    "text": "What do you want for dinner? Let's order in."
   }
  ],
@@ -77,7 +77,7 @@
    "fn": "transfer_funds",
    "args": {
     "from_acct": "checking",
-    "to_acct": "rent account",
+    "to_acct": "savings",
     "amount": "eight hundred"
    }
   }
@@ -88,16 +88,16 @@
    "from_cur": "dollars",
    "to_cur": "yen"
   },
-  "transfer_funds#TRf3a65e": {
+  "transfer_funds#TR159356": {
    "from_acct": "checking",
-   "to_acct": "rent account",
+   "to_acct": "savings",
    "amount": "eight hundred"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv03"
+  "user": "cv08",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

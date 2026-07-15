@@ -6,16 +6,16 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Seattle",
+  "origin": "Boston",
   "destination": "Portland",
-  "date": "June first",
+  "date": "May third",
   "seat_class": "business",
   "passenger": "Alex Chen"
  },
  "slots_final": {
-  "origin": "Seattle",
+  "origin": "Boston",
   "destination": "Portland",
-  "date": "June first",
+  "date": "May third",
   "seat_class": "business",
   "passenger": "Alex Chen"
  },
@@ -26,26 +26,26 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv08",
    "lang": "en",
-   "text": "Find a train from Seattle to Portland on June first, hold a business seat, and buy the ticket for Alex Chen.",
+   "text": "Find a train from Boston to Portland on May third, hold a business seat, and buy the ticket for Alex Chen.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv08",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 1.791
+   "at_after_eou": 1.871
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.626,
+   "offset": 0.397,
    "action": "progress_query",
    "role": "user",
-   "voice": "cv07",
+   "voice": "cv08",
    "text": "Any progress?"
   }
  ],
@@ -64,9 +64,9 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Seattle",
+    "origin": "Boston",
     "destination": "Portland",
-    "date": "June first"
+    "date": "May third"
    }
   },
   {
@@ -79,30 +79,30 @@
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO8b5679",
+    "hold_id": "HOe0a6b9",
     "passenger": "Alex Chen"
    }
   }
  ],
  "gold_state": {
   "search_trains#SE664537": {
-   "origin": "Seattle",
+   "origin": "Boston",
    "destination": "Portland",
-   "date": "June first"
+   "date": "May third"
   },
-  "hold_seat#HO8b5679": {
+  "hold_seat#HOe0a6b9": {
    "train_id": "SE664537",
    "seat_class": "business"
   },
-  "purchase_ticket#PUf48f77": {
-   "hold_id": "HO8b5679",
+  "purchase_ticket#PU214413": {
+   "hold_id": "HOe0a6b9",
    "passenger": "Alex Chen"
   }
  },
  "voices": {
-  "user": "cv07",
-  "bystander": "cv02"
+  "user": "cv08",
+  "bystander": "cv05"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

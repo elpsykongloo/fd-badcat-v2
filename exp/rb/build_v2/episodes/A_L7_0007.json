@@ -7,26 +7,26 @@
  "scenario": "travel_multi",
  "slots": {
   "origin": "Seattle",
-  "destination": "Portland",
-  "date": "June first",
-  "country": "Japan",
+  "destination": "Denver",
+  "date": "May third",
+  "country": "Thailand",
   "nationality": "American"
  },
  "slots_final": {
   "origin": "Seattle",
-  "destination": "Denver",
-  "date": "June first",
-  "country": "Japan",
+  "destination": "Austin",
+  "date": "May third",
+  "country": "Thailand",
   "nationality": "American"
  },
  "revisions": [
   {
    "slot": "destination",
-   "old": "Portland",
-   "new": "Denver",
+   "old": "Denver",
+   "new": "Austin",
    "by": "user",
    "kind": "default",
-   "gap": 1.306
+   "gap": 1.141
   }
  ],
  "bystander": null,
@@ -35,17 +35,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Look up trains from Seattle to Portland on June first, and also check if American citizens need a visa for Japan.",
+   "text": "Look up trains from Seattle to Denver on May third, and also check if American citizens need a visa for Thailand.",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv02",
+   "voice": "cv05",
    "lang": "en",
-   "text": "Wait — make it Denver.",
-   "gap_before": 1.306
+   "text": "Wait — make it Austin.",
+   "gap_before": 1.141
   }
  ],
  "events": [],
@@ -64,14 +64,14 @@
    "fn": "search_trains",
    "args": {
     "origin": "Seattle",
-    "destination": "Denver",
-    "date": "June first"
+    "destination": "Austin",
+    "date": "May third"
    }
   },
   {
    "fn": "check_visa_rule",
    "args": {
-    "country": "Japan",
+    "country": "Thailand",
     "nationality": "American"
    }
   }
@@ -79,18 +79,18 @@
  "gold_state": {
   "search_trains#SE486cde": {
    "origin": "Seattle",
-   "destination": "Denver",
-   "date": "June first"
+   "destination": "Austin",
+   "date": "May third"
   },
-  "check_visa_rule#CHbd52e1": {
-   "country": "Japan",
+  "check_visa_rule#CH43256e": {
+   "country": "Thailand",
    "nationality": "American"
   }
  },
  "voices": {
-  "user": "cv02",
-  "bystander": "cv03"
+  "user": "cv05",
+  "bystander": "cv02"
  },
  "split": "dev",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

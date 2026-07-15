@@ -6,23 +6,23 @@
  "lang": "zh",
  "scenario": "ecom_chain",
  "slots": {
-  "query": "保温杯",
-  "qty": "一",
-  "address": "海淀区学院路一号"
+  "query": "跑步鞋",
+  "qty": "两",
+  "address": "浦东新区世纪大道八号"
  },
  "slots_final": {
   "query": "保温杯",
   "qty": "两",
-  "address": "海淀区学院路一号"
+  "address": "浦东新区世纪大道八号"
  },
  "revisions": [
   {
-   "slot": "qty",
-   "old": "一",
-   "new": "两",
+   "slot": "query",
+   "old": "跑步鞋",
+   "new": "保温杯",
    "by": "user",
    "kind": "value_first",
-   "gap": 0.699
+   "gap": 0.687
   }
  ],
  "bystander": null,
@@ -33,15 +33,15 @@
    "role": "user",
    "voice": "cv09",
    "lang": "zh",
-   "text": "帮我搜保温杯，加一件进购物车，下单寄到海淀区学院路一号。",
+   "text": "帮我搜跑步鞋，加两件进购物车，下单寄到浦东新区世纪大道八号。",
    "gap_before": 0.5
   },
   {
    "role": "user",
    "voice": "cv09",
    "lang": "zh",
-   "text": "两，改成两。",
-   "gap_before": 0.699
+   "text": "保温杯，改成保温杯。",
+   "gap_before": 0.687
   }
  ],
  "events": [],
@@ -73,8 +73,8 @@
   {
    "fn": "place_order",
    "args": {
-    "cart_id": "ADfbde47",
-    "address": "海淀区学院路一号"
+    "cart_id": "ADe58385",
+    "address": "浦东新区世纪大道八号"
    }
   }
  ],
@@ -82,19 +82,19 @@
   "search_catalog#SEa7b45e": {
    "query": "保温杯"
   },
-  "add_item#ADfbde47": {
+  "add_item#ADe58385": {
    "item_id": "SEa7b45e",
    "qty": "两"
   },
-  "place_order#PL3be3d8": {
-   "cart_id": "ADfbde47",
-   "address": "海淀区学院路一号"
+  "place_order#PL52d422": {
+   "cart_id": "ADe58385",
+   "address": "浦东新区世纪大道八号"
   }
  },
  "voices": {
   "user": "cv09",
-  "bystander": "cv04"
+  "bystander": "cv07"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

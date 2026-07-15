@@ -6,17 +6,17 @@
  "lang": "en",
  "scenario": "travel_chain",
  "slots": {
-  "origin": "Boston",
-  "destination": "Portland",
+  "origin": "Chicago",
+  "destination": "Austin",
   "date": "May third",
-  "seat_class": "business",
+  "seat_class": "coach",
   "passenger": "Jordan Lee"
  },
  "slots_final": {
-  "origin": "Boston",
-  "destination": "Portland",
+  "origin": "Chicago",
+  "destination": "Austin",
   "date": "May third",
-  "seat_class": "business",
+  "seat_class": "coach",
   "passenger": "Jordan Lee"
  },
  "revisions": [],
@@ -28,7 +28,7 @@
    "role": "user",
    "voice": "cv04",
    "lang": "en",
-   "text": "Find a train from Boston to Portland on May third, hold a business seat, and buy the ticket for Jordan Lee.",
+   "text": "Find a train from Chicago to Austin on May third, hold a coach seat, and buy the ticket for Jordan Lee.",
    "gap_before": 0.5
   },
   {
@@ -36,13 +36,13 @@
    "voice": "cv04",
    "lang": "en",
    "text": "Any progress?",
-   "at_after_eou": 1.813
+   "at_after_eou": 1.829
   }
  ],
  "events": [
   {
    "state": "inflight",
-   "offset": 0.507,
+   "offset": 0.453,
    "action": "progress_query",
    "role": "user",
    "voice": "cv04",
@@ -64,8 +64,8 @@
   {
    "fn": "search_trains",
    "args": {
-    "origin": "Boston",
-    "destination": "Portland",
+    "origin": "Chicago",
+    "destination": "Austin",
     "date": "May third"
    }
   },
@@ -73,36 +73,36 @@
    "fn": "hold_seat",
    "args": {
     "train_id": "SEe83b21",
-    "seat_class": "business"
+    "seat_class": "coach"
    }
   },
   {
    "fn": "purchase_ticket",
    "args": {
-    "hold_id": "HO68aced",
+    "hold_id": "HOf7d5d8",
     "passenger": "Jordan Lee"
    }
   }
  ],
  "gold_state": {
   "search_trains#SEe83b21": {
-   "origin": "Boston",
-   "destination": "Portland",
+   "origin": "Chicago",
+   "destination": "Austin",
    "date": "May third"
   },
-  "hold_seat#HO68aced": {
+  "hold_seat#HOf7d5d8": {
    "train_id": "SEe83b21",
-   "seat_class": "business"
+   "seat_class": "coach"
   },
-  "purchase_ticket#PU999f7e": {
-   "hold_id": "HO68aced",
+  "purchase_ticket#PU6d9266": {
+   "hold_id": "HOf7d5d8",
    "passenger": "Jordan Lee"
   }
  },
  "voices": {
   "user": "cv04",
-  "bystander": "cv07"
+  "bystander": "cv01"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }

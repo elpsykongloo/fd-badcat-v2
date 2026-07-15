@@ -6,21 +6,21 @@
  "lang": "zh",
  "scenario": "ecom_multi",
  "slots": {
-  "query": "保温杯",
-  "item_id": "B205"
+  "query": "蓝牙耳机",
+  "item_id": "C330"
  },
  "slots_final": {
-  "query": "保温杯",
-  "item_id": "C330"
+  "query": "蓝牙耳机",
+  "item_id": "B205"
  },
  "revisions": [
   {
    "slot": "item_id",
-   "old": "B205",
-   "new": "C330",
+   "old": "C330",
+   "new": "B205",
    "by": "user",
    "kind": "default",
-   "gap": 1.078
+   "gap": 2.176
   }
  ],
  "bystander": null,
@@ -29,17 +29,17 @@
  "pieces": [
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv02",
    "lang": "zh",
-   "text": "搜一下保温杯，再看看编号B205还有没有货。",
+   "text": "搜一下蓝牙耳机，再看看编号C330还有没有货。",
    "gap_before": 0.5
   },
   {
    "role": "user",
-   "voice": "cv06",
+   "voice": "cv02",
    "lang": "zh",
-   "text": "等等，改成C330。",
-   "gap_before": 1.078
+   "text": "等等，改成B205。",
+   "gap_before": 2.176
   }
  ],
  "events": [],
@@ -57,28 +57,28 @@
   {
    "fn": "search_catalog",
    "args": {
-    "query": "保温杯"
+    "query": "蓝牙耳机"
    }
   },
   {
    "fn": "check_stock",
    "args": {
-    "item_id": "C330"
+    "item_id": "B205"
    }
   }
  ],
  "gold_state": {
   "search_catalog#SEde0f5e": {
-   "query": "保温杯"
+   "query": "蓝牙耳机"
   },
-  "check_stock#CH93960c": {
-   "item_id": "C330"
+  "check_stock#CH75a24a": {
+   "item_id": "B205"
   }
  },
  "voices": {
-  "user": "cv06",
-  "bystander": "cv02"
+  "user": "cv02",
+  "bystander": "cv09"
  },
  "split": "test",
- "config_hash": "586da9e6a8c4"
+ "config_hash": "b30499ad9de7"
 }
