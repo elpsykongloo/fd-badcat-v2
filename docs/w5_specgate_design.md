@@ -74,6 +74,13 @@
 
 **Phase-1 工具已交付（2026-07-15，本容器 selftest 全过）**：`src/specgate.py`（SGTracker 单一特征化器=训练/记账/引擎三方共用；SpecGate 运行时，stophead JSON 约定；selftest 11/11）；`scripts/w5sg_census.py`（引擎同参 VADIterator 扫描 + events.jsonl 数字化落盘 + census_report〔K1/基率/gap 分位/ASR 可用性审计〕+ **pause_prior.json = RB 共用时序先验**）；`scripts/w5sg_train.py`（--probe 分组 OOF/K2 判决；train 按 §6 冻结规则选 θ + MLP 消融）；`scripts/w5sg_replay_account.py`（§5 门算术 + always-dispatch 基线行）。引擎挂点：`engine_b.py` cfg `speculative_gate:<path>`（默认 None=冻结路径逐位不动；gated 时发 `tact_spec_gated` 控制事件）。**census/probe 结果回填本节并冻结数值后，方可训练与 FDB 单发。**
 
+## §9.1 Phase-1 判决（2026-07-15，用户实跑，提交 6f41c85）——**K2 FAIL，v0 按 §7 取消**
+
+- **census**：9,988 samples / **102,194 vad-end 事件**（K1 PASS，5× 于 20k 门）；确认基率 **0.3961**（FDB live 32.6% 的同数量级邻域）；gap 分位 zh p10/25/50/75/90 = 0.1/0.2/0.3/2.5/2.8s、en = 0.1/0.2/0.3/0.8/2.7s——**负类主体是 ≤0.3s 微停顿**；ASR 可用性审计：投影时滞 p50 **52.5ms > 50ms 冻结门 ⇒ F_text 排除**（以 2.5ms 之差；按冻结规则执行，不弯折）。数据修复记录：英文样本误标 zh 的字段映射修复后全链重跑，K2 数值不变。
+- **probe（F_time 6 维，分组 OOF）**：AUC **0.6425**；precision@recall0.85 = **0.4228**（仅高出基率 +2.7pt）**< 0.50 ⇒ K2 FAIL**。
+- **判决（冻结规则机械执行）**：v0 取消，零训练浪费、FDB 零接触。负结果定性：**"本次静默会持续多久"在纯时序历史上不可判**——话语时长/前序间隙/局部密度对 0.64s 恢复预测只携带弱信号（AUC 0.64）。与 w4v3 探针（内容结构族对"停顿-终止"判别近饱和 AUC 0.984）合成更锋利的图景：**finality 信号是内容承载的（content-borne），而部署时点（vad-end 即刻）的可观测集里只有时序——内容恰好被 ASR 时滞墙挡在外面（52.5ms）**。双分离主张措辞相应收窄："finality 可学"限定为离线内容探针口径；在线 timing-only 版不可达经济工作点。
+- **后继路径（不属本预注册，须另开）**：地板余量算术给出干净的候选假设——首响地板对派发延迟的容忍度 = 0.64 − infer p50 0.561 = **79ms ≥ ASR 时滞 p50 52.5ms**：**"派发等 ASR 前缀"的架构改造在 p50 上结构性保住地板**（first = max(0.64, lag+infer)，lag+infer p50 ≈ 0.614 < 0.64）。任何此类 SG v1（ASR 同步门控 + F_text）必须新预注册：新 Phase-1 = 对 census 102k 事件补 ASR 结构特征（SenseVoice 全量 ≈2.3h，RTF 0.021×106.9h）+ 重跑分组 OOF 探针 + **同门 K2'（precision@recall0.85 ≥ 0.50，不得放宽）**；合规：ASR 转写缓存必须落在仓外（如 /root/autodl-tmp/w5sg_asr_cache），入仓产物仍数字 only。若 K2' 亦败，SG 线以双探针负结果永久收口（timing 与 ASR-content 双轨均不可达），分析章素材完整。
+
 ## §10 相关工作定位（写作素材，非判据）
 
 - **SHANKS (2510.06917)**：边听边想、用户未说完即完成 56.9% 工具调用——占据"提前执行"极大化。本项目目标不同：在**修订安全不变量**（R0/R1 inert、EoU 确认前无副作用、决策内容不变）之上优化既有投机机制的**浪费经济学**——SHANKS 最大化提前量，我们在给定提前量（地板 0.64）下最小化计算废单。
