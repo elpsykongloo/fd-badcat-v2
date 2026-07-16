@@ -1,0 +1,75 @@
+{
+ "id": "B_L10_0033",
+ "layer": "L10",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 9.337,
+ "U": 0.6194,
+ "U_sens": {
+  "0.5": 0.6194,
+  "1.0": 0.6194,
+  "2.0": 0.6194
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 8.865,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 3
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 2,
+   "t_eou": 14.912,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   9.865,
+   "好的，马上办。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   8.225,
+   "user"
+  ],
+  [
+   10.172,
+   12.197,
+   "bystander"
+  ],
+  [
+   12.247,
+   14.272,
+   "bystander"
+  ]
+ ]
+}

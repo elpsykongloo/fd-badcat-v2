@@ -1,0 +1,75 @@
+{
+ "id": "B_L4_0056",
+ "layer": "L4",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 0.0,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 0.0,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 1,
+   "t_eou": 12.549,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "place_order",
+     "op_id": 4
+    }
+   ],
+   "say": ""
+  },
+  {
+   "i": 2,
+   "t_eou": 19.869,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [],
+ "segs": [
+  [
+   0.5,
+   5.38,
+   "user"
+  ],
+  [
+   6.229,
+   11.909,
+   "user"
+  ],
+  [
+   13.549,
+   19.229,
+   "user"
+  ]
+ ]
+}

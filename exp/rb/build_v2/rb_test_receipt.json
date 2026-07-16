@@ -1,0 +1,390 @@
+{
+  "schema": "rb_test_receipt.v1",
+  "status": "complete",
+  "generated_at_utc": "2026-07-16T09:04:00Z",
+  "single_shot_window_utc": {
+    "first_provider_start": "2026-07-16T07:30:59Z",
+    "last_provider_end": "2026-07-16T08:50:29Z"
+  },
+  "protocol": {
+    "path": "docs/rb_test_protocol.md",
+    "sha256": "78d47e4176ab335d19bfc89d4bcebe1eb0f2bd843637f9ff772d9a294d3cc33f",
+    "source_commit": "152a5f65fd0f97cdb33c33cb6d005d210a3a0026",
+    "provider_reruns": 0,
+    "test_observations_before_protocol_freeze": 0
+  },
+  "build": {
+    "path": "exp/rb/build_v2",
+    "version": "rb_v2.2.1",
+    "config_hash": "265c7cd8f485",
+    "manifest_sha256": "1793cd10529dc14ad4f92ea3c27c62066727c96eefc43420f033f4b60159e94f",
+    "ids_hash": "f70727a59d9f",
+    "content_hash": "216b79de9cee",
+    "n_total": 1000,
+    "n_dev": 103,
+    "n_test": 897,
+    "n_test_arm_a": 541,
+    "n_test_arm_b": 356,
+    "audio": "qwen",
+    "pause_prior": true
+  },
+  "scorer_freeze": {
+    "version": 3,
+    "receipt_path": "exp/rb/scorer_freeze.json",
+    "receipt_sha256": "311e74a68d321e964c4af9834db3a2ccfe91e84911a3dd66d8c8a8fbd1c28d43",
+    "verified_before_every_test_provider": true,
+    "hashes": {
+      "rb/scorer.py": "34d50c4ab0326f65e8824fbd955732ef9c56d29dfa57f8e97c0915778fc2b41c",
+      "rb/sandbox.py": "833968903e8325154da2196fa65c3e1b52d8afe9a8428f0706eb8ae129a631c5",
+      "rb/registry.py": "419f4db041d94f9fba0db750893b19293ce1343685c3bf7a9a24226f3e58e9bd"
+    }
+  },
+  "inference_service": {
+    "kind": "local_qwen3_omni_audio",
+    "model": "Qwen3-Omni-30B-A3B-Instruct",
+    "vllm_url": "http://127.0.0.1:10003",
+    "proxy_url": "http://127.0.0.1:10004",
+    "launcher": "setup/start_qwen3omni_audio.sh",
+    "launcher_sha256": "87f6edf98a5f2b1428d2c8553d6ba5479f667b8f4b7a5814c1e922f153cf7e19",
+    "proxy_launcher_sha256": "ae4bc2c74518e5eb074fcfde4d2572cd33847d2fad3f3a072e15d146cb619f5d",
+    "deploy_config": "configs/qwen3_omni_audio_single_gpu.yaml",
+    "deploy_config_sha256": "338fc9035be05fd59a5a05fc4823189490f1233068f6a197dc326b999b39734f",
+    "max_num_seqs": 1,
+    "formal_live_cache_misses": 4559,
+    "formal_live_http_non_200": 0,
+    "same_processes_for_all_llm_providers": true,
+    "stopped_before_offline_replay": true,
+    "ports_closed_after_run": true,
+    "gpu_released_after_run": true
+  },
+  "tts": {
+    "formal_arm_b_flag": "--tts qwen",
+    "reason_for_explicit_flag": "The frozen command list omitted --tts, while the frozen runner hard-requires it for arm-B audio input.",
+    "cache_location": "/root/autodl-tmp/rb_tts_cache",
+    "cache_tracked_by_git": false,
+    "required_unique_segments": 537,
+    "prewarm_hits": 352,
+    "prewarm_synthesized": 185,
+    "missing_after_prewarm": 0,
+    "cache_files_before": 1790,
+    "cache_files_after": 1975,
+    "synthesis_during_formal_arm_b_providers": 0
+  },
+  "cache_seed_provenance": {
+    "rbtest_tact_d150": "fresh protocol main cache; 114 hits were duplicate decisions within the same run",
+    "rbtest_sblock": "fresh blocking cache; 2 hits were duplicate decisions within the same run",
+    "rbtest_tact_d150_nobar": "copy of rbtest_tact_d150",
+    "rbtest_tact_d000": "copy of rbtest_tact_d150",
+    "rbtest_tact_d060": "copy of rbtest_tact_d000 after its run",
+    "rbtest_tact_d100": "copy of rbtest_tact_d060 after its run",
+    "rbtest_tact_d200": "copy of rbtest_tact_d100 after its run",
+    "rbtest_tact_d150_nodag": "copy of rbtest_tact_d200 after its run",
+    "rbtest_tact_d150_fcv1": "copy of rbtest_tact_d150",
+    "rbtest_tact_d150_fcfiller": "copy of rbtest_tact_d150",
+    "rbtest_tact_d150_fcsilent": "copy of rbtest_tact_d150",
+    "rbtest_b_tact_d150": "fresh arm-B TACT cache",
+    "rbtest_b_sblock": "fresh arm-B blocking cache"
+  },
+  "providers": [
+    {
+      "ordinal": 1,
+      "provider": "rbtest_tact_d150",
+      "started_utc": "2026-07-16T07:30:59Z",
+      "ended_utc": "2026-07-16T07:50:56Z",
+      "args": "--arm A --system tact --delta 1.5 --decider llm --input audio",
+      "first_run_cache": {"hits": 114, "misses": 1290, "entries": 1290},
+      "replay_cache": {"hits": 1404, "misses": 0},
+      "metrics": {"n": 541, "exact": 0.2662, "state_normalized": 0.2828, "U": 0.1996, "first_p50": 1.64, "done_p50": 3.889},
+      "report": {"path": "exp/rb/build_v2/rb_report_rbtest_tact_d150.json", "sha256": "53f1a25eb96095e9d4719cf16f328b9a915498b81ec56830bbdd40591060e631"},
+      "cache": {"path": "exp/rb/build_v2/decision_cache_rbtest_tact_d150.json", "sha256": "2b1f7aa39dad075b44f8b8e4fcd8bd803136934c0b77ade5f1aa7cbeba959094"},
+      "results_dir_sha256": "035558cc9c7eb76f1d951195d262f930dcea9b316aad168421401f25a51e4a85"
+    },
+    {
+      "ordinal": 2,
+      "provider": "rbtest_sblock",
+      "started_utc": "2026-07-16T07:51:14Z",
+      "ended_utc": "2026-07-16T08:05:22Z",
+      "args": "--arm A --system blocking --decider llm --input audio",
+      "first_run_cache": {"hits": 2, "misses": 770, "entries": 770},
+      "replay_cache": {"hits": 772, "misses": 0},
+      "metrics": {"n": 541, "exact": 0.2181, "state_normalized": 0.244, "U": 0.141, "first_p50": 2.176, "done_p50": 2.302},
+      "report": {"path": "exp/rb/build_v2/rb_report_rbtest_sblock.json", "sha256": "a5f9b92ea66fa289c19140aed5819385029dd21514d520a32c271e6791e8eb6b"},
+      "cache": {"path": "exp/rb/build_v2/decision_cache_rbtest_sblock.json", "sha256": "d26ec302e6baee03dde6c25cc9e001b32e574e428449e275f3ffd0cc3e410c47"},
+      "results_dir_sha256": "89f9629602c3db673c38d4029d1b8ff7b39b6c0e63f1b826e83dff5fe5bfb690"
+    },
+    {
+      "ordinal": 3,
+      "provider": "rbtest_tact_d150_nobar",
+      "started_utc": "2026-07-16T08:05:35Z",
+      "ended_utc": "2026-07-16T08:07:03Z",
+      "args": "--arm A --system tact --delta 1.5 --commit-barrier off --decider llm --input audio",
+      "first_run_cache": {"hits": 1340, "misses": 63, "entries": 1353},
+      "replay_cache": {"hits": 1403, "misses": 0},
+      "metrics": {"n": 541, "exact": 0.1885, "state_normalized": 0.2052, "U": 0.1348, "first_p50": 1.64, "done_p50": 3.637},
+      "report": {"path": "exp/rb/build_v2/rb_report_rbtest_tact_d150_nobar.json", "sha256": "1f81c456c46934ed168928ae81e98e6399378420b9c40f23f27b19666a5d4912"},
+      "cache": {"path": "exp/rb/build_v2/decision_cache_rbtest_tact_d150_nobar.json", "sha256": "ef7596e7f47487d94ea150869ff4e4670a425fa93f244c058ec56ad266ed9056"},
+      "results_dir_sha256": "32a08c78fce99359ad48b083538545cb812b3e3e4926913b9e3434e2e42f8f87"
+    },
+    {
+      "ordinal": 4,
+      "provider": "rbtest_tact_d000",
+      "started_utc": "2026-07-16T08:07:11Z",
+      "ended_utc": "2026-07-16T08:13:13Z",
+      "args": "--arm A --system tact --delta 0 --decider llm --input audio",
+      "first_run_cache": {"hits": 988, "misses": 383, "entries": 1673},
+      "replay_cache": {"hits": 1371, "misses": 0},
+      "metrics": {"n": 541, "exact": 0.1922, "state_normalized": 0.2089, "U": 0.1493, "first_p50": 1.64, "done_p50": 2.15},
+      "report": {"path": "exp/rb/build_v2/rb_report_rbtest_tact_d000.json", "sha256": "3ec6c0b069f83301c80ee4e75241452e3cd32a994b1608949787bf0301770b76"},
+      "cache": {"path": "exp/rb/build_v2/decision_cache_rbtest_tact_d000.json", "sha256": "54a83973abe89529bc5362bd0812faa575881d281a365e596bd946ab594c7849"},
+      "results_dir_sha256": "478de89091edb2ea637ddefecdbf76a999a1f34d0ae082c706ea2fee65ec1a31"
+    },
+    {
+      "ordinal": 5,
+      "provider": "rbtest_tact_d060",
+      "started_utc": "2026-07-16T08:13:22Z",
+      "ended_utc": "2026-07-16T08:13:27Z",
+      "args": "--arm A --system tact --delta 0.6 --decider llm --input audio",
+      "first_run_cache": {"hits": 1370, "misses": 1, "entries": 1674},
+      "replay_cache": {"hits": 1371, "misses": 0},
+      "metrics": {"n": 541, "exact": 0.1922, "state_normalized": 0.2089, "U": 0.1449, "first_p50": 1.64, "done_p50": 2.79},
+      "report": {"path": "exp/rb/build_v2/rb_report_rbtest_tact_d060.json", "sha256": "eccb8de3bab6c1d603b304fd3ba6693d0cbbe27c9665388b9d0668a82ae8ecb2"},
+      "cache": {"path": "exp/rb/build_v2/decision_cache_rbtest_tact_d060.json", "sha256": "da73a3c3b0b315ebcf4e81bf9e4fd515244602db33f89351baef52da317b3076"},
+      "results_dir_sha256": "20a19c976084cc70cdf0b89b1e5385c9413dd7547bf41ea1160869ad3ddc49eb"
+    },
+    {
+      "ordinal": 6,
+      "provider": "rbtest_tact_d100",
+      "started_utc": "2026-07-16T08:13:36Z",
+      "ended_utc": "2026-07-16T08:13:46Z",
+      "args": "--arm A --system tact --delta 1.0 --decider llm --input audio",
+      "first_run_cache": {"hits": 1395, "misses": 5, "entries": 1679},
+      "replay_cache": {"hits": 1400, "misses": 0},
+      "metrics": {"n": 541, "exact": 0.2366, "state_normalized": 0.2532, "U": 0.1769, "first_p50": 1.64, "done_p50": 3.377},
+      "report": {"path": "exp/rb/build_v2/rb_report_rbtest_tact_d100.json", "sha256": "6bbc01b71654bd1e82bd274b41895a1ed3a8bd154f9e170abc3e7f716004bd7c"},
+      "cache": {"path": "exp/rb/build_v2/decision_cache_rbtest_tact_d100.json", "sha256": "7fa57b683ab71063e2c631f687b5be5fc7f0da1e7b98b34c969be51ec6d63bac"},
+      "results_dir_sha256": "292c70007b900f56cf3a7cf165d18d779e134c829ca975e4ebf81fdfb6fd06ca"
+    },
+    {
+      "ordinal": 7,
+      "provider": "rbtest_tact_d200",
+      "started_utc": "2026-07-16T08:13:53Z",
+      "ended_utc": "2026-07-16T08:17:03Z",
+      "args": "--arm A --system tact --delta 2.0 --decider llm --input audio",
+      "first_run_cache": {"hits": 1229, "misses": 183, "entries": 1862},
+      "replay_cache": {"hits": 1412, "misses": 0},
+      "metrics": {"n": 541, "exact": 0.2865, "state_normalized": 0.3031, "U": 0.2127, "first_p50": 1.64, "done_p50": 4.503},
+      "report": {"path": "exp/rb/build_v2/rb_report_rbtest_tact_d200.json", "sha256": "d12b9869067a7b08c38550aef4bc6bff465d63a083ff84fb9aaebf5302b70edf"},
+      "cache": {"path": "exp/rb/build_v2/decision_cache_rbtest_tact_d200.json", "sha256": "9ba7337bc600edbab49f6f1ced7e26a0f17a7b80f8293e67ca4e8bb14e3fa9cb"},
+      "results_dir_sha256": "ebed8c052715b779fa1d76ae026217471f788b029c25640db8287f751ef32649"
+    },
+    {
+      "ordinal": 8,
+      "provider": "rbtest_tact_d150_nodag",
+      "started_utc": "2026-07-16T08:17:14Z",
+      "ended_utc": "2026-07-16T08:17:28Z",
+      "args": "--arm A --system tact --delta 1.5 --dag off --decider llm --input audio",
+      "first_run_cache": {"hits": 1396, "misses": 8, "entries": 1870},
+      "replay_cache": {"hits": 1404, "misses": 0},
+      "metrics": {"n": 541, "exact": 0.2606, "state_normalized": 0.2773, "U": 0.1956, "first_p50": 1.64, "done_p50": 3.869},
+      "report": {"path": "exp/rb/build_v2/rb_report_rbtest_tact_d150_nodag.json", "sha256": "aa6a624003726998cb7e1773c18fd78235279658a1b77d576bc18e7c7e02e69e"},
+      "cache": {"path": "exp/rb/build_v2/decision_cache_rbtest_tact_d150_nodag.json", "sha256": "dfad7f674741d245b02e676512a90f4f9a6bbedb20b2414fd06c4d4bafc45cbb"},
+      "results_dir_sha256": "41852575eca19494cbdb4ecdd1ec0000963da85750b868b2a09823d6c791c824"
+    },
+    {
+      "ordinal": 9,
+      "provider": "rbtest_tact_d150_fcv1",
+      "started_utc": "2026-07-16T08:17:45Z",
+      "ended_utc": "2026-07-16T08:17:49Z",
+      "args": "--arm A --system tact --delta 1.5 --floor-commit-tiers v1 --decider llm --input audio",
+      "first_run_cache": {"hits": 1404, "misses": 0, "entries": 1290},
+      "replay_cache": {"hits": 1404, "misses": 0},
+      "metrics": {"n": 541, "exact": 0.2662, "state_normalized": 0.2828, "U": 0.1996, "first_p50": 3.352, "done_p50": 3.889},
+      "report": {"path": "exp/rb/build_v2/rb_report_rbtest_tact_d150_fcv1.json", "sha256": "3cdc82739ea5acc0a8a07d2173bcc3bfdbd4d7b0d85b4bba48d22424989b32be"},
+      "cache": {"path": "exp/rb/build_v2/decision_cache_rbtest_tact_d150_fcv1.json", "sha256": "2b1f7aa39dad075b44f8b8e4fcd8bd803136934c0b77ade5f1aa7cbeba959094"},
+      "results_dir_sha256": "099857c3a6e888fb24ed6987fe1f603650ac3f872d0ae68590b73c2c2439da6f"
+    },
+    {
+      "ordinal": 10,
+      "provider": "rbtest_tact_d150_fcfiller",
+      "started_utc": "2026-07-16T08:18:02Z",
+      "ended_utc": "2026-07-16T08:18:06Z",
+      "args": "--arm A --system tact --delta 1.5 --floor-commit-tiers always_filler --decider llm --input audio",
+      "first_run_cache": {"hits": 1404, "misses": 0, "entries": 1290},
+      "replay_cache": {"hits": 1404, "misses": 0},
+      "metrics": {"n": 541, "exact": 0.2662, "state_normalized": 0.2828, "U": 0.1996, "first_p50": 1.64, "done_p50": 3.889},
+      "report": {"path": "exp/rb/build_v2/rb_report_rbtest_tact_d150_fcfiller.json", "sha256": "19c6f6fb38b4de0ee22e9735612be8cfc911bba4a06f76d1c58bc685339c1086"},
+      "cache": {"path": "exp/rb/build_v2/decision_cache_rbtest_tact_d150_fcfiller.json", "sha256": "2b1f7aa39dad075b44f8b8e4fcd8bd803136934c0b77ade5f1aa7cbeba959094"},
+      "results_dir_sha256": "ffe5868e7d9fcbcd9ab4a5791cf022ccb0c082cbaffae6e0c52dbc3af957d3fc"
+    },
+    {
+      "ordinal": 11,
+      "provider": "rbtest_tact_d150_fcsilent",
+      "started_utc": "2026-07-16T08:18:13Z",
+      "ended_utc": "2026-07-16T08:18:17Z",
+      "args": "--arm A --system tact --delta 1.5 --floor-commit-tiers always_silent --decider llm --input audio",
+      "first_run_cache": {"hits": 1404, "misses": 0, "entries": 1290},
+      "replay_cache": {"hits": 1404, "misses": 0},
+      "metrics": {"n": 541, "exact": 0.2662, "state_normalized": 0.2828, "U": 0.1996, "first_p50": 3.818, "done_p50": 3.889},
+      "report": {"path": "exp/rb/build_v2/rb_report_rbtest_tact_d150_fcsilent.json", "sha256": "cfebbba4ad128d6bcc1b3458eb943908ec8d1d391721020339903f7e04777ee9"},
+      "cache": {"path": "exp/rb/build_v2/decision_cache_rbtest_tact_d150_fcsilent.json", "sha256": "2b1f7aa39dad075b44f8b8e4fcd8bd803136934c0b77ade5f1aa7cbeba959094"},
+      "results_dir_sha256": "886a3031f34d4f3fbd023a629724281432bc0bf1dbb5ebfcd213032d2bb655ee"
+    },
+    {
+      "ordinal": 12,
+      "provider": "rbtest_oracle_a",
+      "started_utc": "2026-07-16T08:18:24Z",
+      "ended_utc": "2026-07-16T08:18:24Z",
+      "args": "--arm A --decider oracle --input text",
+      "first_run_cache": null,
+      "replay_cache": null,
+      "metrics": {"n": 541, "exact": 0.7763, "state_normalized": 0.7763, "U": 0.5943, "first_p50": 1.64, "done_p50": 4.092},
+      "report": {"path": "exp/rb/build_v2/rb_report_rbtest_oracle_a.json", "sha256": "3b838aab6facfd3be785dc492b56688fd682b58c99460806723c44160742edd2"},
+      "cache": null,
+      "results_dir_sha256": "0e528e40e0ad23824cbfc901032c854b9f8e01d43117c55306fd65a1ea17c997"
+    },
+    {
+      "ordinal": 13,
+      "provider": "rbtest_oracle_b",
+      "started_utc": "2026-07-16T08:18:30Z",
+      "ended_utc": "2026-07-16T08:18:30Z",
+      "args": "--arm B --decider oracle --input text",
+      "first_run_cache": null,
+      "replay_cache": null,
+      "metrics": {"n": 356, "exact": 0.7865, "state_normalized": 0.7865, "U": 0.5944, "first_p50": 1.64, "done_p50": 4.338},
+      "report": {"path": "exp/rb/build_v2/rb_report_rbtest_oracle_b.json", "sha256": "2b239980cb8b124c7df24787d141aa42ef758fd6dd440261a86e81045dc12b30"},
+      "cache": null,
+      "results_dir_sha256": "17b714af88e887ae21fcbb870ce20b5bc3ff2627b1dfeeb4127bb8f8bc19dd83"
+    },
+    {
+      "ordinal": 14,
+      "provider": "rbtest_b_tact_d150",
+      "started_utc": "2026-07-16T08:18:43Z",
+      "ended_utc": "2026-07-16T08:34:03Z",
+      "args": "--arm B --system tact --delta 1.5 --decider llm --input audio --tts qwen",
+      "first_run_cache": {"hits": 64, "misses": 932, "entries": 932},
+      "replay_cache": {"hits": 996, "misses": 0},
+      "metrics": {"n": 356, "exact": 0.2781, "state_normalized": 0.3146, "U": 0.2078, "first_p50": 1.64, "done_p50": 4.05},
+      "report": {"path": "exp/rb/build_v2/rb_report_rbtest_b_tact_d150.json", "sha256": "9945569b4c01b80003d6df81a64c7587b7d900f7677631a671166877c31eaf8f"},
+      "cache": {"path": "exp/rb/build_v2/decision_cache_rbtest_b_tact_d150.json", "sha256": "75a4ab95080b8877773f8ba91567bd0a5fe9c9949794c2c04b1de71d3866f196"},
+      "results_dir_sha256": "97c179f7eeb8d96000c00150efc7f12842b682980d5f38c66bba12a69cde0804"
+    },
+    {
+      "ordinal": 15,
+      "provider": "rbtest_b_sblock",
+      "started_utc": "2026-07-16T08:34:54Z",
+      "ended_utc": "2026-07-16T08:50:29Z",
+      "args": "--arm B --system blocking --decider llm --input audio --tts qwen",
+      "first_run_cache": {"hits": 27, "misses": 924, "entries": 924},
+      "replay_cache": {"hits": 951, "misses": 0},
+      "metrics": {"n": 356, "exact": 0.191, "state_normalized": 0.2303, "U": 0.1342, "first_p50": 1.967, "done_p50": 2.268},
+      "report": {"path": "exp/rb/build_v2/rb_report_rbtest_b_sblock.json", "sha256": "e0ba094fef5e472a971bc1e3416a14881dd313b090e5d690202fba55e0c7c2c9"},
+      "cache": {"path": "exp/rb/build_v2/decision_cache_rbtest_b_sblock.json", "sha256": "4bb1f6acd9f3ca8fd257f8489ab5a8a7eea24f9c1b66f516a19e67313d50eddb"},
+      "results_dir_sha256": "dd1763401926ad499eb7dcff3c8bfa89c5b8ce5383b2118a22f21f438885c766"
+    }
+  ],
+  "offline_replay": {
+    "providers_replayed": 15,
+    "llm_providers_replayed": 13,
+    "oracle_providers_recomputed": 2,
+    "cache_misses": 0,
+    "reports_byte_identical": 15,
+    "caches_byte_identical": 13,
+    "result_directories_byte_identical": 15,
+    "result_directory_hash_algorithm": "sha256 over sorted(relative_path + NUL + file_bytes)",
+    "verdict": "PASS"
+  },
+  "derived_audits": {
+    "commit_barrier": {
+      "on_exact": 0.2662,
+      "off_exact": 0.1885,
+      "delta_off_minus_on": -0.0777,
+      "all_paired": {"n": 541, "on_only_pass": 44, "off_only_pass": 2, "same": 495},
+      "L3_paired": {"n": 59, "on_only_pass": 9, "off_only_pass": 0},
+      "L4_paired": {"n": 64, "on_only_pass": 6, "off_only_pass": 0},
+      "L4_exact_on": 0.0938,
+      "L4_exact_off": 0.0,
+      "preregistered_direction": "supported"
+    },
+    "delta_curve": {
+      "delta_s": [0.0, 0.6, 1.0, 1.5, 2.0],
+      "exact": [0.1922, 0.1922, 0.2366, 0.2662, 0.2865],
+      "done_p50": [2.15, 2.79, 3.377, 3.889, 4.503],
+      "first_p50": [1.64, 1.64, 1.64, 1.64, 1.64]
+    },
+    "dag": {
+      "on_exact": 0.2662,
+      "off_exact": 0.2606,
+      "all_paired": {"n": 541, "on_only_pass": 3, "off_only_pass": 0, "same": 538},
+      "L5_exact_on_off": [0.0122, 0.0122],
+      "L7_exact_on_off": [0.3864, 0.3864],
+      "L5_paired_on_only_off_only": [0, 0],
+      "L7_paired_on_only_off_only": [0, 0],
+      "preregistered_L5_L7_direction": "not_supported",
+      "zero_miss_trace_reconstruction": {
+        "episodes_checked": 541,
+        "row_mismatches": 0,
+        "dag_edge": 219,
+        "dag_stale": 29,
+        "episodes_with_any_dag_event": 145,
+        "episodes_with_dag_stale": 28,
+        "dag_reparam": 0,
+        "dag_comp_plan": 0,
+        "by_layer_stale": {"L10": 3, "L3": 7, "L4": 5, "L5": 0, "L6": 11, "L8": 3}
+      },
+      "note": "The three on-only passes occurred in L3 (1) and L4 (2), not the preregistered L5/L7 cells. L7 generated independent multi-call scenarios and therefore had no DAG edges."
+    },
+    "floor_commit": {
+      "all_exact": {"base": 0.2662, "v1": 0.2662, "always_filler": 0.2662, "always_silent": 0.2662},
+      "all_first_p50": {"base": 1.64, "v1": 3.352, "always_filler": 1.64, "always_silent": 3.818},
+      "all_done_p50": {"base": 3.889, "v1": 3.889, "always_filler": 3.889, "always_silent": 3.889},
+      "L9": {"n": 65, "exact_all_tiers": 0.8308, "first_p50_all_tiers": 7.55, "done_p50_all_tiers": 7.708},
+      "v1_tier_decisions": {"filler": 228, "silence": 377, "progress": 64},
+      "wrong_commits_all_providers": 0,
+      "unrepaired_all_providers": 0,
+      "comp_cost_all_providers": 0.0
+    },
+    "L10_direct_parameter_safety": {
+      "definition": "Benign penetration = the user's revised scalar reached an executed sandbox call. Adversarial rejection = the bystander-command scalar did not reach any executed sandbox call. These are direct parameter-flow rates, not whole-episode exact proxies.",
+      "arm_A": {
+        "tact": {"benign_penetration": {"count": 8, "n": 13, "rate": 0.6154}, "adversarial_rejection": {"count": 7, "n": 14, "rate": 0.5}},
+        "blocking": {"benign_penetration": {"count": 1, "n": 13, "rate": 0.0769}, "adversarial_rejection": {"count": 13, "n": 14, "rate": 0.9286}}
+      },
+      "arm_B": {
+        "tact": {"benign_penetration": {"count": 4, "n": 12, "rate": 0.3333}, "adversarial_rejection": {"count": 2, "n": 13, "rate": 0.1538}},
+        "blocking": {"benign_penetration": {"count": 5, "n": 12, "rate": 0.4167}, "adversarial_rejection": {"count": 9, "n": 13, "rate": 0.6923}}
+      },
+      "audit_cache_misses": 0,
+      "audit_row_mismatches": 0
+    },
+    "arm_B_state_strata": {
+      "pre_call_eou": {"n": 153, "tact_exact_count": 1, "tact_exact": 0.0065, "blocking_exact_count": 4, "blocking_exact": 0.0261},
+      "inflight": {"n": 203, "tact_exact_count": 98, "tact_exact": 0.4828, "blocking_exact_count": 64, "blocking_exact": 0.3153},
+      "revision_only_unpaired": {
+        "pre_call_eou": {"n": 103, "tact_exact": 0.0097, "blocking_exact": 0.0291},
+        "inflight": {"n": 36, "tact_exact": 0.1944, "blocking_exact": 0.0}
+      },
+      "preregistered_H_B1": "not_testable_as_paired_McNemar",
+      "reason": "The generator provides no matched cross-state episode-pair identifier; pre-call and in-flight strata are different episodes/actions. Descriptive rates do not support failure concentration in the in-flight stratum, but they are action-confounded and are not substituted for the preregistered paired test."
+    }
+  },
+  "anomalies": [
+    {
+      "phase": "pre_test_tts_prewarm",
+      "kind": "service_lifecycle",
+      "detail": "The first detached TTS server process exited after its health check when its launching shell ended. The first prewarm attempt then received a connection failure. No formal provider had started and no provider was consumed. TTS was restarted in a persistent foreground session and prewarm completed with 537/537 segments cached.",
+      "provider_rerun": false
+    },
+    {
+      "phase": "frozen_command_materialization",
+      "kind": "required_runner_argument",
+      "detail": "Both arm-B audio commands were run with --tts qwen because the frozen runner asserts that arm-B audio input requires --tts; the protocol command list omitted the flag. All segments were prewarmed, so this selected cached audio and triggered no formal-run synthesis.",
+      "provider_rerun": false
+    },
+    {
+      "phase": "provider_2",
+      "kind": "client_interruption_only",
+      "detail": "The interactive client yielded while rbtest_sblock was still running. The underlying process and model services continued uninterrupted; the provider was not restarted.",
+      "provider_rerun": false
+    }
+  ]
+}

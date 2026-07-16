@@ -1,0 +1,127 @@
+{
+ "id": "B_L6_0028",
+ "layer": "L6",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 5.127,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 5.127,
+ "n_eou": 3,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.42,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "place_order",
+     "op_id": 4
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 9.304,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "item_id": "$RESULT_0.products[1].product_id"
+     }
+    },
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 5
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 3,
+   "t_eou": 16.079,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "item_id": "$RESULT_3.products[0].product_id"
+     }
+    },
+    {
+     "type": "patch",
+     "op_id": 4,
+     "diff": {
+      "address": ""
+     }
+    },
+    {
+     "type": "cancel",
+     "op_id": 5
+    }
+   ],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   7.42,
+   "I'm on it."
+  ],
+  [
+   10.304,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.78,
+   "user"
+  ],
+  [
+   6.504,
+   8.664,
+   "user"
+  ],
+  [
+   10.829,
+   13.229,
+   "user"
+  ],
+  [
+   13.279,
+   15.439,
+   "user"
+  ]
+ ]
+}

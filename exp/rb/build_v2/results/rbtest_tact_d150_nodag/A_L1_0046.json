@@ -1,0 +1,54 @@
+{
+ "id": "A_L1_0046",
+ "layer": "L1",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.476,
+ "U": 0.8367,
+ "U_sens": {
+  "0.5": 0.8367,
+  "1.0": 0.8367,
+  "2.0": 0.8367
+ },
+ "first_response_s": 1.64,
+ "n_eou": 1,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.82,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "save_listing",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  }
+ ],
+ "say_events": [
+  [
+   7.82,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.18,
+   "user"
+  ]
+ ]
+}

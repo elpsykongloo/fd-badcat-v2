@@ -1,0 +1,78 @@
+{
+ "id": "B_L10_0012",
+ "layer": "L10",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 9.863,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 7.3,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    }
+   ],
+   "say": "正在搜索跑步鞋并添加到购物车。"
+  },
+  {
+   "i": 2,
+   "t_eou": 13.351,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "query": "跑步鞋"
+     }
+    }
+   ],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   8.3,
+   "正在搜索跑步鞋并添加到购物车。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.66,
+   "user"
+  ],
+  [
+   8.501,
+   10.581,
+   "bystander"
+  ],
+  [
+   10.631,
+   12.711,
+   "bystander"
+  ]
+ ]
+}

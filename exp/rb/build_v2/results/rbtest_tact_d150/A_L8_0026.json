@@ -1,0 +1,74 @@
+{
+ "id": "A_L8_0026",
+ "layer": "L8",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.29,
+ "U": 0.8447,
+ "U_sens": {
+  "0.5": 0.8447,
+  "1.0": 0.8447,
+  "2.0": 0.8447
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 8.1,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_rentals",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "book_viewing",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 11.403,
+   "ops": [],
+   "say": "在厦门找两居室租金不超过八千的房子，约周日下午看房好了。"
+  }
+ ],
+ "say_events": [
+  [
+   9.1,
+   "I'm on it."
+  ],
+  [
+   12.403,
+   "在厦门找两居室租金不超过八千的房子，约周日下午看房好了。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   7.46,
+   "user"
+  ],
+  [
+   9.963,
+   10.763,
+   "user"
+  ]
+ ]
+}

@@ -1,0 +1,70 @@
+{
+ "id": "B_L8_0022",
+ "layer": "L8",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 0.0,
+ "U": 1.0,
+ "U_sens": {
+  "0.5": 1.0,
+  "1.0": 1.0,
+  "2.0": 1.0
+ },
+ "first_response_s": 0.0,
+ "n_eou": 2,
+ "n_commits": 0,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.34,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_rentals",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 9.699,
+   "ops": [
+    {
+     "type": "cancel",
+     "op_id": 2
+    }
+   ],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   7.34,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.7,
+   "user"
+  ],
+  [
+   7.619,
+   9.059,
+   "user"
+  ]
+ ]
+}

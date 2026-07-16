@@ -1,0 +1,89 @@
+{
+ "id": "B_L10_0014",
+ "layer": "L10",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 4.655,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 1,
+   "t_eou": 9.073,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_rentals",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 2,
+   "t_eou": 13.324,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "city": "成都",
+      "beds": 2,
+      "max_rent": 8000
+     }
+    },
+    {
+     "type": "launch",
+     "fn": "book_viewing",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  }
+ ],
+ "say_events": [
+  [
+   10.073,
+   "I'm on it."
+  ],
+  [
+   14.324,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   9.3,
+   "user"
+  ],
+  [
+   5.873,
+   8.433,
+   "user"
+  ],
+  [
+   10.124,
+   12.684,
+   "user"
+  ]
+ ]
+}

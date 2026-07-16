@@ -1,0 +1,115 @@
+{
+ "id": "B_L6_0009",
+ "layer": "L6",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 4.997,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 5.78,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 11.883,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 4
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 3,
+   "t_eou": 17.908,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "amount": 5000
+     }
+    },
+    {
+     "type": "patch",
+     "op_id": 4,
+     "diff": {
+      "amount": 5000
+     }
+    }
+   ],
+   "say": "Updating the transfer and quote amounts to $5,000. I'm also getting a new quote for $800 now."
+  }
+ ],
+ "say_events": [
+  [
+   6.78,
+   "I'm on it."
+  ],
+  [
+   12.883,
+   "I'm on it."
+  ],
+  [
+   18.908,
+   "Updating the transfer and quote amounts to $5,000. I'm also getting a new quote for $800 now."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.14,
+   "user"
+  ],
+  [
+   9.003,
+   11.243,
+   "user"
+  ],
+  [
+   12.258,
+   14.978,
+   "user"
+  ],
+  [
+   15.028,
+   17.268,
+   "user"
+  ]
+ ]
+}

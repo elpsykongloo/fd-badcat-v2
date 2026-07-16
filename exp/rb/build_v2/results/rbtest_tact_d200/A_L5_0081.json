@@ -1,0 +1,85 @@
+{
+ "id": "A_L5_0081",
+ "layer": "L5",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 6.167,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 6.167,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 8.18,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 12.656,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "to_cur": "JPY"
+     }
+    },
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "to_acct": "rent_account_jpy"
+     }
+    }
+   ],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   9.18,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   7.54,
+   "user"
+  ],
+  [
+   10.336,
+   12.016,
+   "user"
+  ]
+ ]
+}

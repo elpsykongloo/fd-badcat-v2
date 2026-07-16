@@ -1,0 +1,113 @@
+{
+ "id": "A_L6_0003",
+ "layer": "L6",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 6.233,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 7.94,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 12.355,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "destination": "Austin"
+     }
+    }
+   ],
+   "say": ""
+  },
+  {
+   "i": 2,
+   "t_eou": 17.386,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "destination": "Austin"
+     }
+    },
+    {
+     "type": "launch",
+     "fn": "hold_seat",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "purchase_ticket",
+     "op_id": 4
+    },
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "seat_class": "\"coach\""
+     }
+    }
+   ],
+   "say": "I'm on it."
+  }
+ ],
+ "say_events": [
+  [
+   8.94,
+   "I'm on it."
+  ],
+  [
+   18.386,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   7.3,
+   "user"
+  ],
+  [
+   8.755,
+   11.715,
+   "user"
+  ],
+  [
+   14.346,
+   16.746,
+   "user"
+  ]
+ ]
+}

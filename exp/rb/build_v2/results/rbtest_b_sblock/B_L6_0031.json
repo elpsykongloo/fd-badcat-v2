@@ -1,0 +1,70 @@
+{
+ "id": "B_L6_0031",
+ "layer": "L6",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 0.0,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 0.0,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 2,
+   "t_eou": 16.67,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    }
+   ],
+   "say": ""
+  },
+  {
+   "i": 3,
+   "t_eou": 20.95,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [],
+ "segs": [
+  [
+   0.5,
+   8.18,
+   "user"
+  ],
+  [
+   9.123,
+   11.763,
+   "user"
+  ],
+  [
+   12.59,
+   16.03,
+   "user"
+  ],
+  [
+   17.67,
+   20.31,
+   "user"
+  ]
+ ]
+}

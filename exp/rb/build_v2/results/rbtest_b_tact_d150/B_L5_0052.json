@@ -1,0 +1,82 @@
+{
+ "id": "B_L5_0052",
+ "layer": "L5",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.411,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 7.3,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    }
+   ],
+   "say": "正在搜索跑步鞋并添加到购物车。"
+  },
+  {
+   "i": 2,
+   "t_eou": 15.446,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "query": "跑步鞋"
+     }
+    }
+   ],
+   "say": "正在为您添加商品并下单。"
+  }
+ ],
+ "say_events": [
+  [
+   8.3,
+   "正在搜索跑步鞋并添加到购物车。"
+  ],
+  [
+   16.446,
+   "正在为您添加商品并下单。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.66,
+   "user"
+  ],
+  [
+   8.676,
+   11.716,
+   "user"
+  ],
+  [
+   11.766,
+   14.806,
+   "user"
+  ]
+ ]
+}

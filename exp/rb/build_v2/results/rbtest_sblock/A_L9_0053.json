@@ -1,0 +1,59 @@
+{
+ "id": "A_L9_0053",
+ "layer": "L9",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 20.985,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 1,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 1,
+   "t_eou": 19.827,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "schedule_payment",
+     "op_id": 2
+    }
+   ],
+   "say": "Scheduling a payment of 5,000 to Property Office for May 3."
+  }
+ ],
+ "say_events": [
+  [
+   20.827,
+   "Scheduling a payment of 5,000 to Property Office for May 3."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   3.94,
+   "user"
+  ],
+  [
+   17.827,
+   19.187,
+   "user"
+  ]
+ ]
+}

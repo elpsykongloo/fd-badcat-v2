@@ -1,0 +1,64 @@
+{
+ "id": "A_L8_0035",
+ "layer": "L8",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 2.864,
+ "U": 0.8634,
+ "U_sens": {
+  "0.5": 0.8634,
+  "1.0": 0.8634,
+  "2.0": 0.8634
+ },
+ "first_response_s": 2.864,
+ "n_eou": 1,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 1,
+   "t_eou": 11.0,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "hold_seat",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "purchase_ticket",
+     "op_id": 4
+    }
+   ],
+   "say": ""
+  }
+ ],
+ "say_events": [],
+ "segs": [
+  [
+   0.5,
+   6.74,
+   "user"
+  ],
+  [
+   9.4,
+   10.36,
+   "user"
+  ]
+ ]
+}

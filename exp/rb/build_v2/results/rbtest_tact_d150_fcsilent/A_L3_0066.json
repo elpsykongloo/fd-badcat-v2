@@ -1,0 +1,83 @@
+{
+ "id": "A_L3_0066",
+ "layer": "L3",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 6.795,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 7.46,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_rentals",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "book_viewing",
+     "op_id": 3
+    }
+   ],
+   "say": "",
+   "fc_tier": "silence"
+  },
+  {
+   "i": 1,
+   "t_eou": 9.756,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "city": "青岛"
+     }
+    },
+    {
+     "type": "launch_dedup",
+     "fn": "book_viewing"
+    }
+   ],
+   "say": "I'm on it."
+  }
+ ],
+ "say_events": [
+  [
+   10.756,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.82,
+   "user"
+  ],
+  [
+   7.516,
+   9.116,
+   "user"
+  ]
+ ]
+}

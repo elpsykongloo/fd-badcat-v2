@@ -1,0 +1,65 @@
+{
+ "id": "A_L9_0004",
+ "layer": "L9",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 6.208,
+ "U": 0.7273,
+ "U_sens": {
+  "0.5": 0.7273,
+  "1.0": 0.7273,
+  "2.0": 0.7273
+ },
+ "first_response_s": 6.208,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 4.34,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 20.092,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   5.34,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   3.7,
+   "user"
+  ],
+  [
+   18.172,
+   19.452,
+   "user"
+  ]
+ ]
+}

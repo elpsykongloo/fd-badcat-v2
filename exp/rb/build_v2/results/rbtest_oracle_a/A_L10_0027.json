@@ -1,0 +1,75 @@
+{
+ "id": "A_L10_0027",
+ "layer": "L10",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 5.831,
+ "U": 0.7415,
+ "U_sens": {
+  "0.5": 0.7415,
+  "1.0": 0.7415,
+  "2.0": 0.7415
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 9.015,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "hold_seat",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "purchase_ticket",
+     "op_id": 4
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 12.834,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   10.015,
+   "好的，马上办。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   8.375,
+   "user"
+  ],
+  [
+   10.769,
+   12.194,
+   "bystander"
+  ]
+ ]
+}

@@ -1,0 +1,87 @@
+{
+ "id": "B_L4_0058",
+ "layer": "L4",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 6.282,
+ "U": 0.7245,
+ "U_sens": {
+  "0.5": 0.7245,
+  "1.0": 0.7245,
+  "2.0": 0.7245
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 5.82,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_rentals",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "book_viewing",
+     "op_id": 3
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 2,
+   "t_eou": 9.44,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "max_rent": 6000
+     }
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   6.82,
+   "好的，马上办。"
+  ],
+  [
+   10.44,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.18,
+   "user"
+  ],
+  [
+   5.87,
+   7.31,
+   "user"
+  ],
+  [
+   7.36,
+   8.8,
+   "user"
+  ]
+ ]
+}

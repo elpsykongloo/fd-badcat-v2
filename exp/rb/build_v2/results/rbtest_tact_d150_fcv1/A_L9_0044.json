@@ -1,0 +1,70 @@
+{
+ "id": "A_L9_0044",
+ "layer": "L9",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 10.605,
+ "U": 0.5804,
+ "U_sens": {
+  "0.5": 0.5804,
+  "1.0": 0.5804,
+  "2.0": 0.5804
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 5.62,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 2
+    }
+   ],
+   "say": "正在处理add item，大约还需要20秒。",
+   "fc_tier": "progress"
+  },
+  {
+   "i": 1,
+   "t_eou": 23.918,
+   "ops": [],
+   "say": "编号C330的商品已经加了两件到购物车。"
+  }
+ ],
+ "say_events": [
+  [
+   6.62,
+   "正在处理add item，大约还需要20秒。"
+  ],
+  [
+   24.918,
+   "编号C330的商品已经加了两件到购物车。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   4.98,
+   "user"
+  ],
+  [
+   22.718,
+   23.278,
+   "user"
+  ]
+ ]
+}

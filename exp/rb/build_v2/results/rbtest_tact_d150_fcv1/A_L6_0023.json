@@ -1,0 +1,96 @@
+{
+ "id": "A_L6_0023",
+ "layer": "L6",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 1.448,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.448,
+ "n_eou": 3,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 8.18,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    }
+   ],
+   "say": "",
+   "fc_tier": "silence"
+  },
+  {
+   "i": 1,
+   "t_eou": 13.014,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "destination": "Portland"
+     }
+    },
+    {
+     "type": "launch",
+     "fn": "hold_seat",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "purchase_ticket",
+     "op_id": 4
+    }
+   ],
+   "say": "One moment, let me check.",
+   "fc_tier": "filler"
+  },
+  {
+   "i": 2,
+   "t_eou": 18.416,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   14.014,
+   "One moment, let me check."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   7.54,
+   "user"
+  ],
+  [
+   8.854,
+   12.374,
+   "user"
+  ],
+  [
+   15.216,
+   17.776,
+   "user"
+  ]
+ ]
+}

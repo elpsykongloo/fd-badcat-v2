@@ -1,0 +1,56 @@
+{
+  "n": 356,
+  "exact": 0.191,
+  "state_verbatim": 0.191,
+  "state_normalized": 0.2303,
+  "U_mean": 0.1342,
+  "wrong_commits": 0,
+  "unrepaired": 0,
+  "first_p50": 1.967,
+  "done_p50": 2.268,
+  "by_layer": {
+    "L10": {
+      "n": 38,
+      "exact": 0.0789,
+      "U": 0.0617
+    },
+    "L4": {
+      "n": 54,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L5": {
+      "n": 49,
+      "exact": 0.0612,
+      "U": 0.0508
+    },
+    "L6": {
+      "n": 38,
+      "exact": 0.0263,
+      "U": 0.0225
+    },
+    "L8": {
+      "n": 103,
+      "exact": 0.068,
+      "U": 0.0664
+    },
+    "L9": {
+      "n": 74,
+      "exact": 0.7297,
+      "U": 0.4765
+    }
+  },
+  "provider": "rbtest_b_sblock",
+  "config": {
+    "arm": "B",
+    "system": "blocking",
+    "delta": 1.5,
+    "commit_barrier": "on",
+    "input": "audio",
+    "decider": "llm",
+    "floor_commit_tiers": null,
+    "split": "test",
+    "infer_nominal": 1.0,
+    "dag": "on"
+  }
+}

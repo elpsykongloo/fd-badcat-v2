@@ -1,0 +1,87 @@
+{
+ "id": "B_L8_0072",
+ "layer": "L8",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 4.132,
+ "U": 0.809,
+ "U_sens": {
+  "0.5": 0.809,
+  "1.0": 0.809,
+  "2.0": 0.809
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.36,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "place_order",
+     "op_id": 4
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 9.573,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "qty": 1
+     }
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   7.36,
+   "好的，马上办。"
+  ],
+  [
+   10.573,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.72,
+   "user"
+  ],
+  [
+   7.673,
+   8.933,
+   "user"
+  ]
+ ]
+}

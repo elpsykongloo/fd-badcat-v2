@@ -1,0 +1,95 @@
+{
+ "id": "B_L6_0035",
+ "layer": "L6",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.862,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 3.862,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 2,
+   "t_eou": 16.771,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "hold_seat",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 3,
+   "t_eou": 20.891,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "destination": "Atlanta"
+     }
+    },
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "seat_class": "$RESULT_0.trains[0].seats[0].class"
+     }
+    }
+   ],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   17.771,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   17.38,
+   "user"
+  ],
+  [
+   9.564,
+   12.044,
+   "user"
+  ],
+  [
+   12.291,
+   16.131,
+   "user"
+  ],
+  [
+   17.771,
+   20.251,
+   "user"
+  ]
+ ]
+}

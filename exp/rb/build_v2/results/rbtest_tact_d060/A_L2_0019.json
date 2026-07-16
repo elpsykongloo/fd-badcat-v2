@@ -1,0 +1,59 @@
+{
+ "id": "A_L2_0019",
+ "layer": "L2",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.338,
+ "U": 0.8426,
+ "U_sens": {
+  "0.5": 0.8426,
+  "1.0": 0.8426,
+  "2.0": 0.8426
+ },
+ "first_response_s": 1.64,
+ "n_eou": 1,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 1,
+   "t_eou": 8.171,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "reserve_hotel",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  }
+ ],
+ "say_events": [
+  [
+   9.171,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.02,
+   "user"
+  ],
+  [
+   6.251,
+   7.531,
+   "user"
+  ]
+ ]
+}

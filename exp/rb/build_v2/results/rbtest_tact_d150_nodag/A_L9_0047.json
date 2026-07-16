@@ -1,0 +1,65 @@
+{
+ "id": "A_L9_0047",
+ "layer": "L9",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 9.694,
+ "U": 0.6082,
+ "U_sens": {
+  "0.5": 0.6082,
+  "1.0": 0.6082,
+  "2.0": 0.6082
+ },
+ "first_response_s": 9.694,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 5.62,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "reserve_hotel",
+     "op_id": 2
+    }
+   ],
+   "say": "Booking a hotel in Boise for three nights starting May 10th."
+  },
+  {
+   "i": 1,
+   "t_eou": 23.95,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   6.62,
+   "Booking a hotel in Boise for three nights starting May 10th."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   4.98,
+   "user"
+  ],
+  [
+   22.19,
+   23.31,
+   "user"
+  ]
+ ]
+}

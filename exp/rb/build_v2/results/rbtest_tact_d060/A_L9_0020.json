@@ -1,0 +1,65 @@
+{
+ "id": "A_L9_0020",
+ "layer": "L9",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 13.283,
+ "U": 0.5059,
+ "U_sens": {
+  "0.5": 0.5059,
+  "1.0": 0.5059,
+  "2.0": 0.5059
+ },
+ "first_response_s": 13.283,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 4.82,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 2
+    }
+   ],
+   "say": "正在把编号B205的商品加一件到购物车。"
+  },
+  {
+   "i": 1,
+   "t_eou": 28.484,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   5.82,
+   "正在把编号B205的商品加一件到购物车。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   4.18,
+   "user"
+  ],
+  [
+   27.284,
+   27.844,
+   "user"
+  ]
+ ]
+}

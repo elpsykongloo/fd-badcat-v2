@@ -1,0 +1,66 @@
+{
+ "id": "A_L9_0051",
+ "layer": "L9",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 5.474,
+ "U": 0.7552,
+ "U_sens": {
+  "0.5": 0.7552,
+  "1.0": 0.7552,
+  "2.0": 0.7552
+ },
+ "first_response_s": 5.474,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.26,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "reserve_hotel",
+     "op_id": 2
+    }
+   ],
+   "say": "Working on reserve hotel, about 20 more seconds.",
+   "fc_tier": "progress"
+  },
+  {
+   "i": 1,
+   "t_eou": 18.86,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   7.26,
+   "Working on reserve hotel, about 20 more seconds."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.62,
+   "user"
+  ],
+  [
+   16.86,
+   18.22,
+   "user"
+  ]
+ ]
+}

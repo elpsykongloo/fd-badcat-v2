@@ -1,0 +1,79 @@
+{
+ "id": "A_L3_0031",
+ "layer": "L3",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 8.773,
+ "U": 0.6376,
+ "U_sens": {
+  "0.5": 0.6376,
+  "1.0": 0.6376,
+  "2.0": 0.6376
+ },
+ "first_response_s": 8.773,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 7.86,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "hold_seat",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "purchase_ticket",
+     "op_id": 4
+    }
+   ],
+   "say": "",
+   "fc_tier": "silence"
+  },
+  {
+   "i": 1,
+   "t_eou": 11.007,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "seat_class": "first class"
+     }
+    }
+   ],
+   "say": ""
+  }
+ ],
+ "say_events": [],
+ "segs": [
+  [
+   0.5,
+   7.22,
+   "user"
+  ],
+  [
+   7.967,
+   10.367,
+   "user"
+  ]
+ ]
+}

@@ -1,0 +1,59 @@
+{
+ "id": "A_L2_0003",
+ "layer": "L2",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 5.802,
+ "U": 0.7426,
+ "U_sens": {
+  "0.5": 0.7426,
+  "1.0": 0.7426,
+  "2.0": 0.7426
+ },
+ "first_response_s": 1.64,
+ "n_eou": 1,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 1,
+   "t_eou": 7.295,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "reserve_hotel",
+     "op_id": 2
+    }
+   ],
+   "say": "Booking a hotel in Austin for two nights starting May 3."
+  }
+ ],
+ "say_events": [
+  [
+   8.295,
+   "Booking a hotel in Austin for two nights starting May 3."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   4.74,
+   "user"
+  ],
+  [
+   5.055,
+   6.655,
+   "user"
+  ]
+ ]
+}

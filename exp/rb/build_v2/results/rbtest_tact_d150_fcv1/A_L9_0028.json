@@ -1,0 +1,66 @@
+{
+ "id": "A_L9_0028",
+ "layer": "L9",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 1.777,
+ "U": 0.9129,
+ "U_sens": {
+  "0.5": 0.9129,
+  "1.0": 0.9129,
+  "2.0": 0.9129
+ },
+ "first_response_s": 1.777,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 4.1,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 2
+    }
+   ],
+   "say": "正在处理add item，大约还需要20秒。",
+   "fc_tier": "progress"
+  },
+  {
+   "i": 1,
+   "t_eou": 10.556,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   5.1,
+   "正在处理add item，大约还需要20秒。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   3.46,
+   "user"
+  ],
+  [
+   8.796,
+   9.916,
+   "user"
+  ]
+ ]
+}

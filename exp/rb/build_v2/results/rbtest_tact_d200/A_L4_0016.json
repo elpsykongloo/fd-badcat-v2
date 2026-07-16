@@ -1,0 +1,87 @@
+{
+ "id": "A_L4_0016",
+ "layer": "L4",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 4.949,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 7.54,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 3
+    }
+   ],
+   "say": "正在搜索蓝牙耳机并添加两件到购物车。"
+  },
+  {
+   "i": 1,
+   "t_eou": 10.558,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "__id__from_search_op_0__products[0]__product_id__field_name___id___value____$RESULT_0.products[0].product_id__": 1
+     }
+    },
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 4
+    }
+   ],
+   "say": "I'm on it."
+  }
+ ],
+ "say_events": [
+  [
+   8.54,
+   "正在搜索蓝牙耳机并添加两件到购物车。"
+  ],
+  [
+   11.558,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.9,
+   "user"
+  ],
+  [
+   7.598,
+   9.918,
+   "user"
+  ]
+ ]
+}

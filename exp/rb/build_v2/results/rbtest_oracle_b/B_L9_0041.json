@@ -1,0 +1,65 @@
+{
+ "id": "B_L9_0041",
+ "layer": "L9",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 4.922,
+ "U": 0.7769,
+ "U_sens": {
+  "0.5": 0.7769,
+  "1.0": 0.7769,
+  "2.0": 0.7769
+ },
+ "first_response_s": 4.922,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.315,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "schedule_payment",
+     "op_id": 2
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 16.814,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   7.315,
+   "好的，马上办。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.675,
+   "user"
+  ],
+  [
+   15.199,
+   16.174,
+   "user"
+  ]
+ ]
+}

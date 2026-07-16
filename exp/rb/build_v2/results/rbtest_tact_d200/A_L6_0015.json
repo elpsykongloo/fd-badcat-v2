@@ -1,0 +1,114 @@
+{
+ "id": "A_L6_0015",
+ "layer": "L6",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 4.05,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 8.26,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 11.11,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "origin": "Portland"
+     }
+    },
+    {
+     "type": "launch",
+     "fn": "purchase_ticket",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 2,
+   "t_eou": 19.048,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "origin": "Boston"
+     }
+    },
+    {
+     "type": "launch",
+     "fn": "hold_seat",
+     "op_id": 4
+    },
+    {
+     "type": "launch_dedup",
+     "fn": "purchase_ticket"
+    }
+   ],
+   "say": "Updating that to Boston and checking the commute now."
+  }
+ ],
+ "say_events": [
+  [
+   9.26,
+   "I'm on it."
+  ],
+  [
+   12.11,
+   "I'm on it."
+  ],
+  [
+   20.048,
+   "Updating that to Boston and checking the commute now."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   7.62,
+   "user"
+  ],
+  [
+   8.47,
+   10.47,
+   "user"
+  ],
+  [
+   13.048,
+   18.408,
+   "user"
+  ]
+ ]
+}

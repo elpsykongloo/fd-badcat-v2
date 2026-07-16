@@ -1,0 +1,61 @@
+{
+ "id": "A_L9_0029",
+ "layer": "L9",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 9.347,
+ "U": 0.6191,
+ "U_sens": {
+  "0.5": 0.6191,
+  "1.0": 0.6191,
+  "2.0": 0.6191
+ },
+ "first_response_s": 9.347,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 4.74,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "schedule_payment",
+     "op_id": 2
+    }
+   ],
+   "say": "",
+   "fc_tier": "silence"
+  },
+  {
+   "i": 1,
+   "t_eou": 22.151,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [],
+ "segs": [
+  [
+   0.5,
+   4.1,
+   "user"
+  ],
+  [
+   20.551,
+   21.511,
+   "user"
+  ]
+ ]
+}

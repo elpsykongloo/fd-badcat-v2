@@ -1,0 +1,92 @@
+{
+ "id": "A_L3_0052",
+ "layer": "L3",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 5.327,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.02,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "place_order",
+     "op_id": 4
+    }
+   ],
+   "say": "稍等，我看一下。",
+   "fc_tier": "filler"
+  },
+  {
+   "i": 1,
+   "t_eou": 9.987,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 4,
+     "diff": {
+      "$RESULT_1.address)": ""
+     }
+    },
+    {
+     "type": "launch_dedup",
+     "fn": "place_order"
+    }
+   ],
+   "say": "I'm on it."
+  }
+ ],
+ "say_events": [
+  [
+   7.02,
+   "稍等，我看一下。"
+  ],
+  [
+   10.987,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.38,
+   "user"
+  ],
+  [
+   6.147,
+   9.347,
+   "user"
+  ]
+ ]
+}

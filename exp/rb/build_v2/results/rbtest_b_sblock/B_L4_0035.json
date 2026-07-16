@@ -1,0 +1,81 @@
+{
+ "id": "B_L4_0035",
+ "layer": "L4",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 2.508,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 1,
+   "t_eou": 13.151,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    }
+   ],
+   "say": ""
+  },
+  {
+   "i": 2,
+   "t_eou": 18.311,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "hold_seat",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "purchase_ticket",
+     "op_id": 4
+    }
+   ],
+   "say": "Updating the destination to Atlanta and holding a coach seat for Sam Rivera."
+  }
+ ],
+ "say_events": [
+  [
+   19.311,
+   "Updating the destination to Atlanta and holding a coach seat for Sam Rivera."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.82,
+   "user"
+  ],
+  [
+   8.991,
+   12.511,
+   "user"
+  ],
+  [
+   14.151,
+   17.671,
+   "user"
+  ]
+ ]
+}

@@ -1,0 +1,65 @@
+{
+ "id": "B_L9_0011",
+ "layer": "L9",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 11.848,
+ "U": 0.5446,
+ "U_sens": {
+  "0.5": 0.5446,
+  "1.0": 0.5446,
+  "2.0": 0.5446
+ },
+ "first_response_s": 11.848,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.09,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "reserve_hotel",
+     "op_id": 2
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 22.432,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   7.09,
+   "好的，马上办。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.45,
+   "user"
+  ],
+  [
+   20.817,
+   21.792,
+   "user"
+  ]
+ ]
+}

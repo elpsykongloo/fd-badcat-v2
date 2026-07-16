@@ -1,0 +1,77 @@
+{
+ "id": "A_L8_0005",
+ "layer": "L8",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 5.047,
+ "U": 0.7719,
+ "U_sens": {
+  "0.5": 0.7719,
+  "1.0": 0.7719,
+  "2.0": 0.7719
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 8.18,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    }
+   ],
+   "say": "",
+   "fc_tier": "silence"
+  },
+  {
+   "i": 1,
+   "t_eou": 11.674,
+   "ops": [
+    {
+     "type": "launch_dedup",
+     "fn": "get_fx_quote"
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 3
+    }
+   ],
+   "say": "One moment, let me check.",
+   "fc_tier": "filler"
+  }
+ ],
+ "say_events": [
+  [
+   12.674,
+   "One moment, let me check."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   7.54,
+   "user"
+  ],
+  [
+   10.074,
+   11.034,
+   "user"
+  ]
+ ]
+}

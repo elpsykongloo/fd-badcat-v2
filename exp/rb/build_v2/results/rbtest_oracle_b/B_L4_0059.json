@@ -1,0 +1,92 @@
+{
+ "id": "B_L4_0059",
+ "layer": "L4",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 4.037,
+ "U": 0.813,
+ "U_sens": {
+  "0.5": 0.813,
+  "1.0": 0.813,
+  "2.0": 0.813
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 8.865,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "hold_seat",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "purchase_ticket",
+     "op_id": 4
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 2,
+   "t_eou": 14.376,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "destination": "Atlanta"
+     }
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   9.865,
+   "好的，马上办。"
+  ],
+  [
+   15.376,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   8.225,
+   "user"
+  ],
+  [
+   9.036,
+   11.361,
+   "user"
+  ],
+  [
+   11.411,
+   13.736,
+   "user"
+  ]
+ ]
+}

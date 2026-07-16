@@ -1,0 +1,75 @@
+{
+ "id": "A_L3_0019",
+ "layer": "L3",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 2.713,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 8.1,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    }
+   ],
+   "say": "Searching for a train from Chicago to Denver on May 8 and holding a first-class seat."
+  },
+  {
+   "i": 1,
+   "t_eou": 11.237,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "hold_seat",
+     "op_id": 3
+    }
+   ],
+   "say": "Updating that to Atlanta and holding a first-class seat now."
+  }
+ ],
+ "say_events": [
+  [
+   9.1,
+   "Searching for a train from Chicago to Denver on May 8 and holding a first-class seat."
+  ],
+  [
+   12.237,
+   "Updating that to Atlanta and holding a first-class seat now."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   7.46,
+   "user"
+  ],
+  [
+   8.117,
+   10.597,
+   "user"
+  ]
+ ]
+}

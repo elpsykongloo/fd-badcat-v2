@@ -1,0 +1,70 @@
+{
+ "id": "A_L5_0033",
+ "layer": "L5",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 0.888,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 12.26,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    }
+   ],
+   "say": "One moment, let me check.",
+   "fc_tier": "filler"
+  },
+  {
+   "i": 1,
+   "t_eou": 17.444,
+   "ops": [],
+   "say": "Updating the amount to $3,000 for both quote and transfer."
+  }
+ ],
+ "say_events": [
+  [
+   13.26,
+   "One moment, let me check."
+  ],
+  [
+   18.444,
+   "Updating the amount to $3,000 for both quote and transfer."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   11.62,
+   "user"
+  ],
+  [
+   14.324,
+   16.804,
+   "user"
+  ]
+ ]
+}

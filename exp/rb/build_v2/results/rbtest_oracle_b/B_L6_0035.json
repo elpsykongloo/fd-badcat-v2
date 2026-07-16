@@ -1,0 +1,115 @@
+{
+ "id": "B_L6_0035",
+ "layer": "L6",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.503,
+ "U": 0.8355,
+ "U_sens": {
+  "0.5": 0.8355,
+  "1.0": 0.8355,
+  "2.0": 0.8355
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 9.465,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "hold_seat",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "purchase_ticket",
+     "op_id": 4
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 11.929,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "destination": "Atlanta"
+     }
+    }
+   ],
+   "say": "已更新。"
+  },
+  {
+   "i": 3,
+   "t_eou": 17.181,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "seat_class": "business"
+     }
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   10.465,
+   "好的，马上办。"
+  ],
+  [
+   12.929,
+   "已更新。"
+  ],
+  [
+   18.181,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   8.825,
+   "user"
+  ],
+  [
+   9.564,
+   11.289,
+   "user"
+  ],
+  [
+   12.291,
+   14.766,
+   "user"
+  ],
+  [
+   14.816,
+   16.541,
+   "user"
+  ]
+ ]
+}

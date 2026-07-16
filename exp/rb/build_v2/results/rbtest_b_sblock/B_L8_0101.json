@@ -1,0 +1,65 @@
+{
+ "id": "B_L8_0101",
+ "layer": "L8",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 0.514,
+ "U": 0.974,
+ "U_sens": {
+  "0.5": 0.974,
+  "1.0": 0.974,
+  "2.0": 0.974
+ },
+ "first_response_s": 0.514,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 7.22,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 3
+    }
+   ],
+   "say": ""
+  },
+  {
+   "i": 1,
+   "t_eou": 10.448,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [],
+ "segs": [
+  [
+   0.5,
+   6.58,
+   "user"
+  ],
+  [
+   8.528,
+   9.808,
+   "user"
+  ]
+ ]
+}

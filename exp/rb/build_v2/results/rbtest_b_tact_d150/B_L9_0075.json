@@ -1,0 +1,65 @@
+{
+ "id": "B_L9_0075",
+ "layer": "L9",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 19.86,
+ "U": 0.3611,
+ "U_sens": {
+  "0.5": 0.3611,
+  "1.0": 0.3611,
+  "2.0": 0.3611
+ },
+ "first_response_s": 19.86,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.58,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "reserve_hotel",
+     "op_id": 2
+    }
+   ],
+   "say": "Booking a hotel in Denver for three nights starting May 10."
+  },
+  {
+   "i": 1,
+   "t_eou": 29.78,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   7.58,
+   "Booking a hotel in Denver for three nights starting May 10."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.94,
+   "user"
+  ],
+  [
+   27.78,
+   29.14,
+   "user"
+  ]
+ ]
+}

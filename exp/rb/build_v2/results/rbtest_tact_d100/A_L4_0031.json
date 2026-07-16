@@ -1,0 +1,87 @@
+{
+ "id": "A_L4_0031",
+ "layer": "L4",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.616,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 8.02,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "hold_seat",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 12.367,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "destination": "Austin"
+     }
+    },
+    {
+     "type": "launch",
+     "fn": "hold_seat",
+     "op_id": 4
+    }
+   ],
+   "say": "Updating the destination to Austin and holding a business seat."
+  }
+ ],
+ "say_events": [
+  [
+   9.02,
+   "I'm on it."
+  ],
+  [
+   13.367,
+   "Updating the destination to Austin and holding a business seat."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   7.38,
+   "user"
+  ],
+  [
+   8.207,
+   11.727,
+   "user"
+  ]
+ ]
+}

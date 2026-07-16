@@ -1,0 +1,101 @@
+{
+ "id": "A_L6_0016",
+ "layer": "L6",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 2.751,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 4,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.34,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 10.268,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 4
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 2,
+   "t_eou": 16.406,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "place_order",
+     "op_id": 5
+    }
+   ],
+   "say": "已将购物车中的商品更换为跑步鞋，并准备下单。"
+  }
+ ],
+ "say_events": [
+  [
+   7.34,
+   "I'm on it."
+  ],
+  [
+   11.268,
+   "I'm on it."
+  ],
+  [
+   17.406,
+   "已将购物车中的商品更换为跑步鞋，并准备下单。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.7,
+   "user"
+  ],
+  [
+   7.068,
+   9.628,
+   "user"
+  ],
+  [
+   12.166,
+   15.766,
+   "user"
+  ]
+ ]
+}
