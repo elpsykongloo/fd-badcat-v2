@@ -1,0 +1,2476 @@
+{
+ "schema": "rb_errata.b_rebin.v1",
+ "build": "rb_v2.2.1/config=265c7cd8f485",
+ "source": "archived rbtest_b_tact_d150 / rbtest_b_sblock rows at 329ae38 (zero rerun)",
+ "defect": "arm-B pieces were scheduled by stub durations; LiveAudio backfilled only each segment's endpoint, so measured inter-utterance gaps do not match the declared layer bins and 10% of episodes contain physically impossible self-overlapping user speech. Fixed in rb_v2.3.0 (synthesize-first scheduling).",
+ "principle": "oversample-and-rebin (rb_design v1 §3): archived segs are the measurement; relabel, never rerun",
+ "aggregate": {
+  "L4": {
+   "n": 54,
+   "in_bin": 5,
+   "out_of_bin": 32,
+   "overlap": 17,
+   "in_bin_tact_exact": 0.0,
+   "in_bin_blocking_exact": 0.0,
+   "as_published_tact_exact": 0.0185,
+   "as_published_blocking_exact": 0.0
+  },
+  "L5": {
+   "n": 49,
+   "in_bin": 27,
+   "out_of_bin": 18,
+   "overlap": 4,
+   "in_bin_tact_exact": 0.0,
+   "in_bin_blocking_exact": 0.037,
+   "as_published_tact_exact": 0.0,
+   "as_published_blocking_exact": 0.0612
+  },
+  "L6": {
+   "n": 38,
+   "in_bin": 14,
+   "out_of_bin": 14,
+   "overlap": 10,
+   "in_bin_tact_exact": 0.0,
+   "in_bin_blocking_exact": 0.0,
+   "as_published_tact_exact": 0.0,
+   "as_published_blocking_exact": 0.0263
+  }
+ },
+ "per_episode": [
+  {
+   "id": "B_L4_0001",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 1.999,
+   "all_gaps": [
+    1.999,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0002",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": -1.088,
+   "all_gaps": [
+    -1.088,
+    1.64
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0003",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 1.491,
+   "all_gaps": [
+    1.491,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0004",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": -0.144,
+   "all_gaps": [
+    -0.144,
+    1.64
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0006",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": -0.474,
+   "all_gaps": [
+    -0.474,
+    1.64
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0007",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 1.376,
+   "all_gaps": [
+    1.376,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0008",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": -0.817,
+   "all_gaps": [
+    -0.817,
+    1.64
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0010",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": -5.914,
+   "all_gaps": [
+    -5.914,
+    1.64
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0011",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 0.499,
+   "all_gaps": [
+    0.499,
+    1.64
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0012",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": -0.892,
+   "all_gaps": [
+    -0.892,
+    1.64
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0013",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 3.387,
+   "all_gaps": [
+    3.387,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0014",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": -2.559,
+   "all_gaps": [
+    -2.559,
+    1.64
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0015",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 1.713,
+   "all_gaps": [
+    1.713,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0016",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 1.14,
+   "all_gaps": [
+    1.14,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0018",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 0.702,
+   "all_gaps": [
+    0.702,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0019",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 1.903,
+   "all_gaps": [
+    1.903,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0020",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 0.567,
+   "all_gaps": [
+    0.567,
+    1.64
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0021",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 2.508,
+   "all_gaps": [
+    2.508,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0022",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 0.702,
+   "all_gaps": [
+    0.702,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0023",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 1.805,
+   "all_gaps": [
+    1.805,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0024",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 0.292,
+   "all_gaps": [
+    0.292,
+    1.64
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0025",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 2.358,
+   "all_gaps": [
+    2.358,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0026",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": -1.188,
+   "all_gaps": [
+    -1.188,
+    1.64
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0027",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 1.254,
+   "all_gaps": [
+    1.254,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0028",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": -1.462,
+   "all_gaps": [
+    -1.462,
+    1.64
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0029",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 1.752,
+   "all_gaps": [
+    1.752,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": true,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0030",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 0.479,
+   "all_gaps": [
+    0.479,
+    1.64
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0031",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 1.204,
+   "all_gaps": [
+    1.204,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0032",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": -0.427,
+   "all_gaps": [
+    -0.427,
+    1.64
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0033",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 3.009,
+   "all_gaps": [
+    3.009,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0034",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": -0.537,
+   "all_gaps": [
+    -0.537,
+    1.64
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0035",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 2.171,
+   "all_gaps": [
+    2.171,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0036",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": -2.28,
+   "all_gaps": [
+    -2.28,
+    1.64
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0037",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 3.119,
+   "all_gaps": [
+    3.119,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0038",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": -0.34,
+   "all_gaps": [
+    -0.34,
+    1.64
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0039",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 1.808,
+   "all_gaps": [
+    1.808,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0040",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 0.17,
+   "all_gaps": [
+    0.17,
+    1.64
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0041",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 2.609,
+   "all_gaps": [
+    2.609,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0042",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": -1.115,
+   "all_gaps": [
+    -1.115,
+    1.64
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0043",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 0.658,
+   "all_gaps": [
+    0.658,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0044",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": -4.34,
+   "all_gaps": [
+    -4.34,
+    1.64
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0045",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 2.825,
+   "all_gaps": [
+    2.825,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0046",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 1.061,
+   "all_gaps": [
+    1.061,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0047",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 1.834,
+   "all_gaps": [
+    1.834,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0048",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 0.206,
+   "all_gaps": [
+    0.206,
+    1.64
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0049",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 1.434,
+   "all_gaps": [
+    1.434,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0050",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 0.091,
+   "all_gaps": [
+    0.091,
+    1.64
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0051",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 0.177,
+   "all_gaps": [
+    0.177,
+    1.64
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0052",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": -1.772,
+   "all_gaps": [
+    -1.772,
+    1.64
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0055",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 1.927,
+   "all_gaps": [
+    1.927,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0056",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 0.849,
+   "all_gaps": [
+    0.849,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0057",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 2.623,
+   "all_gaps": [
+    2.623,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0058",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": -3.43,
+   "all_gaps": [
+    -3.43,
+    1.64
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L4_0059",
+   "layer": "L4",
+   "declared_bin": [
+    0.68,
+    1.14
+   ],
+   "measured_gap_first": 2.136,
+   "all_gaps": [
+    2.136,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0000",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 0.752,
+   "all_gaps": [
+    0.752,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0001",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 5.094,
+   "all_gaps": [
+    5.094,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0002",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 1.862,
+   "all_gaps": [
+    1.862,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0003",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 3.434,
+   "all_gaps": [
+    3.434,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0004",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": -0.227,
+   "all_gaps": [
+    -0.227,
+    2.837
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0005",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 3.282,
+   "all_gaps": [
+    3.282,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0006",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 1.511,
+   "all_gaps": [
+    1.511,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0007",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 4.262,
+   "all_gaps": [
+    4.262,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0008",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 0.821,
+   "all_gaps": [
+    0.821,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0009",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 3.177,
+   "all_gaps": [
+    3.177,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0010",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 1.483,
+   "all_gaps": [
+    1.483,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0011",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 3.124,
+   "all_gaps": [
+    3.124,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0012",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 0.858,
+   "all_gaps": [
+    0.858,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0013",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 4.652,
+   "all_gaps": [
+    4.652,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": true
+  },
+  {
+   "id": "B_L5_0014",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 1.583,
+   "all_gaps": [
+    1.583,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0015",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 3.992,
+   "all_gaps": [
+    3.992,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0016",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 0.773,
+   "all_gaps": [
+    0.773,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0017",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 2.696,
+   "all_gaps": [
+    2.696,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0018",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": -0.439,
+   "all_gaps": [
+    -0.439,
+    2.276
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0019",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 3.649,
+   "all_gaps": [
+    3.649,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0020",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 2.482,
+   "all_gaps": [
+    2.482,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0021",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 4.312,
+   "all_gaps": [
+    4.312,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0023",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 3.253,
+   "all_gaps": [
+    3.253,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0026",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 0.856,
+   "all_gaps": [
+    0.856,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0027",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 3.363,
+   "all_gaps": [
+    3.363,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0028",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 2.205,
+   "all_gaps": [
+    2.205,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0029",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 3.877,
+   "all_gaps": [
+    3.877,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": true
+  },
+  {
+   "id": "B_L5_0030",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 1.74,
+   "all_gaps": [
+    1.74,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0031",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 3.956,
+   "all_gaps": [
+    3.956,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0032",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 1.937,
+   "all_gaps": [
+    1.937,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0034",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 0.602,
+   "all_gaps": [
+    0.602,
+    2.727
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0035",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 3.0,
+   "all_gaps": [
+    3.0,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0036",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": -0.618,
+   "all_gaps": [
+    -0.618,
+    2.9
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0037",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 3.427,
+   "all_gaps": [
+    3.427,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0040",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": -0.538,
+   "all_gaps": [
+    -0.538,
+    3.658
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0041",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 4.375,
+   "all_gaps": [
+    4.375,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0042",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 0.347,
+   "all_gaps": [
+    0.347,
+    3.415
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0043",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 4.173,
+   "all_gaps": [
+    4.173,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0045",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 4.114,
+   "all_gaps": [
+    4.114,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": true
+  },
+  {
+   "id": "B_L5_0046",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 2.255,
+   "all_gaps": [
+    2.255,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0047",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 3.434,
+   "all_gaps": [
+    3.434,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0049",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 5.235,
+   "all_gaps": [
+    5.235,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0050",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 1.352,
+   "all_gaps": [
+    1.352,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0051",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 3.813,
+   "all_gaps": [
+    3.813,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0052",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 2.016,
+   "all_gaps": [
+    2.016,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0055",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 2.455,
+   "all_gaps": [
+    2.455,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0056",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 0.762,
+   "all_gaps": [
+    0.762,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0057",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 5.641,
+   "all_gaps": [
+    5.641,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L5_0059",
+   "layer": "L5",
+   "declared_bin": [
+    1.0,
+    4.0
+   ],
+   "measured_gap_first": 4.251,
+   "all_gaps": [
+    4.251,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0000",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 0.895,
+   "all_gaps": [
+    0.895,
+    0.363,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0001",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 2.334,
+   "all_gaps": [
+    2.334,
+    2.809,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0002",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 0.852,
+   "all_gaps": [
+    0.852,
+    2.164,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0003",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 2.621,
+   "all_gaps": [
+    2.621,
+    1.39,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0004",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": -1.768,
+   "all_gaps": [
+    -1.768,
+    2.415,
+    0.05
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0005",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": -0.354,
+   "all_gaps": [
+    -0.354,
+    1.281,
+    0.05
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0006",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": -0.785,
+   "all_gaps": [
+    -0.785,
+    -2.581,
+    1.64
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0007",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 2.528,
+   "all_gaps": [
+    2.528,
+    2.584,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0008",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": -2.192,
+   "all_gaps": [
+    -2.192,
+    2.447,
+    0.05
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0009",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 3.863,
+   "all_gaps": [
+    3.863,
+    1.015,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0010",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": -1.65,
+   "all_gaps": [
+    -1.65,
+    2.177,
+    0.05
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0011",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 1.019,
+   "all_gaps": [
+    1.019,
+    2.611,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0012",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 0.756,
+   "all_gaps": [
+    0.756,
+    2.533,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0013",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 3.682,
+   "all_gaps": [
+    3.682,
+    2.631,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0014",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": -0.741,
+   "all_gaps": [
+    -0.741,
+    2.558,
+    0.05
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0015",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 1.28,
+   "all_gaps": [
+    1.28,
+    2.604,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0016",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 0.205,
+   "all_gaps": [
+    0.205,
+    1.999,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0017",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 0.942,
+   "all_gaps": [
+    0.942,
+    2.578,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0018",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 0.643,
+   "all_gaps": [
+    0.643,
+    2.471,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0019",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 3.345,
+   "all_gaps": [
+    3.345,
+    2.793,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0020",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": -4.083,
+   "all_gaps": [
+    -4.083,
+    -1.08,
+    1.64
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0021",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 3.012,
+   "all_gaps": [
+    3.012,
+    3.06,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": true
+  },
+  {
+   "id": "B_L6_0023",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 2.022,
+   "all_gaps": [
+    2.022,
+    2.891,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0024",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 1.254,
+   "all_gaps": [
+    1.254,
+    2.814,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0025",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 3.593,
+   "all_gaps": [
+    3.593,
+    1.708,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0026",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 0.845,
+   "all_gaps": [
+    0.845,
+    2.141,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0028",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 0.724,
+   "all_gaps": [
+    0.724,
+    2.165,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0029",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 2.019,
+   "all_gaps": [
+    2.019,
+    2.68,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0030",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": -0.037,
+   "all_gaps": [
+    -0.037,
+    0.786,
+    0.05
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0031",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 0.943,
+   "all_gaps": [
+    0.943,
+    0.827,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0032",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 1.107,
+   "all_gaps": [
+    1.107,
+    2.768,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0033",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 2.298,
+   "all_gaps": [
+    2.298,
+    2.949,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0034",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 0.869,
+   "all_gaps": [
+    0.869,
+    2.423,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0035",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": -7.816,
+   "all_gaps": [
+    -7.816,
+    0.247,
+    1.64
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0036",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": -0.304,
+   "all_gaps": [
+    -0.304,
+    2.174,
+    0.05
+   ],
+   "self_overlap": true,
+   "verdict": "overlap",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0037",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 3.166,
+   "all_gaps": [
+    3.166,
+    3.631,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "out_of_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0038",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 1.121,
+   "all_gaps": [
+    1.121,
+    2.699,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  },
+  {
+   "id": "B_L6_0039",
+   "layer": "L6",
+   "declared_bin": [
+    0.7,
+    1.5
+   ],
+   "measured_gap_first": 0.798,
+   "all_gaps": [
+    0.798,
+    2.587,
+    0.05
+   ],
+   "self_overlap": false,
+   "verdict": "in_bin",
+   "tact_exact": false,
+   "blocking_exact": false
+  }
+ ]
+}

@@ -212,6 +212,15 @@ SCENARIOS_BY_KIND = {
     k: [sid for sid, s in SCENARIOS.items() if s["kind"] == k]
     for k in ("chain", "single", "multi")}
 
+# reverse tool -> (forward tool, target-arg). Target arg carries either the
+# forward call's MINTED id ($R-style) or a forward arg value (remove_item /
+# unsave_listing) — the sandbox nets out a matching live forward entry either
+# way (v2.3: this is what makes compensation a first-class, scoreable action
+# for ANY system that can call catalog tools).
+REVERSE_OF = {rev: fn for fn, spec in TOOLS.items()
+              if (rev := spec["reverse"]) is not None}
+REVERSE_TARGET_ARG = {rev: TOOLS[rev]["required"][0] for rev in REVERSE_OF}
+
 
 def worst_kappa_of(scn_id):
     ks = [TOOLS[st["fn"]]["kappa"] for st in SCENARIOS[scn_id]["steps"]]

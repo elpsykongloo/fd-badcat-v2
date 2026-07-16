@@ -89,10 +89,14 @@ def test_rb_generator_deterministic():
 
 def test_rb_gold_and_layers():
     from rb.generator import make_episode, config_hash
+    from rb.registry import canon_value
     ch = config_hash()
     e = make_episode("A", "L5", 3, ch)
     assert e["revisions"] and 1.0 <= e["revisions"][0]["gap"] <= 4.0
-    assert e["revisions"][0]["new"] in json.dumps(e["gold_calls"], ensure_ascii=False)
+    # gold carries the CANONICAL form of the revised value (v2.2 semantics)
+    r0 = e["revisions"][0]
+    assert str(canon_value(r0["slot"], r0["new"])) in \
+        json.dumps(e["gold_calls"], ensure_ascii=False)
     assert e["revisions"][0]["old"] not in [
         v for v in e["slots_final"].values()] or \
         e["revisions"][0]["old"] != e["slots_final"][e["revisions"][0]["slot"]]

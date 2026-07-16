@@ -13,7 +13,7 @@ import json
 import math
 import random
 
-from .registry import TOOLS
+from .registry import TOOLS, REVERSE_OF, REVERSE_TARGET_ARG
 
 # lognormal (mu, sigma) seconds per latency class; heavy = L9 long-tail profile
 LATENCY = {"short": (math.log(0.5), 0.4), "mid": (math.log(2.0), 0.5),
@@ -50,12 +50,32 @@ class Sandbox:
         self._n_fn = {}
 
     def latency_of(self, fn):
-        cls = "heavy" if self.profile == "heavy" and TOOLS[fn]["kappa"] != "READ" \
-            else TOOLS[fn]["latency"]
-        mu, sig = LATENCY[cls]
-        return round(min(LATENCY_CAP_S, math.exp(self.rng.gauss(mu, sig))), 3)
+        """Wall latency of the NEXT call of fn. v2.3: keyed by (episode, fn,
+        occurrence) — interleaving-immune, same lesson as mint_id (the v2.2
+        streamed draw shifted under window-policy reordering)."""
+        return self.latency_of_at(fn, self._n_fn.get(fn, 0))
 
-    def execute(self, fn, args, idem_key=None):
+    def _match_forward(self, rev_fn, target):
+        """Live forward entry a reverse call nets out: by minted id first,
+        then by arg-value equality (remove_item / unsave_listing class);
+        latest match wins. Returns the state key or None."""
+        fwd = REVERSE_OF[rev_fn]
+        tv = str(target)
+        best = None
+        for key, v in self.state.items():
+            if not key.startswith(fwd + "#") or v.get("void"):
+                continue
+            if key.split("#", 1)[1] == tv or \
+                    any(str(x) == tv for x in v.values()):
+                best = key
+        return best
+
+    def execute(self, fn, args, idem_key=None, t=None):
+        """v2.3: `t` (audio-clock commit time) opens an execution window
+        [t, t+latency] during which abort() may cancel a REV/COMP effect;
+        reverse-tool calls that match a live forward entry NET IT OUT (the
+        compensation path is an ordinary catalog call, scoreable for any
+        system). Without t, effects are instantaneous (v2.2 behavior)."""
         if fn not in TOOLS:
             return {"status": "error", "error": f"unknown tool {fn}"}
         missing = [a for a in TOOLS[fn]["required"]
@@ -64,15 +84,65 @@ class Sandbox:
             return {"status": "error", "error": f"missing {missing}"}
         if idem_key and idem_key in self._idem:
             return self._idem[idem_key]
+        if fn in REVERSE_OF:
+            key = self._match_forward(fn, (args or {}).get(REVERSE_TARGET_ARG[fn]))
+            if key is None:
+                return {"status": "error",
+                        "error": f"{fn}: no live {REVERSE_OF[fn]} to reverse"}
+            fwd_kappa = TOOLS[REVERSE_OF[fn]]["kappa"]
+            self.state[key]["void"] = True
+            if fwd_kappa == "COMP":
+                self.state[key]["fee"] = COMP_FEE
+                self.fees += COMP_FEE
+            self.calls.append({"fn": fn, "args": dict(args),
+                               "rid": key.split("#", 1)[1], "comp": True})
+            res = {"status": "success",
+                   "result": {"id": key.split("#", 1)[1], "fn": fn,
+                              "reversed": key}}
+            if idem_key:
+                self._idem[idem_key] = res
+            return res
         k = self._n_fn.get(fn, 0)
         self._n_fn[fn] = k + 1
         rid = _rid(self.episode_id, fn, k)
-        self.state[f"{fn}#{rid}"] = dict(args)
+        entry = dict(args)
+        if t is not None:
+            entry["completes_at"] = round(float(t) + self.latency_of_at(fn, k), 3)
+        self.state[f"{fn}#{rid}"] = entry
         self.calls.append({"fn": fn, "args": dict(args), "rid": rid})
         res = {"status": "success", "result": {"id": rid, "fn": fn}}
         if idem_key:
             self._idem[idem_key] = res
         return res
+
+    def latency_of_at(self, fn, k):
+        """Deterministic per-(fn, occurrence) latency — replayable regardless
+        of interleaving (the streamed rng draw depends on call order)."""
+        r = random.Random(f"{self.episode_id}:{fn}:{k}:lat")
+        cls = "heavy" if self.profile == "heavy" and TOOLS[fn]["kappa"] != "READ" \
+            else TOOLS[fn]["latency"]
+        mu, sig = LATENCY[cls]
+        return round(min(LATENCY_CAP_S, math.exp(r.gauss(mu, sig))), 3)
+
+    def abort(self, rid_or_key, t):
+        """Abort an op WHILE IT IS STILL EXECUTING (t < completes_at): the
+        effect never lands (entry voided, no fee — the def2 alternative to
+        wait-then-compensate). IRR ops cannot be aborted; completed ops
+        cannot be aborted (use the reverse tool)."""
+        key = rid_or_key if "#" in str(rid_or_key) else next(
+            (k for k in self.state if k.endswith(f"#{rid_or_key}")), rid_or_key)
+        v = self.state.get(key)
+        if v is None or v.get("void"):
+            return {"status": "error", "error": "nothing to abort"}
+        fn = key.split("#")[0]
+        if TOOLS[fn]["kappa"] == "IRR":
+            return {"status": "error", "error": f"{fn} is irreversible"}
+        ca = v.get("completes_at")
+        if ca is None or float(t) >= ca:
+            return {"status": "error", "error": "already completed - compensate"}
+        v["void"] = True
+        v["aborted_at"] = round(float(t), 3)
+        return {"status": "success", "result": {"aborted": key}}
 
     def compensate(self, fn, rid):
         """Reverse the effect of an earlier call (fn, rid). COMP leaves a fee

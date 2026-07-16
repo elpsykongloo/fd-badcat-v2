@@ -1,21 +1,47 @@
 # -*- coding: utf-8 -*-
-"""rb/grammar.py — RB v2 layer definitions, event grammar, and utterance
-templates (docs/rb_design.md v2 §2/§3).
+"""rb/grammar.py — RB layer definitions, event grammar, and utterance
+templates (docs/rb_design.md v2 §2/§3; v2.3 = review-driven revision).
 
-Layers L1–L10: gap bins are on the SILENCE CLOCK (seconds between the end of
-the intent utterance and the start of the revision utterance). L4 revision
-text is value-first (the new value is the first word — travel_10 lesson).
+Layers (v2.3):
+  L1  inline revision            L2  short-gap revision
+  L3  epsilon-band revision      L4  race-region revision (value-first)
+  L5  chain revision             L6  chain + double revision
+  L7  COMPENSATION arena: the revision is TIMED PAST the reference commit
+      horizon (hold + infer + delta* + tool wall + margin), so under the
+      reference window the forward op is already committed — the only path
+      to the gold terminal state is reverse-tool + relaunch (or, for systems
+      holding longer windows, an in-window patch; both net to the same call
+      multiset — the fee/time difference lands in the transactional track).
+  L8  in-flight events           L9  latency long-tail
+  L10 adversarial bystander      L11 TTS barge-in revision (arm B; the user
+      interrupts the agent's own speech to revise — the signature full-duplex
+      revision cell)
+  L12 ATTRIBUTION arena (the old L7-multi construction): the revision names a
+      STEP-2-ONLY slot while step 1's window is open — probes revision-target
+      binding (the v2.2.1 anti-window cells' mechanism).
 
 Arm-B event grammar: a rule = (lifecycle_state, offset_spec, action, content
-kind). The reactive user simulator (rb/simulator.py) tracks the engine's
-lifecycle from trace events and fires rules deterministically per episode
-seed. Content is template-filled; `content_hook` (an optional callable
-(kind, lang, slots) -> str) is the LLM slot interface — the default is
-template-only so builds are fully deterministic with no API.
+kind). v2.3: arm-B revision content is delivered ONLY through events (the
+v2.2 script-piece + event double delivery is removed); the `inflight` anchor
+is the first COMP/IRR launch (was: first launch of any kappa — always a READ
+in every chain, so nothing ever landed in a transactional execution window).
+
+Content: templates below are the deterministic fallback. When
+exp/rb/content_bank.json exists (built by scripts/rb_content_gen.py from
+DeepSeek v4-flash samples, then FROZEN — its hash enters config_hash), text
+functions draw seeded variants from the bank and optionally inject one
+disfluency (five families: false_start, filler, repetition, elongation,
+self_repair). `content_hook` remains the external override interface.
 """
+import hashlib
+import json
+from pathlib import Path
 
 HOLD_S = 0.64
 NOMINAL_INFER_S = 1.0     # nominal decision latency (arm-A lifecycle projection)
+DELTA_REF_S = 1.5         # reference objection window (L7 commit-horizon calc)
+L7_MARGIN_S = 0.30
+DISFLUENCY_P = 0.30       # per-revision injection probability (bank builds)
 
 # gap bins per layer (uniform in-bin unless a pause prior narrows them)
 LAYER_GAP = {
@@ -24,18 +50,21 @@ LAYER_GAP = {
     "L4": (0.68, 1.14),
     "L5": (1.00, 4.00),
     "L6": [(0.70, 1.50), (1.00, 3.00)],   # two revisions
-    "L7": (1.00, 2.50),
+    "L7": None,                            # computed past the commit horizon
     "L8": None,                            # timed to the in-flight window
     "L9": None,                            # no revision by default (latency layer)
     "L10": None,                           # adversarial: lifecycle-timed injection
+    "L11": None,                           # reactive: anchored to agent TTS onset
+    "L12": (1.00, 2.50),                   # attribution arena (old L7 bin)
 }
-LAYERS = ("L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9", "L10")
+LAYERS = ("L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9", "L10",
+          "L11", "L12")
 
 # scenario kind preference per layer (chain exercises DAG; multi = independent
 # calls; single = COMP/IRR-terminal short tasks)
 LAYER_KIND = {"L1": "single", "L2": "single", "L3": "chain", "L4": "chain",
-              "L5": "chain", "L6": "chain", "L7": "multi", "L8": "chain",
-              "L9": "single", "L10": "chain"}
+              "L5": "chain", "L6": "chain", "L7": "single", "L8": "chain",
+              "L9": "single", "L10": "chain", "L11": "single", "L12": "multi"}
 
 REV_UTT = {
     "zh": {"default": "等等，改成{new}。",
@@ -58,14 +87,17 @@ BYSTANDER = {
 }
 
 # Arm-B event rules per layer: (state, offset_spec, action, content_kind).
-# state ∈ {eou, inflight, committed, tts}; offset_spec = (lo, hi) seconds
+# state in {eou, inflight, committed, tts}; offset_spec = (lo, hi) seconds
 # after the state's anchor event — except inflight, where it is a FRACTION of
-# the tool's wall time (lands inside the execution window by construction).
+# the anchoring tool's wall time. v2.3 anchors: inflight = first COMP/IRR
+# launch; committed = first commit (live since the feed_sim watermark fix);
+# tts = first agent audio onset.
 ARM_B_RULES = {
     "L4": [("eou", (0.04, 0.50), "revise", "value_first")],
     "L5": [("eou", (0.36, 3.36), "revise", "default")],
     "L6": [("eou", (0.06, 0.86), "revise", "default"),
            ("committed", (0.30, 1.50), "revise", "second")],
+    "L7": [("committed", (0.30, 1.20), "revise", "default")],
     "L8": [("inflight", (0.20, 0.80), "revise", "default"),
            ("inflight", (0.20, 0.80), "cancel", "cancel"),
            ("inflight", (0.30, 0.90), "progress_query", "progress")],
@@ -74,7 +106,70 @@ ARM_B_RULES = {
             ("tts", (0.10, 0.60), "bystander", "command"),
             ("inflight", (0.10, 0.80), "bystander", "irrelevant"),
             ("eou", (0.30, 1.20), "benign_control", "default")],
+    "L11": [("tts", (0.05, 0.40), "revise", "default")],
 }
+# layers whose arm-B revision/cancel content arrives ONLY via events (v2.3:
+# the generator emits no script piece for these on arm B — de-duplication)
+ARM_B_EVENT_ONLY = ("L4", "L5", "L6", "L7", "L11")
+
+# ---------------------------------------------------------------------------
+# content bank (optional, frozen artifact) + disfluency injection
+# ---------------------------------------------------------------------------
+BANK_PATH = Path(__file__).resolve().parents[1] / "exp/rb/content_bank.json"
+_BANK = None
+_BANK_HASH = "none"
+if BANK_PATH.exists():
+    _raw = BANK_PATH.read_bytes()
+    _BANK = json.loads(_raw)
+    _BANK_HASH = hashlib.sha256(_raw).hexdigest()[:12]
+
+DISFLUENCY_FAMILIES = ("false_start", "filler", "repetition", "elongation",
+                       "self_repair")
+# deterministic fallback disfluency patterns ({body} = the clean utterance,
+# {new} available for self_repair)
+DISFLUENCY_FALLBACK = {
+    "zh": {"false_start": "那个我先——{body}",
+           "filler": "嗯……{body}",
+           "repetition": "改成，改成，{body}",
+           "elongation": "呃——{body}",
+           "self_repair": "改成那个……不对，{body}"},
+    "en": {"false_start": "So I was— {body}",
+           "filler": "Um... {body}",
+           "repetition": "Make it, make it, {body}",
+           "elongation": "Uh— {body}",
+           "self_repair": "Change it to the... no wait, {body}"},
+}
+
+
+def bank_hash():
+    return _BANK_HASH
+
+
+def _bank_pick(rng, path_keys, fallback):
+    """Seeded pick from a bank list at bank[k0][k1]...; falls back."""
+    node = _BANK
+    for k in path_keys:
+        if not isinstance(node, dict) or k not in node:
+            return fallback
+        node = node[k]
+    if isinstance(node, list) and node:
+        return node[rng.randrange(len(node))]
+    return fallback
+
+
+def maybe_disfluent(rng, lang, text, new=None):
+    """With DISFLUENCY_P (bank builds only), wrap `text` in one seeded
+    disfluency family. Inline-kind texts are never wrapped (they splice into
+    the intent sentence)."""
+    if _BANK is None or rng.random() >= DISFLUENCY_P:
+        return text
+    fam = DISFLUENCY_FAMILIES[rng.randrange(len(DISFLUENCY_FAMILIES))]
+    pat = _bank_pick(rng, ("disfluency", lang, fam),
+                     DISFLUENCY_FALLBACK[lang][fam])
+    try:
+        return pat.format(body=text, new=new if new is not None else "")
+    except (KeyError, IndexError):
+        return text
 
 
 def gap_for_layer(layer, rng, pause_prior=None, which=0):
@@ -100,19 +195,53 @@ def gap_for_layer(layer, rng, pause_prior=None, which=0):
     return round(lo + rng.random() * (hi - lo), 3)
 
 
-def revision_text(lang, kind, new, content_hook=None):
+def l7_gap(rng, tool_wall_s):
+    """L7 compensation gap: past the reference commit horizon by construction
+    (EoU hold + nominal infer + delta* + the forward tool's wall + margin)."""
+    lo = HOLD_S + NOMINAL_INFER_S + DELTA_REF_S + float(tool_wall_s) + L7_MARGIN_S
+    return round(lo + rng.random() * 1.5, 3)
+
+
+def intent_text(lang, scenario_id, default_template, rng=None):
+    """Scenario intent template: seeded bank paraphrase when available."""
+    if rng is None:
+        return default_template
+    return _bank_pick(rng, ("intent", scenario_id, lang), default_template)
+
+
+def revision_text(lang, kind, new, content_hook=None, rng=None):
     if content_hook:
         out = content_hook(kind, lang, {"new": new})
         if out:
             return out
     t = REV_UTT[lang].get(kind, REV_UTT[lang]["default"])
-    return t.format(new=new)
+    if rng is not None:
+        t = _bank_pick(rng, ("revision", lang, kind), t)
+    try:
+        text = t.format(new=new)
+    except (KeyError, IndexError):
+        text = REV_UTT[lang].get(kind, REV_UTT[lang]["default"]).format(new=new)
+    if rng is not None and kind not in ("inline", "cancel"):
+        text = maybe_disfluent(rng, lang, text, new=new)
+    return text
 
 
-def bystander_text(lang, kind, other=None, content_hook=None):
+def bystander_text(lang, kind, other=None, content_hook=None, rng=None):
     if content_hook:
         out = content_hook("bystander_" + kind, lang, {"other": other})
         if out:
             return out
     t = BYSTANDER[lang][kind]
-    return t.format(other=other) if "{other}" in t else t
+    if rng is not None:
+        t = _bank_pick(rng, ("bystander", lang, kind), t)
+    try:
+        return t.format(other=other) if "{other}" in t else t
+    except (KeyError, IndexError):
+        t = BYSTANDER[lang][kind]
+        return t.format(other=other) if "{other}" in t else t
+
+
+def progress_text(lang, rng=None):
+    if rng is None:
+        return PROGRESS_QUERY[lang]
+    return _bank_pick(rng, ("progress", lang), PROGRESS_QUERY[lang])

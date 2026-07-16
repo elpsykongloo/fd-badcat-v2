@@ -73,6 +73,28 @@ def rb_catalog():
     return "\n".join(lines)
 
 
+# W5 attribution gate (the WHICH-axis of window admission control; user
+# ruling 2026-07-16). v1 wording — dev-iterable at most twice (five-target
+# discipline), then frozen. Installed only under --attr on; the constant is
+# additive so non-attr providers' prompts stay byte-identical.
+PROMPT_RB_ATTR = (
+    "16. REVISION TARGET BINDING: when the user revises a value, bind it to "
+    "the op or action whose declared argument that value belongs to (check "
+    "the catalog argument formats). If the value names an argument of an "
+    "action you have NOT launched yet, LAUNCH that action carrying the new "
+    "value - do NOT patch an open op whose arguments the value does not fit. "
+    "Only patch an op when the revised value is a valid replacement for one "
+    "of that op's own arguments.")
+
+
+def install_rb_attr():
+    td = tact_core.tact_decider
+    if getattr(td, "_RB_ATTR_INSTALLED", False):
+        return
+    td.SYSTEM_PROMPT = td.SYSTEM_PROMPT + "\n" + PROMPT_RB_ATTR
+    td._RB_ATTR_INSTALLED = True
+
+
 def install_rb(prompt="v3.1"):
     td = tact_core.tact_decider
     cat = rb_catalog()
@@ -139,17 +161,32 @@ def plan_segments(ep, use_cues=True):
 
 class LiveAudio:
     """Arm-B audio assembler: synthesizes pieces on demand and mixes them at
-    their segment times; prefix(t) yields the decider's audio input. With a
-    real backend the segment DURATIONS come from the synthesized audio."""
+    their segment times; prefix(t) yields the decider's audio input. Segment
+    DURATIONS come from the synthesized audio (v2.3: START times too — the
+    caller schedules synthesize-first, same structure as the arm-A
+    assembler; v2.2 scheduled by stub estimates and only backfilled the
+    endpoint, which produced physically impossible self-overlapping speech).
+    The episode's seeded perturbation family (rate/gain/scene SNR) is applied
+    here, post-synthesis, so TTS cache keys stay clean."""
 
-    def __init__(self, backend):
+    def __init__(self, backend, episode=None):
         import array
         self.backend = backend
         self.buf = array.array("h")
+        pb = (episode or {}).get("perturb") or {}
+        self.rate = pb.get("rate", 1.0)
+        self.gain = pb.get("gain_db", 0.0)
+        self.snr = pb.get("snr_db")
+        self.eid = (episode or {}).get("id", "")
+        self.sigma = None
 
     def place(self, seg):
+        from rb.audio import perturb_samples, noise_sigma
         samples, _sr = self.backend.synthesize(
             seg["text"], seg.get("voice") or "cv01", seg.get("lang") or "zh")
+        samples = perturb_samples(samples, self.rate, self.gain)
+        if self.sigma is None:
+            self.sigma = noise_sigma(samples, self.snr)
         i0 = int(seg["s"] * SR)
         need = i0 + len(samples)
         if need > len(self.buf):
@@ -161,10 +198,14 @@ class LiveAudio:
 
     def prefix(self, t):
         import numpy as np
+        from rb.audio import noise_block
         n = int(t * SR)
         if n > len(self.buf):
             self.buf.extend([0] * (n - len(self.buf)))
-        return np.asarray(self.buf[:n], dtype=np.float32) / 32768.0
+        x = np.asarray(self.buf[:n], dtype=np.float32)
+        if self.sigma and self.sigma > 0.0:
+            x = x + noise_block(self.eid, n, self.sigma)
+        return np.clip(x, -32768.0, 32767.0) / 32768.0
 
 
 # ---------------------------------------------------------------------------
@@ -232,11 +273,36 @@ class OracleDecider:
             self.applied_revs.add(slot)
             for step_i, arg in self.slot_args[slot]:
                 fn = self.scn["steps"][step_i]["fn"]
+                patched = False
                 for oid in tx.pending:
                     if tx.pending[oid].fn == fn:
                         ops.append({"type": "patch", "op_id": oid,
                                     "diff": {arg: canon_value(slot, slots[slot])}})
+                        patched = True
                         break
+                if patched or not any(op.fn == fn for op in tx.committed):
+                    continue
+                # v2.3 compensation route (L7 arena): the target op is already
+                # COMMITTED — reverse it via its catalog reverse tool, then
+                # relaunch with the revised value (nets to forward(new)).
+                rev_fn = TOOLS[fn].get("reverse")
+                if rev_fn is None:
+                    continue
+                from rb.registry import REVERSE_TARGET_ARG
+                ops.append({"type": "launch", "fn": rev_fn,
+                            "args": {REVERSE_TARGET_ARG[rev_fn]:
+                                     mint_id(self.ep["id"], fn, 0)}})
+                new_args = {}
+                for a, v in self.scn["steps"][step_i]["args"].items():
+                    if isinstance(v, str) and v.startswith("$R"):
+                        ref_fn = self.scn["steps"][int(v[2:])]["fn"]
+                        new_args[a] = mint_id(self.ep["id"], ref_fn, 0)
+                    elif isinstance(v, str) and v.startswith("{"):
+                        sl = v.strip("{}")
+                        new_args[a] = canon_value(sl, slots[sl])
+                    else:
+                        new_args[a] = v
+                ops.append({"type": "launch", "fn": fn, "args": new_args})
         return {"dialogue": "stay", "ops": ops,
                 "say": "已更新。" if ops else ""}
 
@@ -308,15 +374,28 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
         from tact_dag import OpDag, CompensationRegistry
         dag = OpDag(ledger)
         comp_reg = CompensationRegistry()
-    segs = plan_segments(ep, use_cues=input_kind == "audio" and ep["arm"] == "A")
     sim = ReactiveUser(ep) if ep["arm"] == "B" else None
     live = None
     if input_kind == "audio" and ep["arm"] == "B":
         assert tts_backend is not None, "arm B audio runs need --tts"
-        live = LiveAudio(tts_backend)
-        for sg_ in segs:
-            live.place(sg_)
-        segs.sort(key=lambda x: x["s"])
+        # v2.3 synthesize-first scheduling: true duration decides the next
+        # start (arm-A assembler structure) — no stub estimates on the clock.
+        live = LiveAudio(tts_backend, ep)
+        segs = []
+        t = 0.0
+        for p in ep["pieces"]:
+            if "at_after_eou" in p:
+                continue                      # arm B: lifecycle pieces -> events
+            s = t + float(p.get("gap_before", 0.0))
+            seg = {"s": round(s, 3), "e": None, "text": p["text"],
+                   "role": p["role"], "voice": p.get("voice"),
+                   "lang": p.get("lang")}
+            live.place(seg)                   # sets true e, mixes at s
+            segs.append(seg)
+            t = seg["e"]
+    else:
+        segs = plan_segments(ep, use_cues=input_kind == "audio"
+                             and ep["arm"] == "A")
     say_events, commits, decisions = [], [], []
     trace_events = []
     results_by_op, results_by_step = {}, []
@@ -335,7 +414,8 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
             ra = {k: _resolve_ref(v, results_by_op, results_by_step, batch,
                                   base=cur_base["v"])
                   for k, v in (a or {}).items()}
-            res = sandbox.execute(f, ra)
+            res = sandbox.execute(f, ra, idem_key=f"{ep['id']}:{op_id}",
+                                  t=t_nominal)
             if res.get("status") == "success":
                 results_by_op[op_id] = res
                 results_by_step.append(res)
@@ -348,24 +428,39 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
                              "data": {"t_audio": t_nominal,
                                       "op": {"type": "commit", "fn": fn}}})
 
+    trace_sent = {"n": 0}                  # feed_sim watermark over trace_events
+
     def feed_sim(evts, t_now):
-        """arm B: engine events -> reactive-user actions -> new segments."""
+        """arm B: engine events -> reactive-user actions -> new segments.
+        Injections never overlap existing speech (physical single mouth)."""
         if sim is None:
             return
         for ev in evts:
             for act in sim.on_event(ev):
                 p = act["piece"]
-                dur = stub_dur(p["text"], p["lang"])
-                s = max(act["at"], (segs[-1]["e"] + 0.05) if segs else 0.0, t_now)
-                seg = {"s": round(s, 3), "e": round(s + dur, 3),
+                floor = max((sg["e"] for sg in segs), default=0.0) + 0.05
+                s = act["at"] if act["at"] >= floor else floor
+                s = max(s, t_now)
+                seg = {"s": round(s, 3), "e": None,
                        "text": p["text"], "role": p["role"],
                        "voice": p.get("voice"), "lang": p.get("lang")}
                 if live is not None:
-                    live.place(seg)          # true duration replaces the stub
+                    live.place(seg)          # true duration
+                else:
+                    seg["e"] = round(seg["s"] + stub_dur(p["text"], p["lang"]), 3)
                 lo = 0
                 while lo < len(segs) and segs[lo]["s"] <= seg["s"]:
                     lo += 1
                 segs.insert(lo, seg)
+
+    def feed_sim_traces(t_now):
+        """Deliver trace events (commits) accrued since the last watermark —
+        the v2.2 `trace_events[len(trace_events):]` was a constant empty
+        slice, so the `committed` lifecycle anchor never fired."""
+        mark = trace_sent["n"]
+        trace_sent["n"] = len(trace_events)
+        if mark < trace_sent["n"]:
+            feed_sim(trace_events[mark:], t_now)
 
     cursor, i, n_eou = 0.0, 0, 0
     tuple_segs = lambda: [(x["s"], x["e"]) for x in segs]        # noqa: E731
@@ -474,10 +569,16 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
                                   "op": {"type": "launch", "fn": a.get("fn")}}})
         if say:
             evts.append({"event": "tts_start", "t": t_dec})
-        feed_sim(evts + trace_events[len(trace_events):], t_dec)
+        feed_sim(evts, t_dec)
+        feed_sim_traces(t_dec)               # commits since last decision
         i += 1
-    advance_over(ledger, cursor, math.inf, tuple_segs(), do_commit)
-    ledger.sweep(cursor, do_commit, cause="finalize")
+        if i >= len(segs):
+            # end of current speech: close remaining windows on tail silence,
+            # then deliver their commit events — a `committed`-anchored user
+            # event may still inject speech and resume the loop (v2.3).
+            advance_over(ledger, cursor, math.inf, tuple_segs(), do_commit)
+            ledger.sweep(cursor, do_commit, cause="finalize")
+            feed_sim_traces(cursor)
 
     t_user_end = max((s["e"] for s in segs if s["role"] == "user"), default=0.0)
     done = max((c["t_commit"] + c["tool_nominal_s"] for c in commits),
@@ -491,6 +592,15 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
                 "n_commits": len(commits), "fees": sandbox.fees,
                 "decisions": decisions, "say_events": say_events,
                 "segs": [(s["s"], s["e"], s["role"]) for s in segs]})
+    if ep["arm"] == "B":
+        # v2.3 arm-B timing acceptance receipt (arm-A-grade): overlaps must
+        # be zero by construction; measured gaps are the re-binning truth.
+        user = sorted((s["s"], s["e"]) for s in segs if s["role"] == "user")
+        row["armb_timing"] = {
+            "user_overlaps": sum(1 for a, b in zip(user, user[1:])
+                                 if b[0] < a[1] - 1e-9),
+            "measured_gaps": [round(b[0] - a[1], 3)
+                              for a, b in zip(user, user[1:])]}
     return row
 
 
@@ -516,6 +626,11 @@ def aggregate(rows):
            "by_layer": {L: {"n": len(xs), "exact": rate(xs, "exact"),
                             "U": round(sum(x["U"] for x in xs) / len(xs), 4)}
                         for L, xs in sorted(by.items())}}
+    bt = [r["armb_timing"] for r in rows if "armb_timing" in r]
+    if bt:
+        rep["armb_timing"] = {
+            "episodes_with_overlap": sum(1 for x in bt if x["user_overlaps"]),
+            "total_overlaps": sum(x["user_overlaps"] for x in bt)}
     return rep
 
 
@@ -536,6 +651,10 @@ def main():
     ap.add_argument("--dag", default="on", choices=["on", "off"])
     ap.add_argument("--tts", default=None, choices=[None, "qwen", "stub"],
                     help="arm-B audio synthesis backend")
+    ap.add_argument("--attr", default="off", choices=["on", "off"],
+                    help="W5 attribution gate: append the revision-target-"
+                         "binding rule (PROMPT_RB_ATTR) to the decider "
+                         "prompt. Default off = prompt byte-identical.")
     ap.add_argument("--delta-policy", default="fixed",
                     choices=["fixed", "learned:v2"],
                     help="fixed (default; frozen batch-1 path, bit-identical) "
@@ -562,6 +681,11 @@ def main():
             got = _h.sha256((ROOT / f).read_bytes()).hexdigest()
             assert got == want, f"scorer freeze violated: {f} changed"
     install_rb(args.prompt)
+    if args.attr == "on":
+        install_rb_attr()
+        if "attr" not in args.provider:
+            print("WARNING: --attr on without an attr-tagged provider; "
+                  "recommend *_attr so grids stay separable.")
     stophead = fin_cache = None
     if args.delta_policy != "fixed":
         if args.system != "tact":
@@ -640,7 +764,7 @@ def main():
     rep["config"] = {k: getattr(args, k) for k in
                      ("arm", "system", "delta", "commit_barrier", "input",
                       "decider", "floor_commit_tiers", "split", "infer_nominal",
-                      "dag")}
+                      "dag", "attr")}
     if args.delta_policy != "fixed":    # absent on frozen batch-1 reports
         from rb.learned import head_summary
         rep["config"]["delta_policy"] = args.delta_policy
@@ -746,10 +870,15 @@ def selftest():
     cnow = run_episode(ep4l, OracleDecider(ep4l), mode="tact",
                        input_kind="text", delta_policy="learned:v2",
                        stophead=commit_now)
-    ck["lh_commit_now_drops_rescue"] = (not cnow["exact"]) and fixed["exact"] \
+    # v2.3 semantics: with reverse tools first-class, commit-now either LOSES
+    # the episode or pays the compensation price the window would have saved
+    # (the def2 economics) — while the fixed window patches for free.
+    ck["lh_commit_now_pays_or_loses"] = (
+        fixed["exact"] and fixed["fees"] == 0 and fixed["comp_cost"] == 0.0
         and all(w == 0.0 for d in cnow["decisions"]
-                for w in d.get("op_windows", {}).values()) \
-        and cnow["done_s"] < fixed["done_s"]
+                for w in d.get("op_windows", {}).values())
+        and ((not cnow["exact"])
+             or cnow["fees"] > 0 or cnow["comp_cost"] > 0.0))
     cnow2 = run_episode(ep4l, OracleDecider(ep4l), mode="tact",
                         input_kind="text", delta_policy="learned:v2",
                         stophead=commit_now)
@@ -757,6 +886,97 @@ def selftest():
         json.dumps(cnow2, sort_keys=True)
     ck["lh_frozen_path_no_audit_keys"] = not any(
         "op_windows" in d or "finality" in d for d in fixed["decisions"])
+
+    # -- v2.3: transactional arena + arm-B mechanics + attribution gate ------
+    sb = Sandbox("t_v23")
+    r1 = sb.execute("reserve_hotel", {"city": "杭州", "checkin": "5月3日",
+                                      "nights": 2}, t=0.0)
+    rid1 = r1["result"]["id"]
+    rr = sb.execute("cancel_hotel", {"booking_id": rid1})
+    from rb.scorer import net_calls, comp_cost as _cc
+    ck["v23_reverse_netting"] = (rr["status"] == "success"
+                                 and sb.live_state() == {}
+                                 and sb.fees == 1
+                                 and net_calls(sb.calls, sb.state) == []
+                                 and _cc(sb.state) == 4.0)
+    sb2 = Sandbox("t_v23b")
+    r2b = sb2.execute("transfer_funds", {"from_acct": "checking",
+                                         "to_acct": "savings", "amount": 800},
+                      t=10.0)
+    ca = sb2.state[f"transfer_funds#{r2b['result']['id']}"]["completes_at"]
+    a1 = sb2.abort(r2b["result"]["id"], t=10.1)
+    a2 = sb2.abort(r2b["result"]["id"], t=10.2)
+    r2c = sb2.execute("purchase_ticket", {"hold_id": "HO123456",
+                                          "passenger": "Alex Chen"}, t=0.0)
+    a3 = sb2.abort(r2c["result"]["id"], t=0.01)
+    ck["v23_abort_primitive"] = (ca > 10.0 and a1["status"] == "success"
+                                 and a2["status"] == "error"
+                                 and a3["status"] == "error"
+                                 and _cc(sb2.state) == 0.0)
+    ep7, r7 = run_oracle("A", "L7", 3)          # idx 3 -> travel (COMP terminal)
+    ck["v23_l7_comp_oracle"] = (r7["exact"] and r7["fees"] == 1
+                                and r7["comp_cost"] == 4.0
+                                and ep7["revisions"][0]["gap"] > 3.4)
+    r7b = run_episode(ep7, OracleDecider(ep7), mode="blocking",
+                      input_kind="text")
+    ck["v23_l7_patchless_blocking"] = r7b["exact"] and r7b["fees"] == 0
+    ep12, r12 = run_oracle("A", "L12", 0)
+    step0 = {v.strip("{}") for v in
+             __import__("rb.registry", fromlist=["SCENARIOS"]).SCENARIOS[
+                 ep12["scenario"]]["steps"][0]["args"].values()
+             if isinstance(v, str) and v.startswith("{")}
+    ck["v23_l12_step2_slot"] = r12["exact"] and \
+        ep12["revisions"][0]["slot"] not in step0
+    epb6, rb6 = run_oracle("B", "L6", 1)
+    segs_user = [s for s in rb6["segs"] if s[2] == "user"]
+    ck["v23_b_l6_committed_anchor"] = (
+        len(epb6["events"]) == 2 and len(segs_user) == 3
+        and rb6["exact"]
+        and epb6["events"][1]["text"].count(epb6["revisions"][1]["new"]) > 0)
+    epb11, rb11 = run_oracle("B", "L11", 2)
+    ck["v23_b_l11_tts_barge"] = (rb11["exact"]
+                                 and len([s for s in rb11["segs"]
+                                          if s[2] == "user"]) == 2
+                                 and rb11["armb_timing"]["user_overlaps"] == 0)
+    ck["v23_armb_receipts"] = all(
+        r.get("armb_timing", {}).get("user_overlaps") == 0
+        for r in (rb1, rb6, rb11))
+    from rb.simulator import ReactiveUser as _RU
+    ru = _RU({"id": "x", "lang": "zh", "step_latencies": [0.5, 2.0],
+              "scenario_steps": ["search_trains", "hold_seat"],
+              "events": [{"state": "inflight", "offset": 0.5, "action":
+                          "revise", "role": "user", "voice": "cv01",
+                          "text": "t"}]})
+    no_fire = ru.on_event({"event": "tact_op_applied", "t": 1.0,
+                           "data": {"t_audio": 1.0, "op": {"type": "launch",
+                                                           "fn": "search_trains"}}})
+    fire = ru.on_event({"event": "tact_op_applied", "t": 2.0,
+                        "data": {"t_audio": 2.0, "op": {"type": "launch",
+                                                        "fn": "hold_seat"}}})
+    ck["v23_inflight_anchor_nonread"] = (no_fire == [] and len(fire) == 1
+                                         and fire[0]["at"] == 3.0)
+    from rb.generator import make_episode as _mk, config_hash as _chf
+    _ch = _chf()
+    langs_per_domain = {}
+    for i in range(40):
+        e = _mk("A", "L1", i, _ch)
+        langs_per_domain.setdefault(e["domain"], set()).add(e["lang"])
+    ck["v23_lang_domain_decoupled"] = all(
+        len(v) == 2 for v in langs_per_domain.values())
+    td = tact_core.tact_decider
+    before = "REVISION TARGET BINDING" in td.SYSTEM_PROMPT
+    install_rb_attr()
+    ck["v23_attr_additive"] = (not before) and \
+        "REVISION TARGET BINDING" in td.SYSTEM_PROMPT
+    from rb.audio import perturb_samples, noise_block
+    import array as _arr
+    base = _arr.array("h", [1000] * 1600)
+    p1 = perturb_samples(base, rate=1.06, gain_db=-3.0)
+    p2 = perturb_samples(base, rate=1.06, gain_db=-3.0)
+    nb1 = noise_block("e1", 100, 50.0)
+    nb2 = noise_block("e1", 100, 50.0)
+    ck["v23_perturb_deterministic"] = (p1 == p2 and len(p1) < len(base)
+                                       and list(nb1) == list(nb2))
     for k, v in ck.items():
         print(f"  selftest {k}: {'PASS' if v else 'FAIL'}")
     print("SELFTEST", "PASS" if all(ck.values()) else "FAIL")

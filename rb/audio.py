@@ -122,15 +122,60 @@ def _mix_into(buf, samples, at_s):
         buf[i0 + j] = max(-32768, min(32767, s))
 
 
+# ---------------------------------------------------------------------------
+# v2.3 seeded perturbation family (design §4 promise): rate / gain / scene SNR.
+# Applied POST-synthesis so the TTS cache stays keyed on clean text+voice.
+# ---------------------------------------------------------------------------
+def perturb_samples(samples, rate=1.0, gain_db=0.0):
+    """Speed (linear resample; pitch shifts with it — declared) + gain."""
+    import numpy as np
+    x = np.asarray(samples, dtype=np.float32)
+    if abs(rate - 1.0) > 1e-6 and len(x) > 1:
+        n_out = max(1, int(round(len(x) / rate)))
+        x = np.interp(np.linspace(0, len(x) - 1, n_out),
+                      np.arange(len(x)), x)
+    if abs(gain_db) > 1e-6:
+        x = x * (10.0 ** (gain_db / 20.0))
+    x = np.clip(x, -32768, 32767)
+    return array.array("h", x.astype("int16").tolist())
+
+
+def noise_sigma(first_piece_samples, snr_db):
+    """Scene-noise sigma from the FIRST piece's RMS (known first in both
+    arms — keeps arm-B lazy prefixes consistent) at the target SNR."""
+    import numpy as np
+    if snr_db is None:
+        return 0.0
+    x = np.asarray(first_piece_samples, dtype=np.float32)
+    rms = float(np.sqrt(np.mean(x * x))) if len(x) else 0.0
+    return rms / (10.0 ** (snr_db / 20.0))
+
+
+def noise_block(episode_id, n, sigma):
+    """Deterministic scene noise, reproducible for any prefix length."""
+    import numpy as np
+    if sigma <= 0.0 or n <= 0:
+        return np.zeros(n, dtype=np.float32)
+    seed = int(hashlib.sha256(f"{episode_id}:noise".encode()).hexdigest()[:8], 16)
+    return np.random.default_rng(seed).standard_normal(n).astype(np.float32) * sigma
+
+
 def assemble_episode(episode, backend, out_wav):
     """Render one episode's user-channel wav. Returns the cue table."""
+    import numpy as np
     buf = array.array("h")
     cues = []
     t = 0.0
     seq_end = 0.0
+    pb = episode.get("perturb") or {}
+    rate, gain = pb.get("rate", 1.0), pb.get("gain_db", 0.0)
+    sigma = None
     for p in episode["pieces"]:
         samples, sr = backend.synthesize(p["text"], p["voice"], p["lang"])
         assert sr == SR
+        samples = perturb_samples(samples, rate, gain)
+        if sigma is None:
+            sigma = noise_sigma(samples, pb.get("snr_db"))
         if "at_after_eou" in p:
             at = seq_end + HOLD_S + float(p["at_after_eou"])
             _mix_into(buf, samples, at)
@@ -147,6 +192,10 @@ def assemble_episode(episode, backend, out_wav):
         seq_end = max(seq_end, end)
     # tail room so the engine can reach its final EoU + windows
     buf.extend([0] * int(6.0 * SR))
+    if sigma and sigma > 0.0:
+        x = np.asarray(buf, dtype=np.float32) + \
+            noise_block(episode["id"], len(buf), sigma)
+        buf = array.array("h", np.clip(x, -32768, 32767).astype("int16").tolist())
     out_wav = Path(out_wav)
     out_wav.parent.mkdir(parents=True, exist_ok=True)
     with wave.open(str(out_wav), "wb") as w:

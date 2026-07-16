@@ -1,22 +1,34 @@
 # -*- coding: utf-8 -*-
-"""rb/simulator.py — RB v2 arm-B reactive user (docs/rb_design.md v2 §2).
+"""rb/simulator.py — RB arm-B reactive user (docs/rb_design.md v2 §2;
+v2.3 anchor revision).
 
 The user simulator subscribes to the engine's trace/control event stream and
 fires the episode's event bindings when their lifecycle anchor first occurs:
 
-  anchor   fired on                            offset semantics
-  eou      first confirmed EoU                 seconds after the anchor
-  inflight first tool launch                   FRACTION of that tool's wall
-  committed first commit                       seconds after the anchor
-  tts      first agent audio onset             seconds after the anchor
+  anchor    fired on                              offset semantics
+  eou       first confirmed EoU                   seconds after the anchor
+  inflight  first COMP/IRR launch (v2.3; was:     FRACTION of THAT tool's wall
+            first launch of any kappa — every
+            chain starts with a READ, so nothing
+            ever landed in a transactional
+            execution window)
+  committed first commit                          seconds after the anchor
+  tts       first agent audio onset               seconds after the anchor
 
 All offsets were pre-sampled at build time (episode["events"]) — the
 simulator adds NO randomness, so a run is bit-reproducible given the engine's
 own determinism. Output actions are {"at": t_audio, "piece": {...}}; the
-Phase-2 live driver turns them into injected audio (same synth pipeline as
-arm A). This module is the grammar's executable semantics + its selftest;
-websocket wiring is the Phase-2 integration item."""
+live driver turns them into injected audio (same synth pipeline as arm A).
+This module is the grammar's executable semantics + its selftest."""
 from __future__ import annotations
+
+try:
+    from .registry import TOOLS
+except ImportError:                      # `python rb/simulator.py` selftest path
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    from rb.registry import TOOLS
 
 EVENT_ANCHORS = {
     "eou": ("tact_eou", "eou_confirmed", "vad_hold_expired"),
@@ -24,6 +36,13 @@ EVENT_ANCHORS = {
     "committed": ("op_committed", "act_committed"),
     "tts": ("tts_start", "tts_sent_start", "agent_audio_start"),
 }
+# v2.3: the anchor is the first TRANSACTIONAL launch (any non-READ kappa).
+# The review asked for "first COMP/IRR"; REV is included because REV ops have
+# real execution windows too and three domains' single-step scenarios are
+# REV-terminal (schedule_payment/add_item/save_listing) — a COMP/IRR-only
+# rule would orphan their in-flight events entirely. Deviation documented in
+# rb_design §15.
+INFLIGHT_KAPPAS = ("REV", "COMP", "IRR")
 
 
 def normalize_event(ev):
@@ -41,7 +60,7 @@ def normalize_event(ev):
         if op.get("type") == "launch":
             return ("inflight", float(t), {"fn": op.get("fn")})
         if op.get("type") == "commit":
-            return ("committed", float(t), {})
+            return ("committed", float(t), {"fn": op.get("fn")})
         return None
     for kind, names in EVENT_ANCHORS.items():
         if name in names:
@@ -56,12 +75,27 @@ class ReactiveUser:
         self.fired = []
         self.anchors = {}
 
+    def _wall_of(self, fn):
+        """Wall time of the anchoring tool = the episode's precomputed latency
+        for ITS step (occurrence-keyed in v2.3, so step order is safe)."""
+        scn_steps = self.episode.get("scenario_steps") or []
+        lats = self.episode.get("step_latencies") or []
+        for i, sfn in enumerate(scn_steps):
+            if sfn == fn and i < len(lats):
+                return lats[i]
+        return lats[0] if lats else 1.0
+
     def on_event(self, ev):
         """Feed one engine event; returns newly-scheduled actions."""
         norm = normalize_event(ev)
         if norm is None:
             return []
         kind, t, extra = norm
+        if kind == "inflight":
+            fn = (extra or {}).get("fn")
+            if fn is not None and \
+                    TOOLS.get(fn, {}).get("kappa") not in INFLIGHT_KAPPAS:
+                return []                    # v2.3: anchor = first COMP/IRR
         if kind in self.anchors:
             return []
         self.anchors[kind] = t
@@ -72,7 +106,7 @@ class ReactiveUser:
                 keep.append(e)
                 continue
             if kind == "inflight":
-                wall = (self.episode.get("step_latencies") or [1.0])[0]
+                wall = self._wall_of((extra or {}).get("fn"))
                 at = t + float(e["offset"]) * float(wall)
             else:
                 at = t + float(e["offset"])

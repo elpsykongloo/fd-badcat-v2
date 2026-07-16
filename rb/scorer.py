@@ -33,6 +33,42 @@ SENS = (0.5, 1.0, 2.0)
 COMMIT_MARKERS = {"zh": "已确认：", "en": "Confirmed: "}
 REPAIR_MARKERS = {"zh": "抱歉，刚才说错了：", "en": "Sorry, correction: "}
 
+# FROZEN commitment judge (v2.3): lets the commitment-repair track score
+# FREE-TEXT systems (external SUTs speak without our FC markers). One frozen
+# prompt + strict JSON; parse failure -> None verdict (marker mode already
+# ran). Changing this prompt = scorer version bump, same as the markers.
+COMMIT_JUDGE_PROMPT = (
+    "You will read ONE utterance an assistant spoke during a task call. "
+    "Classify it:\n"
+    "- commit: the assistant ASSERTS a task fact or outcome as settled "
+    "(booked/paid/set to VALUE, 'done', a definite confirmation of a "
+    "parameter value). Questions, fillers, progress reports, and intentions "
+    "('I will...') are NOT commits.\n"
+    "- repair: the assistant retracts or corrects an earlier assertion.\n"
+    "Reply with EXACTLY one JSON object, no prose: "
+    '{"commit": true|false, "repair": true|false, "claim": "<the asserted '
+    'value/fact verbatim, or empty>"}\n'
+    "Utterance ({lang}): {text}")
+
+
+def make_llm_judge(llm_call):
+    """Adapt a raw text-completion callable into the extract_commitments
+    llm_judge interface. llm_call(prompt_str) -> str. Deterministic given a
+    deterministic backend (T=0 / cached)."""
+    def judge(text, lang):
+        raw = llm_call(COMMIT_JUDGE_PROMPT.format(lang=lang, text=text))
+        try:
+            m = re.search(r"\{.*\}", raw or "", re.S)
+            j = json.loads(m.group(0)) if m else None
+            if isinstance(j, dict):
+                return {"commit": bool(j.get("commit")),
+                        "repair": bool(j.get("repair")),
+                        "claim": str(j.get("claim", ""))}
+        except Exception:
+            pass
+        return None
+    return judge
+
 
 def net_calls(calls, state):
     """Calls whose effect survives (not compensated away)."""
@@ -50,12 +86,15 @@ def _norm(v):
     return re.sub(r"[\s\.\,\-—，。、]+", "", s)
 
 
+SANDBOX_META_KEYS = ("void", "fee", "completes_at", "aborted_at")
+
+
 def score_state(live_state, gold_state, normalized=False):
     def strip(d):
         out = {}
         for k, v in d.items():
             args = {a: (_norm(x) if normalized else x) for a, x in v.items()
-                    if a not in ("void", "fee")}
+                    if a not in SANDBOX_META_KEYS}
             key = k.split("#")[0]              # ids are sandbox-minted: compare by fn
             out.setdefault(key, []).append(json.dumps(args, sort_keys=True,
                                                       ensure_ascii=False))
@@ -111,10 +150,13 @@ def commitment_repair(say_events, lang, gold_values, superseded_values,
 
 
 def comp_cost(state):
-    """Sum C_kappa over compensated entries (the fee side of the ledger)."""
+    """Sum C_kappa over COMPENSATED entries (the fee side of the ledger).
+    Aborted-while-executing entries (v2.3 `aborted_at`) are free — the def2
+    cost of an abort is the lost wall time, priced by gamma**done, not a
+    fee."""
     tot = 0.0
     for k, v in state.items():
-        if v.get("void"):
+        if v.get("void") and "aborted_at" not in v:
             fn = k.split("#")[0]
             tot += C_KAPPA.get(TOOLS.get(fn, {}).get("kappa", "IRR"), 8.0)
     return tot
