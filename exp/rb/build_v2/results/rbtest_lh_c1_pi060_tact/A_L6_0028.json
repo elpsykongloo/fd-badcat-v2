@@ -1,0 +1,128 @@
+{
+ "id": "A_L6_0028",
+ "layer": "L6",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 2.414,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 5,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 7.7,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "place_order",
+     "op_id": 4
+    }
+   ],
+   "say": "I'm on it.",
+   "op_windows": {
+    "2": 0.0,
+    "3": 0.0,
+    "4": 1.5
+   },
+   "finality": "final"
+  },
+  {
+   "i": 1,
+   "t_eou": 10.522,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 4,
+     "diff": {
+      "address": "浦东新区世纪大道8号"
+     }
+    },
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 5
+    }
+   ],
+   "say": "I'm on it.",
+   "op_windows": {
+    "4": 1.5,
+    "5": 1.5
+   },
+   "finality": "unfinished"
+  },
+  {
+   "i": 2,
+   "t_eou": 15.08,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 6
+    }
+   ],
+   "say": "I'm on it.",
+   "op_windows": {
+    "6": 0.0
+   },
+   "finality": "unfinished"
+  }
+ ],
+ "say_events": [
+  [
+   8.7,
+   "I'm on it."
+  ],
+  [
+   11.522,
+   "I'm on it."
+  ],
+  [
+   16.08,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   7.06,
+   "user"
+  ],
+  [
+   7.802,
+   9.882,
+   "user"
+  ],
+  [
+   12.6,
+   14.44,
+   "user"
+  ]
+ ]
+}

@@ -1,0 +1,114 @@
+{
+ "id": "A_L6_0013",
+ "layer": "L6",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 5.382,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 4,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 12.26,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it.",
+   "op_windows": {
+    "2": 0.0
+   },
+   "finality": "final"
+  },
+  {
+   "i": 1,
+   "t_eou": 15.962,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 4
+    }
+   ],
+   "say": "I'm on it.",
+   "op_windows": {
+    "3": 1.5,
+    "4": 1.5
+   },
+   "finality": "hesitant"
+  },
+  {
+   "i": 2,
+   "t_eou": 21.484,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 5
+    }
+   ],
+   "say": "Updating the transfer to 3,000 and sending it to savings now.",
+   "op_windows": {
+    "5": 1.5
+   },
+   "finality": "unfinished"
+  }
+ ],
+ "say_events": [
+  [
+   13.26,
+   "I'm on it."
+  ],
+  [
+   16.962,
+   "I'm on it."
+  ],
+  [
+   22.484,
+   "Updating the transfer to 3,000 and sending it to savings now."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   11.62,
+   "user"
+  ],
+  [
+   12.842,
+   15.322,
+   "user"
+  ],
+  [
+   18.124,
+   20.844,
+   "user"
+  ]
+ ]
+}

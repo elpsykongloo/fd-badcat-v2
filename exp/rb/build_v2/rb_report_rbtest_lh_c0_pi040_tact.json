@@ -1,0 +1,113 @@
+{
+  "n": 541,
+  "exact": 0.1941,
+  "state_verbatim": 0.1941,
+  "state_normalized": 0.2107,
+  "U_mean": 0.1495,
+  "wrong_commits": 0,
+  "unrepaired": 0,
+  "first_p50": 1.64,
+  "done_p50": 2.75,
+  "by_layer": {
+    "L1": {
+      "n": 45,
+      "exact": 0.5111,
+      "U": 0.4305
+    },
+    "L10": {
+      "n": 40,
+      "exact": 0.05,
+      "U": 0.0352
+    },
+    "L2": {
+      "n": 41,
+      "exact": 0.2927,
+      "U": 0.2494
+    },
+    "L3": {
+      "n": 59,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L4": {
+      "n": 64,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L5": {
+      "n": 82,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L6": {
+      "n": 44,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L7": {
+      "n": 44,
+      "exact": 0.1818,
+      "U": 0.1555
+    },
+    "L8": {
+      "n": 57,
+      "exact": 0.1053,
+      "U": 0.0875
+    },
+    "L9": {
+      "n": 65,
+      "exact": 0.8308,
+      "U": 0.5849
+    }
+  },
+  "provider": "rbtest_lh_c0_pi040_tact",
+  "config": {
+    "arm": "A",
+    "system": "tact",
+    "delta": 1.5,
+    "commit_barrier": "on",
+    "input": "audio",
+    "decider": "llm",
+    "floor_commit_tiers": null,
+    "split": "test",
+    "infer_nominal": 1.0,
+    "dag": "on",
+    "delta_policy": "learned:v2",
+    "stophead_model": "exp/w4v3/stophead_v3c_pi040.json",
+    "stophead": {
+      "version": "stophead_v2_lr",
+      "policy": "twostage",
+      "theta": 0.135935,
+      "w_protect": 1.5,
+      "risk_horizon": 2.5,
+      "feats": [
+        "t",
+        "eou_idx",
+        "utt_dur",
+        "slots_missing",
+        "f_final",
+        "f_hesitant",
+        "f_unfinished"
+      ],
+      "armc": {
+        "pi": 0.04,
+        "q_h": [
+          731,
+          748
+        ],
+        "m_train": [
+          3307,
+          19288
+        ],
+        "theta_base": 0.03,
+        "formula": "sigmoid(logit(theta)-logit(pi*q_H)+logit(m_train))",
+        "source": "docs/w4v3_design.md \u00a710.2"
+      }
+    }
+  },
+  "learned_windows": {
+    "ops": 1024,
+    "protected": 240,
+    "protect_rate": 0.2344
+  }
+}

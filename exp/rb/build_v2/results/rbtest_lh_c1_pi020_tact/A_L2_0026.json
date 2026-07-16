@@ -1,0 +1,63 @@
+{
+ "id": "A_L2_0026",
+ "layer": "L2",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 2.044,
+ "U": 0.9005,
+ "U_sens": {
+  "0.5": 0.9005,
+  "1.0": 0.9005,
+  "2.0": 0.9005
+ },
+ "first_response_s": 1.64,
+ "n_eou": 1,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 1,
+   "t_eou": 10.997,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "save_listing",
+     "op_id": 2
+    }
+   ],
+   "say": "好的，已收藏房源编号 LST12。",
+   "op_windows": {
+    "2": 0.0
+   },
+   "finality": "final"
+  }
+ ],
+ "say_events": [
+  [
+   11.997,
+   "好的，已收藏房源编号 LST12。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.14,
+   "user"
+  ],
+  [
+   5.397,
+   10.357,
+   "user"
+  ]
+ ]
+}

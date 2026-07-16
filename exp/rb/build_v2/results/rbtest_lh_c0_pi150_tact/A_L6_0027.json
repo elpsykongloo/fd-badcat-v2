@@ -1,0 +1,104 @@
+{
+ "id": "A_L6_0027",
+ "layer": "L6",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 0.0,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 0.0,
+ "n_eou": 3,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 8.02,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it.",
+   "op_windows": {
+    "2": 1.5
+   },
+   "finality": "final"
+  },
+  {
+   "i": 1,
+   "t_eou": 11.068,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "destination": "Atlanta"
+     }
+    },
+    {
+     "type": "launch",
+     "fn": "hold_seat",
+     "op_id": 3
+    }
+   ],
+   "say": "Updating that to Atlanta and holding a coach seat now.",
+   "op_windows": {
+    "2": 0.0,
+    "3": 0.0
+   },
+   "finality": "final"
+  },
+  {
+   "i": 2,
+   "t_eou": 17.342,
+   "ops": [],
+   "say": "",
+   "op_windows": {},
+   "finality": "final"
+  }
+ ],
+ "say_events": [
+  [
+   9.02,
+   "I'm on it."
+  ],
+  [
+   12.068,
+   "Updating that to Atlanta and holding a coach seat now."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   7.38,
+   "user"
+  ],
+  [
+   8.268,
+   10.428,
+   "user"
+  ],
+  [
+   13.262,
+   16.702,
+   "user"
+  ]
+ ]
+}

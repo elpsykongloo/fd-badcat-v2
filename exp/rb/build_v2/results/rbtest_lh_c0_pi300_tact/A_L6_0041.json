@@ -1,0 +1,122 @@
+{
+ "id": "A_L6_0041",
+ "layer": "L6",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 5.707,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 5.707,
+ "n_eou": 3,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 12.26,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it.",
+   "op_windows": {
+    "2": 1.5
+   },
+   "finality": "final"
+  },
+  {
+   "i": 1,
+   "t_eou": 15.229,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "amount": 800
+     }
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it.",
+   "op_windows": {
+    "2": 1.5,
+    "3": 1.5
+   },
+   "finality": "hesitant"
+  },
+  {
+   "i": 2,
+   "t_eou": 20.429,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "amount": 800
+     }
+    },
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "_note_for_user_only_do_not_execute_this_part_of_the_request_until_after_get_fx_quote_completes_and_returns_a_value_for_to_cur_which_is_the_currency_code_of_the_destination_account__this_is_a_placeholder__do_not_use_it_as_an_actual_account_name_or_transfer_target_in_real_life": ""
+     }
+    }
+   ],
+   "say": "",
+   "op_windows": {
+    "2": 1.5,
+    "3": 1.5
+   },
+   "finality": "unfinished"
+  }
+ ],
+ "say_events": [
+  [
+   13.26,
+   "I'm on it."
+  ],
+  [
+   16.229,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   11.62,
+   "user"
+  ],
+  [
+   12.429,
+   14.589,
+   "user"
+  ],
+  [
+   17.069,
+   19.789,
+   "user"
+  ]
+ ]
+}

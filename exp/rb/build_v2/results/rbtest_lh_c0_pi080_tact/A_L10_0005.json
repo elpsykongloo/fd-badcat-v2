@@ -1,0 +1,81 @@
+{
+ "id": "A_L10_0005",
+ "layer": "L10",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 1.623,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.74,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it.",
+   "op_windows": {
+    "2": 0.0,
+    "3": 0.0
+   },
+   "finality": "final"
+  },
+  {
+   "i": 1,
+   "t_eou": 8.626,
+   "ops": [],
+   "say": "Updating the transfer to your rent account.",
+   "op_windows": {},
+   "finality": "unfinished"
+  }
+ ],
+ "say_events": [
+  [
+   7.74,
+   "I'm on it."
+  ],
+  [
+   9.626,
+   "Updating the transfer to your rent account."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.1,
+   "user"
+  ],
+  [
+   6.786,
+   7.986,
+   "user"
+  ]
+ ]
+}

@@ -1,0 +1,97 @@
+{
+ "id": "A_L5_0079",
+ "layer": "L5",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.197,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 7.94,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it.",
+   "op_windows": {
+    "2": 1.5
+   },
+   "finality": "final"
+  },
+  {
+   "i": 1,
+   "t_eou": 11.383,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "origin": "Portland"
+     }
+    },
+    {
+     "type": "launch",
+     "fn": "hold_seat",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "purchase_ticket",
+     "op_id": 4
+    }
+   ],
+   "say": "I'm on it.",
+   "op_windows": {
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0
+   },
+   "finality": "final"
+  }
+ ],
+ "say_events": [
+  [
+   8.94,
+   "I'm on it."
+  ],
+  [
+   12.383,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   7.3,
+   "user"
+  ],
+  [
+   8.743,
+   10.743,
+   "user"
+  ]
+ ]
+}

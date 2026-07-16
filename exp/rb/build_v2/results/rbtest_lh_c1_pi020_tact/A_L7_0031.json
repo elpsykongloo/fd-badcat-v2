@@ -1,0 +1,83 @@
+{
+ "id": "A_L7_0031",
+ "layer": "L7",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 1.967,
+ "U": 0.904,
+ "U_sens": {
+  "0.5": 0.904,
+  "1.0": 0.904,
+  "2.0": 0.904
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 8.74,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it.",
+   "op_windows": {
+    "2": 0.0
+   },
+   "finality": "final"
+  },
+  {
+   "i": 1,
+   "t_eou": 12.275,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "check_visa_rule",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it.",
+   "op_windows": {
+    "3": 0.0
+   },
+   "finality": "unfinished"
+  }
+ ],
+ "say_events": [
+  [
+   9.74,
+   "I'm on it."
+  ],
+  [
+   13.275,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   8.1,
+   "user"
+  ],
+  [
+   9.955,
+   11.635,
+   "user"
+  ]
+ ]
+}

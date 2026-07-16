@@ -1,0 +1,91 @@
+{
+ "id": "A_L7_0045",
+ "layer": "L7",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 2.053,
+ "U": 0.9,
+ "U_sens": {
+  "0.5": 0.9,
+  "1.0": 0.9,
+  "2.0": 0.9
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 5.14,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_balance",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "set_alert",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it.",
+   "op_windows": {
+    "2": 1.5,
+    "3": 1.5
+   },
+   "finality": "final"
+  },
+  {
+   "i": 1,
+   "t_eou": 10.284,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "threshold": 500
+     }
+    }
+   ],
+   "say": "Updating the alert threshold to 500.",
+   "op_windows": {
+    "3": 0.0
+   },
+   "finality": "final"
+  }
+ ],
+ "say_events": [
+  [
+   6.14,
+   "I'm on it."
+  ],
+  [
+   11.284,
+   "Updating the alert threshold to 500."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   4.5,
+   "user"
+  ],
+  [
+   6.924,
+   9.644,
+   "user"
+  ]
+ ]
+}

@@ -1,0 +1,89 @@
+{
+ "id": "A_L5_0025",
+ "layer": "L5",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.973,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 7.78,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it.",
+   "op_windows": {
+    "2": 1.5
+   },
+   "finality": "final"
+  },
+  {
+   "i": 1,
+   "t_eou": 12.875,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 4
+    }
+   ],
+   "say": "Updating the amount to 3,000 and processing both requests now.",
+   "op_windows": {
+    "3": 1.5,
+    "4": 1.5
+   },
+   "finality": "final"
+  }
+ ],
+ "say_events": [
+  [
+   8.78,
+   "I'm on it."
+  ],
+  [
+   13.875,
+   "Updating the amount to 3,000 and processing both requests now."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   7.14,
+   "user"
+  ],
+  [
+   9.835,
+   12.235,
+   "user"
+  ]
+ ]
+}

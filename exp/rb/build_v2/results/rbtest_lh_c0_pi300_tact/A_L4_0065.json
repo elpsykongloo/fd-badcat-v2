@@ -1,0 +1,91 @@
+{
+ "id": "A_L4_0065",
+ "layer": "L4",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 4.299,
+ "U": 0.8021,
+ "U_sens": {
+  "0.5": 0.8021,
+  "1.0": 0.8021,
+  "2.0": 0.8021
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 7.62,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it.",
+   "op_windows": {
+    "2": 1.5
+   },
+   "finality": "final"
+  },
+  {
+   "i": 1,
+   "t_eou": 11.102,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "to_cur": "EUR"
+     }
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it.",
+   "op_windows": {
+    "2": 1.5,
+    "3": 1.5
+   },
+   "finality": "final"
+  }
+ ],
+ "say_events": [
+  [
+   8.62,
+   "I'm on it."
+  ],
+  [
+   12.102,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.98,
+   "user"
+  ],
+  [
+   7.662,
+   10.462,
+   "user"
+  ]
+ ]
+}

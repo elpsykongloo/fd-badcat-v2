@@ -1,0 +1,93 @@
+{
+ "id": "A_L10_0016",
+ "layer": "L10",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 9.184,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 13.22,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it.",
+   "op_windows": {
+    "2": 0.0
+   },
+   "finality": "final"
+  },
+  {
+   "i": 1,
+   "t_eou": 20.019,
+   "ops": [
+    {
+     "type": "launch_dedup",
+     "fn": "search_catalog"
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "place_order",
+     "op_id": 4
+    }
+   ],
+   "say": "正在为您添加蓝牙耳机并下单。",
+   "op_windows": {
+    "3": 0.0,
+    "4": 0.0
+   },
+   "finality": "final"
+  }
+ ],
+ "say_events": [
+  [
+   14.22,
+   "I'm on it."
+  ],
+  [
+   21.019,
+   "正在为您添加蓝牙耳机并下单。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   12.58,
+   "user"
+  ],
+  [
+   15.299,
+   19.379,
+   "bystander"
+  ]
+ ]
+}

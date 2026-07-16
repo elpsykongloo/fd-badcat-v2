@@ -1,0 +1,105 @@
+{
+ "id": "A_L6_0012",
+ "layer": "L6",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 0.0,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.66,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it.",
+   "op_windows": {
+    "2": 0.0
+   },
+   "finality": "final"
+  },
+  {
+   "i": 1,
+   "t_eou": 9.054,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it.",
+   "op_windows": {
+    "3": 0.0
+   },
+   "finality": "unfinished"
+  },
+  {
+   "i": 2,
+   "t_eou": 15.137,
+   "ops": [
+    {
+     "type": "launch_dedup",
+     "fn": "search_catalog"
+    }
+   ],
+   "say": "正在为您搜索跑步鞋并添加两件到购物车。",
+   "op_windows": {},
+   "finality": "final"
+  }
+ ],
+ "say_events": [
+  [
+   7.66,
+   "I'm on it."
+  ],
+  [
+   10.054,
+   "I'm on it."
+  ],
+  [
+   16.137,
+   "正在为您搜索跑步鞋并添加两件到购物车。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.02,
+   "user"
+  ],
+  [
+   6.734,
+   8.414,
+   "user"
+  ],
+  [
+   11.057,
+   14.497,
+   "user"
+  ]
+ ]
+}

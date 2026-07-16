@@ -1,0 +1,1637 @@
+{
+  "schema": "rb_test_receipt_batch2.v1",
+  "status": "complete",
+  "generated_at_utc": "2026-07-16T10:44:34.559Z",
+  "single_shot_window_utc": {
+    "first_provider_start": "2026-07-16T10:27:22Z",
+    "last_provider_end": "2026-07-16T10:38:27.037668Z"
+  },
+  "protocol": {
+    "path": "docs/rb_test_protocol.md",
+    "section": "§6",
+    "sha256": "0677e9de062d621d264702b897805be2432b3ae0ffb49874d8ab1aec0f218f46",
+    "source_commit": "3e07ea216b06c715a78bfeeabd95f8ccdaeb12e2",
+    "planned_providers": 17,
+    "completed_providers": 17,
+    "provider_reruns": 0,
+    "prefix_truncation": false,
+    "test_observations_before_protocol_freeze": 0
+  },
+  "code": {
+    "source_head_at_run": "3e07ea216b06c715a78bfeeabd95f8ccdaeb12e2",
+    "runner_version": "1.1",
+    "scripts/rb_run.py": "455c6a58b7e036ef68817a8335dbfa823699f5388c8e498876d0b00f17852d9b",
+    "rb/learned.py": "11b68604cae607d9d28720fb4120878e4abf80041808cf797fdb55bdbdbca736",
+    "selftest": {
+      "passed": 21,
+      "total": 21
+    }
+  },
+  "build": {
+    "path": "exp/rb/build_v2",
+    "version": "rb_v2.2.1",
+    "config_hash": "265c7cd8f485",
+    "manifest_sha256": "1793cd10529dc14ad4f92ea3c27c62066727c96eefc43420f033f4b60159e94f",
+    "ids_hash": "f70727a59d9f",
+    "content_hash": "216b79de9cee",
+    "n_total": 1000,
+    "n_dev": 103,
+    "n_test": 897,
+    "n_test_arm_a": 541,
+    "n_test_arm_b": 356,
+    "audio": "qwen",
+    "pause_prior": true
+  },
+  "scorer_freeze": {
+    "version": 3,
+    "receipt_path": "exp/rb/scorer_freeze.json",
+    "receipt_sha256": "311e74a68d321e964c4af9834db3a2ccfe91e84911a3dd66d8c8a8fbd1c28d43",
+    "verified_before_every_test_provider": true,
+    "hashes": {
+      "rb/scorer.py": "34d50c4ab0326f65e8824fbd955732ef9c56d29dfa57f8e97c0915778fc2b41c",
+      "rb/sandbox.py": "833968903e8325154da2196fa65c3e1b52d8afe9a8428f0706eb8ae129a631c5",
+      "rb/registry.py": "419f4db041d94f9fba0db750893b19293ce1343685c3bf7a9a24226f3e58e9bd"
+    }
+  },
+  "fixed_reference": {
+    "provider": "rbtest_tact_d150",
+    "exact": 0.2662,
+    "report": {
+      "path": "exp/rb/build_v2/rb_report_rbtest_tact_d150.json",
+      "sha256": "53f1a25eb96095e9d4719cf16f328b9a915498b81ec56830bbdd40591060e631"
+    },
+    "decision_cache": {
+      "path": "exp/rb/build_v2/decision_cache_rbtest_tact_d150.json",
+      "sha256": "2b1f7aa39dad075b44f8b8e4fcd8bd803136934c0b77ade5f1aa7cbeba959094"
+    },
+    "results_dir_sha256": "035558cc9c7eb76f1d951195d262f930dcea9b316aad168421401f25a51e4a85"
+  },
+  "inference_service": {
+    "kind": "local_qwen3_omni_audio",
+    "model": "Qwen3-Omni-30B-A3B-Instruct",
+    "vllm_url": "http://127.0.0.1:10003",
+    "proxy_url": "http://127.0.0.1:10004",
+    "launcher": "setup/start_qwen3omni_audio.sh",
+    "launcher_sha256": "87f6edf98a5f2b1428d2c8553d6ba5479f667b8f4b7a5814c1e922f153cf7e19",
+    "proxy_launcher_sha256": "ae4bc2c74518e5eb074fcfde4d2572cd33847d2fad3f3a072e15d146cb619f5d",
+    "deploy_config": "configs/qwen3_omni_audio_single_gpu.yaml",
+    "deploy_config_sha256": "338fc9035be05fd59a5a05fc4823189490f1233068f6a197dc326b999b39734f",
+    "max_num_seqs": 1,
+    "formal_live_decision_cache_misses": 427,
+    "formal_live_finality_cache_misses": 934,
+    "formal_live_http_requests": 1361,
+    "formal_live_http_non_200": 0,
+    "same_processes_for_all_providers": true,
+    "stopped_before_offline_replay": true,
+    "ports_closed_after_run": true,
+    "gpu_released_after_run": true
+  },
+  "shared_finality_cache": {
+    "path": "exp/rb/build_v2/finality_cache_rb_a.json",
+    "entries": 934,
+    "sha256": "0a87d5b33cc7a483c8a5c1a413338c2c680d857d1c61c5256d7b77553907e95f",
+    "first_provider": {
+      "hits": 106,
+      "misses": 934
+    },
+    "each_subsequent_provider": {
+      "hits": 1040,
+      "misses": 0
+    }
+  },
+  "models": [
+    {
+      "path": "exp/w4/stophead_v2.json",
+      "sha256": "7e0981324edd90a50b6c3876064e30c234bdd75d30e6d83e6ac2d18df093a27f"
+    },
+    {
+      "path": "exp/w4v3/stophead_v3c_pi020.json",
+      "sha256": "fd67ff18fb98c28d4e8b63f011a0e1ed1b1a0840d0a449f27a65bee7b051442a"
+    },
+    {
+      "path": "exp/w4v3/stophead_v3c_pi040.json",
+      "sha256": "315cfd3e7e1c49f8589f59cc8afeea6da4e3a79989ba680ac1150241cb2cf59e"
+    },
+    {
+      "path": "exp/w4v3/stophead_v3c_pi060.json",
+      "sha256": "c925425add72e6ad4c8b51dc869ae369ca75c73ea8347e01d4bc4a6376d38a28"
+    },
+    {
+      "path": "exp/w4v3/stophead_v3c_pi080.json",
+      "sha256": "0e346a2ae39d1cdee498ba03e79f032bd1043934114464308d2533972d0e629b"
+    },
+    {
+      "path": "exp/w4v3/stophead_v3c_pi100.json",
+      "sha256": "7edfb3e533cad804c3cb9045be84b8ba55ba15edbd8ca2f3bb67c822c4eebf63"
+    },
+    {
+      "path": "exp/w4v3/stophead_v3c_pi150.json",
+      "sha256": "af7291a30167a85553050aac3849b819107e64bce4ee04e1912ad02061de6335"
+    },
+    {
+      "path": "exp/w4v3/stophead_v3c_pi200.json",
+      "sha256": "b3a3676e9c7c5e34c0ee04ad69a219e979da1db2cc8ae979ba2084f5b2f17522"
+    },
+    {
+      "path": "exp/w4v3/stophead_v3c_pi300.json",
+      "sha256": "fdf35956b70c71c684098623b41f5e3288bff14562b49eabccb01a9e14c31e82"
+    },
+    {
+      "path": "exp/w4v3/stophead_v3c1_pi020.json",
+      "sha256": "c5f696e6989622aa027ae15702bbce1847127832a15ecc146889f033a41ecbd4"
+    },
+    {
+      "path": "exp/w4v3/stophead_v3c1_pi040.json",
+      "sha256": "9500111c25a3400ea518bb9e30cbe4dbbad0e2ae1337a3d3966e2b4f7d35ba7e"
+    },
+    {
+      "path": "exp/w4v3/stophead_v3c1_pi060.json",
+      "sha256": "ff97a108bb1f6049c50a7d568ca94fec3af278b5747b2747e0f1087f4eeb6d7c"
+    },
+    {
+      "path": "exp/w4v3/stophead_v3c1_pi080.json",
+      "sha256": "2b4b6b4b3537938481e3cebce0bf45f4e0c223c4ef462eb4eb2cb8531182202d"
+    },
+    {
+      "path": "exp/w4v3/stophead_v3c1_pi100.json",
+      "sha256": "25bf29ba61967193c9f86e21806357aa3faade1fb26d56b2f2073481a7ee4be2"
+    },
+    {
+      "path": "exp/w4v3/stophead_v3c1_pi150.json",
+      "sha256": "268b3a234b0028e98cee411c36ddd781ee1361f11050628d22bf765975d3abdc"
+    },
+    {
+      "path": "exp/w4v3/stophead_v3c1_pi200.json",
+      "sha256": "2f9cbb42657760814488d1105a84fc497c9f4b7452c720250f1f49e1a27328c6"
+    },
+    {
+      "path": "exp/w4v3/stophead_v3c1_pi300.json",
+      "sha256": "209a9f6ec98dbcdb024686a86243e35c59e2f3f8073e4ec37eabf7f336be157f"
+    }
+  ],
+  "cache_seed_provenance": {
+    "rule": "first provider copied from batch-1 fixed main cache; every later provider copied from the immediately preceding provider cache before its single formal run",
+    "first_seed_source": "exp/rb/build_v2/decision_cache_rbtest_tact_d150.json",
+    "first_seed_sha256": "2b1f7aa39dad075b44f8b8e4fcd8bd803136934c0b77ade5f1aa7cbeba959094"
+  },
+  "providers": [
+    {
+      "ordinal": 1,
+      "provider": "rbtest_lh_v2_tact",
+      "family": "v2",
+      "pi": null,
+      "started_utc": "2026-07-16T10:27:22Z",
+      "ended_utc": "2026-07-16T10:29:52.485323Z",
+      "args": "--build exp/rb/build_v2 --split test --arm A --system tact --delta 1.5 --decider llm --input audio --delta-policy learned:v2",
+      "stophead_model": {
+        "path": "exp/w4/stophead_v2.json",
+        "sha256": "7e0981324edd90a50b6c3876064e30c234bdd75d30e6d83e6ac2d18df093a27f",
+        "theta": 0.03
+      },
+      "cache_seeded_from": "rbtest_tact_d150",
+      "first_run_decision_cache": {
+        "hits": 1404,
+        "misses": 0,
+        "entries": 1290
+      },
+      "first_run_finality_cache": {
+        "hits": 106,
+        "misses": 934,
+        "entries_after": 934
+      },
+      "offline_replay": {
+        "decision_hits": 1404,
+        "decision_misses": 0,
+        "finality_hits": 1040,
+        "finality_misses": 0
+      },
+      "metrics": {
+        "n": 541,
+        "exact": 0.2662,
+        "state_normalized": 0.2828,
+        "U": 0.1998,
+        "first_p50": 1.64,
+        "done_p50": 3.874,
+        "learned_windows": {
+          "ops": 1157,
+          "protected": 1150,
+          "protect_rate": 0.9939
+        },
+        "by_layer_exact": {
+          "L1": 0.5111,
+          "L10": 0.1,
+          "L2": 0.2927,
+          "L3": 0.1525,
+          "L4": 0.0938,
+          "L5": 0.0122,
+          "L6": 0.0227,
+          "L7": 0.3864,
+          "L8": 0.2982,
+          "L9": 0.8308
+        }
+      },
+      "paired_vs_fixed_d150": {
+        "learned_only": 0,
+        "fixed_only": 0,
+        "same_pass": 144,
+        "same_fail": 397,
+        "discordant": 0,
+        "p_two_sided": 1
+      },
+      "report": {
+        "path": "exp/rb/build_v2/rb_report_rbtest_lh_v2_tact.json",
+        "sha256": "f1d3f03caf11a50de68e84a230bebb0c1b8433c1ec23175d124f3147e79ce5bc"
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v2/decision_cache_rbtest_lh_v2_tact.json",
+        "sha256": "2b1f7aa39dad075b44f8b8e4fcd8bd803136934c0b77ade5f1aa7cbeba959094"
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v2/results/rbtest_lh_v2_tact",
+        "files": 541,
+        "sha256": "30e99d60c1c9b50ca27e7d0edab7826aa5adb9e8e6204e78a7c58b0cf25889d9"
+      }
+    },
+    {
+      "ordinal": 2,
+      "provider": "rbtest_lh_c0_pi020_tact",
+      "family": "C0",
+      "pi": 0.02,
+      "started_utc": "2026-07-16T10:30:17Z",
+      "ended_utc": "2026-07-16T10:36:22.240328Z",
+      "args": "--build exp/rb/build_v2 --split test --arm A --system tact --delta 1.5 --decider llm --input audio --delta-policy learned:v2",
+      "stophead_model": {
+        "path": "exp/w4v3/stophead_v3c_pi020.json",
+        "sha256": "fd67ff18fb98c28d4e8b63f011a0e1ed1b1a0840d0a449f27a65bee7b051442a",
+        "theta": 0.243022
+      },
+      "cache_seeded_from": "rbtest_lh_v2_tact",
+      "first_run_decision_cache": {
+        "hits": 989,
+        "misses": 400,
+        "entries": 1690
+      },
+      "first_run_finality_cache": {
+        "hits": 1040,
+        "misses": 0,
+        "entries_after": 934
+      },
+      "offline_replay": {
+        "decision_hits": 1389,
+        "decision_misses": 0,
+        "finality_hits": 1040,
+        "finality_misses": 0
+      },
+      "metrics": {
+        "n": 541,
+        "exact": 0.1922,
+        "state_normalized": 0.2089,
+        "U": 0.1493,
+        "first_p50": 1.64,
+        "done_p50": 2.273,
+        "learned_windows": {
+          "ops": 1006,
+          "protected": 106,
+          "protect_rate": 0.1054
+        },
+        "by_layer_exact": {
+          "L1": 0.5111,
+          "L10": 0.05,
+          "L2": 0.2927,
+          "L3": 0,
+          "L4": 0,
+          "L5": 0,
+          "L6": 0,
+          "L7": 0.1591,
+          "L8": 0.1053,
+          "L9": 0.8308
+        }
+      },
+      "paired_vs_fixed_d150": {
+        "learned_only": 6,
+        "fixed_only": 46,
+        "same_pass": 98,
+        "same_fail": 391,
+        "discordant": 52,
+        "p_two_sided": 1.0325821975243343e-8
+      },
+      "report": {
+        "path": "exp/rb/build_v2/rb_report_rbtest_lh_c0_pi020_tact.json",
+        "sha256": "af97c72a6fe2f03bf1178f6e1c5c289e0b32636ccd64bcbaf70b6a6866615a93"
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v2/decision_cache_rbtest_lh_c0_pi020_tact.json",
+        "sha256": "5b431f4bc3ace2e8559718ee189ca97459abfcc0e713c45f32838c538f45b775"
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v2/results/rbtest_lh_c0_pi020_tact",
+        "files": 541,
+        "sha256": "18ba9b7ba0c7587ff8ef93502d5a852fd297eb6ed807e70c1b6519491dcca354"
+      }
+    },
+    {
+      "ordinal": 3,
+      "provider": "rbtest_lh_c0_pi040_tact",
+      "family": "C0",
+      "pi": 0.04,
+      "started_utc": "2026-07-16T10:36:22Z",
+      "ended_utc": "2026-07-16T10:36:50.056540Z",
+      "args": "--build exp/rb/build_v2 --split test --arm A --system tact --delta 1.5 --decider llm --input audio --delta-policy learned:v2",
+      "stophead_model": {
+        "path": "exp/w4v3/stophead_v3c_pi040.json",
+        "sha256": "315cfd3e7e1c49f8589f59cc8afeea6da4e3a79989ba680ac1150241cb2cf59e",
+        "theta": 0.135935
+      },
+      "cache_seeded_from": "rbtest_lh_c0_pi020_tact",
+      "first_run_decision_cache": {
+        "hits": 1363,
+        "misses": 24,
+        "entries": 1714
+      },
+      "first_run_finality_cache": {
+        "hits": 1040,
+        "misses": 0,
+        "entries_after": 934
+      },
+      "offline_replay": {
+        "decision_hits": 1387,
+        "decision_misses": 0,
+        "finality_hits": 1040,
+        "finality_misses": 0
+      },
+      "metrics": {
+        "n": 541,
+        "exact": 0.1941,
+        "state_normalized": 0.2107,
+        "U": 0.1495,
+        "first_p50": 1.64,
+        "done_p50": 2.75,
+        "learned_windows": {
+          "ops": 1024,
+          "protected": 240,
+          "protect_rate": 0.2344
+        },
+        "by_layer_exact": {
+          "L1": 0.5111,
+          "L10": 0.05,
+          "L2": 0.2927,
+          "L3": 0,
+          "L4": 0,
+          "L5": 0,
+          "L6": 0,
+          "L7": 0.1818,
+          "L8": 0.1053,
+          "L9": 0.8308
+        }
+      },
+      "paired_vs_fixed_d150": {
+        "learned_only": 6,
+        "fixed_only": 45,
+        "same_pass": 99,
+        "same_fail": 391,
+        "discordant": 51,
+        "p_two_sided": 1.8323628836469652e-8
+      },
+      "report": {
+        "path": "exp/rb/build_v2/rb_report_rbtest_lh_c0_pi040_tact.json",
+        "sha256": "fdd03fd93559cb193f30d09aa200ddc6278a87950972e24532c28e6777caf185"
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v2/decision_cache_rbtest_lh_c0_pi040_tact.json",
+        "sha256": "567142fdea0b46553be711bfeb493204caf395d97573c1da799896191348a3fd"
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v2/results/rbtest_lh_c0_pi040_tact",
+        "files": 541,
+        "sha256": "05431f8a03677dc06bf5503f591223fc886823623642fddc3b9d09bd566b591d"
+      }
+    },
+    {
+      "ordinal": 4,
+      "provider": "rbtest_lh_c0_pi060_tact",
+      "family": "C0",
+      "pi": 0.06,
+      "started_utc": "2026-07-16T10:36:50Z",
+      "ended_utc": "2026-07-16T10:36:55.416580Z",
+      "args": "--build exp/rb/build_v2 --split test --arm A --system tact --delta 1.5 --decider llm --input audio --delta-policy learned:v2",
+      "stophead_model": {
+        "path": "exp/w4v3/stophead_v3c_pi060.json",
+        "sha256": "c925425add72e6ad4c8b51dc869ae369ca75c73ea8347e01d4bc4a6376d38a28",
+        "theta": 0.093174
+      },
+      "cache_seeded_from": "rbtest_lh_c0_pi040_tact",
+      "first_run_decision_cache": {
+        "hits": 1387,
+        "misses": 0,
+        "entries": 1714
+      },
+      "first_run_finality_cache": {
+        "hits": 1040,
+        "misses": 0,
+        "entries_after": 934
+      },
+      "offline_replay": {
+        "decision_hits": 1387,
+        "decision_misses": 0,
+        "finality_hits": 1040,
+        "finality_misses": 0
+      },
+      "metrics": {
+        "n": 541,
+        "exact": 0.1941,
+        "state_normalized": 0.2107,
+        "U": 0.1495,
+        "first_p50": 1.64,
+        "done_p50": 2.906,
+        "learned_windows": {
+          "ops": 1024,
+          "protected": 262,
+          "protect_rate": 0.2559
+        },
+        "by_layer_exact": {
+          "L1": 0.5111,
+          "L10": 0.05,
+          "L2": 0.2927,
+          "L3": 0,
+          "L4": 0,
+          "L5": 0,
+          "L6": 0,
+          "L7": 0.1818,
+          "L8": 0.1053,
+          "L9": 0.8308
+        }
+      },
+      "paired_vs_fixed_d150": {
+        "learned_only": 6,
+        "fixed_only": 45,
+        "same_pass": 99,
+        "same_fail": 391,
+        "discordant": 51,
+        "p_two_sided": 1.8323628836469652e-8
+      },
+      "report": {
+        "path": "exp/rb/build_v2/rb_report_rbtest_lh_c0_pi060_tact.json",
+        "sha256": "1a30208d27ef5eb64a86006f11eb2da189f84ef5f208af484cd6a521d6d7bdb1"
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v2/decision_cache_rbtest_lh_c0_pi060_tact.json",
+        "sha256": "567142fdea0b46553be711bfeb493204caf395d97573c1da799896191348a3fd"
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v2/results/rbtest_lh_c0_pi060_tact",
+        "files": 541,
+        "sha256": "b2439800a25a38ef196dc2a0d8f1d56820b474a1c7318c5f5948900bf371ea82"
+      }
+    },
+    {
+      "ordinal": 5,
+      "provider": "rbtest_lh_c0_pi080_tact",
+      "family": "C0",
+      "pi": 0.08,
+      "started_utc": "2026-07-16T10:36:55Z",
+      "ended_utc": "2026-07-16T10:37:01.900657Z",
+      "args": "--build exp/rb/build_v2 --split test --arm A --system tact --delta 1.5 --decider llm --input audio --delta-policy learned:v2",
+      "stophead_model": {
+        "path": "exp/w4v3/stophead_v3c_pi080.json",
+        "sha256": "0e346a2ae39d1cdee498ba03e79f032bd1043934114464308d2533972d0e629b",
+        "theta": 0.070166
+      },
+      "cache_seeded_from": "rbtest_lh_c0_pi060_tact",
+      "first_run_decision_cache": {
+        "hits": 1385,
+        "misses": 1,
+        "entries": 1715
+      },
+      "first_run_finality_cache": {
+        "hits": 1040,
+        "misses": 0,
+        "entries_after": 934
+      },
+      "offline_replay": {
+        "decision_hits": 1386,
+        "decision_misses": 0,
+        "finality_hits": 1040,
+        "finality_misses": 0
+      },
+      "metrics": {
+        "n": 541,
+        "exact": 0.1941,
+        "state_normalized": 0.2107,
+        "U": 0.1493,
+        "first_p50": 1.64,
+        "done_p50": 2.949,
+        "learned_windows": {
+          "ops": 1026,
+          "protected": 276,
+          "protect_rate": 0.269
+        },
+        "by_layer_exact": {
+          "L1": 0.5111,
+          "L10": 0.05,
+          "L2": 0.2927,
+          "L3": 0,
+          "L4": 0,
+          "L5": 0,
+          "L6": 0,
+          "L7": 0.1818,
+          "L8": 0.1053,
+          "L9": 0.8308
+        }
+      },
+      "paired_vs_fixed_d150": {
+        "learned_only": 6,
+        "fixed_only": 45,
+        "same_pass": 99,
+        "same_fail": 391,
+        "discordant": 51,
+        "p_two_sided": 1.8323628836469652e-8
+      },
+      "report": {
+        "path": "exp/rb/build_v2/rb_report_rbtest_lh_c0_pi080_tact.json",
+        "sha256": "d4f9761f0e139949f53c3c606271ce4821575771c31b48ec8af279e4edb972c1"
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v2/decision_cache_rbtest_lh_c0_pi080_tact.json",
+        "sha256": "d03fcdbaad2aede1fdcd33f4cf26449868099d2d471254a7fe4dbe9c5e47c2b7"
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v2/results/rbtest_lh_c0_pi080_tact",
+        "files": 541,
+        "sha256": "fbaa64e063db20562ec90ee296194ed4534ae79e8a2652688f8463b6cac4fb94"
+      }
+    },
+    {
+      "ordinal": 6,
+      "provider": "rbtest_lh_c0_pi100_tact",
+      "family": "C0",
+      "pi": 0.1,
+      "started_utc": "2026-07-16T10:37:01Z",
+      "ended_utc": "2026-07-16T10:37:07.360724Z",
+      "args": "--build exp/rb/build_v2 --split test --arm A --system tact --delta 1.5 --decider llm --input audio --delta-policy learned:v2",
+      "stophead_model": {
+        "path": "exp/w4v3/stophead_v3c_pi100.json",
+        "sha256": "7edfb3e533cad804c3cb9045be84b8ba55ba15edbd8ca2f3bb67c822c4eebf63",
+        "theta": 0.055792
+      },
+      "cache_seeded_from": "rbtest_lh_c0_pi080_tact",
+      "first_run_decision_cache": {
+        "hits": 1386,
+        "misses": 0,
+        "entries": 1715
+      },
+      "first_run_finality_cache": {
+        "hits": 1040,
+        "misses": 0,
+        "entries_after": 934
+      },
+      "offline_replay": {
+        "decision_hits": 1386,
+        "decision_misses": 0,
+        "finality_hits": 1040,
+        "finality_misses": 0
+      },
+      "metrics": {
+        "n": 541,
+        "exact": 0.1941,
+        "state_normalized": 0.2107,
+        "U": 0.1493,
+        "first_p50": 1.64,
+        "done_p50": 2.949,
+        "learned_windows": {
+          "ops": 1026,
+          "protected": 276,
+          "protect_rate": 0.269
+        },
+        "by_layer_exact": {
+          "L1": 0.5111,
+          "L10": 0.05,
+          "L2": 0.2927,
+          "L3": 0,
+          "L4": 0,
+          "L5": 0,
+          "L6": 0,
+          "L7": 0.1818,
+          "L8": 0.1053,
+          "L9": 0.8308
+        }
+      },
+      "paired_vs_fixed_d150": {
+        "learned_only": 6,
+        "fixed_only": 45,
+        "same_pass": 99,
+        "same_fail": 391,
+        "discordant": 51,
+        "p_two_sided": 1.8323628836469652e-8
+      },
+      "report": {
+        "path": "exp/rb/build_v2/rb_report_rbtest_lh_c0_pi100_tact.json",
+        "sha256": "2788de2da663099f4becba9e431d1b4416ae5fc36558d0b1939288b0e08ecbd3"
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v2/decision_cache_rbtest_lh_c0_pi100_tact.json",
+        "sha256": "d03fcdbaad2aede1fdcd33f4cf26449868099d2d471254a7fe4dbe9c5e47c2b7"
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v2/results/rbtest_lh_c0_pi100_tact",
+        "files": 541,
+        "sha256": "fbaa64e063db20562ec90ee296194ed4534ae79e8a2652688f8463b6cac4fb94"
+      }
+    },
+    {
+      "ordinal": 7,
+      "provider": "rbtest_lh_c0_pi150_tact",
+      "family": "C0",
+      "pi": 0.15,
+      "started_utc": "2026-07-16T10:37:07Z",
+      "ended_utc": "2026-07-16T10:37:13.620800Z",
+      "args": "--build exp/rb/build_v2 --split test --arm A --system tact --delta 1.5 --decider llm --input audio --delta-policy learned:v2",
+      "stophead_model": {
+        "path": "exp/w4v3/stophead_v3c_pi150.json",
+        "sha256": "af7291a30167a85553050aac3849b819107e64bce4ee04e1912ad02061de6335",
+        "theta": 0.035921
+      },
+      "cache_seeded_from": "rbtest_lh_c0_pi100_tact",
+      "first_run_decision_cache": {
+        "hits": 1401,
+        "misses": 1,
+        "entries": 1716
+      },
+      "first_run_finality_cache": {
+        "hits": 1040,
+        "misses": 0,
+        "entries_after": 934
+      },
+      "offline_replay": {
+        "decision_hits": 1402,
+        "decision_misses": 0,
+        "finality_hits": 1040,
+        "finality_misses": 0
+      },
+      "metrics": {
+        "n": 541,
+        "exact": 0.2662,
+        "state_normalized": 0.2828,
+        "U": 0.2029,
+        "first_p50": 1.64,
+        "done_p50": 3.636,
+        "learned_windows": {
+          "ops": 1154,
+          "protected": 896,
+          "protect_rate": 0.7764
+        },
+        "by_layer_exact": {
+          "L1": 0.5111,
+          "L10": 0.1,
+          "L2": 0.2927,
+          "L3": 0.1525,
+          "L4": 0.0938,
+          "L5": 0.0122,
+          "L6": 0.0227,
+          "L7": 0.3864,
+          "L8": 0.2982,
+          "L9": 0.8308
+        }
+      },
+      "paired_vs_fixed_d150": {
+        "learned_only": 0,
+        "fixed_only": 0,
+        "same_pass": 144,
+        "same_fail": 397,
+        "discordant": 0,
+        "p_two_sided": 1
+      },
+      "report": {
+        "path": "exp/rb/build_v2/rb_report_rbtest_lh_c0_pi150_tact.json",
+        "sha256": "ddc6fa9995d90280e89ee2934b1c0803197ff3dd0ccc931102668a3a7f7f8f97"
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v2/decision_cache_rbtest_lh_c0_pi150_tact.json",
+        "sha256": "7c30d89f29786fdd1db0c3f4d3594f14988cb0232be1b17eb91bb5ddd3fcb4c3"
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v2/results/rbtest_lh_c0_pi150_tact",
+        "files": 541,
+        "sha256": "4df74bbcdc4e6facfd7e47af250bbd698a7deaa0f08136a03fbb99574e189ae3"
+      }
+    },
+    {
+      "ordinal": 8,
+      "provider": "rbtest_lh_c0_pi200_tact",
+      "family": "C0",
+      "pi": 0.2,
+      "started_utc": "2026-07-16T10:37:13Z",
+      "ended_utc": "2026-07-16T10:37:19.228868Z",
+      "args": "--build exp/rb/build_v2 --split test --arm A --system tact --delta 1.5 --decider llm --input audio --delta-policy learned:v2",
+      "stophead_model": {
+        "path": "exp/w4v3/stophead_v3c_pi200.json",
+        "sha256": "b3a3676e9c7c5e34c0ee04ad69a219e979da1db2cc8ae979ba2084f5b2f17522",
+        "theta": 0.025668
+      },
+      "cache_seeded_from": "rbtest_lh_c0_pi150_tact",
+      "first_run_decision_cache": {
+        "hits": 1404,
+        "misses": 0,
+        "entries": 1716
+      },
+      "first_run_finality_cache": {
+        "hits": 1040,
+        "misses": 0,
+        "entries_after": 934
+      },
+      "offline_replay": {
+        "decision_hits": 1404,
+        "decision_misses": 0,
+        "finality_hits": 1040,
+        "finality_misses": 0
+      },
+      "metrics": {
+        "n": 541,
+        "exact": 0.2662,
+        "state_normalized": 0.2828,
+        "U": 0.1996,
+        "first_p50": 1.64,
+        "done_p50": 3.889,
+        "learned_windows": {
+          "ops": 1157,
+          "protected": 1157,
+          "protect_rate": 1
+        },
+        "by_layer_exact": {
+          "L1": 0.5111,
+          "L10": 0.1,
+          "L2": 0.2927,
+          "L3": 0.1525,
+          "L4": 0.0938,
+          "L5": 0.0122,
+          "L6": 0.0227,
+          "L7": 0.3864,
+          "L8": 0.2982,
+          "L9": 0.8308
+        }
+      },
+      "paired_vs_fixed_d150": {
+        "learned_only": 0,
+        "fixed_only": 0,
+        "same_pass": 144,
+        "same_fail": 397,
+        "discordant": 0,
+        "p_two_sided": 1
+      },
+      "report": {
+        "path": "exp/rb/build_v2/rb_report_rbtest_lh_c0_pi200_tact.json",
+        "sha256": "cf054780843c9fa76c3514f5ba70b2b66227c3817379fb7dc193e11004177f67"
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v2/decision_cache_rbtest_lh_c0_pi200_tact.json",
+        "sha256": "7c30d89f29786fdd1db0c3f4d3594f14988cb0232be1b17eb91bb5ddd3fcb4c3"
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v2/results/rbtest_lh_c0_pi200_tact",
+        "files": 541,
+        "sha256": "31b037f9d01bba49f5b83b9041d68391eb0df05ab65ad05487f0aa547fbcaafe"
+      }
+    },
+    {
+      "ordinal": 9,
+      "provider": "rbtest_lh_c0_pi300_tact",
+      "family": "C0",
+      "pi": 0.3,
+      "started_utc": "2026-07-16T10:37:19Z",
+      "ended_utc": "2026-07-16T10:37:24.772934Z",
+      "args": "--build exp/rb/build_v2 --split test --arm A --system tact --delta 1.5 --decider llm --input audio --delta-policy learned:v2",
+      "stophead_model": {
+        "path": "exp/w4v3/stophead_v3c_pi300.json",
+        "sha256": "fdf35956b70c71c684098623b41f5e3288bff14562b49eabccb01a9e14c31e82",
+        "theta": 0.015195
+      },
+      "cache_seeded_from": "rbtest_lh_c0_pi200_tact",
+      "first_run_decision_cache": {
+        "hits": 1404,
+        "misses": 0,
+        "entries": 1716
+      },
+      "first_run_finality_cache": {
+        "hits": 1040,
+        "misses": 0,
+        "entries_after": 934
+      },
+      "offline_replay": {
+        "decision_hits": 1404,
+        "decision_misses": 0,
+        "finality_hits": 1040,
+        "finality_misses": 0
+      },
+      "metrics": {
+        "n": 541,
+        "exact": 0.2662,
+        "state_normalized": 0.2828,
+        "U": 0.1996,
+        "first_p50": 1.64,
+        "done_p50": 3.889,
+        "learned_windows": {
+          "ops": 1157,
+          "protected": 1157,
+          "protect_rate": 1
+        },
+        "by_layer_exact": {
+          "L1": 0.5111,
+          "L10": 0.1,
+          "L2": 0.2927,
+          "L3": 0.1525,
+          "L4": 0.0938,
+          "L5": 0.0122,
+          "L6": 0.0227,
+          "L7": 0.3864,
+          "L8": 0.2982,
+          "L9": 0.8308
+        }
+      },
+      "paired_vs_fixed_d150": {
+        "learned_only": 0,
+        "fixed_only": 0,
+        "same_pass": 144,
+        "same_fail": 397,
+        "discordant": 0,
+        "p_two_sided": 1
+      },
+      "report": {
+        "path": "exp/rb/build_v2/rb_report_rbtest_lh_c0_pi300_tact.json",
+        "sha256": "67a12f6008660ead75af5e5879d3f74c593c4c77798485a129730c813957a0e1"
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v2/decision_cache_rbtest_lh_c0_pi300_tact.json",
+        "sha256": "7c30d89f29786fdd1db0c3f4d3594f14988cb0232be1b17eb91bb5ddd3fcb4c3"
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v2/results/rbtest_lh_c0_pi300_tact",
+        "files": 541,
+        "sha256": "31b037f9d01bba49f5b83b9041d68391eb0df05ab65ad05487f0aa547fbcaafe"
+      }
+    },
+    {
+      "ordinal": 10,
+      "provider": "rbtest_lh_c1_pi020_tact",
+      "family": "C1",
+      "pi": 0.02,
+      "started_utc": "2026-07-16T10:37:40Z",
+      "ended_utc": "2026-07-16T10:37:47.169202Z",
+      "args": "--build exp/rb/build_v2 --split test --arm A --system tact --delta 1.5 --decider llm --input audio --delta-policy learned:v2",
+      "stophead_model": {
+        "path": "exp/w4v3/stophead_v3c1_pi020.json",
+        "sha256": "c5f696e6989622aa027ae15702bbce1847127832a15ecc146889f033a41ecbd4",
+        "theta": 0.152996
+      },
+      "cache_seeded_from": "rbtest_lh_c0_pi300_tact",
+      "first_run_decision_cache": {
+        "hits": 1387,
+        "misses": 1,
+        "entries": 1717
+      },
+      "first_run_finality_cache": {
+        "hits": 1040,
+        "misses": 0,
+        "entries_after": 934
+      },
+      "offline_replay": {
+        "decision_hits": 1388,
+        "decision_misses": 0,
+        "finality_hits": 1040,
+        "finality_misses": 0
+      },
+      "metrics": {
+        "n": 541,
+        "exact": 0.1922,
+        "state_normalized": 0.2089,
+        "U": 0.1493,
+        "first_p50": 1.64,
+        "done_p50": 2.296,
+        "learned_windows": {
+          "ops": 1014,
+          "protected": 137,
+          "protect_rate": 0.1351
+        },
+        "by_layer_exact": {
+          "L1": 0.5111,
+          "L10": 0.05,
+          "L2": 0.2927,
+          "L3": 0,
+          "L4": 0,
+          "L5": 0,
+          "L6": 0,
+          "L7": 0.1591,
+          "L8": 0.1053,
+          "L9": 0.8308
+        }
+      },
+      "paired_vs_fixed_d150": {
+        "learned_only": 6,
+        "fixed_only": 46,
+        "same_pass": 98,
+        "same_fail": 391,
+        "discordant": 52,
+        "p_two_sided": 1.0325821975243343e-8
+      },
+      "report": {
+        "path": "exp/rb/build_v2/rb_report_rbtest_lh_c1_pi020_tact.json",
+        "sha256": "471f57cfd763ca9a4d7a37336913d7990f07ea1eb6a88959ab4ca1565c166bec"
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v2/decision_cache_rbtest_lh_c1_pi020_tact.json",
+        "sha256": "c0e4b1aea23493c15624cb37fbd1d216a205df6e4dfedb9c0b9d6312b4187882"
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v2/results/rbtest_lh_c1_pi020_tact",
+        "files": 541,
+        "sha256": "e8ad1bd3ce5b0e0c2b36869dbc11c54a332f2d289fddfa16bc00d62ff6f7132c"
+      }
+    },
+    {
+      "ordinal": 11,
+      "provider": "rbtest_lh_c1_pi040_tact",
+      "family": "C1",
+      "pi": 0.04,
+      "started_utc": "2026-07-16T10:37:47Z",
+      "ended_utc": "2026-07-16T10:37:52.809268Z",
+      "args": "--build exp/rb/build_v2 --split test --arm A --system tact --delta 1.5 --decider llm --input audio --delta-policy learned:v2",
+      "stophead_model": {
+        "path": "exp/w4v3/stophead_v3c1_pi040.json",
+        "sha256": "9500111c25a3400ea518bb9e30cbe4dbbad0e2ae1337a3d3966e2b4f7d35ba7e",
+        "theta": 0.081318
+      },
+      "cache_seeded_from": "rbtest_lh_c1_pi020_tact",
+      "first_run_decision_cache": {
+        "hits": 1384,
+        "misses": 0,
+        "entries": 1717
+      },
+      "first_run_finality_cache": {
+        "hits": 1040,
+        "misses": 0,
+        "entries_after": 934
+      },
+      "offline_replay": {
+        "decision_hits": 1384,
+        "decision_misses": 0,
+        "finality_hits": 1040,
+        "finality_misses": 0
+      },
+      "metrics": {
+        "n": 541,
+        "exact": 0.1922,
+        "state_normalized": 0.2089,
+        "U": 0.1492,
+        "first_p50": 1.64,
+        "done_p50": 2.395,
+        "learned_windows": {
+          "ops": 1024,
+          "protected": 194,
+          "protect_rate": 0.1895
+        },
+        "by_layer_exact": {
+          "L1": 0.5111,
+          "L10": 0.05,
+          "L2": 0.2927,
+          "L3": 0,
+          "L4": 0,
+          "L5": 0,
+          "L6": 0,
+          "L7": 0.1591,
+          "L8": 0.1053,
+          "L9": 0.8308
+        }
+      },
+      "paired_vs_fixed_d150": {
+        "learned_only": 6,
+        "fixed_only": 46,
+        "same_pass": 98,
+        "same_fail": 391,
+        "discordant": 52,
+        "p_two_sided": 1.0325821975243343e-8
+      },
+      "report": {
+        "path": "exp/rb/build_v2/rb_report_rbtest_lh_c1_pi040_tact.json",
+        "sha256": "927504234ee07a83f2f197b3bada372d06038dee3ff55875bc5c8f5269453e70"
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v2/decision_cache_rbtest_lh_c1_pi040_tact.json",
+        "sha256": "c0e4b1aea23493c15624cb37fbd1d216a205df6e4dfedb9c0b9d6312b4187882"
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v2/results/rbtest_lh_c1_pi040_tact",
+        "files": 541,
+        "sha256": "12ec7e13f57df509050adadff089f8e937e8d387d92f1233f7d6bf7d390e7c17"
+      }
+    },
+    {
+      "ordinal": 12,
+      "provider": "rbtest_lh_c1_pi060_tact",
+      "family": "C1",
+      "pi": 0.06,
+      "started_utc": "2026-07-16T10:37:52Z",
+      "ended_utc": "2026-07-16T10:37:58.433335Z",
+      "args": "--build exp/rb/build_v2 --split test --arm A --system tact --delta 1.5 --decider llm --input audio --delta-policy learned:v2",
+      "stophead_model": {
+        "path": "exp/w4v3/stophead_v3c1_pi060.json",
+        "sha256": "ff97a108bb1f6049c50a7d568ca94fec3af278b5747b2747e0f1087f4eeb6d7c",
+        "theta": 0.054651
+      },
+      "cache_seeded_from": "rbtest_lh_c1_pi040_tact",
+      "first_run_decision_cache": {
+        "hits": 1386,
+        "misses": 0,
+        "entries": 1717
+      },
+      "first_run_finality_cache": {
+        "hits": 1040,
+        "misses": 0,
+        "entries_after": 934
+      },
+      "offline_replay": {
+        "decision_hits": 1386,
+        "decision_misses": 0,
+        "finality_hits": 1040,
+        "finality_misses": 0
+      },
+      "metrics": {
+        "n": 541,
+        "exact": 0.1941,
+        "state_normalized": 0.2107,
+        "U": 0.1493,
+        "first_p50": 1.64,
+        "done_p50": 2.804,
+        "learned_windows": {
+          "ops": 1026,
+          "protected": 256,
+          "protect_rate": 0.2495
+        },
+        "by_layer_exact": {
+          "L1": 0.5111,
+          "L10": 0.05,
+          "L2": 0.2927,
+          "L3": 0,
+          "L4": 0,
+          "L5": 0,
+          "L6": 0,
+          "L7": 0.1818,
+          "L8": 0.1053,
+          "L9": 0.8308
+        }
+      },
+      "paired_vs_fixed_d150": {
+        "learned_only": 6,
+        "fixed_only": 45,
+        "same_pass": 99,
+        "same_fail": 391,
+        "discordant": 51,
+        "p_two_sided": 1.8323628836469652e-8
+      },
+      "report": {
+        "path": "exp/rb/build_v2/rb_report_rbtest_lh_c1_pi060_tact.json",
+        "sha256": "cac556618ee9450f6daf5672ffe3838979f228c9d8ea987da963b5fce2601ba8"
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v2/decision_cache_rbtest_lh_c1_pi060_tact.json",
+        "sha256": "c0e4b1aea23493c15624cb37fbd1d216a205df6e4dfedb9c0b9d6312b4187882"
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v2/results/rbtest_lh_c1_pi060_tact",
+        "files": 541,
+        "sha256": "51c3109aaad375e29642aed0187783dec13068bd60a56582ba6ead34ad0ad190"
+      }
+    },
+    {
+      "ordinal": 13,
+      "provider": "rbtest_lh_c1_pi080_tact",
+      "family": "C1",
+      "pi": 0.08,
+      "started_utc": "2026-07-16T10:37:58Z",
+      "ended_utc": "2026-07-16T10:38:04.085401Z",
+      "args": "--build exp/rb/build_v2 --split test --arm A --system tact --delta 1.5 --decider llm --input audio --delta-policy learned:v2",
+      "stophead_model": {
+        "path": "exp/w4v3/stophead_v3c1_pi080.json",
+        "sha256": "2b4b6b4b3537938481e3cebce0bf45f4e0c223c4ef462eb4eb2cb8531182202d",
+        "theta": 0.040728
+      },
+      "cache_seeded_from": "rbtest_lh_c1_pi060_tact",
+      "first_run_decision_cache": {
+        "hits": 1386,
+        "misses": 0,
+        "entries": 1717
+      },
+      "first_run_finality_cache": {
+        "hits": 1040,
+        "misses": 0,
+        "entries_after": 934
+      },
+      "offline_replay": {
+        "decision_hits": 1386,
+        "decision_misses": 0,
+        "finality_hits": 1040,
+        "finality_misses": 0
+      },
+      "metrics": {
+        "n": 541,
+        "exact": 0.1941,
+        "state_normalized": 0.2107,
+        "U": 0.1493,
+        "first_p50": 1.64,
+        "done_p50": 2.949,
+        "learned_windows": {
+          "ops": 1026,
+          "protected": 276,
+          "protect_rate": 0.269
+        },
+        "by_layer_exact": {
+          "L1": 0.5111,
+          "L10": 0.05,
+          "L2": 0.2927,
+          "L3": 0,
+          "L4": 0,
+          "L5": 0,
+          "L6": 0,
+          "L7": 0.1818,
+          "L8": 0.1053,
+          "L9": 0.8308
+        }
+      },
+      "paired_vs_fixed_d150": {
+        "learned_only": 6,
+        "fixed_only": 45,
+        "same_pass": 99,
+        "same_fail": 391,
+        "discordant": 51,
+        "p_two_sided": 1.8323628836469652e-8
+      },
+      "report": {
+        "path": "exp/rb/build_v2/rb_report_rbtest_lh_c1_pi080_tact.json",
+        "sha256": "4515686b6357ec8687d4f94b5a751852a51387c7159445431c569e7fef31cb7c"
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v2/decision_cache_rbtest_lh_c1_pi080_tact.json",
+        "sha256": "c0e4b1aea23493c15624cb37fbd1d216a205df6e4dfedb9c0b9d6312b4187882"
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v2/results/rbtest_lh_c1_pi080_tact",
+        "files": 541,
+        "sha256": "fbaa64e063db20562ec90ee296194ed4534ae79e8a2652688f8463b6cac4fb94"
+      }
+    },
+    {
+      "ordinal": 14,
+      "provider": "rbtest_lh_c1_pi100_tact",
+      "family": "C1",
+      "pi": 0.1,
+      "started_utc": "2026-07-16T10:38:04Z",
+      "ended_utc": "2026-07-16T10:38:09.789468Z",
+      "args": "--build exp/rb/build_v2 --split test --arm A --system tact --delta 1.5 --decider llm --input audio --delta-policy learned:v2",
+      "stophead_model": {
+        "path": "exp/w4v3/stophead_v3c1_pi100.json",
+        "sha256": "25bf29ba61967193c9f86e21806357aa3faade1fb26d56b2f2073481a7ee4be2",
+        "theta": 0.032176
+      },
+      "cache_seeded_from": "rbtest_lh_c1_pi080_tact",
+      "first_run_decision_cache": {
+        "hits": 1390,
+        "misses": 0,
+        "entries": 1717
+      },
+      "first_run_finality_cache": {
+        "hits": 1040,
+        "misses": 0,
+        "entries_after": 934
+      },
+      "offline_replay": {
+        "decision_hits": 1390,
+        "decision_misses": 0,
+        "finality_hits": 1040,
+        "finality_misses": 0
+      },
+      "metrics": {
+        "n": 541,
+        "exact": 0.2421,
+        "state_normalized": 0.2588,
+        "U": 0.1844,
+        "first_p50": 1.64,
+        "done_p50": 3.378,
+        "learned_windows": {
+          "ops": 1064,
+          "protected": 526,
+          "protect_rate": 0.4944
+        },
+        "by_layer_exact": {
+          "L1": 0.5111,
+          "L10": 0.05,
+          "L2": 0.2927,
+          "L3": 0.0678,
+          "L4": 0.0625,
+          "L5": 0.0122,
+          "L6": 0.0227,
+          "L7": 0.4318,
+          "L8": 0.193,
+          "L9": 0.8308
+        }
+      },
+      "paired_vs_fixed_d150": {
+        "learned_only": 4,
+        "fixed_only": 17,
+        "same_pass": 127,
+        "same_fail": 393,
+        "discordant": 21,
+        "p_two_sided": 0.007197380065917969
+      },
+      "report": {
+        "path": "exp/rb/build_v2/rb_report_rbtest_lh_c1_pi100_tact.json",
+        "sha256": "95857cf155bc0663c4094e4c89ce351223c34eacd26643a6cea930ba14c87d0c"
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v2/decision_cache_rbtest_lh_c1_pi100_tact.json",
+        "sha256": "c0e4b1aea23493c15624cb37fbd1d216a205df6e4dfedb9c0b9d6312b4187882"
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v2/results/rbtest_lh_c1_pi100_tact",
+        "files": 541,
+        "sha256": "57edecabcb8587c9a7a1ee7e8ffdb7679778d0b8ba1e62267f823af602a80a21"
+      }
+    },
+    {
+      "ordinal": 15,
+      "provider": "rbtest_lh_c1_pi150_tact",
+      "family": "C1",
+      "pi": 0.15,
+      "started_utc": "2026-07-16T10:38:09Z",
+      "ended_utc": "2026-07-16T10:38:15.453534Z",
+      "args": "--build exp/rb/build_v2 --split test --arm A --system tact --delta 1.5 --decider llm --input audio --delta-policy learned:v2",
+      "stophead_model": {
+        "path": "exp/w4v3/stophead_v3c1_pi150.json",
+        "sha256": "268b3a234b0028e98cee411c36ddd781ee1361f11050628d22bf765975d3abdc",
+        "theta": 0.020533
+      },
+      "cache_seeded_from": "rbtest_lh_c1_pi100_tact",
+      "first_run_decision_cache": {
+        "hits": 1404,
+        "misses": 0,
+        "entries": 1717
+      },
+      "first_run_finality_cache": {
+        "hits": 1040,
+        "misses": 0,
+        "entries_after": 934
+      },
+      "offline_replay": {
+        "decision_hits": 1404,
+        "decision_misses": 0,
+        "finality_hits": 1040,
+        "finality_misses": 0
+      },
+      "metrics": {
+        "n": 541,
+        "exact": 0.2662,
+        "state_normalized": 0.2828,
+        "U": 0.1996,
+        "first_p50": 1.64,
+        "done_p50": 3.889,
+        "learned_windows": {
+          "ops": 1157,
+          "protected": 1157,
+          "protect_rate": 1
+        },
+        "by_layer_exact": {
+          "L1": 0.5111,
+          "L10": 0.1,
+          "L2": 0.2927,
+          "L3": 0.1525,
+          "L4": 0.0938,
+          "L5": 0.0122,
+          "L6": 0.0227,
+          "L7": 0.3864,
+          "L8": 0.2982,
+          "L9": 0.8308
+        }
+      },
+      "paired_vs_fixed_d150": {
+        "learned_only": 0,
+        "fixed_only": 0,
+        "same_pass": 144,
+        "same_fail": 397,
+        "discordant": 0,
+        "p_two_sided": 1
+      },
+      "report": {
+        "path": "exp/rb/build_v2/rb_report_rbtest_lh_c1_pi150_tact.json",
+        "sha256": "8a24a0c4a8bd3ed1600c4394ab03102638f6cbde9482ca6f95a2600315411f1f"
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v2/decision_cache_rbtest_lh_c1_pi150_tact.json",
+        "sha256": "c0e4b1aea23493c15624cb37fbd1d216a205df6e4dfedb9c0b9d6312b4187882"
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v2/results/rbtest_lh_c1_pi150_tact",
+        "files": 541,
+        "sha256": "31b037f9d01bba49f5b83b9041d68391eb0df05ab65ad05487f0aa547fbcaafe"
+      }
+    },
+    {
+      "ordinal": 16,
+      "provider": "rbtest_lh_c1_pi200_tact",
+      "family": "C1",
+      "pi": 0.2,
+      "started_utc": "2026-07-16T10:38:15Z",
+      "ended_utc": "2026-07-16T10:38:21.201601Z",
+      "args": "--build exp/rb/build_v2 --split test --arm A --system tact --delta 1.5 --decider llm --input audio --delta-policy learned:v2",
+      "stophead_model": {
+        "path": "exp/w4v3/stophead_v3c1_pi200.json",
+        "sha256": "2f9cbb42657760814488d1105a84fc497c9f4b7452c720250f1f49e1a27328c6",
+        "theta": 0.014606
+      },
+      "cache_seeded_from": "rbtest_lh_c1_pi150_tact",
+      "first_run_decision_cache": {
+        "hits": 1404,
+        "misses": 0,
+        "entries": 1717
+      },
+      "first_run_finality_cache": {
+        "hits": 1040,
+        "misses": 0,
+        "entries_after": 934
+      },
+      "offline_replay": {
+        "decision_hits": 1404,
+        "decision_misses": 0,
+        "finality_hits": 1040,
+        "finality_misses": 0
+      },
+      "metrics": {
+        "n": 541,
+        "exact": 0.2662,
+        "state_normalized": 0.2828,
+        "U": 0.1996,
+        "first_p50": 1.64,
+        "done_p50": 3.889,
+        "learned_windows": {
+          "ops": 1157,
+          "protected": 1157,
+          "protect_rate": 1
+        },
+        "by_layer_exact": {
+          "L1": 0.5111,
+          "L10": 0.1,
+          "L2": 0.2927,
+          "L3": 0.1525,
+          "L4": 0.0938,
+          "L5": 0.0122,
+          "L6": 0.0227,
+          "L7": 0.3864,
+          "L8": 0.2982,
+          "L9": 0.8308
+        }
+      },
+      "paired_vs_fixed_d150": {
+        "learned_only": 0,
+        "fixed_only": 0,
+        "same_pass": 144,
+        "same_fail": 397,
+        "discordant": 0,
+        "p_two_sided": 1
+      },
+      "report": {
+        "path": "exp/rb/build_v2/rb_report_rbtest_lh_c1_pi200_tact.json",
+        "sha256": "6f9120eb4e12493006a8f14206433947d09fd6b7d2b995e4ce26508c4b5af11f"
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v2/decision_cache_rbtest_lh_c1_pi200_tact.json",
+        "sha256": "c0e4b1aea23493c15624cb37fbd1d216a205df6e4dfedb9c0b9d6312b4187882"
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v2/results/rbtest_lh_c1_pi200_tact",
+        "files": 541,
+        "sha256": "31b037f9d01bba49f5b83b9041d68391eb0df05ab65ad05487f0aa547fbcaafe"
+      }
+    },
+    {
+      "ordinal": 17,
+      "provider": "rbtest_lh_c1_pi300_tact",
+      "family": "C1",
+      "pi": 0.3,
+      "started_utc": "2026-07-16T10:38:21Z",
+      "ended_utc": "2026-07-16T10:38:27.037668Z",
+      "args": "--build exp/rb/build_v2 --split test --arm A --system tact --delta 1.5 --decider llm --input audio --delta-policy learned:v2",
+      "stophead_model": {
+        "path": "exp/w4v3/stophead_v3c1_pi300.json",
+        "sha256": "209a9f6ec98dbcdb024686a86243e35c59e2f3f8073e4ec37eabf7f336be157f",
+        "theta": 0.008607
+      },
+      "cache_seeded_from": "rbtest_lh_c1_pi200_tact",
+      "first_run_decision_cache": {
+        "hits": 1404,
+        "misses": 0,
+        "entries": 1717
+      },
+      "first_run_finality_cache": {
+        "hits": 1040,
+        "misses": 0,
+        "entries_after": 934
+      },
+      "offline_replay": {
+        "decision_hits": 1404,
+        "decision_misses": 0,
+        "finality_hits": 1040,
+        "finality_misses": 0
+      },
+      "metrics": {
+        "n": 541,
+        "exact": 0.2662,
+        "state_normalized": 0.2828,
+        "U": 0.1996,
+        "first_p50": 1.64,
+        "done_p50": 3.889,
+        "learned_windows": {
+          "ops": 1157,
+          "protected": 1157,
+          "protect_rate": 1
+        },
+        "by_layer_exact": {
+          "L1": 0.5111,
+          "L10": 0.1,
+          "L2": 0.2927,
+          "L3": 0.1525,
+          "L4": 0.0938,
+          "L5": 0.0122,
+          "L6": 0.0227,
+          "L7": 0.3864,
+          "L8": 0.2982,
+          "L9": 0.8308
+        }
+      },
+      "paired_vs_fixed_d150": {
+        "learned_only": 0,
+        "fixed_only": 0,
+        "same_pass": 144,
+        "same_fail": 397,
+        "discordant": 0,
+        "p_two_sided": 1
+      },
+      "report": {
+        "path": "exp/rb/build_v2/rb_report_rbtest_lh_c1_pi300_tact.json",
+        "sha256": "e61d4c4cd321d931b389a80fe52cbaf055e013a48c0139c0df3ed483d5f04ea7"
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v2/decision_cache_rbtest_lh_c1_pi300_tact.json",
+        "sha256": "c0e4b1aea23493c15624cb37fbd1d216a205df6e4dfedb9c0b9d6312b4187882"
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v2/results/rbtest_lh_c1_pi300_tact",
+        "files": 541,
+        "sha256": "31b037f9d01bba49f5b83b9041d68391eb0df05ab65ad05487f0aa547fbcaafe"
+      }
+    }
+  ],
+  "machine_readout_not_section7_adjudication": {
+    "H-LH1a": {
+      "observed": "supported",
+      "C0_protect_rate": [
+        0.1054,
+        0.2344,
+        0.2559,
+        0.269,
+        0.269,
+        0.7764,
+        1,
+        1
+      ],
+      "C1_protect_rate": [
+        0.1351,
+        0.1895,
+        0.2495,
+        0.269,
+        0.4944,
+        1,
+        1,
+        1
+      ],
+      "weakly_monotone_with_pi": {
+        "C0": true,
+        "C1": true
+      }
+    },
+    "H-LH1b": {
+      "observed": "supported",
+      "C0_exact": [
+        0.1922,
+        0.1941,
+        0.1941,
+        0.1941,
+        0.1941,
+        0.2662,
+        0.2662,
+        0.2662
+      ],
+      "C1_exact": [
+        0.1922,
+        0.1922,
+        0.1941,
+        0.1941,
+        0.2421,
+        0.2662,
+        0.2662,
+        0.2662
+      ],
+      "weakly_monotone_with_pi": {
+        "C0": true,
+        "C1": true
+      }
+    },
+    "H-LH2": {
+      "observed": "prediction_confirmed",
+      "any_significant_paired_net_advantage_vs_fixed": false,
+      "significantly_worse_providers": 10,
+      "paired_identical_providers": 7,
+      "criterion": "learned_only > fixed_only and exact two-sided binomial p < .05"
+    },
+    "H-LH3": {
+      "observed": "not_supported_pointwise",
+      "comparisons": [
+        {
+          "pi": 0.02,
+          "C0": 0.1054,
+          "C1": 0.1351,
+          "C1_ge_C0": true
+        },
+        {
+          "pi": 0.04,
+          "C0": 0.2344,
+          "C1": 0.1895,
+          "C1_ge_C0": false
+        },
+        {
+          "pi": 0.06,
+          "C0": 0.2559,
+          "C1": 0.2495,
+          "C1_ge_C0": false
+        },
+        {
+          "pi": 0.08,
+          "C0": 0.269,
+          "C1": 0.269,
+          "C1_ge_C0": true
+        },
+        {
+          "pi": 0.1,
+          "C0": 0.269,
+          "C1": 0.4944,
+          "C1_ge_C0": true
+        },
+        {
+          "pi": 0.15,
+          "C0": 0.7764,
+          "C1": 1,
+          "C1_ge_C0": true
+        },
+        {
+          "pi": 0.2,
+          "C0": 1,
+          "C1": 1,
+          "C1_ge_C0": true
+        },
+        {
+          "pi": 0.3,
+          "C0": 1,
+          "C1": 1,
+          "C1_ge_C0": true
+        }
+      ],
+      "all_C1_ge_C0": false,
+      "satisfied_including_ties": 6,
+      "total": 8,
+      "violations_at_pi": [
+        0.04,
+        0.06
+      ]
+    },
+    "declared_risk": "RB episode-level revision rate .673 exceeds the pi grid support [.02,.30]; scale mismatch is expected and is not a retraining trigger."
+  },
+  "offline_replay": {
+    "services_stopped_before_replay": true,
+    "providers_replayed": 17,
+    "total_result_files": 9197,
+    "decision_cache_misses": 0,
+    "finality_cache_misses": 0,
+    "reports_byte_identical": true,
+    "decision_caches_byte_identical": true,
+    "finality_cache_byte_identical": true,
+    "result_directories_byte_identical": true,
+    "hash_mismatches": []
+  },
+  "formal_exceptions": [],
+  "nonformal_observations": [
+    {
+      "code": "preflight_proxy_get_404",
+      "impact": "none",
+      "detail": "A preflight GET /v1/models against the proxy returned 404 because the proxy exposes POST chat completions only; vLLM /health and proxy /docs were healthy, and no formal provider had started."
+    },
+    {
+      "code": "shutdown_resource_tracker_warning",
+      "impact": "none",
+      "detail": "Python resource_tracker warned about leaked semaphore/shared-memory handles during vLLM shutdown; ports closed and GPU memory was fully released before replay."
+    }
+  ]
+}

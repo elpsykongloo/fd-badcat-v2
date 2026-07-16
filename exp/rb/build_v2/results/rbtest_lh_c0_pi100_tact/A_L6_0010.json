@@ -1,0 +1,100 @@
+{
+ "id": "A_L6_0010",
+ "layer": "L6",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 0.725,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 0.725,
+ "n_eou": 3,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 5.62,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_rentals",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "book_viewing",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it.",
+   "op_windows": {
+    "2": 1.5,
+    "3": 0.0
+   },
+   "finality": "final"
+  },
+  {
+   "i": 1,
+   "t_eou": 7.968,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "city": "成都"
+     }
+    }
+   ],
+   "say": "",
+   "op_windows": {
+    "2": 1.5
+   },
+   "finality": "final"
+  },
+  {
+   "i": 2,
+   "t_eou": 14.509,
+   "ops": [],
+   "say": "",
+   "op_windows": {},
+   "finality": "unfinished"
+  }
+ ],
+ "say_events": [
+  [
+   6.62,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   4.98,
+   "user"
+  ],
+  [
+   5.808,
+   7.328,
+   "user"
+  ],
+  [
+   10.029,
+   13.869,
+   "user"
+  ]
+ ]
+}
