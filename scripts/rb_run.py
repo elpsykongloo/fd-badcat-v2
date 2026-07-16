@@ -288,8 +288,15 @@ def _resolve_ref(v, by_op, by_step, batch=None, base=None):
 
 def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
                 fc_mode=None, input_kind="text", audio=None, tts_backend=None,
-                infer_nominal=1.0, dag_on=True):
+                infer_nominal=1.0, dag_on=True,
+                delta_policy="fixed", stophead=None, fin_cache=None):
     random.seed(42)
+    learned = delta_policy.startswith("learned")
+    if learned:
+        assert mode == "tact", "--delta-policy requires --system tact"
+        assert stophead is not None, "learned:* needs a loaded stophead model"
+        import stophead as stophead_mod
+        import delta_policy as delta_policy_mod
     import itertools
     import tact.transaction as _txm
     _txm._uid = itertools.count(1)          # per-episode op ids (reproducible runs)
@@ -390,11 +397,43 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
         advance_over(ledger, cursor, t_dec, tuple_segs(), do_commit)
         cursor = max(cursor, t_dec)
         say = dec.get("say", "") if mode == "blocking" else ack_fallback(dec)
+        # W4 learned stopping head (batch 2): per-op objection windows from the
+        # FROZEN model. Finality is judged AFTER the decision call on the same
+        # audio tail convention as the FDB harness (separate cache; its wall
+        # time never advances the audio clock — deployed it overlaps the hold).
+        # The decider messages are untouched: decision cache keys stay caliber.
+        delta_fn = None
+        finality = None
+        fin_parsed = True
+        if learned:
+            if input_kind == "audio" and fin_cache is not None:
+                if live is not None:
+                    pref = live.prefix(e_i)
+                    tail = pref[int(max(0.0, e_i - delta_policy_mod.
+                                        FINALITY_TAIL_S) * SR):]
+                else:
+                    tail = audio[int(max(0.0, e_i - delta_policy_mod.
+                                         FINALITY_TAIL_S) * SR): int(e_i * SR)]
+                from decider_b import _audio_block
+                fraw, _fin_infer = fin_cache.call(
+                    delta_policy_mod.build_finality_msgs(_audio_block(tail)))
+                finality, fin_parsed = delta_policy_mod.parse_finality(fraw)
+            else:       # text / cache-less oracle smoke: declared, deterministic
+                finality = delta_policy_mod.FINALITY_FALLBACK
+            s0 = segs[i]["s"]
+            ctx = {"eou_idx": n_eou - 1, "utt_dur": round(e_i - s0, 3),
+                   "gap_prev": round(s0 - (segs[i - 1]["e"] if i else 0.0), 3),
+                   "n_prior_ops": len(tx.pending) + len(tx.committed),
+                   "finality": finality,
+                   "domain": TOOLS[SCENARIOS[ep["scenario"]]["steps"][0]["fn"]
+                                   ]["domain"]}
+            delta_fn = stophead_mod.make_learned_delta_fn(stophead, ctx)
         cur_base["v"] = len(results_by_step)
         applied = apply_decision_ops(tx, ledger, dec, t_dec,
                                      immediate=(mode == "blocking" or delta <= 0),
                                      commit_cb=do_commit,
-                                     dag=dag, comp_registry=comp_reg)
+                                     dag=dag, comp_registry=comp_reg,
+                                     delta_fn=delta_fn)
         ledger.end_decision(i)
         ledger.sweep(t_dec, do_commit, cause="decision_done")
         launches = [a for a in applied if a.get("type") == "launch"]
@@ -413,8 +452,21 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
             say = tier_utterance(tier, lang=ep["lang"], fns=fns, eta_s=eta)
         if say:
             say_events.append((round(t_dec, 3), say))
-        decisions.append({"i": i, "t_eou": round(t_eou, 3), "ops": applied,
-                          "say": say, **({"fc_tier": tier} if tier else {})})
+        dec_entry = {"i": i, "t_eou": round(t_eou, 3), "ops": applied,
+                     "say": say, **({"fc_tier": tier} if tier else {})}
+        if learned:                     # audit fields (absent on the frozen path)
+            ow = {}
+            for a in applied:
+                oid = a.get("op_id")
+                if a["type"] in ("launch", "patch") and oid is not None:
+                    rem = ledger.remaining(oid)
+                    if rem is not None:
+                        ow[str(oid)] = round(rem, 3)
+            dec_entry["op_windows"] = ow
+            dec_entry["finality"] = finality
+            if not fin_parsed:
+                dec_entry["finality_unparsed"] = True
+        decisions.append(dec_entry)
         evts = [{"event": "tact_eou", "t": t_eou}]
         for a in launches:
             evts.append({"event": "tact_op_applied", "t": t_dec,
@@ -484,6 +536,19 @@ def main():
     ap.add_argument("--dag", default="on", choices=["on", "off"])
     ap.add_argument("--tts", default=None, choices=[None, "qwen", "stub"],
                     help="arm-B audio synthesis backend")
+    ap.add_argument("--delta-policy", default="fixed",
+                    choices=["fixed", "learned:v2"],
+                    help="fixed (default; frozen batch-1 path, bit-identical) "
+                         "| learned:v2 = frozen two-stage stopping head "
+                         "(test-897 batch 2; needs --stophead-model; judges "
+                         "finality on the audio tail via --finality-cache). "
+                         "EVALUATION ONLY: never tune theta/weights on RB.")
+    ap.add_argument("--stophead-model", default="exp/w4/stophead_v2.json",
+                    help="frozen model JSON (v2 / C0 / C1 pi-point remaps)")
+    ap.add_argument("--finality-cache", default=None,
+                    help="finality-call cache path (default: "
+                         "<build>/finality_cache_rb_<arm>.json — shared across "
+                         "learned providers; arm-A audio is provider-invariant)")
     ap.add_argument("--provider", required=False, default="rbdev")
     ap.add_argument("--limit", type=int)
     ap.add_argument("--selftest", action="store_true")
@@ -497,11 +562,34 @@ def main():
             got = _h.sha256((ROOT / f).read_bytes()).hexdigest()
             assert got == want, f"scorer freeze violated: {f} changed"
     install_rb(args.prompt)
+    stophead = fin_cache = None
+    if args.delta_policy != "fixed":
+        if args.system != "tact":
+            ap.error("--delta-policy requires --system tact")
+        if args.delta <= 0:
+            ap.error("--delta-policy needs --delta > 0 (delta<=0 selects the "
+                     "immediate-commit path and would bypass per-op windows)")
+        if args.decider == "llm" and args.input != "audio":
+            ap.error("learned + llm requires --input audio (finality is an "
+                     "audio-tail judgment; text is smoke-only via oracle)")
+        from rb.learned import install_stophead_rb, load_head, head_summary
+        n_inst = install_stophead_rb()
+        stophead = load_head(ROOT / args.stophead_model, expect=args.delta_policy)
+        print(f"stophead: {json.dumps(head_summary(stophead))} "
+              f"| RB required-args installed: {n_inst}")
+        if not args.provider.startswith(("rbtest_lh", "rbdev_lh", "lh")):
+            print("WARNING: learned provider without an lh tag; recommend "
+                  "rbtest_lh_* / rbdev_lh_* so grids stay separable.")
     cache = None
     if args.decider == "llm":
         sys.path.insert(0, str(ROOT / "scripts"))
         from w2r_stream_replay import DecisionCache
         cache = DecisionCache(Path(args.build) / f"decision_cache_{args.provider}.json")
+    if args.delta_policy != "fixed" and args.decider == "llm":
+        from w2r_stream_replay import DecisionCache as _FC
+        fin_path = args.finality_cache or str(
+            Path(args.build) / f"finality_cache_rb_{args.arm.lower()}.json")
+        fin_cache = _FC(fin_path)
     tts_backend = None
     if args.tts == "qwen":
         from rb.audio import QwenTTSBackend
@@ -528,32 +616,43 @@ def main():
                 continue
             audio, _sr = sf.read(str(wav), dtype="float32")
         decider = OracleDecider(ep) if args.decider == "oracle" else "llm"
-        row = run_episode(ep, decider if args.decider == "oracle" else None,
-                          cache=cache, mode=args.system, delta=args.delta,
-                          barrier=args.commit_barrier == "on",
-                          fc_mode=args.floor_commit_tiers,
-                          input_kind=args.input, audio=audio,
-                          infer_nominal=args.infer_nominal,
-                          dag_on=args.dag == "on", tts_backend=tts_backend) \
-            if args.decider == "oracle" else \
-            run_episode(ep, "llm", cache=cache, mode=args.system,
-                        delta=args.delta, barrier=args.commit_barrier == "on",
-                        fc_mode=args.floor_commit_tiers,
-                        input_kind=args.input, audio=audio,
-                        infer_nominal=args.infer_nominal,
-                        dag_on=args.dag == "on", tts_backend=tts_backend)
+        kw = dict(cache=cache, mode=args.system, delta=args.delta,
+                  barrier=args.commit_barrier == "on",
+                  fc_mode=args.floor_commit_tiers,
+                  input_kind=args.input, audio=audio,
+                  infer_nominal=args.infer_nominal,
+                  dag_on=args.dag == "on", tts_backend=tts_backend,
+                  delta_policy=args.delta_policy, stophead=stophead,
+                  fin_cache=fin_cache)
+        row = run_episode(ep, decider, **kw) if args.decider == "oracle" \
+            else run_episode(ep, "llm", **kw)
         (outdir / f"{ep['id']}.json").write_text(
             json.dumps(row, ensure_ascii=False, indent=1))
         rows.append(row)
     if cache is not None:
         cache.save()
         print(f"decision cache: {cache.hits} hits / {cache.misses} misses")
+    if fin_cache is not None:
+        fin_cache.save()
+        print(f"finality cache: {fin_cache.hits} hits / {fin_cache.misses} misses")
     rep = aggregate(rows)
     rep["provider"] = args.provider
     rep["config"] = {k: getattr(args, k) for k in
                      ("arm", "system", "delta", "commit_barrier", "input",
                       "decider", "floor_commit_tiers", "split", "infer_nominal",
                       "dag")}
+    if args.delta_policy != "fixed":    # absent on frozen batch-1 reports
+        from rb.learned import head_summary
+        rep["config"]["delta_policy"] = args.delta_policy
+        rep["config"]["stophead_model"] = args.stophead_model
+        rep["config"]["stophead"] = head_summary(stophead)
+        prot = sum(1 for r in rows for d in r["decisions"]
+                   for w in d.get("op_windows", {}).values() if w > 0)
+        tot = sum(len(d.get("op_windows", {})) for r in rows
+                  for d in r["decisions"])
+        rep["learned_windows"] = {"ops": tot, "protected": prot,
+                                  "protect_rate": round(prot / tot, 4) if tot
+                                  else None}
     (Path(args.build) / f"rb_report_{args.provider}.json").write_text(
         json.dumps(rep, indent=2))
     print(json.dumps(rep, indent=2))
@@ -611,6 +710,53 @@ def selftest():
         _resolve_ref("$RESULT_0.trains[0].id", {}, steps, None, base=0) == "AAA"
         and _resolve_ref("$RESULT_1.id", {}, steps, None, base=0) == "BBB"
         and _resolve_ref("$RESULT_7.id", {}, steps, None, base=0) == "$RESULT_7.id")
+
+    # -- learned-head RB adaptation (test-897 batch 2; frozen v2 weights) ----
+    from rb.learned import install_stophead_rb, load_head, RB_REQUIRED_ARGS
+    import stophead as sh_mod
+    install_stophead_rb()
+    ck["lh_required_args_installed"] = all(
+        fn in sh_mod.REQUIRED_ARGS for fn in RB_REQUIRED_ARGS) and \
+        "search_flights" in sh_mod.REQUIRED_ARGS          # FDB keys intact
+    ck["lh_kappa_resolves"] = all(
+        sh_mod.kappa_name(fn) in sh_mod.KAPPAS for fn in RB_REQUIRED_ARGS)
+    v2 = load_head(ROOT / "exp/w4/stophead_v2.json")
+    base_ctx = {"eou_idx": 0, "utt_dur": 2.0, "gap_prev": 0.0,
+                "n_prior_ops": 0, "domain": "travel", "kappa": "REV",
+                "slots_missing": 0, "chain_dep": 0}
+    r_unf = v2.risk({**base_ctx, "finality": "unfinished"})
+    r_fin = v2.risk({**base_ctx, "finality": "final"})
+    ck["lh_finality_feature_flows"] = r_unf > r_fin       # frozen v2 loading
+    # protect-all theta clone == fixed delta* arm on scored fields (structural
+    # bound of the twostage policy; window audit fields differ by design)
+    protect_all = sh_mod.StopHead({**v2.d, "theta": -1.0})
+    commit_now = sh_mod.StopHead({**v2.d, "theta": 1.1})
+    ep4l = make_episode("A", "L4", 0, ch)
+    fixed = run_episode(ep4l, OracleDecider(ep4l), mode="tact",
+                        input_kind="text")
+    pall = run_episode(ep4l, OracleDecider(ep4l), mode="tact",
+                       input_kind="text", delta_policy="learned:v2",
+                       stophead=protect_all)
+    scored = ("exact", "state_verbatim", "state_normalized", "U", "done_s",
+              "first_response_s", "n_commits", "fees", "comp_cost")
+    ck["lh_protect_all_equals_fixed"] = all(
+        fixed[k] == pall[k] for k in scored) and all(
+        w == 1.5 for d in pall["decisions"]
+        for w in d.get("op_windows", {}).values())
+    cnow = run_episode(ep4l, OracleDecider(ep4l), mode="tact",
+                       input_kind="text", delta_policy="learned:v2",
+                       stophead=commit_now)
+    ck["lh_commit_now_drops_rescue"] = (not cnow["exact"]) and fixed["exact"] \
+        and all(w == 0.0 for d in cnow["decisions"]
+                for w in d.get("op_windows", {}).values()) \
+        and cnow["done_s"] < fixed["done_s"]
+    cnow2 = run_episode(ep4l, OracleDecider(ep4l), mode="tact",
+                        input_kind="text", delta_policy="learned:v2",
+                        stophead=commit_now)
+    ck["lh_deterministic"] = json.dumps(cnow, sort_keys=True) == \
+        json.dumps(cnow2, sort_keys=True)
+    ck["lh_frozen_path_no_audit_keys"] = not any(
+        "op_windows" in d or "finality" in d for d in fixed["decisions"])
     for k, v in ck.items():
         print(f"  selftest {k}: {'PASS' if v else 'FAIL'}")
     print("SELFTEST", "PASS" if all(ck.values()) else "FAIL")

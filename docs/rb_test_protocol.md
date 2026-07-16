@@ -192,3 +192,69 @@ armA 兑现（.615 vs .077）、armB 反而 .333 vs .417。SV 门控是下一个
 
 **第二批**：learned-head 臂（v2/C0/C1 π 点）待 RB 适配层 + selftest 交付后按 §一同纪律
 单发（评测 only，任何 RB 观测不得回流训练/调参）。
+
+---
+
+## 六、第二批：学习头臂（协议冻结 2026-07-16；在任何 batch-2 test 观测之前写定）
+
+> **runner v1.1（增量勘误，按 §一纪律登记）**：`scripts/rb_run.py` 新增
+> `--delta-policy learned:v2 / --stophead-model / --finality-cache` 与
+> `rb/learned.py` 适配模块（stophead.REQUIRED_ARGS ← rb.registry.TOOLS[fn]["required"]，
+> 工具名与 FDB 零重叠断言；κ 经 install_rb 既有注入）。**默认路径逐位不动的证明**：
+> 扩展后 runner 以 `--delta-policy fixed`（默认）重放两个 oracle test provider，
+> **897/897 逐夹行与归档 `rbtest_oracle_a/b` 逐字节相同**、报告除 provider 名外相等；
+> runner selftest 14→21（新增 7 项：protect-all ≡ 固定 δ1.5 结构等式、commit-now 丢
+> L4 救援、确定性双跑、冻结路径无审计键等）。**batch-1 结果不受影响、不重跑。**
+> scorer/sandbox/registry 三文件未动，freeze v3 哈希不变。
+
+### 6.1 评测对象与红线
+
+冻结模型 = W4 归档原件，**逐字节不改**：`exp/w4/stophead_v2.json`（θ=.03）、
+`exp/w4v3/stophead_v3c_pi{020,040,060,080,100,150,200,300}.json`（C0 先验移位）、
+`exp/w4v3/stophead_v3c1_pi{020..300}.json`（C1 真实停顿锚重训）。全部 twostage
+（w_protect=1.5 / risk_horizon=2.5；θ 随 π 单调降已验）。**评测 only**：RB 任何观测
+不得回流训练、θ/π 选择或模型挑选；不做 RB 侧点预测校准。finality = 冻结
+FINALITY_PROMPT 在音频尾 8s 上的 Omni 判读（独立缓存，不进决策消息 ⇒ 决策缓存
+键口径不变）。
+
+### 6.2 provider 清单与运行序（各一次，§一单发纪律全承接）
+
+臂 A（test 541，`--split test --arm A --system tact --delta 1.5 --decider llm
+--input audio --delta-policy learned:v2`）；缓存种子 = 前一 provider 决策缓存副本
+（首个种自 `decision_cache_rbtest_tact_d150.json`）；finality 缓存共用一份
+`finality_cache_rb_a.json`（臂 A 音频 provider 不变式）：
+
+| # | provider | --stophead-model |
+|---|---|---|
+| 1 | `rbtest_lh_v2_tact` | exp/w4/stophead_v2.json |
+| 2–9 | `rbtest_lh_c0_pi{020,040,060,080,100,150,200,300}_tact` | exp/w4v3/stophead_v3c_pi*.json（π 升序） |
+| 10–17 | `rbtest_lh_c1_pi{020,...,300}_tact` | exp/w4v3/stophead_v3c1_pi*.json（π 升序） |
+
+预算许可下跑满 17；若须裁减，**在第一个 provider 启动前**声明前缀截断
+（只允许按上表顺序截断，不允许挑点）。臂 B 学习头 provider 代码已支持但
+**不在本批**（跑它 = 新预注册）。每份 report 自动携带
+`config.stophead`（版本/θ）与 `learned_windows`（protect_rate）。
+
+### 6.3 冻结判读（仅此三条进判定句；其余全部描述性）
+
+- **H-LH1a（机械）**：同族内 protect_rate 随 π 单调不减（θ_eff 单调降的直接后果；
+  违反 = 适配层 bug，不是科学结果）。
+- **H-LH1b（经验）**：同族内 exact 随 π 弱单调升、趋向固定臂 .2662
+  （protect-all 结构等式已由 selftest 钉死）。
+- **H-LH2（W4 判决迁移，主判读）**：**没有任何学习头臂对固定 δ1.5 臂
+  （`rbtest_tact_d150`）取得配对净优势**（learned-only vs fixed-only，
+  精确二项 p<.05）。预测 = 不发生；若发生 = W4 "G2 未立"结论不迁移，
+  属重大更新，如实入册并重启学习线讨论。
+- **H-LH3（经验方向）**：逐 π 配点上 C1 protect_rate ≥ C0（FDB 上已现方向；
+  真实停顿锚 ⇒ m_train 更小 ⇒ θ_eff 更低）。
+
+已声明风险（引用即须随注）：RB 修订基率（.673 episode 级）远超 π 网格支撑
+[.02,.30] 与两模型的教学/真实先验——头的风险标度在 RB 上先验错配是**预期内**
+现象，任何"标度错了"读数都不构成重训理由（防火墙）。
+
+### 6.4 收官
+
+与 §一同：停服 → 全 provider 离线复放（决策+finality 双缓存 0 miss、报告/缓存/
+逐夹目录逐字节）→ `rb_test_receipt_batch2.json`（provider 清单/缓存计数/
+异常登记/复放结论）。判读（H-LH1–3 + π 前沿表 + 与 batch-1 主表合并）交回
+判读层，写入本文件 §七。
