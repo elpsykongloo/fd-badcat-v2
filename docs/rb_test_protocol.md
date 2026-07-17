@@ -720,6 +720,54 @@ legacy 臂 B eou 箱（L4/L5/L6）维持名义箱 + `armb_timing.measured_gaps` 
   rb/sandbox.py + rb/registry.py + **scripts/rb_commit_judge.py** 四文件哈希 +
   v2.4 勘误链（§10.7 两项）+ P3 收据 + build 钉死；runner test 守卫自动校验。
 
+#### 11.1.5 前置链收官记录（2026-07-17；判读容器镜像核验）
+
+用户实跑（源提交 `d42faac2`，bank 独立提交 `dbf79e83`）；判读容器逐项复核：
+
+- **并发改造审查（先于采信数据）**：DeepSeek 生成并发（job 表固定序、全部成功后按稳定
+  索引装配、per-worker client、硬失败）与 Qwen TTS 并发预热（去重、每 key 线程锁 +
+  fcntl 文件锁、唯一临时名 + 原子 replace、`cache_only` 装配期缓存缺失硬报错）**均
+  通过审查**：装配保持串行 cache-only ⇒ WAV/cue 字节 = f(缓存)，与完成顺序无关；
+  "缓存键即复现单元"的既有纪律不变（合成本身跨运行不保证可复现，v2.3 同）；Omni 判定
+  服务维持 max_num_seqs=1 串行 = 测量口径不动。附带正确增强：value_first 位置不变量
+  （验证器 + 审计 + 运行时护栏三层）与 value_first 免不流利包裹。注记：缓存目录新增
+  `.lock` 文件属常态，后续审计勿计为异常。全套 selftest 在并发提交上复绿
+  （62/16/7/5/4）。
+- **P0**：136 hits / 0 misses，decisions 54/54 逐位同归档 ⇒ v2.3 prompt 字节在新
+  代码下不变，探针产物已删。
+- **P1**：bank `a4a4f2db5bf0`（324/306/303 → 人工筛除 19 → 284），audit **0 违规**；
+  L4 13/13 变体听检过（zh 6 + en 7，全部 new-首 + 单 new/old 对比式）。
+- **P2**：`rb_v2.4.0 / config 9d338e70f770 / ids 96b56bc0af87 / content
+  d5cfef37f9db / n 1364 (143/1221)`；A WAV 666/666 完整；预热 A 1332/1283/739/544、
+  B 1684/1277/205/1072（请求/唯一/命中/新合成），仓外缓存 5827、0 tmp；--verify
+  exit 0（仅预期的 pause-prior content 差异）。
+- **P3**：**硬门全过**，判读容器对四份 report 从逐夹行镜像重算 **0 失配**：A 门层
+  全 1.0、B 门层全 1.0、L13 pair_axis 八格全 1.0、L15 exact 1.0 且 aborted 5 ≥
+  feasible 5、who_axis 双臂良性 1.0/对抗 0。天花板层失分格（A-L5×4、A-L6×3、
+  B-L5×3）逐格死因一致 = 修订到达时目标已 commit 且无合法 pending 修复路；L8 零失分。
+- **P4**：A 0/161、B 0/194 首跑 cache；B 臂 TTS 停服下 0 新合成、76/76 overlaps=0；
+  解析健康 A 95/3/28/2、B 122/2/30/4。**软预期 L4 dev>0 未中（0/12）——判定 = 模型
+  能力而非代码错误**，三重证据：① oracle 同音频重放 A-L3/L4/L7 全 6/6 + 12/12 夹
+  模型都在修订事件后做出了第二决策（时间轴/TTS/runner/scorer 全无罪）；② 12 夹逐行
+  法医分解：**4/12 对比构式被正确理解且正确绑定**（A_L4_0025 双 op patch 3000 后被
+  自发 $R 改写毁掉其余参数；B_L4_0026 patch 正确且 say 显式复述 "$3,000"，死于自身
+  dec0 launch 参数；B_L4_0021 "red account" ASR 表面形；B_L4_0049 verbatim 违规
+  salary_card/rent_card），**仅 1/12 是否定式反转**（A_L4_0029 把旧值 EUR patch 进
+  去），5/12 为 L12 类错绑/未应用、1/12 值位 $R 引用幻觉、1/12 值对目标错
+  （B_L4_0012 qty→place_order = admission 可拦形态）——新模板特有的失败只有那 1 夹，
+  其余全是 v2.3 就有的能力族；③ v2.3 dev L4 基线 = 1/12（旧畸形文本），Δ=−1 于
+  n=12 无统计意义（真率 ~3% 时 P(0/12)≈69%），R-L4FIX 在 test n=110 上读。
+- **附带正结果（dev 观察，预注册不动）**：`B_L15_0026` 中 30B 模型**首次**使用已执行
+  op 撤销通道——正确读 X 命名空间 id、`cancel op_id="X2"` abort 成功（零费）、
+  relaunch 新值、exact 通过。对照 reverse 工具历史四臂恒零：X-id + 显式语法的可达性
+  设计有效。H-ABORT2 预注册预测（=0）不变；test 非零即按冻结措辞入册为能力发现。
+- **P5**：freeze **v5** 已立（`exp/rb/scorer_freeze.json`：scorer/sandbox/registry/
+  rb_commit_judge 四文件哈希 + errata_v4_to_v5 九项 + P3 oracle 门收据 + build 钉死
+  `9d338e70f770`），守卫校验通过。**裁定：不立 prompt/model 干预版本**——词条工程
+  零和先例 ×2（FDB 五靶、attr 门）、v3.1 是跨 FDB/RB 全部主臂的冻结系统 prompt
+  （v2.4-only 改词破坏跨版本系统平价）、dev n=12 无干预依据；补偿/绑定类机制改进
+  （redo op、绑定槽）留作 v2.4 之上的新系统版本单发，不阻塞主线。
+
 #### 11.2 单发 provider 清单（15 个，各 live 恰一次，顺序即清单序）
 
 | # | provider | 关键参数 | 备注 |
