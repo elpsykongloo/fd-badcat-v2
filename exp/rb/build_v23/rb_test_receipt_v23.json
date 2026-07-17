@@ -1315,6 +1315,12 @@
       "phase": "receipt preparation after replay",
       "impact": "none",
       "detail": "A read-only sha256 probe initially guessed rb/admission.py and exp/rb/content_bank_v23.json; both paths do not exist. The actual tracked paths src/admission.py and exp/rb/content_bank.json were then hashed."
+    },
+    {
+      "code": "archive_push_tls_disconnect_after_remote_acceptance",
+      "phase": "git push after archival commit",
+      "impact": "none on archived content; no provider rerun",
+      "detail": "The first git push client exited 1 with curl 56 / GnuTLS non-proper termination while reading the final sideband response. An immediate read-only git ls-remote confirmed origin/main had already accepted archival commit f321601c73b9bf82cedb690f390c86893babd442; the provider artifacts were not rerun or regenerated."
     }
   ],
   "repository_integrity": {
