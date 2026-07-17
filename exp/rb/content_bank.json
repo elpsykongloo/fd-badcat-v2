@@ -1,0 +1,454 @@
+{
+ "_provenance": {
+  "model": "deepseek-v4-flash",
+  "n_accepted": 244,
+  "n_raw": 246,
+  "n_requested": 312
+ },
+ "bystander": {
+  "en": {
+   "cancel": [
+    "Don't buy it, cancel that.",
+    "Just don't buy it, cancel the whole thing.",
+    "Forget about buying it, just go ahead and cancel.",
+    "Don't purchase it, cancel it instead.",
+    "Stop yourself from buying it and cancel that.",
+    "Skip buying it, just cancel the order.",
+    "Don't buy it, cancel it right now."
+   ],
+   "command": [
+    "Change it to {other}.",
+    "Switch it to {other}.",
+    "Set it to {other}.",
+    "Go ahead and change it to {other}.",
+    "Turn it into {other}.",
+    "Make it {other}.",
+    "Replace it with {other}."
+   ],
+   "irrelevant": [
+    "What do you want for dinner? Let's order in.",
+    "What do you feel like for dinner so we can order in",
+    "Let's order in, what are you in the mood for dinner",
+    "For dinner, what do you want since we're ordering in",
+    "What's your dinner choice to order in tonight",
+    "Should we order in and what do you want for dinner",
+    "I'm thinking we order in, so what do you fancy for dinner"
+   ]
+  },
+  "zh": {
+   "cancel": [
+    "别买了别买了。",
+    "算了别买了",
+    "别买了真的别买了",
+    "别去买了",
+    "不买了不买了",
+    "先别买了",
+    "别买了吧"
+   ],
+   "command": [
+    "改成{other}吧。",
+    "你就改成{other}吧。",
+    "咱们改成{other}吧。",
+    "把那个改成{other}吧。",
+    "快点改成{other}吧。",
+    "改一下成{other}吧。"
+   ],
+   "irrelevant": [
+    "今晚想吃什么？我们点外卖吧。",
+    "今晚想吃啥，我们点外卖吧",
+    "晚上想吃什么，咱们叫外卖吧",
+    "今晚想吃什么菜，我们点外卖呗",
+    "今晚想吃什么，点个外卖吧",
+    "想吃点什么，我们叫外卖好了",
+    "今晚想吃什么，我们点外卖行不"
+   ]
+  }
+ },
+ "disfluency": {
+  "en": {
+   "elongation": [
+    "Uh— {body}",
+    "Uh— I mean {body}",
+    "Well— {body}",
+    "Actually— {body}",
+    "You know— {body}",
+    "Wait, no— {body}",
+    "Sorry— {body}"
+   ],
+   "false_start": [
+    "So I was— {body}"
+   ],
+   "filler": [
+    "Um... {body}",
+    "Uh... {body}",
+    "Hmm... {body}",
+    "Well... {body}",
+    "Like... {body}",
+    "You know... {body}",
+    "I mean... {body}"
+   ],
+   "repetition": [
+    "Make it, make it, {body}",
+    "Do it, do it, {body}",
+    "Say it, say it, {body}",
+    "Write it, write it, {body}",
+    "Try it, try it, {body}",
+    "Fix it, fix it, {body}",
+    "Get it, get it, {body}"
+   ],
+   "self_repair": [
+    "Change it to the... no wait, {body}",
+    "Put it to, um, actually {body}",
+    "Make it the, sorry I mean {body}",
+    "Switch it to the, no no {body}",
+    "Set it to, wait no, {body}",
+    "Change it over to the, hold up {body}",
+    "Do it as the, I mean {body}"
+   ]
+  },
+  "zh": {
+   "elongation": [
+    "呃——{body}",
+    "嗯——{body}",
+    "啊——{body}",
+    "那个——{body}",
+    "哎——{body}",
+    "唔——{body}"
+   ],
+   "false_start": [
+    "那个我先——{body}",
+    "那个就是——{body}",
+    "嗯不对——{body}",
+    "我说的是——{body}",
+    "等一下——{body}",
+    "哦那个——{body}",
+    "我先说——{body}"
+   ],
+   "filler": [
+    "嗯……{body}"
+   ],
+   "repetition": [
+    "改成，改成，{body}"
+   ],
+   "self_repair": [
+    "改成那个……不对，{body}"
+   ]
+  }
+ },
+ "intent": {
+  "ecom_chain": {
+   "en": [
+    "Search for {query}, add {qty} to the cart, and order it to {address}."
+   ],
+   "zh": [
+    "帮我搜{query}，加{qty}件进购物车，下单寄到{address}。",
+    "帮我查{query}，再加{qty}件放进购物车，然后下单寄到{address}。",
+    "搜一下{query}，加{qty}件进购物车，直接下单送到{address}。",
+    "帮我找{query}，加{qty}件到购物车，下单寄去{address}。",
+    "搜索{query}，放进{qty}件到购物车，下单发到{address}。",
+    "帮我搜搜{query}，加{qty}件进购物车，然后下单送到{address}。",
+    "查{query}，加{qty}件进购物车，下单寄往{address}。"
+   ]
+  },
+  "ecom_multi": {
+   "en": [
+    "Search for {query}, and check whether item {item_id} is in stock.",
+    "Can you search for {query} and check if item {item_id} is in stock?",
+    "I need you to look up {query} and tell me whether item {item_id} is available.",
+    "Please search for {query} and see if item {item_id} is in stock.",
+    "Search for {query} and let me know if item {item_id} is in stock, okay?",
+    "Could you run a search for {query} and verify the stock of item {item_id}?",
+    "Would you mind searching for {query} and checking if item {item_id} is in stock?"
+   ],
+   "zh": [
+    "搜一下{query}，再看看编号{item_id}还有没有货。",
+    "帮我搜{query}，再查查编号{item_id}还有库存没",
+    "你先搜一下{query}，然后看看编号{item_id}的库存情况",
+    "查查{query}，顺便看看编号{item_id}还有没有货",
+    "搜一下{query}，另外看一下编号{item_id}还有货吗",
+    "麻烦搜{query}，再确认一下编号{item_id}还有没有库存",
+    "搜{query}，然后检查编号{item_id}还有没有货"
+   ]
+  },
+  "ecom_single": {
+   "en": [
+    "Add {qty} of item {item_id} to my cart.",
+    "Put {qty} of item {item_id} into my cart.",
+    "I need to add {qty} of item {item_id} to my shopping cart.",
+    "Could you add {qty} of item {item_id} to my cart?",
+    "Stick {qty} of item {item_id} in my cart, please.",
+    "Add {qty} of the item {item_id} to my cart for me.",
+    "Throw in {qty} of item {item_id} into my cart."
+   ],
+   "zh": [
+    "把编号{item_id}的商品加{qty}件到购物车。",
+    "帮我加编号{item_id}的商品{qty}件到购物车",
+    "把编号{item_id}的商品放{qty}件进购物车",
+    "我要把编号{item_id}的商品加{qty}件到购物车",
+    "请帮我将编号{item_id}的商品加{qty}件到购物车",
+    "给购物车加编号{item_id}的商品{qty}件",
+    "把编号{item_id}的商品增加{qty}件到购物车"
+   ]
+  },
+  "fin_multi": {
+   "en": [
+    "Check my {account} balance, and set an alert if it drops below {threshold}.",
+    "Could you check my {account} balance and set an alert if it falls below {threshold}?",
+    "Please look up my {account} balance and notify me if it drops under {threshold}.",
+    "I need you to check the balance on my {account} and set a notification if it goes below {threshold}.",
+    "Can you check my {account} balance and then set an alert for when it dips below {threshold}?",
+    "Check the {account} balance for me and trigger an alert if it drops below {threshold}.",
+    "Would you mind checking my {account} balance and setting an alert if it falls beneath {threshold}?"
+   ],
+   "zh": [
+    "看下{account}的余额，再设一个低于{threshold}就提醒我的警报。",
+    "帮我查一下{account}的余额，再设一个低于{threshold}就自动提醒我的警报。",
+    "看看{account}里还有多少钱，然后设定一个阈值低于{threshold}就会报警的提醒。",
+    "查查{account}的余额，并且创建一个低于{threshold}时通知我的警报。",
+    "帮我查看{account}的余额，再设置一个当低于{threshold}就发警报的提醒。",
+    "查询{account}的余额，同时设个低于{threshold}就马上提醒我的警报。",
+    "看看{account}的余额，再建立一个低于{threshold}就自动通知我的警报。"
+   ]
+  },
+  "fin_payment": {
+   "en": [
+    "Schedule a payment of {amount} to {payee} on {date}.",
+    "I need you to schedule a payment of {amount} to {payee} on {date}.",
+    "Can you set up a payment of {amount} to {payee} for {date}?",
+    "Please arrange a transfer of {amount} to {payee} on {date}.",
+    "Could you make a payment of {amount} to {payee} on {date}?",
+    "Schedule a transfer of {amount} to {payee} for {date}.",
+    "I want to pay {amount} to {payee} on {date}."
+   ],
+   "zh": [
+    "帮我设一笔给{payee}的付款，{amount}块，{date}扣。",
+    "帮我在{date}给{payee}转{amount}块",
+    "我要设个付款，{amount}块，{date}付给{payee}",
+    "帮我安排一笔{date}扣{amount}块给{payee}的付款",
+    "请帮我设一笔付款，给{payee}，金额{amount}块，{date}扣款",
+    "帮我设置一下，在{date}给{payee}付{amount}块",
+    "我需要在{date}从账户扣{amount}块转给{payee}，帮我设一下"
+   ]
+  },
+  "fin_transfer": {
+   "en": [
+    "Get a quote for {amount} {from_cur} to {to_cur}, then transfer {amount} from {from_acct} to {to_acct}.",
+    "First get a quote for {amount} {from_cur} to {to_cur} and then transfer {amount} from {from_acct} to {to_acct}.",
+    "Can you quote {amount} {from_cur} in {to_cur} and after that move {amount} from {from_acct} into {to_acct}?",
+    "I need a quote converting {amount} {from_cur} to {to_cur}, then please send {amount} from {from_acct} to {to_acct}.",
+    "Get me a quote for {amount} {from_cur} to {to_cur} and afterwards transfer that same {amount} from {from_acct} over to {to_acct}.",
+    "Please provide a quote for {amount} {from_cur} to {to_cur} and then initiate a transfer of {amount} from {from_acct} to {to_acct}.",
+    "Could you quote {amount} {from_cur} in {to_cur} first and then transfer {amount} from {from_acct} to {to_acct}?"
+   ],
+   "zh": [
+    "先查{amount}块{from_cur}换{to_cur}的汇率，然后从{from_acct}转{amount}到{to_acct}。"
+   ]
+  },
+  "hou_chain": {
+   "en": [
+    "Find a {beds} in {city} under {max_rent}, and book a viewing for {slot}.",
+    "I need you to find a {beds} in {city} for under {max_rent} and set up a viewing for {slot}.",
+    "Could you look for a {beds} in {city} that's under {max_rent} and then book me a viewing at {slot}?",
+    "Find me a {beds} in {city} under {max_rent} and arrange a viewing for {slot}.",
+    "I'm looking for a {beds} in {city} under {max_rent}, and please book a viewing for {slot}.",
+    "Can you search for a {beds} in {city} that costs under {max_rent} and then schedule a viewing for {slot}?",
+    "I want a {beds} in {city} for less than {max_rent} and a viewing booked for {slot}."
+   ],
+   "zh": [
+    "在{city}找{beds}、租金不超过{max_rent}的房子，约{slot}看房。",
+    "我想在{city}找{beds}的房子，月租不超过{max_rent}，约{slot}过去看看。",
+    "在{city}找个{beds}的，租金最高{max_rent}，然后约{slot}看房可以吗？",
+    "帮我找{city}那边{beds}的房源，租金别超{max_rent}，约{slot}看下。",
+    "我要在{city}租{beds}的房子，租金控制在{max_rent}以内，约{slot}去看。",
+    "在{city}找套{beds}的，月租不超过{max_rent}，看房时间定在{slot}。",
+    "想在{city}找{beds}的房间，房租顶多{max_rent}，约{slot}实地看下。"
+   ]
+  },
+  "hou_multi": {
+   "en": [
+    "Find a {beds} in {city} under {max_rent}, and check the commute from {from_addr} to {to_addr}.",
+    "Find me a {beds} in {city} for less than {max_rent}, and also check the commute from {from_addr} to {to_addr}.",
+    "I need a {beds} in {city} under {max_rent}, plus see how long the commute is from {from_addr} to {to_addr}.",
+    "Look for a {beds} in {city} with rent under {max_rent}, and check the travel time from {from_addr} to {to_addr}.",
+    "Can you find a {beds} in {city} under {max_rent}, and also check the commute from {from_addr} to {to_addr}?",
+    "Search for a {beds} in {city} for no more than {max_rent}, and see the commute from {from_addr} to {to_addr}.",
+    "Get me a {beds} in {city} under {max_rent}, and check how the commute is from {from_addr} to {to_addr}."
+   ],
+   "zh": [
+    "在{city}找{beds}、不超过{max_rent}的房子，再算下从{from_addr}到{to_addr}的通勤时间。",
+    "在{city}找带{beds}的，租金不超过{max_rent}的房子，再帮我算算从{from_addr}到{to_addr}要多久通勤",
+    "帮我找{city}里{beds}、月租{max_rent}以内的房子，然后算下从{from_addr}到{to_addr}的通勤时间",
+    "我要在{city}找{beds}、最高{max_rent}的房子，顺便算一下从{from_addr}到{to_addr}的上下班时间",
+    "在{city}找{beds}、租金别超过{max_rent}的房，再算算从{from_addr}到{to_addr}的通勤时间行吗",
+    "找{city}的{beds}房子，预算{max_rent}内，还得算从{from_addr}到{to_addr}的通勤时长",
+    "帮我查下{city}有{beds}、租金{max_rent}以下的房子，再算下从{from_addr}到{to_addr}的通勤时间"
+   ]
+  },
+  "hou_single": {
+   "en": [
+    "Save listing {listing_id} for me.",
+    "Could you save listing {listing_id} for me?",
+    "Please save listing {listing_id} for me.",
+    "I need you to save listing {listing_id}.",
+    "Save that listing {listing_id} for me, will you?",
+    "Would you mind saving listing {listing_id} for me?",
+    "Make sure listing {listing_id} is saved for me."
+   ],
+   "zh": [
+    "把编号{listing_id}的房源收藏一下。",
+    "帮我收藏一下编号{listing_id}的这个房源",
+    "把{listing_id}这个房源给收藏了呗",
+    "收藏一下{listing_id}的那个房源",
+    "帮我把编号{listing_id}的房源收藏起来",
+    "麻烦把{listing_id}的房源收藏一下",
+    "把那个编号是{listing_id}的房源收藏了吧"
+   ]
+  },
+  "travel_chain": {
+   "en": [
+    "Find a train from {origin} to {destination} on {date}, hold a {seat_class} seat, and buy the ticket for {passenger}.",
+    "I need you to look up a train from {origin} to {destination} on {date}, reserve a {seat_class} seat, and purchase the ticket for {passenger}.",
+    "Can you find a train from {origin} to {destination} on {date}, put a {seat_class} seat on hold, and buy the ticket for {passenger}?",
+    "Get me a train from {origin} to {destination} on {date}, hold a {seat_class} seat, and then buy the ticket for {passenger}.",
+    "Search for a train from {origin} to {destination} on {date}, keep a {seat_class} seat, and buy the ticket for {passenger}.",
+    "I wanna find a train from {origin} to {destination} on {date}, hold a {seat_class} seat, and buy the ticket for {passenger}.",
+    "Please find a train from {origin} to {destination} on {date}, put a {seat_class} seat on hold, and buy the ticket for {passenger}."
+   ],
+   "zh": [
+    "帮我查{date}从{origin}到{destination}的火车，订{seat_class}，然后直接买票，乘客是{passenger}。"
+   ]
+  },
+  "travel_hotel": {
+   "en": [
+    "Book me a hotel in {city}, checking in {checkin}, for {nights} nights.",
+    "I need a hotel in {city} for {nights} nights starting {checkin}.",
+    "Could you book a room in {city} from {checkin} for {nights} nights?",
+    "Find me a place to stay in {city} checking in {checkin} for {nights} nights.",
+    "I'd like to reserve a hotel in {city} with check-in on {checkin} and stay {nights} nights.",
+    "Book a hotel in {city} for {nights} nights, checking in {checkin}.",
+    "Can you get me a hotel in {city} from {checkin} for {nights} nights?"
+   ],
+   "zh": [
+    "帮我在{city}订一间酒店，{checkin}入住，住{nights}晚。"
+   ]
+  },
+  "travel_multi": {
+   "en": [
+    "Look up trains from {origin} to {destination} on {date}, and also check if {nationality} citizens need a visa for {country}.",
+    "Find me trains from {origin} to {destination} on {date}, and also see if {nationality} nationals need a visa for {country}.",
+    "Can you look up trains from {origin} to {destination} on {date} and check whether {nationality} passport holders require a visa for {country}?",
+    "I need train schedules from {origin} to {destination} on {date}, plus find out if {nationality} citizens need a visa for {country}.",
+    "Search for trains from {origin} to {destination} on {date}, and in addition, check visa requirements for {nationality} travelers going to {country}.",
+    "Look up trains between {origin} and {destination} on {date} and also tell me if {nationality} people need a visa for {country}.",
+    "I'd like you to check trains from {origin} to {destination} on {date} and also confirm if {nationality} citizens require a visa for {country}."
+   ],
+   "zh": [
+    "查一下{date}从{origin}到{destination}的火车，顺便查{nationality}去{country}要不要签证。",
+    "帮我查查{date}从{origin}到{destination}的火车，顺便看看{nationality}去{country}用不用签证。",
+    "查一下{date}从{origin}到{destination}的火车，再查查{nationality}去{country}要不要签证呗。",
+    "我想问{date}从{origin}到{destination}的火车，还有{nationality}去{country}需不需要签证。",
+    "麻烦查{date}从{origin}到{destination}的火车，顺便帮问问{nationality}去{country}要不要签证。",
+    "查下{date}从{origin}到{destination}的火车，顺便查{nationality}去{country}要签证不？",
+    "帮我查{date}从{origin}到{destination}的火车，还有查查{nationality}去{country}是不是要签证。"
+   ]
+  }
+ },
+ "progress": {
+  "en": [
+   "Any progress?",
+   "Any update?",
+   "How's it going?",
+   "Any headway?",
+   "What's the status?",
+   "Is it done yet?",
+   "Any movement?"
+  ],
+  "zh": [
+   "好了没？"
+  ]
+ },
+ "revision": {
+  "en": {
+   "cancel": [
+    "Actually, hold off, don't do it yet.",
+    "Actually, hold off on that for now please.",
+    "Wait a second, don't do that yet.",
+    "Hang on, cancel that for the moment.",
+    "Scratch that, don't go ahead with it.",
+    "Hold up, put that on pause.",
+    "Let me stop you there, don't do it."
+   ],
+   "default": [
+    "Wait — make it {new}."
+   ],
+   "inline": [
+    ", oh no, make that {new}",
+    "oh wait, change that to {new}",
+    "actually, i mean {new}",
+    "hold on, make it {new} instead",
+    "scratch that, make it {new}",
+    "no no, let me change that to {new}",
+    "sorry, I need {new} instead"
+   ],
+   "second": [
+    "Also, one more change — {new}.",
+    "Also, one more thing I need to change — {new}.",
+    "Oh and another change, {new}.",
+    "Wait, I've got one more change — {new}.",
+    "And I'd like to add another change, {new}.",
+    "Also, there's another change I'm making — {new}.",
+    "One more update here, {new}."
+   ],
+   "value_first": [
+    "{new} — change it to {new}.",
+    "Switch it to {new} instead of {new}.",
+    "I need {new} changed to {new}.",
+    "Put {new} in place of {new}.",
+    "Let's go with {new} over {new}.",
+    "Change that from {new} to {new}.",
+    "Make it {new} rather than {new}."
+   ]
+  },
+  "zh": {
+   "cancel": [
+    "算了，先别办了。",
+    "算了，不弄了",
+    "哎，别搞了",
+    "那就算了，停了吧",
+    "得了，先别弄了",
+    "算了算了，不办了",
+    "好吧，先取消吧"
+   ],
+   "default": [
+    "等等，改成{new}。",
+    "等一下，改回{new}。",
+    "不好意思，换{new}吧。",
+    "慢着，我要{new}。",
+    "稍等，改成{new}行吗。",
+    "不对，应该是{new}。",
+    "等等，还是{new}吧。"
+   ],
+   "inline": [
+    "，哦不对，改成{new}",
+    "哦不对，改成{new}",
+    "啊，不是，要改成{new}",
+    "等一下，换一下，改成{new}",
+    "搞错了，应该是{new}",
+    "改一下，用{new}",
+    "哦，那换成{new}吧"
+   ],
+   "second": [
+    "还有，再改一下，要{new}。",
+    "那个，再改一次，要{new}。",
+    "另外，再调一下，要{new}。",
+    "然后，再换一下，要{new}。",
+    "对了，再改改，要{new}。",
+    "嗯，再调整下，要{new}。",
+    "等等，再变动一下，要{new}。"
+   ],
+   "value_first": [
+    "{new}，改成{new}。"
+   ]
+  }
+ }
+}
