@@ -439,3 +439,23 @@ attr 臂不进本批（§16.6 封盘）。
 判读层写 §十（镜像容器独立重算纪律照批一/批二）；v2.3 主表 + v2.2.1 勘误后可引行
 并置进论文（分箱失效行永不并置）。本批之后 RB v2.3 test 窗口即告耗尽，任何后续
 运行 = 新系统版本单发或 v2.4 版本递增。
+
+### 9.4 增补（2026-07-17，仍在任何 v2.3 test 观测之前）：admission 臂
+
+用户裁定"方法必须应对 L12"后交付 admission v1（patch 模式门，`rb_design.md`
+§16.7：拒绝非法字段 patch，可证明无害，v1 不重定向）。provider 清单增补两个
+（总数 15→17），排在原 #12 之后、臂 B 三臂之前：
+
+| # | provider | 命令要点 |
+|---|---|---|
+| 12a | `rbt23_tact_d150_adm` | `--arm A --system tact --delta 1.5 --admission schema`（种自 #1 副本） |
+| 12b | `rbt23_b_tact_d150_adm` | `--arm B ... --admission schema --tts qwen`（种自 #13 副本，跑在 #13 之后） |
+
+**冻结判读追加**：
+- **R-ADM1（安全，硬判据）**：admission 臂对主臂配对 **admission-only-loss = 0**
+  （可证明无害性的实测检验；任何损失 = 实现 bug，按基础设施级处理）。
+- **R-ADM2（收益，诚实低预期）**：admission-only-gain = "junk-arg 是唯一死因"的夹数
+  ——普查含非法 patch 的 25 夹全部另有失败共因，预期增益 0–5 夹；=0 也入册
+  （门的价值在审计轨与安全证明，不以翻夹数论成败）。
+- **R-ADM3（审计）**：rejected/dropped/redirect-candidate 计数随行报告
+  （v2.2.1 基线 = 9.7% patch 非法率的复现检验）。

@@ -362,7 +362,8 @@ def _resolve_ref(v, by_op, by_step, batch=None, base=None):
 def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
                 fc_mode=None, input_kind="text", audio=None, tts_backend=None,
                 infer_nominal=1.0, dag_on=True,
-                delta_policy="fixed", stophead=None, fin_cache=None):
+                delta_policy="fixed", stophead=None, fin_cache=None,
+                admission=None):
     random.seed(42)
     learned = delta_policy.startswith("learned")
     if learned:
@@ -504,6 +505,20 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
         # audio tail convention as the FDB harness (separate cache; its wall
         # time never advances the audio clock — deployed it overlaps the hold).
         # The decider messages are untouched: decision cache keys stay caliber.
+        # v1 admission control (schema gate): reject patch diff keys that do
+        # not exist on the target op's schema — provably non-harmful (junk
+        # keys are guaranteed canonical mismatches); redirects counted, never
+        # applied (src/admission.py; rb_design 16.7).
+        adm_audit = None
+        if admission == "schema" and mode == "tact":
+            from admission import admit_decision_ops
+            new_ops, adm_audit = admit_decision_ops(
+                dec.get("ops") or [],
+                {oid: tx.pending[oid].fn for oid in tx.pending},
+                {f: spec["required"] for f, spec in TOOLS.items()})
+            if adm_audit:
+                dec = dict(dec)
+                dec["ops"] = new_ops
         delta_fn = None
         finality = None
         fin_parsed = True
@@ -568,6 +583,8 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
             dec_entry["finality"] = finality
             if not fin_parsed:
                 dec_entry["finality_unparsed"] = True
+        if adm_audit:                   # admission audit (flag-gated path only)
+            dec_entry["admission"] = adm_audit
         decisions.append(dec_entry)
         evts = [{"event": "tact_eou", "t": t_eou}]
         for a in launches:
@@ -659,9 +676,14 @@ def main():
     ap.add_argument("--tts", default=None, choices=[None, "qwen", "stub"],
                     help="arm-B audio synthesis backend")
     ap.add_argument("--attr", default="off", choices=["on", "off"],
-                    help="W5 attribution gate: append the revision-target-"
-                         "binding rule (PROMPT_RB_ATTR) to the decider "
-                         "prompt. Default off = prompt byte-identical.")
+                    help="W5 attribution PROMPT rule (SEALED at dev round 1, "
+                         "rb_design 16.6 — kept for archival replay only). "
+                         "Default off = prompt byte-identical.")
+    ap.add_argument("--admission", default=None, choices=[None, "schema"],
+                    help="W5 admission control v1: reject patch diff keys "
+                         "absent from the target op's schema (provably non-"
+                         "harmful; redirects counted, never applied). "
+                         "Default off = frozen path byte-identical.")
     ap.add_argument("--delta-policy", default="fixed",
                     choices=["fixed", "learned:v2"],
                     help="fixed (default; frozen batch-1 path, bit-identical) "
@@ -688,6 +710,11 @@ def main():
             got = _h.sha256((ROOT / f).read_bytes()).hexdigest()
             assert got == want, f"scorer freeze violated: {f} changed"
     install_rb(args.prompt)
+    if args.admission and args.system != "tact":
+        ap.error("--admission requires --system tact (patches are a tact op)")
+    if args.admission and "adm" not in args.provider:
+        print("WARNING: --admission without an adm-tagged provider; "
+              "recommend *_adm so grids stay separable.")
     if args.attr == "on":
         install_rb_attr()
         if "attr" not in args.provider:
@@ -754,7 +781,7 @@ def main():
                   infer_nominal=args.infer_nominal,
                   dag_on=args.dag == "on", tts_backend=tts_backend,
                   delta_policy=args.delta_policy, stophead=stophead,
-                  fin_cache=fin_cache)
+                  fin_cache=fin_cache, admission=args.admission)
         row = run_episode(ep, decider, **kw) if args.decider == "oracle" \
             else run_episode(ep, "llm", **kw)
         (outdir / f"{ep['id']}.json").write_text(
@@ -771,7 +798,7 @@ def main():
     rep["config"] = {k: getattr(args, k) for k in
                      ("arm", "system", "delta", "commit_barrier", "input",
                       "decider", "floor_commit_tiers", "split", "infer_nominal",
-                      "dag", "attr")}
+                      "dag", "attr", "admission")}
     if args.delta_policy != "fixed":    # absent on frozen batch-1 reports
         from rb.learned import head_summary
         rep["config"]["delta_policy"] = args.delta_policy
@@ -988,6 +1015,72 @@ def selftest():
     nb2 = noise_block("e1", 100, 50.0)
     ck["v23_perturb_deterministic"] = (p1 == p2 and len(p1) < len(base)
                                        and list(nb1) == list(nb2))
+
+    # -- admission v1 (patch schema gate; rb_design 16.7) --------------------
+    from admission import admit_decision_ops
+    req = {f: spec["required"] for f, spec in TOOLS.items()}
+    ops_in = [{"type": "launch", "fn": "check_stock", "args": {"item_id": "A100"}},
+              {"type": "patch", "op_id": 2, "diff": {"seat_class": "coach"}},
+              {"type": "patch", "op_id": 2, "diff": {"query": "鞋", "qty": 2}},
+              {"type": "patch", "op_id": 9, "diff": {"seat_class": "coach"}}]
+    out, aud = admit_decision_ops(ops_in, {2: "search_catalog"}, req)
+    # redirect candidates come only from PENDING ops passed in: none here
+    ck["adm_unit_gate"] = (
+        len(out) == 3                                   # junk-only patch dropped
+        and out[0] is ops_in[0]                         # non-patch passthrough
+        and out[1] == {"type": "patch", "op_id": 2, "diff": {"query": "鞋"}}
+        and out[2] is ops_in[3]                         # unknown target untouched
+        and len(aud) == 2
+        and aud[0]["rejected_keys"] == ["seat_class"] and aud[0]["dropped"]
+        and aud[0]["redirect_candidates"] == []
+        and aud[1]["rejected_keys"] == ["qty"] and not aud[1]["dropped"])
+
+    class JunkPatchDecider(OracleDecider):
+        """Launches the full scenario with FINAL canon values, then emits a
+        spurious illegal-field patch on the first pending op — the exact
+        junk-arg corruption shape the census found (25 eps, 0 passes).
+        Subclasses OracleDecider only for the runner's oracle-path dispatch."""
+        def __init__(self, ep):
+            self.ep = ep
+            self.scn = SCENARIOS[ep["scenario"]]
+            self.launched = False
+        def __call__(self, tx, segs_done, op_ids):
+            if not self.launched:
+                self.launched = True
+                ops = []
+                for st in self.scn["steps"]:
+                    args = {a: (self.ep["slots_canon"][v.strip("{}")]
+                                if isinstance(v, str) and v.startswith("{") else v)
+                            for a, v in st["args"].items()}
+                    ops.append({"type": "launch", "fn": st["fn"], "args": args})
+                return {"dialogue": "stay", "ops": ops, "say": "ok"}
+            if tx.pending:
+                oid = sorted(tx.pending)[0]
+                return {"dialogue": "stay", "say": "",
+                        "ops": [{"type": "patch", "op_id": oid,
+                                 "diff": {"seat_class": "junk"}}]}
+            return {"dialogue": "stay", "ops": [], "say": ""}
+
+    ep12a = make_episode("A", "L12", 0, ch)
+    r_off = run_episode(ep12a, JunkPatchDecider(ep12a), mode="tact",
+                        input_kind="text")
+    r_on = run_episode(ep12a, JunkPatchDecider(ep12a), mode="tact",
+                       input_kind="text", admission="schema")
+    ck["adm_flip_junk_arg_failure"] = (not r_off["exact"]) and r_on["exact"]
+    ck["adm_audit_recorded"] = (
+        any("admission" in d for d in r_on["decisions"])
+        and not any("admission" in d for d in r_off["decisions"]))
+    r_off2 = run_episode(ep12a, JunkPatchDecider(ep12a), mode="tact",
+                         input_kind="text")
+    ck["adm_default_off_identity"] = json.dumps(r_off, sort_keys=True) == \
+        json.dumps(r_off2, sort_keys=True)
+    # legal patches under the gate are byte-untouched: oracle run identical
+    ro_off = run_episode(ep12a, OracleDecider(ep12a), mode="tact",
+                         input_kind="text")
+    ro_on = run_episode(ep12a, OracleDecider(ep12a), mode="tact",
+                        input_kind="text", admission="schema")
+    ck["adm_legal_patches_untouched"] = json.dumps(ro_off, sort_keys=True) == \
+        json.dumps(ro_on, sort_keys=True)
     for k, v in ck.items():
         print(f"  selftest {k}: {'PASS' if v else 'FAIL'}")
     print("SELFTEST", "PASS" if all(ck.values()) else "FAIL")
