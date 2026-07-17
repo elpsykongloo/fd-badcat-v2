@@ -1,0 +1,79 @@
+{
+ "id": "A_L5_0035",
+ "layer": "L5",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 1.266,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.266,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 8.575,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 13.539,
+   "ops": [],
+   "say": "",
+   "admission": [
+    {
+     "op_id": 1,
+     "resolved_op_id": 2,
+     "target_fn": "search_trains",
+     "rejected_keys": [
+      "seat_class"
+     ],
+     "kept_keys": [],
+     "dropped": true,
+     "wire_unwrapped": true,
+     "gate": "v1.1"
+    }
+   ]
+  }
+ ],
+ "say_events": [
+  [
+   9.575,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   7.935,
+   "user"
+  ],
+  [
+   10.344,
+   12.899,
+   "user"
+  ]
+ ]
+}

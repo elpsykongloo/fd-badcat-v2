@@ -1,0 +1,67 @@
+{
+  "n": 35,
+  "exact": 0.1429,
+  "state_verbatim": 0.1429,
+  "state_normalized": 0.1429,
+  "U_mean": 0.0968,
+  "wrong_commits": 0,
+  "unrepaired": 0,
+  "first_p50": 1.64,
+  "done_p50": 3.754,
+  "by_layer": {
+    "L10": {
+      "n": 2,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L11": {
+      "n": 3,
+      "exact": 0.3333,
+      "U": 0.246
+    },
+    "L4": {
+      "n": 4,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L5": {
+      "n": 8,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L6": {
+      "n": 2,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L8": {
+      "n": 12,
+      "exact": 0.0833,
+      "U": 0.0833
+    },
+    "L9": {
+      "n": 4,
+      "exact": 0.75,
+      "U": 0.4125
+    }
+  },
+  "armb_timing": {
+    "episodes_with_overlap": 0,
+    "total_overlaps": 0
+  },
+  "provider": "rbdev23_b_adm11_tact_d150",
+  "config": {
+    "arm": "B",
+    "system": "tact",
+    "delta": 1.5,
+    "commit_barrier": "on",
+    "input": "audio",
+    "decider": "llm",
+    "floor_commit_tiers": null,
+    "split": "dev",
+    "infer_nominal": 1.0,
+    "dag": "on",
+    "attr": "off",
+    "admission": "schema11"
+  }
+}

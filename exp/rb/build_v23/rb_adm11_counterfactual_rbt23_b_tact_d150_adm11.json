@@ -1,0 +1,398 @@
+{
+  "schema": "rb-admission-v1.1-counterfactual-v1",
+  "runner_args": [
+    "--build",
+    "exp/rb/build_v23",
+    "--split",
+    "test",
+    "--arm",
+    "B",
+    "--system",
+    "tact",
+    "--delta",
+    "1.5",
+    "--admission",
+    "schema11",
+    "--decider",
+    "llm",
+    "--input",
+    "audio",
+    "--tts",
+    "qwen",
+    "--provider",
+    "rbt23_b_tact_d150_adm11"
+  ],
+  "counts": {
+    "both_reject": 9,
+    "raw_patch_events": 257,
+    "resolved_pending_patch_events": 174,
+    "unresolved_or_stale_patch_events": 83,
+    "v11_only_reject": 5,
+    "v11_reject": 14,
+    "v1_false_positive_resolved": 24,
+    "v1_would_reject": 33
+  },
+  "details": [
+    {
+      "episode_id": "B_L10_0004",
+      "layer": "L10",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 3,
+      "resolved_op_id": 4,
+      "resolved_target_fn": "place_order",
+      "v1_target_fn": "add_item",
+      "v1_rejected_keys": [
+        "args"
+      ],
+      "wire_nested_args": true,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L10_0005",
+      "layer": "L10",
+      "decision_index": 2,
+      "op_index": 1,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "transfer_funds",
+      "v1_target_fn": "get_fx_quote",
+      "v1_rejected_keys": [
+        "from_acct"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L10_0012",
+      "layer": "L10",
+      "decision_index": 2,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "args"
+      ],
+      "wire_nested_args": true,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L10_0015",
+      "layer": "L10",
+      "decision_index": 2,
+      "op_index": 1,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "hold_seat",
+      "v1_target_fn": "search_trains",
+      "v1_rejected_keys": [
+        "train_id"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L10_0015",
+      "layer": "L10",
+      "decision_index": 2,
+      "op_index": 2,
+      "raw_op_id": 3,
+      "resolved_op_id": 4,
+      "resolved_target_fn": "purchase_ticket",
+      "v1_target_fn": "hold_seat",
+      "v1_rejected_keys": [
+        "hold_id"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L10_0036",
+      "layer": "L10",
+      "decision_index": 2,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "qty"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L4_0021",
+      "layer": "L4",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "transfer_funds",
+      "v1_target_fn": "get_fx_quote",
+      "v1_rejected_keys": [
+        "from_acct"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L4_0025",
+      "layer": "L4",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "transfer_funds",
+      "v1_target_fn": "get_fx_quote",
+      "v1_rejected_keys": [
+        "from_acct"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L4_0028",
+      "layer": "L4",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "qty"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L4_0028",
+      "layer": "L4",
+      "decision_index": 1,
+      "op_index": 1,
+      "raw_op_id": 3,
+      "resolved_op_id": 4,
+      "resolved_target_fn": "place_order",
+      "v1_target_fn": "add_item",
+      "v1_rejected_keys": [
+        "args"
+      ],
+      "wire_nested_args": true,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L4_0041",
+      "layer": "L4",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "transfer_funds",
+      "v1_target_fn": "get_fx_quote",
+      "v1_rejected_keys": [
+        "to_acct"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L4_0044",
+      "layer": "L4",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "qty"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L5_0005",
+      "layer": "L5",
+      "decision_index": 1,
+      "op_index": 1,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "transfer_funds",
+      "v1_target_fn": "get_fx_quote",
+      "v1_rejected_keys": [
+        "to_acct"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L5_0037",
+      "layer": "L5",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "transfer_funds",
+      "v1_target_fn": "get_fx_quote",
+      "v1_rejected_keys": [
+        "to_acct"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L5_0045",
+      "layer": "L5",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "transfer_funds",
+      "v1_target_fn": "get_fx_quote",
+      "v1_rejected_keys": [
+        "from_acct",
+        "to_acct"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L6_0000",
+      "layer": "L6",
+      "decision_index": 1,
+      "op_index": 2,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "qty"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L8_0012",
+      "layer": "L8",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "qty"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L8_0033",
+      "layer": "L8",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "transfer_funds",
+      "v1_target_fn": "get_fx_quote",
+      "v1_rejected_keys": [
+        "to_acct"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L8_0036",
+      "layer": "L8",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "args"
+      ],
+      "wire_nested_args": true,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L8_0042",
+      "layer": "L8",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "book_viewing",
+      "v1_target_fn": "search_rentals",
+      "v1_rejected_keys": [
+        "slot"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L8_0060",
+      "layer": "L8",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "qty"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L8_0063",
+      "layer": "L8",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "hold_seat",
+      "v1_target_fn": "search_trains",
+      "v1_rejected_keys": [
+        "seat_class"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L8_0068",
+      "layer": "L8",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 3,
+      "resolved_op_id": 4,
+      "resolved_target_fn": "place_order",
+      "v1_target_fn": "add_item",
+      "v1_rejected_keys": [
+        "args"
+      ],
+      "wire_nested_args": true,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L8_0074",
+      "layer": "L8",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "book_viewing",
+      "v1_target_fn": "search_rentals",
+      "v1_rejected_keys": [
+        "args"
+      ],
+      "wire_nested_args": true,
+      "category": "v1_false_positive_resolved"
+    }
+  ]
+}

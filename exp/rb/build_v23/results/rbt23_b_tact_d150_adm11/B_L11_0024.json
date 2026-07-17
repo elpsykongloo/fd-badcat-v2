@@ -1,0 +1,83 @@
+{
+ "id": "B_L11_0024",
+ "layer": "L11",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.482,
+ "U": 0.8364,
+ "U_sens": {
+  "0.5": 0.8364,
+  "1.0": 0.8364,
+  "2.0": 0.8364
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 5.998,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 2
+    }
+   ],
+   "say": "正在把编号B205的商品加两件到购物车。"
+  },
+  {
+   "i": 1,
+   "t_eou": 11.956,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "item_id": "C330"
+     }
+    }
+   ],
+   "say": "已将购物车中的商品更改为编号 C330。"
+  }
+ ],
+ "say_events": [
+  [
+   6.998,
+   "正在把编号B205的商品加两件到购物车。"
+  ],
+  [
+   12.956,
+   "已将购物车中的商品更改为编号 C330。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.358,
+   "user"
+  ],
+  [
+   7.065,
+   11.316,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   1.707
+  ]
+ }
+}

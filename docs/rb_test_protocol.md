@@ -552,3 +552,53 @@ v1.1〔解析后置门 + wire 形态归一〕——预期增益按 R-ADM2 精神
 - 附带记录：admission 审计键仅出现在 adm11 决策行（冻结路径零新键，selftest 钉死）。
 
 判读并入 §十尾注；跑完后 v2.3 上剩余合法运行 = SV 门（W6 记录）或 v2.4。
+
+### 10.6 admission v1.1 单发判定（2026-07-17；§10.5 的观测后尾注）
+
+> 来源提交 `1302ab54966fac701442522b3be422444d2100a5`；完整机器收据
+> `exp/rb/build_v23/rb_test_receipt_v23_adm11.json`。runner selftest 45/45，
+> freeze v4 三文件逐哈希预检通过。TTS 仓外缓存对 dev/test 臂 B 分别覆盖
+> 73/725 unique 段、0 missing；正式 provider 期间 `:8091` 关闭，0 新合成。
+
+**dev 零损失门 PASS**：
+
+| 臂 | baseline exact | adm11 exact | adm11-only / baseline-only | both-pass / both-fail | 拒绝事件 / wire-unwrapped | v1 假阳性对照 |
+|---|---:|---:|---:|---:|---:|---:|
+| A（54） | 7 | 7 | 0 / **0** | 7 / 47 | 2 / 1 | 7 patches（7 夹） |
+| B（35） | 5 | 5 | 0 / **0** | 5 / 30 | 2 / 2 | 2 patches（2 夹） |
+
+两臂 `baseline-only=0` 后才复制 test 主臂缓存并进入单发；dev 决策缓存首跑
+A/B = 136/0、89/0 hits/misses。
+
+**test 两臂各 live 一次、0 重跑**：
+
+| 臂 | exact | state verbatim / norm | U | done50 | adm11-only / main-only | both-pass / both-fail |
+|---|---:|---:|---:|---:|---:|---:|
+| A（546） | 95 = .1740 | 95 / 99 | .1334 | 3.767 | 0 / **0** | 95 / 451 |
+| B（365） | 52 = .1425 | 52 / 56 | .0973 | 3.720 | 0 / **0** | 52 / 313 |
+
+- **R-ADM1' PASS（双臂）**：两臂 `main-only-pass` 均为空列表；没有 v1 式错杀。
+- **R-ADM2' = 0 / 0 gains**：如预注册低标所允许，41 个被机械拒绝的非法 patch
+  全部仍有共同失败因，不翻 whole-episode exact；exact/state/U 与各自主臂逐位同，
+  done50 仅 A −.022s、B −.010s。
+- **R-ADM3'**：
+  - A：解析后拒绝 **27/273 resolved-pending patches = 9.9%**，其中
+    `wire_unwrapped=11`；26 个整 patch 丢弃，28 个非法键实例。
+  - B：解析后拒绝 **14/174 = 8.0%**，其中 `wire_unwrapped=7`；14 个整 patch
+    丢弃，14 个非法键实例。
+  - v1 假阳性对照：A **52 patches / 51 episodes**，B
+    **24 patches / 22 episodes**。这 76 个 patch 全部是 raw local id 与引擎
+    resolved id 不同；其中 10/6 个还带 nested `{"args": {...}}` wire。该数直接量化
+    v1 把解析前编号几何误当语义目标的错杀面，远大于 test-911 已经翻成 loss 的 10 夹。
+
+第三个审计数不能从归档后的 applied ops 反推（局部 id 与 wire 已被规范化），故在
+停服后的全缓存复放中用 `scripts/rb_adm11_counterfactual.py` 旁路同时执行 v1/v1.1
+纯函数；旁路原样返回 v1.1 输出。标准离线复放 A/B = **1432/0、954/0
+hits/misses**，report、decision cache、546+365 逐夹目录三类哈希均与 live
+逐字节一致；旁路复放后四个 dev/test provider 仍保持同一三类哈希。臂 B
+`armb_timing.total_overlaps=0`，四个正式 HTTP miss（A 1 + B 3）全部 200。
+
+**裁决**：v1.1 把机械规则放回正确的解析后层，在 dev 与单发 test 上双重兑现
+零损失硬门；收益为 0 符合冻结低预期。论文可写“解析后 schema admission 安全关闭了
+非法字段形态并提供审计”，不可写 whole-episode accuracy 增益；合法字段错语义形态
+仍由 L12 测量。v2.3 上 admission 系列窗口至此耗尽，剩余合法运行仍仅 SV 门或 v2.4。

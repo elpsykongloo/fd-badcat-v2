@@ -1,0 +1,66 @@
+{
+  "schema": "rb-admission-v1.1-counterfactual-v1",
+  "runner_args": [
+    "--build",
+    "exp/rb/build_v23",
+    "--split",
+    "dev",
+    "--arm",
+    "B",
+    "--system",
+    "tact",
+    "--delta",
+    "1.5",
+    "--admission",
+    "schema11",
+    "--decider",
+    "llm",
+    "--input",
+    "audio",
+    "--tts",
+    "qwen",
+    "--provider",
+    "rbdev23_b_adm11_tact_d150"
+  ],
+  "counts": {
+    "raw_patch_events": 23,
+    "resolved_pending_patch_events": 13,
+    "unresolved_or_stale_patch_events": 10,
+    "v11_only_reject": 2,
+    "v11_reject": 2,
+    "v1_false_positive_resolved": 2,
+    "v1_would_reject": 2
+  },
+  "details": [
+    {
+      "episode_id": "B_L10_0000",
+      "layer": "L10",
+      "decision_index": 2,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "qty"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "B_L5_0048",
+      "layer": "L5",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "qty"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    }
+  ]
+}

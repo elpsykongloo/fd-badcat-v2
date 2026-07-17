@@ -1,0 +1,74 @@
+{
+ "id": "A_L9_0057",
+ "layer": "L9",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 0.0,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.316,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 18.729,
+   "ops": [
+    {
+     "type": "launch_dedup",
+     "fn": "transfer_funds"
+    }
+   ],
+   "say": "Transferring $3,000 to landlord now."
+  }
+ ],
+ "say_events": [
+  [
+   7.316,
+   "I'm on it."
+  ],
+  [
+   19.729,
+   "Transferring $3,000 to landlord now."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.676,
+   "user"
+  ],
+  [
+   16.913,
+   18.089,
+   "user"
+  ]
+ ]
+}

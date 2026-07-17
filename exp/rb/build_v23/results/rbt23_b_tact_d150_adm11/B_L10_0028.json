@@ -1,0 +1,96 @@
+{
+ "id": "B_L10_0028",
+ "layer": "L10",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 7.099,
+ "U": 0.6948,
+ "U_sens": {
+  "0.5": 0.6948,
+  "1.0": 0.6948,
+  "2.0": 0.6948
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 7.743,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "place_order",
+     "op_id": 4
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 12.917,
+   "ops": [
+    {
+     "type": "launch_dedup",
+     "fn": "search_catalog"
+    },
+    {
+     "type": "launch_dedup",
+     "fn": "add_item"
+    },
+    {
+     "type": "launch_dedup",
+     "fn": "place_order"
+    }
+   ],
+   "say": "I'm on it."
+  }
+ ],
+ "say_events": [
+  [
+   8.743,
+   "I'm on it."
+  ],
+  [
+   13.917,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   7.103,
+   "user"
+  ],
+  [
+   9.568,
+   12.277,
+   "bystander"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": []
+ }
+}

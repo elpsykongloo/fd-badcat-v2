@@ -1,0 +1,83 @@
+{
+ "id": "B_L11_0003",
+ "layer": "L11",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 5.925,
+ "U": 0.7379,
+ "U_sens": {
+  "0.5": 0.7379,
+  "1.0": 0.7379,
+  "2.0": 0.7379
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 4.784,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "reserve_hotel",
+     "op_id": 2
+    }
+   ],
+   "say": "Searching for hotels in Denver now."
+  },
+  {
+   "i": 1,
+   "t_eou": 9.329,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "checkin": "May 3"
+     }
+    }
+   ],
+   "say": "Updating that to May 3rd."
+  }
+ ],
+ "say_events": [
+  [
+   5.784,
+   "Searching for hotels in Denver now."
+  ],
+  [
+   10.329,
+   "Updating that to May 3rd."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   4.144,
+   "user"
+  ],
+  [
+   6.017,
+   8.689,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   1.873
+  ]
+ }
+}

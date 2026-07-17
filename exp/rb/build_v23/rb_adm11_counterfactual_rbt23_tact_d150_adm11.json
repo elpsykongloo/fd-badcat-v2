@@ -1,0 +1,817 @@
+{
+  "schema": "rb-admission-v1.1-counterfactual-v1",
+  "runner_args": [
+    "--build",
+    "exp/rb/build_v23",
+    "--split",
+    "test",
+    "--arm",
+    "A",
+    "--system",
+    "tact",
+    "--delta",
+    "1.5",
+    "--admission",
+    "schema11",
+    "--decider",
+    "llm",
+    "--input",
+    "audio",
+    "--provider",
+    "rbt23_tact_d150_adm11"
+  ],
+  "counts": {
+    "both_reject": 11,
+    "raw_patch_events": 428,
+    "resolved_pending_patch_events": 273,
+    "unresolved_or_stale_patch_events": 155,
+    "v11_only_reject": 16,
+    "v11_reject": 27,
+    "v1_false_positive_resolved": 52,
+    "v1_would_reject": 63
+  },
+  "details": [
+    {
+      "episode_id": "A_L10_0012",
+      "layer": "L10",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "qty"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L10_0020",
+      "layer": "L10",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 3,
+      "resolved_op_id": 4,
+      "resolved_target_fn": "place_order",
+      "v1_target_fn": "add_item",
+      "v1_rejected_keys": [
+        "args"
+      ],
+      "wire_nested_args": true,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L10_0032",
+      "layer": "L10",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "qty"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L12_0001",
+      "layer": "L12",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "set_alert",
+      "v1_target_fn": "get_balance",
+      "v1_rejected_keys": [
+        "threshold"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L12_0005",
+      "layer": "L12",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "set_alert",
+      "v1_target_fn": "get_balance",
+      "v1_rejected_keys": [
+        "threshold"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L12_0006",
+      "layer": "L12",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "get_commute_time",
+      "v1_target_fn": "search_rentals",
+      "v1_rejected_keys": [
+        "from_addr"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L12_0009",
+      "layer": "L12",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "set_alert",
+      "v1_target_fn": "get_balance",
+      "v1_rejected_keys": [
+        "threshold"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L12_0010",
+      "layer": "L12",
+      "decision_index": 1,
+      "op_index": 1,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "get_commute_time",
+      "v1_target_fn": "search_rentals",
+      "v1_rejected_keys": [
+        "from_addr"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L12_0013",
+      "layer": "L12",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "set_alert",
+      "v1_target_fn": "get_balance",
+      "v1_rejected_keys": [
+        "threshold"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L12_0014",
+      "layer": "L12",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "get_commute_time",
+      "v1_target_fn": "search_rentals",
+      "v1_rejected_keys": [
+        "to_addr"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L12_0017",
+      "layer": "L12",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "set_alert",
+      "v1_target_fn": "get_balance",
+      "v1_rejected_keys": [
+        "threshold"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L12_0020",
+      "layer": "L12",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "check_stock",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "item_id"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L12_0021",
+      "layer": "L12",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "set_alert",
+      "v1_target_fn": "get_balance",
+      "v1_rejected_keys": [
+        "threshold"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L12_0025",
+      "layer": "L12",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "set_alert",
+      "v1_target_fn": "get_balance",
+      "v1_rejected_keys": [
+        "threshold"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L12_0027",
+      "layer": "L12",
+      "decision_index": 1,
+      "op_index": 1,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "check_visa_rule",
+      "v1_target_fn": "search_trains",
+      "v1_rejected_keys": [
+        "country"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L12_0029",
+      "layer": "L12",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "set_alert",
+      "v1_target_fn": "get_balance",
+      "v1_rejected_keys": [
+        "threshold"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L12_0030",
+      "layer": "L12",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "get_commute_time",
+      "v1_target_fn": "search_rentals",
+      "v1_rejected_keys": [
+        "args"
+      ],
+      "wire_nested_args": true,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L12_0034",
+      "layer": "L12",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "get_commute_time",
+      "v1_target_fn": "search_rentals",
+      "v1_rejected_keys": [
+        "to_addr"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L3_0000",
+      "layer": "L3",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "qty"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L3_0025",
+      "layer": "L3",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "transfer_funds",
+      "v1_target_fn": "get_fx_quote",
+      "v1_rejected_keys": [
+        "to_acct"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L3_0032",
+      "layer": "L3",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "args"
+      ],
+      "wire_nested_args": true,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L3_0034",
+      "layer": "L3",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "book_viewing",
+      "v1_target_fn": "search_rentals",
+      "v1_rejected_keys": [
+        "slot"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L3_0036",
+      "layer": "L3",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "qty"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L3_0037",
+      "layer": "L3",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "transfer_funds",
+      "v1_target_fn": "get_fx_quote",
+      "v1_rejected_keys": [
+        "to_acct"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L3_0040",
+      "layer": "L3",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "qty"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L3_0044",
+      "layer": "L3",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 3,
+      "resolved_op_id": 4,
+      "resolved_target_fn": "place_order",
+      "v1_target_fn": "add_item",
+      "v1_rejected_keys": [
+        "args"
+      ],
+      "wire_nested_args": true,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L3_0048",
+      "layer": "L3",
+      "decision_index": 1,
+      "op_index": 1,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "args"
+      ],
+      "wire_nested_args": true,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L4_0000",
+      "layer": "L4",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "qty"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L4_0016",
+      "layer": "L4",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "qty"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L4_0017",
+      "layer": "L4",
+      "decision_index": 1,
+      "op_index": 1,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "transfer_funds",
+      "v1_target_fn": "get_fx_quote",
+      "v1_rejected_keys": [
+        "from_acct"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L4_0021",
+      "layer": "L4",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "transfer_funds",
+      "v1_target_fn": "get_fx_quote",
+      "v1_rejected_keys": [
+        "to_acct"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L4_0024",
+      "layer": "L4",
+      "decision_index": 1,
+      "op_index": 1,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "item_id"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L4_0029",
+      "layer": "L4",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "transfer_funds",
+      "v1_target_fn": "get_fx_quote",
+      "v1_rejected_keys": [
+        "from_acct"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L4_0033",
+      "layer": "L4",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "transfer_funds",
+      "v1_target_fn": "get_fx_quote",
+      "v1_rejected_keys": [
+        "from_acct"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L4_0041",
+      "layer": "L4",
+      "decision_index": 1,
+      "op_index": 1,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "transfer_funds",
+      "v1_target_fn": "get_fx_quote",
+      "v1_rejected_keys": [
+        "from_acct",
+        "to_acct"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L4_0044",
+      "layer": "L4",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "args"
+      ],
+      "wire_nested_args": true,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L4_0044",
+      "layer": "L4",
+      "decision_index": 1,
+      "op_index": 1,
+      "raw_op_id": 3,
+      "resolved_op_id": 4,
+      "resolved_target_fn": "place_order",
+      "v1_target_fn": "add_item",
+      "v1_rejected_keys": [
+        "args"
+      ],
+      "wire_nested_args": true,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L4_0046",
+      "layer": "L4",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "book_viewing",
+      "v1_target_fn": "search_rentals",
+      "v1_rejected_keys": [
+        "slot"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L4_0058",
+      "layer": "L4",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "book_viewing",
+      "v1_target_fn": "search_rentals",
+      "v1_rejected_keys": [
+        "slot"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L5_0008",
+      "layer": "L5",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 3,
+      "resolved_op_id": 4,
+      "resolved_target_fn": "place_order",
+      "v1_target_fn": "add_item",
+      "v1_rejected_keys": [
+        "args"
+      ],
+      "wire_nested_args": true,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L5_0017",
+      "layer": "L5",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "transfer_funds",
+      "v1_target_fn": "get_fx_quote",
+      "v1_rejected_keys": [
+        "to_acct"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L5_0036",
+      "layer": "L5",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "item_id"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L5_0078",
+      "layer": "L5",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "book_viewing",
+      "v1_target_fn": "search_rentals",
+      "v1_rejected_keys": [
+        "slot"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L6_0016",
+      "layer": "L6",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "item_id"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L6_0024",
+      "layer": "L6",
+      "decision_index": 1,
+      "op_index": 2,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "item_id"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L6_0039",
+      "layer": "L6",
+      "decision_index": 2,
+      "op_index": 1,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "hold_seat",
+      "v1_target_fn": "search_trains",
+      "v1_rejected_keys": [
+        "seat_class"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L6_0044",
+      "layer": "L6",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "add_item",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "item_id"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L8_0036",
+      "layer": "L8",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 3,
+      "resolved_op_id": 4,
+      "resolved_target_fn": "place_order",
+      "v1_target_fn": "add_item",
+      "v1_rejected_keys": [
+        "args"
+      ],
+      "wire_nested_args": true,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L8_0048",
+      "layer": "L8",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 3,
+      "resolved_op_id": 4,
+      "resolved_target_fn": "place_order",
+      "v1_target_fn": "add_item",
+      "v1_rejected_keys": [
+        "args"
+      ],
+      "wire_nested_args": true,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L8_0053",
+      "layer": "L8",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "transfer_funds",
+      "v1_target_fn": "get_fx_quote",
+      "v1_rejected_keys": [
+        "from_acct",
+        "to_acct"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L8_0054",
+      "layer": "L8",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "book_viewing",
+      "v1_target_fn": "search_rentals",
+      "v1_rejected_keys": [
+        "slot"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L8_0057",
+      "layer": "L8",
+      "decision_index": 1,
+      "op_index": 1,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "transfer_funds",
+      "v1_target_fn": "get_fx_quote",
+      "v1_rejected_keys": [
+        "to_acct"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    }
+  ]
+}

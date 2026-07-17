@@ -1,0 +1,536 @@
+{
+  "schema": "rb-v2.3-admission-v1.1-receipt-v1",
+  "created_utc": "2026-07-17T09:28:29Z",
+  "protocol": {
+    "spec": "docs/rb_test_protocol.md §10.5",
+    "design": "docs/rb_design.md §16.8",
+    "adjudication": "docs/rb_test_protocol.md §10.6",
+    "single_shot_rule_inherited_from": "docs/rb_test_protocol.md §一",
+    "old_v23_receipt_unchanged": "exp/rb/build_v23/rb_test_receipt_v23.json",
+    "old_v23_receipt_sha256": "058754972c9b4c0598264fc7c82bd4dc6bc21774f92f87577c7fd4babf6a66c4"
+  },
+  "verdict": {
+    "dev_zero_loss_gate": "PASS_BOTH_ARMS",
+    "test_r_adm1_prime": "PASS_BOTH_ARMS",
+    "test_r_adm2_prime_gains": {
+      "A": 0,
+      "B": 0,
+      "within_frozen_expectation_0_to_5": true
+    },
+    "test_r_adm3_prime": "COMPLETE",
+    "single_shot_discipline": "PASS",
+    "offline_replay": "PASS",
+    "overall": "PASS"
+  },
+  "source": {
+    "experiment_head": "1302ab54966fac701442522b3be422444d2100a5",
+    "experiment_head_short": "1302ab54",
+    "branch": "tact",
+    "origin_main_at_preflight": "1302ab54966fac701442522b3be422444d2100a5",
+    "pull_mode": "git pull --ff-only origin main",
+    "worktree_clean_before_run": true,
+    "pre_observation_hashes": {
+      "docs/rb_test_protocol.md": "da6fa528bdb8da7b2cd3a85fd13eff48d674e3a337d3b966633adaba0c435464",
+      "docs/rb_design.md": "3605d54417a2ae99a402addc1aef16aea5351db8ef3d0a49bc70a3f6bc330dd8",
+      "scripts/rb_run.py": "d8c0630c3a82ee7b6290a8011e035e5ff1539259bde1e16c6806899919091f46",
+      "src/admission.py": "6956e1f002153c67b48770e64bd48cb7825a7f8f54ba243d2c3a0e733c3b4fe0"
+    },
+    "postrun_analysis": {
+      "script": "scripts/rb_adm11_counterfactual.py",
+      "sha256": "9af3b41641e757bce086fec35bbb0eddc8c2b4729c1a3b67816fbf80b4e52473",
+      "scope": "offline cache-only counterfactual; returns the original v1.1 gate output unchanged"
+    }
+  },
+  "build": {
+    "path": "exp/rb/build_v23",
+    "version": "rb_v2.3.0",
+    "config_hash": "e1a515c29b8a",
+    "manifest_sha256": "eef243ee15c61d87e4b4fe87cc3c1d8d513584532c888bf1c3ff6a2650a2e22a",
+    "content_bank": "309c7c0d0361",
+    "ids_hash": "acbb7984b03d",
+    "content_hash": "2cc261e7e0fd",
+    "episodes": {
+      "all": 1000,
+      "dev": 89,
+      "test": 911,
+      "dev_A": 54,
+      "dev_B": 35,
+      "test_A": 546,
+      "test_B": 365
+    },
+    "audio": "qwen",
+    "rebuilt_for_this_run": false
+  },
+  "freeze_v4": {
+    "path": "exp/rb/scorer_freeze.json",
+    "sha256": "bda78c7cd6d1b40f211a9da8b5ca405cd18a06889c92cc4b820afb636580ac14",
+    "version": 4,
+    "manual_preflight_passed": true,
+    "automatic_check_before_each_test_provider": true,
+    "frozen_hashes": {
+      "rb/scorer.py": "548bed2e12f4b3cd5b8f0cec82107e411f27a63ba4af277930a375d240901204",
+      "rb/sandbox.py": "b0ad0842cec1d8093ddaa6d8d43bd0c2ea64080d2d88aaa8072d5db38ea83205",
+      "rb/registry.py": "b50e8aab689389580d1b5be18e3f0ccb1722615e4503873322870af0267837de"
+    },
+    "all_matched": true
+  },
+  "preflight": {
+    "runner_selftest": {
+      "command": "/root/miniconda3/envs/fd-sds/bin/python scripts/rb_run.py --selftest",
+      "passed": 45,
+      "total": 45,
+      "verdict": "PASS"
+    },
+    "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+    "gpu_memory_mib_before_services": 0,
+    "ports_10003_10004_8091_closed_before_services": true,
+    "new_provider_paths_absent_before_run": true,
+    "tts_health_check": {
+      "url": "http://127.0.0.1:8091/health",
+      "healthy": true,
+      "ran_alone_before_omni": true,
+      "stopped_before_omni": true,
+      "reason": "the frozen Omni deployment occupies about 96 GiB and prior colocation is a recorded CUDA-OOM path"
+    },
+    "tts_cache_coverage": {
+      "path": "/root/autodl-tmp/rb_tts_cache",
+      "wav_files": 3594,
+      "tmp_files": 0,
+      "dev_references": 74,
+      "dev_unique": 73,
+      "dev_missing": 0,
+      "test_references": 793,
+      "test_unique": 725,
+      "test_missing": 0,
+      "latest_wav_mtime_utc_before_and_after": "2026-07-17T06:09:40Z"
+    }
+  },
+  "services": {
+    "omni": {
+      "kind": "local_qwen3_omni_audio",
+      "model": "Qwen3-Omni-30B-A3B-Instruct",
+      "url": "http://127.0.0.1:10003",
+      "launcher": "setup/start_qwen3omni_audio.sh",
+      "launcher_sha256": "87f6edf98a5f2b1428d2c8553d6ba5479f667b8f4b7a5814c1e922f153cf7e19",
+      "deploy_config": "configs/qwen3_omni_audio_single_gpu.yaml",
+      "deploy_config_sha256": "338fc9035be05fd59a5a05fc4823189490f1233068f6a197dc326b999b39734f",
+      "max_num_seqs": 1,
+      "health_passed": true
+    },
+    "proxy": {
+      "url": "http://127.0.0.1:10004",
+      "launcher": "setup/start_qwen3_proxy.sh",
+      "launcher_sha256": "ae4bc2c74518e5eb074fcfde4d2572cd33847d2fad3f3a072e15d146cb619f5d",
+      "openapi_route_present": "/v1/chat/completions",
+      "health_passed": true
+    },
+    "same_processes_for_all_dev_and_test_live_providers": true,
+    "live_http_requests": 4,
+    "live_http_200": 4,
+    "live_http_non_200": 0,
+    "external_log_hashes": {
+      "/root/autodl-tmp/Qwen3TTS/logs/vllm-omni.log": "6515b1fa4bdf2da1bd61caae04e6c4979d36ba5d86845c5601608d45e38a67f8",
+      "/root/autodl-tmp/rb_adm11_runtime_logs/omni.log": "8e12f6f00f48bb2bd9a26c2a104e23821ef111bdc98ba617c8119259a207b162",
+      "/root/autodl-tmp/rb_adm11_runtime_logs/proxy.log": "7d5fd8932d8de2c910f419436d48529062e62a183645a0d720b80f15e0dc7070"
+    },
+    "tts_formal_syntheses": 0,
+    "tts_service_closed_during_all_dev_and_test_providers": true,
+    "stopped_before_replay": true,
+    "ports_10003_10004_8091_closed_before_replay": true,
+    "gpu_memory_mib_after_shutdown": 0,
+    "gpu_utilization_percent_after_shutdown": 0
+  },
+  "cache_seed_provenance": {
+    "rbdev23_adm11_tact_d150": {
+      "source": "decision_cache_rbdev23_tact_d150.json",
+      "seed_sha256": "4b57811571f5ad7b6d07df000fa303df6f8174b642184c37f1a78d22f387a63b",
+      "seed_entries": 136
+    },
+    "rbdev23_b_adm11_tact_d150": {
+      "source": "decision_cache_rbdev23_b_tact_d150.json",
+      "seed_sha256": "44e77a673fb013efe7911a56debca5dabdfa7116c94be29dd2c17b330df1f165",
+      "seed_entries": 89
+    },
+    "rbt23_tact_d150_adm11": {
+      "source": "decision_cache_rbt23_tact_d150.json",
+      "seed_sha256": "8994c3ca59d8d67d681b1599551941aff52f42a765ed812841463e0704b9505a",
+      "seed_entries": 1432
+    },
+    "rbt23_b_tact_d150_adm11": {
+      "source": "decision_cache_rbt23_b_tact_d150.json",
+      "seed_sha256": "56f4c5b2e0f5f4c298df4f8403baf5e65bddff87d57ec6c2dbb2a0d26ea35774",
+      "seed_entries": 955
+    },
+    "all_seed_values_unchanged_after_live_run": true
+  },
+  "dev_gate": {
+    "rule": "run test only if baseline/main-only-pass is empty for both dev arms",
+    "test_touched_before_gate_passed": false,
+    "providers": [
+      {
+        "provider": "rbdev23_adm11_tact_d150",
+        "arm": "A",
+        "started_utc": "2026-07-17T09:16:35.721Z",
+        "ended_utc": "2026-07-17T09:16:36.105Z",
+        "n": 54,
+        "baseline": {
+          "provider": "rbdev23_tact_d150",
+          "exact_count": 7,
+          "state_verbatim_count": 7,
+          "state_normalized_count": 8,
+          "U_mean": 0.1066,
+          "done_p50": 3.717,
+          "report_sha256": "0455648daca4948a538fce295cc008078a590435b628bddb2b6fa9066a06be36"
+        },
+        "admission_v11": {
+          "exact_count": 7,
+          "state_verbatim_count": 7,
+          "state_normalized_count": 8,
+          "U_mean": 0.1066,
+          "done_p50": 3.711
+        },
+        "paired": {
+          "adm11_only_pass_count": 0,
+          "adm11_only_pass_ids": [],
+          "baseline_only_pass_count": 0,
+          "baseline_only_pass_ids": [],
+          "both_pass": 7,
+          "both_fail": 47
+        },
+        "admission_audit": {
+          "post_resolution_reject_patch_events": 2,
+          "resolved_pending_patch_events": 29,
+          "raw_patch_events": 46,
+          "decisions_with_audit": 2,
+          "episodes_with_audit": 2,
+          "rejected_key_instances": 2,
+          "dropped_patches": 2,
+          "wire_unwrapped": 1,
+          "v1_false_positive_patches": 7,
+          "v1_false_positive_episodes": 7
+        },
+        "first_live_cache": {
+          "hits": 136,
+          "misses": 0,
+          "final_entries": 136
+        },
+        "armb_timing_total_overlaps": null
+      },
+      {
+        "provider": "rbdev23_b_adm11_tact_d150",
+        "arm": "B",
+        "started_utc": "2026-07-17T09:16:50.297Z",
+        "ended_utc": "2026-07-17T09:16:54.585Z",
+        "n": 35,
+        "baseline": {
+          "provider": "rbdev23_b_tact_d150",
+          "exact_count": 5,
+          "state_verbatim_count": 5,
+          "state_normalized_count": 5,
+          "U_mean": 0.0968,
+          "done_p50": 3.785,
+          "report_sha256": "a7e5cddb8ab62b99c67916a821789755b4e41ee17bd1c3d74f606c392449e60b"
+        },
+        "admission_v11": {
+          "exact_count": 5,
+          "state_verbatim_count": 5,
+          "state_normalized_count": 5,
+          "U_mean": 0.0968,
+          "done_p50": 3.754
+        },
+        "paired": {
+          "adm11_only_pass_count": 0,
+          "adm11_only_pass_ids": [],
+          "baseline_only_pass_count": 0,
+          "baseline_only_pass_ids": [],
+          "both_pass": 5,
+          "both_fail": 30
+        },
+        "admission_audit": {
+          "post_resolution_reject_patch_events": 2,
+          "resolved_pending_patch_events": 13,
+          "raw_patch_events": 23,
+          "decisions_with_audit": 2,
+          "episodes_with_audit": 2,
+          "rejected_key_instances": 2,
+          "dropped_patches": 2,
+          "wire_unwrapped": 2,
+          "v1_false_positive_patches": 2,
+          "v1_false_positive_episodes": 2
+        },
+        "first_live_cache": {
+          "hits": 89,
+          "misses": 0,
+          "final_entries": 89
+        },
+        "armb_timing_total_overlaps": 0
+      }
+    ],
+    "verdict": "PASS_BOTH_ARMS"
+  },
+  "test_single_shot": {
+    "provider_count": 2,
+    "live_runs_per_provider": 1,
+    "reruns": 0,
+    "formal_exceptions": [],
+    "providers": [
+      {
+        "ordinal": 1,
+        "provider": "rbt23_tact_d150_adm11",
+        "arm": "A",
+        "started_utc": "2026-07-17T09:17:23.721Z",
+        "ended_utc": "2026-07-17T09:17:28.721Z",
+        "args": [
+          "--build", "exp/rb/build_v23",
+          "--split", "test",
+          "--arm", "A",
+          "--system", "tact",
+          "--delta", "1.5",
+          "--admission", "schema11",
+          "--decider", "llm",
+          "--input", "audio",
+          "--provider", "rbt23_tact_d150_adm11"
+        ],
+        "metrics": {
+          "n": 546,
+          "exact_count": 95,
+          "exact": 0.174,
+          "state_verbatim_count": 95,
+          "state_verbatim": 0.174,
+          "state_normalized_count": 99,
+          "state_normalized": 0.1813,
+          "U_mean": 0.1334,
+          "first_p50": 1.64,
+          "done_p50": 3.767,
+          "wrong_commits": 0,
+          "unrepaired": 0
+        },
+        "main_arm": {
+          "provider": "rbt23_tact_d150",
+          "exact_count": 95,
+          "state_verbatim_count": 95,
+          "state_normalized_count": 99,
+          "U_mean": 0.1334,
+          "done_p50": 3.789,
+          "report_sha256": "11f02cea53df6637d93e9e2e463808a48689f74c6fe181f3208d406a0ecc3309"
+        },
+        "paired": {
+          "adm11_only_pass_count": 0,
+          "adm11_only_pass_ids": [],
+          "main_only_pass_count": 0,
+          "main_only_pass_ids": [],
+          "both_pass": 95,
+          "both_fail": 451
+        },
+        "admission_audit": {
+          "post_resolution_reject_patch_events": 27,
+          "resolved_pending_patch_events": 273,
+          "post_resolution_reject_rate": 0.0989,
+          "raw_patch_events": 428,
+          "decisions_with_audit": 27,
+          "episodes_with_audit": 27,
+          "rejected_key_instances": 28,
+          "dropped_patches": 26,
+          "wire_unwrapped": 11,
+          "v1_false_positive_patches": 52,
+          "v1_false_positive_episodes": 51,
+          "v1_false_positive_nested_wire": 10,
+          "v1_false_positive_all_raw_id_different_from_resolved_id": true
+        },
+        "first_live_cache": {
+          "hits": 1431,
+          "misses": 1,
+          "final_entries": 1433
+        },
+        "armb_timing_total_overlaps": null
+      },
+      {
+        "ordinal": 2,
+        "provider": "rbt23_b_tact_d150_adm11",
+        "arm": "B",
+        "started_utc": "2026-07-17T09:17:46.697Z",
+        "ended_utc": "2026-07-17T09:18:23.161Z",
+        "args": [
+          "--build", "exp/rb/build_v23",
+          "--split", "test",
+          "--arm", "B",
+          "--system", "tact",
+          "--delta", "1.5",
+          "--admission", "schema11",
+          "--decider", "llm",
+          "--input", "audio",
+          "--tts", "qwen",
+          "--provider", "rbt23_b_tact_d150_adm11"
+        ],
+        "metrics": {
+          "n": 365,
+          "exact_count": 52,
+          "exact": 0.1425,
+          "state_verbatim_count": 52,
+          "state_verbatim": 0.1425,
+          "state_normalized_count": 56,
+          "state_normalized": 0.1534,
+          "U_mean": 0.0973,
+          "first_p50": 1.64,
+          "done_p50": 3.72,
+          "wrong_commits": 0,
+          "unrepaired": 0
+        },
+        "main_arm": {
+          "provider": "rbt23_b_tact_d150",
+          "exact_count": 52,
+          "state_verbatim_count": 52,
+          "state_normalized_count": 56,
+          "U_mean": 0.0973,
+          "done_p50": 3.73,
+          "report_sha256": "b939668bce92165faca05abc92fcdedf4239d88bacb548adf09021ffb1741dd8"
+        },
+        "paired": {
+          "adm11_only_pass_count": 0,
+          "adm11_only_pass_ids": [],
+          "main_only_pass_count": 0,
+          "main_only_pass_ids": [],
+          "both_pass": 52,
+          "both_fail": 313
+        },
+        "admission_audit": {
+          "post_resolution_reject_patch_events": 14,
+          "resolved_pending_patch_events": 174,
+          "post_resolution_reject_rate": 0.0805,
+          "raw_patch_events": 257,
+          "decisions_with_audit": 14,
+          "episodes_with_audit": 14,
+          "rejected_key_instances": 14,
+          "dropped_patches": 14,
+          "wire_unwrapped": 7,
+          "v1_false_positive_patches": 24,
+          "v1_false_positive_episodes": 22,
+          "v1_false_positive_nested_wire": 6,
+          "v1_false_positive_all_raw_id_different_from_resolved_id": true
+        },
+        "first_live_cache": {
+          "hits": 951,
+          "misses": 3,
+          "final_entries": 958
+        },
+        "armb_timing_total_overlaps": 0
+      }
+    ],
+    "r_adm1_prime": {
+      "A_main_only_pass_ids": [],
+      "B_main_only_pass_ids": [],
+      "verdict": "PASS_BOTH_ARMS"
+    },
+    "r_adm2_prime": {
+      "A_adm11_only_pass_ids": [],
+      "B_adm11_only_pass_ids": [],
+      "verdict": "ZERO_GAIN_WITHIN_FROZEN_EXPECTATION"
+    },
+    "r_adm3_prime": {
+      "A": {
+        "post_resolution_reject_events": 27,
+        "wire_unwrapped": 11,
+        "v1_false_positive_patches": 52
+      },
+      "B": {
+        "post_resolution_reject_events": 14,
+        "wire_unwrapped": 7,
+        "v1_false_positive_patches": 24
+      },
+      "combined_v1_false_positive_patches": 76
+    }
+  },
+  "live_artifacts": {
+    "rbdev23_adm11_tact_d150": {
+      "report_sha256": "c9a6cff92bfdcae429410f913a327011913358b4040cf4aea7a6bb1fe7d20aae",
+      "decision_cache_sha256": "4b57811571f5ad7b6d07df000fa303df6f8174b642184c37f1a78d22f387a63b",
+      "results_tree_sha256": "a0c173b1f6c91fa28129e7fe45e959d3fa0887c1ea515bd6f7306319496ab054",
+      "result_files": 54
+    },
+    "rbdev23_b_adm11_tact_d150": {
+      "report_sha256": "fef1cb691446e5f5605d316955a5cb2a2a99ab65b8a3ce261b77a4200fee9215",
+      "decision_cache_sha256": "44e77a673fb013efe7911a56debca5dabdfa7116c94be29dd2c17b330df1f165",
+      "results_tree_sha256": "0f3b244ab457528884cf489650beff6dcb49bcc947101669fb93e7bbea96a441",
+      "result_files": 35
+    },
+    "rbt23_tact_d150_adm11": {
+      "report_sha256": "4894105a30cd2b9b398a91243d1d956dcf8618fa94022eb91211f0deaba33792",
+      "decision_cache_sha256": "583c8b9b854c6e5c9923beead6f2003e5f0d0c208b3ca5625ad7d4aeedb39c57",
+      "results_tree_sha256": "475426b1f262381ad21e72defcc70a326c5f3f4f705aa233c6986126097c1efe",
+      "result_files": 546
+    },
+    "rbt23_b_tact_d150_adm11": {
+      "report_sha256": "2128a7b6c2b04bdbe25bf464abb373e85e59d892b41915c4e641fc7469022fbd",
+      "decision_cache_sha256": "c7d5a4a135da099438a6588abee4eaf121fda7458beb06e9f1601f5c7038a2cf",
+      "results_tree_sha256": "34ca9c22644c91c33221fce3eb3ba5600a65434975554b61cd352f6bd8a51f21",
+      "result_files": 365
+    }
+  },
+  "counterfactual_audit_files": {
+    "rbdev23_adm11_tact_d150": {
+      "path": "exp/rb/build_v23/rb_adm11_counterfactual_rbdev23_adm11_tact_d150.json",
+      "sha256": "4096c2a98149f168ea9fdd7852c2259475e2db68f7378f1157f5c8ec355d1846"
+    },
+    "rbdev23_b_adm11_tact_d150": {
+      "path": "exp/rb/build_v23/rb_adm11_counterfactual_rbdev23_b_adm11_tact_d150.json",
+      "sha256": "c197824a7092aea8a2b7df3b6f4e60de8d307c559afe9fccb6a965a1287ad8f7"
+    },
+    "rbt23_tact_d150_adm11": {
+      "path": "exp/rb/build_v23/rb_adm11_counterfactual_rbt23_tact_d150_adm11.json",
+      "sha256": "b6c0b85e5a34bb0a19eb824a4eb5612b47e26e4d1e0316eaaa59414172bba9c9"
+    },
+    "rbt23_b_tact_d150_adm11": {
+      "path": "exp/rb/build_v23/rb_adm11_counterfactual_rbt23_b_tact_d150_adm11.json",
+      "sha256": "616bc62cbad8837de8cc197bf5e328bddf26435fb5374e1991380bc3ca4a5cdd"
+    }
+  },
+  "offline_replay": {
+    "services_stopped_before_replay": true,
+    "test_providers_replayed": 2,
+    "cache": {
+      "rbt23_tact_d150_adm11": {
+        "hits": 1432,
+        "misses": 0
+      },
+      "rbt23_b_tact_d150_adm11": {
+        "hits": 954,
+        "misses": 0
+      }
+    },
+    "report_byte_identical": true,
+    "decision_cache_byte_identical": true,
+    "results_tree_byte_identical": true,
+    "result_files_compared": 911,
+    "result_tree_hash_algorithm": "sha256 over sorted(relative_path + NUL + file_bytes)",
+    "hash_mismatches": [],
+    "counterfactual_replays": {
+      "providers": 4,
+      "cache_misses": 0,
+      "ordinary_outputs_still_byte_identical": true
+    },
+    "verdict": "PASS"
+  },
+  "anomalies": [
+    {
+      "code": "preflight_git_autogc_unreachable_object_warning",
+      "phase": "git pull before preflight",
+      "impact": "none",
+      "detail": "The required fast-forward to 1302ab54 succeeded. Automatic maintenance repeated the known dangling-history warning for missing d215c907..., the parent of unreachable 3a1cb90f...; reachable HEAD and origin/main were unaffected."
+    },
+    {
+      "code": "formal_shutdown_resource_tracker_warning",
+      "phase": "service shutdown after both test providers",
+      "impact": "none",
+      "detail": "vLLM shutdown reported 2 leaked semaphore and 4 shared-memory objects. Ports 10003/10004/8091 closed and GPU memory/utilization reached zero before replay."
+    }
+  ],
+  "security_and_publication": {
+    "changed_and_new_files_pattern_scanned": 1017,
+    "potential_secret_files": 0,
+    "audio_or_tts_cache_added_to_git": false,
+    "runtime_logs_added_to_git": false,
+    "configs_eval_env_added_to_git": false,
+    "target": "origin/main",
+    "push_authorized_by_user": true
+  }
+}

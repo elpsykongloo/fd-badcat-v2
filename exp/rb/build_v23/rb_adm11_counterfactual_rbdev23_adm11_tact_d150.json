@@ -1,0 +1,140 @@
+{
+  "schema": "rb-admission-v1.1-counterfactual-v1",
+  "runner_args": [
+    "--build",
+    "exp/rb/build_v23",
+    "--split",
+    "dev",
+    "--arm",
+    "A",
+    "--system",
+    "tact",
+    "--delta",
+    "1.5",
+    "--admission",
+    "schema11",
+    "--decider",
+    "llm",
+    "--input",
+    "audio",
+    "--provider",
+    "rbdev23_adm11_tact_d150"
+  ],
+  "counts": {
+    "both_reject": 1,
+    "raw_patch_events": 46,
+    "resolved_pending_patch_events": 29,
+    "unresolved_or_stale_patch_events": 17,
+    "v11_only_reject": 1,
+    "v11_reject": 2,
+    "v1_false_positive_resolved": 7,
+    "v1_would_reject": 8
+  },
+  "details": [
+    {
+      "episode_id": "A_L12_0000",
+      "layer": "L12",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "check_stock",
+      "v1_target_fn": "search_catalog",
+      "v1_rejected_keys": [
+        "item_id"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L12_0023",
+      "layer": "L12",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "check_visa_rule",
+      "v1_target_fn": "search_trains",
+      "v1_rejected_keys": [
+        "country"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L12_0033",
+      "layer": "L12",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "set_alert",
+      "v1_target_fn": "get_balance",
+      "v1_rejected_keys": [
+        "threshold"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L3_0053",
+      "layer": "L3",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "transfer_funds",
+      "v1_target_fn": "get_fx_quote",
+      "v1_rejected_keys": [
+        "to_acct"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L4_0037",
+      "layer": "L4",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "transfer_funds",
+      "v1_target_fn": "get_fx_quote",
+      "v1_rejected_keys": [
+        "from_acct"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L4_0055",
+      "layer": "L4",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "hold_seat",
+      "v1_target_fn": "search_trains",
+      "v1_rejected_keys": [
+        "seat_class"
+      ],
+      "wire_nested_args": false,
+      "category": "v1_false_positive_resolved"
+    },
+    {
+      "episode_id": "A_L8_0011",
+      "layer": "L8",
+      "decision_index": 1,
+      "op_index": 0,
+      "raw_op_id": 2,
+      "resolved_op_id": 3,
+      "resolved_target_fn": "hold_seat",
+      "v1_target_fn": "search_trains",
+      "v1_rejected_keys": [
+        "args"
+      ],
+      "wire_nested_args": true,
+      "category": "v1_false_positive_resolved"
+    }
+  ]
+}

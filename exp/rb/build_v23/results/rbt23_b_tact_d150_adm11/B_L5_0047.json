@@ -1,0 +1,86 @@
+{
+ "id": "B_L5_0047",
+ "layer": "L5",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 6.826,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 11.796,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "hold_seat",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 17.206,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "purchase_ticket",
+     "op_id": 4
+    }
+   ],
+   "say": "已将目的地改为杭州，正在为您购买车票。"
+  }
+ ],
+ "say_events": [
+  [
+   12.796,
+   "I'm on it."
+  ],
+  [
+   18.206,
+   "已将目的地改为杭州，正在为您购买车票。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   11.156,
+   "user"
+  ],
+  [
+   14.306,
+   16.566,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   3.15
+  ]
+ }
+}

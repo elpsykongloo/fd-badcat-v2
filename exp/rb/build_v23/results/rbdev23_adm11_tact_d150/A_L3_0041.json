@@ -1,0 +1,84 @@
+{
+ "id": "A_L3_0041",
+ "layer": "L3",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 2.821,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 2.821,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 9.413,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 12.571,
+   "ops": [],
+   "say": "",
+   "admission": [
+    {
+     "op_id": 2,
+     "resolved_op_id": 3,
+     "target_fn": "transfer_funds",
+     "rejected_keys": [
+      "_note_for_user_only_do_not_use_in_code_or_call_it_out_loud_as_is_this_is_a_placeholder_to_show_where_the_transfer_will_come_from_and_go_to__you_must_replace_with_actual_account_ids_if_you_know_them_but_i_dont_so_i_am_leaving_it_here_as_a_placeholder_for_now__but_in_reality_this_should_be_filled_with_real_account_ids_from_your_system__i_am_stuck_here_because_i_don_t_have_access_to_your_accounts_so_i_can't_fill_this_in_properly__this_is_a_problem_that_needs_solving_by_someone_with_access_to_the_system___i_am_stuck_here_until_1234567890abcdefg"
+     ],
+     "kept_keys": [],
+     "dropped": true,
+     "wire_unwrapped": false,
+     "gate": "v1.1"
+    }
+   ]
+  }
+ ],
+ "say_events": [
+  [
+   10.413,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   8.773,
+   "user"
+  ],
+  [
+   9.426,
+   11.931,
+   "user"
+  ]
+ ]
+}

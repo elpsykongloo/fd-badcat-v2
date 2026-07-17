@@ -1,0 +1,87 @@
+{
+ "id": "B_L11_0006",
+ "layer": "L11",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 4.416,
+ "U": 0.7973,
+ "U_sens": {
+  "0.5": 0.7973,
+  "1.0": 0.7973,
+  "2.0": 0.7973
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 4.739,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "save_listing",
+     "op_id": 2
+    }
+   ],
+   "say": "好的，已将房源 LST12 收藏。"
+  },
+  {
+   "i": 1,
+   "t_eou": 9.576,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "listing_id": "LST47"
+     }
+    },
+    {
+     "type": "launch_dedup",
+     "fn": "save_listing"
+    }
+   ],
+   "say": "I'm on it."
+  }
+ ],
+ "say_events": [
+  [
+   5.739,
+   "好的，已将房源 LST12 收藏。"
+  ],
+  [
+   10.576,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   4.099,
+   "user"
+  ],
+  [
+   5.991,
+   8.936,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   1.892
+  ]
+ }
+}
