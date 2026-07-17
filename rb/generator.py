@@ -71,7 +71,7 @@ from .registry import (SCENARIOS, SCENARIOS_BY_KIND, SLOT_POOLS, DOMAINS,
                        TOOLS, canon_value)
 from .grammar import (LAYER_GAP, LAYER_KIND, LAYERS, HOLD_S, NOMINAL_INFER_S,
                       ARM_B_RULES, ARM_B_EVENT_ONLY, DELTA_REF_S, L7_MARGIN_S,
-                      L13_OFFSETS, L13_STATES,
+                      L13_OFFSETS, L13_STATES, REV_UTT, CONFIRM_QUERY,
                       gap_for_layer, l7_gap, revision_text, bystander_text,
                       progress_text, intent_text, confirm_text, bank_hash)
 from .sandbox import Sandbox, oracle_run
@@ -106,7 +106,8 @@ def config_hash():
                        "l13": [L13_STATES, L13_OFFSETS, L13_CELLS],
                        "dev": [DEV_RATE, DEV_FLOOR],
                        "caps": EPISODE_CAPS,
-                       "l15_budget": L15_SPEECH_BUDGET_S},
+                       "l15_budget": L15_SPEECH_BUDGET_S,
+                       "rev_utt": REV_UTT, "confirm": CONFIRM_QUERY},
                       sort_keys=True, ensure_ascii=False, default=list)
     return hashlib.sha256(blob.encode()).hexdigest()[:12]
 
@@ -325,7 +326,12 @@ def make_episode(arm, layer, idx, cfg_hash, pause_prior=None, content_hook=None)
                                                old=revisions[0]["old"])
                                  if layer == "L1" and revisions else ""),
                "gap_before": LEAD_IN_S}]
-    arm_b_event_only = (arm == "B" and layer in ARM_B_EVENT_ONLY)
+    # v2.4 review fix: the arm-B BENIGN L10 cell is event-only too — it has
+    # both a scripted revision piece (L4-bin gap) and a benign_control event,
+    # i.e. the exact v2.2 double-delivery class ARM_B_EVENT_ONLY was built to
+    # kill, missed for L10 (present in v2.2.1/v2.3 archives as well — erratum
+    # rb_test_protocol §10.7).
+    arm_b_event_only = (arm == "B" and (layer in ARM_B_EVENT_ONLY or benign_l10))
     if not arm_b_event_only:
         for r in revisions:
             if r["gap"] is not None:
@@ -454,7 +460,7 @@ def make_episode(arm, layer, idx, cfg_hash, pause_prior=None, content_hook=None)
 
 
 def _assign_splits(eps):
-    """v2.4 stratified dev split (design §17.5). Per (arm, layer): floor
+    """v2.4 stratified dev split (design §17.0 item 5). Per (arm, layer): floor
     DEV_FLOOR, rate DEV_RATE, capped at half the group (tiny-quota builds
     stay usable). L10 stratifies by its idx%3 construction cell (2 dev per
     cell — keeps every WHO cell >= 30 on test); L13 splits in whole pair
@@ -485,8 +491,7 @@ def _assign_splits(eps):
                 for e in ce:
                     e["split"] = "dev" if e["id"] in dev_ids else "test"
         else:
-            k = min(max(DEV_FLOOR, round(DEV_RATE * len(g))),
-                    max(1, len(g) // 2))
+            k = min(max(DEV_FLOOR, round(DEV_RATE * len(g))), len(g) // 2)
             dev_ids = set(sorted((e["id"] for e in g), key=h)[:k])
             for e in g:
                 e["split"] = "dev" if e["id"] in dev_ids else "test"

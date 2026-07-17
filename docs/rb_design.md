@@ -420,7 +420,7 @@ v1.1 的经验安全门兑现，低增益预期也兑现；机制贡献按“关
 | 1 | WHO 轴无结论级数字（L10 双率格 n=12–19 < 30） | L10 配额 42/40 → **108/108**，dev 按构造格分层各抽 2 ⇒ test 每格恰 **34 ≥ 30**（实测六格全 34）；`rev_adopted`/`intruder_present` 升格为判分器行级一等字段（bystander 记录补 `slot`）；report 内置 `who_axis` |
 | 2 | 生命周期因果主张缺配对设计（H-B1 死于无跨状态 pair id） | **L13 = 生命周期配对八元组**（臂 B 160 = 20 家族 × {user, bystander} × {eou, inflight, committed, tts}）：全部内容抽签走**家族 rng**（意图/槽位/修订/双声/文本/偏移固定消费序），8 格只差 who×state；家族共享时延命名空间（sandbox `lat_ns`）；`pair` 字段透传进行；dev/test **家族原子切分**；report 内置 `pair_axis` |
 | 3 | 承诺-修复轨死仪器（wrong_commits 恒 0；冻结 judge 从未被消费——且实测 `.format` 遇字面 JSON 花括号必 KeyError = **潜伏死仪器**，无任何已判分结果受影响） | **L14 = 承诺考场**（臂 B 40）：`committed` 锚双事件 = 确认请求（+0.5–1.0s，新 `confirm_query` 动作 + `CONFIRM_QUERY` 类，词面刻意排除 cancel 词素）+ 迟修订（+5.0–7.0s）；judge 渲染改 `.replace`（渲染字节 = 设计意图）；新 `scripts/rb_commit_judge.py` 判官覆盖层（DeepSeek dv4-flash、T=0、512 tokens、5 重试硬失败、prompt 键控缓存、只写 overlay 不碰归档；脚本哈希入冻结 v5） |
-| 4 | R6：L8 in-flight 不再区分系统；abort 通路存在但**决策层不可达**（全仓唯一调用点是 selftest） | **L8 减半 50 + L15 = 执行窗 abort 考场**（臂 B 50，heavy 时延、single 场景）：新 `executing` 锚（首个非 READ commit、frac-of-wall 落窗内、与 `committed` 同源事件双锚各触发一次）；**cancel→abort 映射**（runner 拦截 `op_id="X<gid>"` 的 cancel → `sandbox.abort`，成功零费；`_snapshot_v24` 给已执行 op 编 X 命名空间 id——与杀死 admission v1 的局部 id 几何**无碰撞**）；gold = forward(new) 净额**路由无关**（abort+relaunch 免费 / reverse+relaunch 计价，`abort_feasible` 构造标注，实测 46/50 可 abort）；oracle 单序列双分支路由（cancel-X + reverse + relaunch：abort 成则 reverse 无害报错，abort 败则 reverse 净额）；report 内置 `route_axis` |
+| 4 | R6：L8 in-flight 不再区分系统、反应式主战场移至 L11（v2.3 n=27 过薄）；abort 通路存在但**决策层不可达**（全仓唯一调用点是 selftest） | **L8 减半 50 + L15 = 执行窗 abort 考场**（臂 B 50，heavy 时延、single 场景）：新 `executing` 锚（首个非 READ commit、frac-of-wall 落窗内、与 `committed` 同源事件双锚各触发一次）；**cancel→abort 映射**（runner 拦截 `op_id="X<gid>"` 的 cancel → `sandbox.abort`，成功零费；`_snapshot_v24` 给已执行 op 编 X 命名空间 id——与杀死 admission v1 的局部 id 几何**无碰撞**）；gold = forward(new) 净额**路由无关**（abort+relaunch 免费 / reverse+relaunch 计价，`abort_feasible` 构造标注，实测 46/50 可 abort）；oracle 单序列双分支路由（cancel-X + reverse + relaunch：abort 成则 reverse 无害报错，abort 败则 reverse 净额）；report 内置 `route_axis`；**L11 配额 30→60**（反应式主战场增厚，test n 27→54） |
 | 5 | dev 功效不足（attr 门死因之一：靶层 L12 dev n=3 天花板） | **分层 dev 切分**（`_assign_splits` 构建后处理）：每 (arm,layer) 下限 6 / 率 8% / 上限半格；L10 按构造格各 2；L13 按家族 2 个整家族；实测 dev 143 / test 1221（A 67/599、B 76/622） |
 
 ### 17.1 版本边界与字节安全
@@ -441,6 +441,13 @@ abort+relaunch **免费且更快**（实测 L4 夹 commit-now done 4.701 < fixed
 def2 章从二元换算表升级为三路由前沿；LLM 主臂上 abort 使用率（H-ABORT2）按 L7
 reverse 先例诚实预期 ≈ 0。
 
+**完成锚计价规则（审查修正后冻结）**：commit 的完成贡献 = 存活效果的
+`t_commit + wall`；**被 abort 的效果止于 `aborted_at`**（初版按幻影 completes_at
+计价，把 abort 的时间收益整个抹掉——审查抓出 B_L15_0046 done_s 63.14 vs 真值
+13.09、U 偏差 13×，已修）；**执行报错的调用不封门**（贡献 = `t_commit`，错误尝试
+不产生用户等待的结局效果——abort 成功分支里必然报错的 reverse 调用因此不再把
+heavy 幻影墙记入 done）。被 reverse 净掉的效果仍计全墙（用户真实等过它）。
+
 ### 17.3 判读侧五项之外的裁剪（记录不做之理由）
 
 - **臂 A bystander 因子化**：被 L13 八元组取代（臂 A 固定时间轴的生命周期投影已被
@@ -459,10 +466,29 @@ reverse 先例诚实预期 ≈ 0。
   commit-judge 4/4（新）；test_w5 13/13。
 - 全尺寸干构建：1364 夹、dev/test 143/1221、双跑 `json.dumps` 逐字节同、config
   确定性；L10 test 六格全 34；L13 20 家族原子、dev 2 家族；L15 可 abort 46/50。
-- oracle dev 冒烟（bank-less、text）：A .9552（除 L5 .5714 外全层 1.0）、B .9737
-  （除 L5 .6667 外全层 1.0，**L13 八格、L14、L15 全 1.0**）；L15 路由：5 可行格全
-  走 abort（零费）、1 不可行格走补偿——经济学按构造兑现。who/pair/route 三轴 report
-  内置块全部就位。
+- oracle dev 冒烟（bank-less、text，审查修复后复跑）：A .9552（L5 .7143/L6 .8333
+  为已知链/双修订时序天花板，其余全层 1.0）、B .9737（L5 .8333/L8 .8333 天花板，
+  **L13 八格、L14、L15 全 1.0**）。L15 全体 50 夹 oracle 探针：**exact 50/50、abort
+  实测 49/50**（`abort_feasible` 是保守单侧下界、只标 46——门以 `aborted ≥ feasible`
+  判）；最长 done_s 63.14 系 relaunch 抽中 60s 封顶墙的合法 heavy 长尾。链式 reverse
+  路由中出现机会性 abort（A 臂 1 次）= abort 语义全域可用的自然结果，路由轨照实计。
+  who/pair/route 三轴 report 内置块全部就位（who_axis 对抗格 = command-only，
+  irrelevant 独立对照格）。
+
+**对抗审查收口（2026-07-17；5 维审查 + 逐发现证伪）**：7 项实锤全部修复——①
+done_s abort 计价（上文）；② **臂 B L10 良性格双投放**（脚本 piece + benign_control
+事件 = v2.2 双投放类在 L10 的漏网；v2.3 归档 **13/13** 良性格中招〔test 12+dev 1〕，
+v2.2.1 同形；v2.4 改事件单投放，勘误挂 §10.7）；③ **L13 eou 偏移不可投放**（反应式
+事件在决策后才投放，偏移 <1.0s 全被钳到 t_dec——12/20 家族名义偏移失真；eou 箱改
+(1.00,1.95) 使采样=投放；legacy 臂 B eou 箱按 §八 re-binning 纪律保持名义值+实测
+gap 双报）；④ who_axis 对抗分母混入 irrelevant 格（结构性零稀释一半，改
+command-only + 独立对照格，scorer 行加 `bystander_kind`）；⑤ `rev_adopted`
+槽盲（值落错 op/字段也计 adopted——L12 病灶反被记成收养；改**槽键控匹配**）；⑥
+承诺轨只匹配口语形态（catalog 命令模型说数字/ISO 码——canonical 承诺全漏；
+`episode_claim_forms` 双形态 + ≥2 字符护栏防 qty "1" 子串误报，scorer 与 judge
+overlay 单源）；⑦ 杂项（split size-1 组、config_hash 补 REV_UTT/CONFIRM 文本、
+manifest 版本比较改数值元组、三处 § 交叉引用）。**审查亦证伪 1 项**（L13 八格
+perturb 不同不损配对——R-PAIR1 配对在同夹跨系统，扰动逐位相同）。
 
 ## 附录 A：v1 原案（2026-07-06，逐字保留；§5 已被 v2 §8-5 作废条款取代）
 

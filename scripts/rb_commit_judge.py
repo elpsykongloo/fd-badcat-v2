@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """rb_commit_judge.py — the RB v2.4 commitment-judge OVERLAY (analysis layer;
-rb_design §17.3, rb_test_protocol §11).
+rb_design §17.0 item 3, rb_test_protocol §11).
 
 Main arms speak FREE TEXT (FC off), so the marker path of the commitment-
 repair track reads zero by construction. This script re-scores archived rows'
-say_events with the FROZEN COMMIT_JUDGE_PROMPT (rb/scorer.py, freeze v5)
+say_events with the FROZEN COMMIT_JUDGE_PROMPT (rb/scorer.py, freeze v5;
+design rb_design §17.0 item 3)
 through DeepSeek `deepseek-v4-flash`, and writes a judged overlay NEXT TO the
 archive — it never modifies rows, reports, or caches. Deterministic replay
 via an on-disk prompt-keyed cache.
@@ -32,7 +33,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from rb.scorer import (COMMIT_JUDGE_PROMPT, make_llm_judge,   # noqa: E402
-                       commitment_repair)
+                       commitment_repair, episode_claim_forms)
 
 MODEL = "deepseek-v4-flash"
 BASE_URL = "https://api.deepseek.com"
@@ -98,14 +99,10 @@ def judge_provider(build, provider, layers, cache):
     out_rows = []
     for r in rows:
         ep = json.loads((epdir / f"{r['id']}.json").read_text())
-        gold_vals = list(ep["slots_final"].values())
-        superseded = [x["old"] for x in ep.get("revisions", [])
-                      if x["by"] == "user"]
-        if ep.get("bystander"):
-            superseded.append(ep["bystander"].get("other"))
+        # same spoken+canonical claim forms as the scorer (one source)
+        gold_vals, superseded = episode_claim_forms(ep)
         cr = commitment_repair([tuple(s) for s in r.get("say_events", [])],
-                               ep["lang"], gold_vals,
-                               [s for s in superseded if s], judge)
+                               ep["lang"], gold_vals, superseded, judge)
         out_rows.append({"id": r["id"], "layer": r["layer"],
                          "arm": r["arm"], "exact": r["exact"],
                          "marker": r["commit_repair"], "judged": cr})

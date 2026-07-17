@@ -155,11 +155,18 @@ ARM_B_RULES = {
             ("committed", (5.00, 7.00), "revise", "default")],
     "L15": [("executing", (0.10, 0.45), "revise", "default")],
 }
-# L13 per-state offset bins (frozen; eou = the L10 benign bin, inflight = the
-# L8 bin, committed = the L7-adjacent bin, tts = the L11 bin — each state
-# keeps its canonical timing family so the paired contrast is state-vs-state,
-# not bin-vs-bin).
-L13_OFFSETS = {"eou": (0.30, 1.20), "inflight": (0.20, 0.80),
+# L13 per-state offset bins (frozen; inflight = the L8 bin, committed = the
+# L7-adjacent bin, tts = the L11 bin — each state keeps its canonical timing
+# family so the paired contrast is state-vs-state, not bin-vs-bin).
+# eou bin (review fix): reactive events are delivered AFTER the decision the
+# anchor belongs to, so any eou offset < NOMINAL_INFER (1.0 s) is clamped to
+# the decision time by the runner's feed floor — the v2.4 bin starts AT the
+# deliverable boundary so sampled == delivered (still inside the reference
+# window: speech starting <= eou+1.95 < eou+1.0+delta* pauses the countdown).
+# Legacy arm-B eou bins (L4/L5/L6) keep their nominal ranges for cross-version
+# continuity; their delivered truth is the armb_timing measured_gaps (the §八
+# re-binning discipline).
+L13_OFFSETS = {"eou": (1.00, 1.95), "inflight": (0.20, 0.80),
                "committed": (0.30, 1.20), "tts": (0.05, 0.40)}
 L13_STATES = ("eou", "inflight", "committed", "tts")
 # layers whose arm-B revision/cancel content arrives ONLY via events (v2.3:

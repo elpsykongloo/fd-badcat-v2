@@ -666,6 +666,17 @@ v2.3 上不可引用。修复 = v2.4（`rb_design.md` §17 item 0：单 `{new}` 
 judge 是从未被任何已判分运行消费过的**潜伏死仪器**（"对外可用"仅在接口意义上成立）。
 v2.4 改 `.replace` 渲染（渲染字节 = 设计意图），修复入冻结 v5。
 
+**第二项勘误（v2.4 对抗审查发现，2026-07-17）：臂 B L10 良性格双投放**。
+`ARM_B_EVENT_ONLY` 漏收 L10 的良性格：良性修订既作脚本 piece（L4 箱 gap）又作
+`benign_control` 事件投放——即 v2.2 双投放 bug 类在 L10 的漏网。v2.3 归档实测
+**13/13** 臂 B 良性格中招（test 12 + dev 1），v2.2.1 同构。影响：v2.2.1/v2.3 的
+L10-B 良性采纳读数（均为 n<30 描述级、未进结论句）建立在"修订被说两遍"的音频上，
+引用时须挂本勘误；臂 A 不受影响（固定时间轴无事件）。v2.4 修复 = 良性格并入事件
+单投放。同批亦钉死 arm-B eou 偏移的投放钳制事实（反应式事件在决策后才可注入，
+偏移 <infer 名义值全部钳到 t_dec）：L13 的 eou 箱改为可投放区间 (1.00,1.95)，
+legacy 臂 B eou 箱（L4/L5/L6）维持名义箱 + `armb_timing.measured_gaps` 实测双报
+（§八 re-binning 纪律的既有口径，非新勘误）。
+
 ## §十一 v2.4 test 协议（Phase-0 冻结于 2026-07-17，观测前；构建/判读规格 = `rb_design.md` §17）
 
 > 单发纪律、缓存/复放/收据要求、异常登记与 §一/§九 完全同源；本节只列 v2.4 差异。
@@ -689,10 +700,14 @@ v2.4 改 `.replace` 渲染（渲染字节 = 设计意图），修复入冻结 v5
   config/ids/content 三哈希、A 臂 666/666 WAV 完整性（mono PCM16 16k/cues/tail）、
   TTS 仓外缓存计数。金子集清单随构建再生（144 项，录制目标切到 v2.4）。
 - **P3 oracle dev 门**（text 或 audio 皆可，两臂）：**硬门** = A 臂 L1–L4/L7–L12
-  全 1.0；B 臂 L4/L7–L15 全 1.0，其中 **L13 pair_axis 八格全 1.0、L14 1.0、L15
-  可行格全走 abort（route_axis.aborted = feasible 数）且不可行格经补偿路仍 1.0、
-  who_axis 良性 adopted=1.0 / 对抗 intruded=0**；L5/L6 为已知窗口天花板层照实记录
-  （冒烟参考 A .9552 / B .9737）。armb overlaps=0。
+  全 1.0；B 臂 L4/L7/L9–L15 全 1.0，其中 **L13 pair_axis 八格全 1.0、L14 1.0、
+  L15 exact 全 1.0 且 route_axis.l15.aborted ≥ feasible**（`abort_feasible` 是保守
+  单侧下界——flag 未标的格也可能实际 abort 成功：全体 50 夹探针实测 49 次 abort、
+  flag 仅 46；初稿的等式门是审查修正前的错误表述）、who_axis 良性 adopted=1.0 /
+  对抗 intruded=0（对抗格 = command-only，irrelevant 为独立对照格）。**L5/L6/L8
+  为已知窗口/时序天花板层**，不设 1.0 门，逐格死因分类入收据（同 v2.3
+  `B_L8_0057` 先例；冒烟参考 A .9552〔L5 .7143/L6 .8333〕/ B .9737〔L5 .8333/
+  L8 .8333〕）。armb overlaps=0。
 - **P4 LLM dev 冒烟**（audio、两臂各一次）：只做构建有效性判读（解析健康、L4 新文
   本在 ASR 意义下可懂、整层零的死因分类），**不设分数门**；预期 L4 dev > 0。
 - **P5 冻结 v5**：`exp/rb/scorer_freeze.json` version 5 = rb/scorer.py +

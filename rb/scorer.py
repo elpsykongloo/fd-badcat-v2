@@ -170,6 +170,36 @@ def commitment_repair(say_events, lang, gold_values, superseded_values,
             "wrong_at": [w["t"] for w in wrong]}
 
 
+def episode_claim_forms(episode):
+    """(gold_values, superseded_values) for the commitment-repair track,
+    in BOTH spoken and canonical forms (v2.4 review fix: the catalog
+    mandates digits/ISO codes while users speak 三千/May eighth — spoken-
+    only matching missed canonical-phrased commits/repairs). One source for
+    score_episode AND the rb_commit_judge overlay. Canonical forms join the
+    substring match only when >= 2 chars (1-char canon like qty "1" would
+    false-hit inside ids like A100)."""
+    from .registry import canon_value as _cv
+
+    def forms(spoken, canon):
+        out = [str(spoken)]
+        if len(str(canon)) >= 2 and str(canon) != str(spoken):
+            out.append(str(canon))
+        return out
+    gold_vals = list(dict.fromkeys(
+        f for k, v in episode["slots_final"].items()
+        for f in forms(v, episode.get("slots_canon", {}).get(k, v))))
+    superseded = []
+    for r in episode.get("revisions", []):
+        if r["by"] == "user":
+            superseded += forms(r["old"], _cv(r["slot"], r["old"]))
+    if episode.get("bystander"):
+        bo = episode["bystander"].get("other")
+        if bo:
+            superseded += forms(bo, _cv(episode["bystander"].get("slot", ""),
+                                        bo))
+    return gold_vals, list(dict.fromkeys(s for s in superseded if s))
+
+
 def comp_cost(state):
     """Sum C_kappa over COMPENSATED entries (the fee side of the ledger).
     Aborted-while-executing entries (v2.3 `aborted_at`) are free — the def2
@@ -189,9 +219,18 @@ def utility(passed, done_s, unrepaired, c_sum, gamma=GAMMA, w_r=W_R, w_c=W_C):
 
 
 def _value_in_net_args(slot, value, net):
-    """Exact arg-value match (spoken OR canonical form) over net calls."""
-    forms = {str(value), str(canon_value(slot, value))}
-    return any(str(v) in forms for c in net for v in c["args"].values())
+    """SLOT-KEYED arg-value match (spoken OR canonical form) over net calls.
+    v2.4 review fix: matching the value in ANY arg of ANY call let a
+    misbound revision (value written into the wrong op/field — the L12
+    failure mode) score as adopted; RB revisable slots are same-named as
+    their step args, so the match is keyed on the slot's own arg. Legacy
+    rows without a slot (v2.3 bystander records) fall back to the spoken-
+    form any-arg scan."""
+    if slot:
+        forms = {str(value), str(canon_value(slot, value))}
+        return any(str(c["args"].get(slot)) in forms
+                   for c in net if slot in c["args"])
+    return any(str(v) == str(value) for c in net for v in c["args"].values())
 
 
 def score_episode(episode, sys_calls, live_state, say_events, done_s,
@@ -201,12 +240,9 @@ def score_episode(episode, sys_calls, live_state, say_events, done_s,
     gold_state = episode["gold_state"]
     net = net_calls(sys_calls, live_state)
     passed = score_exact(net, gold_calls)
-    gold_vals = list(episode["slots_final"].values())
-    superseded = [r["old"] for r in episode.get("revisions", []) if r["by"] == "user"]
-    if episode.get("bystander"):
-        superseded.append(episode["bystander"].get("other"))
+    gold_vals, superseded = episode_claim_forms(episode)
     cr = commitment_repair(say_events, episode["lang"], gold_vals,
-                           [s for s in superseded if s], llm_judge)
+                           superseded, llm_judge)
     c_sum = comp_cost(live_state)
     row = {"id": episode["id"], "layer": episode["layer"], "arm": episode["arm"],
            "exact": passed,
@@ -224,6 +260,7 @@ def score_episode(episode, sys_calls, live_state, say_events, done_s,
     row["intruder_present"] = (_value_in_net_args(by.get("slot", ""),
                                                   by.get("other"), net)
                                if by and by.get("other") else None)
+    row["bystander_kind"] = by.get("kind") if by else None
     row["aborted_ops"] = sum(1 for v in live_state.values()
                              if "aborted_at" in v)
     row["comp_calls"] = sum(1 for c in sys_calls if c.get("comp"))

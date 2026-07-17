@@ -597,7 +597,7 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
             if adm_audit:
                 dec = dict(dec)
                 dec["ops"] = new_ops
-        # v2.4 abort semantics (caps-gated; rb_design §17.4): a cancel whose
+        # v2.4 abort semantics (caps-gated; rb_design §17.0 item 4 / §17.1): a cancel whose
         # op_id is "X<id>" addresses an ALREADY-EXECUTED op (the _snapshot_v24
         # namespace — collision-free with local pending ids). If that op's
         # sandbox execution window is still open, the effect is aborted in
@@ -714,8 +714,23 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
             feed_sim_traces(cursor)
 
     t_user_end = max((s["e"] for s in segs if s["role"] == "user"), default=0.0)
-    done = max((c["t_commit"] + c["tool_nominal_s"] for c in commits),
-               default=t_user_end)
+
+    def _completion(c):
+        """v2.4 completion contribution of one commit (rb_design §17.2):
+        an ABORTED effect terminates at aborted_at (not its phantom
+        completes_at — pricing the uncut wall was the review-caught abort-
+        economics corruption); an ERRORED execute produced no effect and
+        gates nothing (t_commit); a live or reversed-later effect bills its
+        full wall (the user waited through it)."""
+        res = results_by_op.get(c["op_id"])
+        if not res or res.get("status") != "success":
+            return c["t_commit"]
+        rid = (res.get("result") or {}).get("id")
+        ent = sandbox.state.get(f"{c['fn']}#{rid}") if rid else None
+        if ent is not None and "aborted_at" in ent:
+            return ent["aborted_at"]
+        return c["t_commit"] + c["tool_nominal_s"]
+    done = max((_completion(c) for c in commits), default=t_user_end)
     done_s = round(max(0.0, done - t_user_end), 3)
     final_says = [t for t, _ in say_events if t >= t_user_end]
     first = round(min(final_says) - t_user_end, 3) if final_says else done_s
@@ -767,19 +782,26 @@ def aggregate(rows):
             "episodes_with_overlap": sum(1 for x in bt if x["user_overlaps"]),
             "total_overlaps": sum(x["user_overlaps"] for x in bt)}
     # v2.4 preregistered instruments (in-report, not ad-hoc):
-    # WHO axis over L10 (benign adoption / adversarial intrusion double rate)
+    # WHO axis over L10 (benign adoption / adversarial intrusion double
+    # rate). Review fix: the adversarial cell counts COMMAND bystanders only
+    # (irrelevant bystanders never speak the value — structural zeros that
+    # halved the intrusion rate); irrelevant kept as its own control cell.
     l10 = by.get("L10", [])
     ben = [r for r in l10 if r.get("rev_adopted") is not None]
-    adv = [r for r in l10 if r.get("intruder_present") is not None]
-    if ben or adv:
+    adv = [r for r in l10 if r.get("intruder_present") is not None
+           and r.get("bystander_kind") == "command"]
+    irr = [r for r in l10 if r.get("intruder_present") is not None
+           and r.get("bystander_kind") == "irrelevant"]
+    if ben or adv or irr:
+        def _irate(xs):
+            return round(sum(1 for r in xs if r["intruder_present"])
+                         / max(1, len(xs)), 4)
         rep["who_axis"] = {
             "benign": {"n": len(ben),
                        "adopted": round(sum(1 for r in ben if r["rev_adopted"])
                                         / max(1, len(ben)), 4)},
-            "adversarial": {"n": len(adv),
-                            "intruded": round(sum(1 for r in adv
-                                                  if r["intruder_present"])
-                                              / max(1, len(adv)), 4)}}
+            "adversarial": {"n": len(adv), "intruded": _irate(adv)},
+            "irrelevant_control": {"n": len(irr), "intruded": _irate(irr)}}
     # lifecycle pair grid over L13 (per (who, state) cell)
     l13 = [r for r in rows if r.get("pair")]
     if l13:
@@ -868,7 +890,10 @@ def main():
     build_ver = ""
     if mpath.exists():
         build_ver = json.loads(mpath.read_text()).get("version", "")
-    install_rb(args.prompt, v24=build_ver >= "rb_v2.4")
+
+    def _ver_tuple(v):
+        return tuple(int(x) for x in re.findall(r"\d+", v or "")[:3])
+    install_rb(args.prompt, v24=_ver_tuple(build_ver) >= (2, 4))
     if args.admission and args.system != "tact":
         ap.error("--admission requires --system tact (patches are a tact op)")
     if args.admission and "adm" not in args.provider:
