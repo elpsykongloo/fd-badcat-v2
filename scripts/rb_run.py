@@ -505,15 +505,31 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
         # audio tail convention as the FDB harness (separate cache; its wall
         # time never advances the audio clock — deployed it overlaps the hold).
         # The decider messages are untouched: decision cache keys stay caliber.
-        # v1 admission control (schema gate): reject patch diff keys that do
-        # not exist on the target op's schema — provably non-harmful (junk
-        # keys are guaranteed canonical mismatches); redirects counted, never
-        # applied (src/admission.py; rb_design 16.7).
+        # Admission control (patch schema gate), rb_design 16.7/16.8:
+        #   schema   = v1 (RETIRED after test-911 R-ADM1 — kept ONLY for
+        #              archival replay of the rbt23_*_adm arms; gated at the
+        #              raw layer, which misread snapshot-local ids)
+        #   schema11 = v1.1: same rule at the POST-RESOLUTION layer, using
+        #              the engine's own resolve_ref + nested-args unwrap.
         adm_audit = None
         if admission == "schema" and mode == "tact":
             from admission import admit_decision_ops
             new_ops, adm_audit = admit_decision_ops(
                 dec.get("ops") or [],
+                {oid: tx.pending[oid].fn for oid in tx.pending},
+                {f: spec["required"] for f, spec in TOOLS.items()})
+            if adm_audit:
+                dec = dict(dec)
+                dec["ops"] = new_ops
+        elif admission == "schema11" and mode == "tact":
+            from admission import admit_decision_ops_v11
+            from tact_core import resolve_ref as _rref
+
+            def _resolve_pending(op):
+                r = _rref(tx, op)
+                return r if r in tx.pending else None
+            new_ops, adm_audit = admit_decision_ops_v11(
+                dec.get("ops") or [], _resolve_pending,
                 {oid: tx.pending[oid].fn for oid in tx.pending},
                 {f: spec["required"] for f, spec in TOOLS.items()})
             if adm_audit:
@@ -679,11 +695,14 @@ def main():
                     help="W5 attribution PROMPT rule (SEALED at dev round 1, "
                          "rb_design 16.6 — kept for archival replay only). "
                          "Default off = prompt byte-identical.")
-    ap.add_argument("--admission", default=None, choices=[None, "schema"],
-                    help="W5 admission control v1: reject patch diff keys "
-                         "absent from the target op's schema (provably non-"
-                         "harmful; redirects counted, never applied). "
-                         "Default off = frozen path byte-identical.")
+    ap.add_argument("--admission", default=None,
+                    choices=[None, "schema", "schema11"],
+                    help="Patch schema gate. schema = v1, RETIRED (archival "
+                         "replay of rbt23_*_adm only — raw-layer gating "
+                         "misread snapshot-local ids, test-911 R-ADM1). "
+                         "schema11 = v1.1: same rejection rule at the post-"
+                         "resolution layer (engine resolve_ref + nested-args "
+                         "unwrap). Default off = frozen path byte-identical.")
     ap.add_argument("--delta-policy", default="fixed",
                     choices=["fixed", "learned:v2"],
                     help="fixed (default; frozen batch-1 path, bit-identical) "
@@ -1081,6 +1100,64 @@ def selftest():
                         input_kind="text", admission="schema")
     ck["adm_legal_patches_untouched"] = json.dumps(ro_off, sort_keys=True) == \
         json.dumps(ro_on, sort_keys=True)
+
+    # -- admission v1.1: post-resolution gate (rb_design 16.8) ---------------
+    from admission import admit_decision_ops_v11
+    from tact_core import resolve_ref as _rref
+    from tact.transaction import Transaction as _Tx, Reversibility as _Rev
+    import itertools as _it
+    import tact.transaction as _txm
+    _txm._uid = _it.count(1)      # per-episode id reset (mirrors run_episode) —
+    # real ids become 2/3 while local snapshot ids are 1/2: the exact
+    # collision geometry that made v1 misread local ids as global ones.
+    tx11 = _Tx()
+    p_bal = tx11.launch("get_balance", {"account": "checking"}, _Rev.READ, t=0.0)
+    p_al = tx11.launch("set_alert", {"threshold": 500, "account": "checking"},
+                       _Rev.REV, t=0.0)
+    tx11._localmap = {1: p_bal.op_id, 2: p_al.op_id}   # snapshot-local numbering
+    fnmap = {o.op_id: tx11.pending[o.op_id].fn for o in (p_bal, p_al)}
+
+    def res11(op):
+        r = _rref(tx11, op)
+        return r if r in tx11.pending else None
+    # the exact op that killed v1: model's LOCAL id 2 = set_alert; threshold
+    # is legal there. v1 misread it as global id -> get_balance -> rejected.
+    killer = {"type": "patch", "op_id": 2, "diff": {"threshold": 1000}}
+    out11, aud11 = admit_decision_ops_v11([killer], res11, fnmap, req)
+    out_v1, aud_v1 = admit_decision_ops([killer], fnmap, req)
+    ck["adm11_localmap_correct_patch_untouched"] = (
+        out11 == [killer] and aud11 == []
+        and len(aud_v1) == 1)            # contrast: v1 would have rejected it
+    # post-resolution illegal: local 1 -> get_balance, threshold illegal there
+    bad11 = {"type": "patch", "op_id": 1, "diff": {"threshold": 1000}}
+    o2, a2 = admit_decision_ops_v11([bad11], res11, fnmap, req)
+    ck["adm11_postres_illegal_dropped"] = (
+        o2 == [] and len(a2) == 1 and a2[0]["resolved_op_id"] == p_bal.op_id
+        and a2[0]["gate"] == "v1.1" and a2[0]["dropped"])
+    # nested-args wire shape: engine unwraps -> gate checks unwrapped form
+    nest_ok = {"type": "patch", "op_id": 2,
+               "diff": {"args": {"threshold": 800}}}
+    nest_bad = {"type": "patch", "op_id": 2,
+                "diff": {"args": {"threshold": 800, "seat_class": "coach"}}}
+    o3, a3 = admit_decision_ops_v11([nest_ok, nest_bad], res11, fnmap, req)
+    ck["adm11_nested_args_engine_mirror"] = (
+        o3[0] is nest_ok                                  # legal: untouched
+        and o3[1]["diff"] == {"threshold": 800}           # illegal key stripped
+        and len(a3) == 1 and a3[0]["wire_unwrapped"]
+        and a3[0]["rejected_keys"] == ["seat_class"])
+    # unresolvable target: pass through byte-identical (engine drops it)
+    ghost = {"type": "patch", "op_id": 99, "diff": {"seat_class": "x"}}
+    o4, a4 = admit_decision_ops_v11([ghost], res11, fnmap, req)
+    ck["adm11_unresolvable_passthrough"] = o4 == [ghost] and a4 == []
+    # e2e: the junk-arg flip still holds under v1.1 (raw-id fallback path)
+    r11 = run_episode(ep12a, JunkPatchDecider(ep12a), mode="tact",
+                      input_kind="text", admission="schema11")
+    ck["adm11_flip_junk_arg_failure"] = r11["exact"] and (not r_off["exact"]) \
+        and any("admission" in d for d in r11["decisions"])
+    ro11 = run_episode(ep12a, OracleDecider(ep12a), mode="tact",
+                       input_kind="text", admission="schema11")
+    ck["adm11_legal_path_untouched"] = json.dumps(ro_off, sort_keys=True) == \
+        json.dumps(ro11, sort_keys=True)
     for k, v in ck.items():
         print(f"  selftest {k}: {'PASS' if v else 'FAIL'}")
     print("SELFTEST", "PASS" if all(ck.values()) else "FAIL")

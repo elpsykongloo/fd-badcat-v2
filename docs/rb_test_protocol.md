@@ -525,3 +525,30 @@ test-911 十七臂窗口耗尽；v2.3 上后续合法运行 = 新系统版本单
 v1.1〔解析后置门 + wire 形态归一〕——预期增益按 R-ADM2 精神诚实标低；SV 门
 〔W6 记录〕）或 v2.4 版本递增。**下一步 = 文稿装配线**（RB 章数字齐：v2.2.1 主表
 + §八勘误 + v2.3 主表 + 双批判读），金子集录制与四基准全文核对并行不变。
+
+### 10.5 admission v1.1 单发规格（2026-07-17 冻结；新系统版本，v2.3 test 上合法单发）
+
+**前置 dev 冒烟（零损失门，先于任何 test 接触）**：两个 dev provider
+`rbdev23_adm11_tact_d150`（A，种自 `decision_cache_rbdev23_tact_d150.json` 副本）与
+`rbdev23_b_adm11_tact_d150`（B，种自 `decision_cache_rbdev23_b_tact_d150.json` 副本），
+`--admission schema11` 其余同各自 dev 基线。**门：对基线配对 adm11-only-loss = 0**
+（A 54 夹 + B 35 夹）；违门 = 实现缺陷，修完重进 dev（dev 可迭代），不碰 test。
+
+**test 单发（dev 门过后）**：两个 provider，各一次，§一纪律全承接：
+
+| provider | 命令要点 | 缓存种子 |
+|---|---|---|
+| `rbt23_tact_d150_adm11` | `--arm A --system tact --delta 1.5 --admission schema11` | `decision_cache_rbt23_tact_d150.json` 副本 |
+| `rbt23_b_tact_d150_adm11` | `--arm B ... --admission schema11 --tts qwen` | `decision_cache_rbt23_b_tact_d150.json` 副本 |
+
+**冻结判读**：
+- **R-ADM1'（硬门）**：对各自 v2.3 主臂配对 **adm11-only-loss = 0**；任何损失 =
+  实现缺陷级（臂作废重修），不入正表。
+- **R-ADM2'（收益，诚实低预期）**：adm11-only-gain 预期 0–5 夹（解析后非法 patch
+  所在夹多为共因失败）；=0 照实入册，门的价值不以翻夹数论。
+- **R-ADM3'（审计三数）**：① 解析后拒绝事件数（对照主臂解析层非法率 9.9%）；
+  ② `wire_unwrapped` 计数；③ **v1 假阳性对照数** = 若按 v1 规则本会误拒、v1.1
+  放行的 patch 数（≥ test-911 已知的 10 夹当量——量化 v1 勘误的错杀面）。
+- 附带记录：admission 审计键仅出现在 adm11 决策行（冻结路径零新键，selftest 钉死）。
+
+判读并入 §十尾注；跑完后 v2.3 上剩余合法运行 = SV 门（W6 记录）或 v2.4。
