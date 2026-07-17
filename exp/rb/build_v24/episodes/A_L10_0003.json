@@ -1,0 +1,141 @@
+{
+ "id": "A_L10_0003",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
+ "slots_final": {
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "command",
+  "other": "Denver",
+  "slot": "destination",
+  "state": "inflight",
+  "frac": 0.125
+ },
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "May 3",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Please find me a train from Seattle to Portland on May third, hold a coach seat, and purchase the ticket for Sam Rivera.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Change it to Denver.",
+   "at_after_eou": 1.062
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.497
+ },
+ "step_latencies": [
+  0.497,
+  0.478,
+  1.389
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.056,
+  "gain_db": -1.1,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Seattle",
+    "destination": "Portland",
+    "date": "May 3"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE5557d9",
+    "seat_class": "coach"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO44c85b",
+    "passenger": "Sam Rivera"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE5557d9": {
+   "origin": "Seattle",
+   "destination": "Portland",
+   "date": "May 3"
+  },
+  "hold_seat#HO44c85b": {
+   "train_id": "SE5557d9",
+   "seat_class": "coach"
+  },
+  "purchase_ticket#PUe87047": {
+   "hold_id": "HO44c85b",
+   "passenger": "Sam Rivera"
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv01"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 9.136,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "bystander",
+   "t_start": 10.838,
+   "t_end": 12.657,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

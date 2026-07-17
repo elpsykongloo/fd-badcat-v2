@@ -1,0 +1,92 @@
+{
+ "id": "B_L8_0019",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
+ "slots_final": {
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "June 1",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
+ "l8_action": "cancel",
+ "cancelled": true,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Can you find a train from Seattle to Atlanta on June first, hold a business seat, and buy the ticket for Jordan Lee?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Actually, stop what you're doing, don't go ahead.",
+   "at_after_eou": 1.83
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.301,
+   "action": "cancel",
+   "role": "user",
+   "voice": "cv04",
+   "text": "Actually, never mind, just cancel that for now."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 1.134
+ },
+ "step_latencies": [
+  1.134,
+  1.0,
+  2.891
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.965,
+  "gain_db": 0.8,
+  "snr_db": 22.8
+ },
+ "gold_calls": [],
+ "gold_state": {},
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv05"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

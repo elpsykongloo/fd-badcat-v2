@@ -1,0 +1,81 @@
+{
+ "id": "B_L15_0037",
+ "layer": "L15",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 0.802,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "rev_adopted": false,
+ "intruder_present": null,
+ "bystander_kind": null,
+ "aborted_ops": 0,
+ "comp_calls": 0,
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 5.603,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "schedule_payment",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 13.041,
+   "ops": [],
+   "say": "Updating the payee to Landlord for the June 1 payment."
+  }
+ ],
+ "say_events": [
+  [
+   6.603,
+   "I'm on it."
+  ],
+  [
+   14.041,
+   "Updating the payee to Landlord for the June 1 payment."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   4.963,
+   "user"
+  ],
+  [
+   9.454,
+   12.401,
+   "user"
+  ]
+ ],
+ "abort_feasible": false,
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   4.491
+  ]
+ }
+}

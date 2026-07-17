@@ -1,0 +1,115 @@
+{
+ "id": "B_L10_0086",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "厦门",
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周日下午"
+ },
+ "slots_final": {
+  "city": "青岛",
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周日下午"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "厦门",
+   "new": "青岛",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.709
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "青岛",
+  "beds": 1,
+  "max_rent": 8000,
+  "slot": "周日下午"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "zh",
+   "text": "帮我看看厦门有没有一居的房，租金低于八千，约周日下午去看。",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 1.156,
+   "action": "benign_control",
+   "role": "user",
+   "voice": "cv01",
+   "text": "慢着，改成青岛。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.637
+ },
+ "step_latencies": [
+  0.637,
+  1.868
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.015,
+  "gain_db": -6.0,
+  "snr_db": 20.9
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "青岛",
+    "beds": 1,
+    "max_rent": 8000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE5f970d",
+    "slot": "周日下午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE5f970d": {
+   "city": "青岛",
+   "beds": 1,
+   "max_rent": 8000
+  },
+  "book_viewing#BO4ab5df": {
+   "listing_id": "SE5f970d",
+   "slot": "周日下午"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv04"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

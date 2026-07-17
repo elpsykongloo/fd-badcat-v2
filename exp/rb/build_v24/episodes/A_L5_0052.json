@@ -1,0 +1,136 @@
+{
+ "id": "A_L5_0052",
+ "arm": "A",
+ "layer": "L5",
+ "domain": "ecommerce",
+ "lang": "zh",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "蓝牙耳机",
+  "qty": "一",
+  "address": "海淀区学院路一号"
+ },
+ "slots_final": {
+  "query": "蓝牙耳机",
+  "qty": "一",
+  "address": "浦东新区世纪大道八号"
+ },
+ "revisions": [
+  {
+   "slot": "address",
+   "old": "海淀区学院路一号",
+   "new": "浦东新区世纪大道八号",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.767
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "蓝牙耳机",
+  "qty": 1,
+  "address": "浦东新区世纪大道八号"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "帮我查蓝牙耳机，加一件进购物车，然后下单运到海淀区学院路一号",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "嗯——呃——慢着，改成浦东新区世纪大道八号。",
+   "gap_before": 2.767
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.414
+ },
+ "step_latencies": [
+  0.414,
+  0.611,
+  2.718
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 0.969,
+  "gain_db": -3.8,
+  "snr_db": 16.2
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "蓝牙耳机"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE793524",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "ADbd8509",
+    "address": "浦东新区世纪大道八号"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE793524": {
+   "query": "蓝牙耳机"
+  },
+  "add_item#ADbd8509": {
+   "item_id": "SE793524",
+   "qty": 1
+  },
+  "place_order#PLd33eca": {
+   "cart_id": "ADbd8509",
+   "address": "浦东新区世纪大道八号"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv04"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.343,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 11.11,
+   "t_end": 15.733,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  2.767
+ ]
+}

@@ -1,0 +1,131 @@
+{
+ "id": "B_L6_0038",
+ "arm": "B",
+ "layer": "L6",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Denver",
+  "beds": "two-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Sunday afternoon"
+ },
+ "slots_final": {
+  "city": "Boise",
+  "beds": "one-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Sunday afternoon"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "Denver",
+   "new": "Boise",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.793
+  },
+  {
+   "slot": "beds",
+   "old": "two-bedroom",
+   "new": "one-bedroom",
+   "by": "user",
+   "kind": "second",
+   "gap": 2.447
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Boise",
+  "beds": 1,
+  "max_rent": 2000,
+  "slot": "Sunday afternoon"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Find me a two-bedroom in Denver that's no more than two thousand, and book a viewing slot at Sunday afternoon.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.675,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv09",
+   "text": "No wait, make that Boise"
+  },
+  {
+   "state": "committed",
+   "offset": 1.428,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv09",
+   "text": "Hmm, Actually, another adjustment: one-bedroom."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.299
+ },
+ "step_latencies": [
+  0.299,
+  0.712
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 0.947,
+  "gain_db": -2.1,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Boise",
+    "beds": 1,
+    "max_rent": 2000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SEf793f2",
+    "slot": "Sunday afternoon"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEf793f2": {
+   "city": "Boise",
+   "beds": 1,
+   "max_rent": 2000
+  },
+  "book_viewing#BOb30dba": {
+   "listing_id": "SEf793f2",
+   "slot": "Sunday afternoon"
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv03"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

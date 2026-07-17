@@ -1,0 +1,135 @@
+{
+ "id": "B_L10_0067",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "北京",
+  "destination": "西安",
+  "date": "五月三号",
+  "seat_class": "二等座",
+  "passenger": "王磊"
+ },
+ "slots_final": {
+  "origin": "北京",
+  "destination": "西安",
+  "date": "五月三号",
+  "seat_class": "二等座",
+  "passenger": "王磊"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "irrelevant",
+  "other": "成都",
+  "slot": "destination",
+  "state": "inflight",
+  "frac": 0.133
+ },
+ "slots_canon": {
+  "origin": "北京",
+  "destination": "西安",
+  "date": "5月3日",
+  "seat_class": "二等座",
+  "passenger": "王磊"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "能帮我查五月三号从北京到西安的火车不？订二等座，然后直接帮买，乘客是王磊。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv06",
+   "lang": "zh",
+   "text": "作业写完了？来打盘游戏。",
+   "at_after_eou": 1.087
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.292,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv06",
+   "text": "周末有空吗？一起去看电影。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.654
+ },
+ "step_latencies": [
+  0.654,
+  0.816,
+  1.499
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.047,
+  "gain_db": -0.6,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "北京",
+    "destination": "西安",
+    "date": "5月3日"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE37746e",
+    "seat_class": "二等座"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HOc79a2b",
+    "passenger": "王磊"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE37746e": {
+   "origin": "北京",
+   "destination": "西安",
+   "date": "5月3日"
+  },
+  "hold_seat#HOc79a2b": {
+   "train_id": "SE37746e",
+   "seat_class": "二等座"
+  },
+  "purchase_ticket#PU1ffea8": {
+   "hold_id": "HOc79a2b",
+   "passenger": "王磊"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv06"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

@@ -1,0 +1,146 @@
+{
+ "id": "A_L4_0011",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Alex Chen"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Portland",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Alex Chen"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "Austin",
+   "new": "Portland",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.8
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Portland",
+  "date": "May 3",
+  "seat_class": "business",
+  "passenger": "Alex Chen"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Please find me a train from Chicago to Austin on May third, hold a business seat, and purchase the ticket for Alex Chen.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Portland — I mean not Austin.",
+   "gap_before": 0.8
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.282
+ },
+ "step_latencies": [
+  0.282,
+  0.476,
+  2.265
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.015,
+  "gain_db": -1.6,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Chicago",
+    "destination": "Portland",
+    "date": "May 3"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE9e5011",
+    "seat_class": "business"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO126248",
+    "passenger": "Alex Chen"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE9e5011": {
+   "origin": "Chicago",
+   "destination": "Portland",
+   "date": "May 3"
+  },
+  "hold_seat#HO126248": {
+   "train_id": "SE9e5011",
+   "seat_class": "business"
+  },
+  "purchase_ticket#PUbcb24a": {
+   "hold_id": "HO126248",
+   "passenger": "Alex Chen"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv06"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.121,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 7.921,
+   "t_end": 10.206,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.8
+ ]
+}

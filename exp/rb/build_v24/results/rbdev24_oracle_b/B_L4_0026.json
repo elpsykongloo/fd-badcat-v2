@@ -1,0 +1,93 @@
+{
+ "id": "B_L4_0026",
+ "layer": "L4",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 5.22,
+ "U": 0.7651,
+ "U_sens": {
+  "0.5": 0.7651,
+  "1.0": 0.7651,
+  "2.0": 0.7651
+ },
+ "rev_adopted": true,
+ "intruder_present": null,
+ "bystander_kind": null,
+ "aborted_ops": 0,
+ "comp_calls": 0,
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 9.54,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_rentals",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "book_viewing",
+     "op_id": 3
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 14.18,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "max_rent": 3000
+     }
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   10.54,
+   "好的，马上办。"
+  ],
+  [
+   15.18,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   8.9,
+   "user"
+  ],
+  [
+   10.54,
+   13.54,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   1.64
+  ]
+ }
+}

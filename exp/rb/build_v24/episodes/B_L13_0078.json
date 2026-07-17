@@ -1,0 +1,102 @@
+{
+ "id": "B_L13_0078",
+ "arm": "B",
+ "layer": "L13",
+ "domain": "finance",
+ "lang": "zh",
+ "scenario": "fin_payment",
+ "slots": {
+  "payee": "物业",
+  "amount": "三千",
+  "date": "五月三号"
+ },
+ "slots_final": {
+  "payee": "物业",
+  "amount": "三千",
+  "date": "五月三号"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "command",
+  "other": "五千",
+  "slot": "amount",
+  "state": "committed",
+  "frac": null
+ },
+ "slots_canon": {
+  "payee": "物业",
+  "amount": 3000,
+  "date": "5月3日"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "zh",
+   "text": "给我弄一笔付款给物业，三千块，五月三号扣掉。",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "committed",
+   "offset": 0.379,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv03",
+   "text": "换一下五千吧"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 2.985
+ },
+ "step_latencies": [
+  2.985
+ ],
+ "lat_ns": "9d338e70f770:B_L13_fam0009",
+ "scenario_steps": [
+  "schedule_payment"
+ ],
+ "perturb": {
+  "rate": 1.04,
+  "gain_db": 0.3,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "schedule_payment",
+   "args": {
+    "payee": "物业",
+    "amount": 3000,
+    "date": "5月3日"
+   }
+  }
+ ],
+ "gold_state": {
+  "schedule_payment#SC3c9c4a": {
+   "payee": "物业",
+   "amount": 3000,
+   "date": "5月3日"
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv03"
+ },
+ "pair": {
+  "family": "BF009",
+  "who": "bystander",
+  "state": "committed"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

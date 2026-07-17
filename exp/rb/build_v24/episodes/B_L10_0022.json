@@ -1,0 +1,119 @@
+{
+ "id": "B_L10_0022",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Boise",
+  "beds": "one-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Sunday afternoon"
+ },
+ "slots_final": {
+  "city": "Boise",
+  "beds": "one-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Sunday afternoon"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "irrelevant",
+  "other": "Austin",
+  "slot": "city",
+  "state": "inflight",
+  "frac": 0.775
+ },
+ "slots_canon": {
+  "city": "Boise",
+  "beds": 1,
+  "max_rent": 2000,
+  "slot": "Sunday afternoon"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Search for a one-bedroom in Boise under two thousand, and also arrange a viewing for Sunday afternoon.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Let's order something in, what do you want for dinner?",
+   "at_after_eou": 1.343
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.37,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv04",
+   "text": "What do you want for dinner? Let's order in."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.442
+ },
+ "step_latencies": [
+  0.442,
+  1.492
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.058,
+  "gain_db": -0.2,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Boise",
+    "beds": 1,
+    "max_rent": 2000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE5eab7e",
+    "slot": "Sunday afternoon"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE5eab7e": {
+   "city": "Boise",
+   "beds": 1,
+   "max_rent": 2000
+  },
+  "book_viewing#BO9a16b4": {
+   "listing_id": "SE5eab7e",
+   "slot": "Sunday afternoon"
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv04"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

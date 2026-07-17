@@ -1,0 +1,136 @@
+{
+ "id": "A_L4_0064",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "running shoes",
+  "qty": "one",
+  "address": "12 College Road"
+ },
+ "slots_final": {
+  "query": "thermos bottle",
+  "qty": "one",
+  "address": "12 College Road"
+ },
+ "revisions": [
+  {
+   "slot": "query",
+   "old": "running shoes",
+   "new": "thermos bottle",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.697
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "thermos bottle",
+  "qty": 1,
+  "address": "12 College Road"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "Find running shoes, toss one into the cart, and have it shipped to 12 College Road.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "thermos bottle — go with that, not running shoes.",
+   "gap_before": 0.697
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.849
+ },
+ "step_latencies": [
+  0.849,
+  0.406,
+  3.09
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 1.017,
+  "gain_db": -1.5,
+  "snr_db": 19.1
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "thermos bottle"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE98b53e",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD537755",
+    "address": "12 College Road"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE98b53e": {
+   "query": "thermos bottle"
+  },
+  "add_item#AD537755": {
+   "item_id": "SE98b53e",
+   "qty": 1
+  },
+  "place_order#PLf0a960": {
+   "cart_id": "AD537755",
+   "address": "12 College Road"
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv03"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.085,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 6.782,
+   "t_end": 11.266,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.697
+ ]
+}

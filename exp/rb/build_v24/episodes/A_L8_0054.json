@@ -1,0 +1,128 @@
+{
+ "id": "A_L8_0054",
+ "arm": "A",
+ "layer": "L8",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Miami",
+  "beds": "two-bedroom",
+  "max_rent": "three thousand",
+  "slot": "Sunday afternoon"
+ },
+ "slots_final": {
+  "city": "Boise",
+  "beds": "two-bedroom",
+  "max_rent": "three thousand",
+  "slot": "Sunday afternoon"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "Miami",
+   "new": "Boise",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Boise",
+  "beds": 2,
+  "max_rent": 3000,
+  "slot": "Sunday afternoon"
+ },
+ "l8_action": "revise",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "Can you find a two-bedroom in Miami for less than three thousand and schedule a viewing at Sunday afternoon?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "Make it, make it, No wait, make that Boise",
+   "at_after_eou": 1.511
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.695
+ },
+ "step_latencies": [
+  0.695,
+  2.505
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 0.949,
+  "gain_db": 0.4,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Boise",
+    "beds": 2,
+    "max_rent": 3000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE60be4a",
+    "slot": "Sunday afternoon"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE60be4a": {
+   "city": "Boise",
+   "beds": 2,
+   "max_rent": 3000
+  },
+  "book_viewing#BO9c98af": {
+   "listing_id": "SE60be4a",
+   "slot": "Sunday afternoon"
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv02"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.16,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 9.311,
+   "t_end": 14.031,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

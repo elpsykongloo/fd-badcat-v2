@@ -1,0 +1,103 @@
+{
+ "id": "A_L9_0037",
+ "arm": "A",
+ "layer": "L9",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_payment",
+ "slots": {
+  "payee": "landlord",
+  "amount": "eight hundred",
+  "date": "May third"
+ },
+ "slots_final": {
+  "payee": "landlord",
+  "amount": "eight hundred",
+  "date": "May third"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "payee": "landlord",
+  "amount": 800,
+  "date": "May 3"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Set up a payment for eight hundred to landlord on May third.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Getting anywhere?",
+   "at_after_eou": 7.699
+  }
+ ],
+ "events": [],
+ "profile": "heavy",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 11.165
+ },
+ "step_latencies": [
+  11.165
+ ],
+ "scenario_steps": [
+  "schedule_payment"
+ ],
+ "perturb": {
+  "rate": 0.969,
+  "gain_db": 0.5,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "schedule_payment",
+   "args": {
+    "payee": "landlord",
+    "amount": 800,
+    "date": "May 3"
+   }
+  }
+ ],
+ "gold_state": {
+  "schedule_payment#SCc98333": {
+   "payee": "landlord",
+   "amount": 800,
+   "date": "May 3"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv03"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "dev",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 3.72,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 12.059,
+   "t_end": 12.967,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

@@ -1,0 +1,136 @@
+{
+ "id": "A_L10_0020",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "thermos bottle",
+  "qty": "one",
+  "address": "12 College Road"
+ },
+ "slots_final": {
+  "query": "thermos bottle",
+  "qty": "one",
+  "address": "88 Century Avenue"
+ },
+ "revisions": [
+  {
+   "slot": "address",
+   "old": "12 College Road",
+   "new": "88 Century Avenue",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.699
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "thermos bottle",
+  "qty": 1,
+  "address": "88 Century Avenue"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Find thermos bottle, toss one into the cart, and have it shipped to 12 College Road.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "So— Wait — make it 88 Century Avenue.",
+   "gap_before": 0.699
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.597
+ },
+ "step_latencies": [
+  0.597,
+  0.267,
+  4.403
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 0.948,
+  "gain_db": 1.8,
+  "snr_db": 17.1
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "thermos bottle"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE601b77",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD88496b",
+    "address": "88 Century Avenue"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE601b77": {
+   "query": "thermos bottle"
+  },
+  "add_item#AD88496b": {
+   "item_id": "SE601b77",
+   "qty": 1
+  },
+  "place_order#PL710559": {
+   "cart_id": "AD88496b",
+   "address": "88 Century Avenue"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv09"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 5.141,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 5.84,
+   "t_end": 9.385,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.699
+ ]
+}

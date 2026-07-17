@@ -1,0 +1,100 @@
+{
+ "id": "B_L15_0023",
+ "arm": "B",
+ "layer": "L15",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_hotel",
+ "slots": {
+  "city": "成都",
+  "checkin": "五月十号",
+  "nights": "两"
+ },
+ "slots_final": {
+  "city": "成都",
+  "checkin": "五月三号",
+  "nights": "两"
+ },
+ "revisions": [
+  {
+   "slot": "checkin",
+   "old": "五月十号",
+   "new": "五月三号",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "成都",
+  "checkin": "5月3日",
+  "nights": 2
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "zh",
+   "text": "帮我在成都订一间酒店，五月十号入住，住两晚。",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "executing",
+   "offset": 0.381,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv04",
+   "text": "慢着，改成五月三号。"
+  }
+ ],
+ "profile": "heavy",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 22.267
+ },
+ "step_latencies": [
+  22.267
+ ],
+ "scenario_steps": [
+  "reserve_hotel"
+ ],
+ "perturb": {
+  "rate": 0.944,
+  "gain_db": 0.2,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "reserve_hotel",
+   "args": {
+    "city": "成都",
+    "checkin": "5月3日",
+    "nights": 2
+   }
+  }
+ ],
+ "gold_state": {
+  "reserve_hotel#REba87c4": {
+   "city": "成都",
+   "checkin": "5月3日",
+   "nights": 2
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv08"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "abort_feasible": true
+}

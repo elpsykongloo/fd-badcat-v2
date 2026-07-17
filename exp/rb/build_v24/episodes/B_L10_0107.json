@@ -1,0 +1,131 @@
+{
+ "id": "B_L10_0107",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "上海",
+  "destination": "西安",
+  "date": "六月一号",
+  "seat_class": "二等座",
+  "passenger": "张伟"
+ },
+ "slots_final": {
+  "origin": "上海",
+  "destination": "西安",
+  "date": "五月八号",
+  "seat_class": "二等座",
+  "passenger": "张伟"
+ },
+ "revisions": [
+  {
+   "slot": "date",
+   "old": "六月一号",
+   "new": "五月八号",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.681
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "上海",
+  "destination": "西安",
+  "date": "5月8日",
+  "seat_class": "二等座",
+  "passenger": "张伟"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "zh",
+   "text": "帮我查六月一号从上海到西安的火车信息，订二等座，直接买掉，乘客是张伟。",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.738,
+   "action": "benign_control",
+   "role": "user",
+   "voice": "cv03",
+   "text": "呃呃——等等，改成五月八号。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.855
+ },
+ "step_latencies": [
+  0.855,
+  0.666,
+  1.627
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.949,
+  "gain_db": 1.8,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "上海",
+    "destination": "西安",
+    "date": "5月8日"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEbe0e6c",
+    "seat_class": "二等座"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO8df29f",
+    "passenger": "张伟"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEbe0e6c": {
+   "origin": "上海",
+   "destination": "西安",
+   "date": "5月8日"
+  },
+  "hold_seat#HO8df29f": {
+   "train_id": "SEbe0e6c",
+   "seat_class": "二等座"
+  },
+  "purchase_ticket#PU4818a5": {
+   "hold_id": "HO8df29f",
+   "passenger": "张伟"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv06"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

@@ -1,0 +1,168 @@
+{
+ "id": "A_L6_0007",
+ "arm": "A",
+ "layer": "L6",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "广州",
+  "destination": "西安",
+  "date": "六月一号",
+  "seat_class": "二等座",
+  "passenger": "李娜"
+ },
+ "slots_final": {
+  "origin": "广州",
+  "destination": "南京",
+  "date": "六月一号",
+  "seat_class": "一等座",
+  "passenger": "李娜"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "西安",
+   "new": "南京",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.858
+  },
+  {
+   "slot": "seat_class",
+   "old": "二等座",
+   "new": "一等座",
+   "by": "user",
+   "kind": "second",
+   "gap": 2.919
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "广州",
+  "destination": "南京",
+  "date": "6月1日",
+  "seat_class": "一等座",
+  "passenger": "李娜"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "帮我看看六月一号从广州到西安有什么火车，订二等座，接着直接买票，乘客是李娜。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "慢着，改成南京。",
+   "gap_before": 0.858
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "还有，再改一下，要一等座。",
+   "gap_before": 2.919
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.199
+ },
+ "step_latencies": [
+  0.199,
+  0.422,
+  1.439
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.025,
+  "gain_db": 0.3,
+  "snr_db": 24.2
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "广州",
+    "destination": "南京",
+    "date": "6月1日"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE4e0248",
+    "seat_class": "一等座"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO34e0ba",
+    "passenger": "李娜"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE4e0248": {
+   "origin": "广州",
+   "destination": "南京",
+   "date": "6月1日"
+  },
+  "hold_seat#HO34e0ba": {
+   "train_id": "SE4e0248",
+   "seat_class": "一等座"
+  },
+  "purchase_ticket#PU88ece5": {
+   "hold_id": "HO34e0ba",
+   "passenger": "李娜"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv01"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.383,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 9.241,
+   "t_end": 11.348,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 14.267,
+   "t_end": 17.858,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.858,
+  2.919
+ ]
+}

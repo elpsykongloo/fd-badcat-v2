@@ -1,0 +1,130 @@
+{
+ "id": "A_L10_0033",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "eight hundred",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "slots_final": {
+  "amount": "eight hundred",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "command",
+  "other": "three thousand",
+  "slot": "amount",
+  "state": "inflight",
+  "frac": 0.107
+ },
+ "slots_canon": {
+  "amount": 800,
+  "from_cur": "USD",
+  "to_cur": "JPY",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "Please provide a quote for eight hundred dollars to yen and afterwards transfer eight hundred from checking to savings.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Go ahead and change it to three thousand.",
+   "at_after_eou": 1.065
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.606
+ },
+ "step_latencies": [
+  0.606,
+  3.145
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 1.042,
+  "gain_db": -2.5,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": 800,
+    "from_cur": "USD",
+    "to_cur": "JPY"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "savings",
+    "amount": 800
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GEfe0fe2": {
+   "amount": 800,
+   "from_cur": "USD",
+   "to_cur": "JPY"
+  },
+  "transfer_funds#TR3862b1": {
+   "from_acct": "checking",
+   "to_acct": "savings",
+   "amount": 800
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv02"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "dev",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 9.252,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "bystander",
+   "t_start": 10.957,
+   "t_end": 13.107,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

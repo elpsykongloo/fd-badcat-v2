@@ -1,0 +1,95 @@
+{
+ "id": "B_L15_0048",
+ "arm": "B",
+ "layer": "L15",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_single",
+ "slots": {
+  "item_id": "C330",
+  "qty": "one"
+ },
+ "slots_final": {
+  "item_id": "C330",
+  "qty": "two"
+ },
+ "revisions": [
+  {
+   "slot": "qty",
+   "old": "one",
+   "new": "two",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "item_id": "C330",
+  "qty": 2
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "I need to add one of item C330 to the cart.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "executing",
+   "offset": 0.248,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv03",
+   "text": "No, forget that— Wait — make it two."
+  }
+ ],
+ "profile": "heavy",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 5.741
+ },
+ "step_latencies": [
+  5.741
+ ],
+ "scenario_steps": [
+  "add_item"
+ ],
+ "perturb": {
+  "rate": 0.984,
+  "gain_db": -0.1,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "C330",
+    "qty": 2
+   }
+  }
+ ],
+ "gold_state": {
+  "add_item#AD47f7a4": {
+   "item_id": "C330",
+   "qty": 2
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv07"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "abort_feasible": false
+}

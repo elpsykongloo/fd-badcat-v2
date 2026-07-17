@@ -1,0 +1,146 @@
+{
+ "id": "A_L10_0011",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "北京",
+  "destination": "杭州",
+  "date": "六月一号",
+  "seat_class": "一等座",
+  "passenger": "李娜"
+ },
+ "slots_final": {
+  "origin": "北京",
+  "destination": "杭州",
+  "date": "六月一号",
+  "seat_class": "二等座",
+  "passenger": "李娜"
+ },
+ "revisions": [
+  {
+   "slot": "seat_class",
+   "old": "一等座",
+   "new": "二等座",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.732
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "北京",
+  "destination": "杭州",
+  "date": "6月1日",
+  "seat_class": "二等座",
+  "passenger": "李娜"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "帮我看看六月一号从北京到杭州有什么火车，订一等座，接着直接买票，乘客是李娜。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "哦不，改二等座。",
+   "gap_before": 0.732
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.328
+ },
+ "step_latencies": [
+  0.328,
+  0.71,
+  0.818
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.038,
+  "gain_db": -2.1,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "北京",
+    "destination": "杭州",
+    "date": "6月1日"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEe60614",
+    "seat_class": "二等座"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HOd90b49",
+    "passenger": "李娜"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEe60614": {
+   "origin": "北京",
+   "destination": "杭州",
+   "date": "6月1日"
+  },
+  "hold_seat#HOd90b49": {
+   "train_id": "SEe60614",
+   "seat_class": "二等座"
+  },
+  "purchase_ticket#PU38fd61": {
+   "hold_id": "HOd90b49",
+   "passenger": "李娜"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv01"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "dev",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 9.749,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 10.481,
+   "t_end": 12.793,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.732
+ ]
+}

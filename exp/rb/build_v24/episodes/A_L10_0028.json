@@ -1,0 +1,131 @@
+{
+ "id": "A_L10_0028",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "running shoes",
+  "qty": "one",
+  "address": "12 College Road"
+ },
+ "slots_final": {
+  "query": "running shoes",
+  "qty": "one",
+  "address": "12 College Road"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "irrelevant",
+  "other": "88 Century Avenue",
+  "slot": "address",
+  "state": "inflight",
+  "frac": 0.373
+ },
+ "slots_canon": {
+  "query": "running shoes",
+  "qty": 1,
+  "address": "12 College Road"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Look up running shoes, add one to the cart, then order to 12 College Road.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Let's just order in, what sounds good for dinner?",
+   "at_after_eou": 1.084
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.226
+ },
+ "step_latencies": [
+  0.226,
+  0.637,
+  5.094
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 1.06,
+  "gain_db": 0.3,
+  "snr_db": 15.7
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "running shoes"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE3ca21e",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "ADac0cce",
+    "address": "12 College Road"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE3ca21e": {
+   "query": "running shoes"
+  },
+  "add_item#ADac0cce": {
+   "item_id": "SE3ca21e",
+   "qty": 1
+  },
+  "place_order#PL8de241": {
+   "cart_id": "ADac0cce",
+   "address": "12 College Road"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv04"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 5.255,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "bystander",
+   "t_start": 6.979,
+   "t_end": 9.847,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

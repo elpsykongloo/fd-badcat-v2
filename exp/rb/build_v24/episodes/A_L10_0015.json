@@ -1,0 +1,141 @@
+{
+ "id": "A_L10_0015",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
+ "slots_final": {
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "command",
+  "other": "Denver",
+  "slot": "destination",
+  "state": "inflight",
+  "frac": 0.344
+ },
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "May 3",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Please find me a train from Seattle to Austin on May third, hold a business seat, and purchase the ticket for Jordan Lee.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "Make it Denver instead.",
+   "at_after_eou": 1.15
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.437
+ },
+ "step_latencies": [
+  0.437,
+  1.297,
+  3.816
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.019,
+  "gain_db": -5.3,
+  "snr_db": 17.1
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Seattle",
+    "destination": "Austin",
+    "date": "May 3"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEc3f587",
+    "seat_class": "business"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HOc5ff22",
+    "passenger": "Jordan Lee"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEc3f587": {
+   "origin": "Seattle",
+   "destination": "Austin",
+   "date": "May 3"
+  },
+  "hold_seat#HOc5ff22": {
+   "train_id": "SEc3f587",
+   "seat_class": "business"
+  },
+  "purchase_ticket#PUb73b4d": {
+   "hold_id": "HOc5ff22",
+   "passenger": "Jordan Lee"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv05"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 9.293,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "bystander",
+   "t_start": 11.083,
+   "t_end": 12.575,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

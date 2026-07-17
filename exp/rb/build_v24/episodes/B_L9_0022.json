@@ -1,0 +1,87 @@
+{
+ "id": "B_L9_0022",
+ "arm": "B",
+ "layer": "L9",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_single",
+ "slots": {
+  "listing_id": "LST12"
+ },
+ "slots_final": {
+  "listing_id": "LST12"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "listing_id": "LST12"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "zh",
+   "text": "把LST12这个房源给我收藏了",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "zh",
+   "text": "做好了没？",
+   "at_after_eou": 12.838
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.695,
+   "action": "progress_query",
+   "role": "user",
+   "voice": "cv01",
+   "text": "好了没？"
+  }
+ ],
+ "profile": "heavy",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 19.73
+ },
+ "step_latencies": [
+  19.73
+ ],
+ "scenario_steps": [
+  "save_listing"
+ ],
+ "perturb": {
+  "rate": 1.001,
+  "gain_db": -1.6,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "save_listing",
+   "args": {
+    "listing_id": "LST12"
+   }
+  }
+ ],
+ "gold_state": {
+  "save_listing#SA66255b": {
+   "listing_id": "LST12"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv07"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

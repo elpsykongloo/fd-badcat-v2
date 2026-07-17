@@ -1,0 +1,131 @@
+{
+ "id": "B_L10_0023",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "May eighth",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
+ "revisions": [
+  {
+   "slot": "date",
+   "old": "June first",
+   "new": "May eighth",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.691
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "May 8",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Could you look up a train from Chicago to Denver on June first, hold a coach seat, and buy the ticket for Sam Rivera?",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.541,
+   "action": "benign_control",
+   "role": "user",
+   "voice": "cv07",
+   "text": "Set it to the... I mean, Actually, let's go with May eighth"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.534
+ },
+ "step_latencies": [
+  0.534,
+  0.716,
+  1.78
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.991,
+  "gain_db": 0.7,
+  "snr_db": 17.2
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Chicago",
+    "destination": "Denver",
+    "date": "May 8"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE574575",
+    "seat_class": "coach"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO4303c3",
+    "passenger": "Sam Rivera"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE574575": {
+   "origin": "Chicago",
+   "destination": "Denver",
+   "date": "May 8"
+  },
+  "hold_seat#HO4303c3": {
+   "train_id": "SE574575",
+   "seat_class": "coach"
+  },
+  "purchase_ticket#PU4d8a35": {
+   "hold_id": "HO4303c3",
+   "passenger": "Sam Rivera"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv04"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

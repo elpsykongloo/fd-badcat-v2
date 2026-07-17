@@ -1,0 +1,136 @@
+{
+ "id": "A_L5_0040",
+ "arm": "A",
+ "layer": "L5",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "running shoes",
+  "qty": "one",
+  "address": "88 Century Avenue"
+ },
+ "slots_final": {
+  "query": "running shoes",
+  "qty": "one",
+  "address": "12 College Road"
+ },
+ "revisions": [
+  {
+   "slot": "address",
+   "old": "88 Century Avenue",
+   "new": "12 College Road",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.672
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "running shoes",
+  "qty": 1,
+  "address": "12 College Road"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Search for running shoes, pop one into the cart, and get it sent to 88 Century Avenue.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "No wait, make that 12 College Road",
+   "gap_before": 2.672
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.364
+ },
+ "step_latencies": [
+  0.364,
+  0.65,
+  2.952
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 1.047,
+  "gain_db": -5.1,
+  "snr_db": 21.9
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "running shoes"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE9a429d",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD854903",
+    "address": "12 College Road"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE9a429d": {
+   "query": "running shoes"
+  },
+  "add_item#AD854903": {
+   "item_id": "SE9a429d",
+   "qty": 1
+  },
+  "place_order#PLc8f9a1": {
+   "cart_id": "AD854903",
+   "address": "12 College Road"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv08"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 5.849,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 8.521,
+   "t_end": 11.042,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  2.672
+ ]
+}

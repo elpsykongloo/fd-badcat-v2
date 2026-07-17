@@ -1,0 +1,102 @@
+{
+ "id": "B_L14_0016",
+ "arm": "B",
+ "layer": "L14",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_single",
+ "slots": {
+  "item_id": "C330",
+  "qty": "two"
+ },
+ "slots_final": {
+  "item_id": "C330",
+  "qty": "one"
+ },
+ "revisions": [
+  {
+   "slot": "qty",
+   "old": "two",
+   "new": "one",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "item_id": "C330",
+  "qty": 1
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Put two of item C330 in my shopping cart please.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "committed",
+   "offset": 0.734,
+   "action": "confirm_query",
+   "role": "user",
+   "voice": "cv02",
+   "text": "Wait — what exactly did you set that to? Say it back to me."
+  },
+  {
+   "state": "committed",
+   "offset": 6.635,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv02",
+   "text": "Hold on, switch that to one"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.33
+ },
+ "step_latencies": [
+  0.33
+ ],
+ "scenario_steps": [
+  "add_item"
+ ],
+ "perturb": {
+  "rate": 1.04,
+  "gain_db": -1.5,
+  "snr_db": 17.1
+ },
+ "gold_calls": [
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "C330",
+    "qty": 1
+   }
+  }
+ ],
+ "gold_state": {
+  "add_item#AD9a2377": {
+   "item_id": "C330",
+   "qty": 1
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv09"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

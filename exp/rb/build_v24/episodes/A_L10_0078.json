@@ -1,0 +1,125 @@
+{
+ "id": "A_L10_0078",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "成都",
+  "beds": "一居",
+  "max_rent": "六千",
+  "slot": "周六上午"
+ },
+ "slots_final": {
+  "city": "成都",
+  "beds": "一居",
+  "max_rent": "六千",
+  "slot": "周六上午"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "command",
+  "other": "周日下午",
+  "slot": "slot",
+  "state": "inflight",
+  "frac": 0.333
+ },
+ "slots_canon": {
+  "city": "成都",
+  "beds": 1,
+  "max_rent": 6000,
+  "slot": "周六上午"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "zh",
+   "text": "我想在成都找一居的，租金顶多六千，约周六上午看房行不？",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv09",
+   "lang": "zh",
+   "text": "改成周日下午吧",
+   "at_after_eou": 1.232
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.696
+ },
+ "step_latencies": [
+  0.696,
+  3.623
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.04,
+  "gain_db": -4.3,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "成都",
+    "beds": 1,
+    "max_rent": 6000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE1678ab",
+    "slot": "周六上午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE1678ab": {
+   "city": "成都",
+   "beds": 1,
+   "max_rent": 6000
+  },
+  "book_viewing#BOfdc327": {
+   "listing_id": "SE1678ab",
+   "slot": "周六上午"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv09"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.962,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "bystander",
+   "t_start": 8.834,
+   "t_end": 11.834,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

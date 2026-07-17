@@ -1,0 +1,64 @@
+{
+ "id": "A_L2_0012",
+ "layer": "L2",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.643,
+ "U": 0.8296,
+ "U_sens": {
+  "0.5": 0.8296,
+  "1.0": 0.8296,
+  "2.0": 0.8296
+ },
+ "rev_adopted": true,
+ "intruder_present": null,
+ "bystander_kind": null,
+ "aborted_ops": 0,
+ "comp_calls": 0,
+ "first_response_s": 1.64,
+ "n_eou": 1,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 1,
+   "t_eou": 8.973,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 2
+    }
+   ],
+   "say": "Adding two of item A100 to the cart."
+  }
+ ],
+ "say_events": [
+  [
+   9.973,
+   "Adding two of item A100 to the cart."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   4.799,
+   "user"
+  ],
+  [
+   5.031,
+   8.333,
+   "user"
+  ]
+ ]
+}

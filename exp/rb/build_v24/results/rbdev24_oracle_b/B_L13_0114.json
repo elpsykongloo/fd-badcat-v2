@@ -1,0 +1,103 @@
+{
+ "id": "B_L13_0114",
+ "layer": "L13",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 2.0,
+ "done_s": 3.847,
+ "U": 0.7209,
+ "U_sens": {
+  "0.5": 0.7709,
+  "1.0": 0.7209,
+  "2.0": 0.6209
+ },
+ "rev_adopted": true,
+ "intruder_present": null,
+ "bystander_kind": null,
+ "aborted_ops": 0,
+ "comp_calls": 1,
+ "pair": {
+  "family": "BF014",
+  "who": "user",
+  "state": "committed"
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 3.09,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "save_listing",
+     "op_id": 2
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 8.231,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "unsave_listing",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "save_listing",
+     "op_id": 4
+    },
+    {
+     "type": "abort",
+     "op_id": "X2",
+     "target": "SAff8429",
+     "ok": false,
+     "error": "already completed - compensate"
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   4.09,
+   "好的，马上办。"
+  ],
+  [
+   9.231,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   2.45,
+   "user"
+  ],
+  [
+   6.016,
+   7.591,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   3.566
+  ]
+ }
+}

@@ -1,0 +1,158 @@
+{
+ "id": "A_L6_0020",
+ "arm": "A",
+ "layer": "L6",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "running shoes",
+  "qty": "two",
+  "address": "88 Century Avenue"
+ },
+ "slots_final": {
+  "query": "wireless earbuds",
+  "qty": "one",
+  "address": "88 Century Avenue"
+ },
+ "revisions": [
+  {
+   "slot": "query",
+   "old": "running shoes",
+   "new": "wireless earbuds",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.752
+  },
+  {
+   "slot": "qty",
+   "old": "two",
+   "new": "one",
+   "by": "user",
+   "kind": "second",
+   "gap": 1.129
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "wireless earbuds",
+  "qty": 1,
+  "address": "88 Century Avenue"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Look up running shoes, add two to the cart, then order to 88 Century Avenue.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Set it to the... I mean, Hold on, switch that to wireless earbuds",
+   "gap_before": 0.752
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "And one more thing, one.",
+   "gap_before": 1.129
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.511
+ },
+ "step_latencies": [
+  0.511,
+  0.684,
+  2.044
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 0.975,
+  "gain_db": -2.3,
+  "snr_db": 16.7
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "wireless earbuds"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE42a6a6",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "ADecf102",
+    "address": "88 Century Avenue"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE42a6a6": {
+   "query": "wireless earbuds"
+  },
+  "add_item#ADecf102": {
+   "item_id": "SE42a6a6",
+   "qty": 1
+  },
+  "place_order#PLa60a70": {
+   "cart_id": "ADecf102",
+   "address": "88 Century Avenue"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv05"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.49,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 7.242,
+   "t_end": 17.498,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 18.627,
+   "t_end": 21.171,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.752,
+  1.129
+ ]
+}

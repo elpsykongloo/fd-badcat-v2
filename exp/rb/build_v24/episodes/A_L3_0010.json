@@ -1,0 +1,130 @@
+{
+ "id": "A_L3_0010",
+ "arm": "A",
+ "layer": "L3",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "青岛",
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周日下午"
+ },
+ "slots_final": {
+  "city": "青岛",
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周六上午"
+ },
+ "revisions": [
+  {
+   "slot": "slot",
+   "old": "周日下午",
+   "new": "周六上午",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.728
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "青岛",
+  "beds": 1,
+  "max_rent": 8000,
+  "slot": "周六上午"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "zh",
+   "text": "在青岛找一居、租金不超过八千的房子，约周日下午看房。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "zh",
+   "text": "等等，我改周六上午。",
+   "gap_before": 0.728
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.962
+ },
+ "step_latencies": [
+  0.962,
+  2.393
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.009,
+  "gain_db": -3.6,
+  "snr_db": 23.7
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "青岛",
+    "beds": 1,
+    "max_rent": 8000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE58c3b1",
+    "slot": "周六上午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE58c3b1": {
+   "city": "青岛",
+   "beds": 1,
+   "max_rent": 8000
+  },
+  "book_viewing#BO30b73d": {
+   "listing_id": "SE58c3b1",
+   "slot": "周六上午"
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv02"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.081,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 7.809,
+   "t_end": 10.663,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.728
+ ]
+}

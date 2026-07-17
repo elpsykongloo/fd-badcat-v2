@@ -1,0 +1,125 @@
+{
+ "id": "A_L8_0008",
+ "arm": "A",
+ "layer": "L8",
+ "domain": "ecommerce",
+ "lang": "zh",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "蓝牙耳机",
+  "qty": "一",
+  "address": "海淀区学院路一号"
+ },
+ "slots_final": {
+  "query": "蓝牙耳机",
+  "qty": "一",
+  "address": "海淀区学院路一号"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "query": "蓝牙耳机",
+  "qty": 1,
+  "address": "海淀区学院路一号"
+ },
+ "l8_action": "progress",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "zh",
+   "text": "帮我搜蓝牙耳机，加一件进购物车，下单寄到海淀区学院路一号。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "zh",
+   "text": "做完了没？",
+   "at_after_eou": 1.461
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.654
+ },
+ "step_latencies": [
+  0.654,
+  0.472,
+  1.824
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 1.007,
+  "gain_db": -0.3,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "蓝牙耳机"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SEca87f2",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "ADad5de5",
+    "address": "海淀区学院路一号"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SEca87f2": {
+   "query": "蓝牙耳机"
+  },
+  "add_item#ADad5de5": {
+   "item_id": "SEca87f2",
+   "qty": 1
+  },
+  "place_order#PLcacd32": {
+   "cart_id": "ADad5de5",
+   "address": "海淀区学院路一号"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv04"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 5.982,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 8.083,
+   "t_end": 8.798,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

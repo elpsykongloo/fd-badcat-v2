@@ -1,0 +1,97 @@
+{
+ "id": "B_L14_0022",
+ "arm": "B",
+ "layer": "L14",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_single",
+ "slots": {
+  "listing_id": "LST47"
+ },
+ "slots_final": {
+  "listing_id": "LST12"
+ },
+ "revisions": [
+  {
+   "slot": "listing_id",
+   "old": "LST47",
+   "new": "LST12",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "listing_id": "LST12"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "zh",
+   "text": "收藏一下编号是LST47的房源",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "committed",
+   "offset": 0.728,
+   "action": "confirm_query",
+   "role": "user",
+   "voice": "cv04",
+   "text": "等一下，你刚才办的那个，具体是什么来着？再说一遍。"
+  },
+  {
+   "state": "committed",
+   "offset": 6.681,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv04",
+   "text": "换一下，换一下，等等，我改LST12。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.682
+ },
+ "step_latencies": [
+  0.682
+ ],
+ "scenario_steps": [
+  "save_listing"
+ ],
+ "perturb": {
+  "rate": 0.985,
+  "gain_db": -4.4,
+  "snr_db": 15.2
+ },
+ "gold_calls": [
+  {
+   "fn": "save_listing",
+   "args": {
+    "listing_id": "LST12"
+   }
+  }
+ ],
+ "gold_state": {
+  "save_listing#SAb7d449": {
+   "listing_id": "LST12"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv03"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

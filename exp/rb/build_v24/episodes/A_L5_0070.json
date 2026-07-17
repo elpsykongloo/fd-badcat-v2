@@ -1,0 +1,130 @@
+{
+ "id": "A_L5_0070",
+ "arm": "A",
+ "layer": "L5",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Miami",
+  "beds": "one-bedroom",
+  "max_rent": "three thousand",
+  "slot": "Sunday afternoon"
+ },
+ "slots_final": {
+  "city": "Miami",
+  "beds": "one-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Sunday afternoon"
+ },
+ "revisions": [
+  {
+   "slot": "max_rent",
+   "old": "three thousand",
+   "new": "two thousand",
+   "by": "user",
+   "kind": "default",
+   "gap": 3.193
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Miami",
+  "beds": 1,
+  "max_rent": 2000,
+  "slot": "Sunday afternoon"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Find a one-bedroom in Miami under three thousand, and book a viewing for Sunday afternoon.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "No wait, make that two thousand",
+   "gap_before": 3.193
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.367
+ },
+ "step_latencies": [
+  0.367,
+  0.36
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.029,
+  "gain_db": -1.5,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Miami",
+    "beds": 1,
+    "max_rent": 2000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SEf3e152",
+    "slot": "Sunday afternoon"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEf3e152": {
+   "city": "Miami",
+   "beds": 1,
+   "max_rent": 2000
+  },
+  "book_viewing#BOc7335f": {
+   "listing_id": "SEf3e152",
+   "slot": "Sunday afternoon"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv02"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 5.709,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 8.902,
+   "t_end": 11.001,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  3.193
+ ]
+}

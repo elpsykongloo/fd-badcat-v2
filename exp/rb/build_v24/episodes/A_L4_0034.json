@@ -1,0 +1,130 @@
+{
+ "id": "A_L4_0034",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Denver",
+  "beds": "one-bedroom",
+  "max_rent": "three thousand",
+  "slot": "Sunday afternoon"
+ },
+ "slots_final": {
+  "city": "Austin",
+  "beds": "one-bedroom",
+  "max_rent": "three thousand",
+  "slot": "Sunday afternoon"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "Denver",
+   "new": "Austin",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.835
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Austin",
+  "beds": 1,
+  "max_rent": 3000,
+  "slot": "Sunday afternoon"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "I need to find a one-bedroom in Denver for under three thousand, and then schedule a viewing for Sunday afternoon.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Austin instead of Denver.",
+   "gap_before": 0.835
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.524
+ },
+ "step_latencies": [
+  0.524,
+  3.579
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.0,
+  "gain_db": -1.8,
+  "snr_db": 20.8
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Austin",
+    "beds": 1,
+    "max_rent": 3000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE58460c",
+    "slot": "Sunday afternoon"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE58460c": {
+   "city": "Austin",
+   "beds": 1,
+   "max_rent": 3000
+  },
+  "book_viewing#BO8ea809": {
+   "listing_id": "SE58460c",
+   "slot": "Sunday afternoon"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv09"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.3,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 8.135,
+   "t_end": 9.495,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.835
+ ]
+}

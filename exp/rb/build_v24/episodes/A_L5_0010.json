@@ -1,0 +1,130 @@
+{
+ "id": "A_L5_0010",
+ "arm": "A",
+ "layer": "L5",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Boise",
+  "beds": "two-bedroom",
+  "max_rent": "three thousand",
+  "slot": "Sunday afternoon"
+ },
+ "slots_final": {
+  "city": "Boise",
+  "beds": "two-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Sunday afternoon"
+ },
+ "revisions": [
+  {
+   "slot": "max_rent",
+   "old": "three thousand",
+   "new": "two thousand",
+   "by": "user",
+   "kind": "default",
+   "gap": 3.658
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Boise",
+  "beds": 2,
+  "max_rent": 2000,
+  "slot": "Sunday afternoon"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "Search for a two-bedroom in Boise under three thousand, and also arrange a viewing for Sunday afternoon.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "Set it to the... I mean, Wait — make it two thousand.",
+   "gap_before": 3.658
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.591
+ },
+ "step_latencies": [
+  0.591,
+  1.899
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.028,
+  "gain_db": -1.8,
+  "snr_db": 24.9
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Boise",
+    "beds": 2,
+    "max_rent": 2000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE894d24",
+    "slot": "Sunday afternoon"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE894d24": {
+   "city": "Boise",
+   "beds": 2,
+   "max_rent": 2000
+  },
+  "book_viewing#BO4e9c51": {
+   "listing_id": "SE894d24",
+   "slot": "Sunday afternoon"
+  }
+ },
+ "voices": {
+  "user": "cv05",
+  "bystander": "cv02"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.414,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 10.072,
+   "t_end": 16.298,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  3.658
+ ]
+}

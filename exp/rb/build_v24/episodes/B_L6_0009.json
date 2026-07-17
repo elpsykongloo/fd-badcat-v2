@@ -1,0 +1,136 @@
+{
+ "id": "B_L6_0009",
+ "arm": "B",
+ "layer": "L6",
+ "domain": "finance",
+ "lang": "zh",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "八百",
+  "from_cur": "人民币",
+  "to_cur": "日元",
+  "from_acct": "工资卡",
+  "to_acct": "房租卡"
+ },
+ "slots_final": {
+  "amount": "五千",
+  "from_cur": "人民币",
+  "to_cur": "日元",
+  "from_acct": "工资卡",
+  "to_acct": "储蓄卡"
+ },
+ "revisions": [
+  {
+   "slot": "amount",
+   "old": "八百",
+   "new": "五千",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.204
+  },
+  {
+   "slot": "to_acct",
+   "old": "房租卡",
+   "new": "储蓄卡",
+   "by": "user",
+   "kind": "second",
+   "gap": 2.789
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "amount": 5000,
+  "from_cur": "CNY",
+  "to_cur": "JPY",
+  "from_acct": "工资卡",
+  "to_acct": "储蓄卡"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "zh",
+   "text": "先查八百块人民币换日元的汇率，然后从工资卡转八百到房租卡。",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.857,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv03",
+   "text": "等一下，换五千。"
+  },
+  {
+   "state": "committed",
+   "offset": 0.392,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv03",
+   "text": "对了，再改一改，要储蓄卡。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.368
+ },
+ "step_latencies": [
+  0.368,
+  1.989
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 1.045,
+  "gain_db": -3.9,
+  "snr_db": 16.9
+ },
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": 5000,
+    "from_cur": "CNY",
+    "to_cur": "JPY"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "工资卡",
+    "to_acct": "储蓄卡",
+    "amount": 5000
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GEebb49f": {
+   "amount": 5000,
+   "from_cur": "CNY",
+   "to_cur": "JPY"
+  },
+  "transfer_funds#TRa15ede": {
+   "from_acct": "工资卡",
+   "to_acct": "储蓄卡",
+   "amount": 5000
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv05"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

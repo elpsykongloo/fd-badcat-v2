@@ -1,0 +1,128 @@
+{
+ "id": "B_L8_0024",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "thermos bottle",
+  "qty": "two",
+  "address": "12 College Road"
+ },
+ "slots_final": {
+  "query": "thermos bottle",
+  "qty": "two",
+  "address": "88 Century Avenue"
+ },
+ "revisions": [
+  {
+   "slot": "address",
+   "old": "12 College Road",
+   "new": "88 Century Avenue",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "thermos bottle",
+  "qty": 2,
+  "address": "88 Century Avenue"
+ },
+ "l8_action": "revise",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Could you search for thermos bottle, add two to the cart, and deliver it to 12 College Road?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Hang on, it's— Actually, let's go with 88 Century Avenue",
+   "at_after_eou": 1.368
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.501,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv03",
+   "text": "Hold up, change it to 88 Century Avenue"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.542
+ },
+ "step_latencies": [
+  0.542,
+  0.871,
+  2.876
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 1.046,
+  "gain_db": -4.1,
+  "snr_db": 17.9
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "thermos bottle"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SEe2042c",
+    "qty": 2
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "ADd4e4d7",
+    "address": "88 Century Avenue"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SEe2042c": {
+   "query": "thermos bottle"
+  },
+  "add_item#ADd4e4d7": {
+   "item_id": "SEe2042c",
+   "qty": 2
+  },
+  "place_order#PL4e3084": {
+   "cart_id": "ADd4e4d7",
+   "address": "88 Century Avenue"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv09"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "dev",
+ "config_hash": "9d338e70f770"
+}

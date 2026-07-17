@@ -1,0 +1,130 @@
+{
+ "id": "A_L5_0078",
+ "arm": "A",
+ "layer": "L5",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Austin",
+  "beds": "two-bedroom",
+  "max_rent": "three thousand",
+  "slot": "Sunday afternoon"
+ },
+ "slots_final": {
+  "city": "Austin",
+  "beds": "two-bedroom",
+  "max_rent": "three thousand",
+  "slot": "Saturday morning"
+ },
+ "revisions": [
+  {
+   "slot": "slot",
+   "old": "Sunday afternoon",
+   "new": "Saturday morning",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.829
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Austin",
+  "beds": 2,
+  "max_rent": 3000,
+  "slot": "Saturday morning"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Search for a two-bedroom in Austin under three thousand, and also arrange a viewing for Sunday afternoon.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Wait — make it Saturday morning.",
+   "gap_before": 2.829
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.367
+ },
+ "step_latencies": [
+  0.367,
+  2.593
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 0.967,
+  "gain_db": -2.5,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Austin",
+    "beds": 2,
+    "max_rent": 3000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE8d23a0",
+    "slot": "Saturday morning"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE8d23a0": {
+   "city": "Austin",
+   "beds": 2,
+   "max_rent": 3000
+  },
+  "book_viewing#BO06d61a": {
+   "listing_id": "SE8d23a0",
+   "slot": "Saturday morning"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv03"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 9.104,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 11.933,
+   "t_end": 14.001,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  2.829
+ ]
+}

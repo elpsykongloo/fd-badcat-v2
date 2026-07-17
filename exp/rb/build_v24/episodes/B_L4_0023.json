@@ -1,0 +1,131 @@
+{
+ "id": "B_L4_0023",
+ "arm": "B",
+ "layer": "L4",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "广州",
+  "destination": "西安",
+  "date": "六月一号",
+  "seat_class": "商务座",
+  "passenger": "王磊"
+ },
+ "slots_final": {
+  "origin": "广州",
+  "destination": "西安",
+  "date": "六月一号",
+  "seat_class": "二等座",
+  "passenger": "王磊"
+ },
+ "revisions": [
+  {
+   "slot": "seat_class",
+   "old": "商务座",
+   "new": "二等座",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.692
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "广州",
+  "destination": "西安",
+  "date": "6月1日",
+  "seat_class": "二等座",
+  "passenger": "王磊"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "zh",
+   "text": "帮我看看六月一号从广州到西安有什么火车，订商务座，接着直接买票，乘客是王磊。",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.377,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv08",
+   "text": "二等座，不是商务座啊。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.367
+ },
+ "step_latencies": [
+  0.367,
+  0.39,
+  4.517
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.05,
+  "gain_db": -5.4,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "广州",
+    "destination": "西安",
+    "date": "6月1日"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE4747ad",
+    "seat_class": "二等座"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HOa14d9b",
+    "passenger": "王磊"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE4747ad": {
+   "origin": "广州",
+   "destination": "西安",
+   "date": "6月1日"
+  },
+  "hold_seat#HOa14d9b": {
+   "train_id": "SE4747ad",
+   "seat_class": "二等座"
+  },
+  "purchase_ticket#PU777f2e": {
+   "hold_id": "HOa14d9b",
+   "passenger": "王磊"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv06"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

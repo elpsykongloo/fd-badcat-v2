@@ -1,0 +1,104 @@
+{
+ "id": "A_L7_0030",
+ "arm": "A",
+ "layer": "L7",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_single",
+ "slots": {
+  "listing_id": "LST47"
+ },
+ "slots_final": {
+  "listing_id": "LST12"
+ },
+ "revisions": [
+  {
+   "slot": "listing_id",
+   "old": "LST47",
+   "new": "LST12",
+   "by": "user",
+   "kind": "default",
+   "gap": 4.782
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "listing_id": "LST12"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Save listing LST47 for me, would you?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Uh, Actually, let's go with LST12",
+   "gap_before": 4.782
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.208
+ },
+ "step_latencies": [
+  0.208
+ ],
+ "scenario_steps": [
+  "save_listing"
+ ],
+ "perturb": {
+  "rate": 1.033,
+  "gain_db": -1.0,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "save_listing",
+   "args": {
+    "listing_id": "LST12"
+   }
+  }
+ ],
+ "gold_state": {
+  "save_listing#SAac2780": {
+   "listing_id": "LST12"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv05"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 5.611,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 10.393,
+   "t_end": 13.878,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  4.782
+ ]
+}

@@ -1,0 +1,130 @@
+{
+ "id": "A_L5_0018",
+ "arm": "A",
+ "layer": "L5",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Austin",
+  "beds": "two-bedroom",
+  "max_rent": "three thousand",
+  "slot": "Saturday morning"
+ },
+ "slots_final": {
+  "city": "Austin",
+  "beds": "two-bedroom",
+  "max_rent": "three thousand",
+  "slot": "Sunday afternoon"
+ },
+ "revisions": [
+  {
+   "slot": "slot",
+   "old": "Saturday morning",
+   "new": "Sunday afternoon",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.686
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Austin",
+  "beds": 2,
+  "max_rent": 3000,
+  "slot": "Sunday afternoon"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "I need to find a two-bedroom in Austin for under three thousand, and then schedule a viewing for Saturday morning.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Wait — make it Sunday afternoon.",
+   "gap_before": 2.686
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.283
+ },
+ "step_latencies": [
+  0.283,
+  2.647
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.054,
+  "gain_db": -1.3,
+  "snr_db": 18.4
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Austin",
+    "beds": 2,
+    "max_rent": 3000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SEecfaa4",
+    "slot": "Sunday afternoon"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEecfaa4": {
+   "city": "Austin",
+   "beds": 2,
+   "max_rent": 3000
+  },
+  "book_viewing#BOdb19ab": {
+   "listing_id": "SEecfaa4",
+   "slot": "Sunday afternoon"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv04"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.697,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 11.383,
+   "t_end": 14.268,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  2.686
+ ]
+}

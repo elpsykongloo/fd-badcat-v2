@@ -1,0 +1,131 @@
+{
+ "id": "B_L6_0030",
+ "arm": "B",
+ "layer": "L6",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "成都",
+  "beds": "两居",
+  "max_rent": "六千",
+  "slot": "周六上午"
+ },
+ "slots_final": {
+  "city": "青岛",
+  "beds": "一居",
+  "max_rent": "六千",
+  "slot": "周六上午"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "成都",
+   "new": "青岛",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.946
+  },
+  {
+   "slot": "beds",
+   "old": "两居",
+   "new": "一居",
+   "by": "user",
+   "kind": "second",
+   "gap": 2.464
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "青岛",
+  "beds": 1,
+  "max_rent": 6000,
+  "slot": "周六上午"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "zh",
+   "text": "我想在成都找两居的，租金最多六千，然后约周六上午看房可以吗？",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.395,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv06",
+   "text": "等一下，换青岛。"
+  },
+  {
+   "state": "committed",
+   "offset": 0.763,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv06",
+   "text": "还有，再帮我改一下，要一居。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.72
+ },
+ "step_latencies": [
+  0.72,
+  4.107
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.005,
+  "gain_db": -5.9,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "青岛",
+    "beds": 1,
+    "max_rent": 6000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SEf265dd",
+    "slot": "周六上午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEf265dd": {
+   "city": "青岛",
+   "beds": 1,
+   "max_rent": 6000
+  },
+  "book_viewing#BO89c926": {
+   "listing_id": "SEf265dd",
+   "slot": "周六上午"
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv02"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

@@ -1,0 +1,143 @@
+{
+ "id": "B_L10_0051",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "command",
+  "other": "business",
+  "slot": "seat_class",
+  "state": "inflight",
+  "frac": 0.501
+ },
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "June 1",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Find me a train from Chicago to Atlanta on June first, hold a coach seat, and buy the ticket for Jordan Lee.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "Make it business instead.",
+   "at_after_eou": 1.171
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.349,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv06",
+   "text": "Change it to business."
+  },
+  {
+   "state": "tts",
+   "offset": 0.3,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv06",
+   "text": "Put business in there."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.342
+ },
+ "step_latencies": [
+  0.342,
+  0.929,
+  2.566
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.942,
+  "gain_db": -0.2,
+  "snr_db": 21.0
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Chicago",
+    "destination": "Atlanta",
+    "date": "June 1"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEcc6c23",
+    "seat_class": "coach"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HOfd895b",
+    "passenger": "Jordan Lee"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEcc6c23": {
+   "origin": "Chicago",
+   "destination": "Atlanta",
+   "date": "June 1"
+  },
+  "hold_seat#HOfd895b": {
+   "train_id": "SEcc6c23",
+   "seat_class": "coach"
+  },
+  "purchase_ticket#PU54c7ee": {
+   "hold_id": "HOfd895b",
+   "passenger": "Jordan Lee"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv06"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

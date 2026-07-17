@@ -1,0 +1,133 @@
+{
+ "id": "A_L12_0010",
+ "arm": "A",
+ "layer": "L12",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_multi",
+ "slots": {
+  "city": "Miami",
+  "beds": "two-bedroom",
+  "max_rent": "three thousand",
+  "from_addr": "university campus",
+  "to_addr": "tech park"
+ },
+ "slots_final": {
+  "city": "Miami",
+  "beds": "two-bedroom",
+  "max_rent": "three thousand",
+  "from_addr": "university campus",
+  "to_addr": "Downtown"
+ },
+ "revisions": [
+  {
+   "slot": "to_addr",
+   "old": "tech park",
+   "new": "Downtown",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.228
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Miami",
+  "beds": 2,
+  "max_rent": 3000,
+  "from_addr": "university campus",
+  "to_addr": "Downtown"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Find a two-bedroom in Miami under three thousand, and check the commute from university campus to tech park.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Oh wait, I mean Downtown",
+   "gap_before": 1.228
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.527
+ },
+ "step_latencies": [
+  0.527,
+  0.486
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "get_commute_time"
+ ],
+ "perturb": {
+  "rate": 1.001,
+  "gain_db": -5.0,
+  "snr_db": 21.0
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Miami",
+    "beds": 2,
+    "max_rent": 3000
+   }
+  },
+  {
+   "fn": "get_commute_time",
+   "args": {
+    "from_addr": "university campus",
+    "to_addr": "Downtown"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEe404b4": {
+   "city": "Miami",
+   "beds": 2,
+   "max_rent": 3000
+  },
+  "get_commute_time#GE1d3211": {
+   "from_addr": "university campus",
+   "to_addr": "Downtown"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv09"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.494,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 7.722,
+   "t_end": 10.12,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  1.228
+ ]
+}

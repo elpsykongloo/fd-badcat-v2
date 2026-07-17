@@ -1,0 +1,146 @@
+{
+ "id": "A_L3_0019",
+ "arm": "A",
+ "layer": "L3",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Boston",
+  "destination": "Denver",
+  "date": "June first",
+  "seat_class": "business",
+  "passenger": "Alex Chen"
+ },
+ "slots_final": {
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "business",
+  "passenger": "Alex Chen"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "Denver",
+   "new": "Atlanta",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.774
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "June 1",
+  "seat_class": "business",
+  "passenger": "Alex Chen"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "I want you to find a train from Boston to Denver on June first, hold a business seat, and buy the ticket for Alex Chen.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "No wait, make that Atlanta",
+   "gap_before": 0.774
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.6
+ },
+ "step_latencies": [
+  0.6,
+  0.399,
+  4.706
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.021,
+  "gain_db": -1.9,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Boston",
+    "destination": "Atlanta",
+    "date": "June 1"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEcea5eb",
+    "seat_class": "business"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO6fc7ea",
+    "passenger": "Alex Chen"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEcea5eb": {
+   "origin": "Boston",
+   "destination": "Atlanta",
+   "date": "June 1"
+  },
+  "hold_seat#HO6fc7ea": {
+   "train_id": "SEcea5eb",
+   "seat_class": "business"
+  },
+  "purchase_ticket#PU82f173": {
+   "hold_id": "HO6fc7ea",
+   "passenger": "Alex Chen"
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv05"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.1,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 8.874,
+   "t_end": 11.538,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.774
+ ]
+}

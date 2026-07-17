@@ -1,0 +1,89 @@
+{
+ "id": "A_L6_0043",
+ "layer": "L6",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 0.684,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "rev_adopted": false,
+ "intruder_present": null,
+ "bystander_kind": null,
+ "aborted_ops": 0,
+ "comp_calls": 0,
+ "first_response_s": 0.684,
+ "n_eou": 3,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 8.444,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 11.294,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "origin": "Xi'an"
+     }
+    }
+   ],
+   "say": ""
+  },
+  {
+   "i": 2,
+   "t_eou": 17.163,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   9.444,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   7.804,
+   "user"
+  ],
+  [
+   8.701,
+   10.654,
+   "user"
+  ],
+  [
+   13.636,
+   16.523,
+   "user"
+  ]
+ ]
+}

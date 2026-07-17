@@ -1,0 +1,130 @@
+{
+ "id": "A_L3_0026",
+ "arm": "A",
+ "layer": "L3",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Denver",
+  "beds": "one-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Sunday afternoon"
+ },
+ "slots_final": {
+  "city": "Denver",
+  "beds": "two-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Sunday afternoon"
+ },
+ "revisions": [
+  {
+   "slot": "beds",
+   "old": "one-bedroom",
+   "new": "two-bedroom",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.775
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Denver",
+  "beds": 2,
+  "max_rent": 2000,
+  "slot": "Sunday afternoon"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "Can you find a one-bedroom in Denver for less than two thousand and schedule a viewing at Sunday afternoon?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "Hold on, switch that to two-bedroom",
+   "gap_before": 0.775
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.309
+ },
+ "step_latencies": [
+  0.309,
+  3.087
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 0.998,
+  "gain_db": -3.6,
+  "snr_db": 22.5
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Denver",
+    "beds": 2,
+    "max_rent": 2000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SEfe1ebc",
+    "slot": "Sunday afternoon"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEfe1ebc": {
+   "city": "Denver",
+   "beds": 2,
+   "max_rent": 2000
+  },
+  "book_viewing#BO5ef450": {
+   "listing_id": "SEfe1ebc",
+   "slot": "Sunday afternoon"
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv01"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 9.398,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 10.173,
+   "t_end": 14.742,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.775
+ ]
+}

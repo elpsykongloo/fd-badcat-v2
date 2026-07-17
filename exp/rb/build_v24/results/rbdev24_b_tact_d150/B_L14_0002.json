@@ -1,0 +1,96 @@
+{
+ "id": "B_L14_0002",
+ "layer": "L14",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 0.0,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "rev_adopted": false,
+ "intruder_present": null,
+ "bystander_kind": null,
+ "aborted_ops": 0,
+ "comp_calls": 0,
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 3.978,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "save_listing",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 11.285,
+   "ops": [],
+   "say": "I saved listing LST10 for you."
+  },
+  {
+   "i": 2,
+   "t_eou": 17.574,
+   "ops": [],
+   "say": "Updating that to LST47."
+  }
+ ],
+ "say_events": [
+  [
+   4.978,
+   "I'm on it."
+  ],
+  [
+   12.285,
+   "I saved listing LST10 for you."
+  ],
+  [
+   18.574,
+   "Updating that to LST47."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   3.338,
+   "user"
+  ],
+  [
+   7.347,
+   10.645,
+   "user"
+  ],
+  [
+   12.485,
+   16.934,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   4.009,
+   1.84
+  ]
+ }
+}

@@ -1,0 +1,137 @@
+{
+ "id": "B_L6_0012",
+ "arm": "B",
+ "layer": "L6",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "wireless earbuds",
+  "qty": "two",
+  "address": "12 College Road"
+ },
+ "slots_final": {
+  "query": "thermos bottle",
+  "qty": "one",
+  "address": "12 College Road"
+ },
+ "revisions": [
+  {
+   "slot": "query",
+   "old": "wireless earbuds",
+   "new": "thermos bottle",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.707
+  },
+  {
+   "slot": "qty",
+   "old": "two",
+   "new": "one",
+   "by": "user",
+   "kind": "second",
+   "gap": 2.796
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "thermos bottle",
+  "qty": 1,
+  "address": "12 College Road"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "Search for wireless earbuds, pop two into the cart, and get it sent to 12 College Road.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.594,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv05",
+   "text": "Like, Wait — make it thermos bottle."
+  },
+  {
+   "state": "committed",
+   "offset": 1.233,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv05",
+   "text": "Make it, make it, Wait, one more revision: one."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.334
+ },
+ "step_latencies": [
+  0.334,
+  0.498,
+  1.796
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 0.942,
+  "gain_db": -2.7,
+  "snr_db": 22.9
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "thermos bottle"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SEe26dcc",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD1f298f",
+    "address": "12 College Road"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SEe26dcc": {
+   "query": "thermos bottle"
+  },
+  "add_item#AD1f298f": {
+   "item_id": "SEe26dcc",
+   "qty": 1
+  },
+  "place_order#PL447fe9": {
+   "cart_id": "AD1f298f",
+   "address": "12 College Road"
+  }
+ },
+ "voices": {
+  "user": "cv05",
+  "bystander": "cv04"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

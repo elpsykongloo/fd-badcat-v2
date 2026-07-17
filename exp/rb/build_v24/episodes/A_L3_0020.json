@@ -1,0 +1,136 @@
+{
+ "id": "A_L3_0020",
+ "arm": "A",
+ "layer": "L3",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "running shoes",
+  "qty": "two",
+  "address": "12 College Road"
+ },
+ "slots_final": {
+  "query": "running shoes",
+  "qty": "two",
+  "address": "88 Century Avenue"
+ },
+ "revisions": [
+  {
+   "slot": "address",
+   "old": "12 College Road",
+   "new": "88 Century Avenue",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.752
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "running shoes",
+  "qty": 2,
+  "address": "88 Century Avenue"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Search for running shoes, pop two into the cart, and get it sent to 12 College Road.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Go with the... no, Actually, let's go with 88 Century Avenue",
+   "gap_before": 0.752
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.34
+ },
+ "step_latencies": [
+  0.34,
+  0.317,
+  1.587
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 0.973,
+  "gain_db": -3.7,
+  "snr_db": 18.8
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "running shoes"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SEb60952",
+    "qty": 2
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "ADd8d276",
+    "address": "88 Century Avenue"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SEb60952": {
+   "query": "running shoes"
+  },
+  "add_item#ADd8d276": {
+   "item_id": "SEb60952",
+   "qty": 2
+  },
+  "place_order#PL758444": {
+   "cart_id": "ADd8d276",
+   "address": "88 Century Avenue"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv01"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.324,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 8.076,
+   "t_end": 14.572,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.752
+ ]
+}

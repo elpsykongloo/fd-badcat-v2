@@ -1,0 +1,99 @@
+{
+ "id": "B_L11_0033",
+ "arm": "B",
+ "layer": "L11",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_payment",
+ "slots": {
+  "payee": "landlord",
+  "amount": "five thousand",
+  "date": "May eighth"
+ },
+ "slots_final": {
+  "payee": "landlord",
+  "amount": "three thousand",
+  "date": "May eighth"
+ },
+ "revisions": [
+  {
+   "slot": "amount",
+   "old": "five thousand",
+   "new": "three thousand",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "payee": "landlord",
+  "amount": 3000,
+  "date": "May 8"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "I need to schedule a payment of five thousand to landlord on May eighth.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "tts",
+   "offset": 0.203,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv03",
+   "text": "Oh wait, I mean three thousand"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 1.146
+ },
+ "step_latencies": [
+  1.146
+ ],
+ "scenario_steps": [
+  "schedule_payment"
+ ],
+ "perturb": {
+  "rate": 1.005,
+  "gain_db": -0.7,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "schedule_payment",
+   "args": {
+    "payee": "landlord",
+    "amount": 3000,
+    "date": "May 8"
+   }
+  }
+ ],
+ "gold_state": {
+  "schedule_payment#SC359e1f": {
+   "payee": "landlord",
+   "amount": 3000,
+   "date": "May 8"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv04"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

@@ -1,0 +1,125 @@
+{
+ "id": "A_L10_0094",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Austin",
+  "beds": "one-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Sunday afternoon"
+ },
+ "slots_final": {
+  "city": "Austin",
+  "beds": "one-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Sunday afternoon"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "irrelevant",
+  "other": "three thousand",
+  "slot": "max_rent",
+  "state": "inflight",
+  "frac": 0.641
+ },
+ "slots_canon": {
+  "city": "Austin",
+  "beds": 1,
+  "max_rent": 2000,
+  "slot": "Sunday afternoon"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Search for a one-bedroom in Austin under two thousand, and also arrange a viewing for Sunday afternoon.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "For dinner, what are you craving if we order in?",
+   "at_after_eou": 1.187
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.292
+ },
+ "step_latencies": [
+  0.292,
+  1.176
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.031,
+  "gain_db": -5.0,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Austin",
+    "beds": 1,
+    "max_rent": 2000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SEa29b4e",
+    "slot": "Sunday afternoon"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEa29b4e": {
+   "city": "Austin",
+   "beds": 1,
+   "max_rent": 2000
+  },
+  "book_viewing#BOca00e8": {
+   "listing_id": "SEa29b4e",
+   "slot": "Sunday afternoon"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv08"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "dev",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.406,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "bystander",
+   "t_start": 9.233,
+   "t_end": 13.19,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

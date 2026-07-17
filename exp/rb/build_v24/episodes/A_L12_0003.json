@@ -1,0 +1,133 @@
+{
+ "id": "A_L12_0003",
+ "arm": "A",
+ "layer": "L12",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_multi",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "June first",
+  "country": "Thailand",
+  "nationality": "American"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "June first",
+  "country": "Japan",
+  "nationality": "American"
+ },
+ "revisions": [
+  {
+   "slot": "country",
+   "old": "Thailand",
+   "new": "Japan",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.956
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "June 1",
+  "country": "Japan",
+  "nationality": "American"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Check trains from Chicago to Atlanta on June first and simultaneously check visa requirements for American citizens traveling to Thailand.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Wait — make it Japan.",
+   "gap_before": 1.956
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.433
+ },
+ "step_latencies": [
+  0.433,
+  1.098
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "check_visa_rule"
+ ],
+ "perturb": {
+  "rate": 0.989,
+  "gain_db": -5.4,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Chicago",
+    "destination": "Atlanta",
+    "date": "June 1"
+   }
+  },
+  {
+   "fn": "check_visa_rule",
+   "args": {
+    "country": "Japan",
+    "nationality": "American"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEe86980": {
+   "origin": "Chicago",
+   "destination": "Atlanta",
+   "date": "June 1"
+  },
+  "check_visa_rule#CHb11e28": {
+   "country": "Japan",
+   "nationality": "American"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv09"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.508,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 10.464,
+   "t_end": 12.729,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  1.956
+ ]
+}

@@ -1,0 +1,153 @@
+{
+  "n": 76,
+  "exact": 0.2105,
+  "state_verbatim": 0.2105,
+  "state_normalized": 0.2237,
+  "U_mean": 0.1552,
+  "wrong_commits": 0,
+  "unrepaired": 0,
+  "first_p50": 1.64,
+  "done_p50": 3.694,
+  "by_layer": {
+    "L10": {
+      "n": 6,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L11": {
+      "n": 6,
+      "exact": 0.6667,
+      "U": 0.5515
+    },
+    "L13": {
+      "n": 16,
+      "exact": 0.4375,
+      "U": 0.3589
+    },
+    "L14": {
+      "n": 6,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L15": {
+      "n": 6,
+      "exact": 0.1667,
+      "U": 0.0404
+    },
+    "L4": {
+      "n": 6,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L5": {
+      "n": 6,
+      "exact": 0.1667,
+      "U": 0.1299
+    },
+    "L6": {
+      "n": 6,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L7": {
+      "n": 6,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L8": {
+      "n": 6,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L9": {
+      "n": 6,
+      "exact": 0.5,
+      "U": 0.2869
+    }
+  },
+  "armb_timing": {
+    "episodes_with_overlap": 0,
+    "total_overlaps": 0
+  },
+  "who_axis": {
+    "benign": {
+      "n": 2,
+      "adopted": 0.5
+    },
+    "adversarial": {
+      "n": 2,
+      "intruded": 1.0
+    },
+    "irrelevant_control": {
+      "n": 2,
+      "intruded": 0.0
+    }
+  },
+  "pair_axis": {
+    "bystander:committed": {
+      "n": 2,
+      "exact": 0.5,
+      "intruded": 0.5
+    },
+    "bystander:eou": {
+      "n": 2,
+      "exact": 0.0,
+      "intruded": 1.0
+    },
+    "bystander:inflight": {
+      "n": 2,
+      "exact": 0.0,
+      "intruded": 1.0
+    },
+    "bystander:tts": {
+      "n": 2,
+      "exact": 0.0,
+      "intruded": 1.0
+    },
+    "user:committed": {
+      "n": 2,
+      "exact": 0.0,
+      "intruded": null
+    },
+    "user:eou": {
+      "n": 2,
+      "exact": 1.0,
+      "intruded": null
+    },
+    "user:inflight": {
+      "n": 2,
+      "exact": 1.0,
+      "intruded": null
+    },
+    "user:tts": {
+      "n": 2,
+      "exact": 1.0,
+      "intruded": null
+    }
+  },
+  "route_axis": {
+    "aborted_ops": 2,
+    "comp_calls": 0,
+    "l15": {
+      "n": 6,
+      "exact": 0.1667,
+      "aborted": 2,
+      "feasible": 5
+    }
+  },
+  "provider": "rbdev24_b_tact_d150",
+  "config": {
+    "arm": "B",
+    "system": "tact",
+    "delta": 1.5,
+    "commit_barrier": "on",
+    "input": "audio",
+    "decider": "llm",
+    "floor_commit_tiers": null,
+    "split": "dev",
+    "infer_nominal": 1.0,
+    "dag": "on",
+    "attr": "off",
+    "admission": null
+  }
+}

@@ -1,0 +1,99 @@
+{
+ "id": "A_L1_0007",
+ "arm": "A",
+ "layer": "L1",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_hotel",
+ "slots": {
+  "city": "成都",
+  "checkin": "五月十号",
+  "nights": "三"
+ },
+ "slots_final": {
+  "city": "青岛",
+  "checkin": "五月十号",
+  "nights": "三"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "成都",
+   "new": "青岛",
+   "by": "user",
+   "kind": "inline",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "青岛",
+  "checkin": "5月10日",
+  "nights": 3
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "zh",
+   "text": "在成都帮我订间房，五月十号到，住三晚。等一下，我说错了，改成青岛",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 2.197
+ },
+ "step_latencies": [
+  2.197
+ ],
+ "scenario_steps": [
+  "reserve_hotel"
+ ],
+ "perturb": {
+  "rate": 0.971,
+  "gain_db": -2.4,
+  "snr_db": 24.4
+ },
+ "gold_calls": [
+  {
+   "fn": "reserve_hotel",
+   "args": {
+    "city": "青岛",
+    "checkin": "5月10日",
+    "nights": 3
+   }
+  }
+ ],
+ "gold_state": {
+  "reserve_hotel#REfdf4b4": {
+   "city": "青岛",
+   "checkin": "5月10日",
+   "nights": 3
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv05"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 9.563,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": []
+}

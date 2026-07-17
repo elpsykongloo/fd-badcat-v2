@@ -1,0 +1,99 @@
+{
+ "id": "B_L11_0019",
+ "arm": "B",
+ "layer": "L11",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_hotel",
+ "slots": {
+  "city": "厦门",
+  "checkin": "五月十号",
+  "nights": "三"
+ },
+ "slots_final": {
+  "city": "青岛",
+  "checkin": "五月十号",
+  "nights": "三"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "厦门",
+   "new": "青岛",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "青岛",
+  "checkin": "5月10日",
+  "nights": 3
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "zh",
+   "text": "麻烦在厦门订个酒店，五月十号住进去，住三晚。",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "tts",
+   "offset": 0.299,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv09",
+   "text": "改成，改成，等等，我改青岛。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 2.391
+ },
+ "step_latencies": [
+  2.391
+ ],
+ "scenario_steps": [
+  "reserve_hotel"
+ ],
+ "perturb": {
+  "rate": 1.001,
+  "gain_db": -5.2,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "reserve_hotel",
+   "args": {
+    "city": "青岛",
+    "checkin": "5月10日",
+    "nights": 3
+   }
+  }
+ ],
+ "gold_state": {
+  "reserve_hotel#RE688a2a": {
+   "city": "青岛",
+   "checkin": "5月10日",
+   "nights": 3
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv01"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

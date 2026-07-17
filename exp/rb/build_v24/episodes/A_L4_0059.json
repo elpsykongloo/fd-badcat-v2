@@ -1,0 +1,146 @@
+{
+ "id": "A_L4_0059",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Boston",
+  "destination": "Denver",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
+ },
+ "slots_final": {
+  "origin": "Boston",
+  "destination": "Denver",
+  "date": "May eighth",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
+ },
+ "revisions": [
+  {
+   "slot": "date",
+   "old": "May third",
+   "new": "May eighth",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.984
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Boston",
+  "destination": "Denver",
+  "date": "May 8",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Please find me a train from Boston to Denver on May third, hold a coach seat, and purchase the ticket for Jordan Lee.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "May eighth rather than May third.",
+   "gap_before": 0.984
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.416
+ },
+ "step_latencies": [
+  0.416,
+  0.601,
+  3.948
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.013,
+  "gain_db": -0.6,
+  "snr_db": 23.9
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Boston",
+    "destination": "Denver",
+    "date": "May 8"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE020609",
+    "seat_class": "coach"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO50a6c0",
+    "passenger": "Jordan Lee"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE020609": {
+   "origin": "Boston",
+   "destination": "Denver",
+   "date": "May 8"
+  },
+  "hold_seat#HO50a6c0": {
+   "train_id": "SE020609",
+   "seat_class": "coach"
+  },
+  "purchase_ticket#PUf2404d": {
+   "hold_id": "HO50a6c0",
+   "passenger": "Jordan Lee"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv06"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.081,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 9.065,
+   "t_end": 11.514,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.984
+ ]
+}

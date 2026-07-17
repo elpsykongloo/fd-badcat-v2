@@ -1,0 +1,147 @@
+{
+ "id": "B_L6_0011",
+ "arm": "B",
+ "layer": "L6",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "广州",
+  "destination": "南京",
+  "date": "五月八号",
+  "seat_class": "一等座",
+  "passenger": "张伟"
+ },
+ "slots_final": {
+  "origin": "广州",
+  "destination": "成都",
+  "date": "五月八号",
+  "seat_class": "商务座",
+  "passenger": "张伟"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "南京",
+   "new": "成都",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.053
+  },
+  {
+   "slot": "seat_class",
+   "old": "一等座",
+   "new": "商务座",
+   "by": "user",
+   "kind": "second",
+   "gap": 1.014
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "广州",
+  "destination": "成都",
+  "date": "5月8日",
+  "seat_class": "商务座",
+  "passenger": "张伟"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "能帮我查五月八号从广州到南京的火车不？订一等座，然后直接帮买，乘客是张伟。",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.631,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv02",
+   "text": "哦不，改成都。"
+  },
+  {
+   "state": "committed",
+   "offset": 1.319,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv02",
+   "text": "还有啊，再调整一下，我要商务座。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.472
+ },
+ "step_latencies": [
+  0.472,
+  0.7,
+  0.883
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.944,
+  "gain_db": -2.7,
+  "snr_db": 20.8
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "广州",
+    "destination": "成都",
+    "date": "5月8日"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEad7bab",
+    "seat_class": "商务座"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO7025db",
+    "passenger": "张伟"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEad7bab": {
+   "origin": "广州",
+   "destination": "成都",
+   "date": "5月8日"
+  },
+  "hold_seat#HO7025db": {
+   "train_id": "SEad7bab",
+   "seat_class": "商务座"
+  },
+  "purchase_ticket#PU061ac3": {
+   "hold_id": "HO7025db",
+   "passenger": "张伟"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv08"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "dev",
+ "config_hash": "9d338e70f770"
+}

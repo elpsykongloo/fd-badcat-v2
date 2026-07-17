@@ -1,0 +1,102 @@
+{
+ "id": "B_L13_0028",
+ "arm": "B",
+ "layer": "L13",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_hotel",
+ "slots": {
+  "city": "Boise",
+  "checkin": "May tenth",
+  "nights": "two"
+ },
+ "slots_final": {
+  "city": "Boise",
+  "checkin": "May tenth",
+  "nights": "two"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "command",
+  "other": "Miami",
+  "slot": "city",
+  "state": "eou",
+  "frac": null
+ },
+ "slots_canon": {
+  "city": "Boise",
+  "checkin": "May 10",
+  "nights": 2
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "I need a hotel in Boise from May tenth for two nights, please book it.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 1.031,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv03",
+   "text": "Go ahead and change it to Miami."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 2.761
+ },
+ "step_latencies": [
+  2.761
+ ],
+ "lat_ns": "9d338e70f770:B_L13_fam0003",
+ "scenario_steps": [
+  "reserve_hotel"
+ ],
+ "perturb": {
+  "rate": 1.031,
+  "gain_db": 0.4,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "reserve_hotel",
+   "args": {
+    "city": "Boise",
+    "checkin": "May 10",
+    "nights": 2
+   }
+  }
+ ],
+ "gold_state": {
+  "reserve_hotel#RE41732a": {
+   "city": "Boise",
+   "checkin": "May 10",
+   "nights": 2
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv03"
+ },
+ "pair": {
+  "family": "BF003",
+  "who": "bystander",
+  "state": "eou"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

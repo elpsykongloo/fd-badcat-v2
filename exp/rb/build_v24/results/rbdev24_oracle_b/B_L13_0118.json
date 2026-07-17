@@ -1,0 +1,79 @@
+{
+ "id": "B_L13_0118",
+ "layer": "L13",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.421,
+ "U": 0.8391,
+ "U_sens": {
+  "0.5": 0.8391,
+  "1.0": 0.8391,
+  "2.0": 0.8391
+ },
+ "rev_adopted": null,
+ "intruder_present": false,
+ "bystander_kind": "command",
+ "aborted_ops": 0,
+ "comp_calls": 0,
+ "pair": {
+  "family": "BF014",
+  "who": "bystander",
+  "state": "committed"
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 3.09,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "save_listing",
+     "op_id": 2
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 8.081,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   4.09,
+   "好的，马上办。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   2.45,
+   "user"
+  ],
+  [
+   6.016,
+   7.441,
+   "bystander"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": []
+ }
+}

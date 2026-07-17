@@ -1,0 +1,124 @@
+{
+ "id": "B_L10_0061",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "five thousand",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "slots_final": {
+  "amount": "five thousand",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "irrelevant",
+  "other": "savings",
+  "slot": "to_acct",
+  "state": "inflight",
+  "frac": 0.573
+ },
+ "slots_canon": {
+  "amount": 5000,
+  "from_cur": "USD",
+  "to_cur": "JPY",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "First get a quote for five thousand dollars to yen then transfer five thousand from checking to rent account.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "What do you want for dinner? Let's order in.",
+   "at_after_eou": 1.482
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.746,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv02",
+   "text": "For dinner, what are you craving if we order in?"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.842
+ },
+ "step_latencies": [
+  0.842,
+  1.52
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 1.05,
+  "gain_db": -3.0,
+  "snr_db": 21.6
+ },
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": 5000,
+    "from_cur": "USD",
+    "to_cur": "JPY"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "rent account",
+    "amount": 5000
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GEd24bba": {
+   "amount": 5000,
+   "from_cur": "USD",
+   "to_cur": "JPY"
+  },
+  "transfer_funds#TRd18306": {
+   "from_acct": "checking",
+   "to_acct": "rent account",
+   "amount": 5000
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv02"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

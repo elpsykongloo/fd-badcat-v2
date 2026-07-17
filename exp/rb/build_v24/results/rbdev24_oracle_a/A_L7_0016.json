@@ -1,0 +1,92 @@
+{
+ "id": "A_L7_0016",
+ "layer": "L7",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 2.0,
+ "done_s": 3.642,
+ "U": 0.7296,
+ "U_sens": {
+  "0.5": 0.7796,
+  "1.0": 0.7296,
+  "2.0": 0.6296
+ },
+ "rev_adopted": true,
+ "intruder_present": null,
+ "bystander_kind": null,
+ "aborted_ops": 0,
+ "comp_calls": 1,
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 4.59,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 2
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 11.151,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "remove_item",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 4
+    },
+    {
+     "type": "abort",
+     "op_id": "X2",
+     "target": "ADe4266c",
+     "ok": false,
+     "error": "already completed - compensate"
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   5.59,
+   "好的，马上办。"
+  ],
+  [
+   12.151,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   3.95,
+   "user"
+  ],
+  [
+   8.636,
+   10.511,
+   "user"
+  ]
+ ]
+}

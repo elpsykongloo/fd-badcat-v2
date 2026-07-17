@@ -1,0 +1,107 @@
+{
+ "id": "B_L14_0001",
+ "arm": "B",
+ "layer": "L14",
+ "domain": "finance",
+ "lang": "zh",
+ "scenario": "fin_payment",
+ "slots": {
+  "payee": "房东",
+  "amount": "三千",
+  "date": "六月一号"
+ },
+ "slots_final": {
+  "payee": "物业",
+  "amount": "三千",
+  "date": "六月一号"
+ },
+ "revisions": [
+  {
+   "slot": "payee",
+   "old": "房东",
+   "new": "物业",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "payee": "物业",
+  "amount": 3000,
+  "date": "6月1日"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "zh",
+   "text": "我要给房东付一笔款，三千块，六月一号扣。",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "committed",
+   "offset": 0.885,
+   "action": "confirm_query",
+   "role": "user",
+   "voice": "cv06",
+   "text": "等一下，你刚才办的那个，具体是什么来着？再说一遍。"
+  },
+  {
+   "state": "committed",
+   "offset": 5.801,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv06",
+   "text": "等等，我改物业。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 4.154
+ },
+ "step_latencies": [
+  4.154
+ ],
+ "scenario_steps": [
+  "schedule_payment"
+ ],
+ "perturb": {
+  "rate": 0.973,
+  "gain_db": -3.0,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "schedule_payment",
+   "args": {
+    "payee": "物业",
+    "amount": 3000,
+    "date": "6月1日"
+   }
+  }
+ ],
+ "gold_state": {
+  "schedule_payment#SC96def2": {
+   "payee": "物业",
+   "amount": 3000,
+   "date": "6月1日"
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv05"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

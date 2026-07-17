@@ -1,0 +1,138 @@
+{
+ "id": "B_L8_0027",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "Austin",
+   "new": "Atlanta",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May 3",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
+ "l8_action": "revise",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "I need a train from Chicago to Austin on May third, hold a business seat, and buy the ticket for Sam Rivera.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Actually, let's go with Atlanta",
+   "at_after_eou": 1.208
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.523,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv04",
+   "text": "Hold on, switch that to Atlanta"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.444
+ },
+ "step_latencies": [
+  0.444,
+  0.752,
+  1.502
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.017,
+  "gain_db": -1.9,
+  "snr_db": 17.5
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Chicago",
+    "destination": "Atlanta",
+    "date": "May 3"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEb13c39",
+    "seat_class": "business"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO886bfd",
+    "passenger": "Sam Rivera"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEb13c39": {
+   "origin": "Chicago",
+   "destination": "Atlanta",
+   "date": "May 3"
+  },
+  "hold_seat#HO886bfd": {
+   "train_id": "SEb13c39",
+   "seat_class": "business"
+  },
+  "purchase_ticket#PUaae2ed": {
+   "hold_id": "HO886bfd",
+   "passenger": "Sam Rivera"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv08"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

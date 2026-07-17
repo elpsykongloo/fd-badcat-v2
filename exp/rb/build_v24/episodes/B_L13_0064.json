@@ -1,0 +1,100 @@
+{
+ "id": "B_L13_0064",
+ "arm": "B",
+ "layer": "L13",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_single",
+ "slots": {
+  "item_id": "C330",
+  "qty": "two"
+ },
+ "slots_final": {
+  "item_id": "C330",
+  "qty": "one"
+ },
+ "revisions": [
+  {
+   "slot": "qty",
+   "old": "two",
+   "new": "one",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "item_id": "C330",
+  "qty": 1
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "I'd like to put two of item C330 into my cart.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 1.691,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv07",
+   "text": "No wait, make that one"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.391
+ },
+ "step_latencies": [
+  0.391
+ ],
+ "lat_ns": "9d338e70f770:B_L13_fam0008",
+ "scenario_steps": [
+  "add_item"
+ ],
+ "perturb": {
+  "rate": 1.054,
+  "gain_db": -5.2,
+  "snr_db": 15.7
+ },
+ "gold_calls": [
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "C330",
+    "qty": 1
+   }
+  }
+ ],
+ "gold_state": {
+  "add_item#AD909163": {
+   "item_id": "C330",
+   "qty": 1
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv06"
+ },
+ "pair": {
+  "family": "BF008",
+  "who": "user",
+  "state": "eou"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

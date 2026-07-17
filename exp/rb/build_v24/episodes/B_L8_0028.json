@@ -1,0 +1,86 @@
+{
+ "id": "B_L8_0028",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "ecommerce",
+ "lang": "zh",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "跑步鞋",
+  "qty": "两",
+  "address": "海淀区学院路一号"
+ },
+ "slots_final": {
+  "query": "跑步鞋",
+  "qty": "两",
+  "address": "海淀区学院路一号"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "query": "跑步鞋",
+  "qty": 2,
+  "address": "海淀区学院路一号"
+ },
+ "l8_action": "cancel",
+ "cancelled": true,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "帮我查跑步鞋，加两件进购物车，然后下单运到海淀区学院路一号",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "取消吧，不用了。",
+   "at_after_eou": 1.299
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.501,
+   "action": "cancel",
+   "role": "user",
+   "voice": "cv02",
+   "text": "不办了，先停一下。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.911
+ },
+ "step_latencies": [
+  0.911,
+  0.276,
+  1.638
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 1.01,
+  "gain_db": 1.3,
+  "snr_db": null
+ },
+ "gold_calls": [],
+ "gold_state": {},
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv03"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

@@ -1,0 +1,133 @@
+{
+ "id": "A_L12_0007",
+ "arm": "A",
+ "layer": "L12",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_multi",
+ "slots": {
+  "origin": "广州",
+  "destination": "西安",
+  "date": "五月八号",
+  "country": "泰国",
+  "nationality": "中国"
+ },
+ "slots_final": {
+  "origin": "广州",
+  "destination": "西安",
+  "date": "五月八号",
+  "country": "日本",
+  "nationality": "中国"
+ },
+ "revisions": [
+  {
+   "slot": "country",
+   "old": "泰国",
+   "new": "日本",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.744
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "广州",
+  "destination": "西安",
+  "date": "5月8日",
+  "country": "日本",
+  "nationality": "中国"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "查一下五月八号从广州到西安的火车，顺便查中国去泰国要不要签证。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "就是……等等，改成日本。",
+   "gap_before": 1.744
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.31
+ },
+ "step_latencies": [
+  0.31,
+  0.614
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "check_visa_rule"
+ ],
+ "perturb": {
+  "rate": 0.981,
+  "gain_db": -1.5,
+  "snr_db": 21.5
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "广州",
+    "destination": "西安",
+    "date": "5月8日"
+   }
+  },
+  {
+   "fn": "check_visa_rule",
+   "args": {
+    "country": "日本",
+    "nationality": "中国"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEb3d1ec": {
+   "origin": "广州",
+   "destination": "西安",
+   "date": "5月8日"
+  },
+  "check_visa_rule#CHb2d527": {
+   "country": "日本",
+   "nationality": "中国"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv06"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.595,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 9.339,
+   "t_end": 14.966,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  1.744
+ ]
+}

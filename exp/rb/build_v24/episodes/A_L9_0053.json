@@ -1,0 +1,103 @@
+{
+ "id": "A_L9_0053",
+ "arm": "A",
+ "layer": "L9",
+ "domain": "finance",
+ "lang": "zh",
+ "scenario": "fin_payment",
+ "slots": {
+  "payee": "房东",
+  "amount": "五千",
+  "date": "五月八号"
+ },
+ "slots_final": {
+  "payee": "房东",
+  "amount": "五千",
+  "date": "五月八号"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "payee": "房东",
+  "amount": 5000,
+  "date": "5月8日"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "zh",
+   "text": "请帮我设一笔付款，收款人是房东，金额五千块，五月八号扣。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "zh",
+   "text": "完成了吗？",
+   "at_after_eou": 26.679
+  }
+ ],
+ "events": [],
+ "profile": "heavy",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 42.798
+ },
+ "step_latencies": [
+  42.798
+ ],
+ "scenario_steps": [
+  "schedule_payment"
+ ],
+ "perturb": {
+  "rate": 1.034,
+  "gain_db": 0.3,
+  "snr_db": 16.7
+ },
+ "gold_calls": [
+  {
+   "fn": "schedule_payment",
+   "args": {
+    "payee": "房东",
+    "amount": 5000,
+    "date": "5月8日"
+   }
+  }
+ ],
+ "gold_state": {
+  "schedule_payment#SCc039ff": {
+   "payee": "房东",
+   "amount": 5000,
+   "date": "5月8日"
+  }
+ },
+ "voices": {
+  "user": "cv05",
+  "bystander": "cv07"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.071,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 33.39,
+   "t_end": 34.241,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

@@ -1,0 +1,146 @@
+{
+ "id": "A_L3_0003",
+ "arm": "A",
+ "layer": "L3",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Portland",
+  "date": "June first",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Portland",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
+ "revisions": [
+  {
+   "slot": "seat_class",
+   "old": "business",
+   "new": "coach",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.708
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Portland",
+  "date": "June 1",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "I need a train from Chicago to Portland on June first, hold a business seat, and buy the ticket for Sam Rivera.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Actually, let's go with coach",
+   "gap_before": 0.708
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.401
+ },
+ "step_latencies": [
+  0.401,
+  0.625,
+  2.679
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.033,
+  "gain_db": 1.4,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Chicago",
+    "destination": "Portland",
+    "date": "June 1"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE67d5c1",
+    "seat_class": "coach"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO75e71b",
+    "passenger": "Sam Rivera"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE67d5c1": {
+   "origin": "Chicago",
+   "destination": "Portland",
+   "date": "June 1"
+  },
+  "hold_seat#HO75e71b": {
+   "train_id": "SE67d5c1",
+   "seat_class": "coach"
+  },
+  "purchase_ticket#PUd47465": {
+   "hold_id": "HO75e71b",
+   "passenger": "Sam Rivera"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv06"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.47,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 8.178,
+   "t_end": 13.599,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.708
+ ]
+}

@@ -1,0 +1,93 @@
+{
+ "id": "B_L13_0137",
+ "layer": "L13",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 4.202,
+ "U": 0.8061,
+ "U_sens": {
+  "0.5": 0.8061,
+  "1.0": 0.8061,
+  "2.0": 0.8061
+ },
+ "rev_adopted": true,
+ "intruder_present": null,
+ "bystander_kind": null,
+ "aborted_ops": 0,
+ "comp_calls": 0,
+ "pair": {
+  "family": "BF017",
+  "who": "user",
+  "state": "inflight"
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 4.285,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "schedule_payment",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 12.215,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "date": "May 3"
+     }
+    }
+   ],
+   "say": "Updating that to May 3rd."
+  }
+ ],
+ "say_events": [
+  [
+   5.285,
+   "I'm on it."
+  ],
+  [
+   13.215,
+   "Updating that to May 3rd."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   3.645,
+   "user"
+  ],
+  [
+   6.129,
+   11.575,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   2.484
+  ]
+ }
+}

@@ -1,0 +1,133 @@
+{
+ "id": "A_L12_0002",
+ "arm": "A",
+ "layer": "L12",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_multi",
+ "slots": {
+  "city": "Austin",
+  "beds": "one-bedroom",
+  "max_rent": "two thousand",
+  "from_addr": "university campus",
+  "to_addr": "Downtown"
+ },
+ "slots_final": {
+  "city": "Austin",
+  "beds": "one-bedroom",
+  "max_rent": "two thousand",
+  "from_addr": "university campus",
+  "to_addr": "tech park"
+ },
+ "revisions": [
+  {
+   "slot": "to_addr",
+   "old": "Downtown",
+   "new": "tech park",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.712
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Austin",
+  "beds": 1,
+  "max_rent": 2000,
+  "from_addr": "university campus",
+  "to_addr": "tech park"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Need a one-bedroom in Austin for less than two thousand, and also want to know the commute from university campus to Downtown.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Hang on, it's— Wait — make it tech park.",
+   "gap_before": 1.712
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.508
+ },
+ "step_latencies": [
+  0.508,
+  0.454
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "get_commute_time"
+ ],
+ "perturb": {
+  "rate": 1.04,
+  "gain_db": -2.5,
+  "snr_db": 21.7
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Austin",
+    "beds": 1,
+    "max_rent": 2000
+   }
+  },
+  {
+   "fn": "get_commute_time",
+   "args": {
+    "from_addr": "university campus",
+    "to_addr": "tech park"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEe71aee": {
+   "city": "Austin",
+   "beds": 1,
+   "max_rent": 2000
+  },
+  "get_commute_time#GE22e250": {
+   "from_addr": "university campus",
+   "to_addr": "tech park"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv01"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.731,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 9.443,
+   "t_end": 12.904,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  1.712
+ ]
+}

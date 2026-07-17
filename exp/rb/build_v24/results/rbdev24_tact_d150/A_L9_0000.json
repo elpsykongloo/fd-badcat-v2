@@ -1,0 +1,74 @@
+{
+ "id": "A_L9_0000",
+ "layer": "L9",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.179,
+ "U": 0.8495,
+ "U_sens": {
+  "0.5": 0.8495,
+  "1.0": 0.8495,
+  "2.0": 0.8495
+ },
+ "rev_adopted": null,
+ "intruder_present": null,
+ "bystander_kind": null,
+ "aborted_ops": 0,
+ "comp_calls": 0,
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 4.477,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 12.903,
+   "ops": [],
+   "say": "购物车里已经添加了编号B205的商品一件。"
+  }
+ ],
+ "say_events": [
+  [
+   5.477,
+   "I'm on it."
+  ],
+  [
+   13.903,
+   "购物车里已经添加了编号B205的商品一件。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   3.837,
+   "user"
+  ],
+  [
+   10.556,
+   12.263,
+   "user"
+  ]
+ ]
+}

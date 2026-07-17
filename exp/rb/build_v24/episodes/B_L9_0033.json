@@ -1,0 +1,97 @@
+{
+ "id": "B_L9_0033",
+ "arm": "B",
+ "layer": "L9",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_payment",
+ "slots": {
+  "payee": "landlord",
+  "amount": "five thousand",
+  "date": "June first"
+ },
+ "slots_final": {
+  "payee": "landlord",
+  "amount": "five thousand",
+  "date": "June first"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "payee": "landlord",
+  "amount": 5000,
+  "date": "June 1"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Schedule a payment of five thousand to landlord on June first.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Getting anywhere?",
+   "at_after_eou": 28.668
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.503,
+   "action": "progress_query",
+   "role": "user",
+   "voice": "cv07",
+   "text": "Made any headway?"
+  }
+ ],
+ "profile": "heavy",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 46.113
+ },
+ "step_latencies": [
+  46.113
+ ],
+ "scenario_steps": [
+  "schedule_payment"
+ ],
+ "perturb": {
+  "rate": 1.028,
+  "gain_db": -2.1,
+  "snr_db": 24.7
+ },
+ "gold_calls": [
+  {
+   "fn": "schedule_payment",
+   "args": {
+    "payee": "landlord",
+    "amount": 5000,
+    "date": "June 1"
+   }
+  }
+ ],
+ "gold_state": {
+  "schedule_payment#SCd15a66": {
+   "payee": "landlord",
+   "amount": 5000,
+   "date": "June 1"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv06"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "dev",
+ "config_hash": "9d338e70f770"
+}

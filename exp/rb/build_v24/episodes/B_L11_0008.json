@@ -1,0 +1,94 @@
+{
+ "id": "B_L11_0008",
+ "arm": "B",
+ "layer": "L11",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_single",
+ "slots": {
+  "item_id": "B205",
+  "qty": "one"
+ },
+ "slots_final": {
+  "item_id": "B205",
+  "qty": "two"
+ },
+ "revisions": [
+  {
+   "slot": "qty",
+   "old": "one",
+   "new": "two",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "item_id": "B205",
+  "qty": 2
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "Could you add one of item B205 to my cart?",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "tts",
+   "offset": 0.125,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv06",
+   "text": "Actually, let's go with two"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.694
+ },
+ "step_latencies": [
+  0.694
+ ],
+ "scenario_steps": [
+  "add_item"
+ ],
+ "perturb": {
+  "rate": 1.028,
+  "gain_db": -5.5,
+  "snr_db": 17.1
+ },
+ "gold_calls": [
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "B205",
+    "qty": 2
+   }
+  }
+ ],
+ "gold_state": {
+  "add_item#AD80873b": {
+   "item_id": "B205",
+   "qty": 2
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv02"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

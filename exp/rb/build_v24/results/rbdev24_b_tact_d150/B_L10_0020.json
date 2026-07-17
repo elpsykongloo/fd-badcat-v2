@@ -1,0 +1,94 @@
+{
+ "id": "B_L10_0020",
+ "layer": "L10",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.14,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "rev_adopted": false,
+ "intruder_present": null,
+ "bystander_kind": null,
+ "aborted_ops": 0,
+ "comp_calls": 0,
+ "first_response_s": 3.14,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 9.578,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "place_order",
+     "op_id": 4
+    }
+   ],
+   "say": "正在搜索保温杯并加入购物车，最后下单寄到海淀学院路。"
+  },
+  {
+   "i": 1,
+   "t_eou": 13.585,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "qty": 1
+     }
+    }
+   ],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   10.578,
+   "正在搜索保温杯并加入购物车，最后下单寄到海淀学院路。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   8.938,
+   "user"
+  ],
+  [
+   10.711,
+   12.945,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   1.773
+  ]
+ }
+}

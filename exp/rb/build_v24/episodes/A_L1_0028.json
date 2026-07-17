@@ -1,0 +1,94 @@
+{
+ "id": "A_L1_0028",
+ "arm": "A",
+ "layer": "L1",
+ "domain": "ecommerce",
+ "lang": "zh",
+ "scenario": "ecom_single",
+ "slots": {
+  "item_id": "A100",
+  "qty": "一"
+ },
+ "slots_final": {
+  "item_id": "B205",
+  "qty": "一"
+ },
+ "revisions": [
+  {
+   "slot": "item_id",
+   "old": "A100",
+   "new": "B205",
+   "by": "user",
+   "kind": "inline",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "item_id": "B205",
+  "qty": 1
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "zh",
+   "text": "往购物车里加编号A100的商品共一件刚刚说错了，改成B205吧",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.529
+ },
+ "step_latencies": [
+  0.529
+ ],
+ "scenario_steps": [
+  "add_item"
+ ],
+ "perturb": {
+  "rate": 1.029,
+  "gain_db": -2.0,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "B205",
+    "qty": 1
+   }
+  }
+ ],
+ "gold_state": {
+  "add_item#AD26e3c1": {
+   "item_id": "B205",
+   "qty": 1
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv09"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 11.462,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": []
+}

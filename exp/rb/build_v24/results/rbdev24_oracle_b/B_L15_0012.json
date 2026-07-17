@@ -1,0 +1,98 @@
+{
+ "id": "B_L15_0012",
+ "layer": "L15",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 12.347,
+ "U": 0.5308,
+ "U_sens": {
+  "0.5": 0.5308,
+  "1.0": 0.5308,
+  "2.0": 0.5308
+ },
+ "rev_adopted": true,
+ "intruder_present": null,
+ "bystander_kind": null,
+ "aborted_ops": 1,
+ "comp_calls": 0,
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 4.74,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 2
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 12.466,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "remove_item",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 4
+    },
+    {
+     "type": "abort",
+     "op_id": "X2",
+     "target": "AD780204",
+     "ok": true
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   5.74,
+   "好的，马上办。"
+  ],
+  [
+   13.466,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   4.1,
+   "user"
+  ],
+  [
+   10.566,
+   11.826,
+   "user"
+  ]
+ ],
+ "abort_feasible": true,
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   6.466
+  ]
+ }
+}

@@ -1,0 +1,130 @@
+{
+ "id": "A_L4_0014",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "青岛",
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周六上午"
+ },
+ "slots_final": {
+  "city": "青岛",
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周日下午"
+ },
+ "revisions": [
+  {
+   "slot": "slot",
+   "old": "周六上午",
+   "new": "周日下午",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.74
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "青岛",
+  "beds": 2,
+  "max_rent": 8000,
+  "slot": "周日下午"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "zh",
+   "text": "在青岛找两居，租金控制在八千以内，约周六上午看房吧。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "zh",
+   "text": "周日下午，把那个改成这个，不是周六上午。",
+   "gap_before": 0.74
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.872
+ },
+ "step_latencies": [
+  0.872,
+  1.339
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.005,
+  "gain_db": 0.3,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "青岛",
+    "beds": 2,
+    "max_rent": 8000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SEed29c0",
+    "slot": "周日下午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEed29c0": {
+   "city": "青岛",
+   "beds": 2,
+   "max_rent": 8000
+  },
+  "book_viewing#BO5fee1b": {
+   "listing_id": "SEed29c0",
+   "slot": "周日下午"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv02"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 5.276,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 6.016,
+   "t_end": 11.668,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.74
+ ]
+}

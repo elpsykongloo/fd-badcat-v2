@@ -1,0 +1,92 @@
+{
+ "id": "B_L13_0023",
+ "arm": "B",
+ "layer": "L13",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_single",
+ "slots": {
+  "listing_id": "LST12"
+ },
+ "slots_final": {
+  "listing_id": "LST12"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "command",
+  "other": "LST47",
+  "slot": "listing_id",
+  "state": "tts",
+  "frac": null
+ },
+ "slots_canon": {
+  "listing_id": "LST12"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Save listing LST12 for me, would you?",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "tts",
+   "offset": 0.303,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv03",
+   "text": "Put LST47 in there."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.794
+ },
+ "step_latencies": [
+  0.794
+ ],
+ "lat_ns": "9d338e70f770:B_L13_fam0002",
+ "scenario_steps": [
+  "save_listing"
+ ],
+ "perturb": {
+  "rate": 1.048,
+  "gain_db": -1.1,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "save_listing",
+   "args": {
+    "listing_id": "LST12"
+   }
+  }
+ ],
+ "gold_state": {
+  "save_listing#SA970192": {
+   "listing_id": "LST12"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv03"
+ },
+ "pair": {
+  "family": "BF002",
+  "who": "bystander",
+  "state": "tts"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

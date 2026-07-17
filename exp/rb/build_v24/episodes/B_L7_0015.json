@@ -1,0 +1,99 @@
+{
+ "id": "B_L7_0015",
+ "arm": "B",
+ "layer": "L7",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_hotel",
+ "slots": {
+  "city": "Boise",
+  "checkin": "May third",
+  "nights": "two"
+ },
+ "slots_final": {
+  "city": "Boise",
+  "checkin": "May tenth",
+  "nights": "two"
+ },
+ "revisions": [
+  {
+   "slot": "checkin",
+   "old": "May third",
+   "new": "May tenth",
+   "by": "user",
+   "kind": "default",
+   "gap": 7.392
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Boise",
+  "checkin": "May 10",
+  "nights": 2
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "Book a hotel for me in Boise, I'll be checking in May third and staying two nights.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "committed",
+   "offset": 0.444,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv05",
+   "text": "Wait — make it May tenth."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 2.608
+ },
+ "step_latencies": [
+  2.608
+ ],
+ "scenario_steps": [
+  "reserve_hotel"
+ ],
+ "perturb": {
+  "rate": 0.984,
+  "gain_db": 1.1,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "reserve_hotel",
+   "args": {
+    "city": "Boise",
+    "checkin": "May 10",
+    "nights": 2
+   }
+  }
+ ],
+ "gold_state": {
+  "reserve_hotel#RE9b7674": {
+   "city": "Boise",
+   "checkin": "May 10",
+   "nights": 2
+  }
+ },
+ "voices": {
+  "user": "cv05",
+  "bystander": "cv08"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "dev",
+ "config_hash": "9d338e70f770"
+}

@@ -1,0 +1,131 @@
+{
+ "id": "B_L4_0031",
+ "arm": "B",
+ "layer": "L4",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
+ "revisions": [
+  {
+   "slot": "seat_class",
+   "old": "coach",
+   "new": "business",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.711
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May 3",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "Can you find a train from Chicago to Atlanta on May third, hold a coach seat, and buy the ticket for Jordan Lee?",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.49,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv05",
+   "text": "business rather than coach."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.704
+ },
+ "step_latencies": [
+  0.704,
+  0.489,
+  2.878
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.021,
+  "gain_db": 0.6,
+  "snr_db": 15.9
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Chicago",
+    "destination": "Atlanta",
+    "date": "May 3"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE737817",
+    "seat_class": "business"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO509c36",
+    "passenger": "Jordan Lee"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE737817": {
+   "origin": "Chicago",
+   "destination": "Atlanta",
+   "date": "May 3"
+  },
+  "hold_seat#HO509c36": {
+   "train_id": "SE737817",
+   "seat_class": "business"
+  },
+  "purchase_ticket#PU875bd9": {
+   "hold_id": "HO509c36",
+   "passenger": "Jordan Lee"
+  }
+ },
+ "voices": {
+  "user": "cv05",
+  "bystander": "cv01"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

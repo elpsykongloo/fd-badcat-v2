@@ -1,0 +1,80 @@
+{
+ "id": "B_L9_0013",
+ "layer": "L9",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 15.898,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "rev_adopted": null,
+ "intruder_present": null,
+ "bystander_kind": null,
+ "aborted_ops": 0,
+ "comp_calls": 0,
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 5.0,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "schedule_payment",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 25.735,
+   "ops": [],
+   "say": "已成功安排5月8日向房东支付800元。"
+  }
+ ],
+ "say_events": [
+  [
+   6.0,
+   "I'm on it."
+  ],
+  [
+   26.735,
+   "已成功安排5月8日向房东支付800元。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   4.36,
+   "user"
+  ],
+  [
+   24.187,
+   25.095,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   19.827
+  ]
+ }
+}

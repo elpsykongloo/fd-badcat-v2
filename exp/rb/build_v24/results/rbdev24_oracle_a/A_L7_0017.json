@@ -1,0 +1,92 @@
+{
+ "id": "A_L7_0017",
+ "layer": "L7",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 2.0,
+ "done_s": 4.861,
+ "U": 0.6793,
+ "U_sens": {
+  "0.5": 0.7293,
+  "1.0": 0.6793,
+  "2.0": 0.5793
+ },
+ "rev_adopted": true,
+ "intruder_present": null,
+ "bystander_kind": null,
+ "aborted_ops": 0,
+ "comp_calls": 1,
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 4.74,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "schedule_payment",
+     "op_id": 2
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 14.685,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "unschedule_payment",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "schedule_payment",
+     "op_id": 4
+    },
+    {
+     "type": "abort",
+     "op_id": "X2",
+     "target": "SC791690",
+     "ok": false,
+     "error": "already completed - compensate"
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   5.74,
+   "好的，马上办。"
+  ],
+  [
+   15.685,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   4.1,
+   "user"
+  ],
+  [
+   11.525,
+   14.045,
+   "user"
+  ]
+ ]
+}

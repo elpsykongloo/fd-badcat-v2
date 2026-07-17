@@ -1,0 +1,107 @@
+{
+ "id": "A_L6_0000",
+ "layer": "L6",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.618,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "rev_adopted": true,
+ "intruder_present": null,
+ "bystander_kind": null,
+ "aborted_ops": 0,
+ "comp_calls": 0,
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 7.45,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 11.359,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "query": "running shoes"
+     }
+    },
+    {
+     "type": "launch_dedup",
+     "fn": "search_catalog"
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 2,
+   "t_eou": 19.854,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 3
+    }
+   ],
+   "say": "Updating to running shoes and adding one to the cart."
+  }
+ ],
+ "say_events": [
+  [
+   8.45,
+   "I'm on it."
+  ],
+  [
+   12.359,
+   "I'm on it."
+  ],
+  [
+   20.854,
+   "Updating to running shoes and adding one to the cart."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.81,
+   "user"
+  ],
+  [
+   7.526,
+   10.719,
+   "user"
+  ],
+  [
+   13.605,
+   19.214,
+   "user"
+  ]
+ ]
+}

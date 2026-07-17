@@ -1,0 +1,146 @@
+{
+ "id": "A_L10_0083",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
+ },
+ "slots_final": {
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "June first",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
+ "revisions": [
+  {
+   "slot": "seat_class",
+   "old": "coach",
+   "new": "business",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.871
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "June 1",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Could you look up a train from Seattle to Austin on June first, hold a coach seat, and buy the ticket for Jordan Lee?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Wait — make it business.",
+   "gap_before": 0.871
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.882
+ },
+ "step_latencies": [
+  0.882,
+  0.494,
+  2.15
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.041,
+  "gain_db": -5.9,
+  "snr_db": 15.8
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Seattle",
+    "destination": "Austin",
+    "date": "June 1"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEc4631f",
+    "seat_class": "business"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO2a7b29",
+    "passenger": "Jordan Lee"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEc4631f": {
+   "origin": "Seattle",
+   "destination": "Austin",
+   "date": "June 1"
+  },
+  "hold_seat#HO2a7b29": {
+   "train_id": "SEc4631f",
+   "seat_class": "business"
+  },
+  "purchase_ticket#PU98d8fa": {
+   "hold_id": "HO2a7b29",
+   "passenger": "Jordan Lee"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv07"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.494,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 7.365,
+   "t_end": 9.133,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.871
+ ]
+}

@@ -1,0 +1,130 @@
+{
+ "id": "A_L5_0074",
+ "arm": "A",
+ "layer": "L5",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "成都",
+  "beds": "一居",
+  "max_rent": "六千",
+  "slot": "周日下午"
+ },
+ "slots_final": {
+  "city": "青岛",
+  "beds": "一居",
+  "max_rent": "六千",
+  "slot": "周日下午"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "成都",
+   "new": "青岛",
+   "by": "user",
+   "kind": "default",
+   "gap": 3.336
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "青岛",
+  "beds": 1,
+  "max_rent": 6000,
+  "slot": "周日下午"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "在成都找一居、租金不超过六千的房子，约周日下午看房。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "等一下，换青岛。",
+   "gap_before": 3.336
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.543
+ },
+ "step_latencies": [
+  0.543,
+  3.913
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.033,
+  "gain_db": -5.9,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "青岛",
+    "beds": 1,
+    "max_rent": 6000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE94446e",
+    "slot": "周日下午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE94446e": {
+   "city": "青岛",
+   "beds": 1,
+   "max_rent": 6000
+  },
+  "book_viewing#BOc6cbd5": {
+   "listing_id": "SE94446e",
+   "slot": "周日下午"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv08"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.864,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 12.2,
+   "t_end": 19.635,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  3.336
+ ]
+}

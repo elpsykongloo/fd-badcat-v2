@@ -1,0 +1,130 @@
+{
+ "id": "A_L5_0082",
+ "arm": "A",
+ "layer": "L5",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "厦门",
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周日下午"
+ },
+ "slots_final": {
+  "city": "青岛",
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周日下午"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "厦门",
+   "new": "青岛",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.897
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "青岛",
+  "beds": 1,
+  "max_rent": 8000,
+  "slot": "周日下午"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "zh",
+   "text": "我想在厦门找一居的，租金顶多八千，约周日下午看房行不？",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "zh",
+   "text": "其实我——不对，我要青岛。",
+   "gap_before": 2.897
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.289
+ },
+ "step_latencies": [
+  0.289,
+  1.972
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.058,
+  "gain_db": -3.5,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "青岛",
+    "beds": 1,
+    "max_rent": 8000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SEf18912",
+    "slot": "周日下午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEf18912": {
+   "city": "青岛",
+   "beds": 1,
+   "max_rent": 8000
+  },
+  "book_viewing#BOe31367": {
+   "listing_id": "SEf18912",
+   "slot": "周日下午"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv08"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.986,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 10.883,
+   "t_end": 14.815,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  2.897
+ ]
+}

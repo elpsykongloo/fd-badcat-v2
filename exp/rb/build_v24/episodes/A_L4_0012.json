@@ -1,0 +1,136 @@
+{
+ "id": "A_L4_0012",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "thermos bottle",
+  "qty": "one",
+  "address": "88 Century Avenue"
+ },
+ "slots_final": {
+  "query": "running shoes",
+  "qty": "one",
+  "address": "88 Century Avenue"
+ },
+ "revisions": [
+  {
+   "slot": "query",
+   "old": "thermos bottle",
+   "new": "running shoes",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.787
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "running shoes",
+  "qty": 1,
+  "address": "88 Century Avenue"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Search for thermos bottle, put one in the cart, and send it to 88 Century Avenue.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "running shoes — not thermos bottle.",
+   "gap_before": 0.787
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.627
+ },
+ "step_latencies": [
+  0.627,
+  0.712,
+  2.479
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 0.947,
+  "gain_db": -2.0,
+  "snr_db": 16.6
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "running shoes"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SEe23fa7",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD0c5395",
+    "address": "88 Century Avenue"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SEe23fa7": {
+   "query": "running shoes"
+  },
+  "add_item#AD0c5395": {
+   "item_id": "SEe23fa7",
+   "qty": 1
+  },
+  "place_order#PLb61108": {
+   "cart_id": "AD0c5395",
+   "address": "88 Century Avenue"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv05"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.258,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 8.045,
+   "t_end": 10.495,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.787
+ ]
+}

@@ -1,0 +1,133 @@
+{
+ "id": "A_L12_0034",
+ "arm": "A",
+ "layer": "L12",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_multi",
+ "slots": {
+  "city": "Boise",
+  "beds": "one-bedroom",
+  "max_rent": "three thousand",
+  "from_addr": "Midtown",
+  "to_addr": "tech park"
+ },
+ "slots_final": {
+  "city": "Boise",
+  "beds": "one-bedroom",
+  "max_rent": "three thousand",
+  "from_addr": "Midtown",
+  "to_addr": "Downtown"
+ },
+ "revisions": [
+  {
+   "slot": "to_addr",
+   "old": "tech park",
+   "new": "Downtown",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.45
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Boise",
+  "beds": 1,
+  "max_rent": 3000,
+  "from_addr": "Midtown",
+  "to_addr": "Downtown"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Find me a one-bedroom in Boise for under three thousand, and also check the commute from Midtown to tech park.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Oh wait, I mean Downtown",
+   "gap_before": 1.45
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.363
+ },
+ "step_latencies": [
+  0.363,
+  0.968
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "get_commute_time"
+ ],
+ "perturb": {
+  "rate": 0.973,
+  "gain_db": 1.7,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Boise",
+    "beds": 1,
+    "max_rent": 3000
+   }
+  },
+  {
+   "fn": "get_commute_time",
+   "args": {
+    "from_addr": "Midtown",
+    "to_addr": "Downtown"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEc6264d": {
+   "city": "Boise",
+   "beds": 1,
+   "max_rent": 3000
+  },
+  "get_commute_time#GEc67cf5": {
+   "from_addr": "Midtown",
+   "to_addr": "Downtown"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv04"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "dev",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 9.955,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 11.405,
+   "t_end": 13.707,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  1.45
+ ]
+}

@@ -1,0 +1,74 @@
+{
+ "id": "A_L9_0045",
+ "layer": "L9",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 4.819,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "rev_adopted": null,
+ "intruder_present": null,
+ "bystander_kind": null,
+ "aborted_ops": 0,
+ "comp_calls": 0,
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 5.841,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "schedule_payment",
+     "op_id": 2
+    }
+   ],
+   "say": "Scheduling a payment of $3,000 to Property Office for June 1."
+  },
+  {
+   "i": 1,
+   "t_eou": 15.05,
+   "ops": [],
+   "say": "Yes, the payment to Property Office for $3000 on June 1 has been scheduled."
+  }
+ ],
+ "say_events": [
+  [
+   6.841,
+   "Scheduling a payment of $3,000 to Property Office for June 1."
+  ],
+  [
+   16.05,
+   "Yes, the payment to Property Office for $3000 on June 1 has been scheduled."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.201,
+   "user"
+  ],
+  [
+   13.374,
+   14.41,
+   "user"
+  ]
+ ]
+}

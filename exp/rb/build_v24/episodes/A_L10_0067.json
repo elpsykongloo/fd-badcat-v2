@@ -1,0 +1,141 @@
+{
+ "id": "A_L10_0067",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "北京",
+  "destination": "成都",
+  "date": "五月三号",
+  "seat_class": "商务座",
+  "passenger": "张伟"
+ },
+ "slots_final": {
+  "origin": "北京",
+  "destination": "成都",
+  "date": "五月三号",
+  "seat_class": "商务座",
+  "passenger": "张伟"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "irrelevant",
+  "other": "西安",
+  "slot": "destination",
+  "state": "inflight",
+  "frac": 0.318
+ },
+ "slots_canon": {
+  "origin": "北京",
+  "destination": "成都",
+  "date": "5月3日",
+  "seat_class": "商务座",
+  "passenger": "张伟"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "zh",
+   "text": "能帮我查五月三号从北京到成都的火车不？订商务座，然后直接帮买，乘客是张伟。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv05",
+   "lang": "zh",
+   "text": "今晚想吃什么？我们点外卖吧。",
+   "at_after_eou": 1.184
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.579
+ },
+ "step_latencies": [
+  0.579,
+  0.38,
+  0.697
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.016,
+  "gain_db": 1.3,
+  "snr_db": 22.6
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "北京",
+    "destination": "成都",
+    "date": "5月3日"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEd53e31",
+    "seat_class": "商务座"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO5c0f8a",
+    "passenger": "张伟"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEd53e31": {
+   "origin": "北京",
+   "destination": "成都",
+   "date": "5月3日"
+  },
+  "hold_seat#HO5c0f8a": {
+   "train_id": "SEd53e31",
+   "seat_class": "商务座"
+  },
+  "purchase_ticket#PU2476db": {
+   "hold_id": "HO5c0f8a",
+   "passenger": "张伟"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv05"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.61,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "bystander",
+   "t_start": 10.434,
+   "t_end": 12.639,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

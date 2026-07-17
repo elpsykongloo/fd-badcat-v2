@@ -1,0 +1,146 @@
+{
+ "id": "A_L10_0071",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "广州",
+  "destination": "成都",
+  "date": "六月一号",
+  "seat_class": "二等座",
+  "passenger": "李娜"
+ },
+ "slots_final": {
+  "origin": "广州",
+  "destination": "成都",
+  "date": "五月八号",
+  "seat_class": "二等座",
+  "passenger": "李娜"
+ },
+ "revisions": [
+  {
+   "slot": "date",
+   "old": "六月一号",
+   "new": "五月八号",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.792
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "广州",
+  "destination": "成都",
+  "date": "5月8日",
+  "seat_class": "二等座",
+  "passenger": "李娜"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "zh",
+   "text": "查一下六月一号从广州到成都的火车，我要订二等座，然后直接付款，乘客写李娜。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "zh",
+   "text": "这个……慢着，改成五月八号。",
+   "gap_before": 0.792
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.256
+ },
+ "step_latencies": [
+  0.256,
+  1.122,
+  3.754
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.038,
+  "gain_db": 1.6,
+  "snr_db": 18.6
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "广州",
+    "destination": "成都",
+    "date": "5月8日"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEafbdc3",
+    "seat_class": "二等座"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HOf2a309",
+    "passenger": "李娜"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEafbdc3": {
+   "origin": "广州",
+   "destination": "成都",
+   "date": "5月8日"
+  },
+  "hold_seat#HOf2a309": {
+   "train_id": "SEafbdc3",
+   "seat_class": "二等座"
+  },
+  "purchase_ticket#PUb11290": {
+   "hold_id": "HOf2a309",
+   "passenger": "李娜"
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv01"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.747,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 9.539,
+   "t_end": 15.242,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.792
+ ]
+}

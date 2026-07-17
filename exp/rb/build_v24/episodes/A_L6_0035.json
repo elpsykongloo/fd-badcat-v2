@@ -1,0 +1,168 @@
+{
+ "id": "A_L6_0035",
+ "arm": "A",
+ "layer": "L6",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "上海",
+  "destination": "杭州",
+  "date": "六月一号",
+  "seat_class": "商务座",
+  "passenger": "王磊"
+ },
+ "slots_final": {
+  "origin": "上海",
+  "destination": "成都",
+  "date": "六月一号",
+  "seat_class": "一等座",
+  "passenger": "王磊"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "杭州",
+   "new": "成都",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.89
+  },
+  {
+   "slot": "seat_class",
+   "old": "商务座",
+   "new": "一等座",
+   "by": "user",
+   "kind": "second",
+   "gap": 2.7
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "上海",
+  "destination": "成都",
+  "date": "6月1日",
+  "seat_class": "一等座",
+  "passenger": "王磊"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "zh",
+   "text": "帮我看看六月一号从上海到杭州有什么火车，订商务座，接着直接买票，乘客是王磊。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "zh",
+   "text": "呃——等等，我改成都。",
+   "gap_before": 0.89
+  },
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "zh",
+   "text": "啊——就是——另外，麻烦再改一下，需要一等座。",
+   "gap_before": 2.7
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.68
+ },
+ "step_latencies": [
+  0.68,
+  0.289,
+  2.801
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.018,
+  "gain_db": -0.0,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "上海",
+    "destination": "成都",
+    "date": "6月1日"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE1f6b6a",
+    "seat_class": "一等座"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO833dc3",
+    "passenger": "王磊"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE1f6b6a": {
+   "origin": "上海",
+   "destination": "成都",
+   "date": "6月1日"
+  },
+  "hold_seat#HO833dc3": {
+   "train_id": "SE1f6b6a",
+   "seat_class": "一等座"
+  },
+  "purchase_ticket#PUa6218c": {
+   "hold_id": "HO833dc3",
+   "passenger": "王磊"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv05"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 9.537,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 10.427,
+   "t_end": 13.256,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 15.956,
+   "t_end": 24.208,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.89,
+  2.7
+ ]
+}

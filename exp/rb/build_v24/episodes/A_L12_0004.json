@@ -1,0 +1,118 @@
+{
+ "id": "A_L12_0004",
+ "arm": "A",
+ "layer": "L12",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_multi",
+ "slots": {
+  "query": "wireless earbuds",
+  "item_id": "A100"
+ },
+ "slots_final": {
+  "query": "wireless earbuds",
+  "item_id": "C330"
+ },
+ "revisions": [
+  {
+   "slot": "item_id",
+   "old": "A100",
+   "new": "C330",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.216
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "wireless earbuds",
+  "item_id": "C330"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Search for wireless earbuds, and check whether item A100 is in stock.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Hold up, change it to C330",
+   "gap_before": 1.216
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.446
+ },
+ "step_latencies": [
+  0.446,
+  0.548
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "check_stock"
+ ],
+ "perturb": {
+  "rate": 1.008,
+  "gain_db": -5.2,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "wireless earbuds"
+   }
+  },
+  {
+   "fn": "check_stock",
+   "args": {
+    "item_id": "C330"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE196888": {
+   "query": "wireless earbuds"
+  },
+  "check_stock#CHabd469": {
+   "item_id": "C330"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv04"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 5.738,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 6.954,
+   "t_end": 10.684,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  1.216
+ ]
+}

@@ -1,0 +1,130 @@
+{
+ "id": "A_L4_0046",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Denver",
+  "beds": "two-bedroom",
+  "max_rent": "three thousand",
+  "slot": "Sunday afternoon"
+ },
+ "slots_final": {
+  "city": "Denver",
+  "beds": "two-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Sunday afternoon"
+ },
+ "revisions": [
+  {
+   "slot": "max_rent",
+   "old": "three thousand",
+   "new": "two thousand",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.7
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Denver",
+  "beds": 2,
+  "max_rent": 2000,
+  "slot": "Sunday afternoon"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Could you look for a two-bedroom in Denver with a max rent of three thousand, and set up a viewing at Sunday afternoon?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "two thousand please, not three thousand.",
+   "gap_before": 0.7
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.513
+ },
+ "step_latencies": [
+  0.513,
+  1.907
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 0.982,
+  "gain_db": -5.8,
+  "snr_db": 24.8
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Denver",
+    "beds": 2,
+    "max_rent": 2000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SEea7e2d",
+    "slot": "Sunday afternoon"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEea7e2d": {
+   "city": "Denver",
+   "beds": 2,
+   "max_rent": 2000
+  },
+  "book_viewing#BO26a8ad": {
+   "listing_id": "SEea7e2d",
+   "slot": "Sunday afternoon"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv07"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.158,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 8.858,
+   "t_end": 11.628,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.7
+ ]
+}

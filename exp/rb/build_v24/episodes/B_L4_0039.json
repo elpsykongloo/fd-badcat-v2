@@ -1,0 +1,131 @@
+{
+ "id": "B_L4_0039",
+ "arm": "B",
+ "layer": "L4",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
+ "slots_final": {
+  "origin": "Boston",
+  "destination": "Austin",
+  "date": "June first",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "Atlanta",
+   "new": "Austin",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.687
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Boston",
+  "destination": "Austin",
+  "date": "June 1",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Could you look up a train from Boston to Atlanta on June first, hold a business seat, and buy the ticket for Jordan Lee?",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.472,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv01",
+   "text": "Austin rather than Atlanta."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.724
+ },
+ "step_latencies": [
+  0.724,
+  0.664,
+  0.999
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.988,
+  "gain_db": -3.8,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Boston",
+    "destination": "Austin",
+    "date": "June 1"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEca0c98",
+    "seat_class": "business"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HOfb7cd8",
+    "passenger": "Jordan Lee"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEca0c98": {
+   "origin": "Boston",
+   "destination": "Austin",
+   "date": "June 1"
+  },
+  "hold_seat#HOfb7cd8": {
+   "train_id": "SEca0c98",
+   "seat_class": "business"
+  },
+  "purchase_ticket#PU2a6c56": {
+   "hold_id": "HOfb7cd8",
+   "passenger": "Jordan Lee"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv08"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

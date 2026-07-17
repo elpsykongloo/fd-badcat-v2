@@ -1,0 +1,96 @@
+{
+ "id": "B_L13_0118",
+ "layer": "L13",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 9.674,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "rev_adopted": null,
+ "intruder_present": true,
+ "bystander_kind": "command",
+ "aborted_ops": 0,
+ "comp_calls": 0,
+ "pair": {
+  "family": "BF014",
+  "who": "bystander",
+  "state": "committed"
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 4.473,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "save_listing",
+     "op_id": 2
+    }
+   ],
+   "say": "Saving that listing for you."
+  },
+  {
+   "i": 1,
+   "t_eou": 10.706,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "save_listing",
+     "op_id": 3
+    },
+    {
+     "type": "abort",
+     "op_id": "X2",
+     "target": "SAbb5b97",
+     "ok": false,
+     "error": "already completed - compensate"
+    }
+   ],
+   "say": "I'm on it."
+  }
+ ],
+ "say_events": [
+  [
+   5.473,
+   "Saving that listing for you."
+  ],
+  [
+   11.706,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   3.833,
+   "user"
+  ],
+  [
+   7.399,
+   10.066,
+   "bystander"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": []
+ }
+}

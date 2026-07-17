@@ -1,0 +1,131 @@
+{
+ "id": "B_L4_0007",
+ "arm": "B",
+ "layer": "L4",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "上海",
+  "destination": "西安",
+  "date": "六月一号",
+  "seat_class": "二等座",
+  "passenger": "李娜"
+ },
+ "slots_final": {
+  "origin": "上海",
+  "destination": "西安",
+  "date": "六月一号",
+  "seat_class": "一等座",
+  "passenger": "李娜"
+ },
+ "revisions": [
+  {
+   "slot": "seat_class",
+   "old": "二等座",
+   "new": "一等座",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.681
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "上海",
+  "destination": "西安",
+  "date": "6月1日",
+  "seat_class": "一等座",
+  "passenger": "李娜"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "zh",
+   "text": "我要查六月一号从上海到西安的火车，订二等座，然后直接下单，乘客填李娜。",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.133,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv09",
+   "text": "一等座，不是二等座啊。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.534
+ },
+ "step_latencies": [
+  0.534,
+  0.173,
+  1.865
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.954,
+  "gain_db": 1.0,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "上海",
+    "destination": "西安",
+    "date": "6月1日"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEc9f4dc",
+    "seat_class": "一等座"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO55c86c",
+    "passenger": "李娜"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEc9f4dc": {
+   "origin": "上海",
+   "destination": "西安",
+   "date": "6月1日"
+  },
+  "hold_seat#HO55c86c": {
+   "train_id": "SEc9f4dc",
+   "seat_class": "一等座"
+  },
+  "purchase_ticket#PU0ab919": {
+   "hold_id": "HO55c86c",
+   "passenger": "李娜"
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv02"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

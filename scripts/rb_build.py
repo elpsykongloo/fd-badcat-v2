@@ -4,7 +4,10 @@
 
   $PY scripts/rb_build.py                       # episodes + manifest (no audio)
   $PY scripts/rb_build.py --audio stub          # + placeholder wavs (pipeline dry run)
-  $PY scripts/rb_build.py --audio qwen          # + real Qwen3-TTS wavs (user wiring)
+  $PY scripts/rb_build.py --audio qwen --tts-workers 16
+                                                # + parallel real Qwen3-TTS prewarm
+  $PY scripts/rb_build.py --out BUILD --prewarm-arm B --tts-workers 16
+                                                # cache all reactive B pieces/events
   $PY scripts/rb_build.py --verify              # determinism: rebuild == manifest
   $PY scripts/rb_build.py --selftest            # tiny-quota structural checks
 
@@ -16,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -23,6 +27,13 @@ REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO))
 
 from rb.generator import build_all, manifest, ARM_A_QUOTA, ARM_B_QUOTA  # noqa: E402
+
+
+def _default_tts_workers():
+    try:
+        return int(os.getenv("RB_TTS_WORKERS", "16"))
+    except ValueError:
+        return 16
 
 
 def audit_templates():
@@ -55,7 +66,8 @@ def audit_templates():
     return bad
 
 
-def build(out_dir, audio=None, pause_prior_path=None, quota_a=None, quota_b=None):
+def build(out_dir, audio=None, pause_prior_path=None, quota_a=None, quota_b=None,
+          tts_workers=16):
     bad = audit_templates()
     if bad:
         for b in bad:
@@ -76,22 +88,55 @@ def build(out_dir, audio=None, pause_prior_path=None, quota_a=None, quota_b=None
         from rb.audio import SilenceStub
         backend = SilenceStub()
     elif audio == "qwen":
-        from rb.audio import QwenTTSBackend
+        from rb.audio import QwenTTSBackend, episode_tts_requests
         backend = QwenTTSBackend()
-    for e in eps:
-        if backend is not None and e["arm"] == "A":
-            from rb.audio import assemble_episode, measured_gaps
-            cues = assemble_episode(e, backend, out / "audio" / f"{e['id']}.wav")
-            e["cues"] = cues
-            e["measured_gaps"] = measured_gaps(cues)
-        (out / "episodes" / f"{e['id']}.json").write_text(
-            json.dumps(e, ensure_ascii=False, indent=1))
+        # The GPU work runs in parallel, but only after deduplicating cache
+        # keys.  Assembly deliberately remains serial and cache-only so cue
+        # ordering and final WAV bytes cannot depend on completion order.
+        a_requests = episode_tts_requests(
+            (e for e in eps if e["arm"] == "A"), include_events=False)
+        tts_stats = backend.prewarm(a_requests, workers=tts_workers)
+        print("qwen TTS prewarm:", json.dumps(tts_stats, sort_keys=True))
+        backend.cache_only = True
+    else:
+        tts_stats = None
+    try:
+        for e in eps:
+            if backend is not None and e["arm"] == "A":
+                from rb.audio import assemble_episode, measured_gaps
+                cues = assemble_episode(e, backend, out / "audio" / f"{e['id']}.wav")
+                e["cues"] = cues
+                e["measured_gaps"] = measured_gaps(cues)
+            (out / "episodes" / f"{e['id']}.json").write_text(
+                json.dumps(e, ensure_ascii=False, indent=1))
+    finally:
+        if audio == "qwen":
+            backend.cache_only = False
     m = manifest(ch, eps)
     m["audio"] = audio or "none"
     m["pause_prior"] = bool(pause_prior)
     (out / "manifest.json").write_text(json.dumps(m, indent=2))
+    if tts_stats is not None:
+        print("qwen TTS assembly: cache-only PASS (0 serial synthesis fallback)")
     print(json.dumps(m, indent=2))
     return m
+
+
+def prewarm_existing(out_dir, arm, tts_workers):
+    """Warm every scripted and reactive segment of an already-built arm."""
+    from rb.audio import QwenTTSBackend, episode_tts_requests
+    epdir = Path(out_dir) / "episodes"
+    paths = sorted(epdir.glob(f"{arm}_*.json"))
+    if not paths:
+        raise SystemExit(f"no arm-{arm} episodes under {epdir}")
+    episodes = [json.loads(path.read_text()) for path in paths]
+    requests = episode_tts_requests(episodes, include_events=True)
+    backend = QwenTTSBackend()
+    stats = backend.prewarm(requests, workers=tts_workers)
+    receipt = {"arm": arm, "episodes": len(episodes),
+               "includes_events": True, **stats}
+    print("qwen TTS prewarm:", json.dumps(receipt, sort_keys=True))
+    return receipt
 
 
 def verify(out_dir):
@@ -186,6 +231,52 @@ def selftest():
         [{"fn": "a", "args": {"x": 2}}, {"fn": "a", "args": {"x": 1}}]) == \
         canonical_calls([{"fn": "a", "args": {"x": 1}}, {"fn": "a", "args": {"x": 2}}])
     ck["split_present"] = {e["split"] for e in eps1} <= {"dev", "test"}
+    # TTS concurrency safety without touching the live service: duplicate
+    # cache keys coalesce before submission, later calls hit atomically
+    # published WAVs, and cache-only mode refuses a silent serial fallback.
+    from rb.audio import QwenTTSBackend
+    import tempfile
+    import threading
+    import wave
+    with tempfile.TemporaryDirectory() as tmpdir:
+        class _FakeQwen(QwenTTSBackend):
+            def __init__(self):
+                super().__init__(tts_dir=tmpdir, cache_dir=tmpdir,
+                                 voice_map_path=Path(tmpdir) / "missing.json")
+                self.calls = []
+                self.calls_lock = threading.Lock()
+
+            def _synthesize_to_path(self, text, preset, lang, tmp):
+                with self.calls_lock:
+                    self.calls.append((text, preset, lang))
+                with wave.open(str(tmp), "wb") as w:
+                    w.setnchannels(1)
+                    w.setsampwidth(2)
+                    w.setframerate(16000)
+                    w.writeframes(b"\x00\x00")
+
+        fake = _FakeQwen()
+        warm = fake.prewarm([
+            {"text": "alpha", "voice": "cv01", "lang": "en"},
+            {"text": "alpha", "voice": "cv01", "lang": "en"},
+            {"text": "beta", "voice": "cv02", "lang": "en"},
+        ], workers=4)
+        hit = fake.prewarm([
+            {"text": "alpha", "voice": "cv01", "lang": "en"},
+            {"text": "beta", "voice": "cv02", "lang": "en"},
+        ], workers=4)
+        fake.cache_only = True
+        try:
+            fake._ensure_wav("uncached", "cv01", "en")
+        except RuntimeError:
+            cache_only_guard = True
+        else:
+            cache_only_guard = False
+        ck["tts_parallel_cache_isolation"] = (
+            warm["requested"] == 3 and warm["unique"] == 2
+            and warm["synthesized"] == 2 and warm["workers_used"] == 2
+            and hit["initial_cache_hits"] == 2 and hit["synthesized"] == 0
+            and len(fake.calls) == 2 and cache_only_guard)
     for k, v in ck.items():
         print(f"  selftest {k}: {'PASS' if v else 'FAIL'}")
     print("SELFTEST", "PASS" if all(ck.values()) else "FAIL")
@@ -196,12 +287,18 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--out", default="exp/rb/build_v2")
     ap.add_argument("--audio", choices=["stub", "qwen"])
+    ap.add_argument("--tts-workers", type=int, default=_default_tts_workers(),
+                    help="parallel Qwen cache-warm requests (default: RB_TTS_WORKERS or 16)")
+    ap.add_argument("--prewarm-arm", choices=["A", "B"],
+                    help="warm existing arm pieces and reactive events only")
     ap.add_argument("--pause-prior", default="exp/w5sg/pause_prior.json")
     ap.add_argument("--verify", action="store_true")
     ap.add_argument("--audit", action="store_true",
                     help="print the current content-template audit without building")
     ap.add_argument("--selftest", action="store_true")
     args = ap.parse_args()
+    if args.tts_workers < 1:
+        ap.error("--tts-workers must be >= 1")
     if args.selftest:
         return selftest()
     if args.audit:
@@ -212,7 +309,13 @@ def main():
         return 0 if not bad else 1
     if args.verify:
         return verify(args.out)
-    build(args.out, audio=args.audio, pause_prior_path=args.pause_prior)
+    if args.prewarm_arm:
+        if args.audio:
+            ap.error("--prewarm-arm is a standalone cache operation; omit --audio")
+        prewarm_existing(args.out, args.prewarm_arm, args.tts_workers)
+        return 0
+    build(args.out, audio=args.audio, pause_prior_path=args.pause_prior,
+          tts_workers=args.tts_workers)
     return 0
 
 

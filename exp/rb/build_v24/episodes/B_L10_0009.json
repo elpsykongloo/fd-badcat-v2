@@ -1,0 +1,132 @@
+{
+ "id": "B_L10_0009",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "three thousand",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "slots_final": {
+  "amount": "three thousand",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "command",
+  "other": "rent account",
+  "slot": "to_acct",
+  "state": "inflight",
+  "frac": 0.62
+ },
+ "slots_canon": {
+  "amount": 3000,
+  "from_cur": "USD",
+  "to_cur": "JPY",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Please provide a quote for three thousand dollars to yen and afterwards transfer three thousand from checking to savings.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "Switch it over to rent account.",
+   "at_after_eou": 1.235
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.753,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv05",
+   "text": "Set it to rent account."
+  },
+  {
+   "state": "tts",
+   "offset": 0.336,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv05",
+   "text": "Set it to rent account."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.379
+ },
+ "step_latencies": [
+  0.379,
+  1.018
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 1.037,
+  "gain_db": -1.7,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": 3000,
+    "from_cur": "USD",
+    "to_cur": "JPY"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "savings",
+    "amount": 3000
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GE8801d8": {
+   "amount": 3000,
+   "from_cur": "USD",
+   "to_cur": "JPY"
+  },
+  "transfer_funds#TR640353": {
+   "from_acct": "checking",
+   "to_acct": "savings",
+   "amount": 3000
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv05"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

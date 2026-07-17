@@ -1,0 +1,131 @@
+{
+ "id": "B_L5_0027",
+ "arm": "B",
+ "layer": "L5",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "北京",
+  "destination": "杭州",
+  "date": "五月八号",
+  "seat_class": "一等座",
+  "passenger": "张伟"
+ },
+ "slots_final": {
+  "origin": "北京",
+  "destination": "南京",
+  "date": "五月八号",
+  "seat_class": "一等座",
+  "passenger": "张伟"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "杭州",
+   "new": "南京",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.507
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "北京",
+  "destination": "南京",
+  "date": "5月8日",
+  "seat_class": "一等座",
+  "passenger": "张伟"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "zh",
+   "text": "能帮我查五月八号从北京到杭州的火车不？订一等座，然后直接帮买，乘客是张伟。",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 2.248,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv08",
+   "text": "哦不，改南京。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.335
+ },
+ "step_latencies": [
+  0.335,
+  0.32,
+  0.657
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.993,
+  "gain_db": -2.1,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "北京",
+    "destination": "南京",
+    "date": "5月8日"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEb5ad27",
+    "seat_class": "一等座"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HOfbd5b7",
+    "passenger": "张伟"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEb5ad27": {
+   "origin": "北京",
+   "destination": "南京",
+   "date": "5月8日"
+  },
+  "hold_seat#HOfbd5b7": {
+   "train_id": "SEb5ad27",
+   "seat_class": "一等座"
+  },
+  "purchase_ticket#PU7185d2": {
+   "hold_id": "HOfbd5b7",
+   "passenger": "张伟"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv01"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

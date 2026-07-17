@@ -1,0 +1,102 @@
+{
+ "id": "B_L14_0004",
+ "arm": "B",
+ "layer": "L14",
+ "domain": "ecommerce",
+ "lang": "zh",
+ "scenario": "ecom_single",
+ "slots": {
+  "item_id": "A100",
+  "qty": "一"
+ },
+ "slots_final": {
+  "item_id": "A100",
+  "qty": "两"
+ },
+ "revisions": [
+  {
+   "slot": "qty",
+   "old": "一",
+   "new": "两",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "item_id": "A100",
+  "qty": 2
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "zh",
+   "text": "请往购物车添加一件编号A100的商品",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "committed",
+   "offset": 0.919,
+   "action": "confirm_query",
+   "role": "user",
+   "voice": "cv04",
+   "text": "等一下，你刚才办的那个，具体是什么来着？再说一遍。"
+  },
+  {
+   "state": "committed",
+   "offset": 6.677,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv04",
+   "text": "改一改，改一改，不对，我要两。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.556
+ },
+ "step_latencies": [
+  0.556
+ ],
+ "scenario_steps": [
+  "add_item"
+ ],
+ "perturb": {
+  "rate": 0.979,
+  "gain_db": -5.6,
+  "snr_db": 22.6
+ },
+ "gold_calls": [
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "A100",
+    "qty": 2
+   }
+  }
+ ],
+ "gold_state": {
+  "add_item#AD2077b3": {
+   "item_id": "A100",
+   "qty": 2
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv02"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "dev",
+ "config_hash": "9d338e70f770"
+}

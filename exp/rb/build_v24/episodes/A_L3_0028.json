@@ -1,0 +1,136 @@
+{
+ "id": "A_L3_0028",
+ "arm": "A",
+ "layer": "L3",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "thermos bottle",
+  "qty": "two",
+  "address": "12 College Road"
+ },
+ "slots_final": {
+  "query": "running shoes",
+  "qty": "two",
+  "address": "12 College Road"
+ },
+ "revisions": [
+  {
+   "slot": "query",
+   "old": "thermos bottle",
+   "new": "running shoes",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.644
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "running shoes",
+  "qty": 2,
+  "address": "12 College Road"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "I need you to look up thermos bottle, throw two in the cart, and order it to 12 College Road.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "No wait, make that running shoes",
+   "gap_before": 0.644
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.271
+ },
+ "step_latencies": [
+  0.271,
+  0.316,
+  0.935
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 0.999,
+  "gain_db": 0.7,
+  "snr_db": 16.6
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "running shoes"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SEc151d2",
+    "qty": 2
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD791223",
+    "address": "12 College Road"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SEc151d2": {
+   "query": "running shoes"
+  },
+  "add_item#AD791223": {
+   "item_id": "SEc151d2",
+   "qty": 2
+  },
+  "place_order#PLddb232": {
+   "cart_id": "AD791223",
+   "address": "12 College Road"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv03"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.666,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 7.31,
+   "t_end": 9.713,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.644
+ ]
+}

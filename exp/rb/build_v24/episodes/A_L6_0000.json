@@ -1,0 +1,158 @@
+{
+ "id": "A_L6_0000",
+ "arm": "A",
+ "layer": "L6",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "thermos bottle",
+  "qty": "two",
+  "address": "12 College Road"
+ },
+ "slots_final": {
+  "query": "running shoes",
+  "qty": "one",
+  "address": "12 College Road"
+ },
+ "revisions": [
+  {
+   "slot": "query",
+   "old": "thermos bottle",
+   "new": "running shoes",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.716
+  },
+  {
+   "slot": "qty",
+   "old": "two",
+   "new": "one",
+   "by": "user",
+   "kind": "second",
+   "gap": 2.886
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "running shoes",
+  "qty": 1,
+  "address": "12 College Road"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Find thermos bottle, toss two into the cart, and have it shipped to 12 College Road.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "No wait, make that running shoes",
+   "gap_before": 0.716
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "So I was— Wait, one more revision: one.",
+   "gap_before": 2.886
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.295
+ },
+ "step_latencies": [
+  0.295,
+  0.478,
+  0.79
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 1.027,
+  "gain_db": -2.1,
+  "snr_db": 22.8
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "running shoes"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE68c752",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD0f4af6",
+    "address": "12 College Road"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE68c752": {
+   "query": "running shoes"
+  },
+  "add_item#AD0f4af6": {
+   "item_id": "SE68c752",
+   "qty": 1
+  },
+  "place_order#PLfe2c02": {
+   "cart_id": "AD0f4af6",
+   "address": "12 College Road"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv08"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "dev",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.81,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 7.526,
+   "t_end": 10.719,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 13.605,
+   "t_end": 19.214,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.716,
+  2.886
+ ]
+}

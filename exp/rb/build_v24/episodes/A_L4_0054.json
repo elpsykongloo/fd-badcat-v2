@@ -1,0 +1,130 @@
+{
+ "id": "A_L4_0054",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "成都",
+  "beds": "两居",
+  "max_rent": "六千",
+  "slot": "周日下午"
+ },
+ "slots_final": {
+  "city": "成都",
+  "beds": "一居",
+  "max_rent": "六千",
+  "slot": "周日下午"
+ },
+ "revisions": [
+  {
+   "slot": "beds",
+   "old": "两居",
+   "new": "一居",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.882
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "成都",
+  "beds": 1,
+  "max_rent": 6000,
+  "slot": "周日下午"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "zh",
+   "text": "我想在成都找两居的，租金顶多六千，约周日下午看房行不？",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "zh",
+   "text": "一居，你搞错了，不是两居。",
+   "gap_before": 0.882
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.501
+ },
+ "step_latencies": [
+  0.501,
+  1.061
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.027,
+  "gain_db": -3.5,
+  "snr_db": 24.0
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "成都",
+    "beds": 1,
+    "max_rent": 6000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SEb6a4ad",
+    "slot": "周日下午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEb6a4ad": {
+   "city": "成都",
+   "beds": 1,
+   "max_rent": 6000
+  },
+  "book_viewing#BOb56d3e": {
+   "listing_id": "SEb6a4ad",
+   "slot": "周日下午"
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv01"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.445,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 9.327,
+   "t_end": 12.288,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.882
+ ]
+}

@@ -1,0 +1,99 @@
+{
+ "id": "B_L11_0037",
+ "arm": "B",
+ "layer": "L11",
+ "domain": "finance",
+ "lang": "zh",
+ "scenario": "fin_payment",
+ "slots": {
+  "payee": "房东",
+  "amount": "八百",
+  "date": "六月一号"
+ },
+ "slots_final": {
+  "payee": "房东",
+  "amount": "五千",
+  "date": "六月一号"
+ },
+ "revisions": [
+  {
+   "slot": "amount",
+   "old": "八百",
+   "new": "五千",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "payee": "房东",
+  "amount": 5000,
+  "date": "6月1日"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "zh",
+   "text": "帮我设一笔给房东的付款，八百块，六月一号扣。",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "tts",
+   "offset": 0.242,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv08",
+   "text": "哦不，改五千。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 1.336
+ },
+ "step_latencies": [
+  1.336
+ ],
+ "scenario_steps": [
+  "schedule_payment"
+ ],
+ "perturb": {
+  "rate": 0.984,
+  "gain_db": -5.0,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "schedule_payment",
+   "args": {
+    "payee": "房东",
+    "amount": 5000,
+    "date": "6月1日"
+   }
+  }
+ ],
+ "gold_state": {
+  "schedule_payment#SCc2f7bb": {
+   "payee": "房东",
+   "amount": 5000,
+   "date": "6月1日"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv03"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

@@ -1,0 +1,141 @@
+{
+ "id": "A_L10_0031",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "slots_final": {
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "irrelevant",
+  "other": "May third",
+  "slot": "date",
+  "state": "inflight",
+  "frac": 0.442
+ },
+ "slots_canon": {
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "June 1",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "I need a train from Boston to Atlanta on June first, hold a coach seat, and buy the ticket for Alex Chen.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "We're getting takeout, so what do you want to eat?",
+   "at_after_eou": 1.242
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.547
+ },
+ "step_latencies": [
+  0.547,
+  0.463,
+  3.608
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.003,
+  "gain_db": -3.3,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Boston",
+    "destination": "Atlanta",
+    "date": "June 1"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEfc7f27",
+    "seat_class": "coach"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO8c172b",
+    "passenger": "Alex Chen"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEfc7f27": {
+   "origin": "Boston",
+   "destination": "Atlanta",
+   "date": "June 1"
+  },
+  "hold_seat#HO8c172b": {
+   "train_id": "SEfc7f27",
+   "seat_class": "coach"
+  },
+  "purchase_ticket#PU72d2e7": {
+   "hold_id": "HO8c172b",
+   "passenger": "Alex Chen"
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv07"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 5.525,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "bystander",
+   "t_start": 7.407,
+   "t_end": 10.039,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

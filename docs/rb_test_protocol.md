@@ -697,9 +697,14 @@ legacy 臂 B eou 箱（L4/L5/L6）维持名义箱 + `armb_timing.measured_gaps` 
   `rb_build --selftest` 过 + `rb_build --audit` / `audit_templates()` **0 违规**（当前 v2.3 bank 16 处
   违规会被硬拒——这是门在工作）；按 §16.1 checklist 听检，**L4 专项**：value_first
   全部变体逐条读一遍，确认对比语义正确、无双值；commit bank（独立提交，SHA 入册）。
-- **P2 正式构建**：`rb_build --out exp/rb/build_v24 --audio qwen`；记录
-  config/ids/content 三哈希、A 臂 666/666 WAV 完整性（mono PCM16 16k/cues/tail）、
-  TTS 仓外缓存计数。金子集清单随构建再生（144 项，录制目标切到 v2.4）。
+- **P2 正式构建**：TTS 服务须为标准 scheduler（`async_scheduling: false`）且双 stage
+  `max_num_seqs=16`；运行 `rb_build --out exp/rb/build_v24 --audio qwen --tts-workers 16`。
+  构建器先按缓存键去重并行预热，再**缓存只读**地串行装配（任何装配期 miss 硬失败，
+  不会退回串行合成）。随后 `rb_build --out exp/rb/build_v24 --verify`；趁 :8091 仍在位，
+  以 `rb_build --out exp/rb/build_v24 --prewarm-arm B --tts-workers 16` 预热 B 的所有
+  scripted pieces 与 reactive events，供 P4/后续单发使用。记录 config/ids/content 三哈希、
+  A 臂 666/666 WAV 完整性（mono PCM16 16k/cues/tail）、两次 TTS 仓外缓存统计与并发数。
+  金子集清单随构建再生（144 项，录制目标切到 v2.4）。
 - **P3 oracle dev 门**（text 或 audio 皆可，两臂）：**硬门** = A 臂 L1–L4/L7–L12
   全 1.0；B 臂 L4/L7/L9–L15 全 1.0，其中 **L13 pair_axis 八格全 1.0、L14 1.0、
   L15 exact 全 1.0 且 route_axis.l15.aborted ≥ feasible**（`abort_feasible` 是保守

@@ -1,0 +1,74 @@
+{
+ "id": "A_L9_0003",
+ "layer": "L9",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 11.201,
+ "U": 0.563,
+ "U_sens": {
+  "0.5": 0.563,
+  "1.0": 0.563,
+  "2.0": 0.563
+ },
+ "rev_adopted": null,
+ "intruder_present": null,
+ "bystander_kind": null,
+ "aborted_ops": 0,
+ "comp_calls": 0,
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 7.54,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "reserve_hotel",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 27.732,
+   "ops": [],
+   "say": "Your hotel reservation in Austin is confirmed."
+  }
+ ],
+ "say_events": [
+  [
+   8.54,
+   "I'm on it."
+  ],
+  [
+   28.732,
+   "Your hotel reservation in Austin is confirmed."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.9,
+   "user"
+  ],
+  [
+   25.492,
+   27.092,
+   "user"
+  ]
+ ]
+}

@@ -1,0 +1,130 @@
+{
+ "id": "A_L10_0081",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "finance",
+ "lang": "zh",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "八百",
+  "from_cur": "人民币",
+  "to_cur": "美元",
+  "from_acct": "工资卡",
+  "to_acct": "房租卡"
+ },
+ "slots_final": {
+  "amount": "八百",
+  "from_cur": "人民币",
+  "to_cur": "美元",
+  "from_acct": "工资卡",
+  "to_acct": "房租卡"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "command",
+  "other": "三千",
+  "slot": "amount",
+  "state": "inflight",
+  "frac": 0.108
+ },
+ "slots_canon": {
+  "amount": 800,
+  "from_cur": "CNY",
+  "to_cur": "USD",
+  "from_acct": "工资卡",
+  "to_acct": "房租卡"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "zh",
+   "text": "先查八百块人民币换美元的汇率，然后从工资卡转八百到房租卡。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv05",
+   "lang": "zh",
+   "text": "改成三千吧",
+   "at_after_eou": 1.055
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.509
+ },
+ "step_latencies": [
+  0.509,
+  1.925
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 0.956,
+  "gain_db": -1.1,
+  "snr_db": 18.1
+ },
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": 800,
+    "from_cur": "CNY",
+    "to_cur": "USD"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "工资卡",
+    "to_acct": "房租卡",
+    "amount": 800
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GE10dca4": {
+   "amount": 800,
+   "from_cur": "CNY",
+   "to_cur": "USD"
+  },
+  "transfer_funds#TRab5b12": {
+   "from_acct": "工资卡",
+   "to_acct": "房租卡",
+   "amount": 800
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv05"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.358,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "bystander",
+   "t_start": 8.053,
+   "t_end": 9.559,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

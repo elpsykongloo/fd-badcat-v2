@@ -1,0 +1,132 @@
+{
+ "id": "B_L10_0093",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "finance",
+ "lang": "zh",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "三千",
+  "from_cur": "人民币",
+  "to_cur": "美元",
+  "from_acct": "工资卡",
+  "to_acct": "储蓄卡"
+ },
+ "slots_final": {
+  "amount": "三千",
+  "from_cur": "人民币",
+  "to_cur": "美元",
+  "from_acct": "工资卡",
+  "to_acct": "储蓄卡"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "command",
+  "other": "八百",
+  "slot": "amount",
+  "state": "inflight",
+  "frac": 0.371
+ },
+ "slots_canon": {
+  "amount": 3000,
+  "from_cur": "CNY",
+  "to_cur": "USD",
+  "from_acct": "工资卡",
+  "to_acct": "储蓄卡"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "zh",
+   "text": "先查三千块人民币换美元的汇率，然后从工资卡转三千到储蓄卡。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv05",
+   "lang": "zh",
+   "text": "调成八百呗",
+   "at_after_eou": 1.21
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.737,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv05",
+   "text": "改到八百吧"
+  },
+  {
+   "state": "tts",
+   "offset": 0.28,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv05",
+   "text": "调成八百呗"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.567
+ },
+ "step_latencies": [
+  0.567,
+  4.229
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 1.059,
+  "gain_db": -4.0,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": 3000,
+    "from_cur": "CNY",
+    "to_cur": "USD"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "工资卡",
+    "to_acct": "储蓄卡",
+    "amount": 3000
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GEf87e3e": {
+   "amount": 3000,
+   "from_cur": "CNY",
+   "to_cur": "USD"
+  },
+  "transfer_funds#TRffbe66": {
+   "from_acct": "工资卡",
+   "to_acct": "储蓄卡",
+   "amount": 3000
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv05"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

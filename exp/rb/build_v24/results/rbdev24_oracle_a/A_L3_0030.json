@@ -1,0 +1,87 @@
+{
+ "id": "A_L3_0030",
+ "layer": "L3",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 4.707,
+ "U": 0.7855,
+ "U_sens": {
+  "0.5": 0.7855,
+  "1.0": 0.7855,
+  "2.0": 0.7855
+ },
+ "rev_adopted": true,
+ "intruder_present": null,
+ "bystander_kind": null,
+ "aborted_ops": 0,
+ "comp_calls": 0,
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 9.165,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_rentals",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "book_viewing",
+     "op_id": 3
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 14.213,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "slot": "Saturday morning"
+     }
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   10.165,
+   "好的，马上办。"
+  ],
+  [
+   15.213,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   8.525,
+   "user"
+  ],
+  [
+   9.298,
+   13.573,
+   "user"
+  ]
+ ]
+}

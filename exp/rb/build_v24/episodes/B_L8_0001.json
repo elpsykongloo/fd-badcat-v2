@@ -1,0 +1,90 @@
+{
+ "id": "B_L8_0001",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "five thousand",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "slots_final": {
+  "amount": "five thousand",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "amount": 5000,
+  "from_cur": "USD",
+  "to_cur": "JPY",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "l8_action": "cancel",
+ "cancelled": true,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "I'd like a quote for five thousand dollars to yen followed by a transfer of five thousand from checking to rent account.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Actually, stop what you're doing, don't go ahead.",
+   "at_after_eou": 1.112
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.646,
+   "action": "cancel",
+   "role": "user",
+   "voice": "cv09",
+   "text": "Actually, never mind, just cancel that for now."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.519
+ },
+ "step_latencies": [
+  0.519,
+  2.055
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 1.047,
+  "gain_db": -5.6,
+  "snr_db": 15.1
+ },
+ "gold_calls": [],
+ "gold_state": {},
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv05"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

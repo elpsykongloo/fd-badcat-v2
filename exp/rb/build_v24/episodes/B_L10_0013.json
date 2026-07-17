@@ -1,0 +1,124 @@
+{
+ "id": "B_L10_0013",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "five thousand",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "slots_final": {
+  "amount": "five thousand",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "irrelevant",
+  "other": "yen",
+  "slot": "to_cur",
+  "state": "inflight",
+  "frac": 0.585
+ },
+ "slots_canon": {
+  "amount": 5000,
+  "from_cur": "USD",
+  "to_cur": "EUR",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Please provide a quote for five thousand dollars to euros and afterwards transfer five thousand from checking to rent account.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "We're getting takeout, so what do you want to eat?",
+   "at_after_eou": 1.194
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.403,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv08",
+   "text": "For dinner, what are you craving if we order in?"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.331
+ },
+ "step_latencies": [
+  0.331,
+  1.271
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 1.023,
+  "gain_db": 0.7,
+  "snr_db": 19.3
+ },
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": 5000,
+    "from_cur": "USD",
+    "to_cur": "EUR"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "rent account",
+    "amount": 5000
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GE92c872": {
+   "amount": 5000,
+   "from_cur": "USD",
+   "to_cur": "EUR"
+  },
+  "transfer_funds#TR9af39f": {
+   "from_acct": "checking",
+   "to_acct": "rent account",
+   "amount": 5000
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv08"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

@@ -1,0 +1,97 @@
+{
+ "id": "B_L13_0102",
+ "arm": "B",
+ "layer": "L13",
+ "domain": "ecommerce",
+ "lang": "zh",
+ "scenario": "ecom_single",
+ "slots": {
+  "item_id": "A100",
+  "qty": "两"
+ },
+ "slots_final": {
+  "item_id": "A100",
+  "qty": "两"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "command",
+  "other": "C330",
+  "slot": "item_id",
+  "state": "committed",
+  "frac": null
+ },
+ "slots_canon": {
+  "item_id": "A100",
+  "qty": 2
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "zh",
+   "text": "请往购物车添加两件编号A100的商品",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "committed",
+   "offset": 0.733,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv02",
+   "text": "用C330算了"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.382
+ },
+ "step_latencies": [
+  0.382
+ ],
+ "lat_ns": "9d338e70f770:B_L13_fam0012",
+ "scenario_steps": [
+  "add_item"
+ ],
+ "perturb": {
+  "rate": 1.018,
+  "gain_db": -5.5,
+  "snr_db": 20.5
+ },
+ "gold_calls": [
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "A100",
+    "qty": 2
+   }
+  }
+ ],
+ "gold_state": {
+  "add_item#ADb4d66a": {
+   "item_id": "A100",
+   "qty": 2
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv02"
+ },
+ "pair": {
+  "family": "BF012",
+  "who": "bystander",
+  "state": "committed"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

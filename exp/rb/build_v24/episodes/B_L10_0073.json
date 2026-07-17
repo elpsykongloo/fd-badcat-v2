@@ -1,0 +1,124 @@
+{
+ "id": "B_L10_0073",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "five thousand",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "slots_final": {
+  "amount": "five thousand",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "irrelevant",
+  "other": "yen",
+  "slot": "to_cur",
+  "state": "inflight",
+  "frac": 0.229
+ },
+ "slots_canon": {
+  "amount": 5000,
+  "from_cur": "USD",
+  "to_cur": "EUR",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "Get a quote for five thousand dollars to euros, then transfer five thousand from checking to savings.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "How about we order in tonight, what's your pick for dinner?",
+   "at_after_eou": 1.106
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.103,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv09",
+   "text": "What do you want for dinner? Let's order in."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.462
+ },
+ "step_latencies": [
+  0.462,
+  1.349
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 1.038,
+  "gain_db": -4.4,
+  "snr_db": 16.0
+ },
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": 5000,
+    "from_cur": "USD",
+    "to_cur": "EUR"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "savings",
+    "amount": 5000
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GE82eb88": {
+   "amount": 5000,
+   "from_cur": "USD",
+   "to_cur": "EUR"
+  },
+  "transfer_funds#TR509405": {
+   "from_acct": "checking",
+   "to_acct": "savings",
+   "amount": 5000
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv09"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

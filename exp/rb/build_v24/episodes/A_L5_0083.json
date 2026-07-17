@@ -1,0 +1,146 @@
+{
+ "id": "A_L5_0083",
+ "arm": "A",
+ "layer": "L5",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "广州",
+  "destination": "成都",
+  "date": "六月一号",
+  "seat_class": "二等座",
+  "passenger": "王磊"
+ },
+ "slots_final": {
+  "origin": "广州",
+  "destination": "杭州",
+  "date": "六月一号",
+  "seat_class": "二等座",
+  "passenger": "王磊"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "成都",
+   "new": "杭州",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.659
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "广州",
+  "destination": "杭州",
+  "date": "6月1日",
+  "seat_class": "二等座",
+  "passenger": "王磊"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "zh",
+   "text": "帮我查六月一号从广州到成都的火车票，订二等座，直接买好，乘客是王磊。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "zh",
+   "text": "不对，我要杭州。",
+   "gap_before": 2.659
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.426
+ },
+ "step_latencies": [
+  0.426,
+  0.621,
+  0.518
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.942,
+  "gain_db": -4.4,
+  "snr_db": 18.4
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "广州",
+    "destination": "杭州",
+    "date": "6月1日"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE0c2543",
+    "seat_class": "二等座"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HOb4d261",
+    "passenger": "王磊"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE0c2543": {
+   "origin": "广州",
+   "destination": "杭州",
+   "date": "6月1日"
+  },
+  "hold_seat#HOb4d261": {
+   "train_id": "SE0c2543",
+   "seat_class": "二等座"
+  },
+  "purchase_ticket#PU57f35f": {
+   "hold_id": "HOb4d261",
+   "passenger": "王磊"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv08"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.653,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 11.312,
+   "t_end": 12.586,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  2.659
+ ]
+}

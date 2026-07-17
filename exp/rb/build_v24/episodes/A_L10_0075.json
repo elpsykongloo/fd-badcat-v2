@@ -1,0 +1,141 @@
+{
+ "id": "A_L10_0075",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "广州",
+  "destination": "成都",
+  "date": "五月八号",
+  "seat_class": "商务座",
+  "passenger": "王磊"
+ },
+ "slots_final": {
+  "origin": "广州",
+  "destination": "成都",
+  "date": "五月八号",
+  "seat_class": "商务座",
+  "passenger": "王磊"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "command",
+  "other": "五月三号",
+  "slot": "date",
+  "state": "inflight",
+  "frac": 0.689
+ },
+ "slots_canon": {
+  "origin": "广州",
+  "destination": "成都",
+  "date": "5月8日",
+  "seat_class": "商务座",
+  "passenger": "王磊"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "查一下五月八号从广州到成都的火车，我要订商务座，然后直接付款，乘客写王磊。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv09",
+   "lang": "zh",
+   "text": "就五月三号吧",
+   "at_after_eou": 1.102
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.148
+ },
+ "step_latencies": [
+  0.148,
+  0.291,
+  1.107
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.009,
+  "gain_db": -2.6,
+  "snr_db": 24.2
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "广州",
+    "destination": "成都",
+    "date": "5月8日"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE04018c",
+    "seat_class": "商务座"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HOc885f0",
+    "passenger": "王磊"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE04018c": {
+   "origin": "广州",
+   "destination": "成都",
+   "date": "5月8日"
+  },
+  "hold_seat#HOc885f0": {
+   "train_id": "SE04018c",
+   "seat_class": "商务座"
+  },
+  "purchase_ticket#PU772734": {
+   "hold_id": "HOc885f0",
+   "passenger": "王磊"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv09"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.398,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "bystander",
+   "t_start": 9.14,
+   "t_end": 10.329,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

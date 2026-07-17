@@ -1,0 +1,168 @@
+{
+ "id": "A_L6_0031",
+ "arm": "A",
+ "layer": "L6",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Alex Chen"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May third",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "Austin",
+   "new": "Atlanta",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.828
+  },
+  {
+   "slot": "seat_class",
+   "old": "business",
+   "new": "first class",
+   "by": "user",
+   "kind": "second",
+   "gap": 2.717
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May 3",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Can you find a train from Chicago to Austin on May third, hold a business seat, and buy the ticket for Alex Chen?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Actually, let's go with Atlanta",
+   "gap_before": 0.828
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Actually, another adjustment: first class.",
+   "gap_before": 2.717
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.335
+ },
+ "step_latencies": [
+  0.335,
+  0.624,
+  1.798
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.991,
+  "gain_db": -3.7,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Chicago",
+    "destination": "Atlanta",
+    "date": "May 3"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEff7491",
+    "seat_class": "first class"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO996e02",
+    "passenger": "Alex Chen"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEff7491": {
+   "origin": "Chicago",
+   "destination": "Atlanta",
+   "date": "May 3"
+  },
+  "hold_seat#HO996e02": {
+   "train_id": "SEff7491",
+   "seat_class": "first class"
+  },
+  "purchase_ticket#PU781609": {
+   "hold_id": "HO996e02",
+   "passenger": "Alex Chen"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv03"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 9.461,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 10.289,
+   "t_end": 12.953,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 15.67,
+   "t_end": 19.141,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.828,
+  2.717
+ ]
+}

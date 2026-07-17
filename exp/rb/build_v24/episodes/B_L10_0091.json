@@ -1,0 +1,135 @@
+{
+ "id": "B_L10_0091",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Boston",
+  "destination": "Austin",
+  "date": "June first",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
+ "slots_final": {
+  "origin": "Boston",
+  "destination": "Austin",
+  "date": "June first",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "irrelevant",
+  "other": "coach",
+  "slot": "seat_class",
+  "state": "inflight",
+  "frac": 0.317
+ },
+ "slots_canon": {
+  "origin": "Boston",
+  "destination": "Austin",
+  "date": "June 1",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Can you find a train from Boston to Austin on June first, hold a business seat, and buy the ticket for Sam Rivera?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "How about we order in tonight, what's your pick for dinner?",
+   "at_after_eou": 1.259
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.324,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv03",
+   "text": "Let's order something in, what do you want for dinner?"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.816
+ },
+ "step_latencies": [
+  0.816,
+  0.725,
+  5.27
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.957,
+  "gain_db": 0.5,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Boston",
+    "destination": "Austin",
+    "date": "June 1"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE235b2f",
+    "seat_class": "business"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HOfa25b7",
+    "passenger": "Sam Rivera"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE235b2f": {
+   "origin": "Boston",
+   "destination": "Austin",
+   "date": "June 1"
+  },
+  "hold_seat#HOfa25b7": {
+   "train_id": "SE235b2f",
+   "seat_class": "business"
+  },
+  "purchase_ticket#PU416432": {
+   "hold_id": "HOfa25b7",
+   "passenger": "Sam Rivera"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv03"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

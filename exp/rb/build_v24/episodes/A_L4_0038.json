@@ -1,0 +1,130 @@
+{
+ "id": "A_L4_0038",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Miami",
+  "beds": "one-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Saturday morning"
+ },
+ "slots_final": {
+  "city": "Denver",
+  "beds": "one-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Saturday morning"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "Miami",
+   "new": "Denver",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.761
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Denver",
+  "beds": 1,
+  "max_rent": 2000,
+  "slot": "Saturday morning"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Can you find a one-bedroom in Miami for less than two thousand and schedule a viewing at Saturday morning?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Denver rather than Miami.",
+   "gap_before": 0.761
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.427
+ },
+ "step_latencies": [
+  0.427,
+  3.473
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 0.972,
+  "gain_db": -4.8,
+  "snr_db": 19.4
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Denver",
+    "beds": 1,
+    "max_rent": 2000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE1b8887",
+    "slot": "Saturday morning"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE1b8887": {
+   "city": "Denver",
+   "beds": 1,
+   "max_rent": 2000
+  },
+  "book_viewing#BObe9862": {
+   "listing_id": "SE1b8887",
+   "slot": "Saturday morning"
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv07"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.401,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 9.162,
+   "t_end": 10.808,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.761
+ ]
+}

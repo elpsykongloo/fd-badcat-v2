@@ -1,0 +1,119 @@
+{
+ "id": "B_L6_0028",
+ "layer": "L6",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.694,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "rev_adopted": true,
+ "intruder_present": null,
+ "bystander_kind": null,
+ "aborted_ops": 0,
+ "comp_calls": 0,
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 9.688,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 16.489,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "query": "running shoes"
+     }
+    },
+    {
+     "type": "cancel",
+     "op_id": 3
+    }
+   ],
+   "say": "Updating that to running shoes and removing the previous item."
+  },
+  {
+   "i": 2,
+   "t_eou": 25.049,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 4
+    }
+   ],
+   "say": "Updating to running shoes and adding one item to the cart."
+  }
+ ],
+ "say_events": [
+  [
+   10.688,
+   "I'm on it."
+  ],
+  [
+   17.489,
+   "Updating that to running shoes and removing the previous item."
+  ],
+  [
+   26.049,
+   "Updating to running shoes and adding one item to the cart."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   9.048,
+   "user"
+  ],
+  [
+   10.688,
+   15.849,
+   "user"
+  ],
+  [
+   19.812,
+   24.409,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   1.64,
+   3.963
+  ]
+ }
+}

@@ -1,0 +1,118 @@
+{
+ "id": "A_L12_0028",
+ "arm": "A",
+ "layer": "L12",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_multi",
+ "slots": {
+  "query": "thermos bottle",
+  "item_id": "A100"
+ },
+ "slots_final": {
+  "query": "thermos bottle",
+  "item_id": "B205"
+ },
+ "revisions": [
+  {
+   "slot": "item_id",
+   "old": "A100",
+   "new": "B205",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.187
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "thermos bottle",
+  "item_id": "B205"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Search for thermos bottle, and check whether item A100 is in stock.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Make it, make it, Hold up, change it to B205",
+   "gap_before": 1.187
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 1.604
+ },
+ "step_latencies": [
+  1.604,
+  0.595
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "check_stock"
+ ],
+ "perturb": {
+  "rate": 1.004,
+  "gain_db": 1.2,
+  "snr_db": 16.3
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "thermos bottle"
+   }
+  },
+  {
+   "fn": "check_stock",
+   "args": {
+    "item_id": "B205"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE660607": {
+   "query": "thermos bottle"
+  },
+  "check_stock#CH7b9636": {
+   "item_id": "B205"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv02"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 5.52,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 6.707,
+   "t_end": 14.117,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  1.187
+ ]
+}

@@ -19,14 +19,48 @@ per-piece [t_start, t_end] — the build-time ground truth for binning."""
 from __future__ import annotations
 
 import array
+from contextlib import contextmanager
 import hashlib
 import json
 import math
+import os
+import threading
 import wave
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 SR = 16000
 HOLD_S = 0.64
+
+
+def episode_tts_requests(episodes, include_events=False):
+    """Return TTS request dictionaries in deterministic episode order.
+
+    Build-time audio is assembled serially so cue placement and WAV bytes stay
+    independent of request completion order.  The expensive synthesis itself
+    can be prewarmed concurrently through :meth:`QwenTTSBackend.prewarm`.
+    Arm-B callers set ``include_events=True`` because its reactive turns are
+    rendered on demand rather than baked into its episode WAVs.
+    """
+    requests = []
+    for episode in episodes:
+        lang_default = episode.get("lang") or "zh"
+        for piece in episode.get("pieces", []):
+            text = piece.get("text")
+            if text:
+                requests.append({"text": text,
+                                 "voice": piece.get("voice") or "cv01",
+                                 "lang": piece.get("lang") or lang_default,
+                                 "rate": piece.get("rate", 1.0)})
+        if include_events:
+            for event in episode.get("events", []):
+                text = event.get("text")
+                if text:
+                    requests.append({"text": text,
+                                     "voice": event.get("voice") or "cv01",
+                                     "lang": event.get("lang") or lang_default,
+                                     "rate": event.get("rate", 1.0)})
+    return requests
 
 
 class TTSBackend:
@@ -55,7 +89,10 @@ class QwenTTSBackend(TTSBackend):
     --language Chinese|English --output <wav>`, caches OUT OF REPO
     (env RB_TTS_CACHE, default /root/autodl-tmp/rb_tts_cache), resamples to
     16k mono PCM16. Deterministic per (text, preset, lang, rate) — the cache
-    key IS the reproducibility unit; a rebuilt cache re-synthesizes.
+    key IS the reproducibility unit; a rebuilt cache re-synthesizes.  The
+    ``prewarm`` API deduplicates keys and sends isolated local requests in
+    parallel; per-key thread and file locks make cache publication safe across
+    workers and processes.
 
     VOICE_MAP: cv01..cv09 -> CustomVoice preset names, loaded from
     exp/rb/tts_voices.json when present ({"cv01": "Vivian", ...}). Fallback
@@ -64,6 +101,8 @@ class QwenTTSBackend(TTSBackend):
 
     LANG = {"zh": "Chinese", "en": "English"}
     FALLBACK = {"zh": "Vivian", "en": "Ryan"}
+    _CACHE_LOCKS = {}
+    _CACHE_LOCKS_GUARD = threading.Lock()
 
     def __init__(self, tts_dir=None, cache_dir=None,
                  voice_map_path="exp/rb/tts_voices.json"):
@@ -76,29 +115,146 @@ class QwenTTSBackend(TTSBackend):
         p = Path(voice_map_path)
         self.voice_map = json.loads(p.read_text()) if p.exists() else {}
         self.voice_map_complete = len(self.voice_map) >= 9
+        # Set by the build after a successful parallel prewarm.  A cache miss
+        # during serial assembly is then a coverage bug, not a quiet fallback
+        # to one-at-a-time synthesis.
+        self.cache_only = False
 
     def _preset(self, voice, lang):
         return self.voice_map.get(voice) or self.FALLBACK[lang]
 
-    def synthesize(self, text, voice, lang, rate=1.0):
-        import subprocess
-        import soundfile as sf
+    def cache_entry(self, text, voice, lang, rate=1.0):
+        """Return ``(key, preset, wav_path)`` for a synthesis request."""
+        if lang not in self.LANG:
+            raise ValueError(f"unsupported Qwen TTS language: {lang!r}")
         preset = self._preset(voice, lang)
         key = hashlib.sha256(
             f"{text}|{preset}|{lang}|{rate}".encode()).hexdigest()[:24]
-        wav = self.cache / f"{key}.wav"
-        if not wav.exists():
-            tmp = wav.with_suffix(".tmp.wav")
-            cmd = [str(self.dir / ".venv/bin/python"),
-                   str(self.dir / "scripts/synthesize.py"),
-                   "--text", text, "--voice", preset,
-                   "--language", self.LANG[lang], "--output", str(tmp)]
-            r = subprocess.run(cmd, cwd=str(self.dir), capture_output=True,
-                               text=True, timeout=300)
-            if r.returncode != 0 or not tmp.exists():
-                raise RuntimeError(f"qwen3-tts failed for [{preset}/{lang}]: "
-                                   f"{r.stderr[-400:]}")
-            tmp.replace(wav)
+        return key, preset, self.cache / f"{key}.wav"
+
+    @classmethod
+    def _thread_lock(cls, wav):
+        """One in-process mutex per cache key (the file lock covers peers)."""
+        with cls._CACHE_LOCKS_GUARD:
+            return cls._CACHE_LOCKS.setdefault(str(wav), threading.Lock())
+
+    @contextmanager
+    def _cache_guard(self, wav):
+        """Serialize writers for one cache key across threads and processes."""
+        with self._thread_lock(wav):
+            lock_path = wav.with_suffix(wav.suffix + ".lock")
+            with lock_path.open("a+") as lock_file:
+                try:
+                    import fcntl
+                except ImportError:  # pragma: no cover - RB runs on Linux
+                    fcntl = None
+                if fcntl is not None:
+                    fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX)
+                try:
+                    yield
+                finally:
+                    if fcntl is not None:
+                        fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
+
+    def _synthesize_to_path(self, text, preset, lang, tmp):
+        """Issue one isolated HTTP synthesis through the existing CLI shim."""
+        import subprocess
+        cmd = [str(self.dir / ".venv/bin/python"),
+               str(self.dir / "scripts/synthesize.py"),
+               "--text", text, "--voice", preset,
+               "--language", self.LANG[lang], "--output", str(tmp)]
+        r = subprocess.run(cmd, cwd=str(self.dir), capture_output=True,
+                           text=True, timeout=300)
+        if r.returncode != 0 or not tmp.exists():
+            raise RuntimeError(f"qwen3-tts failed for [{preset}/{lang}]: "
+                               f"{r.stderr[-400:]}")
+
+    def _ensure_wav(self, text, voice, lang, rate=1.0):
+        """Ensure one atomically published cache WAV; return ``(path, hit)``."""
+        _key, preset, wav = self.cache_entry(text, voice, lang, rate)
+        if wav.exists():
+            return wav, True
+        if self.cache_only:
+            raise RuntimeError(f"Qwen TTS cache miss after prewarm: {wav.name}")
+        with self._cache_guard(wav):
+            if wav.exists():
+                return wav, True
+            # A unique temporary path prevents a second process from ever
+            # clobbering this writer's output before the atomic replace.
+            tmp = wav.with_name(
+                f".{wav.stem}.{os.getpid()}.{threading.get_ident()}.tmp.wav")
+            try:
+                self._synthesize_to_path(text, preset, lang, tmp)
+                if not tmp.exists():
+                    raise RuntimeError(f"qwen3-tts produced no WAV: {wav.name}")
+                tmp.replace(wav)
+            finally:
+                tmp.unlink(missing_ok=True)
+        return wav, False
+
+    def prewarm(self, requests, workers=16):
+        """Concurrently synthesize each distinct cache key exactly once.
+
+        ``requests`` is an iterable of dictionaries with ``text``, ``voice``,
+        ``lang`` and optional ``rate``.  Submission order is deterministic;
+        completion order is intentionally irrelevant because each task writes
+        a distinct atomic cache object.  The returned counts are suitable for
+        the P2 receipt and distinguish pre-existing hits from actual synthesis.
+        """
+        if workers < 1:
+            raise ValueError("TTS workers must be >= 1")
+        unique = {}
+        requested = 0
+        for request in requests:
+            requested += 1
+            try:
+                text = request["text"]
+                voice = request.get("voice") or "cv01"
+                lang = request["lang"]
+                rate = request.get("rate", 1.0)
+            except (AttributeError, KeyError) as exc:
+                raise ValueError(f"invalid TTS prewarm request: {request!r}") from exc
+            _key, _preset, wav = self.cache_entry(text, voice, lang, rate)
+            unique.setdefault(str(wav), (text, voice, lang, rate, wav))
+
+        entries = list(unique.values())
+        pending = [entry for entry in entries if not entry[4].exists()]
+        initial_hits = len(entries) - len(pending)
+        synthesized = 0
+        raced_hits = 0
+        errors = []
+        if pending:
+            used_workers = min(workers, len(pending))
+            with ThreadPoolExecutor(max_workers=used_workers,
+                                    thread_name_prefix="rb-tts") as pool:
+                futures = {
+                    pool.submit(self._ensure_wav, text, voice, lang, rate): wav
+                    for text, voice, lang, rate, wav in pending
+                }
+                for future in as_completed(futures):
+                    wav = futures[future]
+                    try:
+                        _path, hit = future.result()
+                    except Exception as exc:  # preserve every independent failure
+                        errors.append(f"{wav.name}: {exc}")
+                    else:
+                        if hit:
+                            raced_hits += 1
+                        else:
+                            synthesized += 1
+            if errors:
+                excerpt = "\n".join(errors[:4])
+                raise RuntimeError(f"Qwen TTS prewarm failed ({len(errors)} keys):\n{excerpt}")
+        else:
+            used_workers = 0
+        return {"requested": requested, "unique": len(entries),
+                "initial_cache_hits": initial_hits, "cache_misses": len(pending),
+                "synthesized": synthesized, "raced_cache_hits": raced_hits,
+                "workers_requested": workers, "workers_used": used_workers}
+
+    def synthesize(self, text, voice, lang, rate=1.0):
+        import soundfile as sf
+        wav, _hit = self._ensure_wav(text, voice, lang, rate)
         a, sr = sf.read(str(wav), dtype="float32")
         if a.ndim == 2:
             a = a.mean(axis=1)

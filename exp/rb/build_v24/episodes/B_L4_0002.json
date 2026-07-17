@@ -1,0 +1,115 @@
+{
+ "id": "B_L4_0002",
+ "arm": "B",
+ "layer": "L4",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "成都",
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周六上午"
+ },
+ "slots_final": {
+  "city": "杭州",
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周六上午"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "成都",
+   "new": "杭州",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.696
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "杭州",
+  "beds": 1,
+  "max_rent": 8000,
+  "slot": "周六上午"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "zh",
+   "text": "我想在成都找一居的，租金最多八千，然后约周六上午看房可以吗？",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.254,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv05",
+   "text": "杭州，不是成都。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.848
+ },
+ "step_latencies": [
+  0.848,
+  2.671
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 0.995,
+  "gain_db": 0.7,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "杭州",
+    "beds": 1,
+    "max_rent": 8000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SEb69850",
+    "slot": "周六上午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEb69850": {
+   "city": "杭州",
+   "beds": 1,
+   "max_rent": 8000
+  },
+  "book_viewing#BOb014d0": {
+   "listing_id": "SEb69850",
+   "slot": "周六上午"
+  }
+ },
+ "voices": {
+  "user": "cv05",
+  "bystander": "cv09"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770"
+}

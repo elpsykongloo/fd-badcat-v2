@@ -1,0 +1,130 @@
+{
+ "id": "A_L5_0054",
+ "arm": "A",
+ "layer": "L5",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "成都",
+  "beds": "一居",
+  "max_rent": "六千",
+  "slot": "周六上午"
+ },
+ "slots_final": {
+  "city": "成都",
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周六上午"
+ },
+ "revisions": [
+  {
+   "slot": "max_rent",
+   "old": "六千",
+   "new": "八千",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.611
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "成都",
+  "beds": 1,
+  "max_rent": 8000,
+  "slot": "周六上午"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "zh",
+   "text": "我想在成都找一居的，租金最多六千，然后约周六上午看房可以吗？",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "zh",
+   "text": "慢着，改成八千。",
+   "gap_before": 2.611
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.387
+ },
+ "step_latencies": [
+  0.387,
+  3.408
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 0.988,
+  "gain_db": -3.0,
+  "snr_db": 21.8
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "成都",
+    "beds": 1,
+    "max_rent": 8000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE97598a",
+    "slot": "周六上午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE97598a": {
+   "city": "成都",
+   "beds": 1,
+   "max_rent": 8000
+  },
+  "book_viewing#BO8a214b": {
+   "listing_id": "SE97598a",
+   "slot": "周六上午"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv07"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.978,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 9.589,
+   "t_end": 11.532,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  2.611
+ ]
+}

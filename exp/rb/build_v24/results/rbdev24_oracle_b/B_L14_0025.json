@@ -1,0 +1,110 @@
+{
+ "id": "B_L14_0025",
+ "layer": "L14",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 2.0,
+ "done_s": 5.028,
+ "U": 0.6727,
+ "U_sens": {
+  "0.5": 0.7227,
+  "1.0": 0.6727,
+  "2.0": 0.5727
+ },
+ "rev_adopted": true,
+ "intruder_present": null,
+ "bystander_kind": null,
+ "aborted_ops": 0,
+ "comp_calls": 1,
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.24,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "schedule_payment",
+     "op_id": 2
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 13.249,
+   "ops": [],
+   "say": ""
+  },
+  {
+   "i": 2,
+   "t_eou": 20.025,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "unschedule_payment",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "schedule_payment",
+     "op_id": 4
+    },
+    {
+     "type": "abort",
+     "op_id": "X2",
+     "target": "SC9e54b7",
+     "ok": false,
+     "error": "already completed - compensate"
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   7.24,
+   "好的，马上办。"
+  ],
+  [
+   21.025,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.6,
+   "user"
+  ],
+  [
+   9.534,
+   12.609,
+   "user"
+  ],
+  [
+   15.41,
+   19.385,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   3.934,
+   2.801
+  ]
+ }
+}

@@ -1,0 +1,93 @@
+{
+ "id": "B_L13_0113",
+ "layer": "L13",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.421,
+ "U": 0.8391,
+ "U_sens": {
+  "0.5": 0.8391,
+  "1.0": 0.8391,
+  "2.0": 0.8391
+ },
+ "rev_adopted": true,
+ "intruder_present": null,
+ "bystander_kind": null,
+ "aborted_ops": 0,
+ "comp_calls": 0,
+ "pair": {
+  "family": "BF014",
+  "who": "user",
+  "state": "inflight"
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 4.47,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "save_listing",
+     "op_id": 2
+    }
+   ],
+   "say": "Saving listing LST12 for you."
+  },
+  {
+   "i": 1,
+   "t_eou": 11.051,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "listing_id": "LST47"
+     }
+    }
+   ],
+   "say": "Updating that to LST47."
+  }
+ ],
+ "say_events": [
+  [
+   5.47,
+   "Saving listing LST12 for you."
+  ],
+  [
+   12.051,
+   "Updating that to LST47."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   3.83,
+   "user"
+  ],
+  [
+   5.583,
+   10.411,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   1.753
+  ]
+ }
+}

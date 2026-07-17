@@ -1,0 +1,103 @@
+{
+ "id": "A_L9_0049",
+ "arm": "A",
+ "layer": "L9",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_payment",
+ "slots": {
+  "payee": "property office",
+  "amount": "eight hundred",
+  "date": "May third"
+ },
+ "slots_final": {
+  "payee": "property office",
+  "amount": "eight hundred",
+  "date": "May third"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "payee": "property office",
+  "amount": 800,
+  "date": "May 3"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Set up a payment for eight hundred to property office on May third.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Any progress?",
+   "at_after_eou": 5.98
+  }
+ ],
+ "events": [],
+ "profile": "heavy",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 8.3
+ },
+ "step_latencies": [
+  8.3
+ ],
+ "scenario_steps": [
+  "schedule_payment"
+ ],
+ "perturb": {
+  "rate": 1.016,
+  "gain_db": 0.5,
+  "snr_db": 21.2
+ },
+ "gold_calls": [
+  {
+   "fn": "schedule_payment",
+   "args": {
+    "payee": "property office",
+    "amount": 800,
+    "date": "May 3"
+   }
+  }
+ ],
+ "gold_state": {
+  "schedule_payment#SC51641d": {
+   "payee": "property office",
+   "amount": 800,
+   "date": "May 3"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv06"
+ },
+ "caps": {
+  "abort_on_cancel": true,
+  "snapshot": "v24"
+ },
+ "split": "test",
+ "config_hash": "9d338e70f770",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 3.886,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 10.506,
+   "t_end": 11.451,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}
