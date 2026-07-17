@@ -6,6 +6,7 @@ rules — user ruling 2026-07-16).
 
   $PY scripts/rb_content_gen.py                # real API -> exp/rb/content_bank.json
   $PY scripts/rb_content_gen.py --workers 100  # bounded concurrent requests
+  $PY scripts/rb_content_gen.py --quiet        # final receipt only (no progress lines)
   $PY scripts/rb_content_gen.py --selftest     # stub generator, no network
 
 Architecture: generation happens OFFLINE, ONCE; the bank is reviewed, then
@@ -321,6 +322,8 @@ def main():
     ap.add_argument("--workers", type=int, default=DEFAULT_WORKERS,
                     help="concurrent isolated DeepSeek requests "
                          "(default: DEEPSEEK_WORKERS or 100)")
+    ap.add_argument("--quiet", action="store_true",
+                    help="suppress per-task progress; retain final receipt")
     ap.add_argument("--selftest", action="store_true")
     args = ap.parse_args()
     if args.selftest:
@@ -328,7 +331,8 @@ def main():
     if args.workers < 1:
         ap.error("--workers must be >= 1")
     clear_proxy_env()
-    bank = build_bank(deepseek_call, workers=args.workers, progress=True)
+    bank = build_bank(deepseek_call, workers=args.workers,
+                      progress=not args.quiet)
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     blob = json.dumps(bank, ensure_ascii=False, indent=1, sort_keys=True)
