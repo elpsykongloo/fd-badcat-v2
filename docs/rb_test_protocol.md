@@ -377,3 +377,65 @@ L7 反窗口夹（7.3 勘误版）是唯一被实证的"超越固定窗口需要
 6. **安全清单确认**（评审 §四采纳）：屏障主张（±barrier 自体消融）、armB L8
    34/0、δ 网格两定律、L1/L2 对齐锚、批二学习头判读（单调性+逐位同一性）
    ——均不依赖上述缺陷。
+
+---
+
+## 九、v2.3 test-911 单发协议（v2，2026-07-17 冻结；在任何 v2.3 test 观测之前写定）
+
+> 前提：v2.3 dev 有效性门 PASS（`exp/rb/build_v23/rb_dev23_receipt.json`：oracle A/B
+> .8704/.8286、新层门 L7 补偿路 4/4 / L11 3/3 / L12 3/3、armB 物理重叠 0）；attr 门已按
+> §16.6 封盘于一轮（不进本批）；**判分器冻结 v4 已立**（`exp/rb/scorer_freeze.json`，
+> `--split test` 运行时自动验哈希；v2.2.1 归档仍由收据内记录的 v3 哈希背书）。
+> 构建钉死：`rb_v2.3.0 / config e1a515c29b8a`（bank `309c7c0d0361…` 已含）、
+> manifest sha `eef243ee…`、dev/test **89/911**（A 546 / B 365）。
+> 单发纪律、收据、停服复放要求 = §一逐字承接；收据名 `rb_test_receipt_v23.json`。
+
+### 9.1 provider 清单与运行序（15 个，各一次）
+
+**臂 A（test 546，`--build exp/rb/build_v23 --split test --input audio`）**：
+
+| # | provider | 命令要点 |
+|---|---|---|
+| 1 | `rbt23_tact_d150` | `--arm A --system tact --delta 1.5`（缓存主本，全新建） |
+| 2 | `rbt23_sblock` | `--arm A --system blocking` |
+| 3 | `rbt23_tact_d150_nobar` | `--commit-barrier off`（种自 #1 副本） |
+| 4–7 | `rbt23_tact_d{000,060,100,200}` | δ 网格（逐个链式接种） |
+| 8 | `rbt23_tact_d150_nodag` | `--dag off` |
+| 9–11 | `rbt23_tact_d150_fc{v1,filler,silent}` | FC 三档（决策应全缓存命中；**臂 A 限定**——臂 B 的 L10/L11 事件锚在 tts_start 上，改 say 策略会结构性改变考题） |
+| 12 | `rbt23_oracle_a` | `--decider oracle --input text` |
+
+**臂 B（test 365，`--tts qwen`，正式跑前仓外预热全部段文本）**：
+13 `rbt23_b_tact_d150`、14 `rbt23_b_sblock`、15 `rbt23_b_oracle`。
+
+**硬有效性门（任何臂 B provider 违反即中止入册，属基础设施级）**：report
+`armb_timing.total_overlaps == 0`。学习头臂不进本批（双基准否定链已闭合，§7.4）；
+attr 臂不进本批（§16.6 封盘）。
+
+### 9.2 冻结判读（复现类 R1–R2、新考场类 R3–R5、既有续读 R6–R8）
+
+- **R1 屏障复现**：L4/L3 配对 on-only 显著（精确二项 p<.05）且 nobar 全量 exact <
+  blocking（v2.2.1"无屏障净负"在修复后基准上复现）。
+- **R2 三定律复现**：δ 网格 exact 弱单调、first50 与 δ 逐位解耦、完成保费 ≈ δ。
+- **R3 补偿经济学（L7 新考场，主读数）**：**H-COMP1** = blocking L7 exact ≥ TACT
+  L7 exact（该层给"早提交"定价；blocking 决到静默从不早提交，预测其免费通过——
+  这是对我方臂的诚实逆风预注册）；**H-COMP2** = TACT 的 reverse 工具调用发生率
+  （v2.2.1 全 32 provider 为 0）——>0 即"LLM 会走补偿路"的第一个证据，=0 则
+  "补偿是能力缺口而非机制缺口"成立，fees/comp_cost 轨首次有非零机会。
+- **R4（L11 TTS 打断，臂 B）**：TACT vs blocking 配对计数 + first/done；方向不预设
+  （single 场景 blocking 也能过 exact，差异预期落在延迟与打断响应，进双工轨）。
+- **R5（L12 归属测量）**：n=36 基线误绑率 = 失败夹中含 wrong-target patch 轨迹证据
+  的比例（逐轨迹审计口径 = §16.6；机制修复已封盘，本读数是论文对该现象的定量刻画）。
+- **R6（armB L8 复现）**：修复后锚（首个非 READ launch）下 TACT-only/blocking-only
+  配对——v2.2.1 34/0 形态是否在真事务在飞窗上复现。
+- **R7（L10 双率）**：描述级照旧（n<30 不进结论句）。
+- **R8（FC talk-over 前沿）**：批一 post-hoc 双工面本批**预注册化**（say 起点
+  talk-over 率 × first50，三档 + blocking 参照；仍为描述性前沿主张，无支配预设）。
+- **H-B1 不再重冻**：v2.3 仍无跨状态孪生对键，预注册 McNemar 依旧不可合法计算；
+  armB 分层只作描述（诚实沿批一 §5.3）。
+- 判读纪律照旧：逐格配对 + 精确二项、n<30 描述级、judge 噪声带 ≤2pt。
+
+### 9.3 观测后流程
+
+判读层写 §十（镜像容器独立重算纪律照批一/批二）；v2.3 主表 + v2.2.1 勘误后可引行
+并置进论文（分箱失效行永不并置）。本批之后 RB v2.3 test 窗口即告耗尽，任何后续
+运行 = 新系统版本单发或 v2.4 版本递增。

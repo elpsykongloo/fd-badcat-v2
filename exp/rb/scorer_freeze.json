@@ -1,45 +1,82 @@
 {
-  "version": 3,
-  "frozen": "2026-07-16",
-  "errata_v1_to_v2": "pre-test construction-validity revision after the dev LLM smoke (no test observation occurred): (1) gold args now carry the CATALOG-DECLARED canonical forms (integers as ints, ISO currency codes, canonical dates) while utterances keep spoken forms \u2014 the dev smoke showed the decider correctly canonicalizes speech (800/USD/2) and verbatim-spoken gold was unmatchable-by-design; (2) canonical_calls compares scalars as strings (int 800 == '800'); (3) benign-L10 control gap now draws the L4 bin \u2014 rescuable by construction, else it cannot separate SV-kill from window loss; (4) rb_v2.2 config_hash 9f8f4ae9edc8.",
-  "oracle_gate": {
-    "A": {
-      "exact": 0.7966,
-      "gate_layers_all_1": [
-        "L1",
-        "L2",
-        "L3",
-        "L4",
-        "L7",
-        "L8",
-        "L9",
-        "L10"
-      ]
-    },
-    "B": {
-      "exact": 0.7273,
-      "gate_layers_all_1": [
-        "L4",
-        "L8",
-        "L9",
-        "L10"
-      ]
-    },
-    "ceiling": {
-      "A": {
-        "L5": 0.4286,
-        "L6": 0.0
-      },
-      "B": {
-        "L5": 0.0909,
-        "L6": 0.0
-      }
-    }
+ "version": 4,
+ "frozen": "2026-07-17",
+ "errata_v1_to_v2": "pre-test construction-validity revision after the dev LLM smoke (no test observation occurred): (1) gold args now carry the CATALOG-DECLARED canonical forms (integers as ints, ISO currency codes, canonical dates) while utterances keep spoken forms — the dev smoke showed the decider correctly canonicalizes speech (800/USD/2) and verbatim-spoken gold was unmatchable-by-design; (2) canonical_calls compares scalars as strings (int 800 == '800'); (3) benign-L10 control gap now draws the L4 bin — rescuable by construction, else it cannot separate SV-kill from window loss; (4) rb_v2.2 config_hash 9f8f4ae9edc8.",
+ "oracle_gate": {
+  "A": {
+   "exact": 0.7966,
+   "gate_layers_all_1": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L7",
+    "L8",
+    "L9",
+    "L10"
+   ]
   },
-  "hashes": {
-    "rb/scorer.py": "34d50c4ab0326f65e8824fbd955732ef9c56d29dfa57f8e97c0915778fc2b41c",
-    "rb/sandbox.py": "833968903e8325154da2196fa65c3e1b52d8afe9a8428f0706eb8ae129a631c5",
-    "rb/registry.py": "419f4db041d94f9fba0db750893b19293ce1343685c3bf7a9a24226f3e58e9bd"
+  "B": {
+   "exact": 0.7273,
+   "gate_layers_all_1": [
+    "L4",
+    "L8",
+    "L9",
+    "L10"
+   ]
   },
-  "errata_v2_to_v3": "second pre-test dev-window revision (no test observation): (1) blocking/immediate commits resolve same-batch 0-based $RESULT refs via a results_by_step base fallback (batch_of was only populated post-apply); (2) RB chain dependency templates injected into DAG_TEMPLATES (hold_seat<-search_trains, purchase_ticket<-hold_seat, add_item<-search_catalog, place_order<-add_item, book_viewing<-search_rentals) \u2014 RB chains previously had no propagation edges; (3) catalog declares string values VERBATIM in the user's language and multiword values whole; seat_class format anchor added; (4) en pools drop leading articles (landlord/property office/university campus/tech park) \u2014 prompt rule 14 strips articles, gold must not carry them. rb_v2.2.1 config_hash 265c7cd8f485."
+  "ceiling": {
+   "A": {
+    "L5": 0.4286,
+    "L6": 0.0
+   },
+   "B": {
+    "L5": 0.0909,
+    "L6": 0.0
+   }
+  }
+ },
+ "hashes": {
+  "rb/scorer.py": "548bed2e12f4b3cd5b8f0cec82107e411f27a63ba4af277930a375d240901204",
+  "rb/sandbox.py": "b0ad0842cec1d8093ddaa6d8d43bd0c2ea64080d2d88aaa8072d5db38ea83205",
+  "rb/registry.py": "b50e8aab689389580d1b5be18e3f0ccb1722615e4503873322870af0267837de"
+ },
+ "errata_v2_to_v3": "second pre-test dev-window revision (no test observation): (1) blocking/immediate commits resolve same-batch 0-based $RESULT refs via a results_by_step base fallback (batch_of was only populated post-apply); (2) RB chain dependency templates injected into DAG_TEMPLATES (hold_seat<-search_trains, purchase_ticket<-hold_seat, add_item<-search_catalog, place_order<-add_item, book_viewing<-search_rentals) — RB chains previously had no propagation edges; (3) catalog declares string values VERBATIM in the user's language and multiword values whole; seat_class format anchor added; (4) en pools drop leading articles (landlord/property office/university campus/tech park) — prompt rule 14 strips articles, gold must not carry them. rb_v2.2.1 config_hash 265c7cd8f485.",
+ "errata_v3_to_v4": "rb_v2.3.0 version increment (external-review remediation, rb_design 15/16; the v2.2.1 test archives remain scored under freeze v3 whose hashes are recorded in their receipts): (1) reverse catalog tools are first-class compensation - a reverse call matching a live forward entry voids it (COMP fee), adds no state entry, and nets out of exact; (2) execution-window state (execute(t) records completes_at) plus an abort() primitive (REV/COMP abortable while executing, fee-free; IRR never); comp_cost exempts aborted_at entries - an abort's price is time, not fees; (3) score_state excludes void ledger entries, agreeing with net_calls (dev23 fix); (4) frozen COMMIT_JUDGE_PROMPT + make_llm_judge so the commitment-repair track can score free-text external systems; (5) SANDBOX_META_KEYS strips runtime bookkeeping from state comparison; (6) sandbox latencies keyed by (episode, fn, occurrence) - interleaving-immune; (7) registry adds REVERSE_OF / REVERSE_TARGET_ARG (pure derivations of the frozen TOOLS table). Build pinned: rb_v2.3.0 config e1a515c29b8a (content bank 309c7c0d0361... included), ids acbb7984b03d, content 2cc261e7e0fd, dev/test 89/911.",
+ "oracle_gate_v23_dev": {
+  "A": {
+   "exact": 0.8704,
+   "gate_layers_all_pass": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L7",
+    "L8",
+    "L9",
+    "L10",
+    "L12"
+   ],
+   "L7_compensation_route": "4/4",
+   "ceiling": {
+    "L5": "7/13",
+    "L6": "3/4"
+   }
+  },
+  "B": {
+   "exact": 0.8286,
+   "gate_layers_all_pass": [
+    "L4",
+    "L9",
+    "L10",
+    "L11"
+   ],
+   "L8": "11/12 (B_L8_0057 = documented fixed-window ceiling: revision speech 1.557s after transactional launch > delta 1.5; stale READ is un-reversible in the net multiset)",
+   "ceiling": {
+    "L5": "4/8",
+    "L6": "1/2"
+   },
+   "timing_overlaps": 0
+  }
+ }
 }
