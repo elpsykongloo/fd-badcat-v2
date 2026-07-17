@@ -19,14 +19,20 @@ Judge discipline (the fdb_pass_judge_strict lessons): proxy env vars cleared,
 temperature 0, max_tokens 512, up to 5 retries per call, HARD FAIL after —
 silent fallback is how the W1/W2 judge numbers went bad. The overlay's own
 sha256 is pinned in scorer freeze v5: changing this file after the freeze is
-a version bump, same as the scorer."""
+a version bump, same as the scorer.  Rows are judged concurrently with
+thread-local SDK clients; the prompt-keyed cache is single-flight and atomically
+persisted, so identical prompts are issued once and completion order cannot
+change the overlay."""
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import hashlib
 import json
 import os
 import sys
+import threading
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -39,6 +45,15 @@ MODEL = "deepseek-v4-flash"
 BASE_URL = "https://api.deepseek.com"
 MAX_TOKENS = 512
 RETRIES = 5
+DEFAULT_WORKERS = int(os.getenv("DEEPSEEK_WORKERS", "100"))
+USER_ID_PREFIX = "fd-badcat-rb-commitjudge"
+
+
+def clear_proxy_env():
+    """The direct DeepSeek endpoint must not inherit the local SOCKS proxy."""
+    for v in ("all_proxy", "ALL_PROXY", "http_proxy", "https_proxy",
+              "HTTP_PROXY", "HTTPS_PROXY"):
+        os.environ.pop(v, None)
 
 
 class JudgeCache:
@@ -46,47 +61,85 @@ class JudgeCache:
         self.path = Path(path)
         self.d = json.loads(self.path.read_text()) if self.path.exists() else {}
         self.hits = self.misses = 0
+        self._lock = threading.Lock()
+        self._inflight = {}
+        self._errors = {}
 
     def key(self, prompt):
         return hashlib.sha256(prompt.encode()).hexdigest()
 
     def call(self, raw_call, prompt):
         k = self.key(prompt)
-        if k in self.d:
-            self.hits += 1
-            return self.d[k]
-        self.misses += 1
-        out = raw_call(prompt)
-        self.d[k] = out
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        tmp = self.path.with_suffix(".tmp")
-        tmp.write_text(json.dumps(self.d, ensure_ascii=False, sort_keys=True))
-        tmp.replace(self.path)
+        with self._lock:
+            if k in self.d:
+                self.hits += 1
+                return self.d[k]
+            ready = self._inflight.get(k)
+            if ready is None:
+                ready = threading.Event()
+                self._inflight[k] = ready
+                self._errors.pop(k, None)
+                self.misses += 1
+                owner = True
+            else:
+                # A duplicate request joins the first one instead of racing a
+                # second API call or a cache-file write.
+                self.hits += 1
+                owner = False
+        if not owner:
+            ready.wait()
+            with self._lock:
+                if k in self.d:
+                    return self.d[k]
+                err = self._errors.get(k, RuntimeError("cache owner failed"))
+            raise RuntimeError(f"judge cache producer failed for {k[:12]}") from err
+
+        try:
+            out = raw_call(prompt)
+            with self._lock:
+                self.d[k] = out
+                self.path.parent.mkdir(parents=True, exist_ok=True)
+                tmp = self.path.with_suffix(".tmp")
+                tmp.write_text(json.dumps(self.d, ensure_ascii=False, sort_keys=True))
+                tmp.replace(self.path)
+        except BaseException as exc:             # wake duplicate waiters too
+            with self._lock:
+                self._errors[k] = exc
+                self._inflight.pop(k, None)
+                ready.set()
+            raise
+        with self._lock:
+            self._inflight.pop(k, None)
+            ready.set()
         return out
 
 
 def deepseek_call(prompt):
     from openai import OpenAI
-    for v in ("all_proxy", "ALL_PROXY", "http_proxy", "https_proxy",
-              "HTTP_PROXY", "HTTPS_PROXY"):
-        os.environ.pop(v, None)
-    client = OpenAI(api_key=os.environ["DEEPSEEK_API_KEY"], base_url=BASE_URL)
+    # A client belongs to this call/worker only.  Do not share a failing
+    # connection across concurrent rows.
+    client = OpenAI(api_key=os.environ["DEEPSEEK_API_KEY"], base_url=BASE_URL,
+                    timeout=120, max_retries=0)
     last = None
-    for _ in range(RETRIES):
+    user_id = f"{USER_ID_PREFIX}-{hashlib.sha256(prompt.encode()).hexdigest()[:16]}"
+    for attempt in range(RETRIES):
         try:
             r = client.chat.completions.create(
                 model=MODEL, temperature=0, max_tokens=MAX_TOKENS,
-                messages=[{"role": "user", "content": prompt}])
+                messages=[{"role": "user", "content": prompt}],
+                extra_body={"user_id": user_id})
             out = r.choices[0].message.content or ""
             if out.strip():
                 return out
             last = "empty content"
         except Exception as e:                      # noqa: BLE001
             last = repr(e)
+        if attempt + 1 < RETRIES:
+            time.sleep(min(4.0, 0.25 * (2 ** attempt)))
     raise RuntimeError(f"commit judge hard-fail after {RETRIES} tries: {last}")
 
 
-def judge_provider(build, provider, layers, cache):
+def judge_provider(build, provider, layers, cache, workers=1):
     resdir = Path(build) / "results" / provider
     epdir = Path(build) / "episodes"
     rows = []
@@ -96,16 +149,34 @@ def judge_provider(build, provider, layers, cache):
             continue
         rows.append(r)
     judge = make_llm_judge(lambda p: cache.call(deepseek_call, p))
-    out_rows = []
-    for r in rows:
+
+    def judge_row(idx, r):
         ep = json.loads((epdir / f"{r['id']}.json").read_text())
         # same spoken+canonical claim forms as the scorer (one source)
         gold_vals, superseded = episode_claim_forms(ep)
         cr = commitment_repair([tuple(s) for s in r.get("say_events", [])],
                                ep["lang"], gold_vals, superseded, judge)
-        out_rows.append({"id": r["id"], "layer": r["layer"],
-                         "arm": r["arm"], "exact": r["exact"],
-                         "marker": r["commit_repair"], "judged": cr})
+        return idx, {"id": r["id"], "layer": r["layer"],
+                     "arm": r["arm"], "exact": r["exact"],
+                     "marker": r["commit_repair"], "judged": cr}
+
+    out_rows = [None] * len(rows)
+    worker_count = max(1, min(int(workers), len(rows))) if rows else 1
+    if worker_count == 1:
+        for idx, r in enumerate(rows):
+            _, out_rows[idx] = judge_row(idx, r)
+    else:
+        with ThreadPoolExecutor(max_workers=worker_count) as pool:
+            futures = {pool.submit(judge_row, idx, r): idx
+                       for idx, r in enumerate(rows)}
+            try:
+                for future in as_completed(futures):
+                    idx, row = future.result()
+                    out_rows[idx] = row
+            except Exception:
+                for future in futures:
+                    future.cancel()
+                raise
     n = len(out_rows)
     agg = {"n": n,
            "episodes_with_commit": sum(1 for x in out_rows
@@ -164,6 +235,25 @@ def selftest():
         # cache file survives a reload
         cache2 = JudgeCache(cache.path)
         ck["cache_persisted"] = cache2.d == cache.d
+        # Concurrent identical prompts must produce one API-style call, with
+        # all duplicate consumers receiving the same cached bytes.
+        concurrent_calls = {"n": 0}
+        concurrent_lock = threading.Lock()
+
+        def slow_stub(_prompt):
+            with concurrent_lock:
+                concurrent_calls["n"] += 1
+            time.sleep(0.02)
+            return '{"commit": false, "repair": false, "claim": ""}'
+
+        concurrent_cache = JudgeCache(Path(td) / "concurrent.json")
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            replies = list(pool.map(
+                lambda _n: concurrent_cache.call(slow_stub, "same-prompt"),
+                range(8)))
+        ck["cache_singleflight_parallel"] = (
+            concurrent_calls["n"] == 1 and concurrent_cache.misses == 1
+            and concurrent_cache.hits == 7 and len(set(replies)) == 1)
     for k, v in ck.items():
         print(f"  selftest {k}: {'PASS' if v else 'FAIL'}")
     print("SELFTEST", "PASS" if all(ck.values()) else "FAIL")
@@ -178,24 +268,31 @@ def main():
                     help="comma list; empty string = all layers")
     ap.add_argument("--judge-cache", default=None,
                     help="default: <build>/commit_judge_cache.json")
+    ap.add_argument("--workers", type=int, default=DEFAULT_WORKERS,
+                    help="concurrent isolated DeepSeek requests "
+                         "(default: DEEPSEEK_WORKERS or 100)")
     ap.add_argument("--selftest", action="store_true")
     args = ap.parse_args()
     if args.selftest:
         return selftest()
     if not args.provider:
         ap.error("need at least one --provider")
+    if args.workers < 1:
+        ap.error("--workers must be >= 1")
+    clear_proxy_env()
     layers = set(x for x in args.layers.split(",") if x) or None
     cache = JudgeCache(args.judge_cache or
                        Path(args.build) / "commit_judge_cache.json")
     for prov in args.provider:
-        out = judge_provider(args.build, prov, layers, cache)
+        out = judge_provider(args.build, prov, layers, cache, args.workers)
         dst = Path(args.build) / f"rb_commitjudge_{prov}.json"
         dst.write_text(json.dumps(out, ensure_ascii=False, indent=1))
         print(f"{prov}: n={out['aggregate']['n']} "
               f"emission={out['aggregate']['commit_emission_rate']} "
               f"wrong={out['aggregate']['wrong_commits']} "
               f"unrepaired={out['aggregate']['unrepaired']} -> {dst}")
-    print(f"judge cache: {cache.hits} hits / {cache.misses} misses")
+    print(f"judge cache: {cache.hits} hits / {cache.misses} misses; "
+          f"workers={args.workers}")
     return 0
 
 

@@ -3,6 +3,7 @@
 
 import argparse
 import json
+import os
 import pathlib
 import sys
 import time
@@ -71,6 +72,9 @@ def load_entries(benchmark, results_dir: pathlib.Path, provider: str):
 
 
 def main():
+    # The upstream FDB helper already creates a thread-local client per worker.
+    # Keep its CLI override, but make concurrent DeepSeek judging the default.
+    os.environ.setdefault("FDB_LLM_WORKERS", os.getenv("DEEPSEEK_WORKERS", "100"))
     parser = argparse.ArgumentParser()
     parser.add_argument("--benchmark", default=str(FDB_DIR / "benchmark_data_v2.json"))
     parser.add_argument("--results-dir", default=str(FDB_DIR / "fdb_v3_data_released"))
@@ -80,6 +84,12 @@ def main():
     parser.add_argument("--judge-max-tokens", type=int, default=1024)
     add_llm_judge_args(parser)
     args = parser.parse_args()
+
+    if (str(args.llm_base_url or "").startswith("https://api.deepseek.com")
+            or str(args.llm_model or "").startswith("deepseek")):
+        for proxy_var in ("all_proxy", "ALL_PROXY", "http_proxy", "https_proxy",
+                          "HTTP_PROXY", "HTTPS_PROXY"):
+            os.environ.pop(proxy_var, None)
 
     configure_judge_from_args(args)
     install_retrying_judge(

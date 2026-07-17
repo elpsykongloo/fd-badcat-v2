@@ -5,12 +5,14 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import importlib.util
 import json
 import os
 import shutil
 import subprocess
 import sys
+import threading
 import time
 from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -43,6 +45,26 @@ REJECTION_DEEPSEEK_CATEGORIES = {
     "others_talk_to_user_after",
 }
 NO_CLEAN_CATEGORIES = {"pause", "others_talk_to_user_before"}
+
+
+class ThreadLocalClient:
+    """Expose an OpenAI-compatible ``chat`` surface with one SDK client/thread.
+
+    The judge executor is intentionally high-concurrency.  A worker-local
+    client prevents a transient connection error or client shutdown in one
+    item from leaking into another item's request state.
+    """
+    def __init__(self, factory):
+        self._factory = factory
+        self._local = threading.local()
+
+    @property
+    def chat(self):
+        client = getattr(self._local, "client", None)
+        if client is None:
+            client = self._factory()
+            self._local.client = client
+        return client.chat
 
 
 def load_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -695,6 +717,8 @@ def call_deepseek(client: Any, system_msg: str, user_msg: str, retries: int = 4)
                     {"role": "system", "content": system_msg},
                     {"role": "user", "content": user_msg},
                 ],
+                extra_body={"user_id": "fd-badcat-humdial-" +
+                            hashlib.sha256(user_msg.encode()).hexdigest()[:16]},
                 stream=False,
             )
             prediction = response.choices[0].message.content.strip().replace("\n", "")
@@ -1274,11 +1298,12 @@ def judge(
         raise RuntimeError("DEEPSEEK_API_KEY is required")
     for proxy_var in ["all_proxy", "ALL_PROXY", "http_proxy", "https_proxy", "HTTP_PROXY", "HTTPS_PROXY"]:
         os.environ.pop(proxy_var, None)
-    client = OpenAI(
+    client = ThreadLocalClient(lambda: OpenAI(
         api_key=api_key,
         base_url=os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com"),
         timeout=float(os.getenv("DEEPSEEK_TIMEOUT", "120")),
-    )
+        max_retries=0,
+    ))
 
     deepseek_results = judge_ready(eval_root, client, workers=workers)
     write_summary(
@@ -1297,7 +1322,7 @@ def main() -> int:
     parser.add_argument("--asr-engine", choices=["fast", "folder"], default=os.getenv("ASR_ENGINE", "fast"))
     parser.add_argument("--asr-device", choices=["cpu", "cuda"], default=os.getenv("ASR_DEVICE", "cpu"))
     parser.add_argument("--asr-batch-size", type=int, default=int(os.getenv("ASR_BATCH_SIZE", "8")))
-    parser.add_argument("--judge-workers", type=int, default=int(os.getenv("DEEPSEEK_WORKERS", "16")))
+    parser.add_argument("--judge-workers", type=int, default=int(os.getenv("DEEPSEEK_WORKERS", "100")))
     parser.add_argument("--incremental-second", action="store_true")
     parser.add_argument("--force-timing", action="store_true")
     parser.add_argument(

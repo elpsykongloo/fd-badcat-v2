@@ -125,7 +125,7 @@ async def main() -> int:
     parser.add_argument("--asr-engine", choices=["fast", "folder"], default=os.getenv("ASR_ENGINE", "fast"))
     parser.add_argument("--asr-device", choices=["cpu", "cuda"], default=os.getenv("ASR_DEVICE", "cpu"))
     parser.add_argument("--asr-batch-size", type=int, default=int(os.getenv("ASR_BATCH_SIZE", "8")))
-    parser.add_argument("--judge-workers", type=int, default=int(os.getenv("DEEPSEEK_WORKERS", "16")))
+    parser.add_argument("--judge-workers", type=int, default=int(os.getenv("DEEPSEEK_WORKERS", "100")))
     parser.add_argument("--poll-interval", type=float, default=20.0)
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--no-judge", action="store_true")
