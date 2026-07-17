@@ -25,7 +25,41 @@ sys.path.insert(0, str(REPO))
 from rb.generator import build_all, manifest, ARM_A_QUOTA, ARM_B_QUOTA  # noqa: E402
 
 
+def audit_templates():
+    """v2.4 build-time hard gate (the L4 erratum's regression net,
+    rb_test_protocol §10.7): every revision template — frozen AND every bank
+    variant — carries {new} EXACTLY once (cancel: zero); value_first also
+    carries {old}; confirm templates stay free of cancel lexemes (the oracle
+    cancel fallback must never misfire on the L14 probe). Returns a list of
+    violations; the build refuses to proceed on any."""
+    import rb.grammar as g
+    bad = []
+    bank = g._BANK or {}
+    for lang in ("zh", "en"):
+        for kind, tpl in g.REV_UTT[lang].items():
+            variants = [tpl] + [v for v in (bank.get("revision", {})
+                                            .get(lang, {}).get(kind, []))
+                                if v != tpl]
+            for v in variants:
+                want = 0 if kind == "cancel" else 1
+                if v.count("{new}") != want:
+                    bad.append(("revision", lang, kind, v))
+                if kind == "value_first" and v.count("{old}") != 1:
+                    bad.append(("revision_old", lang, kind, v))
+        for v in [g.CONFIRM_QUERY[lang]] + list(bank.get("confirm", {})
+                                                .get(lang, [])):
+            if any(tok in v for tok in ("别办", "先别", "hold off")):
+                bad.append(("confirm_cancel_lexeme", lang, "confirm", v))
+    return bad
+
+
 def build(out_dir, audio=None, pause_prior_path=None, quota_a=None, quota_b=None):
+    bad = audit_templates()
+    if bad:
+        for b in bad:
+            print("TEMPLATE AUDIT FAIL:", b)
+        raise SystemExit("template audit failed - refusing to build "
+                         "(regenerate/fix the content bank first)")
     pause_prior = None
     if pause_prior_path and Path(pause_prior_path).exists():
         pause_prior = json.loads(Path(pause_prior_path).read_text())
@@ -103,6 +137,34 @@ def selftest():
     ck["l8_cancel_gold_empty"] = e8c["cancelled"] and e8c["gold_calls"] == []
     eb = make_episode("B", "L8", 0, ch)
     ck["armb_has_events"] = len(eb["events"]) == 1
+    # v2.4: frozen templates alone are clean; a poisoned double-{new} bank
+    # variant IS caught; and with the CURRENTLY installed bank, any
+    # violations are confined to the v2.3 value_first residue (which the
+    # build gate refuses until the v2.4 bank is regenerated).
+    import rb.grammar as _g
+    saved = _g._BANK
+    _g._BANK = None
+    viol_frozen = audit_templates()
+    _g._BANK = {"revision": {"zh": {"default": ["等等，改成{new}。",
+                                               "从{new}换到{new}。"]}}}
+    viol_poison = audit_templates()
+    _g._BANK = saved
+    viol_now = audit_templates()
+    ck["v24_template_audit"] = (
+        viol_frozen == [] and len(viol_poison) == 1
+        and all(v[2] == "value_first" for v in viol_now))
+    # v2.4: L13 octuple structure + stratified split floors survive the build
+    e13 = make_episode("B", "L13", 0, ch)
+    ck["v24_l13_cell"] = (e13["pair"]["who"] == "user"
+                          and e13["pair"]["state"] == "eou"
+                          and e13["pair"]["family"] == "BF000")
+    e13b = make_episode("B", "L13", 4, ch)
+    ck["v24_l13_byst_cell"] = (e13b["pair"]["who"] == "bystander"
+                               and e13b["pair"]["state"] == "eou"
+                               and e13b["revisions"] == []
+                               and bool(e13b["bystander"]["other"]))
+    ck["v24_caps_present"] = all(
+        e.get("caps", {}).get("abort_on_cancel") for e in eps1)
     # sandbox: idempotency + compensation fee
     sb = Sandbox("t1")
     r1 = sb.execute("reserve_hotel", {"city": "杭州", "checkin": "五月三号",

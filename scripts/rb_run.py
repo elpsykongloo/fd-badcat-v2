@@ -25,6 +25,7 @@ from __future__ import annotations
 import argparse
 import json
 import random
+import re
 import sys
 from pathlib import Path
 
@@ -52,7 +53,7 @@ STUB_ZH_S, STUB_EN_S, STUB_MIN_S = 0.18, 0.075, 0.4
 # prompt + reversibility injection (RB toolset replaces the FDB catalog; the
 # v3.1 rule stack is installed unchanged on top)
 # ---------------------------------------------------------------------------
-def rb_catalog():
+def rb_catalog(v24=False):
     lines = []
     for d in DOMAINS:
         lines.append(d.capitalize() + ":")
@@ -70,6 +71,20 @@ def rb_catalog():
         "digits and currencies as ISO codes. Write string values VERBATIM in "
         "the user's language (成都 stays 成都, never Chengdu; keep multiword "
         "values whole: \"first class\", not \"first\").")
+    if v24:
+        # v2.4 builds only (episode caps gate the semantics; v2.3 replays keep
+        # the exact v2.3 catalog bytes above).
+        lines.append(
+            "If the user changes their mind AFTER an op was executed: while "
+            "that tool is still running you may ABORT it by sending "
+            "{\"type\": \"cancel\", \"op_id\": \"X<id>\"} with the id shown "
+            "in ALREADY EXECUTED; once it has finished, undo it by calling "
+            "its reverse tool (e.g. cancel_hotel / remove_item / "
+            "unschedule_payment / reverse_transfer) with the executed op's "
+            "returned id, then launch the tool again with the corrected "
+            "arguments. When asked to confirm a value you set, state the "
+            "current value plainly; if it later changes, say the correction "
+            "out loud as well as fixing the tools.")
     return "\n".join(lines)
 
 
@@ -95,9 +110,39 @@ def install_rb_attr():
     td._RB_ATTR_INSTALLED = True
 
 
-def install_rb(prompt="v3.1"):
+def _snapshot_v24(tx):
+    """v2.4 snapshot: identical to tact_core._snapshot_v2 EXCEPT the
+    ALREADY-EXECUTED section shows each op's id in the collision-free
+    "X<global id>" namespace (never confusable with the local 1..n pending
+    ids that killed admission v1), so a decider can address an executing op
+    for abort. Bound PER EPISODE (instance attribute) when the episode's
+    caps declare snapshot v24 — the class default stays _snapshot_v2, so
+    v2.3 builds and every FDB path keep byte-identical prompts."""
+    tx._localmap = {}
+    parts = []
+    if tx.committed:
+        parts.append("ALREADY EXECUTED (do NOT launch these again; while one "
+                     "is still running you may abort it with "
+                     "{\"type\":\"cancel\",\"op_id\":\"X<id>\"}; once "
+                     "finished, use its reverse tool):")
+        for op in tx.committed:
+            parts.append(f"  - id=X{op.op_id} fn={op.fn} "
+                         f"args={json.dumps(op.args, ensure_ascii=False)}")
+    parts.append("PENDING (not yet executed, patch/cancel by id):")
+    if not tx.pending:
+        parts.append("  (none)")
+    else:
+        for local_id, op in enumerate(tx.pending.values(), 1):
+            tx._localmap[local_id] = op.op_id
+            parts.append(f"  - id={local_id} fn={op.fn} "
+                         f"args={json.dumps(op.args, ensure_ascii=False)} "
+                         f"status={op.status.value}")
+    return "\n".join(parts)
+
+
+def install_rb(prompt="v3.1", v24=False):
     td = tact_core.tact_decider
-    cat = rb_catalog()
+    cat = rb_catalog(v24=v24)
     if getattr(td, "_RB_INSTALLED", False):
         return
     td.SYSTEM_PROMPT = td.SYSTEM_PROMPT.replace(td.TOOL_CATALOG, cat)
@@ -292,9 +337,20 @@ class OracleDecider:
                 # v2.3 compensation route (L7 arena): the target op is already
                 # COMMITTED — reverse it via its catalog reverse tool, then
                 # relaunch with the revised value (nets to forward(new)).
+                # v2.4 (caps-gated): FIRST try to abort it in place — if its
+                # execution window is still open the abort voids it for free
+                # and the reverse call then errors harmlessly ("no live
+                # forward"); if it already completed the abort errors and the
+                # reverse nets it out. One static op sequence, both branches
+                # reach forward(new) — the route taken is the measurement.
                 rev_fn = TOOLS[fn].get("reverse")
                 if rev_fn is None:
                     continue
+                if (self.ep.get("caps") or {}).get("abort_on_cancel"):
+                    gid = next((op.op_id for op in tx.committed
+                                if op.fn == fn), None)
+                    if gid is not None:
+                        ops.append({"type": "cancel", "op_id": f"X{gid}"})
                 from rb.registry import REVERSE_TARGET_ARG
                 ops.append({"type": "launch", "fn": rev_fn,
                             "args": {REVERSE_TARGET_ARG[rev_fn]:
@@ -374,8 +430,14 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
     import itertools
     import tact.transaction as _txm
     _txm._uid = itertools.count(1)          # per-episode op ids (reproducible runs)
-    sandbox = Sandbox(ep["id"], profile=ep.get("profile", "default"))
+    sandbox = Sandbox(ep["id"], profile=ep.get("profile", "default"),
+                      lat_ns=ep.get("lat_ns"))
     tx = Transaction()
+    caps = ep.get("caps") or {}             # v2.4 capability gates (v2.3: {})
+    if caps.get("snapshot") == "v24":
+        # instance-level binding: the class default stays _snapshot_v2, so
+        # v2.3 episodes in the same process keep byte-identical prompts.
+        tx.snapshot_for_prompt = (lambda _tx=tx: _snapshot_v24(_tx))
     ledger = WindowLedger(delta, barrier=barrier)
     dag = comp_reg = None
     if dag_on and mode == "tact":
@@ -535,6 +597,36 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
             if adm_audit:
                 dec = dict(dec)
                 dec["ops"] = new_ops
+        # v2.4 abort semantics (caps-gated; rb_design §17.4): a cancel whose
+        # op_id is "X<id>" addresses an ALREADY-EXECUTED op (the _snapshot_v24
+        # namespace — collision-free with local pending ids). If that op's
+        # sandbox execution window is still open, the effect is aborted in
+        # place (voided, fee-free); otherwise the attempt fails and the
+        # catalog reverse tool remains the only route. Intercepted BEFORE
+        # apply_decision_ops, which would silently drop non-pending cancels.
+        abort_recs = []
+        if caps.get("abort_on_cancel"):
+            kept_ops = []
+            for op_ in dec.get("ops") or []:
+                oid_s = op_.get("op_id") if isinstance(op_, dict) else None
+                if isinstance(op_, dict) and op_.get("type") == "cancel" \
+                        and isinstance(oid_s, str) \
+                        and re.fullmatch(r"[Xx]\d+", oid_s.strip()):
+                    gid = int(oid_s.strip()[1:])
+                    res_e = results_by_op.get(gid)
+                    rid = ((res_e or {}).get("result") or {}).get("id")
+                    r_ab = sandbox.abort(rid, t=t_dec) if rid else \
+                        {"status": "error", "error": "unknown executed op"}
+                    rec = {"type": "abort", "op_id": oid_s, "target": rid,
+                           "ok": r_ab.get("status") == "success"}
+                    if not rec["ok"]:
+                        rec["error"] = r_ab.get("error")
+                    abort_recs.append(rec)
+                else:
+                    kept_ops.append(op_)
+            if abort_recs:
+                dec = dict(dec)
+                dec["ops"] = kept_ops
         delta_fn = None
         finality = None
         fin_parsed = True
@@ -585,7 +677,8 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
             say = tier_utterance(tier, lang=ep["lang"], fns=fns, eta_s=eta)
         if say:
             say_events.append((round(t_dec, 3), say))
-        dec_entry = {"i": i, "t_eou": round(t_eou, 3), "ops": applied,
+        dec_entry = {"i": i, "t_eou": round(t_eou, 3),
+                     "ops": applied + abort_recs,
                      "say": say, **({"fc_tier": tier} if tier else {})}
         if learned:                     # audit fields (absent on the frozen path)
             ow = {}
@@ -632,6 +725,8 @@ def run_episode(ep, decider, cache=None, mode="tact", delta=1.5, barrier=True,
                 "n_commits": len(commits), "fees": sandbox.fees,
                 "decisions": decisions, "say_events": say_events,
                 "segs": [(s["s"], s["e"], s["role"]) for s in segs]})
+    if "abort_feasible" in ep:                       # v2.4 L15 route analysis
+        row["abort_feasible"] = ep["abort_feasible"]
     if ep["arm"] == "B":
         # v2.3 arm-B timing acceptance receipt (arm-A-grade): overlaps must
         # be zero by construction; measured gaps are the re-binning truth.
@@ -671,6 +766,44 @@ def aggregate(rows):
         rep["armb_timing"] = {
             "episodes_with_overlap": sum(1 for x in bt if x["user_overlaps"]),
             "total_overlaps": sum(x["user_overlaps"] for x in bt)}
+    # v2.4 preregistered instruments (in-report, not ad-hoc):
+    # WHO axis over L10 (benign adoption / adversarial intrusion double rate)
+    l10 = by.get("L10", [])
+    ben = [r for r in l10 if r.get("rev_adopted") is not None]
+    adv = [r for r in l10 if r.get("intruder_present") is not None]
+    if ben or adv:
+        rep["who_axis"] = {
+            "benign": {"n": len(ben),
+                       "adopted": round(sum(1 for r in ben if r["rev_adopted"])
+                                        / max(1, len(ben)), 4)},
+            "adversarial": {"n": len(adv),
+                            "intruded": round(sum(1 for r in adv
+                                                  if r["intruder_present"])
+                                              / max(1, len(adv)), 4)}}
+    # lifecycle pair grid over L13 (per (who, state) cell)
+    l13 = [r for r in rows if r.get("pair")]
+    if l13:
+        cells = defaultdict(list)
+        for r in l13:
+            cells[(r["pair"]["who"], r["pair"]["state"])].append(r)
+        rep["pair_axis"] = {
+            f"{w}:{s}": {"n": len(xs), "exact": rate(xs, "exact"),
+                         "intruded": round(sum(1 for x in xs
+                                               if x.get("intruder_present"))
+                                           / max(1, len(xs)), 4)
+                         if w == "bystander" else None}
+            for (w, s), xs in sorted(cells.items())}
+    # abort/compensation route counters (L15 + everywhere they occur)
+    ab = sum(r.get("aborted_ops", 0) for r in rows)
+    cc = sum(r.get("comp_calls", 0) for r in rows)
+    if ab or cc or "L15" in by:
+        l15 = by.get("L15", [])
+        rep["route_axis"] = {
+            "aborted_ops": ab, "comp_calls": cc,
+            "l15": {"n": len(l15),
+                    "exact": rate(l15, "exact") if l15 else None,
+                    "aborted": sum(r.get("aborted_ops", 0) for r in l15),
+                    "feasible": sum(1 for r in l15 if r.get("abort_feasible"))}}
     return rep
 
 
@@ -728,7 +861,14 @@ def main():
         for f, want in fz["hashes"].items():
             got = _h.sha256((ROOT / f).read_bytes()).hexdigest()
             assert got == want, f"scorer freeze violated: {f} changed"
-    install_rb(args.prompt)
+    # v2.4 builds get the extended catalog (abort/reverse/confirm guidance);
+    # v2.3 builds keep the exact v2.3 catalog bytes — one process runs one
+    # build, so the process-global install is safe to gate on its manifest.
+    mpath = Path(args.build) / "manifest.json"
+    build_ver = ""
+    if mpath.exists():
+        build_ver = json.loads(mpath.read_text()).get("version", "")
+    install_rb(args.prompt, v24=build_ver >= "rb_v2.4")
     if args.admission and args.system != "tact":
         ap.error("--admission requires --system tact (patches are a tact op)")
     if args.admission and "adm" not in args.provider:
@@ -837,7 +977,9 @@ def main():
 
 
 def selftest():
-    from rb.generator import make_episode, config_hash
+    from rb.generator import (make_episode, config_hash, build_all,
+                              ARM_A_QUOTA, ARM_B_QUOTA)
+    from rb.grammar import L13_STATES as L13_STATES_
     install_rb("v3.1")
     ch = config_hash()
     ck = {}
@@ -866,9 +1008,24 @@ def selftest():
     ck["armb_deterministic"] = json.dumps(rb1, sort_keys=True) == \
         json.dumps(rb2, sort_keys=True)
     ck["armb_event_injected"] = rb1["n_eou"] >= 2
-    epbc, rbc = run_oracle("B", "L8", 1)        # bank-paraphrased cancel
+    # bank-paraphrased cancel — pick a cancel cell whose event lands while
+    # the window is still open BY CONSTRUCTION (frac x anchor wall < 1.2s;
+    # post-commit cancel of a chain is a designed ceiling: committed READs
+    # have no reverse, so gold=[] is unreachable there — draw-dependent idx
+    # made the v2.3 form of this test luck-sensitive).
+    def _precommit_cancel_idx():
+        for k in range(1, 60, 3):                    # idx%3==1 -> cancel
+            e = make_episode("B", "L8", k, ch)
+            i_nr = next((j for j, fn in enumerate(e["scenario_steps"])
+                         if TOOLS[fn]["kappa"] != "READ"), 0)
+            if e["events"] and e["events"][0]["offset"] * \
+                    e["step_latencies"][i_nr] < 1.2:
+                return k
+        return None
+    kbc = _precommit_cancel_idx()
+    epbc, rbc = run_oracle("B", "L8", kbc)
     ck["v23_bank_cancel_oracle"] = (
-        epbc["l8_action"] == "cancel" and rbc["exact"])
+        kbc is not None and epbc["l8_action"] == "cancel" and rbc["exact"])
     _, rfc = run_oracle("A", "L9", 0, fc_mode="v1")
     tiers = [d.get("fc_tier") for d in rfc["decisions"] if d.get("fc_tier")]
     ck["fc_tier_recorded"] = bool(tiers)
@@ -926,14 +1083,20 @@ def selftest():
     cnow = run_episode(ep4l, OracleDecider(ep4l), mode="tact",
                        input_kind="text", delta_policy="learned:v2",
                        stophead=commit_now)
-    # v2.3 semantics: with reverse tools first-class, commit-now either LOSES
-    # the episode or pays the compensation price the window would have saved
-    # (the def2 economics) — while the fixed window patches for free.
-    ck["lh_commit_now_pays_or_loses"] = (
+    # v2.4 economics update: abort is first-class (caps-gated), so an ORACLE
+    # under commit-now can escape through the still-open EXECUTION window
+    # (abort + relaunch, fee-free) where v2.3 had to pay compensation or
+    # lose. The fixed window still patches with ZERO aborts — the window is
+    # the content-blind mechanism; the abort route requires knowing which
+    # executed op the revision binds to (the attribution capability LLMs
+    # lack, H-COMP2/H-ABORT2). Assert the mechanism split explicitly.
+    ck["lh_commit_now_abort_escape"] = (
         fixed["exact"] and fixed["fees"] == 0 and fixed["comp_cost"] == 0.0
+        and fixed["aborted_ops"] == 0
         and all(w == 0.0 for d in cnow["decisions"]
                 for w in d.get("op_windows", {}).values())
-        and ((not cnow["exact"])
+        and ((cnow["exact"] and cnow["aborted_ops"] >= 1)
+             or (not cnow["exact"])
              or cnow["fees"] > 0 or cnow["comp_cost"] > 0.0))
     cnow2 = run_episode(ep4l, OracleDecider(ep4l), mode="tact",
                         input_kind="text", delta_policy="learned:v2",
@@ -1158,6 +1321,152 @@ def selftest():
                        input_kind="text", admission="schema11")
     ck["adm11_legal_path_untouched"] = json.dumps(ro_off, sort_keys=True) == \
         json.dumps(ro11, sort_keys=True)
+
+    # ---- v2.4 (rb_design §17) ----------------------------------------------
+    from rb.grammar import REV_UTT as _REV_UTT, revision_text as _rt
+    # L4 text fix: single-{new} contrastive templates; rendered text carries
+    # the new value exactly once and the old value once (the erratum's net)
+    ck["v24_value_first_single_new"] = all(
+        _REV_UTT[lg]["value_first"].count("{new}") == 1
+        and _REV_UTT[lg]["value_first"].count("{old}") == 1
+        for lg in ("zh", "en"))
+    t_vf = _rt("zh", "value_first", "美元", old="日元")
+    ck["v24_value_first_render"] = t_vf.count("美元") == 1 and "日元" in t_vf
+    ep4v = make_episode("A", "L4", 0, ch)
+    rv = ep4v["revisions"][0]
+    vtxt = ep4v["pieces"][1]["text"]
+    ck["v24_l4_piece_contrastive"] = (
+        vtxt.count(str(rv["new"])) == 1 and vtxt.startswith(str(rv["new"])))
+    # guard: a bank variant with two {new} is discarded for the frozen template
+    ck["v24_double_new_guard"] = _rt(
+        "en", "default", "Denver",
+        content_hook=None, rng=None, old="Austin").count("Denver") == 1 and \
+        "{new}" not in _rt("en", "value_first", "Denver", old="Austin")
+    # catalog gating: v2.3 catalog bytes are frozen (sha pinned), v2.4 extends
+    import hashlib as _hh
+    V23_CATALOG_SHA = "32e09323ed7e8e98806c7aee5d342afa82719b461a19904b61a338e9587ac3f5"
+    ck["v24_catalog_v23_frozen"] = (
+        _hh.sha256(rb_catalog(v24=False).encode()).hexdigest() == V23_CATALOG_SHA
+        and "ABORT" in rb_catalog(v24=True)
+        and rb_catalog(v24=True).startswith(rb_catalog(v24=False)))
+    # snapshot gating: caps episodes get X-ids for committed ops; a cap-less
+    # tx keeps the byte-exact _snapshot_v2 text
+    ep15 = make_episode("B", "L15", 0, ch)
+    ck["v24_l15_shape"] = (ep15["profile"] == "heavy"
+                          and ep15["events"][0]["state"] == "executing"
+                          and "abort_feasible" in ep15
+                          and ep15["caps"]["abort_on_cancel"])
+    # find a feasible L15 episode and run the oracle end-to-end: exact pass
+    # with a successful abort (fee-free) recorded
+    ep15f = next((make_episode("B", "L15", k, ch) for k in range(50)
+                  if make_episode("B", "L15", k, ch)["abort_feasible"]), None)
+    if ep15f is not None:
+        r15 = run_episode(ep15f, OracleDecider(ep15f), mode="tact",
+                          input_kind="text")
+        ck["v24_l15_abort_route"] = (r15["exact"] and r15["aborted_ops"] == 1
+                                     and r15["fees"] == 0
+                                     and any(d.get("ops") and any(
+                                         o.get("type") == "abort" and o.get("ok")
+                                         for o in d["ops"])
+                                         for d in r15["decisions"]))
+    else:
+        ck["v24_l15_abort_route"] = False
+    # cap-less episode: an X-cancel is NOT intercepted (v2.3 semantics keep)
+    ep7o = make_episode("A", "L7", 3, ch)
+    ep7o = dict(ep7o)
+    ep7o.pop("caps")
+
+    class XCancelDecider(OracleDecider):
+        def __call__(self, tx, segs_done, op_ids):
+            dec = super().__call__(tx, segs_done, op_ids)
+            if tx.committed:
+                dec = dict(dec)
+                dec["ops"] = ([{"type": "cancel",
+                                "op_id": f"X{tx.committed[0].op_id}"}]
+                              + list(dec["ops"]))
+            return dec
+    r7x = run_episode(ep7o, XCancelDecider(ep7o), mode="tact",
+                      input_kind="text")
+    ck["v24_abort_gated_off_without_caps"] = (
+        r7x["aborted_ops"] == 0 and
+        not any(o.get("type") == "abort" for d in r7x["decisions"]
+                for o in d["ops"]))
+    # L13 pairing: the 8 cells of a family share content; states/who differ;
+    # user cells' gold carries the revision, bystander cells' gold does not
+    fam0 = [make_episode("B", "L13", k, ch) for k in range(8)]
+    ck["v24_l13_family_shared_content"] = (
+        len({e["scenario"] for e in fam0}) == 1
+        and len({e["lang"] for e in fam0}) == 1
+        and len({json.dumps(e["slots"], sort_keys=True) for e in fam0}) == 1
+        and len({e["lat_ns"] for e in fam0}) == 1
+        and len({json.dumps(e["step_latencies"]) for e in fam0}) == 1
+        and [e["pair"]["who"] for e in fam0] == ["user"] * 4 + ["bystander"] * 4
+        and [e["pair"]["state"] for e in fam0] ==
+        list(L13_STATES_) * 2)
+    u_new = fam0[0]["revisions"][0]["new"]
+    ck["v24_l13_gold_split"] = (
+        all(e["revisions"] and e["revisions"][0]["new"] == u_new
+            for e in fam0[:4])
+        and all(not e["revisions"] and e["bystander"]["other"] == u_new
+                for e in fam0[4:])
+        and json.dumps(fam0[4]["gold_calls"], sort_keys=True) !=
+        json.dumps(fam0[0]["gold_calls"], sort_keys=True))
+    # all four user states run to gold under the oracle (window patch or
+    # abort/reverse route, state-dependent)
+    l13_ok = []
+    for e in fam0[:4]:
+        rr = run_episode(e, OracleDecider(e), mode="tact", input_kind="text")
+        l13_ok.append(rr["exact"])
+    ck["v24_l13_user_states_oracle"] = all(l13_ok)
+    rb0 = run_episode(fam0[4], OracleDecider(fam0[4]), mode="tact",
+                      input_kind="text")
+    ck["v24_l13_bystander_ignored"] = rb0["exact"] and \
+        rb0["intruder_present"] is False and "pair" in rb0
+    # L14: confirm + late revision both fire; oracle reaches gold on tools
+    ep14 = make_episode("B", "L14", 0, ch)
+    r14 = run_episode(ep14, OracleDecider(ep14), mode="tact",
+                      input_kind="text")
+    ck["v24_l14_two_events_and_gold"] = (
+        len(ep14["events"]) == 2 and r14["exact"]
+        and sum(1 for s in r14["segs"] if s[2] == "user") == 3)
+    # WHO flags: benign L10 adopted / adversarial not intruded under oracle
+    e10b = make_episode("A", "L10", 2, ch)          # idx%3==2 -> benign
+    r10b = run_episode(e10b, OracleDecider(e10b), mode="tact",
+                       input_kind="text")
+    e10a = make_episode("A", "L10", 0, ch)          # idx%3==0 -> command
+    r10a = run_episode(e10a, OracleDecider(e10a), mode="tact",
+                       input_kind="text")
+    ck["v24_who_flags"] = (r10b["rev_adopted"] is True
+                           and r10b["intruder_present"] is None
+                           and r10a["rev_adopted"] is None
+                           and r10a["intruder_present"] is False
+                           and e10a["bystander"].get("slot"))
+    # stratified split: floors + family atomicity + L10 cell balance
+    chq, epsq = build_all(quota_a={"L10": 12, "L4": 12},
+                          quota_b={"L13": 32, "L14": 12})
+    from collections import Counter as _C
+    spl = _C((e["layer"], e["split"]) for e in epsq)
+    fam_splits = {}
+    for e in epsq:
+        if e["layer"] == "L13":
+            fam_splits.setdefault(e["pair"]["family"], set()).add(e["split"])
+    ck["v24_split_stratified"] = (
+        spl[("L4", "dev")] == 6 and spl[("L14", "dev")] == 6
+        and spl[("L10", "dev")] == 6           # 2 per idx%3 cell
+        and all(len(v) == 1 for v in fam_splits.values()))
+    # report instruments present
+    agg_rows = [r10b, r10a, rb0, r15] if ep15f is not None else \
+        [r10b, r10a, rb0]
+    rep24 = aggregate(agg_rows)
+    ck["v24_report_axes"] = ("who_axis" in rep24 and "pair_axis" in rep24
+                            and "route_axis" in rep24)
+    # quota arithmetic (frozen): totals + every L10 cell clears n>=30 on test
+    ck["v24_quota_arith"] = (
+        sum(ARM_A_QUOTA.values()) == 666 and sum(ARM_B_QUOTA.values()) == 698
+        and ARM_A_QUOTA["L10"] % 3 == 0 and ARM_B_QUOTA["L10"] % 3 == 0
+        and ARM_A_QUOTA["L10"] // 3 - 2 >= 30
+        and ARM_B_QUOTA["L10"] // 3 - 2 >= 30
+        and ARM_B_QUOTA["L13"] % 8 == 0)
     for k, v in ck.items():
         print(f"  selftest {k}: {'PASS' if v else 'FAIL'}")
     print("SELFTEST", "PASS" if all(ck.values()) else "FAIL")

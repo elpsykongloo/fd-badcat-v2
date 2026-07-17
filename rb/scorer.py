@@ -15,13 +15,20 @@ constants = the v2.1 numeric freeze).
 
 FROZEN constants (v2.1): GAMMA=0.95/s; W_R=0.25; W_C=0.05;
 C_KAPPA = {READ:1, REV:2, COMP:4, IRR:8}; sensitivity scan x{0.5,1,2} is
-reported alongside, never used for selection."""
+reported alongside, never used for selection.
+
+v2.4 additions (rb_design §17; scorer freeze v5): row-level WHO-axis flags
+(`rev_adopted` = every user revision's canonical new value appears among the
+NET committed call args; `intruder_present` = the bystander's value does),
+route counters (`aborted_ops` / `comp_calls` — the abort-vs-compensate
+economics of L15/L7), and `pair` passthrough (L13 family/who/state) so the
+paired analyses read archived rows, not ad-hoc joins."""
 from __future__ import annotations
 
 import json
 import re
 
-from .registry import TOOLS
+from .registry import TOOLS, canon_value
 from .sandbox import canonical_calls
 
 GAMMA = 0.95
@@ -54,9 +61,17 @@ COMMIT_JUDGE_PROMPT = (
 def make_llm_judge(llm_call):
     """Adapt a raw text-completion callable into the extract_commitments
     llm_judge interface. llm_call(prompt_str) -> str. Deterministic given a
-    deterministic backend (T=0 / cached)."""
+    deterministic backend (T=0 / cached).
+
+    v2.4 fix (freeze v5): render with .replace, NOT .format — the frozen
+    prompt embeds literal JSON braces, so .format always raised KeyError.
+    The v2.3 judge was therefore a latent dead instrument (never exercised
+    by any scored run; no result is affected). Rendered bytes are identical
+    to the v2.3 design intent."""
     def judge(text, lang):
-        raw = llm_call(COMMIT_JUDGE_PROMPT.format(lang=lang, text=text))
+        raw = llm_call(COMMIT_JUDGE_PROMPT
+                       .replace("{lang}", str(lang))
+                       .replace("{text}", str(text)))
         try:
             m = re.search(r"\{.*\}", raw or "", re.S)
             j = json.loads(m.group(0)) if m else None
@@ -173,12 +188,19 @@ def utility(passed, done_s, unrepaired, c_sum, gamma=GAMMA, w_r=W_R, w_c=W_C):
                  - w_r * unrepaired - w_c * c_sum, 4)
 
 
+def _value_in_net_args(slot, value, net):
+    """Exact arg-value match (spoken OR canonical form) over net calls."""
+    forms = {str(value), str(canon_value(slot, value))}
+    return any(str(v) in forms for c in net for v in c["args"].values())
+
+
 def score_episode(episode, sys_calls, live_state, say_events, done_s,
                   llm_judge=None):
     """One-episode scorecard (the runner aggregates)."""
     gold_calls = episode["gold_calls"]
     gold_state = episode["gold_state"]
-    passed = score_exact(net_calls(sys_calls, live_state), gold_calls)
+    net = net_calls(sys_calls, live_state)
+    passed = score_exact(net, gold_calls)
     gold_vals = list(episode["slots_final"].values())
     superseded = [r["old"] for r in episode.get("revisions", []) if r["by"] == "user"]
     if episode.get("bystander"):
@@ -194,4 +216,17 @@ def score_episode(episode, sys_calls, live_state, say_events, done_s,
            "U": utility(passed, done_s, cr["unrepaired"], c_sum),
            "U_sens": {str(m): utility(passed, done_s, cr["unrepaired"], c_sum,
                                       w_r=W_R * m, w_c=W_C * m) for m in SENS}}
+    # v2.4 WHO-axis flags + route counters + pair passthrough (freeze v5).
+    user_revs = [r for r in episode.get("revisions", []) if r["by"] == "user"]
+    row["rev_adopted"] = (all(_value_in_net_args(r["slot"], r["new"], net)
+                              for r in user_revs) if user_revs else None)
+    by = episode.get("bystander")
+    row["intruder_present"] = (_value_in_net_args(by.get("slot", ""),
+                                                  by.get("other"), net)
+                               if by and by.get("other") else None)
+    row["aborted_ops"] = sum(1 for v in live_state.values()
+                             if "aborted_at" in v)
+    row["comp_calls"] = sum(1 for c in sys_calls if c.get("comp"))
+    if episode.get("pair"):
+        row["pair"] = episode["pair"]
     return row

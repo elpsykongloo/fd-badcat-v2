@@ -39,9 +39,13 @@ class Sandbox:
     style envelope {"status","result"}. State keys are '<fn>#<rid>' -> args
     (compensated entries flip 'void': True and add 'fee')."""
 
-    def __init__(self, episode_id, profile="default", seed=0):
+    def __init__(self, episode_id, profile="default", seed=0, lat_ns=None):
         self.episode_id = episode_id
         self.profile = profile
+        # v2.4: lat_ns = latency namespace override (L13 pair families share
+        # one, so the 8 cells of a family see identical tool walls). Result
+        # ids stay episode-keyed — only the latency draws are namespaced.
+        self.lat_id = lat_ns or episode_id
         self.rng = random.Random(f"{episode_id}:{seed}:lat")
         self.state = {}
         self.calls = []            # committed calls in order: {fn, args, rid}
@@ -117,8 +121,9 @@ class Sandbox:
 
     def latency_of_at(self, fn, k):
         """Deterministic per-(fn, occurrence) latency — replayable regardless
-        of interleaving (the streamed rng draw depends on call order)."""
-        r = random.Random(f"{self.episode_id}:{fn}:{k}:lat")
+        of interleaving (the streamed rng draw depends on call order). Keyed
+        by lat_id (= episode_id unless a v2.4 pair family shares one)."""
+        r = random.Random(f"{self.lat_id}:{fn}:{k}:lat")
         cls = "heavy" if self.profile == "heavy" and TOOLS[fn]["kappa"] != "READ" \
             else TOOLS[fn]["latency"]
         mu, sig = LATENCY[cls]
@@ -163,11 +168,11 @@ class Sandbox:
         return {k: v for k, v in self.state.items() if not v.get("void")}
 
 
-def oracle_run(episode_id, steps, slots, profile="default"):
+def oracle_run(episode_id, steps, slots, profile="default", lat_ns=None):
     """Execute a resolved scenario (steps with {slot}/$R refs) against a fresh
     sandbox — used at BUILD time to precompute gold calls / end-state /
     per-step latencies. Returns (gold_calls, gold_state, latencies)."""
-    sb = Sandbox(episode_id, profile=profile)
+    sb = Sandbox(episode_id, profile=profile, lat_ns=lat_ns)
     results, gold_calls, lats = [], [], []
     for st in steps:
         args = {}

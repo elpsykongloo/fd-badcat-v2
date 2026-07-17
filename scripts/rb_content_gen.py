@@ -34,6 +34,7 @@ sys.path.insert(0, str(ROOT))
 
 from rb.registry import SCENARIOS                                # noqa: E402
 from rb.grammar import (REV_UTT, BYSTANDER, PROGRESS_QUERY,      # noqa: E402
+                        CONFIRM_QUERY,
                         DISFLUENCY_FALLBACK, DISFLUENCY_FAMILIES)
 
 MODEL = "deepseek-v4-flash"
@@ -55,15 +56,23 @@ _PLACEHOLDER_RE = re.compile(r"\{[a-z_]+\}")
 
 
 def _placeholders(t):
-    return sorted(set(_PLACEHOLDER_RE.findall(t)))
+    """v2.4: MULTISET of placeholders (sorted list, duplicates kept). The
+    v2.3 set-compare let DeepSeek turn the double-{new} value_first template
+    into contrastive contradictions ("Change that from X to X") — the L4
+    artifact's second root cause (rb_test_protocol §10.7)."""
+    return sorted(_PLACEHOLDER_RE.findall(t))
 
 
 def validate(cand, example, lang):
-    """Template gate: placeholders identical, no stray braces, speakable."""
+    """Template gate: placeholder MULTISET identical, no stray braces,
+    speakable; belt-and-suspenders: at most one {new} ever (a revision
+    utterance carries its value exactly once)."""
     if not isinstance(cand, str) or not cand.strip():
         return None
     c = cand.strip()
     if _placeholders(c) != _placeholders(example):
+        return None
+    if c.count("{new}") > 1:
         return None
     if c.count("{") != len(_PLACEHOLDER_RE.findall(c)) or \
             c.count("}") != c.count("{"):
@@ -114,7 +123,7 @@ def gen_category(call, cat, example, lang, n=N_PER):
 
 def build_bank(call):
     bank = {"revision": {}, "bystander": {}, "progress": {}, "intent": {},
-            "disfluency": {}}
+            "disfluency": {}, "confirm": {}}
     prov = {"model": MODEL, "n_requested": 0, "n_raw": 0, "n_accepted": 0}
 
     def add(dst, key_path, example, lang, cat):
@@ -136,6 +145,9 @@ def build_bank(call):
                 f"a third person speaking near the phone ({kind})")
         add(bank["progress"], (lang,), PROGRESS_QUERY[lang], lang,
             "user asking whether the task is done yet")
+        add(bank["confirm"], (lang,), CONFIRM_QUERY[lang], lang,
+            "user asking the assistant to repeat back what it just set "
+            "(no cancel words, no specific value)")
         for fam in DISFLUENCY_FAMILIES:
             add(bank["disfluency"], (lang, fam),
                 DISFLUENCY_FALLBACK[lang][fam], lang,
@@ -163,10 +175,20 @@ def selftest():
         and validate("好的换成{news}吧。", "等等，改成{new}。", "zh") is None
         and validate("Wait make it {new}.", "等等，改成{new}。", "zh") is None
         and validate("等等，改成{new}。{x}", "等等，改成{new}。", "zh") is None)
+    # v2.4 multiset gate: the L4-killer contrastive rewrite (one {new} in the
+    # example, two in the candidate) is rejected; {old} must survive; and a
+    # double-{new} example can never admit a double-{new} candidate again
+    # (the >1 belt catches it even at multiset parity).
+    ck["validate_multiset_v24"] = (
+        validate("从{new}改成{new}。", "等等，改成{new}。", "zh") is None
+        and validate("{new}才对，不要{old}了。", "{new}，不是{old}。", "zh")
+        is not None
+        and validate("要{new}，别弄{new}的。", "{new}，不是{old}。", "zh") is None
+        and validate("{new}，改回{new}。", "{new}，改成{new}。", "zh") is None)
     bank = build_bank(stub_call)
     ck["bank_shape"] = all(k in bank for k in
                            ("revision", "bystander", "progress", "intent",
-                            "disfluency"))
+                            "disfluency", "confirm"))
     ck["originals_kept"] = bank["revision"]["zh"]["default"][0] == \
         REV_UTT["zh"]["default"]
     for k, v in ck.items():

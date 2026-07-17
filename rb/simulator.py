@@ -13,6 +13,10 @@ fires the episode's event bindings when their lifecycle anchor first occurs:
             ever landed in a transactional
             execution window)
   committed first commit                          seconds after the anchor
+  executing first non-READ COMMIT (v2.4, L15):    FRACTION of THAT tool's wall
+            the event lands INSIDE the sandbox
+            execution window [t, t+wall] —
+            strictly post-window by construction
   tts       first agent audio onset               seconds after the anchor
 
 All offsets were pre-sampled at build time (episode["events"]) — the
@@ -86,35 +90,44 @@ class ReactiveUser:
         return lats[0] if lats else 1.0
 
     def on_event(self, ev):
-        """Feed one engine event; returns newly-scheduled actions."""
+        """Feed one engine event; returns newly-scheduled actions. A commit
+        event may satisfy TWO anchors: `committed` (seconds offset) and — for
+        non-READ tools — `executing` (v2.4: fraction of that tool's wall,
+        landing inside the sandbox execution window)."""
         norm = normalize_event(ev)
         if norm is None:
             return []
         kind, t, extra = norm
-        if kind == "inflight":
+        kinds = [kind]
+        if kind == "committed":
             fn = (extra or {}).get("fn")
-            if fn is not None and \
-                    TOOLS.get(fn, {}).get("kappa") not in INFLIGHT_KAPPAS:
-                return []                    # v2.3: anchor = first COMP/IRR
-        if kind in self.anchors:
-            return []
-        self.anchors[kind] = t
+            if fn is None or TOOLS.get(fn, {}).get("kappa") != "READ":
+                kinds.append("executing")
         out = []
-        keep = []
-        for e in self.pending:
-            if e["state"] != kind:
-                keep.append(e)
+        for k in kinds:
+            if k == "inflight":
+                fn = (extra or {}).get("fn")
+                if fn is not None and \
+                        TOOLS.get(fn, {}).get("kappa") not in INFLIGHT_KAPPAS:
+                    continue                 # v2.3: anchor = first COMP/IRR
+            if k in self.anchors:
                 continue
-            if kind == "inflight":
-                wall = self._wall_of((extra or {}).get("fn"))
-                at = t + float(e["offset"]) * float(wall)
-            else:
-                at = t + float(e["offset"])
-            out.append({"at": round(at, 3),
-                        "piece": {"role": e["role"], "voice": e["voice"],
-                                  "lang": self.episode["lang"],
-                                  "text": e["text"], "action": e["action"]}})
-        self.pending = keep
+            self.anchors[k] = t
+            keep = []
+            for e in self.pending:
+                if e["state"] != k:
+                    keep.append(e)
+                    continue
+                if k in ("inflight", "executing"):
+                    wall = self._wall_of((extra or {}).get("fn"))
+                    at = t + float(e["offset"]) * float(wall)
+                else:
+                    at = t + float(e["offset"])
+                out.append({"at": round(at, 3),
+                            "piece": {"role": e["role"], "voice": e["voice"],
+                                      "lang": self.episode["lang"],
+                                      "text": e["text"], "action": e["action"]}})
+            self.pending = keep
         self.fired.extend(out)
         return out
 
@@ -138,6 +151,25 @@ def selftest():
     b1 = u2.on_event({"event": "tact_eou", "t": 5.0})
     ck["deterministic"] = b1 == a1
     ck["normalize_ignores_noise"] = normalize_event({"event": "vad_start", "t": 1}) is None
+    # v2.4: a non-READ commit fires BOTH `committed` (seconds) and
+    # `executing` (fraction of wall) anchors, each at most once.
+    ep2 = {"id": "B_L15_0000", "lang": "zh",
+           "scenario_steps": ["reserve_hotel"], "step_latencies": [10.0],
+           "events": [{"state": "executing", "offset": 0.2, "action": "revise",
+                       "role": "user", "voice": "cv01", "text": "等等，改成成都。"},
+                      {"state": "committed", "offset": 0.5, "action": "revise",
+                       "role": "user", "voice": "cv01", "text": "x"}]}
+    u3 = ReactiveUser(ep2)
+    c1 = u3.on_event({"event": "tact_op_applied", "t": 8.0,
+                      "data": {"t_audio": 8.0,
+                               "op": {"type": "commit", "fn": "reserve_hotel"}}})
+    ck["executing_frac_of_wall"] = (
+        len(c1) == 2 and
+        sorted(a["at"] for a in c1) == [8.5, 8.0 + 0.2 * 10.0])
+    c2 = u3.on_event({"event": "tact_op_applied", "t": 9.0,
+                      "data": {"t_audio": 9.0,
+                               "op": {"type": "commit", "fn": "reserve_hotel"}}})
+    ck["executing_fires_once"] = c2 == []
     for k, v in ck.items():
         print(f"  selftest {k}: {'PASS' if v else 'FAIL'}")
     print("SELFTEST", "PASS" if all(ck.values()) else "FAIL")

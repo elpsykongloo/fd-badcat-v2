@@ -634,3 +634,127 @@ selftest 45/45。四点补充证据入册：
 成立，admission 线在 v2.3 上收官**。论文用法补一句：反事实审计使"若按 v1 会错杀
 51+22 夹当量、且漏放 21 个真非法 patch"成为可引用数字——解析后层不是实现细节，
 是这类机械门成立与否的分界线。
+
+### 10.7 v2.3 公开勘误：L4 层修订文本系统性畸形（2026-07-17；用户发现，判读容器逐条实证）
+
+**根因链（三环全部代码级复核成立）**：① `rb/grammar.py` v2.3 `REV_UTT.value_first`
+模板本身双 `{new}`（zh `"{new}，改成{new}。"` / en `"{new} — change it to {new}."`
+——"开口即含新值"的实现方式把值写了两遍）；② DeepSeek 内容库改写把冗余换成对比构式
+但只有 `{new}` 一个占位符可用（"Change that from {new} to {new}."、"Put {new} in
+place of {new}." 等 8 个 en 双值形态全部入库）；③ 验证器 `rb_content_gen.validate`
+的 `_placeholders` 用 `sorted(set(...))` 只比占位符**集合**，双 `{new}` 与单
+`{new}` 不可区分；§16.1 的逐类听写审阅未抓到。
+
+**影响面（判读容器对 build_v23 归档 episodes 全量普查）**：L4 两臂 **122/122 夹**
+的修订句含新值 ≥2 次（A 72/72、B 50/50；首报 121/122 系口径差、实为全覆盖），kind
+全部 `value_first`；en 57 夹中 ~48 条是真语义矛盾句（"Change that from three
+thousand to three thousand."），zh 65 条冗余但可解（"美元，改成美元。"）；叠加句首
+不流利后出现三重畸形（"Write it, write it, Put X in place of X."）。**test 读数**：
+L4-A = TACT 2/64 / blocking 0/64 / oracle **64/64**；L4-B = 1/46 / 0/46 / 46/46。
+
+**判定影响**：oracle 不读文本（直接吃结构化修订记录），故 §10.1 "共同失败 89%
+oracle 可过 = 难度在内容侧"的叙事里，**L4 的贡献是构造伪影而非自然内容难度**——
+oracle−LLM 差距在 L4 被人为放大，引用该分解时 L4 行须挂本勘误。**缓解**：畸形双臂
+对称（TACT/blocking 听同一段音频），配对差分方向不受系统性偏置——R1 的屏障配对读数
+（含 L4 2/0）与全体 29/0 结论**维持有效**；但 L4 的绝对电平与 oracle 天花板对比在
+v2.3 上不可引用。修复 = v2.4（`rb_design.md` §17 item 0：单 `{new}` 对比模板 +
+`{old}` 占位符 + 多重集验证器 + 构建期模板审计硬门 + 运行时单 new 护栏）。
+**v2.3 test 窗口按纪律不重跑；v2.3 归档一字不动。**
+
+附带入册（v2.4 构建期发现，非 v2.3 判分影响）：冻结的 `COMMIT_JUDGE_PROMPT` 因内嵌
+字面 JSON 花括号，`make_llm_judge` 的 `.format` 渲染必然 KeyError——v2.3 的承诺
+judge 是从未被任何已判分运行消费过的**潜伏死仪器**（"对外可用"仅在接口意义上成立）。
+v2.4 改 `.replace` 渲染（渲染字节 = 设计意图），修复入冻结 v5。
+
+## §十一 v2.4 test 协议（Phase-0 冻结于 2026-07-17，观测前；构建/判读规格 = `rb_design.md` §17）
+
+> 单发纪律、缓存/复放/收据要求、异常登记与 §一/§九 完全同源；本节只列 v2.4 差异。
+> **v2.4 = 论文主线版本**：本批产出论文主表；v2.3/v2.2.1 降为归档对照行（跨版本并
+> 置引用须注明各自勘误）。
+
+#### 11.1 前置链（顺序硬性；任何一步失败即停）
+
+- **P0 平价探针**：复制 `exp/rb/build_v23/decision_cache_rbdev23_tact_d150.json`
+  为 `decision_cache_rbparity_probe.json`，新代码对 build_v23 跑
+  `--split dev --arm A --system tact --decider llm --input audio --provider
+  rbparity_probe`，断言 **cache 0 miss** 且逐夹 `decisions` 数组与归档
+  `rbdev23_tact_d150` 行逐位相同（行内新增判分字段不在断言面）。这证明 v2.3 prompt
+  字节在新代码下不变。探针产物用后删除，不入归档目录。
+- **P1 内容库 v2**：`rb_content_gen.py`（DEEPSEEK_API_KEY）重新生成全库（52+2 类：
+  新增 confirm×2 lang；value_first 例句已带 `{new}`+`{old}`）；
+  `rb_build --selftest` 过 + `audit_templates()` **0 违规**（当前 v2.3 bank 16 处
+  违规会被硬拒——这是门在工作）；按 §16.1 checklist 听检，**L4 专项**：value_first
+  全部变体逐条读一遍，确认对比语义正确、无双值；commit bank（独立提交，SHA 入册）。
+- **P2 正式构建**：`rb_build --out exp/rb/build_v24 --audio qwen`；记录
+  config/ids/content 三哈希、A 臂 666/666 WAV 完整性（mono PCM16 16k/cues/tail）、
+  TTS 仓外缓存计数。金子集清单随构建再生（144 项，录制目标切到 v2.4）。
+- **P3 oracle dev 门**（text 或 audio 皆可，两臂）：**硬门** = A 臂 L1–L4/L7–L12
+  全 1.0；B 臂 L4/L7–L15 全 1.0，其中 **L13 pair_axis 八格全 1.0、L14 1.0、L15
+  可行格全走 abort（route_axis.aborted = feasible 数）且不可行格经补偿路仍 1.0、
+  who_axis 良性 adopted=1.0 / 对抗 intruded=0**；L5/L6 为已知窗口天花板层照实记录
+  （冒烟参考 A .9552 / B .9737）。armb overlaps=0。
+- **P4 LLM dev 冒烟**（audio、两臂各一次）：只做构建有效性判读（解析健康、L4 新文
+  本在 ASR 意义下可懂、整层零的死因分类），**不设分数门**；预期 L4 dev > 0。
+- **P5 冻结 v5**：`exp/rb/scorer_freeze.json` version 5 = rb/scorer.py +
+  rb/sandbox.py + rb/registry.py + **scripts/rb_commit_judge.py** 四文件哈希 +
+  v2.4 勘误链（§10.7 两项）+ P3 收据 + build 钉死；runner test 守卫自动校验。
+
+#### 11.2 单发 provider 清单（15 个，各 live 恰一次，顺序即清单序）
+
+| # | provider | 关键参数 | 备注 |
+|---|---|---|---|
+| 1 | `rbt24_tact_d150` | `--arm A --system tact --delta 1.5` | 主臂 A |
+| 2 | `rbt24_sblock` | `--arm A --system blocking` | 主对照 A |
+| 3 | `rbt24_tact_nobar` | `--commit-barrier off` | R1'' 屏障 |
+| 4 | `rbt24_tact_d000` | `--delta 0` | δ 网格 |
+| 5 | `rbt24_tact_d060` | `--delta 0.6` | δ 网格 |
+| 6 | `rbt24_tact_d100` | `--delta 1.0` | δ 网格 |
+| 7 | `rbt24_tact_d200` | `--delta 2.0` | δ 网格 |
+| 8 | `rbt24_tact_fc_v1` | `--floor-commit-tiers v1` | FC（臂 A 限定同 §九） |
+| 9 | `rbt24_tact_fc_filler` | `--floor-commit-tiers always_filler` | FC |
+| 10 | `rbt24_tact_fc_silent` | `--floor-commit-tiers always_silent` | FC |
+| 11 | `rbt24_tact_d150_adm11` | `--admission schema11`（种自 #1 缓存） | R-ADM1'' 零损失重验（新人口） |
+| 12 | `rbt24_oracle_a` | `--decider oracle` | 天花板 A |
+| 13 | `rbt24_b_tact_d150` | `--arm B ... --tts qwen` | 主臂 B |
+| 14 | `rbt24_b_sblock` | `--arm B --system blocking --tts qwen` | 主对照 B |
+| 15 | `rbt24_b_oracle` | `--arm B --decider oracle --tts qwen` | 天花板 B |
+
+DAG 消融臂裁撤（两版本稳定判定 = 机制活性有据、预注册层零翻转；引用 §五/§十 即可）。
+缓存接种：#3–#11 链式种自 #1，同 §九惯例；臂 B 各自独立。**test 跑完后**：
+`rb_commit_judge.py --build exp/rb/build_v24 --provider rbt24_b_tact_d150
+--provider rbt24_b_sblock --provider rbt24_b_oracle`（L14 判官覆盖层，DeepSeek，
+只写 overlay；oracle 行兼作阴性对照——脚本化 say 的 emission 应 ≈0）。
+
+#### 11.3 预注册判读（R''，冻结于观测前）
+
+- **R1'' 屏障三连**：nobar 配对（预期第三次复现 TACT>nobar，p 显著）；**L4 修复后
+  屏障主考场的配对差应扩大**（v2.3 伪影下 L4 仅 2/0——方向预注册，量级不设门）。
+- **R2'' 三定律**：δ 单调、first50 恒 1.640、完成保费 ≈ δ 于 v2.4 复现。
+- **R-L4FIX**：L4-A LLM 绝对电平相对 v2.3 的 2/64 上移（方向预注册）；oracle L4
+  维持 1.0；若 L4 仍 ≈0 ⇒ 内容修复不充分，走勘误页不回改本批。
+- **R-WHO1（结论级，n=34/格）**：良性采纳率 TACT ≥ blocking；对抗拒绝率
+  blocking ≥ TACT——v2.2.1 描述级双率的结论级复验（效用-安全交换定量）。
+- **R-PAIR1（主判读）**：L13 user 半区 TACT vs blocking 配对 McNemar（池化 4 状态
+  n=72 对，p<.05 预期 TACT 优）；分状态存活序预测 eou ≥ tts ≥ inflight ≥
+  committed（每格 n=18，描述级）。
+- **R-PAIR2**：L13 bystander 半区入侵率分状态；预期 TACT ≥ blocking（开窗 = 攻击
+  面的生命周期分辨版）；两臂 armb overlaps=0 硬门。
+- **R-COMMIT1/2**：L14 判官覆盖层 emission rate > 0 = 仪器活（若 =0 按能力发现入
+  册，不算 bench 失败——死仪器风险已声明）；wrong-commit 修复率描述级；oracle 阴性
+  对照 emission ≈0；judge 缓存复放逐字节。
+- **R-ABORT1**：oracle L15 = 1.0（硬门，harness 健康）；LLM 主臂 L15 TACT vs
+  blocking 描述级。
+- **R-ABORT2**：LLM 主臂 abort 使用率——预注册预测 = **0**（H-COMP2 先例：模型不会
+  调 reverse，也不会用 X-cancel）；非零即为值得报告的能力发现。
+- **R-ADM1''**：#11 对 #1 配对 main-only-loss = 0 硬门（v1.1 在 v2.4 新人口上的
+  零损失重验；PASS ⇒ 论文系统定义含解析后 admission，引 §10.6 连续两版本证据）。
+- 判读写 §十二；单发窗口用毕后 generator/scorer/runner 任何改动走公开勘误 + 版本
+  递增，不得回改本批。
+
+#### 11.4 回报清单（用户 → 判读）
+
+机器收据（`rb_test_receipt_v24.json`，结构同 v23 收据）+ 以下最小数字面：P0 探针
+0-miss 证言；bank SHA/违规数/听检记录；build 三哈希与 WAV 完整性；P3 oracle 两臂
+by_layer + pair/route/who 三轴；P4 冒烟两臂 headline 与死因分类；freeze v5 SHA；
+15 provider 各自 headline（n/exact/state×2/U/first50/done50/cache 命中/armb
+overlaps）；复放三类哈希证言；judge overlay 三 provider 聚合行。

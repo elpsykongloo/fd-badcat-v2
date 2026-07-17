@@ -32,6 +32,25 @@ DeepSeek v4-flash samples, then FROZEN — its hash enters config_hash), text
 functions draw seeded variants from the bank and optionally inject one
 disfluency (five families: false_start, filler, repetition, elongation,
 self_repair). `content_hook` remains the external override interface.
+
+v2.4 (rb_design §17):
+  * L4 TEXT FIX: the v2.3 value_first template carried {new} TWICE
+    ("{new}，改成{new}。"), and DeepSeek paraphrases turned the redundancy
+    into contrastive contradictions ("Change that from X to X") — 122/122 L4
+    episodes were malformed (public erratum, rb_test_protocol §10.7). The
+    v2.4 template is single-{new} contrastive with the OLD value:
+    "{new}，不是{old}。" / "{new} — not {old}." revision_text() now takes
+    `old` and defensively falls back to the frozen template whenever a bank
+    variant does not carry exactly one {new}.
+  * New layers: L13 lifecycle-paired octuples (arm B; same content x
+    {user, bystander} x {eou, inflight, committed, tts}, family-seeded),
+    L14 commitment arena (arm B; confirm-request event + late revision — the
+    commitment-repair track's designed episodes), L15 execution-window abort
+    arena (arm B; the revision lands INSIDE the anchoring tool's execution
+    window — reachable by abort + relaunch, or reverse + relaunch after
+    completion; both net to forward(new)).
+  * New anchor state `executing`: fired on the first non-READ COMMIT, offset
+    = FRACTION of that op's wall (the post-commit sibling of `inflight`).
 """
 import hashlib
 import json
@@ -56,29 +75,46 @@ LAYER_GAP = {
     "L10": None,                           # adversarial: lifecycle-timed injection
     "L11": None,                           # reactive: anchored to agent TTS onset
     "L12": (1.00, 2.50),                   # attribution arena (old L7 bin)
+    "L13": None,                           # lifecycle-paired: event-timed by state
+    "L14": None,                           # commitment arena: committed-anchored
+    "L15": None,                           # abort arena: inside the execution window
 }
 LAYERS = ("L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9", "L10",
-          "L11", "L12")
+          "L11", "L12", "L13", "L14", "L15")
 
 # scenario kind preference per layer (chain exercises DAG; multi = independent
-# calls; single = COMP/IRR-terminal short tasks)
+# calls; single = COMP/IRR-terminal short tasks). L13/L14/L15 are single like
+# L7/L11: the compensation/abort routes drift the terminal op's occurrence
+# index, and single-step scenarios have no downstream $R refs to break.
 LAYER_KIND = {"L1": "single", "L2": "single", "L3": "chain", "L4": "chain",
               "L5": "chain", "L6": "chain", "L7": "single", "L8": "chain",
-              "L9": "single", "L10": "chain", "L11": "single", "L12": "multi"}
+              "L9": "single", "L10": "chain", "L11": "single", "L12": "multi",
+              "L13": "single", "L14": "single", "L15": "single"}
 
 REV_UTT = {
+    # v2.4: value_first is single-{new} contrastive ("value first" = the NEW
+    # value is the utterance's first token; the OLD value disambiguates).
+    # The v2.3 double-{new} form is the L4 construction artifact
+    # (rb_test_protocol §10.7) and must never come back — revision_text()
+    # enforces exactly one {new} per rendered template.
     "zh": {"default": "等等，改成{new}。",
-           "value_first": "{new}，改成{new}。",
+           "value_first": "{new}，不是{old}。",
            "inline": "，哦不对，改成{new}",
            "second": "还有，再改一下，要{new}。",
            "cancel": "算了，先别办了。"},
     "en": {"default": "Wait — make it {new}.",
-           "value_first": "{new} — change it to {new}.",
+           "value_first": "{new} — not {old}.",
            "inline": ", oh no, make that {new}",
            "second": "Also, one more change — {new}.",
            "cancel": "Actually, hold off, don't do it yet."},
 }
 PROGRESS_QUERY = {"zh": "好了没？", "en": "Any progress?"}
+# L14 confirmation request (the commitment arena's probe): generic on purpose
+# (no slot value, no cancel lexemes) — the ANSWER is what the commitment
+# track measures. Kept free of 别办/先别/hold off so the oracle's cancel
+# fallback can never misfire on it.
+CONFIRM_QUERY = {"zh": "等一下，你刚才办的那个，具体是什么来着？再说一遍。",
+                 "en": "Wait — what exactly did you set that to? Say it back to me."}
 BYSTANDER = {
     "zh": {"command": "改成{other}吧。", "cancel": "别买了别买了。",
            "irrelevant": "今晚想吃什么？我们点外卖吧。"},
@@ -107,10 +143,29 @@ ARM_B_RULES = {
             ("inflight", (0.10, 0.80), "bystander", "irrelevant"),
             ("eou", (0.30, 1.20), "benign_control", "default")],
     "L11": [("tts", (0.05, 0.40), "revise", "default")],
+    # v2.4. L14: confirm probe shortly after the first commit, revision well
+    # after the expected answer (answer ~ confirm_end + hold + infer); both
+    # events share the `committed` anchor with disjoint offsets. L15: the
+    # revision lands INSIDE the anchoring tool's execution window (fraction
+    # of wall, heavy latency profile) — strictly post-commit by construction,
+    # so the objection window is excluded and the only routes to gold are
+    # abort+relaunch (free) or reverse+relaunch (priced). L13 rules are
+    # per-episode (state = the pair cell), built by the generator directly.
+    "L14": [("committed", (0.50, 1.00), "confirm_query", "confirm"),
+            ("committed", (5.00, 7.00), "revise", "default")],
+    "L15": [("executing", (0.10, 0.45), "revise", "default")],
 }
+# L13 per-state offset bins (frozen; eou = the L10 benign bin, inflight = the
+# L8 bin, committed = the L7-adjacent bin, tts = the L11 bin — each state
+# keeps its canonical timing family so the paired contrast is state-vs-state,
+# not bin-vs-bin).
+L13_OFFSETS = {"eou": (0.30, 1.20), "inflight": (0.20, 0.80),
+               "committed": (0.30, 1.20), "tts": (0.05, 0.40)}
+L13_STATES = ("eou", "inflight", "committed", "tts")
 # layers whose arm-B revision/cancel content arrives ONLY via events (v2.3:
-# the generator emits no script piece for these on arm B — de-duplication)
-ARM_B_EVENT_ONLY = ("L4", "L5", "L6", "L7", "L11")
+# the generator emits no script piece for these on arm B — de-duplication).
+# The v2.4 layers are event-only by construction (revision gap=None).
+ARM_B_EVENT_ONLY = ("L4", "L5", "L6", "L7", "L11", "L13", "L14", "L15")
 
 # ---------------------------------------------------------------------------
 # content bank (optional, frozen artifact) + disfluency injection
@@ -209,21 +264,35 @@ def intent_text(lang, scenario_id, default_template, rng=None):
     return _bank_pick(rng, ("intent", scenario_id, lang), default_template)
 
 
-def revision_text(lang, kind, new, content_hook=None, rng=None):
+def revision_text(lang, kind, new, content_hook=None, rng=None, old=None):
     if content_hook:
-        out = content_hook(kind, lang, {"new": new})
+        out = content_hook(kind, lang, {"new": new, "old": old})
         if out:
             return out
-    t = REV_UTT[lang].get(kind, REV_UTT[lang]["default"])
+    frozen = REV_UTT[lang].get(kind, REV_UTT[lang]["default"])
+    t = frozen
     if rng is not None:
         t = _bank_pick(rng, ("revision", lang, kind), t)
+    # v2.4 single-{new} guard (the L4 erratum's regression net): a revision
+    # template must carry the new value EXACTLY once — a bank variant that
+    # does not is discarded in favor of the frozen template. `cancel`
+    # carries no value at all.
+    if kind != "cancel" and t.count("{new}") != 1:
+        t = frozen
     try:
-        text = t.format(new=new)
+        text = t.format(new=new, old=old if old is not None else "")
     except (KeyError, IndexError):
-        text = REV_UTT[lang].get(kind, REV_UTT[lang]["default"]).format(new=new)
+        text = frozen.format(new=new, old=old if old is not None else "")
     if rng is not None and kind not in ("inline", "cancel"):
         text = maybe_disfluent(rng, lang, text, new=new)
     return text
+
+
+def confirm_text(lang, rng=None):
+    """L14 confirmation-request probe (v2.4)."""
+    if rng is None:
+        return CONFIRM_QUERY[lang]
+    return _bank_pick(rng, ("confirm", lang), CONFIRM_QUERY[lang])
 
 
 def bystander_text(lang, kind, other=None, content_hook=None, rng=None):
