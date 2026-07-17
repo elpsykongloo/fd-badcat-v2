@@ -1,0 +1,66 @@
+{
+ "id": "A_L9_0050",
+ "layer": "L9",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 20.433,
+ "U": 0.3506,
+ "U_sens": {
+  "0.5": 0.3506,
+  "1.0": 0.3506,
+  "2.0": 0.3506
+ },
+ "first_response_s": 20.433,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 5.156,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "save_listing",
+     "op_id": 2
+    }
+   ],
+   "say": "正在处理save listing，大约还需要20秒。",
+   "fc_tier": "progress"
+  },
+  {
+   "i": 1,
+   "t_eou": 36.601,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   6.156,
+   "正在处理save listing，大约还需要20秒。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   4.516,
+   "user"
+  ],
+  [
+   35.399,
+   35.961,
+   "user"
+  ]
+ ]
+}

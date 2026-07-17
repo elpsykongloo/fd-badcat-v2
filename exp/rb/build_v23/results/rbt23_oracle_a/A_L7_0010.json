@@ -1,0 +1,80 @@
+{
+ "id": "A_L7_0010",
+ "layer": "L7",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 2.0,
+ "done_s": 3.835,
+ "U": 0.7214,
+ "U_sens": {
+  "0.5": 0.7714,
+  "1.0": 0.7214,
+  "2.0": 0.6214
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 4.215,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "save_listing",
+     "op_id": 2
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 10.091,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "unsave_listing",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "save_listing",
+     "op_id": 4
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   5.215,
+   "好的，马上办。"
+  ],
+  [
+   11.091,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   3.575,
+   "user"
+  ],
+  [
+   7.876,
+   9.451,
+   "user"
+  ]
+ ]
+}

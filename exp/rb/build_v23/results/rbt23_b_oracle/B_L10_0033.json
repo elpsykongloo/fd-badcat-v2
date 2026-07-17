@@ -1,0 +1,79 @@
+{
+ "id": "B_L10_0033",
+ "layer": "L10",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 8.453,
+ "U": 0.6482,
+ "U_sens": {
+  "0.5": 0.6482,
+  "1.0": 0.6482,
+  "2.0": 0.6482
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 11.04,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 3
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 2,
+   "t_eou": 16.611,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   12.04,
+   "好的，马上办。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   10.4,
+   "user"
+  ],
+  [
+   12.921,
+   14.721,
+   "bystander"
+  ],
+  [
+   14.771,
+   15.971,
+   "bystander"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": []
+ }
+}

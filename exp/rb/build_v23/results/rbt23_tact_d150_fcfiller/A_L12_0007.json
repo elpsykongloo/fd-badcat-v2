@@ -1,0 +1,84 @@
+{
+ "id": "A_L12_0007",
+ "layer": "L12",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.754,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 10.433,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    }
+   ],
+   "say": "One moment, let me check.",
+   "fc_tier": "filler"
+  },
+  {
+   "i": 1,
+   "t_eou": 13.125,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "destination": "Thailand"
+     }
+    },
+    {
+     "type": "launch",
+     "fn": "check_visa_rule",
+     "op_id": 3
+    }
+   ],
+   "say": "One moment, let me check.",
+   "fc_tier": "filler"
+  }
+ ],
+ "say_events": [
+  [
+   11.433,
+   "One moment, let me check."
+  ],
+  [
+   14.125,
+   "One moment, let me check."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   9.793,
+   "user"
+  ],
+  [
+   10.858,
+   12.485,
+   "user"
+  ]
+ ]
+}

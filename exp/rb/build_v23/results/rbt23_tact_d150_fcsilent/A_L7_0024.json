@@ -1,0 +1,66 @@
+{
+ "id": "A_L7_0024",
+ "layer": "L7",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 0.0,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 5.243,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 2
+    }
+   ],
+   "say": "",
+   "fc_tier": "silence"
+  },
+  {
+   "i": 1,
+   "t_eou": 12.422,
+   "ops": [],
+   "say": "Updating that to item B205."
+  }
+ ],
+ "say_events": [
+  [
+   13.422,
+   "Updating that to item B205."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   4.603,
+   "user"
+  ],
+  [
+   9.485,
+   11.782,
+   "user"
+  ]
+ ]
+}

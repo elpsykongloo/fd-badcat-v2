@@ -1,0 +1,91 @@
+{
+ "id": "B_L8_0069",
+ "layer": "L8",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 4.0,
+ "done_s": 5.396,
+ "U": 0.5582,
+ "U_sens": {
+  "0.5": 0.6582,
+  "1.0": 0.5582,
+  "2.0": 0.3582
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 4,
+ "fees": 1,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 9.465,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 3
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 16.242,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "reverse_transfer",
+     "op_id": 4
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 5
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   10.465,
+   "好的，马上办。"
+  ],
+  [
+   17.242,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   8.825,
+   "user"
+  ],
+  [
+   13.427,
+   15.602,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   4.602
+  ]
+ }
+}

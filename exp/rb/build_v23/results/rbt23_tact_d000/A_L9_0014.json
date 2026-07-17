@@ -1,0 +1,65 @@
+{
+ "id": "A_L9_0014",
+ "layer": "L9",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.547,
+ "U": 0.8337,
+ "U_sens": {
+  "0.5": 0.8337,
+  "1.0": 0.8337,
+  "2.0": 0.8337
+ },
+ "first_response_s": 3.547,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 4.019,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "save_listing",
+     "op_id": 2
+    }
+   ],
+   "say": "Saving listing LST47 for you."
+  },
+  {
+   "i": 1,
+   "t_eou": 14.199,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   5.019,
+   "Saving listing LST47 for you."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   3.379,
+   "user"
+  ],
+  [
+   12.271,
+   13.559,
+   "user"
+  ]
+ ]
+}

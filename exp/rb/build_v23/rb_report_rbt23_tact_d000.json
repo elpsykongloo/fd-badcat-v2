@@ -1,0 +1,83 @@
+{
+  "n": 546,
+  "exact": 0.13,
+  "state_verbatim": 0.13,
+  "state_normalized": 0.1374,
+  "U_mean": 0.1005,
+  "wrong_commits": 0,
+  "unrepaired": 0,
+  "first_p50": 1.64,
+  "done_p50": 2.105,
+  "by_layer": {
+    "L1": {
+      "n": 45,
+      "exact": 0.2889,
+      "U": 0.2481
+    },
+    "L10": {
+      "n": 40,
+      "exact": 0.025,
+      "U": 0.0212
+    },
+    "L12": {
+      "n": 33,
+      "exact": 0.1818,
+      "U": 0.1609
+    },
+    "L2": {
+      "n": 41,
+      "exact": 0.2683,
+      "U": 0.233
+    },
+    "L3": {
+      "n": 51,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L4": {
+      "n": 64,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L5": {
+      "n": 71,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L6": {
+      "n": 44,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L7": {
+      "n": 44,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L8": {
+      "n": 57,
+      "exact": 0.0351,
+      "U": 0.0311
+    },
+    "L9": {
+      "n": 56,
+      "exact": 0.6786,
+      "U": 0.4684
+    }
+  },
+  "provider": "rbt23_tact_d000",
+  "config": {
+    "arm": "A",
+    "system": "tact",
+    "delta": 0.0,
+    "commit_barrier": "on",
+    "input": "audio",
+    "decider": "llm",
+    "floor_commit_tiers": null,
+    "split": "test",
+    "infer_nominal": 1.0,
+    "dag": "on",
+    "attr": "off",
+    "admission": null
+  }
+}

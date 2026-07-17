@@ -1,0 +1,79 @@
+{
+ "id": "A_L10_0038",
+ "layer": "L10",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 4.958,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 4.958,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 7.157,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_rentals",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "book_viewing",
+     "op_id": 3
+    }
+   ],
+   "say": "One moment, let me check.",
+   "fc_tier": "filler"
+  },
+  {
+   "i": 1,
+   "t_eou": 10.769,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "_pending_op_id_for_listing_id_123456789012345678901234567890123456789012345678901234567890_undefined_slot_undefined_date_undefined_time_undefined_day_of_week_saturday_morning__placeholder_placeholder_placeholder_placeholder_placeholder_placeholder_placeholder_placeholder_placeholderslot placeholderplaceholderplaceholderplaceholderplaceholder.placeholder._id)": "$RESULT_0.listings[0].listing_id"
+     }
+    }
+   ],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   8.157,
+   "One moment, let me check."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.517,
+   "user"
+  ],
+  [
+   7.274,
+   10.129,
+   "user"
+  ]
+ ]
+}

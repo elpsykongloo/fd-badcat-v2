@@ -1,0 +1,82 @@
+{
+ "id": "A_L12_0024",
+ "layer": "L12",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 4.192,
+ "U": 0.8065,
+ "U_sens": {
+  "0.5": 0.8065,
+  "1.0": 0.8065,
+  "2.0": 0.8065
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 11.906,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 15.773,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "query": "蓝牙耳机"
+     }
+    },
+    {
+     "type": "launch",
+     "fn": "check_stock",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  }
+ ],
+ "say_events": [
+  [
+   12.906,
+   "I'm on it."
+  ],
+  [
+   16.773,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   11.266,
+   "user"
+  ],
+  [
+   12.566,
+   15.133,
+   "user"
+  ]
+ ]
+}

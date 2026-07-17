@@ -1,0 +1,80 @@
+{
+ "id": "A_L7_0023",
+ "layer": "L7",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 4.0,
+ "done_s": 5.039,
+ "U": 0.5722,
+ "U_sens": {
+  "0.5": 0.6722,
+  "1.0": 0.5722,
+  "2.0": 0.3722
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 1,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.54,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "reserve_hotel",
+     "op_id": 2
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 14.891,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "cancel_hotel",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "reserve_hotel",
+     "op_id": 4
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   7.54,
+   "好的，马上办。"
+  ],
+  [
+   15.891,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.9,
+   "user"
+  ],
+  [
+   12.826,
+   14.251,
+   "user"
+  ]
+ ]
+}

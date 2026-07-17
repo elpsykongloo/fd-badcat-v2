@@ -1,0 +1,84 @@
+{
+ "id": "A_L5_0008",
+ "layer": "L5",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 6.919,
+ "U": 0.7012,
+ "U_sens": {
+  "0.5": 0.7012,
+  "1.0": 0.7012,
+  "2.0": 0.7012
+ },
+ "first_response_s": 6.919,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.054,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "place_order",
+     "op_id": 4
+    }
+   ],
+   "say": "One moment, let me check.",
+   "fc_tier": "filler"
+  },
+  {
+   "i": 1,
+   "t_eou": 10.275,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 4,
+     "diff": {
+      "address": "88 Century Avenue"
+     }
+    }
+   ],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   7.054,
+   "One moment, let me check."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.414,
+   "user"
+  ],
+  [
+   6.564,
+   9.635,
+   "user"
+  ]
+ ]
+}

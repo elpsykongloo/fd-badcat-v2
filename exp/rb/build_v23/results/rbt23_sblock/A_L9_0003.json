@@ -1,0 +1,59 @@
+{
+ "id": "A_L9_0003",
+ "layer": "L9",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 29.893,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 1,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 1,
+   "t_eou": 33.174,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "reserve_hotel",
+     "op_id": 2
+    }
+   ],
+   "say": "正在为您预订青岛的酒店。"
+  }
+ ],
+ "say_events": [
+  [
+   34.174,
+   "正在为您预订青岛的酒店。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   13.046,
+   "user"
+  ],
+  [
+   31.638,
+   32.534,
+   "user"
+  ]
+ ]
+}

@@ -1,0 +1,120 @@
+{
+ "id": "B_L6_0037",
+ "layer": "L6",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 1.216,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.243,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 9.296,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "amount": 3000
+     }
+    },
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "amount": 3000
+     }
+    }
+   ],
+   "say": "Updating the amount to 3,000 for both conversion and transfer."
+  },
+  {
+   "i": 2,
+   "t_eou": 15.879,
+   "ops": [
+    {
+     "type": "launch_dedup",
+     "fn": "get_fx_quote"
+    },
+    {
+     "type": "launch_dedup",
+     "fn": "transfer_funds"
+    }
+   ],
+   "say": "Updating the quote and transfer to 3,000. Also noting your savings change."
+  }
+ ],
+ "say_events": [
+  [
+   7.243,
+   "I'm on it."
+  ],
+  [
+   10.296,
+   "Updating the amount to 3,000 for both conversion and transfer."
+  ],
+  [
+   16.879,
+   "Updating the quote and transfer to 3,000. Also noting your savings change."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.603,
+   "user"
+  ],
+  [
+   7.243,
+   8.656,
+   "user"
+  ],
+  [
+   12.099,
+   15.239,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   1.64,
+   3.443
+  ]
+ }
+}

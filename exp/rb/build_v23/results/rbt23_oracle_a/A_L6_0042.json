@@ -1,0 +1,105 @@
+{
+ "id": "A_L6_0042",
+ "layer": "L6",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 4.61,
+ "U": 0.7894,
+ "U_sens": {
+  "0.5": 0.7894,
+  "1.0": 0.7894,
+  "2.0": 0.7894
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.18,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_rentals",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "book_viewing",
+     "op_id": 3
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 8.537,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "city": "杭州"
+     }
+    }
+   ],
+   "say": "已更新。"
+  },
+  {
+   "i": 2,
+   "t_eou": 12.313,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "beds": 2
+     }
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   7.18,
+   "好的，马上办。"
+  ],
+  [
+   9.537,
+   "已更新。"
+  ],
+  [
+   13.313,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.54,
+   "user"
+  ],
+  [
+   6.277,
+   7.897,
+   "user"
+  ],
+  [
+   9.693,
+   11.673,
+   "user"
+  ]
+ ]
+}

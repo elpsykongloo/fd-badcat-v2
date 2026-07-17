@@ -1,0 +1,91 @@
+{
+ "id": "A_L6_0038",
+ "layer": "L6",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 0.802,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 0.802,
+ "n_eou": 3,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 9.026,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_rentals",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "book_viewing",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 11.941,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_rentals",
+     "op_id": 4
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 2,
+   "t_eou": 17.695,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   10.026,
+   "I'm on it."
+  ],
+  [
+   12.941,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   8.386,
+   "user"
+  ],
+  [
+   9.268,
+   11.301,
+   "user"
+  ],
+  [
+   13.966,
+   17.055,
+   "user"
+  ]
+ ]
+}

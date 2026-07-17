@@ -1,0 +1,71 @@
+{
+ "id": "B_L9_0011",
+ "layer": "L9",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 19.771,
+ "U": 0.3627,
+ "U_sens": {
+  "0.5": 0.3627,
+  "1.0": 0.3627,
+  "2.0": 0.3627
+ },
+ "first_response_s": 19.771,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.13,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "reserve_hotel",
+     "op_id": 2
+    }
+   ],
+   "say": "Looking for hotels in Denver now."
+  },
+  {
+   "i": 1,
+   "t_eou": 36.63,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   7.13,
+   "Looking for hotels in Denver now."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.49,
+   "user"
+  ],
+  [
+   34.898,
+   35.99,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   29.408
+  ]
+ }
+}

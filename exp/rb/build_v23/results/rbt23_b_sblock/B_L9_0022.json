@@ -1,0 +1,71 @@
+{
+ "id": "B_L9_0022",
+ "layer": "L9",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 5.106,
+ "U": 0.7696,
+ "U_sens": {
+  "0.5": 0.7696,
+  "1.0": 0.7696,
+  "2.0": 0.7696
+ },
+ "first_response_s": 5.106,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 4.304,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "save_listing",
+     "op_id": 2
+    }
+   ],
+   "say": "正在为您收藏该房源。"
+  },
+  {
+   "i": 1,
+   "t_eou": 20.568,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   5.304,
+   "正在为您收藏该房源。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   3.664,
+   "user"
+  ],
+  [
+   19.036,
+   19.928,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   15.372
+  ]
+ }
+}

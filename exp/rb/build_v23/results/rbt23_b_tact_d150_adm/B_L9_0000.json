@@ -1,0 +1,71 @@
+{
+ "id": "B_L9_0000",
+ "layer": "L9",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 4.681,
+ "U": 0.7865,
+ "U_sens": {
+  "0.5": 0.7865,
+  "1.0": 0.7865,
+  "2.0": 0.7865
+ },
+ "first_response_s": 4.681,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 3.615,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 2
+    }
+   ],
+   "say": "Adding two of item A100 to your cart."
+  },
+  {
+   "i": 1,
+   "t_eou": 11.051,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   4.615,
+   "Adding two of item A100 to your cart."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   2.975,
+   "user"
+  ],
+  [
+   9.373,
+   10.411,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   6.398
+  ]
+ }
+}

@@ -1,0 +1,117 @@
+{
+ "id": "B_L6_0003",
+ "layer": "L6",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.87,
+ "U": 0.82,
+ "U_sens": {
+  "0.5": 0.82,
+  "1.0": 0.82,
+  "2.0": 0.82
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 9.69,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "hold_seat",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "purchase_ticket",
+     "op_id": 4
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 13.055,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "destination": "Atlanta"
+     }
+    }
+   ],
+   "say": "已更新。"
+  },
+  {
+   "i": 2,
+   "t_eou": 19.253,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "seat_class": "coach"
+     }
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   10.69,
+   "好的，马上办。"
+  ],
+  [
+   14.055,
+   "已更新。"
+  ],
+  [
+   20.253,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   9.05,
+   "user"
+  ],
+  [
+   10.69,
+   12.415,
+   "user"
+  ],
+  [
+   14.713,
+   18.613,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   1.64,
+   2.298
+  ]
+ }
+}

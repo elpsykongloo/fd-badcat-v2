@@ -1,0 +1,1353 @@
+{
+  "schema": "rb_test_receipt_v23.v1",
+  "status": "complete",
+  "formal_gate_status": "R-ADM1_FAIL_ARM_A",
+  "generated_at_utc": "2026-07-17T07:43:47.865Z",
+  "single_shot_window_utc": {
+    "first_provider_start": "2026-07-17T06:12:58Z",
+    "last_provider_end": "2026-07-17T07:31:33Z"
+  },
+  "protocol": {
+    "path": "docs/rb_test_protocol.md",
+    "sections": [
+      "§9.1",
+      "§9.4"
+    ],
+    "sha256": "f64eff6f7cd33da112ae763e1b54e8772447f4e0f8186949efb28ac9d215bc77",
+    "source_commit": "78786201d72f07cd748a2649b6d4948635d87057",
+    "planned_providers": 17,
+    "completed_providers": 17,
+    "provider_live_runs": 17,
+    "provider_reruns": 0,
+    "offline_replays": 17,
+    "score_dissatisfaction_reruns": 0,
+    "test_observations_before_protocol_freeze": 0
+  },
+  "code": {
+    "source_head_at_run": "78786201d72f07cd748a2649b6d4948635d87057",
+    "scripts/rb_run.py": "e9c9448d5460af3bee80553aa9c2c50c5cd36837d8f3c0ac289c02e1ba067647",
+    "scripts/rb_build.py": "d93e259b5ff5cf7bce7e2bfb60e6ce19e2a45b427fc19e7f06354b56bc20c1ab",
+    "src/admission.py": "1b3586ee7c96e5aa35aa115179dc8acde168abb8446ea0d38cb49ff9aa99926b",
+    "rb/audio.py": "ecdc1ca42f1ad0e8aff920c32ba5a8aa9a64ae34b1a6362f0fede7a2e4099a7c"
+  },
+  "build": {
+    "path": "exp/rb/build_v23",
+    "version": "rb_v2.3.0",
+    "config_hash": "e1a515c29b8a",
+    "manifest_sha256": "eef243ee15c61d87e4b4fe87cc3c1d8d513584532c888bf1c3ff6a2650a2e22a",
+    "ids_hash": "acbb7984b03d",
+    "content_hash": "2cc261e7e0fd",
+    "content_bank": "309c7c0d0361",
+    "content_bank_path": "exp/rb/content_bank.json",
+    "content_bank_sha256": "309c7c0d03616d629a3e23752499fb576969c5b59c7cd44c66753748d1ff163f",
+    "n_total": 1000,
+    "n_dev": 89,
+    "n_test": 911,
+    "n_test_arm_a": 546,
+    "n_test_arm_b": 365,
+    "audio": "qwen",
+    "pause_prior": true
+  },
+  "scorer_freeze": {
+    "version": 4,
+    "receipt_path": "exp/rb/scorer_freeze.json",
+    "receipt_sha256": "bda78c7cd6d1b40f211a9da8b5ca405cd18a06889c92cc4b820afb636580ac14",
+    "verified_in_preflight": true,
+    "verified_before_every_test_provider": true,
+    "hashes": {
+      "rb/scorer.py": "548bed2e12f4b3cd5b8f0cec82107e411f27a63ba4af277930a375d240901204",
+      "rb/sandbox.py": "b0ad0842cec1d8093ddaa6d8d43bd0c2ea64080d2d88aaa8072d5db38ea83205",
+      "rb/registry.py": "b50e8aab689389580d1b5be18e3f0ccb1722615e4503873322870af0267837de"
+    }
+  },
+  "regression": {
+    "scripts/rb_run.py_selftest": {
+      "passed": 39,
+      "total": 39
+    },
+    "scripts/rb_build.py_selftest": {
+      "passed": 12,
+      "total": 12
+    },
+    "pytest": {
+      "passed": 156,
+      "warnings": 4
+    }
+  },
+  "inference_service": {
+    "kind": "local_qwen3_omni_audio",
+    "model": "Qwen3-Omni-30B-A3B-Instruct",
+    "vllm_url": "http://127.0.0.1:10003",
+    "proxy_url": "http://127.0.0.1:10004",
+    "launcher": "setup/start_qwen3omni_audio.sh",
+    "launcher_sha256": "87f6edf98a5f2b1428d2c8553d6ba5479f667b8f4b7a5814c1e922f153cf7e19",
+    "proxy_launcher": "setup/start_qwen3_proxy.sh",
+    "proxy_launcher_sha256": "ae4bc2c74518e5eb074fcfde4d2572cd33847d2fad3f3a072e15d146cb619f5d",
+    "deploy_config": "configs/qwen3_omni_audio_single_gpu.yaml",
+    "deploy_config_sha256": "338fc9035be05fd59a5a05fc4823189490f1233068f6a197dc326b999b39734f",
+    "max_num_seqs": 1,
+    "formal_live_http_requests": 4599,
+    "formal_live_http_non_200": 0,
+    "same_processes_for_all_formal_providers": true,
+    "stopped_before_offline_replay": true,
+    "ports_10003_10004_8091_closed_before_replay": true,
+    "gpu_memory_mib_after_shutdown": 0,
+    "gpu_utilization_percent_after_shutdown": 0
+  },
+  "tts": {
+    "backend": "Qwen3-TTS CustomVoice",
+    "backend_code_sha256": "ecdc1ca42f1ad0e8aff920c32ba5a8aa9a64ae34b1a6362f0fede7a2e4099a7c",
+    "cache_path": "/root/autodl-tmp/rb_tts_cache",
+    "cache_in_git": false,
+    "prewarm": {
+      "unique_segments": 725,
+      "preexisting_cache_hits": 155,
+      "new_syntheses": 570,
+      "missing_after": 0,
+      "cache_wav_files_after": 3594,
+      "tmp_files_after": 0
+    },
+    "formal_run_syntheses": 0,
+    "latest_cache_wav_mtime_utc": "2026-07-17T06:09:40.312Z",
+    "first_formal_provider_start_utc": "2026-07-17T06:12:58Z",
+    "cache_files_created_or_modified_during_formal_window": 0,
+    "formal_zero_synthesis_enforcement": "TTS service :8091 was closed for all live providers and offline replay; every arm-B lookup therefore had to hit the prewarmed out-of-repo cache."
+  },
+  "cache_seed_provenance": {
+    "rule": "Fresh caches for #1/#2/#14/#16; all other LLM providers were seeded exactly as frozen in the test-day runbook. Oracle providers have no decision cache.",
+    "seed_hashes_recorded_per_provider": true
+  },
+  "providers": [
+    {
+      "ordinal": 1,
+      "provider": "rbt23_tact_d150",
+      "started_utc": "2026-07-17T06:12:58Z",
+      "ended_utc": "2026-07-17T06:34:53Z",
+      "args": "--build exp/rb/build_v23 --split test --arm A --system tact --delta 1.5 --decider llm --input audio --provider rbt23_tact_d150",
+      "cache_seeded_from": null,
+      "cache_seed_sha256": null,
+      "scorer_freeze_v4_verified_by_runner": true,
+      "metrics": {
+        "n": 546,
+        "exact": 0.174,
+        "state_verbatim": 0.174,
+        "state_normalized": 0.1813,
+        "U": 0.1334,
+        "wrong_commits": 0,
+        "unrepaired": 0,
+        "first_p50": 1.64,
+        "done_p50": 3.789,
+        "by_layer_exact": {
+          "L1": 0.2889,
+          "L10": 0.1,
+          "L12": 0.1818,
+          "L2": 0.2683,
+          "L3": 0.0196,
+          "L4": 0.0312,
+          "L5": 0.0141,
+          "L6": 0.0,
+          "L7": 0.0,
+          "L8": 0.3333,
+          "L9": 0.6786
+        }
+      },
+      "armb_timing": null,
+      "report": {
+        "path": "exp/rb/build_v23/rb_report_rbt23_tact_d150.json",
+        "live_sha256": "11f02cea53df6637d93e9e2e463808a48689f74c6fe181f3208d406a0ecc3309",
+        "replay_sha256": "11f02cea53df6637d93e9e2e463808a48689f74c6fe181f3208d406a0ecc3309",
+        "byte_identical": true
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v23/results/rbt23_tact_d150",
+        "files": 546,
+        "live_sha256": "73d9bd07c060e0702483445173a9b8a10bebac7c9518344818247df53e53dced",
+        "replay_sha256": "73d9bd07c060e0702483445173a9b8a10bebac7c9518344818247df53e53dced",
+        "byte_identical": true
+      },
+      "first_run_decision_cache": {
+        "hits": 0,
+        "misses": 1432,
+        "entries_after": 1432
+      },
+      "offline_replay": {
+        "hits": 1432,
+        "misses": 0
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v23/decision_cache_rbt23_tact_d150.json",
+        "live_sha256": "8994c3ca59d8d67d681b1599551941aff52f42a765ed812841463e0704b9505a",
+        "replay_sha256": "8994c3ca59d8d67d681b1599551941aff52f42a765ed812841463e0704b9505a",
+        "byte_identical": true
+      }
+    },
+    {
+      "ordinal": 2,
+      "provider": "rbt23_sblock",
+      "started_utc": "2026-07-17T06:35:59Z",
+      "ended_utc": "2026-07-17T06:48:47Z",
+      "args": "--build exp/rb/build_v23 --split test --arm A --system blocking --decider llm --input audio --provider rbt23_sblock",
+      "cache_seeded_from": null,
+      "cache_seed_sha256": null,
+      "scorer_freeze_v4_verified_by_runner": true,
+      "metrics": {
+        "n": 546,
+        "exact": 0.1832,
+        "state_verbatim": 0.1832,
+        "state_normalized": 0.1923,
+        "U": 0.1254,
+        "wrong_commits": 0,
+        "unrepaired": 0,
+        "first_p50": 2.166,
+        "done_p50": 2.262,
+        "by_layer_exact": {
+          "L1": 0.2889,
+          "L10": 0.05,
+          "L12": 0.0909,
+          "L2": 0.2683,
+          "L3": 0.0,
+          "L4": 0.0,
+          "L5": 0.0282,
+          "L6": 0.0,
+          "L7": 0.3182,
+          "L8": 0.2982,
+          "L9": 0.6786
+        }
+      },
+      "armb_timing": null,
+      "report": {
+        "path": "exp/rb/build_v23/rb_report_rbt23_sblock.json",
+        "live_sha256": "5d151f1e73545a9adae38233e926f9582957394070d46bde013647c88493ec9d",
+        "replay_sha256": "5d151f1e73545a9adae38233e926f9582957394070d46bde013647c88493ec9d",
+        "byte_identical": true
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v23/results/rbt23_sblock",
+        "files": 546,
+        "live_sha256": "ce2805d0e8ba5fc28a065b9b44b09a4624af22640143ee935112c50c1cd67f8a",
+        "replay_sha256": "ce2805d0e8ba5fc28a065b9b44b09a4624af22640143ee935112c50c1cd67f8a",
+        "byte_identical": true
+      },
+      "first_run_decision_cache": {
+        "hits": 0,
+        "misses": 744,
+        "entries_after": 744
+      },
+      "offline_replay": {
+        "hits": 744,
+        "misses": 0
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v23/decision_cache_rbt23_sblock.json",
+        "live_sha256": "2e3ae435350cd76cb3adeeb1d58dcccc188a4191369d3d2694012fc4f52cb985",
+        "replay_sha256": "2e3ae435350cd76cb3adeeb1d58dcccc188a4191369d3d2694012fc4f52cb985",
+        "byte_identical": true
+      }
+    },
+    {
+      "ordinal": 3,
+      "provider": "rbt23_tact_d150_nobar",
+      "started_utc": "2026-07-17T06:49:28Z",
+      "ended_utc": "2026-07-17T06:50:30Z",
+      "args": "--build exp/rb/build_v23 --split test --arm A --system tact --delta 1.5 --commit-barrier off --decider llm --input audio --provider rbt23_tact_d150_nobar",
+      "cache_seeded_from": "rbt23_tact_d150",
+      "cache_seed_sha256": "8994c3ca59d8d67d681b1599551941aff52f42a765ed812841463e0704b9505a",
+      "scorer_freeze_v4_verified_by_runner": true,
+      "metrics": {
+        "n": 546,
+        "exact": 0.1209,
+        "state_verbatim": 0.1209,
+        "state_normalized": 0.1282,
+        "U": 0.0853,
+        "wrong_commits": 0,
+        "unrepaired": 0,
+        "first_p50": 1.64,
+        "done_p50": 3.605,
+        "by_layer_exact": {
+          "L1": 0.2889,
+          "L10": 0.025,
+          "L12": 0.0303,
+          "L2": 0.2683,
+          "L3": 0.0,
+          "L4": 0.0,
+          "L5": 0.0,
+          "L6": 0.0,
+          "L7": 0.0,
+          "L8": 0.0351,
+          "L9": 0.6786
+        }
+      },
+      "armb_timing": null,
+      "report": {
+        "path": "exp/rb/build_v23/rb_report_rbt23_tact_d150_nobar.json",
+        "live_sha256": "fc54706f9a0c61471124af503811a949769acd31c474e263dbd479e60e9a746d",
+        "replay_sha256": "fc54706f9a0c61471124af503811a949769acd31c474e263dbd479e60e9a746d",
+        "byte_identical": true
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v23/results/rbt23_tact_d150_nobar",
+        "files": 546,
+        "live_sha256": "6830993ec5b75aae72300a3f5bae487f2ef9c680ec2c0f272fb3bb4c4c9802df",
+        "replay_sha256": "6830993ec5b75aae72300a3f5bae487f2ef9c680ec2c0f272fb3bb4c4c9802df",
+        "byte_identical": true
+      },
+      "first_run_decision_cache": {
+        "hits": 1372,
+        "misses": 53,
+        "entries_after": 1485
+      },
+      "offline_replay": {
+        "hits": 1425,
+        "misses": 0
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v23/decision_cache_rbt23_tact_d150_nobar.json",
+        "live_sha256": "bde2ef312b3b48d258a78463a20aecefdb338ca068e6b2c58f39328399f17175",
+        "replay_sha256": "bde2ef312b3b48d258a78463a20aecefdb338ca068e6b2c58f39328399f17175",
+        "byte_identical": true
+      }
+    },
+    {
+      "ordinal": 4,
+      "provider": "rbt23_tact_d000",
+      "started_utc": "2026-07-17T06:50:41Z",
+      "ended_utc": "2026-07-17T06:56:59Z",
+      "args": "--build exp/rb/build_v23 --split test --arm A --system tact --delta 0 --decider llm --input audio --provider rbt23_tact_d000",
+      "cache_seeded_from": "rbt23_tact_d150",
+      "cache_seed_sha256": "8994c3ca59d8d67d681b1599551941aff52f42a765ed812841463e0704b9505a",
+      "scorer_freeze_v4_verified_by_runner": true,
+      "metrics": {
+        "n": 546,
+        "exact": 0.13,
+        "state_verbatim": 0.13,
+        "state_normalized": 0.1374,
+        "U": 0.1005,
+        "wrong_commits": 0,
+        "unrepaired": 0,
+        "first_p50": 1.64,
+        "done_p50": 2.105,
+        "by_layer_exact": {
+          "L1": 0.2889,
+          "L10": 0.025,
+          "L12": 0.1818,
+          "L2": 0.2683,
+          "L3": 0.0,
+          "L4": 0.0,
+          "L5": 0.0,
+          "L6": 0.0,
+          "L7": 0.0,
+          "L8": 0.0351,
+          "L9": 0.6786
+        }
+      },
+      "armb_timing": null,
+      "report": {
+        "path": "exp/rb/build_v23/rb_report_rbt23_tact_d000.json",
+        "live_sha256": "4460459bc3a38effd80363676891f776a942b2f0060658397ae3d9f9036643b5",
+        "replay_sha256": "4460459bc3a38effd80363676891f776a942b2f0060658397ae3d9f9036643b5",
+        "byte_identical": true
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v23/results/rbt23_tact_d000",
+        "files": 546,
+        "live_sha256": "f9dc343fb132735ea07b399acf94ab3d105b2790859c13512576bf8aca5c59c3",
+        "replay_sha256": "f9dc343fb132735ea07b399acf94ab3d105b2790859c13512576bf8aca5c59c3",
+        "byte_identical": true
+      },
+      "first_run_decision_cache": {
+        "hits": 976,
+        "misses": 417,
+        "entries_after": 1849
+      },
+      "offline_replay": {
+        "hits": 1393,
+        "misses": 0
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v23/decision_cache_rbt23_tact_d000.json",
+        "live_sha256": "963121b355e189e0338c930c7e882f3f7adf2b49639e64221dce4aea5902b529",
+        "replay_sha256": "963121b355e189e0338c930c7e882f3f7adf2b49639e64221dce4aea5902b529",
+        "byte_identical": true
+      }
+    },
+    {
+      "ordinal": 5,
+      "provider": "rbt23_tact_d060",
+      "started_utc": "2026-07-17T06:57:14Z",
+      "ended_utc": "2026-07-17T06:57:18Z",
+      "args": "--build exp/rb/build_v23 --split test --arm A --system tact --delta 0.6 --decider llm --input audio --provider rbt23_tact_d060",
+      "cache_seeded_from": "rbt23_tact_d000",
+      "cache_seed_sha256": "963121b355e189e0338c930c7e882f3f7adf2b49639e64221dce4aea5902b529",
+      "scorer_freeze_v4_verified_by_runner": true,
+      "metrics": {
+        "n": 546,
+        "exact": 0.13,
+        "state_verbatim": 0.13,
+        "state_normalized": 0.1374,
+        "U": 0.0971,
+        "wrong_commits": 0,
+        "unrepaired": 0,
+        "first_p50": 1.64,
+        "done_p50": 2.81,
+        "by_layer_exact": {
+          "L1": 0.2889,
+          "L10": 0.025,
+          "L12": 0.1818,
+          "L2": 0.2683,
+          "L3": 0.0,
+          "L4": 0.0,
+          "L5": 0.0,
+          "L6": 0.0,
+          "L7": 0.0,
+          "L8": 0.0351,
+          "L9": 0.6786
+        }
+      },
+      "armb_timing": null,
+      "report": {
+        "path": "exp/rb/build_v23/rb_report_rbt23_tact_d060.json",
+        "live_sha256": "50931744a2218208ede4ceed09a36db8f3b30b23bb4583eae1b132bb4a72fead",
+        "replay_sha256": "50931744a2218208ede4ceed09a36db8f3b30b23bb4583eae1b132bb4a72fead",
+        "byte_identical": true
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v23/results/rbt23_tact_d060",
+        "files": 546,
+        "live_sha256": "0102200354ed0f8cee760d7825ce9aab2dac564db8b345825b6a3a80883921a0",
+        "replay_sha256": "0102200354ed0f8cee760d7825ce9aab2dac564db8b345825b6a3a80883921a0",
+        "byte_identical": true
+      },
+      "first_run_decision_cache": {
+        "hits": 1393,
+        "misses": 0,
+        "entries_after": 1849
+      },
+      "offline_replay": {
+        "hits": 1393,
+        "misses": 0
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v23/decision_cache_rbt23_tact_d060.json",
+        "live_sha256": "963121b355e189e0338c930c7e882f3f7adf2b49639e64221dce4aea5902b529",
+        "replay_sha256": "963121b355e189e0338c930c7e882f3f7adf2b49639e64221dce4aea5902b529",
+        "byte_identical": true
+      }
+    },
+    {
+      "ordinal": 6,
+      "provider": "rbt23_tact_d100",
+      "started_utc": "2026-07-17T06:57:33Z",
+      "ended_utc": "2026-07-17T06:57:37Z",
+      "args": "--build exp/rb/build_v23 --split test --arm A --system tact --delta 1.0 --decider llm --input audio --provider rbt23_tact_d100",
+      "cache_seeded_from": "rbt23_tact_d060",
+      "cache_seed_sha256": "963121b355e189e0338c930c7e882f3f7adf2b49639e64221dce4aea5902b529",
+      "scorer_freeze_v4_verified_by_runner": true,
+      "metrics": {
+        "n": 546,
+        "exact": 0.1648,
+        "state_verbatim": 0.1648,
+        "state_normalized": 0.1722,
+        "U": 0.1277,
+        "wrong_commits": 0,
+        "unrepaired": 0,
+        "first_p50": 1.64,
+        "done_p50": 3.267,
+        "by_layer_exact": {
+          "L1": 0.2889,
+          "L10": 0.1,
+          "L12": 0.1515,
+          "L2": 0.2683,
+          "L3": 0.0196,
+          "L4": 0.0312,
+          "L5": 0.0141,
+          "L6": 0.0,
+          "L7": 0.0,
+          "L8": 0.2632,
+          "L9": 0.6786
+        }
+      },
+      "armb_timing": null,
+      "report": {
+        "path": "exp/rb/build_v23/rb_report_rbt23_tact_d100.json",
+        "live_sha256": "e960b88f04de9faa61a025a61560be0a5c29de11f67538e0e08b86b27aa7b70b",
+        "replay_sha256": "e960b88f04de9faa61a025a61560be0a5c29de11f67538e0e08b86b27aa7b70b",
+        "byte_identical": true
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v23/results/rbt23_tact_d100",
+        "files": 546,
+        "live_sha256": "3024b0c961d9fe7ece3fd8caee7bf4f6cc013629c9ec0651c8c598c961ffa033",
+        "replay_sha256": "3024b0c961d9fe7ece3fd8caee7bf4f6cc013629c9ec0651c8c598c961ffa033",
+        "byte_identical": true
+      },
+      "first_run_decision_cache": {
+        "hits": 1429,
+        "misses": 0,
+        "entries_after": 1849
+      },
+      "offline_replay": {
+        "hits": 1429,
+        "misses": 0
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v23/decision_cache_rbt23_tact_d100.json",
+        "live_sha256": "963121b355e189e0338c930c7e882f3f7adf2b49639e64221dce4aea5902b529",
+        "replay_sha256": "963121b355e189e0338c930c7e882f3f7adf2b49639e64221dce4aea5902b529",
+        "byte_identical": true
+      }
+    },
+    {
+      "ordinal": 7,
+      "provider": "rbt23_tact_d200",
+      "started_utc": "2026-07-17T06:58:04Z",
+      "ended_utc": "2026-07-17T07:00:22Z",
+      "args": "--build exp/rb/build_v23 --split test --arm A --system tact --delta 2.0 --decider llm --input audio --provider rbt23_tact_d200",
+      "cache_seeded_from": "rbt23_tact_d100",
+      "cache_seed_sha256": "963121b355e189e0338c930c7e882f3f7adf2b49639e64221dce4aea5902b529",
+      "scorer_freeze_v4_verified_by_runner": true,
+      "metrics": {
+        "n": 546,
+        "exact": 0.1832,
+        "state_verbatim": 0.1832,
+        "state_normalized": 0.1905,
+        "U": 0.1376,
+        "wrong_commits": 0,
+        "unrepaired": 0,
+        "first_p50": 1.64,
+        "done_p50": 4.367,
+        "by_layer_exact": {
+          "L1": 0.2889,
+          "L10": 0.1,
+          "L12": 0.1818,
+          "L2": 0.2683,
+          "L3": 0.0196,
+          "L4": 0.0312,
+          "L5": 0.0845,
+          "L6": 0.0,
+          "L7": 0.0,
+          "L8": 0.3333,
+          "L9": 0.6786
+        }
+      },
+      "armb_timing": null,
+      "report": {
+        "path": "exp/rb/build_v23/rb_report_rbt23_tact_d200.json",
+        "live_sha256": "9832aebf56689ba7f7d5580cdc61ec82eaeb291c5229a7d79c9525251a92b318",
+        "replay_sha256": "9832aebf56689ba7f7d5580cdc61ec82eaeb291c5229a7d79c9525251a92b318",
+        "byte_identical": true
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v23/results/rbt23_tact_d200",
+        "files": 546,
+        "live_sha256": "38b883e68dbcedf920ed905ebb8c5be4b5b18469601bfd120a96c8013fb361d3",
+        "replay_sha256": "38b883e68dbcedf920ed905ebb8c5be4b5b18469601bfd120a96c8013fb361d3",
+        "byte_identical": true
+      },
+      "first_run_decision_cache": {
+        "hits": 1315,
+        "misses": 122,
+        "entries_after": 1971
+      },
+      "offline_replay": {
+        "hits": 1437,
+        "misses": 0
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v23/decision_cache_rbt23_tact_d200.json",
+        "live_sha256": "76406bc8331a55306f4dad39ecc37e1798dd017c004fe517c237c03c0af00ca5",
+        "replay_sha256": "76406bc8331a55306f4dad39ecc37e1798dd017c004fe517c237c03c0af00ca5",
+        "byte_identical": true
+      }
+    },
+    {
+      "ordinal": 8,
+      "provider": "rbt23_tact_d150_nodag",
+      "started_utc": "2026-07-17T07:00:32Z",
+      "ended_utc": "2026-07-17T07:00:40Z",
+      "args": "--build exp/rb/build_v23 --split test --arm A --system tact --delta 1.5 --dag off --decider llm --input audio --provider rbt23_tact_d150_nodag",
+      "cache_seeded_from": "rbt23_tact_d200",
+      "cache_seed_sha256": "76406bc8331a55306f4dad39ecc37e1798dd017c004fe517c237c03c0af00ca5",
+      "scorer_freeze_v4_verified_by_runner": true,
+      "metrics": {
+        "n": 546,
+        "exact": 0.1722,
+        "state_verbatim": 0.1722,
+        "state_normalized": 0.1795,
+        "U": 0.132,
+        "wrong_commits": 0,
+        "unrepaired": 0,
+        "first_p50": 1.64,
+        "done_p50": 3.768,
+        "by_layer_exact": {
+          "L1": 0.2889,
+          "L10": 0.1,
+          "L12": 0.1818,
+          "L2": 0.2683,
+          "L3": 0.0196,
+          "L4": 0.0156,
+          "L5": 0.0141,
+          "L6": 0.0,
+          "L7": 0.0,
+          "L8": 0.3333,
+          "L9": 0.6786
+        }
+      },
+      "armb_timing": null,
+      "report": {
+        "path": "exp/rb/build_v23/rb_report_rbt23_tact_d150_nodag.json",
+        "live_sha256": "e485e0880019c176d2bd17b38162cb310dd12f3e6dd355b8224267e52375112b",
+        "replay_sha256": "e485e0880019c176d2bd17b38162cb310dd12f3e6dd355b8224267e52375112b",
+        "byte_identical": true
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v23/results/rbt23_tact_d150_nodag",
+        "files": 546,
+        "live_sha256": "b0204f3300e15eb42198788d935d76a2b44fd323ed03d55d197bed462ad25924",
+        "replay_sha256": "b0204f3300e15eb42198788d935d76a2b44fd323ed03d55d197bed462ad25924",
+        "byte_identical": true
+      },
+      "first_run_decision_cache": {
+        "hits": 1430,
+        "misses": 2,
+        "entries_after": 1973
+      },
+      "offline_replay": {
+        "hits": 1432,
+        "misses": 0
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v23/decision_cache_rbt23_tact_d150_nodag.json",
+        "live_sha256": "6808901bac536e17c3eefc53bd1a3197eed19e7778c65a4de5d9f7eddae1349c",
+        "replay_sha256": "6808901bac536e17c3eefc53bd1a3197eed19e7778c65a4de5d9f7eddae1349c",
+        "byte_identical": true
+      }
+    },
+    {
+      "ordinal": 9,
+      "provider": "rbt23_tact_d150_fcv1",
+      "started_utc": "2026-07-17T07:00:49Z",
+      "ended_utc": "2026-07-17T07:00:52Z",
+      "args": "--build exp/rb/build_v23 --split test --arm A --system tact --delta 1.5 --floor-commit-tiers v1 --decider llm --input audio --provider rbt23_tact_d150_fcv1",
+      "cache_seeded_from": "rbt23_tact_d150",
+      "cache_seed_sha256": "8994c3ca59d8d67d681b1599551941aff52f42a765ed812841463e0704b9505a",
+      "scorer_freeze_v4_verified_by_runner": true,
+      "metrics": {
+        "n": 546,
+        "exact": 0.174,
+        "state_verbatim": 0.174,
+        "state_normalized": 0.1813,
+        "U": 0.1334,
+        "wrong_commits": 0,
+        "unrepaired": 0,
+        "first_p50": 1.64,
+        "done_p50": 3.789,
+        "by_layer_exact": {
+          "L1": 0.2889,
+          "L10": 0.1,
+          "L12": 0.1818,
+          "L2": 0.2683,
+          "L3": 0.0196,
+          "L4": 0.0312,
+          "L5": 0.0141,
+          "L6": 0.0,
+          "L7": 0.0,
+          "L8": 0.3333,
+          "L9": 0.6786
+        }
+      },
+      "armb_timing": null,
+      "report": {
+        "path": "exp/rb/build_v23/rb_report_rbt23_tact_d150_fcv1.json",
+        "live_sha256": "6e0a4e90fda9e995fddd0a6260ae979ba91cb5a6fe0a192d0b58f74bc40dcbcd",
+        "replay_sha256": "6e0a4e90fda9e995fddd0a6260ae979ba91cb5a6fe0a192d0b58f74bc40dcbcd",
+        "byte_identical": true
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v23/results/rbt23_tact_d150_fcv1",
+        "files": 546,
+        "live_sha256": "8d2253a20f6ae9decdba6700c24d6a29b5d63adc5f0a2e14915cff5203594e2a",
+        "replay_sha256": "8d2253a20f6ae9decdba6700c24d6a29b5d63adc5f0a2e14915cff5203594e2a",
+        "byte_identical": true
+      },
+      "first_run_decision_cache": {
+        "hits": 1432,
+        "misses": 0,
+        "entries_after": 1432
+      },
+      "offline_replay": {
+        "hits": 1432,
+        "misses": 0
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v23/decision_cache_rbt23_tact_d150_fcv1.json",
+        "live_sha256": "8994c3ca59d8d67d681b1599551941aff52f42a765ed812841463e0704b9505a",
+        "replay_sha256": "8994c3ca59d8d67d681b1599551941aff52f42a765ed812841463e0704b9505a",
+        "byte_identical": true
+      }
+    },
+    {
+      "ordinal": 10,
+      "provider": "rbt23_tact_d150_fcfiller",
+      "started_utc": "2026-07-17T07:00:59Z",
+      "ended_utc": "2026-07-17T07:01:03Z",
+      "args": "--build exp/rb/build_v23 --split test --arm A --system tact --delta 1.5 --floor-commit-tiers always_filler --decider llm --input audio --provider rbt23_tact_d150_fcfiller",
+      "cache_seeded_from": "rbt23_tact_d150",
+      "cache_seed_sha256": "8994c3ca59d8d67d681b1599551941aff52f42a765ed812841463e0704b9505a",
+      "scorer_freeze_v4_verified_by_runner": true,
+      "metrics": {
+        "n": 546,
+        "exact": 0.174,
+        "state_verbatim": 0.174,
+        "state_normalized": 0.1813,
+        "U": 0.1334,
+        "wrong_commits": 0,
+        "unrepaired": 0,
+        "first_p50": 1.64,
+        "done_p50": 3.789,
+        "by_layer_exact": {
+          "L1": 0.2889,
+          "L10": 0.1,
+          "L12": 0.1818,
+          "L2": 0.2683,
+          "L3": 0.0196,
+          "L4": 0.0312,
+          "L5": 0.0141,
+          "L6": 0.0,
+          "L7": 0.0,
+          "L8": 0.3333,
+          "L9": 0.6786
+        }
+      },
+      "armb_timing": null,
+      "report": {
+        "path": "exp/rb/build_v23/rb_report_rbt23_tact_d150_fcfiller.json",
+        "live_sha256": "c1da8dd79b7615758c81cd06a61db9ebdf090f94a1d8bb19d2389ce8b7ab5043",
+        "replay_sha256": "c1da8dd79b7615758c81cd06a61db9ebdf090f94a1d8bb19d2389ce8b7ab5043",
+        "byte_identical": true
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v23/results/rbt23_tact_d150_fcfiller",
+        "files": 546,
+        "live_sha256": "fe5b61019dcee8830067efe8fc168eff5ab21e5a54d9a9a14fb0285c8ad65df9",
+        "replay_sha256": "fe5b61019dcee8830067efe8fc168eff5ab21e5a54d9a9a14fb0285c8ad65df9",
+        "byte_identical": true
+      },
+      "first_run_decision_cache": {
+        "hits": 1432,
+        "misses": 0,
+        "entries_after": 1432
+      },
+      "offline_replay": {
+        "hits": 1432,
+        "misses": 0
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v23/decision_cache_rbt23_tact_d150_fcfiller.json",
+        "live_sha256": "8994c3ca59d8d67d681b1599551941aff52f42a765ed812841463e0704b9505a",
+        "replay_sha256": "8994c3ca59d8d67d681b1599551941aff52f42a765ed812841463e0704b9505a",
+        "byte_identical": true
+      }
+    },
+    {
+      "ordinal": 11,
+      "provider": "rbt23_tact_d150_fcsilent",
+      "started_utc": "2026-07-17T07:01:10Z",
+      "ended_utc": "2026-07-17T07:01:14Z",
+      "args": "--build exp/rb/build_v23 --split test --arm A --system tact --delta 1.5 --floor-commit-tiers always_silent --decider llm --input audio --provider rbt23_tact_d150_fcsilent",
+      "cache_seeded_from": "rbt23_tact_d150",
+      "cache_seed_sha256": "8994c3ca59d8d67d681b1599551941aff52f42a765ed812841463e0704b9505a",
+      "scorer_freeze_v4_verified_by_runner": true,
+      "metrics": {
+        "n": 546,
+        "exact": 0.174,
+        "state_verbatim": 0.174,
+        "state_normalized": 0.1813,
+        "U": 0.1334,
+        "wrong_commits": 0,
+        "unrepaired": 0,
+        "first_p50": 3.749,
+        "done_p50": 3.789,
+        "by_layer_exact": {
+          "L1": 0.2889,
+          "L10": 0.1,
+          "L12": 0.1818,
+          "L2": 0.2683,
+          "L3": 0.0196,
+          "L4": 0.0312,
+          "L5": 0.0141,
+          "L6": 0.0,
+          "L7": 0.0,
+          "L8": 0.3333,
+          "L9": 0.6786
+        }
+      },
+      "armb_timing": null,
+      "report": {
+        "path": "exp/rb/build_v23/rb_report_rbt23_tact_d150_fcsilent.json",
+        "live_sha256": "b3f7650111a0cb9f18a0ab3b4f536f502c2c02e982d6e28f54a246610060f704",
+        "replay_sha256": "b3f7650111a0cb9f18a0ab3b4f536f502c2c02e982d6e28f54a246610060f704",
+        "byte_identical": true
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v23/results/rbt23_tact_d150_fcsilent",
+        "files": 546,
+        "live_sha256": "7a656d944e08eef140e5b1cd309fe3ef0666a0f9ed7d9fa83ce5ad6dd5814426",
+        "replay_sha256": "7a656d944e08eef140e5b1cd309fe3ef0666a0f9ed7d9fa83ce5ad6dd5814426",
+        "byte_identical": true
+      },
+      "first_run_decision_cache": {
+        "hits": 1432,
+        "misses": 0,
+        "entries_after": 1432
+      },
+      "offline_replay": {
+        "hits": 1432,
+        "misses": 0
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v23/decision_cache_rbt23_tact_d150_fcsilent.json",
+        "live_sha256": "8994c3ca59d8d67d681b1599551941aff52f42a765ed812841463e0704b9505a",
+        "replay_sha256": "8994c3ca59d8d67d681b1599551941aff52f42a765ed812841463e0704b9505a",
+        "byte_identical": true
+      }
+    },
+    {
+      "ordinal": 12,
+      "provider": "rbt23_oracle_a",
+      "started_utc": "2026-07-17T07:01:19Z",
+      "ended_utc": "2026-07-17T07:01:20Z",
+      "args": "--build exp/rb/build_v23 --split test --arm A --decider oracle --input text --provider rbt23_oracle_a",
+      "cache_seeded_from": null,
+      "cache_seed_sha256": null,
+      "scorer_freeze_v4_verified_by_runner": true,
+      "metrics": {
+        "n": 546,
+        "exact": 0.9121,
+        "state_verbatim": 0.9121,
+        "state_normalized": 0.9121,
+        "U": 0.6827,
+        "wrong_commits": 0,
+        "unrepaired": 0,
+        "first_p50": 1.64,
+        "done_p50": 4.325,
+        "by_layer_exact": {
+          "L1": 1.0,
+          "L10": 1.0,
+          "L12": 1.0,
+          "L2": 1.0,
+          "L3": 1.0,
+          "L4": 1.0,
+          "L5": 0.4366,
+          "L6": 0.8182,
+          "L7": 1.0,
+          "L8": 1.0,
+          "L9": 1.0
+        }
+      },
+      "armb_timing": null,
+      "report": {
+        "path": "exp/rb/build_v23/rb_report_rbt23_oracle_a.json",
+        "live_sha256": "a0924114a553fd7bc0fdd1434c50c47150356f809979361124e2f499adcdcbc9",
+        "replay_sha256": "a0924114a553fd7bc0fdd1434c50c47150356f809979361124e2f499adcdcbc9",
+        "byte_identical": true
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v23/results/rbt23_oracle_a",
+        "files": 546,
+        "live_sha256": "f17e07bf7281422f976bfe9d258f532efdba2e2544800531b5f83d979378067e",
+        "replay_sha256": "f17e07bf7281422f976bfe9d258f532efdba2e2544800531b5f83d979378067e",
+        "byte_identical": true
+      },
+      "first_run_decision_cache": null,
+      "offline_replay": {
+        "oracle_recomputed": true,
+        "byte_identical": true
+      },
+      "decision_cache": null
+    },
+    {
+      "ordinal": 13,
+      "provider": "rbt23_tact_d150_adm",
+      "started_utc": "2026-07-17T07:01:27Z",
+      "ended_utc": "2026-07-17T07:01:36Z",
+      "args": "--build exp/rb/build_v23 --split test --arm A --system tact --delta 1.5 --admission schema --decider llm --input audio --provider rbt23_tact_d150_adm",
+      "cache_seeded_from": "rbt23_tact_d150",
+      "cache_seed_sha256": "8994c3ca59d8d67d681b1599551941aff52f42a765ed812841463e0704b9505a",
+      "scorer_freeze_v4_verified_by_runner": true,
+      "metrics": {
+        "n": 546,
+        "exact": 0.1575,
+        "state_verbatim": 0.1575,
+        "state_normalized": 0.1648,
+        "U": 0.1205,
+        "wrong_commits": 0,
+        "unrepaired": 0,
+        "first_p50": 1.64,
+        "done_p50": 3.738,
+        "by_layer_exact": {
+          "L1": 0.2889,
+          "L10": 0.075,
+          "L12": 0.0303,
+          "L2": 0.2683,
+          "L3": 0.0,
+          "L4": 0.0156,
+          "L5": 0.0,
+          "L6": 0.0,
+          "L7": 0.0,
+          "L8": 0.3333,
+          "L9": 0.6786
+        }
+      },
+      "armb_timing": null,
+      "report": {
+        "path": "exp/rb/build_v23/rb_report_rbt23_tact_d150_adm.json",
+        "live_sha256": "afd7badc62859c0391280d7a8ad9e7806546755a74313b8331bf234ddccb797d",
+        "replay_sha256": "afd7badc62859c0391280d7a8ad9e7806546755a74313b8331bf234ddccb797d",
+        "byte_identical": true
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v23/results/rbt23_tact_d150_adm",
+        "files": 546,
+        "live_sha256": "fab7a5047a0eff7dc09ff3e46bce9c4b97c09bc7c115cfd25934e34011baee1f",
+        "replay_sha256": "fab7a5047a0eff7dc09ff3e46bce9c4b97c09bc7c115cfd25934e34011baee1f",
+        "byte_identical": true
+      },
+      "first_run_decision_cache": {
+        "hits": 1428,
+        "misses": 4,
+        "entries_after": 1436
+      },
+      "offline_replay": {
+        "hits": 1432,
+        "misses": 0
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v23/decision_cache_rbt23_tact_d150_adm.json",
+        "live_sha256": "96394da682eb69613936ad721e34ad121c146cfd9e906bfdbb650455ac8f2f30",
+        "replay_sha256": "96394da682eb69613936ad721e34ad121c146cfd9e906bfdbb650455ac8f2f30",
+        "byte_identical": true
+      }
+    },
+    {
+      "ordinal": 14,
+      "provider": "rbt23_b_tact_d150",
+      "started_utc": "2026-07-17T07:01:52Z",
+      "ended_utc": "2026-07-17T07:16:55Z",
+      "args": "--build exp/rb/build_v23 --split test --arm B --system tact --delta 1.5 --decider llm --input audio --tts qwen --provider rbt23_b_tact_d150",
+      "cache_seeded_from": null,
+      "cache_seed_sha256": null,
+      "scorer_freeze_v4_verified_by_runner": true,
+      "metrics": {
+        "n": 365,
+        "exact": 0.1425,
+        "state_verbatim": 0.1425,
+        "state_normalized": 0.1534,
+        "U": 0.0973,
+        "wrong_commits": 0,
+        "unrepaired": 0,
+        "first_p50": 1.64,
+        "done_p50": 3.73,
+        "by_layer_exact": {
+          "L10": 0.0526,
+          "L11": 0.5556,
+          "L4": 0.0217,
+          "L5": 0.0,
+          "L6": 0.0263,
+          "L7": 0.0,
+          "L8": 0.0341,
+          "L9": 0.6522
+        }
+      },
+      "armb_timing": {
+        "episodes_with_overlap": 0,
+        "total_overlaps": 0
+      },
+      "report": {
+        "path": "exp/rb/build_v23/rb_report_rbt23_b_tact_d150.json",
+        "live_sha256": "b939668bce92165faca05abc92fcdedf4239d88bacb548adf09021ffb1741dd8",
+        "replay_sha256": "b939668bce92165faca05abc92fcdedf4239d88bacb548adf09021ffb1741dd8",
+        "byte_identical": true
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v23/results/rbt23_b_tact_d150",
+        "files": 365,
+        "live_sha256": "85a17f77738d3f28bed76e75456383d62da9071edd151f957daff2a8339fbe27",
+        "replay_sha256": "85a17f77738d3f28bed76e75456383d62da9071edd151f957daff2a8339fbe27",
+        "byte_identical": true
+      },
+      "first_run_decision_cache": {
+        "hits": 0,
+        "misses": 955,
+        "entries_after": 955
+      },
+      "offline_replay": {
+        "hits": 955,
+        "misses": 0
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v23/decision_cache_rbt23_b_tact_d150.json",
+        "live_sha256": "56f4c5b2e0f5f4c298df4f8403baf5e65bddff87d57ec6c2dbb2a0d26ea35774",
+        "replay_sha256": "56f4c5b2e0f5f4c298df4f8403baf5e65bddff87d57ec6c2dbb2a0d26ea35774",
+        "byte_identical": true
+      }
+    },
+    {
+      "ordinal": 15,
+      "provider": "rbt23_b_tact_d150_adm",
+      "started_utc": "2026-07-17T07:17:17Z",
+      "ended_utc": "2026-07-17T07:17:54Z",
+      "args": "--build exp/rb/build_v23 --split test --arm B --system tact --delta 1.5 --admission schema --decider llm --input audio --tts qwen --provider rbt23_b_tact_d150_adm",
+      "cache_seeded_from": "rbt23_b_tact_d150",
+      "cache_seed_sha256": "56f4c5b2e0f5f4c298df4f8403baf5e65bddff87d57ec6c2dbb2a0d26ea35774",
+      "scorer_freeze_v4_verified_by_runner": true,
+      "metrics": {
+        "n": 365,
+        "exact": 0.1452,
+        "state_verbatim": 0.1452,
+        "state_normalized": 0.1562,
+        "U": 0.0996,
+        "wrong_commits": 0,
+        "unrepaired": 0,
+        "first_p50": 1.64,
+        "done_p50": 3.692,
+        "by_layer_exact": {
+          "L10": 0.0526,
+          "L11": 0.5556,
+          "L4": 0.0217,
+          "L5": 0.0238,
+          "L6": 0.0263,
+          "L7": 0.0,
+          "L8": 0.0341,
+          "L9": 0.6522
+        }
+      },
+      "armb_timing": {
+        "episodes_with_overlap": 0,
+        "total_overlaps": 0
+      },
+      "report": {
+        "path": "exp/rb/build_v23/rb_report_rbt23_b_tact_d150_adm.json",
+        "live_sha256": "7d6668b1e7207f1513204931bb00b6be61d66a63a0d9b28a2299b86fb393df91",
+        "replay_sha256": "7d6668b1e7207f1513204931bb00b6be61d66a63a0d9b28a2299b86fb393df91",
+        "byte_identical": true
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v23/results/rbt23_b_tact_d150_adm",
+        "files": 365,
+        "live_sha256": "25b7c319eff2018aea82d4220f7a138d0b8a2ee6f264ec4319363cce0b9a6a73",
+        "replay_sha256": "25b7c319eff2018aea82d4220f7a138d0b8a2ee6f264ec4319363cce0b9a6a73",
+        "byte_identical": true
+      },
+      "first_run_decision_cache": {
+        "hits": 950,
+        "misses": 4,
+        "entries_after": 959
+      },
+      "offline_replay": {
+        "hits": 954,
+        "misses": 0
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v23/decision_cache_rbt23_b_tact_d150_adm.json",
+        "live_sha256": "0de63932c682c09d1de020e9f9006bca0fc2ec29acd3c4585713f3d294bf2ee4",
+        "replay_sha256": "0de63932c682c09d1de020e9f9006bca0fc2ec29acd3c4585713f3d294bf2ee4",
+        "byte_identical": true
+      }
+    },
+    {
+      "ordinal": 16,
+      "provider": "rbt23_b_sblock",
+      "started_utc": "2026-07-17T07:18:05Z",
+      "ended_utc": "2026-07-17T07:31:20Z",
+      "args": "--build exp/rb/build_v23 --split test --arm B --system blocking --decider llm --input audio --tts qwen --provider rbt23_b_sblock",
+      "cache_seeded_from": null,
+      "cache_seed_sha256": null,
+      "scorer_freeze_v4_verified_by_runner": true,
+      "metrics": {
+        "n": 365,
+        "exact": 0.0959,
+        "state_verbatim": 0.0959,
+        "state_normalized": 0.1068,
+        "U": 0.0648,
+        "wrong_commits": 0,
+        "unrepaired": 0,
+        "first_p50": 1.859,
+        "done_p50": 2.071,
+        "by_layer_exact": {
+          "L10": 0.1053,
+          "L11": 0.0,
+          "L4": 0.0,
+          "L5": 0.0,
+          "L6": 0.0,
+          "L7": 0.0,
+          "L8": 0.0114,
+          "L9": 0.6522
+        }
+      },
+      "armb_timing": {
+        "episodes_with_overlap": 0,
+        "total_overlaps": 0
+      },
+      "report": {
+        "path": "exp/rb/build_v23/rb_report_rbt23_b_sblock.json",
+        "live_sha256": "c6c5453d71a67cf2827f63768e913b9011f2a5a99d9dd2917b1829fcbfdf69ef",
+        "replay_sha256": "c6c5453d71a67cf2827f63768e913b9011f2a5a99d9dd2917b1829fcbfdf69ef",
+        "byte_identical": true
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v23/results/rbt23_b_sblock",
+        "files": 365,
+        "live_sha256": "3a0541fde95be20a9367c6f646cf35c7b84109722fae34122d59e0a102265158",
+        "replay_sha256": "3a0541fde95be20a9367c6f646cf35c7b84109722fae34122d59e0a102265158",
+        "byte_identical": true
+      },
+      "first_run_decision_cache": {
+        "hits": 0,
+        "misses": 866,
+        "entries_after": 866
+      },
+      "offline_replay": {
+        "hits": 866,
+        "misses": 0
+      },
+      "decision_cache": {
+        "path": "exp/rb/build_v23/decision_cache_rbt23_b_sblock.json",
+        "live_sha256": "ca2a04b93c447460f3f58bbee3df4bbe545ead29a87af9c12190999af224aeb9",
+        "replay_sha256": "ca2a04b93c447460f3f58bbee3df4bbe545ead29a87af9c12190999af224aeb9",
+        "byte_identical": true
+      }
+    },
+    {
+      "ordinal": 17,
+      "provider": "rbt23_b_oracle",
+      "started_utc": "2026-07-17T07:31:33Z",
+      "ended_utc": "2026-07-17T07:31:33Z",
+      "args": "--build exp/rb/build_v23 --split test --arm B --decider oracle --input text --provider rbt23_b_oracle",
+      "cache_seeded_from": null,
+      "cache_seed_sha256": null,
+      "scorer_freeze_v4_verified_by_runner": true,
+      "metrics": {
+        "n": 365,
+        "exact": 0.874,
+        "state_verbatim": 0.874,
+        "state_normalized": 0.874,
+        "U": 0.642,
+        "wrong_commits": 0,
+        "unrepaired": 0,
+        "first_p50": 1.64,
+        "done_p50": 4.298,
+        "by_layer_exact": {
+          "L10": 1.0,
+          "L11": 1.0,
+          "L4": 1.0,
+          "L5": 0.5952,
+          "L6": 0.7632,
+          "L7": 1.0,
+          "L8": 0.7727,
+          "L9": 1.0
+        }
+      },
+      "armb_timing": {
+        "episodes_with_overlap": 0,
+        "total_overlaps": 0
+      },
+      "report": {
+        "path": "exp/rb/build_v23/rb_report_rbt23_b_oracle.json",
+        "live_sha256": "872f1769dc0b60af47bc4a95d9e6d5c0dec7fb4fb614475b888031c336638f21",
+        "replay_sha256": "872f1769dc0b60af47bc4a95d9e6d5c0dec7fb4fb614475b888031c336638f21",
+        "byte_identical": true
+      },
+      "results_dir": {
+        "path": "exp/rb/build_v23/results/rbt23_b_oracle",
+        "files": 365,
+        "live_sha256": "10a60ae9e7f9c2bec84b880cf31964c04003bc4db74138f2eee4b170c124a4a5",
+        "replay_sha256": "10a60ae9e7f9c2bec84b880cf31964c04003bc4db74138f2eee4b170c124a4a5",
+        "byte_identical": true
+      },
+      "first_run_decision_cache": null,
+      "offline_replay": {
+        "oracle_recomputed": true,
+        "byte_identical": true
+      },
+      "decision_cache": null
+    }
+  ],
+  "armb_hard_gate": {
+    "criterion": "armb_timing.total_overlaps == 0 for every arm-B provider",
+    "providers": {
+      "rbt23_b_tact_d150": {
+        "episodes_with_overlap": 0,
+        "total_overlaps": 0
+      },
+      "rbt23_b_tact_d150_adm": {
+        "episodes_with_overlap": 0,
+        "total_overlaps": 0
+      },
+      "rbt23_b_sblock": {
+        "episodes_with_overlap": 0,
+        "total_overlaps": 0
+      },
+      "rbt23_b_oracle": {
+        "episodes_with_overlap": 0,
+        "total_overlaps": 0
+      }
+    },
+    "verdict": "PASS"
+  },
+  "admission_pairing": {
+    "criterion": "R-ADM1 requires main_only_pass == 0 per arm",
+    "arm_A": {
+      "main_provider": "rbt23_tact_d150",
+      "admission_provider": "rbt23_tact_d150_adm",
+      "n": 546,
+      "admission_only_pass": {
+        "count": 1,
+        "ids": [
+          "A_L8_0057"
+        ]
+      },
+      "main_only_pass": {
+        "count": 10,
+        "ids": [
+          "A_L10_0020",
+          "A_L12_0001",
+          "A_L12_0009",
+          "A_L12_0020",
+          "A_L12_0025",
+          "A_L12_0034",
+          "A_L3_0025",
+          "A_L4_0016",
+          "A_L5_0008",
+          "A_L8_0048"
+        ]
+      },
+      "both_pass": 85,
+      "both_fail": 450,
+      "R_ADM1_main_only_pass_zero": false
+    },
+    "arm_B": {
+      "main_provider": "rbt23_b_tact_d150",
+      "admission_provider": "rbt23_b_tact_d150_adm",
+      "n": 365,
+      "admission_only_pass": {
+        "count": 1,
+        "ids": [
+          "B_L5_0005"
+        ]
+      },
+      "main_only_pass": {
+        "count": 0,
+        "ids": []
+      },
+      "both_pass": 52,
+      "both_fail": 312,
+      "R_ADM1_main_only_pass_zero": true
+    },
+    "arm_A_audit_census": {
+      "episodes_with_audit": 61,
+      "decision_events": 61,
+      "patch_audits": 63,
+      "rejected_keys": 67,
+      "kept_keys": 0,
+      "dropped_patches": 63,
+      "redirect_candidate_links": 42
+    },
+    "arm_B_audit_census": {
+      "episodes_with_audit": 32,
+      "decision_events": 32,
+      "patch_audits": 35,
+      "rejected_keys": 36,
+      "kept_keys": 0,
+      "dropped_patches": 35,
+      "redirect_candidate_links": 20
+    },
+    "verdict": "FAIL_ARM_A",
+    "interpretation_deferred_to_section_10": true
+  },
+  "offline_replay": {
+    "services_stopped_before_replay": true,
+    "providers_replayed": 17,
+    "llm_providers_replayed": 15,
+    "oracle_providers_recomputed": 2,
+    "total_result_files": 8558,
+    "decision_cache_misses": 0,
+    "reports_byte_identical": true,
+    "decision_caches_byte_identical": true,
+    "result_directories_byte_identical": true,
+    "result_directory_hash_algorithm": "sha256 over sorted(relative_path + NUL + file_bytes)",
+    "hash_mismatches": [],
+    "verdict": "PASS"
+  },
+  "formal_exceptions": [],
+  "anomalies": [
+    {
+      "code": "preflight_git_autogc_unreachable_object_warning",
+      "phase": "git pull before preflight",
+      "impact": "none",
+      "detail": "git pull --ff-only reached the required 78786201 head, but automatic maintenance repeated the pre-existing unreachable broken-link warning (missing d215c907..., parent of dangling 3a1cb90f...). The same warning recurred during git commit's background auto-pack; the commit itself succeeded. Reachable HEAD/origin history was unaffected."
+    },
+    {
+      "code": "prewarm_tts_gpu_oom_during_initial_colocation",
+      "phase": "service setup before any formal provider",
+      "impact": "none on formal providers; no provider rerun",
+      "detail": "The first attempt to start persistent Qwen TTS while the frozen Omni stack occupied the 96 GiB GPU failed with CUDA OOM. No test provider or decision cache had started. Omni and proxy were stopped, TTS was started alone, and all 725 segments were prewarmed before the frozen Omni stack was started once for the formal run."
+    },
+    {
+      "code": "prewarm_reorder_shutdown_resource_tracker_warning",
+      "phase": "prewarm service reorder before any formal provider",
+      "impact": "none",
+      "detail": "Stopping the initial Omni process after the prewarm colocation failure emitted a resource_tracker warning about 2 leaked semaphore objects; ports and GPU were clean before the formal service start."
+    },
+    {
+      "code": "formal_shutdown_resource_tracker_warning",
+      "phase": "service shutdown after all 17 live providers",
+      "impact": "none",
+      "detail": "vLLM shutdown emitted resource_tracker warnings for 2 semaphore and 4599 shared-memory objects. All three service ports closed and GPU memory/utilization reached zero before offline replay."
+    },
+    {
+      "code": "pytest_return_not_none_warnings",
+      "phase": "preflight regression",
+      "impact": "none",
+      "detail": "pytest completed 156 passed with 4 known PytestReturnNotNone warnings."
+    },
+    {
+      "code": "postrun_hash_probe_path_typo",
+      "phase": "receipt preparation after replay",
+      "impact": "none",
+      "detail": "A read-only sha256 probe initially guessed rb/admission.py and exp/rb/content_bank_v23.json; both paths do not exist. The actual tracked paths src/admission.py and exp/rb/content_bank.json were then hashed."
+    }
+  ],
+  "repository_integrity": {
+    "reachable_head_and_origin_main_connectivity": "PASS",
+    "reachable_refs_missing_objects": 0,
+    "secret_scan": {
+      "files_scanned": 8592,
+      "rules": [
+        "private_key",
+        "openai_style_key",
+        "aws_access_key",
+        "github_token",
+        "huggingface_token",
+        "google_api_key",
+        "slack_token",
+        "credentialed_url"
+      ],
+      "matches": 0,
+      "verdict": "PASS"
+    },
+    "receipt_artifact_crosscheck": {
+      "providers": 17,
+      "reports": 17,
+      "decision_caches": 15,
+      "result_files": 8558,
+      "verdict": "PASS"
+    }
+  },
+  "archive_discipline": {
+    "audio_in_git": false,
+    "tts_cache_in_git": false,
+    "runtime_logs_in_git": false,
+    "reports_caches_results_receipt_in_git": true,
+    "secret_scan_before_push": "PASS"
+  }
+}

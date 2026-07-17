@@ -1,0 +1,71 @@
+{
+ "id": "B_L9_0002",
+ "layer": "L9",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 10.837,
+ "U": 0.5736,
+ "U_sens": {
+  "0.5": 0.5736,
+  "1.0": 0.5736,
+  "2.0": 0.5736
+ },
+ "first_response_s": 10.837,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 3.66,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "save_listing",
+     "op_id": 2
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 26.814,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   4.66,
+   "好的，马上办。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   3.02,
+   "user"
+  ],
+  [
+   25.454,
+   26.174,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   22.434
+  ]
+ }
+}

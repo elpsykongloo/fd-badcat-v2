@@ -1,0 +1,83 @@
+{
+ "id": "B_L6_0012",
+ "layer": "L6",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 2.058,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.34,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    }
+   ],
+   "say": ""
+  },
+  {
+   "i": 2,
+   "t_eou": 13.79,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 3
+    }
+   ],
+   "say": "Updating to wireless earbuds and adding them to your cart."
+  }
+ ],
+ "say_events": [
+  [
+   14.79,
+   "Updating to wireless earbuds and adding them to your cart."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.7,
+   "user"
+  ],
+  [
+   7.34,
+   9.58,
+   "user"
+  ],
+  [
+   9.63,
+   13.15,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   1.64,
+   0.05
+  ]
+ }
+}

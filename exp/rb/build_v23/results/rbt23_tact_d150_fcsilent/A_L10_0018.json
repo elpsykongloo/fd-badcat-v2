@@ -1,0 +1,83 @@
+{
+ "id": "A_L10_0018",
+ "layer": "L10",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 7.728,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 5.607,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 8.158,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_rentals",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "book_viewing",
+     "op_id": 3
+    }
+   ],
+   "say": "",
+   "fc_tier": "silence"
+  },
+  {
+   "i": 1,
+   "t_eou": 12.125,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "city": "杭州"
+     }
+    },
+    {
+     "type": "cancel",
+     "op_id": 3
+    }
+   ],
+   "say": "好的，已将城市改为杭州，并取消了原看房预约。"
+  }
+ ],
+ "say_events": [
+  [
+   13.125,
+   "好的，已将城市改为杭州，并取消了原看房预约。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   7.518,
+   "user"
+  ],
+  [
+   9.302,
+   11.485,
+   "bystander"
+  ]
+ ]
+}

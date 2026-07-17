@@ -1,0 +1,72 @@
+{
+  "n": 365,
+  "exact": 0.0959,
+  "state_verbatim": 0.0959,
+  "state_normalized": 0.1068,
+  "U_mean": 0.0648,
+  "wrong_commits": 0,
+  "unrepaired": 0,
+  "first_p50": 1.859,
+  "done_p50": 2.071,
+  "by_layer": {
+    "L10": {
+      "n": 38,
+      "exact": 0.1053,
+      "U": 0.0908
+    },
+    "L11": {
+      "n": 27,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L4": {
+      "n": 46,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L5": {
+      "n": 42,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L6": {
+      "n": 38,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L7": {
+      "n": 40,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L8": {
+      "n": 88,
+      "exact": 0.0114,
+      "U": 0.0103
+    },
+    "L9": {
+      "n": 46,
+      "exact": 0.6522,
+      "U": 0.4196
+    }
+  },
+  "armb_timing": {
+    "episodes_with_overlap": 0,
+    "total_overlaps": 0
+  },
+  "provider": "rbt23_b_sblock",
+  "config": {
+    "arm": "B",
+    "system": "blocking",
+    "delta": 1.5,
+    "commit_barrier": "on",
+    "input": "audio",
+    "decider": "llm",
+    "floor_commit_tiers": null,
+    "split": "test",
+    "infer_nominal": 1.0,
+    "dag": "on",
+    "attr": "off",
+    "admission": null
+  }
+}

@@ -1,0 +1,77 @@
+{
+ "id": "B_L5_0019",
+ "layer": "L5",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 2.132,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 10.151,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    }
+   ],
+   "say": ""
+  },
+  {
+   "i": 1,
+   "t_eou": 15.548,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "hold_seat",
+     "op_id": 3
+    }
+   ],
+   "say": "Updating that to May 8 and holding a first-class seat now."
+  }
+ ],
+ "say_events": [
+  [
+   16.548,
+   "Updating that to May 8 and holding a first-class seat now."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   9.511,
+   "user"
+  ],
+  [
+   12.803,
+   14.908,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   3.292
+  ]
+ }
+}

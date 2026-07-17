@@ -1,0 +1,82 @@
+{
+ "id": "A_L12_0012",
+ "layer": "L12",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.574,
+ "U": 0.8325,
+ "U_sens": {
+  "0.5": 0.8325,
+  "1.0": 0.8325,
+  "2.0": 0.8325
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 4.92,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "check_stock",
+     "op_id": 3
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 10.213,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "item_id": "C330"
+     }
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   5.92,
+   "好的，马上办。"
+  ],
+  [
+   11.213,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   4.28,
+   "user"
+  ],
+  [
+   6.693,
+   9.573,
+   "user"
+  ]
+ ]
+}

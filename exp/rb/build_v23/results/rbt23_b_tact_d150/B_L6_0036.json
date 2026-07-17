@@ -1,0 +1,120 @@
+{
+ "id": "B_L6_0036",
+ "layer": "L6",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 1.03,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.251,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "place_order",
+     "op_id": 4
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 11.299,
+   "ops": [
+    {
+     "type": "cancel",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 5
+    },
+    {
+     "type": "launch_dedup",
+     "fn": "add_item"
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 2,
+   "t_eou": 19.797,
+   "ops": [
+    {
+     "type": "launch_dedup",
+     "fn": "search_catalog"
+    }
+   ],
+   "say": "I'm on it."
+  }
+ ],
+ "say_events": [
+  [
+   7.251,
+   "I'm on it."
+  ],
+  [
+   12.299,
+   "I'm on it."
+  ],
+  [
+   20.797,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.611,
+   "user"
+  ],
+  [
+   7.251,
+   10.659,
+   "user"
+  ],
+  [
+   13.349,
+   19.157,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   1.64,
+   2.69
+  ]
+ }
+}

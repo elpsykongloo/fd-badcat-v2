@@ -1,0 +1,55 @@
+{
+ "id": "A_L2_0037",
+ "layer": "L2",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 6.947,
+ "U": 0.7002,
+ "U_sens": {
+  "0.5": 0.7002,
+  "1.0": 0.7002,
+  "2.0": 0.7002
+ },
+ "first_response_s": 6.947,
+ "n_eou": 1,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 1,
+   "t_eou": 6.64,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "schedule_payment",
+     "op_id": 2
+    }
+   ],
+   "say": "",
+   "fc_tier": "silence"
+  }
+ ],
+ "say_events": [],
+ "segs": [
+  [
+   0.5,
+   3.808,
+   "user"
+  ],
+  [
+   4.231,
+   6.0,
+   "user"
+  ]
+ ]
+}

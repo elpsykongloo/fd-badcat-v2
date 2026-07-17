@@ -1,0 +1,105 @@
+{
+ "id": "A_L6_0001",
+ "layer": "L6",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 0.698,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.676,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 3
+    }
+   ],
+   "say": "稍等，我看一下。",
+   "fc_tier": "filler"
+  },
+  {
+   "i": 1,
+   "t_eou": 12.887,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "to_cur": "USD"
+     }
+    },
+    {
+     "type": "launch",
+     "fn": "get_balance",
+     "op_id": 4
+    }
+   ],
+   "say": "",
+   "fc_tier": "silence"
+  },
+  {
+   "i": 2,
+   "t_eou": 18.679,
+   "ops": [
+    {
+     "type": "launch_dedup",
+     "fn": "get_fx_quote"
+    }
+   ],
+   "say": "I'm on it."
+  }
+ ],
+ "say_events": [
+  [
+   7.676,
+   "稍等，我看一下。"
+  ],
+  [
+   19.679,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.036,
+   "user"
+  ],
+  [
+   7.257,
+   12.247,
+   "user"
+  ],
+  [
+   15.154,
+   18.039,
+   "user"
+  ]
+ ]
+}

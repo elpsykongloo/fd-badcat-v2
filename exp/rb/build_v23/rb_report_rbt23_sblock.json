@@ -1,0 +1,83 @@
+{
+  "n": 546,
+  "exact": 0.1832,
+  "state_verbatim": 0.1832,
+  "state_normalized": 0.1923,
+  "U_mean": 0.1254,
+  "wrong_commits": 0,
+  "unrepaired": 0,
+  "first_p50": 2.166,
+  "done_p50": 2.262,
+  "by_layer": {
+    "L1": {
+      "n": 45,
+      "exact": 0.2889,
+      "U": 0.2481
+    },
+    "L10": {
+      "n": 40,
+      "exact": 0.05,
+      "U": 0.0306
+    },
+    "L12": {
+      "n": 33,
+      "exact": 0.0909,
+      "U": 0.081
+    },
+    "L2": {
+      "n": 41,
+      "exact": 0.2683,
+      "U": 0.233
+    },
+    "L3": {
+      "n": 51,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L4": {
+      "n": 64,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L5": {
+      "n": 71,
+      "exact": 0.0282,
+      "U": 0.0239
+    },
+    "L6": {
+      "n": 44,
+      "exact": 0.0,
+      "U": 0.0
+    },
+    "L7": {
+      "n": 44,
+      "exact": 0.3182,
+      "U": 0.2761
+    },
+    "L8": {
+      "n": 57,
+      "exact": 0.2982,
+      "U": 0.2948
+    },
+    "L9": {
+      "n": 56,
+      "exact": 0.6786,
+      "U": 0.2354
+    }
+  },
+  "provider": "rbt23_sblock",
+  "config": {
+    "arm": "A",
+    "system": "blocking",
+    "delta": 1.5,
+    "commit_barrier": "on",
+    "input": "audio",
+    "decider": "llm",
+    "floor_commit_tiers": null,
+    "split": "test",
+    "infer_nominal": 1.0,
+    "dag": "on",
+    "attr": "off",
+    "admission": null
+  }
+}

@@ -1,0 +1,64 @@
+{
+ "id": "A_L12_0020",
+ "layer": "L12",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 2.115,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 1,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 1,
+   "t_eou": 13.043,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "check_stock",
+     "op_id": 3
+    }
+   ],
+   "say": "正在搜索蓝牙耳机并检查库存。已取消之前的查询，现在为您查看 C330 的库存情况。"
+  }
+ ],
+ "say_events": [
+  [
+   14.043,
+   "正在搜索蓝牙耳机并检查库存。已取消之前的查询，现在为您查看 C330 的库存情况。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.353,
+   "user"
+  ],
+  [
+   7.777,
+   12.403,
+   "user"
+  ]
+ ]
+}

@@ -1,0 +1,80 @@
+{
+ "id": "A_L7_0025",
+ "layer": "L7",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 2.0,
+ "done_s": 8.468,
+ "U": 0.5477,
+ "U_sens": {
+  "0.5": 0.5977,
+  "1.0": 0.5477,
+  "2.0": 0.4477
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 4.74,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "schedule_payment",
+     "op_id": 2
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 13.132,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "unschedule_payment",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "schedule_payment",
+     "op_id": 4
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   5.74,
+   "好的，马上办。"
+  ],
+  [
+   14.132,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   4.1,
+   "user"
+  ],
+  [
+   10.512,
+   12.492,
+   "user"
+  ]
+ ]
+}

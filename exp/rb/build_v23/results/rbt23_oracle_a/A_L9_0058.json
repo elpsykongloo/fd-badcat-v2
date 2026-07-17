@@ -1,0 +1,65 @@
+{
+ "id": "A_L9_0058",
+ "layer": "L9",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.99,
+ "U": 0.8149,
+ "U_sens": {
+  "0.5": 0.8149,
+  "1.0": 0.8149,
+  "2.0": 0.8149
+ },
+ "first_response_s": 3.99,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 3.66,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "save_listing",
+     "op_id": 2
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 10.836,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   4.66,
+   "好的，马上办。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   3.02,
+   "user"
+  ],
+  [
+   9.476,
+   10.196,
+   "user"
+  ]
+ ]
+}

@@ -1,0 +1,90 @@
+{
+ "id": "A_L5_0072",
+ "layer": "L5",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 2.0,
+ "done_s": 7.209,
+ "U": 0.5909,
+ "U_sens": {
+  "0.5": 0.6409,
+  "1.0": 0.5909,
+  "2.0": 0.4909
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 5,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 7.44,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "place_order",
+     "op_id": 4
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 11.569,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "remove_item",
+     "op_id": 5
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 6
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   8.44,
+   "好的，马上办。"
+  ],
+  [
+   12.569,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.8,
+   "user"
+  ],
+  [
+   9.504,
+   10.929,
+   "user"
+  ]
+ ]
+}

@@ -1,0 +1,109 @@
+{
+ "id": "A_L6_0036",
+ "layer": "L6",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 2.968,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 5.754,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 10.005,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "query": "wireless earbuds"
+     }
+    },
+    {
+     "type": "cancel",
+     "op_id": 3
+    }
+   ],
+   "say": "Updating that to wireless earbuds and removing the previous item."
+  },
+  {
+   "i": 2,
+   "t_eou": 14.454,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "query": "wireless earbuds"
+     }
+    }
+   ],
+   "say": "Updating that to wireless earbuds and adding one to the cart now."
+  }
+ ],
+ "say_events": [
+  [
+   6.754,
+   "I'm on it."
+  ],
+  [
+   11.005,
+   "Updating that to wireless earbuds and removing the previous item."
+  ],
+  [
+   15.454,
+   "Updating that to wireless earbuds and adding one to the cart now."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.114,
+   "user"
+  ],
+  [
+   5.987,
+   9.365,
+   "user"
+  ],
+  [
+   11.343,
+   13.814,
+   "user"
+  ]
+ ]
+}

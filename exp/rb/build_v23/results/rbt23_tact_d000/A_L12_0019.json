@@ -1,0 +1,75 @@
+{
+ "id": "A_L12_0019",
+ "layer": "L12",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.573,
+ "U": 0.8325,
+ "U_sens": {
+  "0.5": 0.8325,
+  "1.0": 0.8325,
+  "2.0": 0.8325
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 8.774,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 12.087,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "check_visa_rule",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  }
+ ],
+ "say_events": [
+  [
+   9.774,
+   "I'm on it."
+  ],
+  [
+   13.087,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   8.134,
+   "user"
+  ],
+  [
+   9.741,
+   11.447,
+   "user"
+  ]
+ ]
+}

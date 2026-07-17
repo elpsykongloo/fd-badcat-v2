@@ -1,0 +1,113 @@
+{
+ "id": "A_L6_0040",
+ "layer": "L6",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 2.0,
+ "done_s": 3.636,
+ "U": 0.7299,
+ "U_sens": {
+  "0.5": 0.7799,
+  "1.0": 0.7299,
+  "2.0": 0.6299
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 5,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.54,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "place_order",
+     "op_id": 4
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 10.542,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "query": "蓝牙耳机"
+     }
+    }
+   ],
+   "say": "已更新。"
+  },
+  {
+   "i": 2,
+   "t_eou": 15.279,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "remove_item",
+     "op_id": 5
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 6
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   7.54,
+   "好的，马上办。"
+  ],
+  [
+   11.542,
+   "已更新。"
+  ],
+  [
+   16.279,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   5.9,
+   "user"
+  ],
+  [
+   7.202,
+   9.902,
+   "user"
+  ],
+  [
+   12.839,
+   14.639,
+   "user"
+  ]
+ ]
+}

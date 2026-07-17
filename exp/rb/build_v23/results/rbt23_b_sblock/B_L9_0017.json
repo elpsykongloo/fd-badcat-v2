@@ -1,0 +1,71 @@
+{
+ "id": "B_L9_0017",
+ "layer": "L9",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 0.0,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 0.0,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 4.47,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 2
+    }
+   ],
+   "say": "Scheduling a $5,000 transfer to your landlord for May 8."
+  },
+  {
+   "i": 1,
+   "t_eou": 45.175,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   5.47,
+   "Scheduling a $5,000 transfer to your landlord for May 8."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   3.83,
+   "user"
+  ],
+  [
+   43.606,
+   44.535,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   39.776
+  ]
+ }
+}

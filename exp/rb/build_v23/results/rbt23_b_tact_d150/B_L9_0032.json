@@ -1,0 +1,71 @@
+{
+ "id": "B_L9_0032",
+ "layer": "L9",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 24.849,
+ "U": 0.2795,
+ "U_sens": {
+  "0.5": 0.2795,
+  "1.0": 0.2795,
+  "2.0": 0.2795
+ },
+ "first_response_s": 24.849,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 3.904,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 2
+    }
+   ],
+   "say": "Adding one C330 to your cart now."
+  },
+  {
+   "i": 1,
+   "t_eou": 42.195,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   4.904,
+   "Adding one C330 to your cart now."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   3.264,
+   "user"
+  ],
+  [
+   40.844,
+   41.555,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   37.58
+  ]
+ }
+}

@@ -1,0 +1,115 @@
+{
+ "id": "A_L6_0041",
+ "layer": "L6",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 4.0,
+ "done_s": 5.825,
+ "U": 0.5417,
+ "U_sens": {
+  "0.5": 0.6417,
+  "1.0": 0.5417,
+  "2.0": 0.3417
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 4,
+ "fees": 1,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 9.39,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 3
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 13.387,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "amount": 5000
+     }
+    },
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "amount": 5000
+     }
+    }
+   ],
+   "say": "已更新。"
+  },
+  {
+   "i": 2,
+   "t_eou": 18.696,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "reverse_transfer",
+     "op_id": 4
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 5
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   10.39,
+   "好的，马上办。"
+  ],
+  [
+   14.387,
+   "已更新。"
+  ],
+  [
+   19.696,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   8.75,
+   "user"
+  ],
+  [
+   9.822,
+   12.747,
+   "user"
+  ],
+  [
+   15.431,
+   18.056,
+   "user"
+  ]
+ ]
+}

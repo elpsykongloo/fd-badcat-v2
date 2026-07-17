@@ -1,0 +1,98 @@
+{
+ "id": "B_L5_0005",
+ "layer": "L5",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.484,
+ "U": 0.8364,
+ "U_sens": {
+  "0.5": 0.8364,
+  "1.0": 0.8364,
+  "2.0": 0.8364
+ },
+ "first_response_s": 3.484,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 8.56,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 12.522,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "to_cur": "JPY"
+     }
+    }
+   ],
+   "say": "",
+   "admission": [
+    {
+     "op_id": 2,
+     "target_fn": "get_fx_quote",
+     "rejected_keys": [
+      "to_acct"
+     ],
+     "kept_keys": [],
+     "dropped": true,
+     "redirect_candidates": [
+      "transfer_funds"
+     ]
+    }
+   ]
+  }
+ ],
+ "say_events": [
+  [
+   9.56,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   7.92,
+   "user"
+  ],
+  [
+   10.336,
+   11.882,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   2.416
+  ]
+ }
+}

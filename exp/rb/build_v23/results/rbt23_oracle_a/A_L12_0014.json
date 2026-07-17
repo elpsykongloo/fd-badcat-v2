@@ -1,0 +1,82 @@
+{
+ "id": "A_L12_0014",
+ "layer": "L12",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.438,
+ "U": 0.8383,
+ "U_sens": {
+  "0.5": 0.8383,
+  "1.0": 0.8383,
+  "2.0": 0.8383
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.9,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_rentals",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "get_commute_time",
+     "op_id": 3
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 11.667,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "to_addr": "西二旗"
+     }
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   7.9,
+   "好的，马上办。"
+  ],
+  [
+   12.667,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.26,
+   "user"
+  ],
+  [
+   8.507,
+   11.027,
+   "user"
+  ]
+ ]
+}

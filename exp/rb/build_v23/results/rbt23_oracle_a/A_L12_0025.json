@@ -1,0 +1,82 @@
+{
+ "id": "A_L12_0025",
+ "layer": "L12",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.458,
+ "U": 0.8375,
+ "U_sens": {
+  "0.5": 0.8375,
+  "1.0": 0.8375,
+  "2.0": 0.8375
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 8.64,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_balance",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "set_alert",
+     "op_id": 3
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 12.359,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "threshold": 1000
+     }
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   9.64,
+   "好的，马上办。"
+  ],
+  [
+   13.359,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   8.0,
+   "user"
+  ],
+  [
+   9.619,
+   11.719,
+   "user"
+  ]
+ ]
+}

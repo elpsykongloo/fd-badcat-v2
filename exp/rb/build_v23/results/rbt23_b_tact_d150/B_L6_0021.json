@@ -1,0 +1,117 @@
+{
+ "id": "B_L6_0021",
+ "layer": "L6",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 5.397,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 8.36,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 12.158,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "amount": 3000
+     }
+    },
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "@from_acct@_label@_source_account_type@_value@_account_type_label_source_account_type_value_source_account_type_value_source_account_type_value_source_account_type_value_source_account_type_value_source_account_type_value_source_account_type_value_target_balance_checking": "$RESULT_1.id"
+     }
+    }
+   ],
+   "say": ""
+  },
+  {
+   "i": 2,
+   "t_eou": 18.979,
+   "ops": [
+    {
+     "type": "launch_dedup",
+     "fn": "get_fx_quote"
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 4
+    }
+   ],
+   "say": "I'm on it."
+  }
+ ],
+ "say_events": [
+  [
+   9.36,
+   "I'm on it."
+  ],
+  [
+   19.979,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   7.72,
+   "user"
+  ],
+  [
+   9.36,
+   11.518,
+   "user"
+  ],
+  [
+   15.683,
+   18.339,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   1.64,
+   4.165
+  ]
+ }
+}

@@ -1,0 +1,69 @@
+{
+ "id": "A_L5_0026",
+ "layer": "L5",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 1.123,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 7.73,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_rentals",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 13.515,
+   "ops": [],
+   "say": "Updating that to one bedroom and checking the listings now."
+  }
+ ],
+ "say_events": [
+  [
+   8.73,
+   "I'm on it."
+  ],
+  [
+   14.515,
+   "Updating that to one bedroom and checking the listings now."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   7.09,
+   "user"
+  ],
+  [
+   10.116,
+   12.875,
+   "user"
+  ]
+ ]
+}

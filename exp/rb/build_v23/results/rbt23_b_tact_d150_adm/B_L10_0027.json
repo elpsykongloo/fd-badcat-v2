@@ -1,0 +1,128 @@
+{
+ "id": "B_L10_0027",
+ "layer": "L10",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 11.833,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 11.767,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 15.922,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "seat_class": "商务座"
+     }
+    },
+    {
+     "type": "launch",
+     "fn": "hold_seat",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "purchase_ticket",
+     "op_id": 4
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 2,
+   "t_eou": 20.034,
+   "ops": [],
+   "say": "",
+   "admission": [
+    {
+     "op_id": 2,
+     "target_fn": "search_trains",
+     "rejected_keys": [
+      "seat_class"
+     ],
+     "kept_keys": [],
+     "dropped": true,
+     "redirect_candidates": [
+      "hold_seat"
+     ]
+    },
+    {
+     "op_id": 3,
+     "target_fn": "hold_seat",
+     "rejected_keys": [
+      "passenger"
+     ],
+     "kept_keys": [],
+     "dropped": true,
+     "redirect_candidates": [
+      "purchase_ticket"
+     ]
+    }
+   ]
+  }
+ ],
+ "say_events": [
+  [
+   12.767,
+   "I'm on it."
+  ],
+  [
+   16.922,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   11.127,
+   "user"
+  ],
+  [
+   13.327,
+   15.282,
+   "bystander"
+  ],
+  [
+   17.184,
+   19.394,
+   "bystander"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": []
+ }
+}

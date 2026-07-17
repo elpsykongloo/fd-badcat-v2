@@ -1,0 +1,87 @@
+{
+ "id": "B_L11_0026",
+ "layer": "L11",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.599,
+ "U": 0.8314,
+ "U_sens": {
+  "0.5": 0.8314,
+  "1.0": 0.8314,
+  "2.0": 0.8314
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 3.739,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "save_listing",
+     "op_id": 2
+    }
+   ],
+   "say": "Saving listing LST47 for you."
+  },
+  {
+   "i": 1,
+   "t_eou": 14.167,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "listing_id": "LST12"
+     }
+    },
+    {
+     "type": "launch_dedup",
+     "fn": "save_listing"
+    }
+   ],
+   "say": "I'm on it."
+  }
+ ],
+ "say_events": [
+  [
+   4.739,
+   "Saving listing LST47 for you."
+  ],
+  [
+   15.167,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   3.099,
+   "user"
+  ],
+  [
+   5.08,
+   13.527,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   1.981
+  ]
+ }
+}

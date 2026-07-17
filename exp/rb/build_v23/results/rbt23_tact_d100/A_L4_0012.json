@@ -1,0 +1,81 @@
+{
+ "id": "A_L4_0012",
+ "layer": "L4",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.267,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 7.54,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 13.591,
+   "ops": [
+    {
+     "type": "launch_dedup",
+     "fn": "search_catalog"
+    },
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "_status_2024-06-18T15:30:00Z_97897897897897897897_23456": "$RESULT_1.products[0].product_id"
+     }
+    }
+   ],
+   "say": "I'm on it."
+  }
+ ],
+ "say_events": [
+  [
+   8.54,
+   "I'm on it."
+  ],
+  [
+   14.591,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.9,
+   "user"
+  ],
+  [
+   7.618,
+   12.951,
+   "user"
+  ]
+ ]
+}

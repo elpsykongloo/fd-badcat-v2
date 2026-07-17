@@ -1,0 +1,72 @@
+{
+  "n": 365,
+  "exact": 0.874,
+  "state_verbatim": 0.874,
+  "state_normalized": 0.874,
+  "U_mean": 0.642,
+  "wrong_commits": 0,
+  "unrepaired": 0,
+  "first_p50": 1.64,
+  "done_p50": 4.298,
+  "by_layer": {
+    "L10": {
+      "n": 38,
+      "exact": 1.0,
+      "U": 0.6901
+    },
+    "L11": {
+      "n": 27,
+      "exact": 1.0,
+      "U": 0.7974
+    },
+    "L4": {
+      "n": 46,
+      "exact": 1.0,
+      "U": 0.7697
+    },
+    "L5": {
+      "n": 42,
+      "exact": 0.5952,
+      "U": 0.4228
+    },
+    "L6": {
+      "n": 38,
+      "exact": 0.7632,
+      "U": 0.543
+    },
+    "L7": {
+      "n": 40,
+      "exact": 1.0,
+      "U": 0.6667
+    },
+    "L8": {
+      "n": 88,
+      "exact": 0.7727,
+      "U": 0.6624
+    },
+    "L9": {
+      "n": 46,
+      "exact": 1.0,
+      "U": 0.6047
+    }
+  },
+  "armb_timing": {
+    "episodes_with_overlap": 0,
+    "total_overlaps": 0
+  },
+  "provider": "rbt23_b_oracle",
+  "config": {
+    "arm": "B",
+    "system": "tact",
+    "delta": 1.5,
+    "commit_barrier": "on",
+    "input": "text",
+    "decider": "oracle",
+    "floor_commit_tiers": null,
+    "split": "test",
+    "infer_nominal": 1.0,
+    "dag": "on",
+    "attr": "off",
+    "admission": null
+  }
+}

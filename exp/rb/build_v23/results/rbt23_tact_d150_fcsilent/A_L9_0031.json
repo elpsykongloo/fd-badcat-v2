@@ -1,0 +1,61 @@
+{
+ "id": "A_L9_0031",
+ "layer": "L9",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 8.947,
+ "U": 0.632,
+ "U_sens": {
+  "0.5": 0.632,
+  "1.0": 0.632,
+  "2.0": 0.632
+ },
+ "first_response_s": 8.947,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.626,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "reserve_hotel",
+     "op_id": 2
+    }
+   ],
+   "say": "",
+   "fc_tier": "silence"
+  },
+  {
+   "i": 1,
+   "t_eou": 21.531,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [],
+ "segs": [
+  [
+   0.5,
+   5.986,
+   "user"
+  ],
+  [
+   20.053,
+   20.891,
+   "user"
+  ]
+ ]
+}

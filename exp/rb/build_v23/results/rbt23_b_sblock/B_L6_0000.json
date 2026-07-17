@@ -1,0 +1,93 @@
+{
+ "id": "B_L6_0000",
+ "layer": "L6",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 2.292,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 4,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 7.764,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "place_order",
+     "op_id": 4
+    }
+   ],
+   "say": ""
+  },
+  {
+   "i": 2,
+   "t_eou": 19.985,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 5
+    }
+   ],
+   "say": "正在为您查找保温杯并调整购物车数量。"
+  }
+ ],
+ "say_events": [
+  [
+   20.985,
+   "正在为您查找保温杯并调整购物车数量。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   7.124,
+   "user"
+  ],
+  [
+   8.764,
+   13.605,
+   "user"
+  ],
+  [
+   13.655,
+   19.345,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   1.64,
+   0.05
+  ]
+ }
+}

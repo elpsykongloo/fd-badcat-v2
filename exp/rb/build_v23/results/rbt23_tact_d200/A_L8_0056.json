@@ -1,0 +1,81 @@
+{
+ "id": "A_L8_0056",
+ "layer": "L8",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 4.432,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 8.352,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    }
+   ],
+   "say": "Searching for running shoes and adding two to your cart."
+  },
+  {
+   "i": 1,
+   "t_eou": 11.189,
+   "ops": [
+    {
+     "type": "launch_dedup",
+     "fn": "search_catalog"
+    },
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "status": "executing"
+     }
+    }
+   ],
+   "say": "Searching for running shoes now."
+  }
+ ],
+ "say_events": [
+  [
+   9.352,
+   "Searching for running shoes and adding two to your cart."
+  ],
+  [
+   12.189,
+   "Searching for running shoes now."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   7.712,
+   "user"
+  ],
+  [
+   9.554,
+   10.549,
+   "user"
+  ]
+ ]
+}

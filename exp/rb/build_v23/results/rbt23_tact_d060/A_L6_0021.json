@@ -1,0 +1,95 @@
+{
+ "id": "A_L6_0021",
+ "layer": "L6",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 0.0,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.93,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 10.269,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 4
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 2,
+   "t_eou": 17.152,
+   "ops": [],
+   "say": "Updating the amount to 800 for the FX quote."
+  }
+ ],
+ "say_events": [
+  [
+   7.93,
+   "I'm on it."
+  ],
+  [
+   11.269,
+   "I'm on it."
+  ],
+  [
+   18.152,
+   "Updating the amount to 800 for the FX quote."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.29,
+   "user"
+  ],
+  [
+   7.101,
+   9.629,
+   "user"
+  ],
+  [
+   12.19,
+   16.512,
+   "user"
+  ]
+ ]
+}

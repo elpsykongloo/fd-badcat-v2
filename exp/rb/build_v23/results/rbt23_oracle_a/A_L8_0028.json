@@ -1,0 +1,92 @@
+{
+ "id": "A_L8_0028",
+ "layer": "L8",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 0.0,
+ "U": 1.0,
+ "U_sens": {
+  "0.5": 1.0,
+  "1.0": 1.0,
+  "2.0": 1.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 0,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 7.14,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_catalog",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "add_item",
+     "op_id": 3
+    },
+    {
+     "type": "launch",
+     "fn": "place_order",
+     "op_id": 4
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 12.005,
+   "ops": [
+    {
+     "type": "cancel",
+     "op_id": 2
+    },
+    {
+     "type": "cancel",
+     "op_id": 3
+    },
+    {
+     "type": "cancel",
+     "op_id": 4
+    }
+   ],
+   "say": "好的，先不办了。"
+  }
+ ],
+ "say_events": [
+  [
+   8.14,
+   "好的，马上办。"
+  ],
+  [
+   13.005,
+   "好的，先不办了。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.5,
+   "user"
+  ],
+  [
+   8.215,
+   11.365,
+   "user"
+  ]
+ ]
+}

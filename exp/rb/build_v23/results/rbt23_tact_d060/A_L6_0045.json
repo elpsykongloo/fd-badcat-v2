@@ -1,0 +1,95 @@
+{
+ "id": "A_L6_0045",
+ "layer": "L6",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 0.0,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 3,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 8.874,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 11.633,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 4
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 2,
+   "t_eou": 18.347,
+   "ops": [],
+   "say": "Updating the transfer amount to 5,000."
+  }
+ ],
+ "say_events": [
+  [
+   9.874,
+   "I'm on it."
+  ],
+  [
+   12.633,
+   "I'm on it."
+  ],
+  [
+   19.347,
+   "Updating the transfer amount to 5,000."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   8.234,
+   "user"
+  ],
+  [
+   9.118,
+   10.993,
+   "user"
+  ],
+  [
+   13.722,
+   17.707,
+   "user"
+  ]
+ ]
+}

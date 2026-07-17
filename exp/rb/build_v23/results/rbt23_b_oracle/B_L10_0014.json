@@ -1,0 +1,94 @@
+{
+ "id": "B_L10_0014",
+ "layer": "L10",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 4.705,
+ "U": 0.7856,
+ "U_sens": {
+  "0.5": 0.7856,
+  "1.0": 0.7856,
+  "2.0": 0.7856
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 10.365,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_rentals",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "book_viewing",
+     "op_id": 3
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 2,
+   "t_eou": 14.413,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "city": "Austin"
+     }
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   11.365,
+   "好的，马上办。"
+  ],
+  [
+   15.413,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   9.725,
+   "user"
+  ],
+  [
+   10.423,
+   12.073,
+   "user"
+  ],
+  [
+   12.123,
+   13.773,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   0.698,
+   0.05
+  ]
+ }
+}

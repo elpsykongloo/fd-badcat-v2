@@ -1,0 +1,77 @@
+{
+ "id": "B_L10_0026",
+ "layer": "L10",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 0.0,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 0.0,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 1,
+   "t_eou": 11.609,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_rentals",
+     "op_id": 2
+    }
+   ],
+   "say": ""
+  },
+  {
+   "i": 2,
+   "t_eou": 16.168,
+   "ops": [
+    {
+     "type": "launch_dedup",
+     "fn": "search_rentals"
+    }
+   ],
+   "say": ""
+  }
+ ],
+ "say_events": [],
+ "segs": [
+  [
+   0.5,
+   7.522,
+   "user"
+  ],
+  [
+   8.208,
+   10.969,
+   "user"
+  ],
+  [
+   12.609,
+   15.528,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   0.686,
+   1.64
+  ]
+ }
+}

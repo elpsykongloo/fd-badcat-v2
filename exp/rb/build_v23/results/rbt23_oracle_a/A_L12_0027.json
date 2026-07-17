@@ -1,0 +1,82 @@
+{
+ "id": "A_L12_0027",
+ "layer": "L12",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 4.23,
+ "U": 0.805,
+ "U_sens": {
+  "0.5": 0.805,
+  "1.0": 0.805,
+  "2.0": 0.805
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 7.08,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "check_visa_rule",
+     "op_id": 3
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 11.082,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 3,
+     "diff": {
+      "country": "日本"
+     }
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   8.08,
+   "好的，马上办。"
+  ],
+  [
+   12.082,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.44,
+   "user"
+  ],
+  [
+   8.822,
+   10.442,
+   "user"
+  ]
+ ]
+}

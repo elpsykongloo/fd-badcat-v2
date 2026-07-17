@@ -1,0 +1,59 @@
+{
+ "id": "A_L9_0037",
+ "layer": "L9",
+ "arm": "A",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 12.805,
+ "U": 0.5185,
+ "U_sens": {
+  "0.5": 0.5185,
+  "1.0": 0.5185,
+  "2.0": 0.5185
+ },
+ "first_response_s": 1.64,
+ "n_eou": 1,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 1,
+   "t_eou": 14.71,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "schedule_payment",
+     "op_id": 2
+    }
+   ],
+   "say": "Scheduling the payment for May 3rd."
+  }
+ ],
+ "say_events": [
+  [
+   15.71,
+   "Scheduling the payment for May 3rd."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   4.423,
+   "user"
+  ],
+  [
+   12.762,
+   14.07,
+   "user"
+  ]
+ ]
+}
