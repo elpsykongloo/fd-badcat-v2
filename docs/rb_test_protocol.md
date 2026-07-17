@@ -693,8 +693,8 @@ legacy 臂 B eou 箱（L4/L5/L6）维持名义箱 + `armb_timing.measured_gaps` 
   字节在新代码下不变。探针产物用后删除，不入归档目录。
 - **P1 内容库 v2**：`rb_content_gen.py`（DEEPSEEK_API_KEY，默认 `--workers 100`，受
   category 数上限、独立 client/`user_id`/硬重试且稳定归并）重新生成全库（52+2 类：
-  新增 confirm×2 lang；value_first 例句已带 `{new}`+`{old}`）；
-  `rb_build --selftest` 过 + `audit_templates()` **0 违规**（当前 v2.3 bank 16 处
+  新增 confirm×2 lang；value_first 例句须以 `{new}` 开头且带 `{old}`）；
+  `rb_build --selftest` 过 + `rb_build --audit` / `audit_templates()` **0 违规**（当前 v2.3 bank 16 处
   违规会被硬拒——这是门在工作）；按 §16.1 checklist 听检，**L4 专项**：value_first
   全部变体逐条读一遍，确认对比语义正确、无双值；commit bank（独立提交，SHA 入册）。
 - **P2 正式构建**：`rb_build --out exp/rb/build_v24 --audio qwen`；记录

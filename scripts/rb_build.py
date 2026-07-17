@@ -29,7 +29,7 @@ def audit_templates():
     """v2.4 build-time hard gate (the L4 erratum's regression net,
     rb_test_protocol §10.7): every revision template — frozen AND every bank
     variant — carries {new} EXACTLY once (cancel: zero); value_first also
-    carries {old}; confirm templates stay free of cancel lexemes (the oracle
+    starts with {new} and carries {old}; confirm templates stay free of cancel lexemes (the oracle
     cancel fallback must never misfire on the L14 probe). Returns a list of
     violations; the build refuses to proceed on any."""
     import rb.grammar as g
@@ -46,6 +46,8 @@ def audit_templates():
                     bad.append(("revision", lang, kind, v))
                 if kind == "value_first" and v.count("{old}") != 1:
                     bad.append(("revision_old", lang, kind, v))
+                if kind == "value_first" and not v.startswith("{new}"):
+                    bad.append(("revision_value_first_position", lang, kind, v))
         for v in [g.CONFIRM_QUERY[lang]] + list(bank.get("confirm", {})
                                                 .get(lang, [])):
             if any(tok in v for tok in ("别办", "先别", "hold off")):
@@ -148,10 +150,14 @@ def selftest():
     _g._BANK = {"revision": {"zh": {"default": ["等等，改成{new}。",
                                                "从{new}换到{new}。"]}}}
     viol_poison = audit_templates()
+    _g._BANK = {"revision": {"zh": {"value_first": ["{new}，不是{old}。",
+                                                        "我想要{new}，不是{old}。"]}}}
+    viol_position = audit_templates()
     _g._BANK = saved
     viol_now = audit_templates()
     ck["v24_template_audit"] = (
         viol_frozen == [] and len(viol_poison) == 1
+        and len(viol_position) == 1
         and all(v[2] == "value_first" for v in viol_now))
     # v2.4: L13 octuple structure + stratified split floors survive the build
     e13 = make_episode("B", "L13", 0, ch)
@@ -192,10 +198,18 @@ def main():
     ap.add_argument("--audio", choices=["stub", "qwen"])
     ap.add_argument("--pause-prior", default="exp/w5sg/pause_prior.json")
     ap.add_argument("--verify", action="store_true")
+    ap.add_argument("--audit", action="store_true",
+                    help="print the current content-template audit without building")
     ap.add_argument("--selftest", action="store_true")
     args = ap.parse_args()
     if args.selftest:
         return selftest()
+    if args.audit:
+        bad = audit_templates()
+        for row in bad:
+            print("TEMPLATE AUDIT FAIL:", row)
+        print(f"template audit: {len(bad)} violations")
+        return 0 if not bad else 1
     if args.verify:
         return verify(args.out)
     build(args.out, audio=args.audio, pause_prior_path=args.pause_prior)

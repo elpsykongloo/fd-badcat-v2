@@ -59,7 +59,8 @@ GEN_PROMPT = (
     "benchmark. Produce {n} distinct paraphrases of the EXAMPLE below. Rules: "
     "keep EVERY placeholder token EXACTLY as written (e.g. {placeholders}); "
     "colloquial, speakable, one sentence, no emoji, no quotes, no digits "
-    "unless the example has them, length within 2x of the example. Reply as "
+    "unless the example has them, length within 2x of the example. "
+    "{position_rule}Reply as "
     "a JSON array of {n} strings, nothing else.\n"
     "Category: {cat}\nEXAMPLE: {example}")
 
@@ -75,7 +76,7 @@ def _placeholders(t):
     return sorted(_PLACEHOLDER_RE.findall(t))
 
 
-def validate(cand, example, lang):
+def validate(cand, example, lang, kind=None):
     """Template gate: placeholder MULTISET identical, no stray braces,
     speakable; belt-and-suspenders: at most one {new} ever (a revision
     utterance carries its value exactly once)."""
@@ -85,6 +86,10 @@ def validate(cand, example, lang):
     if _placeholders(c) != _placeholders(example):
         return None
     if c.count("{new}") > 1:
+        return None
+    # L4 is not merely contrastive: its perturbation must begin with the NEW
+    # value, or it stops testing the value-first auditory cue.
+    if kind == "value_first" and not c.startswith("{new}"):
         return None
     if c.count("{") != len(_PLACEHOLDER_RE.findall(c)) or \
             c.count("}") != c.count("{"):
@@ -142,13 +147,18 @@ def parse_array(raw):
         return []
 
 
-def gen_category(call, cat, example, lang, n=N_PER):
+def gen_category(call, cat, example, lang, n=N_PER, kind=None):
     ph = ", ".join(_placeholders(example)) or "(none)"
+    position_rule = (
+        "For this VALUE-FIRST category, EVERY string must literally begin "
+        "with {new}, and contrast it with {old} later. "
+        if kind == "value_first" else "")
     raw = call(GEN_PROMPT.format(lang_name=LANG_NAME[lang], n=n,
-                                 placeholders=ph, cat=cat, example=example))
+                                 placeholders=ph, cat=cat, example=example,
+                                 position_rule=position_rule))
     got, ok = parse_array(raw), []
     for c in got:
-        v = validate(c, example, lang)
+        v = validate(c, example, lang, kind=kind)
         if v and v not in ok and v != example:
             ok.append(v)
     return ok, len(got)
@@ -193,7 +203,9 @@ def build_bank(call, workers=1, progress=False):
     def run_one(idx, job):
         section, key_path, example, lang, cat = job
         try:
-            ok, n_raw = gen_category(call, cat, example, lang)
+            ok, n_raw = gen_category(
+                call, cat, example, lang,
+                kind=key_path[-1] if section == "revision" else None)
         except Exception as exc:                 # retain the canonical job id
             raise RuntimeError(
                 f"content job {idx + 1}/{len(jobs)} ({section}/{'.'.join(key_path)}) "
@@ -257,6 +269,11 @@ def selftest():
         is not None
         and validate("要{new}，别弄{new}的。", "{new}，不是{old}。", "zh") is None
         and validate("{new}，改回{new}。", "{new}，改成{new}。", "zh") is None)
+    ck["validate_value_first_position"] = (
+        validate("{new}，不是{old}。", "{new}，不是{old}。", "zh",
+                 kind="value_first") is not None
+        and validate("我想要{new}，不是{old}。", "{new}，不是{old}。", "zh",
+                     kind="value_first") is None)
     bank = build_bank(stub_call)
     ck["bank_shape"] = all(k in bank for k in
                            ("revision", "bystander", "progress", "intent",

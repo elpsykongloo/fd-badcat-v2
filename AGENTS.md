@@ -14,6 +14,8 @@
 
 > **增量更新 9：2026-07-17（用户裁定 DeepSeek 主线调用并发化；P1 重启前）**：官方当前配额为 `deepseek-v4-flash` 账号级 2500 并发（v4-pro 500）；主线默认统一为 `DEEPSEEK_WORKERS=100`（CLI/env 可覆盖，实际受任务数限制）。`rb_content_gen.py` 与 `rb_commit_judge.py` 改为每任务独立 SDK client、prompt-hash 非敏感 `user_id`、五次硬重试、稳定 index 汇合；content 仅全任务成功后原子写 bank，judge cache 加锁 single-flight + 原子落盘。HumDial judge 改每线程 client，FDB strict judge默认 100（其上游本已有 thread-local client）；历史 `evaluation/**/eval.py` 非主线，仅供现代管线读解析 helper。离线回归：runner **62/62**、build **16/16**、content-gen **7/7**（+并发稳定/失败隔离）、commit-judge **5/5**（+single-flight）、py_compile 全过。P0 已在无服务条件下 **136 hit/0 miss、54/54 decisions 相同**后清理；先前串行 P1 进程在写入前 TERM，bank 未变。**下一步 = 用新并发路径重跑 P1，再按 §11 P2–P5。**
 
+> **增量更新 10：2026-07-17（P1 实产物门捕获 L4 位置漏网，未越过 P1）**：并发 P1 首次 54/54 完成、原子写出 candidate（324 requested / 306 raw / 300 accepted，SHA `a5e1b8…05db0`），但 `rb_build --audit` 抓到 **11 条** `value_first`（zh 5/en 6）虽各含单 `{new}`+`{old}` 却不以 `{new}` 开头；故 build selftest 初次 `l4_value_first` FAIL，**未听检/未提交 bank/未起 P2**。根因 = 内容验证与 audit 只管占位符数、不管 L4 的“new 为首 token”，且 disfluency 可在其前插入。修复 = content prompt+validator 明定 `{new}` 首位；build audit 新 `revision_value_first_position` 硬错并提供 `--audit`；runtime fallback 同步检查且 L4 禁前缀不流利。离线：content **8/8**、build **16/16**、runner **62/62**，当前失败 candidate audit **11**（如预期），200 个 A/B L4 rendered revision 0 首位违规。**下一步 = 提交此 P1 内部修复、重跑 P0，再并发重生 P1；旧 candidate 只作未提交失败证据。**
+
 ## 使命
 
 把 fd-badcat（HumDial Challenge 半级联全双工语音系统）改造为 **TACT**（事务性工具调用的全双工语音 agent），投稿 **ICLR 2027**（摘要 9/19、全文 9/24）。

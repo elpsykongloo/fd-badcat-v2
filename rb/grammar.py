@@ -41,7 +41,7 @@ v2.4 (rb_design §17):
     v2.4 template is single-{new} contrastive with the OLD value:
     "{new}，不是{old}。" / "{new} — not {old}." revision_text() now takes
     `old` and defensively falls back to the frozen template whenever a bank
-    variant does not carry exactly one {new}.
+    variant does not carry exactly one {new} or lead with it.
   * New layers: L13 lifecycle-paired octuples (arm B; same content x
     {user, bystander} x {eou, inflight, committed, tts}, family-seeded),
     L14 commitment arena (arm B; confirm-request event + late revision — the
@@ -282,15 +282,18 @@ def revision_text(lang, kind, new, content_hook=None, rng=None, old=None):
         t = _bank_pick(rng, ("revision", lang, kind), t)
     # v2.4 single-{new} guard (the L4 erratum's regression net): a revision
     # template must carry the new value EXACTLY once — a bank variant that
-    # does not is discarded in favor of the frozen template. `cancel`
-    # carries no value at all.
-    if kind != "cancel" and t.count("{new}") != 1:
+    # does not is discarded in favor of the frozen template. `value_first`
+    # also needs it as the literal leading token; `cancel` has no value.
+    if (kind != "cancel" and t.count("{new}") != 1) or \
+            (kind == "value_first" and not t.startswith("{new}")):
         t = frozen
     try:
         text = t.format(new=new, old=old if old is not None else "")
     except (KeyError, IndexError):
         text = frozen.format(new=new, old=old if old is not None else "")
-    if rng is not None and kind not in ("inline", "cancel"):
+    # A disfluency before L4's value-first correction defeats its intended
+    # auditory cue even when the clean template itself is well formed.
+    if rng is not None and kind not in ("inline", "cancel", "value_first"):
         text = maybe_disfluent(rng, lang, text, new=new)
     return text
 
