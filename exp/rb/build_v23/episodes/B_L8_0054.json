@@ -1,0 +1,118 @@
+{
+ "id": "B_L8_0054",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Denver",
+  "beds": "two-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Saturday morning"
+ },
+ "slots_final": {
+  "city": "Denver",
+  "beds": "two-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Sunday afternoon"
+ },
+ "revisions": [
+  {
+   "slot": "slot",
+   "old": "Saturday morning",
+   "new": "Sunday afternoon",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Denver",
+  "beds": 2,
+  "max_rent": 2000,
+  "slot": "Sunday afternoon"
+ },
+ "l8_action": "revise",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "I need you to find a two-bedroom in Denver for under two thousand and set up a viewing for Saturday morning.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Wait — make it Sunday afternoon.",
+   "at_after_eou": 1.202
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.625,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv03",
+   "text": "Wait — make it Sunday afternoon."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.383
+ },
+ "step_latencies": [
+  0.383,
+  4.051
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.0,
+  "gain_db": 2.0,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Denver",
+    "beds": 2,
+    "max_rent": 2000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE1bbf7e",
+    "slot": "Sunday afternoon"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE1bbf7e": {
+   "city": "Denver",
+   "beds": 2,
+   "max_rent": 2000
+  },
+  "book_viewing#BOa2f9ad": {
+   "listing_id": "SE1bbf7e",
+   "slot": "Sunday afternoon"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

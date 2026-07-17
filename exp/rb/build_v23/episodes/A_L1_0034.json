@@ -1,0 +1,85 @@
+{
+ "id": "A_L1_0034",
+ "arm": "A",
+ "layer": "L1",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_single",
+ "slots": {
+  "listing_id": "LST12"
+ },
+ "slots_final": {
+  "listing_id": "LST47"
+ },
+ "revisions": [
+  {
+   "slot": "listing_id",
+   "old": "LST12",
+   "new": "LST47",
+   "by": "user",
+   "kind": "inline",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "listing_id": "LST47"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "zh",
+   "text": "把编号LST12的房源收藏一下。，哦不对，改成LST47",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.237
+ },
+ "step_latencies": [
+  0.237
+ ],
+ "scenario_steps": [
+  "save_listing"
+ ],
+ "perturb": {
+  "rate": 0.973,
+  "gain_db": -3.7,
+  "snr_db": 19.0
+ },
+ "gold_calls": [
+  {
+   "fn": "save_listing",
+   "args": {
+    "listing_id": "LST47"
+   }
+  }
+ ],
+ "gold_state": {
+  "save_listing#SAe24f5d": {
+   "listing_id": "LST47"
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv03"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 9.215,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": []
+}

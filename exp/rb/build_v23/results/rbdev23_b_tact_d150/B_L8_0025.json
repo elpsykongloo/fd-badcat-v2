@@ -1,0 +1,85 @@
+{
+ "id": "B_L8_0025",
+ "layer": "L8",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 0.0,
+ "U": 1.0,
+ "U_sens": {
+  "0.5": 1.0,
+  "1.0": 1.0,
+  "2.0": 1.0
+ },
+ "first_response_s": 0.0,
+ "n_eou": 2,
+ "n_commits": 0,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 9.401,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "get_fx_quote",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "transfer_funds",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 13.307,
+   "ops": [
+    {
+     "type": "cancel",
+     "op_id": 2
+    },
+    {
+     "type": "cancel",
+     "op_id": 3
+    }
+   ],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   10.401,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   8.761,
+   "user"
+  ],
+  [
+   10.728,
+   12.667,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   1.967
+  ]
+ }
+}

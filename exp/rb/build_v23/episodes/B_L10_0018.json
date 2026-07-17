@@ -1,0 +1,122 @@
+{
+ "id": "B_L10_0018",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "厦门",
+  "beds": "两居",
+  "max_rent": "六千",
+  "slot": "周六上午"
+ },
+ "slots_final": {
+  "city": "厦门",
+  "beds": "两居",
+  "max_rent": "六千",
+  "slot": "周六上午"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "command",
+  "other": "一居",
+  "state": "inflight",
+  "frac": 0.33
+ },
+ "slots_canon": {
+  "city": "厦门",
+  "beds": 2,
+  "max_rent": 6000,
+  "slot": "周六上午"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "zh",
+   "text": "想在厦门找两居的房间，房租顶多六千，约周六上午实地看下。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "你就改成一居吧。",
+   "at_after_eou": 1.285
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.195,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv02",
+   "text": "你就改成一居吧。"
+  },
+  {
+   "state": "tts",
+   "offset": 0.568,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv02",
+   "text": "把那个改成一居吧。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.863
+ },
+ "step_latencies": [
+  0.863,
+  2.608
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.022,
+  "gain_db": -5.1,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "厦门",
+    "beds": 2,
+    "max_rent": 6000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE210079",
+    "slot": "周六上午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE210079": {
+   "city": "厦门",
+   "beds": 2,
+   "max_rent": 6000
+  },
+  "book_viewing#BOde6308": {
+   "listing_id": "SE210079",
+   "slot": "周六上午"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv02"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

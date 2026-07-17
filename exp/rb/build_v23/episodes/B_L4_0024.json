@@ -1,0 +1,117 @@
+{
+ "id": "B_L4_0024",
+ "arm": "B",
+ "layer": "L4",
+ "domain": "ecommerce",
+ "lang": "zh",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "跑步鞋",
+  "qty": "一",
+  "address": "海淀区学院路一号"
+ },
+ "slots_final": {
+  "query": "跑步鞋",
+  "qty": "一",
+  "address": "浦东新区世纪大道八号"
+ },
+ "revisions": [
+  {
+   "slot": "address",
+   "old": "海淀区学院路一号",
+   "new": "浦东新区世纪大道八号",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.821
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "跑步鞋",
+  "qty": 1,
+  "address": "浦东新区世纪大道八号"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "帮我搜搜跑步鞋，加一件进购物车，然后下单送到海淀区学院路一号。",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.081,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv02",
+   "text": "浦东新区世纪大道八号，改成浦东新区世纪大道八号。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.516
+ },
+ "step_latencies": [
+  0.516,
+  0.463,
+  10.175
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 0.994,
+  "gain_db": -5.8,
+  "snr_db": 20.8
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "跑步鞋"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE208a55",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD5a8122",
+    "address": "浦东新区世纪大道八号"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE208a55": {
+   "query": "跑步鞋"
+  },
+  "add_item#AD5a8122": {
+   "item_id": "SE208a55",
+   "qty": 1
+  },
+  "place_order#PL000b10": {
+   "cart_id": "AD5a8122",
+   "address": "浦东新区世纪大道八号"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv03"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

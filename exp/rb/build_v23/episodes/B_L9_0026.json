@@ -1,0 +1,83 @@
+{
+ "id": "B_L9_0026",
+ "arm": "B",
+ "layer": "L9",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_single",
+ "slots": {
+  "listing_id": "LST47"
+ },
+ "slots_final": {
+  "listing_id": "LST47"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "listing_id": "LST47"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "I need you to save listing LST47.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "How's it going?",
+   "at_after_eou": 3.418
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.539,
+   "action": "progress_query",
+   "role": "user",
+   "voice": "cv06",
+   "text": "Is it done yet?"
+  }
+ ],
+ "profile": "heavy",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 4.03
+ },
+ "step_latencies": [
+  4.03
+ ],
+ "scenario_steps": [
+  "save_listing"
+ ],
+ "perturb": {
+  "rate": 1.053,
+  "gain_db": -0.3,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "save_listing",
+   "args": {
+    "listing_id": "LST47"
+   }
+  }
+ ],
+ "gold_state": {
+  "save_listing#SA3dd0b4": {
+   "listing_id": "LST47"
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv07"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

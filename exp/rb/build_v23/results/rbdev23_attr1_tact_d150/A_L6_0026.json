@@ -1,0 +1,107 @@
+{
+ "id": "A_L6_0026",
+ "layer": "L6",
+ "arm": "A",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.672,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 3,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 6.86,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_rentals",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "book_viewing",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 14.764,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "city": "Boise"
+     }
+    },
+    {
+     "type": "cancel",
+     "op_id": 3
+    }
+   ],
+   "say": "Updating that to Boise and cancelling the viewing request."
+  },
+  {
+   "i": 2,
+   "t_eou": 21.599,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_rentals",
+     "op_id": 4
+    }
+   ],
+   "say": "I'm on it."
+  }
+ ],
+ "say_events": [
+  [
+   7.86,
+   "I'm on it."
+  ],
+  [
+   15.764,
+   "Updating that to Boise and cancelling the viewing request."
+  ],
+  [
+   22.599,
+   "I'm on it."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   6.22,
+   "user"
+  ],
+  [
+   7.034,
+   14.124,
+   "user"
+  ],
+  [
+   16.77,
+   20.959,
+   "user"
+  ]
+ ]
+}

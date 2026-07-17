@@ -1,0 +1,105 @@
+{
+ "id": "A_L7_0036",
+ "arm": "A",
+ "layer": "L7",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_single",
+ "slots": {
+  "item_id": "B205",
+  "qty": "one"
+ },
+ "slots_final": {
+  "item_id": "A100",
+  "qty": "one"
+ },
+ "revisions": [
+  {
+   "slot": "item_id",
+   "old": "B205",
+   "new": "A100",
+   "by": "user",
+   "kind": "default",
+   "gap": 4.612
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "item_id": "A100",
+  "qty": 1
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Could you add one of item B205 to my cart?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Wait — make it A100.",
+   "gap_before": 4.612
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.461
+ },
+ "step_latencies": [
+  0.461
+ ],
+ "scenario_steps": [
+  "add_item"
+ ],
+ "perturb": {
+  "rate": 0.946,
+  "gain_db": -0.5,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "A100",
+    "qty": 1
+   }
+  }
+ ],
+ "gold_state": {
+  "add_item#AD2577cf": {
+   "item_id": "A100",
+   "qty": 1
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv03"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 4.221,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 8.833,
+   "t_end": 11.032,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  4.612
+ ]
+}

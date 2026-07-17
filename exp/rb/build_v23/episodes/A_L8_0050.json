@@ -1,0 +1,115 @@
+{
+ "id": "A_L8_0050",
+ "arm": "A",
+ "layer": "L8",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "杭州",
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周六上午"
+ },
+ "slots_final": {
+  "city": "杭州",
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周六上午"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "city": "杭州",
+  "beds": 2,
+  "max_rent": 8000,
+  "slot": "周六上午"
+ },
+ "l8_action": "progress",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "zh",
+   "text": "想在杭州找两居的房间，房租顶多八千，约周六上午实地看下。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "zh",
+   "text": "好了没？",
+   "at_after_eou": 1.116
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.282
+ },
+ "step_latencies": [
+  0.282,
+  1.327
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.041,
+  "gain_db": -3.4,
+  "snr_db": 15.6
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "杭州",
+    "beds": 2,
+    "max_rent": 8000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SEb8dfee",
+    "slot": "周六上午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEb8dfee": {
+   "city": "杭州",
+   "beds": 2,
+   "max_rent": 8000
+  },
+  "book_viewing#BO0b544c": {
+   "listing_id": "SEb8dfee",
+   "slot": "周六上午"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.415,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 10.171,
+   "t_end": 11.017,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

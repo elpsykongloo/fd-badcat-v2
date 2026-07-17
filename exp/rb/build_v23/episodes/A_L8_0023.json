@@ -1,0 +1,131 @@
+{
+ "id": "A_L8_0023",
+ "arm": "A",
+ "layer": "L8",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "June first",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
+ "slots_final": {
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "June first",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "June 1",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
+ "l8_action": "progress",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Please find a train from Seattle to Portland on June first, put a business seat on hold, and buy the ticket for Jordan Lee.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Any update?",
+   "at_after_eou": 1.141
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.415
+ },
+ "step_latencies": [
+  0.415,
+  0.408,
+  1.551
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.979,
+  "gain_db": -0.4,
+  "snr_db": 21.0
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Seattle",
+    "destination": "Portland",
+    "date": "June 1"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE948204",
+    "seat_class": "business"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO37e6c3",
+    "passenger": "Jordan Lee"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE948204": {
+   "origin": "Seattle",
+   "destination": "Portland",
+   "date": "June 1"
+  },
+  "hold_seat#HO37e6c3": {
+   "train_id": "SE948204",
+   "seat_class": "business"
+  },
+  "purchase_ticket#PUc3b8ca": {
+   "hold_id": "HO37e6c3",
+   "passenger": "Jordan Lee"
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.917,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 10.698,
+   "t_end": 11.433,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

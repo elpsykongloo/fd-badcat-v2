@@ -1,0 +1,88 @@
+{
+ "id": "B_L9_0012",
+ "arm": "B",
+ "layer": "L9",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_single",
+ "slots": {
+  "item_id": "C330",
+  "qty": "two"
+ },
+ "slots_final": {
+  "item_id": "C330",
+  "qty": "two"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "item_id": "C330",
+  "qty": 2
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "I need to add two of item C330 to my shopping cart.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Any movement?",
+   "at_after_eou": 5.877
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.543,
+   "action": "progress_query",
+   "role": "user",
+   "voice": "cv03",
+   "text": "Any headway?"
+  }
+ ],
+ "profile": "heavy",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 8.129
+ },
+ "step_latencies": [
+  8.129
+ ],
+ "scenario_steps": [
+  "add_item"
+ ],
+ "perturb": {
+  "rate": 0.959,
+  "gain_db": -0.2,
+  "snr_db": 21.3
+ },
+ "gold_calls": [
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "C330",
+    "qty": 2
+   }
+  }
+ ],
+ "gold_state": {
+  "add_item#AD1d89fa": {
+   "item_id": "C330",
+   "qty": 2
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv06"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

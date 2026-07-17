@@ -1,0 +1,94 @@
+{
+ "id": "A_L8_0031",
+ "arm": "A",
+ "layer": "L8",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "slots_final": {
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Boston",
+  "destination": "Atlanta",
+  "date": "June 1",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "l8_action": "cancel",
+ "cancelled": true,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Find a train from Boston to Atlanta on June first, hold a coach seat, and buy the ticket for Alex Chen.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Actually, hold off, don't do it yet.",
+   "at_after_eou": 1.093
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.449
+ },
+ "step_latencies": [
+  0.449,
+  0.547,
+  1.405
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.997,
+  "gain_db": 1.6,
+  "snr_db": 17.1
+ },
+ "gold_calls": [],
+ "gold_state": {},
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv05"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 9.647,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 11.38,
+   "t_end": 14.349,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

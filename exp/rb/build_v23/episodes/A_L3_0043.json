@@ -1,0 +1,142 @@
+{
+ "id": "A_L3_0043",
+ "arm": "A",
+ "layer": "L3",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "May third",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
+ },
+ "slots_final": {
+  "origin": "Seattle",
+  "destination": "Denver",
+  "date": "May third",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "Portland",
+   "new": "Denver",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.799
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Denver",
+  "date": "May 3",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "I need you to look up a train from Seattle to Portland on May third, reserve a first class seat, and purchase the ticket for Alex Chen.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Wait — make it Denver.",
+   "gap_before": 0.799
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.352
+ },
+ "step_latencies": [
+  0.352,
+  0.645,
+  1.447
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.976,
+  "gain_db": -0.3,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Seattle",
+    "destination": "Denver",
+    "date": "May 3"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEfc93b0",
+    "seat_class": "first class"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO66cf79",
+    "passenger": "Alex Chen"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEfc93b0": {
+   "origin": "Seattle",
+   "destination": "Denver",
+   "date": "May 3"
+  },
+  "hold_seat#HO66cf79": {
+   "train_id": "SEfc93b0",
+   "seat_class": "first class"
+  },
+  "purchase_ticket#PU880397": {
+   "hold_id": "HO66cf79",
+   "passenger": "Alex Chen"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 9.516,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 10.315,
+   "t_end": 12.528,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.799
+ ]
+}

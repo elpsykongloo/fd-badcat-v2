@@ -1,0 +1,131 @@
+{
+ "id": "A_L5_0081",
+ "arm": "A",
+ "layer": "L5",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "eight hundred",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "slots_final": {
+  "amount": "eight hundred",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "revisions": [
+  {
+   "slot": "to_cur",
+   "old": "yen",
+   "new": "euros",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.939
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "amount": 800,
+  "from_cur": "USD",
+  "to_cur": "EUR",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Please provide a quote for eight hundred dollars to yen and then initiate a transfer of eight hundred from checking to rent account.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Wait — make it euros.",
+   "gap_before": 2.939
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.691
+ },
+ "step_latencies": [
+  0.691,
+  2.224
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 0.973,
+  "gain_db": -4.4,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": 800,
+    "from_cur": "USD",
+    "to_cur": "EUR"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "rent account",
+    "amount": 800
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GE49c1b1": {
+   "amount": 800,
+   "from_cur": "USD",
+   "to_cur": "EUR"
+  },
+  "transfer_funds#TRa38b02": {
+   "from_acct": "checking",
+   "to_acct": "rent account",
+   "amount": 800
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv09"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.393,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 11.332,
+   "t_end": 12.648,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  2.939
+ ]
+}

@@ -208,6 +208,95 @@ v2.3 test 前按纪律另立冻结 v4。**
 无观察-行动循环、dev 子格功效、冻结哈希门扩到全链、外部系统接入面、口音/信道轴——
 进 limitations 与 v2.4 候选。
 
+## §16 v2.3 内容库、Qwen TTS 构建与 dev 首轮（2026-07-17）
+
+完整机器收据：`exp/rb/build_v23/rb_dev23_receipt.json`。本节只登记已经实际运行并逐文件复核的
+事实；**没有运行任何 test episode，也没有冻结 scorer v4**。
+
+### 16.1 冻结内容库与最终 config
+
+从 `origin/main` 快进到实现提交 `04ab6ff` 后，`rb_content_gen.py` 用
+`deepseek-v4-flash` 完成 **52 次**离线调用（52 类 × 每类请求 6 条；不是按预估调用数凑次数）：
+请求 312 条、返回 246 条、验证器接纳 244 条。39 类接纳 6 条、2 类接纳 5 条、11 类没有合格
+新句而只保留原模板；共 296 个含原句的候选。逐类听写可用性审阅、占位符/语言/字符/全局重复/
+密钥扫描均 0 问题，没有人工改句、补采或重试。冻结文件 SHA256 =
+`309c7c0d03616d629a3e23752499fb576969c5b59c7cd44c66753748d1ff163f`，已单独提交
+`3ebc337`。
+
+评审实现时的 `3c36d0a9ae1b` 是 **bank=none 的代码 config**；设计本来就把 bank SHA 纳入
+`config_hash`，所以冻结内容库后的正式构建 config 自动变为 **`e1a515c29b8a`**，不应强行保留
+旧 hash。最终 manifest：1000 夹（A/B=600/400；dev/test=89/911）、修订率 .729、八个
+域×语言格为 104–143/格、`ids_hash=acbb7984b03d`、`content_hash=2cc261e7e0fd`。
+
+### 16.2 Qwen TTS 构建与运行中勘正
+
+正式输出另置 `exp/rb/build_v23`，旧 `build_v2` 归档未改。Qwen3-TTS 首次正式构建命中
+119 个已有键、新合成 995 个键；600/600 个 A 臂 WAV、1200 个 cue 齐全。WAV 全为
+mono/PCM16/16 kHz，共 365,025,016 bytes，时长 min/p50/max =
+11.050/18.152/50.449s，末 cue 后尾垫最短 5.9994s；九声音件数为
+111/140/147/153/133/119/139/122/136。全量 cache-hit 重建后 manifest、1000 份 episode
+与 600 个 WAV 逐字节相同。B 臂 oracle/dev 首轮按需补齐后，本地 TTS cache 为 3024 个
+mono/PCM16/24 kHz WAV，0 临时文件、0 坏格式。
+
+内容库改变了确定性抽样，因而暴露三处**测试/计分适配缺口**，均先修复并加回归再继续：
+
+1. `rb_build` 的“新值进 gold”自测原先用原始字符串包含关系，`"two"` 对 canonical `2`
+   假失败；改为 `canon_value` 后比较 canonical gold 参数，不改生成行为。
+2. oracle 的 L8 cancel 只识别三个硬编码词组，漏掉冻结库中的合法改写；改为以 episode
+   `l8_action` 为结构真值，旧词法仅作无标注 episode 的 fallback。
+3. reverse/abort 后 sandbox 为费用审计保留 `void` 历史项，state scorer 却仍把它当活状态；
+   state 轨现与 `net_calls()` 一样排除 `void`，并在 reverse 自测中锁定。
+
+### 16.3 dev oracle 有效性门
+
+音频口径、TACT δ=1.5、屏障 on。A 臂 54 夹：exact/state = **.8704/.8704**，除明确的
+L5/L6 设计天花板（7/13、3/4）外，L1/L2/L3/L4/L7/L8/L9/L10/L12 全过。尤其：
+
+- **L7 补偿路 4/4**：四夹均走“旧 forward 已提交 → reverse → 带新值 relaunch”，
+  fee=[1,0,0,1]、`comp_cost`=[4,2,2,4]，净额 exact/state 全过。
+- **L12 新归属层 3/3**。
+
+B 臂 35 夹：exact/state = **.8286/.8286**，L4 4/4、L9 4/4、L10 2/2、**L11 新 TTS
+打断层 3/3**，全部 user speech 物理重叠为 0。L5/L6 是预期天花板 4/8、1/2；L8 为
+11/12。唯一 `B_L8_0057` 不是构建或排期故障：修订语音在首个事务 launch 后 1.557s 才开口，
+比固定 δ=1.5 晚 57ms；transfer 被补偿重发，但旧 READ `get_fx_quote(amount=800)` 无 reverse，
+故 exact 留下一条旧读调用。这是 v2.3 修正时序后真实显出的固定窗边界。
+
+B-dev 没有 L7，故没有偷看 test 来凑数；补偿门由 A-dev 的 4 夹承担。有效性结论是
+**新结构门 L7/L11/L12 全过，另保留一条可解释的固定窗天花板**，不是把 oracle 总分强行调成 1。
+
+### 16.4 attr 门第一轮（冻结原词条，不回调）
+
+本地 Qwen3-Omni 音频栈 `T=0/seed=42/max_num_seqs=1` 严格串行跑四个独立 provider；首轮
+450 次决策均为 live cache miss、HTTP 200，0 retry/fallback：
+
+| arm | baseline exact | attr-v1 exact | 配对净值 | 靶层/护栏 |
+|---|---:|---:|---:|---|
+| A（n=54） | 7/54 = .1296 | 5/54 = .0926 | −2 | L12 3/3→3/3；L3+L4 1/17→0/17 |
+| B（n=35） | 5/35 = .1429 | 7/35 = .2000 | +2 | L11 1/3→1/3；增益落 L8 1/12→3/12 |
+| 合并（n=89） | 12/89 = .1348 | 12/89 = .1348 | 0 | normalized state 同为 .1461 |
+
+A 无 attr-only，通过丢失为 `A_L1_0010`、`A_L4_0055`。前者把 literal `LST12` 幻觉成
+`$RESULT_0.listing_id`；后者把 `seat_class` 错绑到 `search_trains` 并保留旧的
+`hold_seat` 值，恰是规则 16 本应阻止的护栏反例。B 的 attr-only 为 `B_L8_0029`、
+`B_L8_0067`：前者只是把多词实体 `rent account` 从 baseline 的 `rent` 截断中救回，
+不属于归属靶向收复；后者完整 launch 后又把三步全部 cancel，得到正确空净额。
+
+所以首轮裁决是 **FAIL（靶层 0 增益 + A-L4 护栏损失；合并 exact 零和）**。按用户要求只跑
+第一轮，本批没有改 `PROMPT_RB_ATTR`、没有运行第二轮；是否使用“最多两轮”的剩余额度由后续
+裁定，不从本轮 dev 结果偷偷回调。
+
+### 16.5 机器收官与纪律
+
+Omni/代理/TTS 停服后确认 :10003/:10004/:8091 全关闭、GPU 0 残留；在无服务状态复播四臂，
+分别 136/134/89/91 cache hit、全部 0 miss。四份决策 cache、四份 report 与
+54+54+35+35 份逐夹结果在 live 前后逐字节一致。oracle 两份 report/逐夹目录也已记 SHA256。
+`build_v23/audio/` 与密钥文件不入 git；**v2.3 test 仍为零次，scorer v4 仍待正式冻结**。
+
+仓库完整性另记一条维护信息：所有可达 refs 的 missing object 为 0，针对 HEAD 与
+`origin/main` 的 scoped fsck 通过；但 generic auto-gc/full fsck 仍会报告历史不可达 dangling
+commit `3a1cb90…` 缺父 `d215c907…`。它不在当前可达历史中，本轮没有借实验之名改写/清理历史。
+
 ## 附录 A：v1 原案（2026-07-06，逐字保留；§5 已被 v2 §8-5 作废条款取代）
 
 # Revision-Bench (RB) 设计文档 v1 — W3 定稿（录音执行在 W4）

@@ -1,0 +1,132 @@
+{
+ "id": "A_L5_0064",
+ "arm": "A",
+ "layer": "L5",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "thermos bottle",
+  "qty": "two",
+  "address": "88 Century Avenue"
+ },
+ "slots_final": {
+  "query": "wireless earbuds",
+  "qty": "two",
+  "address": "88 Century Avenue"
+ },
+ "revisions": [
+  {
+   "slot": "query",
+   "old": "thermos bottle",
+   "new": "wireless earbuds",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.71
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "wireless earbuds",
+  "qty": 2,
+  "address": "88 Century Avenue"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Search for thermos bottle, add two to the cart, and order it to 88 Century Avenue.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Wait — make it wireless earbuds.",
+   "gap_before": 2.71
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.523
+ },
+ "step_latencies": [
+  0.523,
+  0.214,
+  1.043
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 0.976,
+  "gain_db": -3.0,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "wireless earbuds"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE752a87",
+    "qty": 2
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "ADca728a",
+    "address": "88 Century Avenue"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE752a87": {
+   "query": "wireless earbuds"
+  },
+  "add_item#ADca728a": {
+   "item_id": "SE752a87",
+   "qty": 2
+  },
+  "place_order#PL06f103": {
+   "cart_id": "ADca728a",
+   "address": "88 Century Avenue"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv01"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 5.172,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 7.882,
+   "t_end": 9.931,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  2.71
+ ]
+}

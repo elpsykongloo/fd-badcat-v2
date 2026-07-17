@@ -1,0 +1,132 @@
+{
+ "id": "A_L3_0056",
+ "arm": "A",
+ "layer": "L3",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "thermos bottle",
+  "qty": "two",
+  "address": "88 Century Avenue"
+ },
+ "slots_final": {
+  "query": "thermos bottle",
+  "qty": "one",
+  "address": "88 Century Avenue"
+ },
+ "revisions": [
+  {
+   "slot": "qty",
+   "old": "two",
+   "new": "one",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.646
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "thermos bottle",
+  "qty": 1,
+  "address": "88 Century Avenue"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Search for thermos bottle, add two to the cart, and order it to 88 Century Avenue.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Set it to, wait no, Wait — make it one.",
+   "gap_before": 0.646
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.571
+ },
+ "step_latencies": [
+  0.571,
+  0.433,
+  1.577
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 0.945,
+  "gain_db": -4.6,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "thermos bottle"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SEbe2723",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD80198b",
+    "address": "88 Century Avenue"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SEbe2723": {
+   "query": "thermos bottle"
+  },
+  "add_item#AD80198b": {
+   "item_id": "SEbe2723",
+   "qty": 1
+  },
+  "place_order#PL5d6229": {
+   "cart_id": "AD80198b",
+   "address": "88 Century Avenue"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv04"
+ },
+ "split": "dev",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.934,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 7.58,
+   "t_end": 12.067,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.646
+ ]
+}

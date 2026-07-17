@@ -1,0 +1,95 @@
+{
+ "id": "B_L7_0015",
+ "arm": "B",
+ "layer": "L7",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_hotel",
+ "slots": {
+  "city": "青岛",
+  "checkin": "五月十号",
+  "nights": "三"
+ },
+ "slots_final": {
+  "city": "青岛",
+  "checkin": "五月三号",
+  "nights": "三"
+ },
+ "revisions": [
+  {
+   "slot": "checkin",
+   "old": "五月十号",
+   "new": "五月三号",
+   "by": "user",
+   "kind": "default",
+   "gap": 6.282
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "青岛",
+  "checkin": "5月3日",
+  "nights": 3
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "帮我在青岛订一间酒店，五月十号入住，住三晚。",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "committed",
+   "offset": 0.329,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv02",
+   "text": "稍等，改成五月三号行吗。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 2.608
+ },
+ "step_latencies": [
+  2.608
+ ],
+ "scenario_steps": [
+  "reserve_hotel"
+ ],
+ "perturb": {
+  "rate": 1.026,
+  "gain_db": -6.0,
+  "snr_db": 17.1
+ },
+ "gold_calls": [
+  {
+   "fn": "reserve_hotel",
+   "args": {
+    "city": "青岛",
+    "checkin": "5月3日",
+    "nights": 3
+   }
+  }
+ ],
+ "gold_state": {
+  "reserve_hotel#RE9b7674": {
+   "city": "青岛",
+   "checkin": "5月3日",
+   "nights": 3
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv06"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

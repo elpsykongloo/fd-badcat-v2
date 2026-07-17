@@ -1,0 +1,111 @@
+{
+ "id": "B_L5_0042",
+ "arm": "B",
+ "layer": "L5",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Denver",
+  "beds": "two-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Saturday morning"
+ },
+ "slots_final": {
+  "city": "Denver",
+  "beds": "one-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Saturday morning"
+ },
+ "revisions": [
+  {
+   "slot": "beds",
+   "old": "two-bedroom",
+   "new": "one-bedroom",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.93
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Denver",
+  "beds": 1,
+  "max_rent": 2000,
+  "slot": "Saturday morning"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Can you search for a two-bedroom in Denver that costs under two thousand and then schedule a viewing for Saturday morning?",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 2.88,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv04",
+   "text": "Wait — make it one-bedroom."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.494
+ },
+ "step_latencies": [
+  0.494,
+  1.963
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.006,
+  "gain_db": 0.8,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Denver",
+    "beds": 1,
+    "max_rent": 2000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE6054b7",
+    "slot": "Saturday morning"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE6054b7": {
+   "city": "Denver",
+   "beds": 1,
+   "max_rent": 2000
+  },
+  "book_viewing#BOee54fb": {
+   "listing_id": "SE6054b7",
+   "slot": "Saturday morning"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv03"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

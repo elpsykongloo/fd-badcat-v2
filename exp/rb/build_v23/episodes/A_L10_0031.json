@@ -1,0 +1,136 @@
+{
+ "id": "A_L10_0031",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Boston",
+  "destination": "Austin",
+  "date": "June first",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
+ },
+ "slots_final": {
+  "origin": "Boston",
+  "destination": "Austin",
+  "date": "June first",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "irrelevant",
+  "other": "May eighth",
+  "state": "inflight",
+  "frac": 0.763
+ },
+ "slots_canon": {
+  "origin": "Boston",
+  "destination": "Austin",
+  "date": "June 1",
+  "seat_class": "first class",
+  "passenger": "Alex Chen"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Can you find a train from Boston to Austin on June first, put a first class seat on hold, and buy the ticket for Alex Chen?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "I'm thinking we order in, so what do you fancy for dinner",
+   "at_after_eou": 1.417
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.547
+ },
+ "step_latencies": [
+  0.547,
+  0.463,
+  3.608
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.011,
+  "gain_db": -4.4,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Boston",
+    "destination": "Austin",
+    "date": "June 1"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEfc7f27",
+    "seat_class": "first class"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO8c172b",
+    "passenger": "Alex Chen"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEfc7f27": {
+   "origin": "Boston",
+   "destination": "Austin",
+   "date": "June 1"
+  },
+  "hold_seat#HO8c172b": {
+   "train_id": "SEfc7f27",
+   "seat_class": "first class"
+  },
+  "purchase_ticket#PU72d2e7": {
+   "hold_id": "HO8c172b",
+   "passenger": "Alex Chen"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv07"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.809,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "bystander",
+   "t_start": 10.866,
+   "t_end": 14.506,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

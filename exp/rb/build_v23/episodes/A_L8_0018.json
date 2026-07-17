@@ -1,0 +1,124 @@
+{
+ "id": "A_L8_0018",
+ "arm": "A",
+ "layer": "L8",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Boise",
+  "beds": "two-bedroom",
+  "max_rent": "three thousand",
+  "slot": "Sunday afternoon"
+ },
+ "slots_final": {
+  "city": "Boise",
+  "beds": "one-bedroom",
+  "max_rent": "three thousand",
+  "slot": "Sunday afternoon"
+ },
+ "revisions": [
+  {
+   "slot": "beds",
+   "old": "two-bedroom",
+   "new": "one-bedroom",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Boise",
+  "beds": 1,
+  "max_rent": 3000,
+  "slot": "Sunday afternoon"
+ },
+ "l8_action": "revise",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Can you search for a two-bedroom in Boise that costs under three thousand and then schedule a viewing for Sunday afternoon?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Put it to, um, actually Wait — make it one-bedroom.",
+   "at_after_eou": 1.187
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.463
+ },
+ "step_latencies": [
+  0.463,
+  4.506
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.005,
+  "gain_db": 1.4,
+  "snr_db": 19.7
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Boise",
+    "beds": 1,
+    "max_rent": 3000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE4f0630",
+    "slot": "Sunday afternoon"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE4f0630": {
+   "city": "Boise",
+   "beds": 1,
+   "max_rent": 3000
+  },
+  "book_viewing#BO759d98": {
+   "listing_id": "SE4f0630",
+   "slot": "Sunday afternoon"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv05"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.983,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 9.81,
+   "t_end": 12.914,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

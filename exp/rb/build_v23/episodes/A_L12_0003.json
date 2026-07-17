@@ -1,0 +1,129 @@
+{
+ "id": "A_L12_0003",
+ "arm": "A",
+ "layer": "L12",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_multi",
+ "slots": {
+  "origin": "北京",
+  "destination": "成都",
+  "date": "五月八号",
+  "country": "泰国",
+  "nationality": "中国"
+ },
+ "slots_final": {
+  "origin": "北京",
+  "destination": "成都",
+  "date": "五月八号",
+  "country": "日本",
+  "nationality": "中国"
+ },
+ "revisions": [
+  {
+   "slot": "country",
+   "old": "泰国",
+   "new": "日本",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.36
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "北京",
+  "destination": "成都",
+  "date": "5月8日",
+  "country": "日本",
+  "nationality": "中国"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "zh",
+   "text": "查一下五月八号从北京到成都的火车，再查查中国去泰国要不要签证呗。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "zh",
+   "text": "等等，改成日本。",
+   "gap_before": 1.36
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.433
+ },
+ "step_latencies": [
+  0.433,
+  1.098
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "check_visa_rule"
+ ],
+ "perturb": {
+  "rate": 1.033,
+  "gain_db": -0.6,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "北京",
+    "destination": "成都",
+    "date": "5月8日"
+   }
+  },
+  {
+   "fn": "check_visa_rule",
+   "args": {
+    "country": "日本",
+    "nationality": "中国"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEe86980": {
+   "origin": "北京",
+   "destination": "成都",
+   "date": "5月8日"
+  },
+  "check_visa_rule#CHb11e28": {
+   "country": "日本",
+   "nationality": "中国"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.238,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 8.598,
+   "t_end": 9.992,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  1.36
+ ]
+}

@@ -1,0 +1,99 @@
+{
+ "id": "A_L9_0043",
+ "arm": "A",
+ "layer": "L9",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_hotel",
+ "slots": {
+  "city": "厦门",
+  "checkin": "五月三号",
+  "nights": "两"
+ },
+ "slots_final": {
+  "city": "厦门",
+  "checkin": "五月三号",
+  "nights": "两"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "city": "厦门",
+  "checkin": "5月3日",
+  "nights": 2
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "zh",
+   "text": "帮我在厦门订一间酒店，五月三号入住，住两晚。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "zh",
+   "text": "好了没？",
+   "at_after_eou": 10.278
+  }
+ ],
+ "events": [],
+ "profile": "heavy",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 15.463
+ },
+ "step_latencies": [
+  15.463
+ ],
+ "scenario_steps": [
+  "reserve_hotel"
+ ],
+ "perturb": {
+  "rate": 1.036,
+  "gain_db": -0.2,
+  "snr_db": 20.8
+ },
+ "gold_calls": [
+  {
+   "fn": "reserve_hotel",
+   "args": {
+    "city": "厦门",
+    "checkin": "5月3日",
+    "nights": 2
+   }
+  }
+ ],
+ "gold_state": {
+  "reserve_hotel#REd4594d": {
+   "city": "厦门",
+   "checkin": "5月3日",
+   "nights": 2
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv09"
+ },
+ "split": "dev",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 4.747,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 15.665,
+   "t_end": 16.746,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

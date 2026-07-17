@@ -1,0 +1,95 @@
+{
+ "id": "A_L1_0037",
+ "arm": "A",
+ "layer": "L1",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_payment",
+ "slots": {
+  "payee": "property office",
+  "amount": "five thousand",
+  "date": "May eighth"
+ },
+ "slots_final": {
+  "payee": "property office",
+  "amount": "five thousand",
+  "date": "June first"
+ },
+ "revisions": [
+  {
+   "slot": "date",
+   "old": "May eighth",
+   "new": "June first",
+   "by": "user",
+   "kind": "inline",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "payee": "property office",
+  "amount": 5000,
+  "date": "June 1"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Schedule a transfer of five thousand to property office for May eighth., oh no, make that June first",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 3.778
+ },
+ "step_latencies": [
+  3.778
+ ],
+ "scenario_steps": [
+  "schedule_payment"
+ ],
+ "perturb": {
+  "rate": 0.971,
+  "gain_db": -1.9,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "schedule_payment",
+   "args": {
+    "payee": "property office",
+    "amount": 5000,
+    "date": "June 1"
+   }
+  }
+ ],
+ "gold_state": {
+  "schedule_payment#SC93adb7": {
+   "payee": "property office",
+   "amount": 5000,
+   "date": "June 1"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv06"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.162,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": []
+}

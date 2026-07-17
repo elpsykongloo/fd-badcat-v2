@@ -1,0 +1,126 @@
+{
+ "id": "A_L4_0038",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "成都",
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周日下午"
+ },
+ "slots_final": {
+  "city": "成都",
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周日下午"
+ },
+ "revisions": [
+  {
+   "slot": "beds",
+   "old": "两居",
+   "new": "一居",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.905
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "成都",
+  "beds": 1,
+  "max_rent": 8000,
+  "slot": "周日下午"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "zh",
+   "text": "在成都找个两居的，租金最高八千，然后约周日下午看房可以吗？",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "zh",
+   "text": "一居，改成一居。",
+   "gap_before": 0.905
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.427
+ },
+ "step_latencies": [
+  0.427,
+  3.473
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.046,
+  "gain_db": -5.4,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "成都",
+    "beds": 1,
+    "max_rent": 8000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE1b8887",
+    "slot": "周日下午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE1b8887": {
+   "city": "成都",
+   "beds": 1,
+   "max_rent": 8000
+  },
+  "book_viewing#BObe9862": {
+   "listing_id": "SE1b8887",
+   "slot": "周日下午"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv03"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.613,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 8.518,
+   "t_end": 13.719,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.905
+ ]
+}

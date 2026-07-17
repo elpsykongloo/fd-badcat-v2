@@ -1,0 +1,136 @@
+{
+ "id": "A_L10_0015",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "June first",
+  "seat_class": "first class",
+  "passenger": "Sam Rivera"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "June first",
+  "seat_class": "first class",
+  "passenger": "Sam Rivera"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "command",
+  "other": "May eighth",
+  "state": "inflight",
+  "frac": 0.645
+ },
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "June 1",
+  "seat_class": "first class",
+  "passenger": "Sam Rivera"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "Can you find a train from Chicago to Denver on June first, put a first class seat on hold, and buy the ticket for Sam Rivera?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Go ahead and change it to May eighth.",
+   "at_after_eou": 1.282
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.437
+ },
+ "step_latencies": [
+  0.437,
+  1.297,
+  3.816
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.947,
+  "gain_db": -5.9,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Chicago",
+    "destination": "Denver",
+    "date": "June 1"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEc3f587",
+    "seat_class": "first class"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HOc5ff22",
+    "passenger": "Sam Rivera"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEc3f587": {
+   "origin": "Chicago",
+   "destination": "Denver",
+   "date": "June 1"
+  },
+  "hold_seat#HOc5ff22": {
+   "train_id": "SEc3f587",
+   "seat_class": "first class"
+  },
+  "purchase_ticket#PUb73b4d": {
+   "hold_id": "HOc5ff22",
+   "passenger": "Sam Rivera"
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 10.722,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "bystander",
+   "t_start": 12.644,
+   "t_end": 15.431,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

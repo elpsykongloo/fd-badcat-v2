@@ -1,0 +1,164 @@
+{
+ "id": "A_L6_0003",
+ "arm": "A",
+ "layer": "L6",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "广州",
+  "destination": "西安",
+  "date": "五月八号",
+  "seat_class": "一等座",
+  "passenger": "王磊"
+ },
+ "slots_final": {
+  "origin": "广州",
+  "destination": "南京",
+  "date": "五月八号",
+  "seat_class": "二等座",
+  "passenger": "王磊"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "西安",
+   "new": "南京",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.194
+  },
+  {
+   "slot": "seat_class",
+   "old": "一等座",
+   "new": "二等座",
+   "by": "user",
+   "kind": "second",
+   "gap": 2.737
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "广州",
+  "destination": "南京",
+  "date": "5月8日",
+  "seat_class": "二等座",
+  "passenger": "王磊"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "zh",
+   "text": "帮我查五月八号从广州到西安的火车，订一等座，然后直接买票，乘客是王磊。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "zh",
+   "text": "等一下，改回南京。",
+   "gap_before": 1.194
+  },
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "zh",
+   "text": "对了，再改改，要二等座。",
+   "gap_before": 2.737
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.414
+ },
+ "step_latencies": [
+  0.414,
+  0.627,
+  9.067
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.019,
+  "gain_db": -1.1,
+  "snr_db": 19.0
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "广州",
+    "destination": "南京",
+    "date": "5月8日"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE146cf6",
+    "seat_class": "二等座"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO721f30",
+    "passenger": "王磊"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE146cf6": {
+   "origin": "广州",
+   "destination": "南京",
+   "date": "5月8日"
+  },
+  "hold_seat#HO721f30": {
+   "train_id": "SE146cf6",
+   "seat_class": "二等座"
+  },
+  "purchase_ticket#PU7c2a74": {
+   "hold_id": "HO721f30",
+   "passenger": "王磊"
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv07"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.801,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 8.995,
+   "t_end": 11.35,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 14.087,
+   "t_end": 16.443,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  1.194,
+  2.737
+ ]
+}

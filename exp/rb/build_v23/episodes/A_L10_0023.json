@@ -1,0 +1,142 @@
+{
+ "id": "A_L10_0023",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Sam Rivera"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "June first",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
+ "revisions": [
+  {
+   "slot": "seat_class",
+   "old": "coach",
+   "new": "business",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.692
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "June 1",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "Find a train from Chicago to Austin on June first, hold a coach seat, and buy the ticket for Sam Rivera.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "Wait — make it business.",
+   "gap_before": 0.692
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.295
+ },
+ "step_latencies": [
+  0.295,
+  0.852,
+  1.044
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.039,
+  "gain_db": -1.8,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Chicago",
+    "destination": "Austin",
+    "date": "June 1"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE32b010",
+    "seat_class": "business"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HOf64f7b",
+    "passenger": "Sam Rivera"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE32b010": {
+   "origin": "Chicago",
+   "destination": "Austin",
+   "date": "June 1"
+  },
+  "hold_seat#HOf64f7b": {
+   "train_id": "SE32b010",
+   "seat_class": "business"
+  },
+  "purchase_ticket#PU893e64": {
+   "hold_id": "HOf64f7b",
+   "passenger": "Sam Rivera"
+  }
+ },
+ "voices": {
+  "user": "cv05",
+  "bystander": "cv06"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.276,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 7.968,
+   "t_end": 9.739,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.692
+ ]
+}

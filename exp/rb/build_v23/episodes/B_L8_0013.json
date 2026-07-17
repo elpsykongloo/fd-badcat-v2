@@ -1,0 +1,86 @@
+{
+ "id": "B_L8_0013",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "finance",
+ "lang": "zh",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "三千",
+  "from_cur": "人民币",
+  "to_cur": "日元",
+  "from_acct": "工资卡",
+  "to_acct": "储蓄卡"
+ },
+ "slots_final": {
+  "amount": "三千",
+  "from_cur": "人民币",
+  "to_cur": "日元",
+  "from_acct": "工资卡",
+  "to_acct": "储蓄卡"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "amount": 3000,
+  "from_cur": "CNY",
+  "to_cur": "JPY",
+  "from_acct": "工资卡",
+  "to_acct": "储蓄卡"
+ },
+ "l8_action": "cancel",
+ "cancelled": true,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "zh",
+   "text": "先查三千块人民币换日元的汇率，然后从工资卡转三千到储蓄卡。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "zh",
+   "text": "算了，先别办了。",
+   "at_after_eou": 1.522
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.555,
+   "action": "cancel",
+   "role": "user",
+   "voice": "cv09",
+   "text": "算了，先别办了。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.688
+ },
+ "step_latencies": [
+  0.688,
+  1.653
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 1.005,
+  "gain_db": -5.1,
+  "snr_db": 22.9
+ },
+ "gold_calls": [],
+ "gold_state": {},
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv02"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

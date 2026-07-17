@@ -1,0 +1,123 @@
+{
+ "id": "B_L8_0009",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "eight hundred",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "slots_final": {
+  "amount": "three thousand",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "revisions": [
+  {
+   "slot": "amount",
+   "old": "eight hundred",
+   "new": "three thousand",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "amount": 3000,
+  "from_cur": "USD",
+  "to_cur": "JPY",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "l8_action": "revise",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Get a quote for eight hundred dollars to yen, then transfer eight hundred from checking to rent account.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Wait — make it three thousand.",
+   "at_after_eou": 1.166
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.409,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv08",
+   "text": "Wait — make it three thousand."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.277
+ },
+ "step_latencies": [
+  0.277,
+  2.468
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 1.016,
+  "gain_db": -5.8,
+  "snr_db": 15.8
+ },
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": 3000,
+    "from_cur": "USD",
+    "to_cur": "JPY"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "rent account",
+    "amount": 3000
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GE379276": {
+   "amount": 3000,
+   "from_cur": "USD",
+   "to_cur": "JPY"
+  },
+  "transfer_funds#TR0f03d9": {
+   "from_acct": "checking",
+   "to_acct": "rent account",
+   "amount": 3000
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv09"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

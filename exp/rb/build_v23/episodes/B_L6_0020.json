@@ -1,0 +1,133 @@
+{
+ "id": "B_L6_0020",
+ "arm": "B",
+ "layer": "L6",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "thermos bottle",
+  "qty": "two",
+  "address": "12 College Road"
+ },
+ "slots_final": {
+  "query": "running shoes",
+  "qty": "one",
+  "address": "12 College Road"
+ },
+ "revisions": [
+  {
+   "slot": "query",
+   "old": "thermos bottle",
+   "new": "running shoes",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.947
+  },
+  {
+   "slot": "qty",
+   "old": "two",
+   "new": "one",
+   "by": "user",
+   "kind": "second",
+   "gap": 2.806
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "running shoes",
+  "qty": 1,
+  "address": "12 College Road"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Search for thermos bottle, add two to the cart, and order it to 12 College Road.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.096,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv04",
+   "text": "Um... Wait — make it running shoes."
+  },
+  {
+   "state": "committed",
+   "offset": 1.041,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv04",
+   "text": "And I'd like to add another change, one."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.453
+ },
+ "step_latencies": [
+  0.453,
+  0.488,
+  1.266
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 1.015,
+  "gain_db": 0.3,
+  "snr_db": 19.4
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "running shoes"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SEebaf81",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD219fb2",
+    "address": "12 College Road"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SEebaf81": {
+   "query": "running shoes"
+  },
+  "add_item#AD219fb2": {
+   "item_id": "SEebaf81",
+   "qty": 1
+  },
+  "place_order#PLb5536d": {
+   "cart_id": "AD219fb2",
+   "address": "12 College Road"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv07"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

@@ -1,0 +1,125 @@
+{
+ "id": "A_L10_0025",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "eight hundred",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "slots_final": {
+  "amount": "eight hundred",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "irrelevant",
+  "other": "five thousand",
+  "state": "inflight",
+  "frac": 0.764
+ },
+ "slots_canon": {
+  "amount": 800,
+  "from_cur": "USD",
+  "to_cur": "EUR",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "Can you quote eight hundred dollars in euros and after that move eight hundred from checking into savings?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Should we order in and what do you want for dinner",
+   "at_after_eou": 1.546
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.715
+ },
+ "step_latencies": [
+  0.715,
+  1.545
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 1.022,
+  "gain_db": -1.4,
+  "snr_db": 20.6
+ },
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": 800,
+    "from_cur": "USD",
+    "to_cur": "EUR"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "savings",
+    "amount": 800
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GEc6177f": {
+   "amount": 800,
+   "from_cur": "USD",
+   "to_cur": "EUR"
+  },
+  "transfer_funds#TR3bdeaf": {
+   "from_acct": "checking",
+   "to_acct": "savings",
+   "amount": 800
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv03"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.214,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "bystander",
+   "t_start": 8.4,
+   "t_end": 11.766,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

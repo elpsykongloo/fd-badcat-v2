@@ -1,0 +1,82 @@
+{
+ "id": "B_L8_0016",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "ecommerce",
+ "lang": "zh",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "保温杯",
+  "qty": "两",
+  "address": "浦东新区世纪大道八号"
+ },
+ "slots_final": {
+  "query": "保温杯",
+  "qty": "两",
+  "address": "浦东新区世纪大道八号"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "query": "保温杯",
+  "qty": 2,
+  "address": "浦东新区世纪大道八号"
+ },
+ "l8_action": "cancel",
+ "cancelled": true,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "zh",
+   "text": "搜索保温杯，放进两件到购物车，下单发到浦东新区世纪大道八号。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "zh",
+   "text": "那就算了，停了吧",
+   "at_after_eou": 1.246
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.299,
+   "action": "cancel",
+   "role": "user",
+   "voice": "cv03",
+   "text": "算了，先别办了。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.552
+ },
+ "step_latencies": [
+  0.552,
+  0.326,
+  1.962
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 1.057,
+  "gain_db": -3.5,
+  "snr_db": 23.8
+ },
+ "gold_calls": [],
+ "gold_state": {},
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv02"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

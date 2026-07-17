@@ -1,0 +1,132 @@
+{
+ "id": "A_L4_0004",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "ecommerce",
+ "lang": "zh",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "跑步鞋",
+  "qty": "一",
+  "address": "浦东新区世纪大道八号"
+ },
+ "slots_final": {
+  "query": "蓝牙耳机",
+  "qty": "一",
+  "address": "浦东新区世纪大道八号"
+ },
+ "revisions": [
+  {
+   "slot": "query",
+   "old": "跑步鞋",
+   "new": "蓝牙耳机",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.722
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "蓝牙耳机",
+  "qty": 1,
+  "address": "浦东新区世纪大道八号"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "帮我搜跑步鞋，加一件进购物车，下单寄到浦东新区世纪大道八号。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "唔——蓝牙耳机，改成蓝牙耳机。",
+   "gap_before": 0.722
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.54
+ },
+ "step_latencies": [
+  0.54,
+  0.662,
+  2.469
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 1.011,
+  "gain_db": -3.0,
+  "snr_db": 19.8
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "蓝牙耳机"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE37b0ce",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD375ac8",
+    "address": "浦东新区世纪大道八号"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE37b0ce": {
+   "query": "蓝牙耳机"
+  },
+  "add_item#AD375ac8": {
+   "item_id": "SE37b0ce",
+   "qty": 1
+  },
+  "place_order#PL450fcf": {
+   "cart_id": "AD375ac8",
+   "address": "浦东新区世纪大道八号"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv06"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.989,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 7.711,
+   "t_end": 14.832,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.722
+ ]
+}

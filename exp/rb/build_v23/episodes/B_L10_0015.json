@@ -1,0 +1,138 @@
+{
+ "id": "B_L10_0015",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "June first",
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
+ },
+ "slots_final": {
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "June first",
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "command",
+  "other": "Atlanta",
+  "state": "inflight",
+  "frac": 0.671
+ },
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "June 1",
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "Can you find a train from Seattle to Portland on June first, put a first class seat on hold, and buy the ticket for Jordan Lee?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Go ahead and change it to Atlanta.",
+   "at_after_eou": 1.215
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.565,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv08",
+   "text": "Set it to Atlanta."
+  },
+  {
+   "state": "tts",
+   "offset": 0.358,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv08",
+   "text": "Replace it with Atlanta."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.32
+ },
+ "step_latencies": [
+  0.32,
+  0.45,
+  2.501
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.942,
+  "gain_db": -4.4,
+  "snr_db": 20.3
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Seattle",
+    "destination": "Portland",
+    "date": "June 1"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE920b68",
+    "seat_class": "first class"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HOabea33",
+    "passenger": "Jordan Lee"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE920b68": {
+   "origin": "Seattle",
+   "destination": "Portland",
+   "date": "June 1"
+  },
+  "hold_seat#HOabea33": {
+   "train_id": "SE920b68",
+   "seat_class": "first class"
+  },
+  "purchase_ticket#PU90c65e": {
+   "hold_id": "HOabea33",
+   "passenger": "Jordan Lee"
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

@@ -1,0 +1,126 @@
+{
+ "id": "A_L4_0062",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Austin",
+  "beds": "two-bedroom",
+  "max_rent": "three thousand",
+  "slot": "Sunday afternoon"
+ },
+ "slots_final": {
+  "city": "Boise",
+  "beds": "two-bedroom",
+  "max_rent": "three thousand",
+  "slot": "Sunday afternoon"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "Austin",
+   "new": "Boise",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.697
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Boise",
+  "beds": 2,
+  "max_rent": 3000,
+  "slot": "Sunday afternoon"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Could you look for a two-bedroom in Austin that's under three thousand and then book me a viewing at Sunday afternoon?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Well... I need Boise changed to Boise.",
+   "gap_before": 0.697
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.779
+ },
+ "step_latencies": [
+  0.779,
+  0.923
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.03,
+  "gain_db": -1.0,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Boise",
+    "beds": 2,
+    "max_rent": 3000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SEfcba19",
+    "slot": "Sunday afternoon"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEfcba19": {
+   "city": "Boise",
+   "beds": 2,
+   "max_rent": 3000
+  },
+  "book_viewing#BO6d0d7a": {
+   "listing_id": "SEfcba19",
+   "slot": "Sunday afternoon"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv07"
+ },
+ "split": "dev",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.791,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 7.488,
+   "t_end": 13.546,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.697
+ ]
+}

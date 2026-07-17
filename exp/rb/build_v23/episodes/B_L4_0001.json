@@ -1,0 +1,116 @@
+{
+ "id": "B_L4_0001",
+ "arm": "B",
+ "layer": "L4",
+ "domain": "finance",
+ "lang": "zh",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "三千",
+  "from_cur": "人民币",
+  "to_cur": "美元",
+  "from_acct": "工资卡",
+  "to_acct": "储蓄卡"
+ },
+ "slots_final": {
+  "amount": "三千",
+  "from_cur": "人民币",
+  "to_cur": "日元",
+  "from_acct": "工资卡",
+  "to_acct": "储蓄卡"
+ },
+ "revisions": [
+  {
+   "slot": "to_cur",
+   "old": "美元",
+   "new": "日元",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.693
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "amount": 3000,
+  "from_cur": "CNY",
+  "to_cur": "JPY",
+  "from_acct": "工资卡",
+  "to_acct": "储蓄卡"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "zh",
+   "text": "先查三千块人民币换美元的汇率，然后从工资卡转三千到储蓄卡。",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.454,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv01",
+   "text": "日元，改成日元。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.348
+ },
+ "step_latencies": [
+  0.348,
+  1.558
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 0.989,
+  "gain_db": -4.0,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": 3000,
+    "from_cur": "CNY",
+    "to_cur": "JPY"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "工资卡",
+    "to_acct": "储蓄卡",
+    "amount": 3000
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GE27ef4c": {
+   "amount": 3000,
+   "from_cur": "CNY",
+   "to_cur": "JPY"
+  },
+  "transfer_funds#TRbb93ba": {
+   "from_acct": "工资卡",
+   "to_acct": "储蓄卡",
+   "amount": 3000
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv09"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

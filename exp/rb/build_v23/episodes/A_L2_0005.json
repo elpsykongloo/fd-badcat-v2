@@ -1,0 +1,110 @@
+{
+ "id": "A_L2_0005",
+ "arm": "A",
+ "layer": "L2",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_payment",
+ "slots": {
+  "payee": "landlord",
+  "amount": "five thousand",
+  "date": "May third"
+ },
+ "slots_final": {
+  "payee": "landlord",
+  "amount": "five thousand",
+  "date": "May eighth"
+ },
+ "revisions": [
+  {
+   "slot": "date",
+   "old": "May third",
+   "new": "May eighth",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.354
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "payee": "landlord",
+  "amount": 5000,
+  "date": "May 8"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Can you set up a payment of five thousand to landlord for May third?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Wait — make it May eighth.",
+   "gap_before": 0.354
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.622
+ },
+ "step_latencies": [
+  0.622
+ ],
+ "scenario_steps": [
+  "schedule_payment"
+ ],
+ "perturb": {
+  "rate": 1.009,
+  "gain_db": 1.7,
+  "snr_db": 16.4
+ },
+ "gold_calls": [
+  {
+   "fn": "schedule_payment",
+   "args": {
+    "payee": "landlord",
+    "amount": 5000,
+    "date": "May 8"
+   }
+  }
+ ],
+ "gold_state": {
+  "schedule_payment#SC606235": {
+   "payee": "landlord",
+   "amount": 5000,
+   "date": "May 8"
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv02"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 4.147,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 4.501,
+   "t_end": 7.752,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.354
+ ]
+}

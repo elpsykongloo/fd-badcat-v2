@@ -1,0 +1,154 @@
+{
+ "id": "A_L6_0020",
+ "arm": "A",
+ "layer": "L6",
+ "domain": "ecommerce",
+ "lang": "zh",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "保温杯",
+  "qty": "一",
+  "address": "浦东新区世纪大道八号"
+ },
+ "slots_final": {
+  "query": "蓝牙耳机",
+  "qty": "两",
+  "address": "浦东新区世纪大道八号"
+ },
+ "revisions": [
+  {
+   "slot": "query",
+   "old": "保温杯",
+   "new": "蓝牙耳机",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.115
+  },
+  {
+   "slot": "qty",
+   "old": "一",
+   "new": "两",
+   "by": "user",
+   "kind": "second",
+   "gap": 2.699
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "蓝牙耳机",
+  "qty": 2,
+  "address": "浦东新区世纪大道八号"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "查保温杯，加一件进购物车，下单寄往浦东新区世纪大道八号。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "改成，改成，等等，改成蓝牙耳机。",
+   "gap_before": 1.115
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "还有，再改一下，要两。",
+   "gap_before": 2.699
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.511
+ },
+ "step_latencies": [
+  0.511,
+  0.684,
+  2.044
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 0.965,
+  "gain_db": 0.0,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "蓝牙耳机"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE42a6a6",
+    "qty": 2
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "ADecf102",
+    "address": "浦东新区世纪大道八号"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE42a6a6": {
+   "query": "蓝牙耳机"
+  },
+  "add_item#ADecf102": {
+   "item_id": "SE42a6a6",
+   "qty": 2
+  },
+  "place_order#PLa60a70": {
+   "cart_id": "ADecf102",
+   "address": "浦东新区世纪大道八号"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv06"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.381,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 8.496,
+   "t_end": 14.796,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 17.495,
+   "t_end": 19.402,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  1.115,
+  2.699
+ ]
+}

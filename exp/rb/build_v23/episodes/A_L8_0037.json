@@ -1,0 +1,92 @@
+{
+ "id": "A_L8_0037",
+ "arm": "A",
+ "layer": "L8",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "five thousand",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "slots_final": {
+  "amount": "five thousand",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "amount": 5000,
+  "from_cur": "USD",
+  "to_cur": "EUR",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "l8_action": "cancel",
+ "cancelled": true,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Please provide a quote for five thousand dollars to euros and then initiate a transfer of five thousand from checking to savings.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Actually, hold off, don't do it yet.",
+   "at_after_eou": 1.798
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 1.034
+ },
+ "step_latencies": [
+  1.034,
+  3.998
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 0.969,
+  "gain_db": 1.8,
+  "snr_db": 21.5
+ },
+ "gold_calls": [],
+ "gold_state": {},
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv06"
+ },
+ "split": "dev",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.591,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 11.029,
+   "t_end": 13.175,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

@@ -1,0 +1,133 @@
+{
+ "id": "B_L6_0032",
+ "arm": "B",
+ "layer": "L6",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "running shoes",
+  "qty": "two",
+  "address": "88 Century Avenue"
+ },
+ "slots_final": {
+  "query": "thermos bottle",
+  "qty": "one",
+  "address": "88 Century Avenue"
+ },
+ "revisions": [
+  {
+   "slot": "query",
+   "old": "running shoes",
+   "new": "thermos bottle",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.944
+  },
+  {
+   "slot": "qty",
+   "old": "two",
+   "new": "one",
+   "by": "user",
+   "kind": "second",
+   "gap": 2.611
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "thermos bottle",
+  "qty": 1,
+  "address": "88 Century Avenue"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Search for running shoes, add two to the cart, and order it to 88 Century Avenue.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.813,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv07",
+   "text": "Hmm... Wait — make it thermos bottle."
+  },
+  {
+   "state": "committed",
+   "offset": 0.816,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv07",
+   "text": "Oh and another change, one."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.458
+ },
+ "step_latencies": [
+  0.458,
+  0.423,
+  1.029
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 1.039,
+  "gain_db": 2.0,
+  "snr_db": 18.9
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "thermos bottle"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE1527ac",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD887a64",
+    "address": "88 Century Avenue"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE1527ac": {
+   "query": "thermos bottle"
+  },
+  "add_item#AD887a64": {
+   "item_id": "SE1527ac",
+   "qty": 1
+  },
+  "place_order#PLc751ea": {
+   "cart_id": "AD887a64",
+   "address": "88 Century Avenue"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

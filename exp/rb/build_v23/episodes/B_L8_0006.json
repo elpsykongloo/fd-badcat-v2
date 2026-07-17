@@ -1,0 +1,118 @@
+{
+ "id": "B_L8_0006",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "成都",
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周六上午"
+ },
+ "slots_final": {
+  "city": "成都",
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周日下午"
+ },
+ "revisions": [
+  {
+   "slot": "slot",
+   "old": "周六上午",
+   "new": "周日下午",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "成都",
+  "beds": 2,
+  "max_rent": 8000,
+  "slot": "周日下午"
+ },
+ "l8_action": "revise",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "zh",
+   "text": "在成都找两居、租金不超过八千的房子，约周六上午看房。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "zh",
+   "text": "不好意思，换周日下午吧。",
+   "at_after_eou": 1.209
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.34,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv04",
+   "text": "嗯不对——不对，应该是周日下午。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.564
+ },
+ "step_latencies": [
+  0.564,
+  2.291
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.036,
+  "gain_db": -0.9,
+  "snr_db": 22.1
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "成都",
+    "beds": 2,
+    "max_rent": 8000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE59641b",
+    "slot": "周日下午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE59641b": {
+   "city": "成都",
+   "beds": 2,
+   "max_rent": 8000
+  },
+  "book_viewing#BO98f105": {
+   "listing_id": "SE59641b",
+   "slot": "周日下午"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv05"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

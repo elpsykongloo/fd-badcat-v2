@@ -73,6 +73,7 @@ def verify(out_dir):
 
 def selftest():
     from rb.generator import make_episode, config_hash
+    from rb.registry import canon_value
     from rb.sandbox import Sandbox, canonical_calls
     ck = {}
     ch = config_hash()
@@ -87,8 +88,12 @@ def selftest():
     ck["l4_value_first"] = e["revisions"][0]["kind"] == "value_first" and \
         e["pieces"][1]["text"].startswith(e["revisions"][0]["new"])
     ck["l4_gap_in_bin"] = 0.68 <= e["revisions"][0]["gap"] <= 1.14
-    ck["gold_uses_new_value"] = e["revisions"][0]["new"] in json.dumps(
-        e["gold_calls"], ensure_ascii=False)
+    revised = e["revisions"][0]
+    new_canon = canon_value(revised["slot"], revised["new"])
+    ck["gold_uses_new_value"] = any(
+        value == new_canon
+        for call in e["gold_calls"]
+        for value in call["args"].values())
     e10 = next(x for x in eps1 if x["layer"] == "L10" and x["bystander"])
     gold_arg_values = [v for call in e10["gold_calls"]
                        for v in call["args"].values()]

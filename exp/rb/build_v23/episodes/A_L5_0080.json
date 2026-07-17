@@ -1,0 +1,132 @@
+{
+ "id": "A_L5_0080",
+ "arm": "A",
+ "layer": "L5",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "wireless earbuds",
+  "qty": "two",
+  "address": "12 College Road"
+ },
+ "slots_final": {
+  "query": "wireless earbuds",
+  "qty": "one",
+  "address": "12 College Road"
+ },
+ "revisions": [
+  {
+   "slot": "qty",
+   "old": "two",
+   "new": "one",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.823
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "wireless earbuds",
+  "qty": 1,
+  "address": "12 College Road"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Search for wireless earbuds, add two to the cart, and order it to 12 College Road.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Wait — make it one.",
+   "gap_before": 2.823
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.803
+ },
+ "step_latencies": [
+  0.803,
+  0.816,
+  2.173
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 1.048,
+  "gain_db": -2.9,
+  "snr_db": 23.1
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "wireless earbuds"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE888782",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD9f64f1",
+    "address": "12 College Road"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE888782": {
+   "query": "wireless earbuds"
+  },
+  "add_item#AD9f64f1": {
+   "item_id": "SE888782",
+   "qty": 1
+  },
+  "place_order#PL4861b6": {
+   "cart_id": "AD9f64f1",
+   "address": "12 College Road"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv09"
+ },
+ "split": "dev",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.989,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 9.812,
+   "t_end": 11.567,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  2.823
+ ]
+}

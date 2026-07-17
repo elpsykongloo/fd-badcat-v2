@@ -1,0 +1,131 @@
+{
+ "id": "A_L4_0069",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "five thousand",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "slots_final": {
+  "amount": "five thousand",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "revisions": [
+  {
+   "slot": "to_cur",
+   "old": "yen",
+   "new": "euros",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.688
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "amount": 5000,
+  "from_cur": "USD",
+  "to_cur": "EUR",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Get a quote for five thousand dollars to yen, then transfer five thousand from checking to savings.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "euros — change it to euros.",
+   "gap_before": 0.688
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.624
+ },
+ "step_latencies": [
+  0.624,
+  2.473
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 0.954,
+  "gain_db": 0.6,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": 5000,
+    "from_cur": "USD",
+    "to_cur": "EUR"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "savings",
+    "amount": 5000
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GEe33c30": {
+   "amount": 5000,
+   "from_cur": "USD",
+   "to_cur": "EUR"
+  },
+  "transfer_funds#TR24caac": {
+   "from_acct": "checking",
+   "to_acct": "savings",
+   "amount": 5000
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv06"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 5.867,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 6.555,
+   "t_end": 9.238,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.688
+ ]
+}

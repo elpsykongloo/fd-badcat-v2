@@ -1,0 +1,129 @@
+{
+ "id": "A_L12_0023",
+ "arm": "A",
+ "layer": "L12",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_multi",
+ "slots": {
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "June first",
+  "country": "Thailand",
+  "nationality": "American"
+ },
+ "slots_final": {
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "June first",
+  "country": "Japan",
+  "nationality": "American"
+ },
+ "revisions": [
+  {
+   "slot": "country",
+   "old": "Thailand",
+   "new": "Japan",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.591
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Austin",
+  "date": "June 1",
+  "country": "Japan",
+  "nationality": "American"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Look up trains from Seattle to Austin on June first, and also check if American citizens need a visa for Thailand.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Switch it to the, no no Wait — make it Japan.",
+   "gap_before": 1.591
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.726
+ },
+ "step_latencies": [
+  0.726,
+  0.989
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "check_visa_rule"
+ ],
+ "perturb": {
+  "rate": 0.967,
+  "gain_db": -2.3,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Seattle",
+    "destination": "Austin",
+    "date": "June 1"
+   }
+  },
+  {
+   "fn": "check_visa_rule",
+   "args": {
+    "country": "Japan",
+    "nationality": "American"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEdbdc6c": {
+   "origin": "Seattle",
+   "destination": "Austin",
+   "date": "June 1"
+  },
+  "check_visa_rule#CH5b5df2": {
+   "country": "Japan",
+   "nationality": "American"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv05"
+ },
+ "split": "dev",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.194,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 9.785,
+   "t_end": 14.583,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  1.591
+ ]
+}

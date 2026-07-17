@@ -1,0 +1,164 @@
+{
+ "id": "A_L6_0023",
+ "arm": "A",
+ "layer": "L6",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "上海",
+  "destination": "西安",
+  "date": "六月一号",
+  "seat_class": "商务座",
+  "passenger": "张伟"
+ },
+ "slots_final": {
+  "origin": "上海",
+  "destination": "杭州",
+  "date": "六月一号",
+  "seat_class": "二等座",
+  "passenger": "张伟"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "西安",
+   "new": "杭州",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.935
+  },
+  {
+   "slot": "seat_class",
+   "old": "商务座",
+   "new": "二等座",
+   "by": "user",
+   "kind": "second",
+   "gap": 2.734
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "上海",
+  "destination": "杭州",
+  "date": "6月1日",
+  "seat_class": "二等座",
+  "passenger": "张伟"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "zh",
+   "text": "帮我查六月一号从上海到西安的火车，订商务座，然后直接买票，乘客是张伟。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "zh",
+   "text": "等一下，改回杭州。",
+   "gap_before": 0.935
+  },
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "zh",
+   "text": "然后，再换一下，要二等座。",
+   "gap_before": 2.734
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.456
+ },
+ "step_latencies": [
+  0.456,
+  0.66,
+  3.666
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.996,
+  "gain_db": -2.6,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "上海",
+    "destination": "杭州",
+    "date": "6月1日"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE409fe9",
+    "seat_class": "二等座"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO9c4413",
+    "passenger": "张伟"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE409fe9": {
+   "origin": "上海",
+   "destination": "杭州",
+   "date": "6月1日"
+  },
+  "hold_seat#HO9c4413": {
+   "train_id": "SE409fe9",
+   "seat_class": "二等座"
+  },
+  "purchase_ticket#PU15c1e4": {
+   "hold_id": "HO9c4413",
+   "passenger": "张伟"
+  }
+ },
+ "voices": {
+  "user": "cv05",
+  "bystander": "cv03"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.408,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 8.343,
+   "t_end": 10.27,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 13.004,
+   "t_end": 17.663,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.935,
+  2.734
+ ]
+}

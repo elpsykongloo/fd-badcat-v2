@@ -1,0 +1,129 @@
+{
+ "id": "A_L12_0026",
+ "arm": "A",
+ "layer": "L12",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_multi",
+ "slots": {
+  "city": "杭州",
+  "beds": "一居",
+  "max_rent": "八千",
+  "from_addr": "中关村",
+  "to_addr": "国贸"
+ },
+ "slots_final": {
+  "city": "杭州",
+  "beds": "一居",
+  "max_rent": "八千",
+  "from_addr": "中关村",
+  "to_addr": "西二旗"
+ },
+ "revisions": [
+  {
+   "slot": "to_addr",
+   "old": "国贸",
+   "new": "西二旗",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.597
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "杭州",
+  "beds": 1,
+  "max_rent": 8000,
+  "from_addr": "中关村",
+  "to_addr": "西二旗"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "在杭州找带一居的，租金不超过八千的房子，再帮我算算从中关村到国贸要多久通勤",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "哎——稍等，改成西二旗行吗。",
+   "gap_before": 1.597
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.844
+ },
+ "step_latencies": [
+  0.844,
+  0.296
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "get_commute_time"
+ ],
+ "perturb": {
+  "rate": 1.028,
+  "gain_db": -4.6,
+  "snr_db": 23.4
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "杭州",
+    "beds": 1,
+    "max_rent": 8000
+   }
+  },
+  {
+   "fn": "get_commute_time",
+   "args": {
+    "from_addr": "中关村",
+    "to_addr": "西二旗"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE55e3ba": {
+   "city": "杭州",
+   "beds": 1,
+   "max_rent": 8000
+  },
+  "get_commute_time#GEd93c50": {
+   "from_addr": "中关村",
+   "to_addr": "西二旗"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv09"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.593,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 10.19,
+   "t_end": 18.05,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  1.597
+ ]
+}

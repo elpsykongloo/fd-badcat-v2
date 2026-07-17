@@ -1,0 +1,109 @@
+{
+ "id": "B_L8_0098",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Denver",
+  "beds": "one-bedroom",
+  "max_rent": "three thousand",
+  "slot": "Sunday afternoon"
+ },
+ "slots_final": {
+  "city": "Denver",
+  "beds": "one-bedroom",
+  "max_rent": "three thousand",
+  "slot": "Sunday afternoon"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Denver",
+  "beds": 1,
+  "max_rent": 3000,
+  "slot": "Sunday afternoon"
+ },
+ "l8_action": "progress",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Find a one-bedroom in Denver under three thousand, and book a viewing for Sunday afternoon.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Any update?",
+   "at_after_eou": 1.219
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.86,
+   "action": "progress_query",
+   "role": "user",
+   "voice": "cv09",
+   "text": "Any movement?"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.515
+ },
+ "step_latencies": [
+  0.515,
+  1.142
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 0.946,
+  "gain_db": -5.3,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Denver",
+    "beds": 1,
+    "max_rent": 3000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SEa77e8b",
+    "slot": "Sunday afternoon"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEa77e8b": {
+   "city": "Denver",
+   "beds": 1,
+   "max_rent": 3000
+  },
+  "book_viewing#BO325f14": {
+   "listing_id": "SEa77e8b",
+   "slot": "Sunday afternoon"
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv02"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

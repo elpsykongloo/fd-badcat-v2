@@ -1,0 +1,127 @@
+{
+ "id": "B_L4_0047",
+ "arm": "B",
+ "layer": "L4",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
+ },
+ "slots_final": {
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "June first",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "Portland",
+   "new": "Atlanta",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.68
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "June 1",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Search for a train from Seattle to Portland on June first, keep a coach seat, and buy the ticket for Jordan Lee.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.3,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv04",
+   "text": "Put Atlanta in place of Atlanta."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.442
+ },
+ "step_latencies": [
+  0.442,
+  0.577,
+  1.871
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.048,
+  "gain_db": -5.4,
+  "snr_db": 24.7
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Seattle",
+    "destination": "Atlanta",
+    "date": "June 1"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE2466c5",
+    "seat_class": "coach"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO029cec",
+    "passenger": "Jordan Lee"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE2466c5": {
+   "origin": "Seattle",
+   "destination": "Atlanta",
+   "date": "June 1"
+  },
+  "hold_seat#HO029cec": {
+   "train_id": "SE2466c5",
+   "seat_class": "coach"
+  },
+  "purchase_ticket#PU8bbbc8": {
+   "hold_id": "HO029cec",
+   "passenger": "Jordan Lee"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv09"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

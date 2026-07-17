@@ -1,0 +1,95 @@
+{
+ "id": "B_L11_0027",
+ "arm": "B",
+ "layer": "L11",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_hotel",
+ "slots": {
+  "city": "Austin",
+  "checkin": "May tenth",
+  "nights": "two"
+ },
+ "slots_final": {
+  "city": "Austin",
+  "checkin": "May tenth",
+  "nights": "three"
+ },
+ "revisions": [
+  {
+   "slot": "nights",
+   "old": "two",
+   "new": "three",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Austin",
+  "checkin": "May 10",
+  "nights": 3
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Book me a hotel in Austin, checking in May tenth, for two nights.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "tts",
+   "offset": 0.133,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv09",
+   "text": "Write it, write it, Wait — make it three."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 1.765
+ },
+ "step_latencies": [
+  1.765
+ ],
+ "scenario_steps": [
+  "reserve_hotel"
+ ],
+ "perturb": {
+  "rate": 0.971,
+  "gain_db": -4.7,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "reserve_hotel",
+   "args": {
+    "city": "Austin",
+    "checkin": "May 10",
+    "nights": 3
+   }
+  }
+ ],
+ "gold_state": {
+  "reserve_hotel#RE6d2621": {
+   "city": "Austin",
+   "checkin": "May 10",
+   "nights": 3
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv03"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

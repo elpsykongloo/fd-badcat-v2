@@ -1,0 +1,117 @@
+{
+ "id": "B_L4_0004",
+ "arm": "B",
+ "layer": "L4",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "thermos bottle",
+  "qty": "two",
+  "address": "88 Century Avenue"
+ },
+ "slots_final": {
+  "query": "thermos bottle",
+  "qty": "one",
+  "address": "88 Century Avenue"
+ },
+ "revisions": [
+  {
+   "slot": "qty",
+   "old": "two",
+   "new": "one",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.728
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "thermos bottle",
+  "qty": 1,
+  "address": "88 Century Avenue"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Search for thermos bottle, add two to the cart, and order it to 88 Century Avenue.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.429,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv02",
+   "text": "Change that from one to one."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.591
+ },
+ "step_latencies": [
+  0.591,
+  0.421,
+  2.367
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 0.998,
+  "gain_db": 1.3,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "thermos bottle"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE3026f4",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD139b23",
+    "address": "88 Century Avenue"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE3026f4": {
+   "query": "thermos bottle"
+  },
+  "add_item#AD139b23": {
+   "item_id": "SE3026f4",
+   "qty": 1
+  },
+  "place_order#PLaf9198": {
+   "cart_id": "AD139b23",
+   "address": "88 Century Avenue"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv06"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

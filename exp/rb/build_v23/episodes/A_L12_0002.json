@@ -1,0 +1,129 @@
+{
+ "id": "A_L12_0002",
+ "arm": "A",
+ "layer": "L12",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_multi",
+ "slots": {
+  "city": "Austin",
+  "beds": "two-bedroom",
+  "max_rent": "three thousand",
+  "from_addr": "university campus",
+  "to_addr": "Downtown"
+ },
+ "slots_final": {
+  "city": "Austin",
+  "beds": "two-bedroom",
+  "max_rent": "three thousand",
+  "from_addr": "university campus",
+  "to_addr": "tech park"
+ },
+ "revisions": [
+  {
+   "slot": "to_addr",
+   "old": "Downtown",
+   "new": "tech park",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.287
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Austin",
+  "beds": 2,
+  "max_rent": 3000,
+  "from_addr": "university campus",
+  "to_addr": "tech park"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Get me a two-bedroom in Austin under three thousand, and check how the commute is from university campus to Downtown.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Wait — make it tech park.",
+   "gap_before": 2.287
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.508
+ },
+ "step_latencies": [
+  0.508,
+  0.454
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "get_commute_time"
+ ],
+ "perturb": {
+  "rate": 1.02,
+  "gain_db": -4.2,
+  "snr_db": 16.9
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Austin",
+    "beds": 2,
+    "max_rent": 3000
+   }
+  },
+  {
+   "fn": "get_commute_time",
+   "args": {
+    "from_addr": "university campus",
+    "to_addr": "tech park"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEe71aee": {
+   "city": "Austin",
+   "beds": 2,
+   "max_rent": 3000
+  },
+  "get_commute_time#GE22e250": {
+   "from_addr": "university campus",
+   "to_addr": "tech park"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv09"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 9.677,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 11.963,
+   "t_end": 14.552,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  2.286
+ ]
+}

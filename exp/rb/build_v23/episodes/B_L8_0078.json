@@ -1,0 +1,118 @@
+{
+ "id": "B_L8_0078",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Austin",
+  "beds": "two-bedroom",
+  "max_rent": "three thousand",
+  "slot": "Sunday afternoon"
+ },
+ "slots_final": {
+  "city": "Austin",
+  "beds": "two-bedroom",
+  "max_rent": "three thousand",
+  "slot": "Saturday morning"
+ },
+ "revisions": [
+  {
+   "slot": "slot",
+   "old": "Sunday afternoon",
+   "new": "Saturday morning",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Austin",
+  "beds": 2,
+  "max_rent": 3000,
+  "slot": "Saturday morning"
+ },
+ "l8_action": "revise",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "Can you search for a two-bedroom in Austin that costs under three thousand and then schedule a viewing for Sunday afternoon?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "So I was— Wait — make it Saturday morning.",
+   "at_after_eou": 1.638
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.729,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv05",
+   "text": "Wait — make it Saturday morning."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 1.234
+ },
+ "step_latencies": [
+  1.234,
+  3.907
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.003,
+  "gain_db": -1.4,
+  "snr_db": 21.0
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Austin",
+    "beds": 2,
+    "max_rent": 3000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SEc2dd80",
+    "slot": "Saturday morning"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEc2dd80": {
+   "city": "Austin",
+   "beds": 2,
+   "max_rent": 3000
+  },
+  "book_viewing#BO0febbe": {
+   "listing_id": "SEc2dd80",
+   "slot": "Saturday morning"
+  }
+ },
+ "voices": {
+  "user": "cv05",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

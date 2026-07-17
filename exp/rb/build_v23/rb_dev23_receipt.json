@@ -1,0 +1,445 @@
+{
+  "schema": "rb_v2.3_dev_receipt_v1",
+  "created_utc": "2026-07-17T04:57:14Z",
+  "scope": {
+    "content_bank": true,
+    "qwen_tts_build": true,
+    "dev_oracle_validity": true,
+    "dev_attr_round": 1,
+    "test_split_run": false,
+    "attr_round_2_run": false
+  },
+  "source": {
+    "pulled_implementation_commit": "04ab6ff8563ecdec714760f5b2d541dc0e5530fa",
+    "bank_commit": "3ebc337631792a6e314b45ad66c20e543cd40046",
+    "source_head_at_run": "3ebc337631792a6e314b45ad66c20e543cd40046",
+    "implementation_config_before_bank": "3c36d0a9ae1b",
+    "frozen_config_with_bank": "e1a515c29b8a",
+    "generator_version": "rb_v2.3.0"
+  },
+  "content_bank": {
+    "path": "exp/rb/content_bank.json",
+    "model": "deepseek-v4-flash",
+    "api_calls": 52,
+    "categories": 52,
+    "n_requested": 312,
+    "n_raw": 246,
+    "n_accepted": 244,
+    "categories_with_6_accepted": 39,
+    "categories_with_5_accepted": 2,
+    "categories_with_0_accepted": 11,
+    "variants_including_originals": 296,
+    "sha256": "309c7c0d03616d629a3e23752499fb576969c5b59c7cd44c66753748d1ff163f",
+    "review": {
+      "original_first": true,
+      "placeholder_or_language_issues": 0,
+      "control_character_quote_digit_or_emoji_issues": 0,
+      "duplicate_texts_across_categories": 0,
+      "manual_edits": 0,
+      "retries_or_supplements": 0,
+      "secret_patterns": 0,
+      "status": "PASS"
+    }
+  },
+  "build": {
+    "path": "exp/rb/build_v23",
+    "manifest_sha256": "eef243ee15c61d87e4b4fe87cc3c1d8d513584532c888bf1c3ff6a2650a2e22a",
+    "episodes_tree_sha256": "aa266b8437ede220896cc2ae236e345e49dedeac6b373f89be790dcda43ed10b",
+    "audio_tree_sha256": "7b566f2cc5ba1fe1a01602be0a6dccf357c79a3b1e00540133ce70059c98013e",
+    "tree_hash_algorithm": "sha256(concat(sorted(basename + NUL + bytes + NUL)))",
+    "n": 1000,
+    "arm_a": 600,
+    "arm_b": 400,
+    "split": {
+      "dev": 89,
+      "test": 911
+    },
+    "revision_fraction": 0.729,
+    "ids_hash": "acbb7984b03d",
+    "content_hash": "2cc261e7e0fd",
+    "domain_language_counts": {
+      "ecommerce:en": 116,
+      "ecommerce:zh": 137,
+      "finance:en": 119,
+      "finance:zh": 134,
+      "housing:en": 130,
+      "housing:zh": 117,
+      "travel:en": 143,
+      "travel:zh": 104
+    },
+    "audio": {
+      "backend": "Qwen3-TTS",
+      "files": 600,
+      "bytes": 365025016,
+      "cues": 1200,
+      "format": {
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "sample_rate_hz": 16000
+      },
+      "duration_seconds": {
+        "min": 11.050125,
+        "p50": 18.15215625,
+        "max": 50.4491875
+      },
+      "tail_after_last_cue_seconds_min": 5.9994375,
+      "voice_piece_counts": {
+        "cv01": 111,
+        "cv02": 140,
+        "cv03": 147,
+        "cv04": 153,
+        "cv05": 133,
+        "cv06": 119,
+        "cv07": 139,
+        "cv08": 122,
+        "cv09": 136
+      },
+      "first_formal_build_cache": {
+        "existing_hits": 119,
+        "new_misses": 995,
+        "required_keys": 1114
+      },
+      "cache_after_arm_b_dev": {
+        "files": 3024,
+        "temporary_files": 0,
+        "format": {
+          "channels": 1,
+          "sample_width_bytes": 2,
+          "sample_rate_hz": 24000
+        }
+      },
+      "format_or_missing_key_issues": 0
+    },
+    "full_qwen_rebuild_all_cache_hits": true,
+    "rebuild_manifest_episodes_audio_byte_identical": true,
+    "status": "PASS"
+  },
+  "dev_distribution": {
+    "arm_a": {
+      "n": 54,
+      "layers": {
+        "L1": 3,
+        "L2": 1,
+        "L3": 9,
+        "L4": 8,
+        "L5": 13,
+        "L6": 4,
+        "L7": 4,
+        "L8": 3,
+        "L9": 4,
+        "L10": 2,
+        "L12": 3
+      }
+    },
+    "arm_b": {
+      "n": 35,
+      "layers": {
+        "L4": 4,
+        "L5": 8,
+        "L6": 2,
+        "L8": 12,
+        "L9": 4,
+        "L10": 2,
+        "L11": 3
+      },
+      "L7_dev": 0
+    }
+  },
+  "dev_oracle_validity": {
+    "status": "PASS_WITH_ONE_DESIGNED_FIXED_WINDOW_CEILING",
+    "arm_a": {
+      "provider": "rbdev23_oracle_a",
+      "n": 54,
+      "exact": 0.8704,
+      "state_verbatim": 0.8704,
+      "state_normalized": 0.8704,
+      "U_mean": 0.6506,
+      "wrong_commits": 0,
+      "unrepaired": 0,
+      "gate_layers": {
+        "L1": "3/3",
+        "L2": "1/1",
+        "L3": "9/9",
+        "L4": "8/8",
+        "L7": "4/4",
+        "L8": "3/3",
+        "L9": "4/4",
+        "L10": "2/2",
+        "L12": "3/3"
+      },
+      "designed_ceiling_layers": {
+        "L5": "7/13",
+        "L6": "3/4"
+      },
+      "L7_compensation_route": {
+        "episodes": [
+          "A_L7_0007",
+          "A_L7_0012",
+          "A_L7_0017",
+          "A_L7_0027"
+        ],
+        "exact": "4/4",
+        "reverse_and_relaunch": "4/4",
+        "fees": [
+          1,
+          0,
+          0,
+          1
+        ],
+        "comp_cost": [
+          4.0,
+          2.0,
+          2.0,
+          4.0
+        ]
+      }
+    },
+    "arm_b": {
+      "provider": "rbdev23_oracle_b",
+      "n": 35,
+      "exact": 0.8286,
+      "state_verbatim": 0.8286,
+      "state_normalized": 0.8286,
+      "U_mean": 0.6221,
+      "wrong_commits": 0,
+      "unrepaired": 0,
+      "gate_layers": {
+        "L4": "4/4",
+        "L9": "4/4",
+        "L10": "2/2",
+        "L11": "3/3"
+      },
+      "L8": "11/12",
+      "designed_ceiling_layers": {
+        "L5": "4/8",
+        "L6": "1/2"
+      },
+      "arm_b_timing": {
+        "episodes_with_overlap": 0,
+        "total_overlaps": 0
+      },
+      "fixed_window_ceiling": {
+        "episode": "B_L8_0057",
+        "scenario": "fin_transfer",
+        "action": "revise",
+        "event_offset_after_inflight_anchor_seconds": 0.299,
+        "event_speech_starts_after_launch_seconds": 1.557,
+        "delta_seconds": 1.5,
+        "cause": "transactional transfer is compensated and relaunched, but the stale READ get_fx_quote remains in the exact net call list",
+        "construction_or_harness_error": false
+      }
+    },
+    "new_layers": {
+      "L7_compensation": "4/4",
+      "L11_tts_interrupt": "3/3",
+      "L12_attribution": "3/3"
+    },
+    "note": "Arm B has no L7 episode in dev; L7 was validated on the four Arm-A dev episodes without inspecting test."
+  },
+  "attr_round_1": {
+    "status": "FAIL_ZERO_SUM_AND_GUARD_LOSS",
+    "model": "Qwen3-Omni-30B-A3B-Instruct",
+    "input": "audio",
+    "temperature": 0.0,
+    "seed": 42,
+    "max_num_seqs": 1,
+    "arm_a": {
+      "baseline": {
+        "provider": "rbdev23_tact_d150",
+        "n": 54,
+        "exact_count": 7,
+        "exact": 0.1296,
+        "state_normalized": 0.1481,
+        "U_mean": 0.1066,
+        "live_cache_hits": 0,
+        "live_cache_misses": 136
+      },
+      "attr": {
+        "provider": "rbdev23_attr1_tact_d150",
+        "n": 54,
+        "exact_count": 5,
+        "exact": 0.0926,
+        "state_normalized": 0.1111,
+        "U_mean": 0.079,
+        "live_cache_hits": 0,
+        "live_cache_misses": 134
+      },
+      "paired": {
+        "attr_only": [],
+        "baseline_only": [
+          "A_L1_0010",
+          "A_L4_0055"
+        ],
+        "net_exact_count": -2,
+        "recorded_decision_skeletons_changed": "34/54",
+        "L12": {
+          "baseline": "3/3",
+          "attr": "3/3",
+          "recorded_decision_skeletons_changed": "0/3"
+        },
+        "L3_L4_guard": {
+          "n": 17,
+          "baseline": "1/17",
+          "attr": "0/17",
+          "losses": [
+            "A_L4_0055"
+          ]
+        },
+        "loss_mechanisms": {
+          "A_L1_0010": "attr emitted $RESULT_0.listing_id instead of the literal LST12",
+          "A_L4_0055": "attr delayed the chain, then attached seat_class to search_trains and left the revised hold_seat value stale; this is a direct target-binding guard failure"
+        }
+      }
+    },
+    "arm_b": {
+      "baseline": {
+        "provider": "rbdev23_b_tact_d150",
+        "n": 35,
+        "exact_count": 5,
+        "exact": 0.1429,
+        "state_normalized": 0.1429,
+        "U_mean": 0.0968,
+        "live_cache_hits": 0,
+        "live_cache_misses": 89
+      },
+      "attr": {
+        "provider": "rbdev23_b_attr1_tact_d150",
+        "n": 35,
+        "exact_count": 7,
+        "exact": 0.2,
+        "state_normalized": 0.2,
+        "U_mean": 0.1503,
+        "live_cache_hits": 0,
+        "live_cache_misses": 91
+      },
+      "paired": {
+        "attr_only": [
+          "B_L8_0029",
+          "B_L8_0067"
+        ],
+        "baseline_only": [],
+        "net_exact_count": 2,
+        "recorded_decision_skeletons_changed": "21/35",
+        "L8": {
+          "baseline": "1/12",
+          "attr": "3/12"
+        },
+        "L11": {
+          "baseline": "1/3",
+          "attr": "1/3",
+          "recorded_decision_skeletons_changed": "3/3"
+        },
+        "arm_b_timing_overlaps": 0,
+        "gain_mechanisms": {
+          "B_L8_0029": "attr preserved the literal multiword account name 'rent account' instead of truncating it to 'rent'; this is not an attribution-target recovery",
+          "B_L8_0067": "attr launched the full chain and subsequently cancelled all three pending ops, leaving the intended empty net state"
+        }
+      }
+    },
+    "combined": {
+      "n": 89,
+      "baseline_exact_count": 12,
+      "attr_exact_count": 12,
+      "baseline_exact": 0.1348,
+      "attr_exact": 0.1348,
+      "baseline_state_normalized": 0.1461,
+      "attr_state_normalized": 0.1461,
+      "baseline_U_mean": 0.1027,
+      "attr_U_mean": 0.107,
+      "paired_net_exact_count": 0
+    },
+    "interpretation": "Round 1 produced no intended L12 gain, damaged one Arm-A L4 guard episode, and moved two Arm-B L8 episodes in the opposite direction. No prompt edit or second round was run."
+  },
+  "online_and_replay": {
+    "online_decision_requests": 450,
+    "online_http_200": 450,
+    "online_retries_or_fallbacks": 0,
+    "service_shutdown": {
+      "qwen_proxy_port_10004_closed": true,
+      "qwen_vllm_port_10003_closed": true,
+      "qwen_tts_port_8091_closed": true,
+      "gpu_processes_remaining": 0
+    },
+    "offline_replay": {
+      "rbdev23_tact_d150": {
+        "hits": 136,
+        "misses": 0,
+        "cache_sha256": "4b57811571f5ad7b6d07df000fa303df6f8174b642184c37f1a78d22f387a63b",
+        "report_sha256": "0455648daca4948a538fce295cc008078a590435b628bddb2b6fa9066a06be36",
+        "results_tree_sha256": "f615a47f822929dfb71027bb4d660ac3841fc60bb777d953a7df44bd644f409d"
+      },
+      "rbdev23_attr1_tact_d150": {
+        "hits": 134,
+        "misses": 0,
+        "cache_sha256": "3ff452f2fe2ed3dc7479b4c2e1fa969dfa1e4f81d68b969f47143c90eb93f89d",
+        "report_sha256": "866a8572f020322a9d69817a8d913e092735678d6be2f567ecdc5a1f9d002ad6",
+        "results_tree_sha256": "bab0a623a08abf9f6f64a26f0b641faced89b8b0c1aeb6196569229955611e77"
+      },
+      "rbdev23_b_tact_d150": {
+        "hits": 89,
+        "misses": 0,
+        "cache_sha256": "44e77a673fb013efe7911a56debca5dabdfa7116c94be29dd2c17b330df1f165",
+        "report_sha256": "a7e5cddb8ab62b99c67916a821789755b4e41ee17bd1c3d74f606c392449e60b",
+        "results_tree_sha256": "b01bb82f47a722baa383b7bc176c77e7a985e79c12dd818980fe1b10741cc050"
+      },
+      "rbdev23_b_attr1_tact_d150": {
+        "hits": 91,
+        "misses": 0,
+        "cache_sha256": "fe2cee5e8476b40c4815407b609eba9bbcfebe1aac386dd320136cbe7ad88ed5",
+        "report_sha256": "6f439e7bf2f64f7baafd5392714844ce2c6a239c7680bf65f49889ec8899c31e",
+        "results_tree_sha256": "161291ebc521469eedf7554d28b8f590ff3e78e468c4907abdf6d4a394044864"
+      },
+      "all_cache_report_and_per_episode_bytes_identical": true
+    }
+  },
+  "oracle_artifact_hashes": {
+    "rbdev23_oracle_a": {
+      "report_sha256": "e4d8ea80e15416bb31552ca1411f6181c5aac5923df6e099bc7a1af74bab600b",
+      "results_tree_sha256": "d6b9bf9226fbc3de341e11890f82281f4b7e4700fea883d023a566fdf5d4cc98"
+    },
+    "rbdev23_oracle_b": {
+      "report_sha256": "1dd686d668594c298d0fd2c47d8a816c8df174fcf65e9518f907438321a71028",
+      "results_tree_sha256": "f3686532873e92213f962645cf3cb6802cb513310da69188cac44d68b0f9212d"
+    }
+  },
+  "run_discovered_fixes": [
+    {
+      "file": "scripts/rb_build.py",
+      "reason": "The bank changed the deterministic sample so a quantity was spoken as 'two'; the selftest now compares canonical revised values to canonical gold arguments instead of raw substrings.",
+      "behavior_change": false
+    },
+    {
+      "file": "scripts/rb_run.py",
+      "reason": "The oracle now uses the episode's structured l8_action for bank-paraphrased cancel utterances, with the old lexical heuristic retained as fallback.",
+      "behavior_change": "oracle_only"
+    },
+    {
+      "file": "rb/scorer.py",
+      "reason": "Final-state scoring now excludes voided reverse/abort ledger entries, matching exact net-call semantics.",
+      "behavior_change": "corrects_live_state_track"
+    }
+  ],
+  "regressions": {
+    "rb_content_gen_selftest": "4/4 PASS",
+    "rb_build_selftest": "12/12 PASS",
+    "rb_run_selftest": "34/34 PASS",
+    "rb_simulator_selftest": "5/5 PASS",
+    "tests_test_w5": "13/13 PASS"
+  },
+  "repository_integrity": {
+    "reachable_refs_missing_objects": 0,
+    "scoped_fsck_head_and_origin_main": "PASS",
+    "pre_existing_unreachable_object_warning": {
+      "dangling_commit": "3a1cb90f5ca2be8688c321487374303a4afdcd99",
+      "missing_parent": "d215c90760ff65561f76810344f304c787496dd5",
+      "affects_reachable_history": false,
+      "note": "Generic auto-gc/full fsck still reports this old unreachable broken link; no history repair was attempted during the experiment."
+    }
+  },
+  "archive_discipline": {
+    "v2_2_1_build_modified": false,
+    "v2_3_audio_tracked": false,
+    "v2_3_test_split_run": false,
+    "scorer_v4_frozen": false
+  }
+}

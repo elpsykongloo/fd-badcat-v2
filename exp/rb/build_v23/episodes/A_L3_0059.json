@@ -1,0 +1,142 @@
+{
+ "id": "A_L3_0059",
+ "arm": "A",
+ "layer": "L3",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Seattle",
+  "destination": "Atlanta",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
+ "slots_final": {
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "Atlanta",
+   "new": "Portland",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.675
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Seattle",
+  "destination": "Portland",
+  "date": "May 3",
+  "seat_class": "business",
+  "passenger": "Sam Rivera"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "I need you to look up a train from Seattle to Atlanta on May third, reserve a business seat, and purchase the ticket for Sam Rivera.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Wait — make it Portland.",
+   "gap_before": 0.675
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.338
+ },
+ "step_latencies": [
+  0.338,
+  0.738,
+  3.042
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.996,
+  "gain_db": -5.6,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Seattle",
+    "destination": "Portland",
+    "date": "May 3"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE553c85",
+    "seat_class": "business"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO8d04e6",
+    "passenger": "Sam Rivera"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE553c85": {
+   "origin": "Seattle",
+   "destination": "Portland",
+   "date": "May 3"
+  },
+  "hold_seat#HO8d04e6": {
+   "train_id": "SE553c85",
+   "seat_class": "business"
+  },
+  "purchase_ticket#PU4039a7": {
+   "hold_id": "HO8d04e6",
+   "passenger": "Sam Rivera"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 10.46,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 11.135,
+   "t_end": 13.303,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.675
+ ]
+}

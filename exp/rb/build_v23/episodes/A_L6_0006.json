@@ -1,0 +1,148 @@
+{
+ "id": "A_L6_0006",
+ "arm": "A",
+ "layer": "L6",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Boise",
+  "beds": "one-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Sunday afternoon"
+ },
+ "slots_final": {
+  "city": "Denver",
+  "beds": "two-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Sunday afternoon"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "Boise",
+   "new": "Denver",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.944
+  },
+  {
+   "slot": "beds",
+   "old": "one-bedroom",
+   "new": "two-bedroom",
+   "by": "user",
+   "kind": "second",
+   "gap": 1.284
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Denver",
+  "beds": 2,
+  "max_rent": 2000,
+  "slot": "Sunday afternoon"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "I want a one-bedroom in Boise for less than two thousand and a viewing booked for Sunday afternoon.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "Switch it to the, no no Wait — make it Denver.",
+   "gap_before": 0.944
+  },
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "So I was— Also, one more change — two-bedroom.",
+   "gap_before": 1.284
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.826
+ },
+ "step_latencies": [
+  0.826,
+  1.263
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.004,
+  "gain_db": -4.5,
+  "snr_db": 16.3
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Denver",
+    "beds": 2,
+    "max_rent": 2000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE7a898c",
+    "slot": "Sunday afternoon"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE7a898c": {
+   "city": "Denver",
+   "beds": 2,
+   "max_rent": 2000
+  },
+  "book_viewing#BO94b6c5": {
+   "listing_id": "SE7a898c",
+   "slot": "Sunday afternoon"
+  }
+ },
+ "voices": {
+  "user": "cv05",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.078,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 7.022,
+   "t_end": 10.607,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 11.891,
+   "t_end": 15.796,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.944,
+  1.284
+ ]
+}

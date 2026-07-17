@@ -1,0 +1,116 @@
+{
+ "id": "B_L5_0013",
+ "arm": "B",
+ "layer": "L5",
+ "domain": "finance",
+ "lang": "zh",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "三千",
+  "from_cur": "人民币",
+  "to_cur": "日元",
+  "from_acct": "工资卡",
+  "to_acct": "房租卡"
+ },
+ "slots_final": {
+  "amount": "三千",
+  "from_cur": "人民币",
+  "to_cur": "美元",
+  "from_acct": "工资卡",
+  "to_acct": "房租卡"
+ },
+ "revisions": [
+  {
+   "slot": "to_cur",
+   "old": "日元",
+   "new": "美元",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.993
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "amount": 3000,
+  "from_cur": "CNY",
+  "to_cur": "USD",
+  "from_acct": "工资卡",
+  "to_acct": "房租卡"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "zh",
+   "text": "先查三千块人民币换日元的汇率，然后从工资卡转三千到房租卡。",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 1.974,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv03",
+   "text": "等等，还是美元吧。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.532
+ },
+ "step_latencies": [
+  0.532,
+  1.131
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 0.955,
+  "gain_db": -2.0,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": 3000,
+    "from_cur": "CNY",
+    "to_cur": "USD"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "工资卡",
+    "to_acct": "房租卡",
+    "amount": 3000
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GEca5c78": {
+   "amount": 3000,
+   "from_cur": "CNY",
+   "to_cur": "USD"
+  },
+  "transfer_funds#TR0e13bc": {
+   "from_acct": "工资卡",
+   "to_acct": "房租卡",
+   "amount": 3000
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv09"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

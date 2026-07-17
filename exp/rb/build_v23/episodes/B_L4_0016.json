@@ -1,0 +1,117 @@
+{
+ "id": "B_L4_0016",
+ "arm": "B",
+ "layer": "L4",
+ "domain": "ecommerce",
+ "lang": "zh",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "跑步鞋",
+  "qty": "两",
+  "address": "海淀区学院路一号"
+ },
+ "slots_final": {
+  "query": "蓝牙耳机",
+  "qty": "两",
+  "address": "海淀区学院路一号"
+ },
+ "revisions": [
+  {
+   "slot": "query",
+   "old": "跑步鞋",
+   "new": "蓝牙耳机",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.807
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "蓝牙耳机",
+  "qty": 2,
+  "address": "海淀区学院路一号"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "帮我搜跑步鞋，加两件进购物车，下单寄到海淀区学院路一号。",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.28,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv02",
+   "text": "等一下——蓝牙耳机，改成蓝牙耳机。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.613
+ },
+ "step_latencies": [
+  0.613,
+  0.52,
+  2.362
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 0.943,
+  "gain_db": 1.7,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "蓝牙耳机"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE496da4",
+    "qty": 2
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD40c6d5",
+    "address": "海淀区学院路一号"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE496da4": {
+   "query": "蓝牙耳机"
+  },
+  "add_item#AD40c6d5": {
+   "item_id": "SE496da4",
+   "qty": 2
+  },
+  "place_order#PL40dcf9": {
+   "cart_id": "AD40c6d5",
+   "address": "海淀区学院路一号"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv05"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

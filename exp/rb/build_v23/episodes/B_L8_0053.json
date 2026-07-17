@@ -1,0 +1,114 @@
+{
+ "id": "B_L8_0053",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "finance",
+ "lang": "zh",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "五千",
+  "from_cur": "人民币",
+  "to_cur": "日元",
+  "from_acct": "工资卡",
+  "to_acct": "储蓄卡"
+ },
+ "slots_final": {
+  "amount": "五千",
+  "from_cur": "人民币",
+  "to_cur": "日元",
+  "from_acct": "工资卡",
+  "to_acct": "储蓄卡"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "amount": 5000,
+  "from_cur": "CNY",
+  "to_cur": "JPY",
+  "from_acct": "工资卡",
+  "to_acct": "储蓄卡"
+ },
+ "l8_action": "progress",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "先查五千块人民币换日元的汇率，然后从工资卡转五千到储蓄卡。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "好了没？",
+   "at_after_eou": 1.173
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.746,
+   "action": "progress_query",
+   "role": "user",
+   "voice": "cv02",
+   "text": "好了没？"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.359
+ },
+ "step_latencies": [
+  0.359,
+  2.873
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 1.026,
+  "gain_db": -2.8,
+  "snr_db": 22.8
+ },
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": 5000,
+    "from_cur": "CNY",
+    "to_cur": "JPY"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "工资卡",
+    "to_acct": "储蓄卡",
+    "amount": 5000
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GE49f87d": {
+   "amount": 5000,
+   "from_cur": "CNY",
+   "to_cur": "JPY"
+  },
+  "transfer_funds#TRd48f02": {
+   "from_acct": "工资卡",
+   "to_acct": "储蓄卡",
+   "amount": 5000
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv06"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

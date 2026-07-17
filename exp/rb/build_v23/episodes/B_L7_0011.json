@@ -1,0 +1,95 @@
+{
+ "id": "B_L7_0011",
+ "arm": "B",
+ "layer": "L7",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_hotel",
+ "slots": {
+  "city": "Austin",
+  "checkin": "May third",
+  "nights": "three"
+ },
+ "slots_final": {
+  "city": "Denver",
+  "checkin": "May third",
+  "nights": "three"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "Austin",
+   "new": "Denver",
+   "by": "user",
+   "kind": "default",
+   "gap": 5.384
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Denver",
+  "checkin": "May 3",
+  "nights": 3
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "I need a hotel in Austin for three nights starting May third.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "committed",
+   "offset": 1.012,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv07",
+   "text": "Wait — make it Denver."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 1.222
+ },
+ "step_latencies": [
+  1.222
+ ],
+ "scenario_steps": [
+  "reserve_hotel"
+ ],
+ "perturb": {
+  "rate": 1.046,
+  "gain_db": -0.9,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "reserve_hotel",
+   "args": {
+    "city": "Denver",
+    "checkin": "May 3",
+    "nights": 3
+   }
+  }
+ ],
+ "gold_state": {
+  "reserve_hotel#REa44388": {
+   "city": "Denver",
+   "checkin": "May 3",
+   "nights": 3
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv05"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

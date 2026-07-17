@@ -1,0 +1,94 @@
+{
+ "id": "A_L8_0043",
+ "arm": "A",
+ "layer": "L8",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Portland",
+  "date": "June first",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Portland",
+  "date": "June first",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Portland",
+  "date": "June 1",
+  "seat_class": "business",
+  "passenger": "Jordan Lee"
+ },
+ "l8_action": "cancel",
+ "cancelled": true,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "I wanna find a train from Chicago to Portland on June first, hold a business seat, and buy the ticket for Jordan Lee.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Wait a second, don't do that yet.",
+   "at_after_eou": 1.558
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 1.076
+ },
+ "step_latencies": [
+  1.076,
+  0.554,
+  0.628
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.972,
+  "gain_db": -1.4,
+  "snr_db": null
+ },
+ "gold_calls": [],
+ "gold_state": {},
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.072,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 10.27,
+   "t_end": 12.986,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

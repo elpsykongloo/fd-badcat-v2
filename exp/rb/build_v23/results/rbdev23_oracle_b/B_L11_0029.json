@@ -1,0 +1,83 @@
+{
+ "id": "B_L11_0029",
+ "layer": "L11",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 4.427,
+ "U": 0.7969,
+ "U_sens": {
+  "0.5": 0.7969,
+  "1.0": 0.7969,
+  "2.0": 0.7969
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 4.47,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "schedule_payment",
+     "op_id": 2
+    }
+   ],
+   "say": "好的，马上办。"
+  },
+  {
+   "i": 1,
+   "t_eou": 8.428,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "date": "5月3日"
+     }
+    }
+   ],
+   "say": "已更新。"
+  }
+ ],
+ "say_events": [
+  [
+   5.47,
+   "好的，马上办。"
+  ],
+  [
+   9.428,
+   "已更新。"
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   3.83,
+   "user"
+  ],
+  [
+   5.593,
+   7.788,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   1.763
+  ]
+ }
+}

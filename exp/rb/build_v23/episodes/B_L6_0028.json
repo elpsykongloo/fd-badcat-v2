@@ -1,0 +1,133 @@
+{
+ "id": "B_L6_0028",
+ "arm": "B",
+ "layer": "L6",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "wireless earbuds",
+  "qty": "one",
+  "address": "88 Century Avenue"
+ },
+ "slots_final": {
+  "query": "thermos bottle",
+  "qty": "two",
+  "address": "88 Century Avenue"
+ },
+ "revisions": [
+  {
+   "slot": "query",
+   "old": "wireless earbuds",
+   "new": "thermos bottle",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.781
+  },
+  {
+   "slot": "qty",
+   "old": "one",
+   "new": "two",
+   "by": "user",
+   "kind": "second",
+   "gap": 2.916
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "thermos bottle",
+  "qty": 2,
+  "address": "88 Century Avenue"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "Search for wireless earbuds, add one to the cart, and order it to 88 Century Avenue.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.721,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv05",
+   "text": "Fix it, fix it, Wait — make it thermos bottle."
+  },
+  {
+   "state": "committed",
+   "offset": 1.42,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv05",
+   "text": "Hmm... One more update here, two."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.438
+ },
+ "step_latencies": [
+  0.438,
+  0.554,
+  0.856
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 1.036,
+  "gain_db": -1.0,
+  "snr_db": 15.2
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "thermos bottle"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SEfdfd65",
+    "qty": 2
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD1db5d2",
+    "address": "88 Century Avenue"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SEfdfd65": {
+   "query": "thermos bottle"
+  },
+  "add_item#AD1db5d2": {
+   "item_id": "SEfdfd65",
+   "qty": 2
+  },
+  "place_order#PL6edee2": {
+   "cart_id": "AD1db5d2",
+   "address": "88 Century Avenue"
+  }
+ },
+ "voices": {
+  "user": "cv05",
+  "bystander": "cv09"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

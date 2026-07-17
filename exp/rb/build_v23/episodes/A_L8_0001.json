@@ -1,0 +1,92 @@
+{
+ "id": "A_L8_0001",
+ "arm": "A",
+ "layer": "L8",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "three thousand",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "slots_final": {
+  "amount": "three thousand",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "amount": 3000,
+  "from_cur": "USD",
+  "to_cur": "EUR",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "l8_action": "cancel",
+ "cancelled": true,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Get me a quote for three thousand dollars to euros and afterwards transfer that same three thousand from checking over to savings.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Scratch that, don't go ahead with it.",
+   "at_after_eou": 1.274
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.658
+ },
+ "step_latencies": [
+  0.658,
+  3.154
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 1.01,
+  "gain_db": -0.1,
+  "snr_db": null
+ },
+ "gold_calls": [],
+ "gold_state": {},
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 10.243,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 12.157,
+   "t_end": 14.77,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

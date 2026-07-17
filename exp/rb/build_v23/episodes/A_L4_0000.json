@@ -1,0 +1,132 @@
+{
+ "id": "A_L4_0000",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "running shoes",
+  "qty": "one",
+  "address": "88 Century Avenue"
+ },
+ "slots_final": {
+  "query": "running shoes",
+  "qty": "two",
+  "address": "88 Century Avenue"
+ },
+ "revisions": [
+  {
+   "slot": "qty",
+   "old": "one",
+   "new": "two",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 1.133
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "running shoes",
+  "qty": 2,
+  "address": "88 Century Avenue"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Search for running shoes, add one to the cart, and order it to 88 Century Avenue.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "two — change it to two.",
+   "gap_before": 1.133
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.678
+ },
+ "step_latencies": [
+  0.678,
+  1.322,
+  2.257
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 0.971,
+  "gain_db": -3.5,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "running shoes"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE8f458d",
+    "qty": 2
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "ADba42fa",
+    "address": "88 Century Avenue"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE8f458d": {
+   "query": "running shoes"
+  },
+  "add_item#ADba42fa": {
+   "item_id": "SE8f458d",
+   "qty": 2
+  },
+  "place_order#PLb5ebcf": {
+   "cart_id": "ADba42fa",
+   "address": "88 Century Avenue"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv07"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.926,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 8.059,
+   "t_end": 10.366,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  1.133
+ ]
+}

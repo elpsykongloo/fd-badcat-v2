@@ -1,0 +1,114 @@
+{
+ "id": "A_L12_0024",
+ "arm": "A",
+ "layer": "L12",
+ "domain": "ecommerce",
+ "lang": "zh",
+ "scenario": "ecom_multi",
+ "slots": {
+  "query": "蓝牙耳机",
+  "item_id": "C330"
+ },
+ "slots_final": {
+  "query": "蓝牙耳机",
+  "item_id": "B205"
+ },
+ "revisions": [
+  {
+   "slot": "item_id",
+   "old": "C330",
+   "new": "B205",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.3
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "蓝牙耳机",
+  "item_id": "B205"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "搜一下蓝牙耳机，再看看编号C330还有没有货。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "慢着，我要B205。",
+   "gap_before": 1.3
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.552
+ },
+ "step_latencies": [
+  0.552,
+  0.522
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "check_stock"
+ ],
+ "perturb": {
+  "rate": 0.966,
+  "gain_db": -3.3,
+  "snr_db": 23.5
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "蓝牙耳机"
+   }
+  },
+  {
+   "fn": "check_stock",
+   "args": {
+    "item_id": "B205"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SEcbb94b": {
+   "query": "蓝牙耳机"
+  },
+  "check_stock#CHa14194": {
+   "item_id": "B205"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv07"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 11.266,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 12.566,
+   "t_end": 15.133,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  1.3
+ ]
+}

@@ -1,0 +1,142 @@
+{
+ "id": "A_L4_0059",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "上海",
+  "destination": "杭州",
+  "date": "五月三号",
+  "seat_class": "二等座",
+  "passenger": "王磊"
+ },
+ "slots_final": {
+  "origin": "上海",
+  "destination": "杭州",
+  "date": "五月三号",
+  "seat_class": "一等座",
+  "passenger": "王磊"
+ },
+ "revisions": [
+  {
+   "slot": "seat_class",
+   "old": "二等座",
+   "new": "一等座",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.817
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "上海",
+  "destination": "杭州",
+  "date": "5月3日",
+  "seat_class": "一等座",
+  "passenger": "王磊"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "zh",
+   "text": "帮我查五月三号从上海到杭州的火车，订二等座，然后直接买票，乘客是王磊。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "zh",
+   "text": "一等座，改成一等座。",
+   "gap_before": 0.817
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.416
+ },
+ "step_latencies": [
+  0.416,
+  0.601,
+  3.948
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.974,
+  "gain_db": -4.7,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "上海",
+    "destination": "杭州",
+    "date": "5月3日"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE020609",
+    "seat_class": "一等座"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO50a6c0",
+    "passenger": "王磊"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE020609": {
+   "origin": "上海",
+   "destination": "杭州",
+   "date": "5月3日"
+  },
+  "hold_seat#HO50a6c0": {
+   "train_id": "SE020609",
+   "seat_class": "一等座"
+  },
+  "purchase_ticket#PUf2404d": {
+   "hold_id": "HO50a6c0",
+   "passenger": "王磊"
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv09"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 9.042,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 9.859,
+   "t_end": 11.748,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.817
+ ]
+}

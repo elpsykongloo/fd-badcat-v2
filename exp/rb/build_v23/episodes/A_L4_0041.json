@@ -1,0 +1,131 @@
+{
+ "id": "A_L4_0041",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "three thousand",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "slots_final": {
+  "amount": "three thousand",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "revisions": [
+  {
+   "slot": "to_cur",
+   "old": "euros",
+   "new": "yen",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.746
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "amount": 3000,
+  "from_cur": "USD",
+  "to_cur": "JPY",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Could you quote three thousand dollars in euros first and then transfer three thousand from checking to savings?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Change that from yen to yen.",
+   "gap_before": 0.746
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.349
+ },
+ "step_latencies": [
+  0.349,
+  2.022
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 1.004,
+  "gain_db": 0.8,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": 3000,
+    "from_cur": "USD",
+    "to_cur": "JPY"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "savings",
+    "amount": 3000
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GE9d1626": {
+   "amount": 3000,
+   "from_cur": "USD",
+   "to_cur": "JPY"
+  },
+  "transfer_funds#TRf24a72": {
+   "from_acct": "checking",
+   "to_acct": "savings",
+   "amount": 3000
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.99,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 8.736,
+   "t_end": 10.648,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.746
+ ]
+}

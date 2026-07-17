@@ -1,0 +1,132 @@
+{
+ "id": "B_L6_0037",
+ "arm": "B",
+ "layer": "L6",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "eight hundred",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "slots_final": {
+  "amount": "three thousand",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "revisions": [
+  {
+   "slot": "amount",
+   "old": "eight hundred",
+   "new": "three thousand",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.819
+  },
+  {
+   "slot": "to_acct",
+   "old": "rent account",
+   "new": "savings",
+   "by": "user",
+   "kind": "second",
+   "gap": 2.851
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "amount": 3000,
+  "from_cur": "USD",
+  "to_cur": "JPY",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Can you quote eight hundred dollars in yen and after that move eight hundred from checking into rent account?",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.433,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv07",
+   "text": "Wait — make it three thousand."
+  },
+  {
+   "state": "committed",
+   "offset": 0.303,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv07",
+   "text": "Also, one more thing I need to change — savings."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.394
+ },
+ "step_latencies": [
+  0.394,
+  4.659
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 1.019,
+  "gain_db": 1.4,
+  "snr_db": 23.0
+ },
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": 3000,
+    "from_cur": "USD",
+    "to_cur": "JPY"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "savings",
+    "amount": 3000
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GE0b37f3": {
+   "amount": 3000,
+   "from_cur": "USD",
+   "to_cur": "JPY"
+  },
+  "transfer_funds#TR2a4e6e": {
+   "from_acct": "checking",
+   "to_acct": "savings",
+   "amount": 3000
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv02"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

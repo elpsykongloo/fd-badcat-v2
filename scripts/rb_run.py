@@ -240,8 +240,15 @@ class OracleDecider:
                     (len(texts) > 1 or r["kind"] == "inline"):
                 slots[r["slot"]] = r["new"]
                 revs.append(r["slot"])
-        cancel = any(("别办" in t or "先别" in t or "hold off" in t.lower())
-                     for t in texts[1:])
+        # The oracle follows the episode's declared action, not a tiny lexical
+        # whitelist.  Content-bank paraphrases intentionally include forms
+        # such as "Scratch that" / "算了，不弄了"; once their second user
+        # segment is heard they are the same L8 cancel action.  Keep the
+        # lexical fallback for hand-authored episodes without l8_action.
+        cancel = (
+            self.ep.get("l8_action") == "cancel" and len(texts) > 1
+        ) or any(("别办" in t or "先别" in t or "hold off" in t.lower())
+                 for t in texts[1:])
         return slots, revs, cancel
 
     def __call__(self, tx, segs_done, op_ids):
@@ -813,6 +820,9 @@ def selftest():
     ck["armb_deterministic"] = json.dumps(rb1, sort_keys=True) == \
         json.dumps(rb2, sort_keys=True)
     ck["armb_event_injected"] = rb1["n_eou"] >= 2
+    epbc, rbc = run_oracle("B", "L8", 1)        # bank-paraphrased cancel
+    ck["v23_bank_cancel_oracle"] = (
+        epbc["l8_action"] == "cancel" and rbc["exact"])
     _, rfc = run_oracle("A", "L9", 0, fc_mode="v1")
     tiers = [d.get("fc_tier") for d in rfc["decisions"] if d.get("fc_tier")]
     ck["fc_tier_recorded"] = bool(tiers)
@@ -893,11 +903,12 @@ def selftest():
                                       "nights": 2}, t=0.0)
     rid1 = r1["result"]["id"]
     rr = sb.execute("cancel_hotel", {"booking_id": rid1})
-    from rb.scorer import net_calls, comp_cost as _cc
+    from rb.scorer import net_calls, comp_cost as _cc, score_state as _ss
     ck["v23_reverse_netting"] = (rr["status"] == "success"
                                  and sb.live_state() == {}
                                  and sb.fees == 1
                                  and net_calls(sb.calls, sb.state) == []
+                                 and _ss(sb.state, {})
                                  and _cc(sb.state) == 4.0)
     sb2 = Sandbox("t_v23b")
     r2b = sb2.execute("transfer_funds", {"from_acct": "checking",

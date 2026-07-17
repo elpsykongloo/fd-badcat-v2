@@ -1,0 +1,71 @@
+{
+ "id": "B_L9_0018",
+ "layer": "L9",
+ "arm": "B",
+ "exact": true,
+ "state_verbatim": true,
+ "state_normalized": true,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 5.639,
+ "U": 0.7488,
+ "U_sens": {
+  "0.5": 0.7488,
+  "1.0": 0.7488,
+  "2.0": 0.7488
+ },
+ "first_response_s": 5.639,
+ "n_eou": 2,
+ "n_commits": 1,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 4.457,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "save_listing",
+     "op_id": 2
+    }
+   ],
+   "say": "Saving listing LST47 for you now."
+  },
+  {
+   "i": 1,
+   "t_eou": 17.204,
+   "ops": [],
+   "say": ""
+  }
+ ],
+ "say_events": [
+  [
+   5.457,
+   "Saving listing LST47 for you now."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   3.817,
+   "user"
+  ],
+  [
+   15.458,
+   16.564,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   11.641
+  ]
+ }
+}

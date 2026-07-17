@@ -1,0 +1,124 @@
+{
+ "id": "B_L10_0032",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "wireless earbuds",
+  "qty": "two",
+  "address": "12 College Road"
+ },
+ "slots_final": {
+  "query": "thermos bottle",
+  "qty": "two",
+  "address": "12 College Road"
+ },
+ "revisions": [
+  {
+   "slot": "query",
+   "old": "wireless earbuds",
+   "new": "thermos bottle",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.132
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "thermos bottle",
+  "qty": 2,
+  "address": "12 College Road"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Search for wireless earbuds, add two to the cart, and order it to 12 College Road.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Try it, try it, Wait — make it thermos bottle.",
+   "gap_before": 1.132
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.681,
+   "action": "benign_control",
+   "role": "user",
+   "voice": "cv02",
+   "text": "Sorry— Wait — make it thermos bottle."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.508
+ },
+ "step_latencies": [
+  0.508,
+  0.47,
+  2.799
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 1.048,
+  "gain_db": -1.7,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "thermos bottle"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE101e6d",
+    "qty": 2
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD8ded9b",
+    "address": "12 College Road"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE101e6d": {
+   "query": "thermos bottle"
+  },
+  "add_item#AD8ded9b": {
+   "item_id": "SE101e6d",
+   "qty": 2
+  },
+  "place_order#PL6131ac": {
+   "cart_id": "AD8ded9b",
+   "address": "12 College Road"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv06"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

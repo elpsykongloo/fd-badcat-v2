@@ -1,0 +1,93 @@
+{
+ "id": "B_L9_0015",
+ "arm": "B",
+ "layer": "L9",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_hotel",
+ "slots": {
+  "city": "Denver",
+  "checkin": "May third",
+  "nights": "two"
+ },
+ "slots_final": {
+  "city": "Denver",
+  "checkin": "May third",
+  "nights": "two"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Denver",
+  "checkin": "May 3",
+  "nights": 2
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "Book a hotel in Denver for two nights, checking in May third.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "How's it going?",
+   "at_after_eou": 19.509
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.672,
+   "action": "progress_query",
+   "role": "user",
+   "voice": "cv05",
+   "text": "Any movement?"
+  }
+ ],
+ "profile": "heavy",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 30.849
+ },
+ "step_latencies": [
+  30.849
+ ],
+ "scenario_steps": [
+  "reserve_hotel"
+ ],
+ "perturb": {
+  "rate": 1.015,
+  "gain_db": -0.7,
+  "snr_db": 16.7
+ },
+ "gold_calls": [
+  {
+   "fn": "reserve_hotel",
+   "args": {
+    "city": "Denver",
+    "checkin": "May 3",
+    "nights": 2
+   }
+  }
+ ],
+ "gold_state": {
+  "reserve_hotel#RE2754e8": {
+   "city": "Denver",
+   "checkin": "May 3",
+   "nights": 2
+  }
+ },
+ "voices": {
+  "user": "cv05",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

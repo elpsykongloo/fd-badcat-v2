@@ -1,0 +1,126 @@
+{
+ "id": "A_L5_0062",
+ "arm": "A",
+ "layer": "L5",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "厦门",
+  "beds": "两居",
+  "max_rent": "六千",
+  "slot": "周六上午"
+ },
+ "slots_final": {
+  "city": "厦门",
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周六上午"
+ },
+ "revisions": [
+  {
+   "slot": "max_rent",
+   "old": "六千",
+   "new": "八千",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.996
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "厦门",
+  "beds": 2,
+  "max_rent": 8000,
+  "slot": "周六上午"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "在厦门找两居、租金不超过六千的房子，约周六上午看房。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "不好意思，换八千吧。",
+   "gap_before": 2.996
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.832
+ },
+ "step_latencies": [
+  0.832,
+  5.188
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.055,
+  "gain_db": -1.7,
+  "snr_db": 18.4
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "厦门",
+    "beds": 2,
+    "max_rent": 8000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE8922bb",
+    "slot": "周六上午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE8922bb": {
+   "city": "厦门",
+   "beds": 2,
+   "max_rent": 8000
+  },
+  "book_viewing#BO58bde7": {
+   "listing_id": "SE8922bb",
+   "slot": "周六上午"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 5.884,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 8.88,
+   "t_end": 11.079,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  2.996
+ ]
+}

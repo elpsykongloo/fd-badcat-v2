@@ -1,0 +1,117 @@
+{
+ "id": "B_L5_0020",
+ "arm": "B",
+ "layer": "L5",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "running shoes",
+  "qty": "one",
+  "address": "12 College Road"
+ },
+ "slots_final": {
+  "query": "wireless earbuds",
+  "qty": "one",
+  "address": "12 College Road"
+ },
+ "revisions": [
+  {
+   "slot": "query",
+   "old": "running shoes",
+   "new": "wireless earbuds",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.61
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "wireless earbuds",
+  "qty": 1,
+  "address": "12 College Road"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Search for running shoes, add one to the cart, and order it to 12 College Road.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 1.062,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv04",
+   "text": "So I was— Wait — make it wireless earbuds."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.395
+ },
+ "step_latencies": [
+  0.395,
+  0.329,
+  2.263
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 0.971,
+  "gain_db": -3.6,
+  "snr_db": 17.8
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "wireless earbuds"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SEae1099",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD587cc3",
+    "address": "12 College Road"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SEae1099": {
+   "query": "wireless earbuds"
+  },
+  "add_item#AD587cc3": {
+   "item_id": "SEae1099",
+   "qty": 1
+  },
+  "place_order#PLce7940": {
+   "cart_id": "AD587cc3",
+   "address": "12 College Road"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv09"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

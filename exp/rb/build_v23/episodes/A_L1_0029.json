@@ -1,0 +1,95 @@
+{
+ "id": "A_L1_0029",
+ "arm": "A",
+ "layer": "L1",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_payment",
+ "slots": {
+  "payee": "landlord",
+  "amount": "three thousand",
+  "date": "June first"
+ },
+ "slots_final": {
+  "payee": "landlord",
+  "amount": "five thousand",
+  "date": "June first"
+ },
+ "revisions": [
+  {
+   "slot": "amount",
+   "old": "three thousand",
+   "new": "five thousand",
+   "by": "user",
+   "kind": "inline",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "payee": "landlord",
+  "amount": 5000,
+  "date": "June 1"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Please arrange a transfer of three thousand to landlord on June first., oh no, make that five thousand",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.598
+ },
+ "step_latencies": [
+  0.598
+ ],
+ "scenario_steps": [
+  "schedule_payment"
+ ],
+ "perturb": {
+  "rate": 1.02,
+  "gain_db": -3.4,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "schedule_payment",
+   "args": {
+    "payee": "landlord",
+    "amount": 5000,
+    "date": "June 1"
+   }
+  }
+ ],
+ "gold_state": {
+  "schedule_payment#SCe1b899": {
+   "payee": "landlord",
+   "amount": 5000,
+   "date": "June 1"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.108,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": []
+}

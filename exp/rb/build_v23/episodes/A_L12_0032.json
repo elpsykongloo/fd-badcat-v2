@@ -1,0 +1,114 @@
+{
+ "id": "A_L12_0032",
+ "arm": "A",
+ "layer": "L12",
+ "domain": "ecommerce",
+ "lang": "zh",
+ "scenario": "ecom_multi",
+ "slots": {
+  "query": "跑步鞋",
+  "item_id": "A100"
+ },
+ "slots_final": {
+  "query": "跑步鞋",
+  "item_id": "C330"
+ },
+ "revisions": [
+  {
+   "slot": "item_id",
+   "old": "A100",
+   "new": "C330",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.513
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "跑步鞋",
+  "item_id": "C330"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "zh",
+   "text": "你先搜一下跑步鞋，然后看看编号A100的库存情况",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "zh",
+   "text": "等等，还是C330吧。",
+   "gap_before": 1.513
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.267
+ },
+ "step_latencies": [
+  0.267,
+  0.608
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "check_stock"
+ ],
+ "perturb": {
+  "rate": 1.044,
+  "gain_db": -4.5,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "跑步鞋"
+   }
+  },
+  {
+   "fn": "check_stock",
+   "args": {
+    "item_id": "C330"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE64c2fd": {
+   "query": "跑步鞋"
+  },
+  "check_stock#CHb02c64": {
+   "item_id": "C330"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv07"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 4.638,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 6.151,
+   "t_end": 11.592,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  1.513
+ ]
+}

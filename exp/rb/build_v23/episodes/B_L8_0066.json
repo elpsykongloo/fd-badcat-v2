@@ -1,0 +1,118 @@
+{
+ "id": "B_L8_0066",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Boise",
+  "beds": "two-bedroom",
+  "max_rent": "three thousand",
+  "slot": "Sunday afternoon"
+ },
+ "slots_final": {
+  "city": "Austin",
+  "beds": "two-bedroom",
+  "max_rent": "three thousand",
+  "slot": "Sunday afternoon"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "Boise",
+   "new": "Austin",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Austin",
+  "beds": 2,
+  "max_rent": 3000,
+  "slot": "Sunday afternoon"
+ },
+ "l8_action": "revise",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Find a two-bedroom in Boise under three thousand, and book a viewing for Sunday afternoon.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Wait — make it Austin.",
+   "at_after_eou": 1.41
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.252,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv07",
+   "text": "Wait — make it Austin."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.604
+ },
+ "step_latencies": [
+  0.604,
+  2.584
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.01,
+  "gain_db": 1.6,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Austin",
+    "beds": 2,
+    "max_rent": 3000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE485ff6",
+    "slot": "Sunday afternoon"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE485ff6": {
+   "city": "Austin",
+   "beds": 2,
+   "max_rent": 3000
+  },
+  "book_viewing#BO3d9c09": {
+   "listing_id": "SE485ff6",
+   "slot": "Sunday afternoon"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

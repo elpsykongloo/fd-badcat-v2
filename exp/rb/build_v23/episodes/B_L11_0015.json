@@ -1,0 +1,95 @@
+{
+ "id": "B_L11_0015",
+ "arm": "B",
+ "layer": "L11",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_hotel",
+ "slots": {
+  "city": "Boise",
+  "checkin": "May tenth",
+  "nights": "two"
+ },
+ "slots_final": {
+  "city": "Denver",
+  "checkin": "May tenth",
+  "nights": "two"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "Boise",
+   "new": "Denver",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Denver",
+  "checkin": "May 10",
+  "nights": 2
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Book a hotel in Boise for two nights, checking in May tenth.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "tts",
+   "offset": 0.136,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv07",
+   "text": "Wait — make it Denver."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 1.818
+ },
+ "step_latencies": [
+  1.818
+ ],
+ "scenario_steps": [
+  "reserve_hotel"
+ ],
+ "perturb": {
+  "rate": 0.968,
+  "gain_db": -0.6,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "reserve_hotel",
+   "args": {
+    "city": "Denver",
+    "checkin": "May 10",
+    "nights": 2
+   }
+  }
+ ],
+ "gold_state": {
+  "reserve_hotel#RE7fe77c": {
+   "city": "Denver",
+   "checkin": "May 10",
+   "nights": 2
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv05"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

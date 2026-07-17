@@ -1,0 +1,118 @@
+{
+ "id": "B_L8_0030",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "青岛",
+  "beds": "一居",
+  "max_rent": "六千",
+  "slot": "周日下午"
+ },
+ "slots_final": {
+  "city": "青岛",
+  "beds": "一居",
+  "max_rent": "八千",
+  "slot": "周日下午"
+ },
+ "revisions": [
+  {
+   "slot": "max_rent",
+   "old": "六千",
+   "new": "八千",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "青岛",
+  "beds": 1,
+  "max_rent": 8000,
+  "slot": "周日下午"
+ },
+ "l8_action": "revise",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "zh",
+   "text": "在青岛找套一居的，月租不超过六千，看房时间定在周日下午。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "zh",
+   "text": "不对，应该是八千。",
+   "at_after_eou": 1.294
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.782,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv05",
+   "text": "等一下，改回八千。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.768
+ },
+ "step_latencies": [
+  0.768,
+  4.057
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.028,
+  "gain_db": -1.9,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "青岛",
+    "beds": 1,
+    "max_rent": 8000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE8318b0",
+    "slot": "周日下午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE8318b0": {
+   "city": "青岛",
+   "beds": 1,
+   "max_rent": 8000
+  },
+  "book_viewing#BOba49fc": {
+   "listing_id": "SE8318b0",
+   "slot": "周日下午"
+  }
+ },
+ "voices": {
+  "user": "cv05",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

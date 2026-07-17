@@ -1,0 +1,99 @@
+{
+ "id": "A_L9_0031",
+ "arm": "A",
+ "layer": "L9",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_hotel",
+ "slots": {
+  "city": "Miami",
+  "checkin": "May tenth",
+  "nights": "three"
+ },
+ "slots_final": {
+  "city": "Miami",
+  "checkin": "May tenth",
+  "nights": "three"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Miami",
+  "checkin": "May 10",
+  "nights": 3
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Find me a place to stay in Miami checking in May tenth for three nights.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "How's it going?",
+   "at_after_eou": 13.427
+  }
+ ],
+ "events": [],
+ "profile": "heavy",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 20.712
+ },
+ "step_latencies": [
+  20.712
+ ],
+ "scenario_steps": [
+  "reserve_hotel"
+ ],
+ "perturb": {
+  "rate": 1.05,
+  "gain_db": -0.1,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "reserve_hotel",
+   "args": {
+    "city": "Miami",
+    "checkin": "May 10",
+    "nights": 3
+   }
+  }
+ ],
+ "gold_state": {
+  "reserve_hotel#REa2eff8": {
+   "city": "Miami",
+   "checkin": "May 10",
+   "nights": 3
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv02"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 5.986,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 20.053,
+   "t_end": 20.891,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

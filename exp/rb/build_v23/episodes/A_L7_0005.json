@@ -1,0 +1,110 @@
+{
+ "id": "A_L7_0005",
+ "arm": "A",
+ "layer": "L7",
+ "domain": "finance",
+ "lang": "zh",
+ "scenario": "fin_payment",
+ "slots": {
+  "payee": "物业",
+  "amount": "八百",
+  "date": "五月八号"
+ },
+ "slots_final": {
+  "payee": "房东",
+  "amount": "八百",
+  "date": "五月八号"
+ },
+ "revisions": [
+  {
+   "slot": "payee",
+   "old": "物业",
+   "new": "房东",
+   "by": "user",
+   "kind": "default",
+   "gap": 7.909
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "payee": "房东",
+  "amount": 800,
+  "date": "5月8日"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "zh",
+   "text": "帮我设一笔给物业的付款，八百块，五月八号扣。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "zh",
+   "text": "不对，应该是房东。",
+   "gap_before": 7.909
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 3.727
+ },
+ "step_latencies": [
+  3.727
+ ],
+ "scenario_steps": [
+  "schedule_payment"
+ ],
+ "perturb": {
+  "rate": 0.993,
+  "gain_db": -0.4,
+  "snr_db": 19.2
+ },
+ "gold_calls": [
+  {
+   "fn": "schedule_payment",
+   "args": {
+    "payee": "房东",
+    "amount": 800,
+    "date": "5月8日"
+   }
+  }
+ ],
+ "gold_state": {
+  "schedule_payment#SCecf780": {
+   "payee": "房东",
+   "amount": 800,
+   "date": "5月8日"
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv02"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.348,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 15.257,
+   "t_end": 17.11,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  7.909
+ ]
+}

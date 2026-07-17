@@ -1,0 +1,142 @@
+{
+ "id": "A_L4_0055",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Boston",
+  "destination": "Portland",
+  "date": "May third",
+  "seat_class": "business",
+  "passenger": "Alex Chen"
+ },
+ "slots_final": {
+  "origin": "Boston",
+  "destination": "Portland",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "revisions": [
+  {
+   "slot": "seat_class",
+   "old": "business",
+   "new": "coach",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.876
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Boston",
+  "destination": "Portland",
+  "date": "May 3",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Search for a train from Boston to Portland on May third, keep a business seat, and buy the ticket for Alex Chen.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Switch it to the, no no Put coach in place of coach.",
+   "gap_before": 0.876
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.453
+ },
+ "step_latencies": [
+  0.453,
+  0.711,
+  4.869
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.999,
+  "gain_db": 0.5,
+  "snr_db": 16.0
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Boston",
+    "destination": "Portland",
+    "date": "May 3"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE58c780",
+    "seat_class": "coach"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO9b1faa",
+    "passenger": "Alex Chen"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE58c780": {
+   "origin": "Boston",
+   "destination": "Portland",
+   "date": "May 3"
+  },
+  "hold_seat#HO9b1faa": {
+   "train_id": "SE58c780",
+   "seat_class": "coach"
+  },
+  "purchase_ticket#PUdc2709": {
+   "hold_id": "HO9b1faa",
+   "passenger": "Alex Chen"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv06"
+ },
+ "split": "dev",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.826,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 7.702,
+   "t_end": 10.585,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.876
+ ]
+}

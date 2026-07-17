@@ -1,0 +1,126 @@
+{
+ "id": "A_L4_0018",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "成都",
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周日下午"
+ },
+ "slots_final": {
+  "city": "青岛",
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周日下午"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "成都",
+   "new": "青岛",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.686
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "青岛",
+  "beds": 2,
+  "max_rent": 8000,
+  "slot": "周日下午"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "zh",
+   "text": "想在成都找两居的房间，房租顶多八千，约周日下午实地看下。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "zh",
+   "text": "青岛，改成青岛。",
+   "gap_before": 0.686
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.291
+ },
+ "step_latencies": [
+  0.291,
+  1.968
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 0.947,
+  "gain_db": -2.5,
+  "snr_db": 19.8
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "青岛",
+    "beds": 2,
+    "max_rent": 8000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE6afef5",
+    "slot": "周日下午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE6afef5": {
+   "city": "青岛",
+   "beds": 2,
+   "max_rent": 8000
+  },
+  "book_viewing#BO8c3fd2": {
+   "listing_id": "SE6afef5",
+   "slot": "周日下午"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv06"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.244,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 6.93,
+   "t_end": 8.873,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.686
+ ]
+}

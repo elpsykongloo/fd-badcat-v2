@@ -1,0 +1,116 @@
+{
+ "id": "A_L12_0013",
+ "arm": "A",
+ "layer": "L12",
+ "domain": "finance",
+ "lang": "zh",
+ "scenario": "fin_multi",
+ "slots": {
+  "account": "工资卡",
+  "threshold": "一千"
+ },
+ "slots_final": {
+  "account": "工资卡",
+  "threshold": "五百"
+ },
+ "revisions": [
+  {
+   "slot": "threshold",
+   "old": "一千",
+   "new": "五百",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.121
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "account": "工资卡",
+  "threshold": 500
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "看下工资卡的余额，再设一个低于一千就提醒我的警报。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "不好意思，换五百吧。",
+   "gap_before": 2.121
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.321
+ },
+ "step_latencies": [
+  0.321,
+  0.817
+ ],
+ "scenario_steps": [
+  "get_balance",
+  "set_alert"
+ ],
+ "perturb": {
+  "rate": 1.042,
+  "gain_db": -1.5,
+  "snr_db": 21.7
+ },
+ "gold_calls": [
+  {
+   "fn": "get_balance",
+   "args": {
+    "account": "工资卡"
+   }
+  },
+  {
+   "fn": "set_alert",
+   "args": {
+    "threshold": 500,
+    "account": "工资卡"
+   }
+  }
+ ],
+ "gold_state": {
+  "get_balance#GE4069a3": {
+   "account": "工资卡"
+  },
+  "set_alert#SEcdba5a": {
+   "threshold": 500,
+   "account": "工资卡"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv01"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 5.414,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 7.535,
+   "t_end": 9.147,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  2.121
+ ]
+}

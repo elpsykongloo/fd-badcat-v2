@@ -1,0 +1,154 @@
+{
+ "id": "A_L6_0008",
+ "arm": "A",
+ "layer": "L6",
+ "domain": "ecommerce",
+ "lang": "zh",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "保温杯",
+  "qty": "两",
+  "address": "海淀区学院路一号"
+ },
+ "slots_final": {
+  "query": "蓝牙耳机",
+  "qty": "一",
+  "address": "海淀区学院路一号"
+ },
+ "revisions": [
+  {
+   "slot": "query",
+   "old": "保温杯",
+   "new": "蓝牙耳机",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.865
+  },
+  {
+   "slot": "qty",
+   "old": "两",
+   "new": "一",
+   "by": "user",
+   "kind": "second",
+   "gap": 1.113
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "蓝牙耳机",
+  "qty": 1,
+  "address": "海淀区学院路一号"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "帮我搜保温杯，加两件进购物车，下单寄到海淀区学院路一号。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "等等，还是蓝牙耳机吧。",
+   "gap_before": 0.865
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "zh",
+   "text": "嗯……还有，再改一下，要一。",
+   "gap_before": 1.113
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.501
+ },
+ "step_latencies": [
+  0.501,
+  0.248,
+  1.827
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 0.945,
+  "gain_db": 1.4,
+  "snr_db": 15.4
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "蓝牙耳机"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE35a823",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "ADc685a4",
+    "address": "海淀区学院路一号"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE35a823": {
+   "query": "蓝牙耳机"
+  },
+  "add_item#ADc685a4": {
+   "item_id": "SE35a823",
+   "qty": 1
+  },
+  "place_order#PL946d7d": {
+   "cart_id": "ADc685a4",
+   "address": "海淀区学院路一号"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv05"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.341,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 7.206,
+   "t_end": 9.661,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 10.774,
+   "t_end": 16.616,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.865,
+  1.113
+ ]
+}

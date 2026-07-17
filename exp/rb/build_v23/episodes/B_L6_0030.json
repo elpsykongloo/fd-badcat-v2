@@ -1,0 +1,127 @@
+{
+ "id": "B_L6_0030",
+ "arm": "B",
+ "layer": "L6",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Miami",
+  "beds": "two-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Saturday morning"
+ },
+ "slots_final": {
+  "city": "Boise",
+  "beds": "one-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Saturday morning"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "Miami",
+   "new": "Boise",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.719
+  },
+  {
+   "slot": "beds",
+   "old": "two-bedroom",
+   "new": "one-bedroom",
+   "by": "user",
+   "kind": "second",
+   "gap": 2.945
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Boise",
+  "beds": 1,
+  "max_rent": 2000,
+  "slot": "Saturday morning"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "I'm looking for a two-bedroom in Miami under two thousand, and please book a viewing for Saturday morning.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.508,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv02",
+   "text": "Wait — make it Boise."
+  },
+  {
+   "state": "committed",
+   "offset": 0.907,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv02",
+   "text": "Also, there's another change I'm making — one-bedroom."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.72
+ },
+ "step_latencies": [
+  0.72,
+  4.107
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.037,
+  "gain_db": -3.2,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Boise",
+    "beds": 1,
+    "max_rent": 2000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SEf265dd",
+    "slot": "Saturday morning"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEf265dd": {
+   "city": "Boise",
+   "beds": 1,
+   "max_rent": 2000
+  },
+  "book_viewing#BO89c926": {
+   "listing_id": "SEf265dd",
+   "slot": "Saturday morning"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv09"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

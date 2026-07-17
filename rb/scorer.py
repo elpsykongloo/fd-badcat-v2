@@ -93,6 +93,12 @@ def score_state(live_state, gold_state, normalized=False):
     def strip(d):
         out = {}
         for k, v in d.items():
+            # Reverse/abort keeps the historical ledger entry for fee and
+            # repair accounting, but a voided effect is not part of the final
+            # live state.  Exact-call scoring already applies the same net
+            # semantics in net_calls(); the state track must agree.
+            if v.get("void"):
+                continue
             args = {a: (_norm(x) if normalized else x) for a, x in v.items()
                     if a not in SANDBOX_META_KEYS}
             key = k.split("#")[0]              # ids are sandbox-minted: compare by fn

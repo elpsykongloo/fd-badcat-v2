@@ -1,0 +1,111 @@
+{
+ "id": "B_L5_0022",
+ "arm": "B",
+ "layer": "L5",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "青岛",
+  "beds": "两居",
+  "max_rent": "六千",
+  "slot": "周日下午"
+ },
+ "slots_final": {
+  "city": "青岛",
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周日下午"
+ },
+ "revisions": [
+  {
+   "slot": "max_rent",
+   "old": "六千",
+   "new": "八千",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.663
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "青岛",
+  "beds": 2,
+  "max_rent": 8000,
+  "slot": "周日下午"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "zh",
+   "text": "我想在青岛找两居的房子，月租不超过六千，约周日下午过去看看。",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 3.193,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv08",
+   "text": "等等，改成八千。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.673
+ },
+ "step_latencies": [
+  0.673,
+  1.087
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 0.97,
+  "gain_db": 0.5,
+  "snr_db": 23.4
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "青岛",
+    "beds": 2,
+    "max_rent": 8000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE05cb4c",
+    "slot": "周日下午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE05cb4c": {
+   "city": "青岛",
+   "beds": 2,
+   "max_rent": 8000
+  },
+  "book_viewing#BOa7787c": {
+   "listing_id": "SE05cb4c",
+   "slot": "周日下午"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv06"
+ },
+ "split": "dev",
+ "config_hash": "e1a515c29b8a"
+}

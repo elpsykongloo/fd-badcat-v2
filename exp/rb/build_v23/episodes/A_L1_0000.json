@@ -1,0 +1,90 @@
+{
+ "id": "A_L1_0000",
+ "arm": "A",
+ "layer": "L1",
+ "domain": "ecommerce",
+ "lang": "zh",
+ "scenario": "ecom_single",
+ "slots": {
+  "item_id": "B205",
+  "qty": "两"
+ },
+ "slots_final": {
+  "item_id": "A100",
+  "qty": "两"
+ },
+ "revisions": [
+  {
+   "slot": "item_id",
+   "old": "B205",
+   "new": "A100",
+   "by": "user",
+   "kind": "inline",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "item_id": "A100",
+  "qty": 2
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "把编号B205的商品放两件进购物车等一下，换一下，改成A100",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.573
+ },
+ "step_latencies": [
+  0.573
+ ],
+ "scenario_steps": [
+  "add_item"
+ ],
+ "perturb": {
+  "rate": 1.055,
+  "gain_db": -0.9,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "A100",
+    "qty": 2
+   }
+  }
+ ],
+ "gold_state": {
+  "add_item#ADbefcab": {
+   "item_id": "A100",
+   "qty": 2
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv09"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.946,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": []
+}

@@ -1,0 +1,126 @@
+{
+ "id": "A_L5_0010",
+ "arm": "A",
+ "layer": "L5",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "厦门",
+  "beds": "两居",
+  "max_rent": "六千",
+  "slot": "周六上午"
+ },
+ "slots_final": {
+  "city": "成都",
+  "beds": "两居",
+  "max_rent": "六千",
+  "slot": "周六上午"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "厦门",
+   "new": "成都",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.804
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "成都",
+  "beds": 2,
+  "max_rent": 6000,
+  "slot": "周六上午"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "zh",
+   "text": "想在厦门找两居的房间，房租顶多六千，约周六上午实地看下。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "zh",
+   "text": "慢着，我要成都。",
+   "gap_before": 2.804
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.591
+ },
+ "step_latencies": [
+  0.591,
+  1.899
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.008,
+  "gain_db": -3.5,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "成都",
+    "beds": 2,
+    "max_rent": 6000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE894d24",
+    "slot": "周六上午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE894d24": {
+   "city": "成都",
+   "beds": 2,
+   "max_rent": 6000
+  },
+  "book_viewing#BO4e9c51": {
+   "listing_id": "SE894d24",
+   "slot": "周六上午"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv09"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 5.976,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 8.78,
+   "t_end": 10.923,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  2.804
+ ]
+}

@@ -1,0 +1,126 @@
+{
+ "id": "A_L10_0000",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "wireless earbuds",
+  "qty": "one",
+  "address": "88 Century Avenue"
+ },
+ "slots_final": {
+  "query": "wireless earbuds",
+  "qty": "one",
+  "address": "88 Century Avenue"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "command",
+  "other": "thermos bottle",
+  "state": "inflight",
+  "frac": 0.156
+ },
+ "slots_canon": {
+  "query": "wireless earbuds",
+  "qty": 1,
+  "address": "88 Century Avenue"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Search for wireless earbuds, add one to the cart, and order it to 88 Century Avenue.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Turn it into thermos bottle.",
+   "at_after_eou": 1.063
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.403
+ },
+ "step_latencies": [
+  0.403,
+  0.722,
+  1.973
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 0.986,
+  "gain_db": -1.4,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "wireless earbuds"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE2591f9",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD7b828a",
+    "address": "88 Century Avenue"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE2591f9": {
+   "query": "wireless earbuds"
+  },
+  "add_item#AD7b828a": {
+   "item_id": "SE2591f9",
+   "qty": 1
+  },
+  "place_order#PLaf0614": {
+   "cart_id": "AD7b828a",
+   "address": "88 Century Avenue"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.64,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "bystander",
+   "t_start": 9.343,
+   "t_end": 11.29,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

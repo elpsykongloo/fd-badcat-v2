@@ -1,0 +1,124 @@
+{
+ "id": "B_L10_0020",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "wireless earbuds",
+  "qty": "one",
+  "address": "12 College Road"
+ },
+ "slots_final": {
+  "query": "running shoes",
+  "qty": "one",
+  "address": "12 College Road"
+ },
+ "revisions": [
+  {
+   "slot": "query",
+   "old": "wireless earbuds",
+   "new": "running shoes",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.684
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "running shoes",
+  "qty": 1,
+  "address": "12 College Road"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Search for wireless earbuds, add one to the cart, and order it to 12 College Road.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Wait — make it running shoes.",
+   "gap_before": 0.684
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.956,
+   "action": "benign_control",
+   "role": "user",
+   "voice": "cv09",
+   "text": "Wait — make it running shoes."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.488
+ },
+ "step_latencies": [
+  0.488,
+  0.449,
+  1.239
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 0.968,
+  "gain_db": -1.3,
+  "snr_db": 20.7
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "running shoes"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SEbcaf2c",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "ADfc0530",
+    "address": "12 College Road"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SEbcaf2c": {
+   "query": "running shoes"
+  },
+  "add_item#ADfc0530": {
+   "item_id": "SEbcaf2c",
+   "qty": 1
+  },
+  "place_order#PL07699a": {
+   "cart_id": "ADfc0530",
+   "address": "12 College Road"
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv04"
+ },
+ "split": "dev",
+ "config_hash": "e1a515c29b8a"
+}

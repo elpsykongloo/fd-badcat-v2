@@ -1,0 +1,129 @@
+{
+ "id": "A_L12_0010",
+ "arm": "A",
+ "layer": "L12",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_multi",
+ "slots": {
+  "city": "Denver",
+  "beds": "one-bedroom",
+  "max_rent": "two thousand",
+  "from_addr": "university campus",
+  "to_addr": "Downtown"
+ },
+ "slots_final": {
+  "city": "Denver",
+  "beds": "one-bedroom",
+  "max_rent": "two thousand",
+  "from_addr": "university campus",
+  "to_addr": "tech park"
+ },
+ "revisions": [
+  {
+   "slot": "to_addr",
+   "old": "Downtown",
+   "new": "tech park",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.363
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Denver",
+  "beds": 1,
+  "max_rent": 2000,
+  "from_addr": "university campus",
+  "to_addr": "tech park"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "Find me a one-bedroom in Denver for less than two thousand, and also check the commute from university campus to Downtown.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "Wait — make it tech park.",
+   "gap_before": 1.363
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.527
+ },
+ "step_latencies": [
+  0.527,
+  0.486
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "get_commute_time"
+ ],
+ "perturb": {
+  "rate": 0.982,
+  "gain_db": 1.6,
+  "snr_db": 22.8
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Denver",
+    "beds": 1,
+    "max_rent": 2000
+   }
+  },
+  {
+   "fn": "get_commute_time",
+   "args": {
+    "from_addr": "university campus",
+    "to_addr": "tech park"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEe404b4": {
+   "city": "Denver",
+   "beds": 1,
+   "max_rent": 2000
+  },
+  "get_commute_time#GE1d3211": {
+   "from_addr": "university campus",
+   "to_addr": "tech park"
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 9.706,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 11.069,
+   "t_end": 14.083,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  1.363
+ ]
+}

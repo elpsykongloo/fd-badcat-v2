@@ -1,0 +1,132 @@
+{
+ "id": "B_L6_0013",
+ "arm": "B",
+ "layer": "L6",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "three thousand",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "slots_final": {
+  "amount": "eight hundred",
+  "from_cur": "dollars",
+  "to_cur": "euros",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "revisions": [
+  {
+   "slot": "amount",
+   "old": "three thousand",
+   "new": "eight hundred",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.716
+  },
+  {
+   "slot": "to_acct",
+   "old": "rent account",
+   "new": "savings",
+   "by": "user",
+   "kind": "second",
+   "gap": 2.681
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "amount": 800,
+  "from_cur": "USD",
+  "to_cur": "EUR",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "en",
+   "text": "Could you quote three thousand dollars in euros first and then transfer three thousand from checking to rent account?",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.43,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv09",
+   "text": "You know— Wait — make it eight hundred."
+  },
+  {
+   "state": "committed",
+   "offset": 0.872,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv09",
+   "text": "Oh and another change, savings."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.757
+ },
+ "step_latencies": [
+  0.757,
+  0.938
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 0.984,
+  "gain_db": 1.1,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": 800,
+    "from_cur": "USD",
+    "to_cur": "EUR"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "savings",
+    "amount": 800
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GE6a8bd5": {
+   "amount": 800,
+   "from_cur": "USD",
+   "to_cur": "EUR"
+  },
+  "transfer_funds#TR381d6f": {
+   "from_acct": "checking",
+   "to_acct": "savings",
+   "amount": 800
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

@@ -1,0 +1,125 @@
+{
+ "id": "A_L10_0037",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "three thousand",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "slots_final": {
+  "amount": "three thousand",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "irrelevant",
+  "other": "euros",
+  "state": "inflight",
+  "frac": 0.156
+ },
+ "slots_canon": {
+  "amount": 3000,
+  "from_cur": "USD",
+  "to_cur": "JPY",
+  "from_acct": "checking",
+  "to_acct": "rent account"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Could you quote three thousand dollars in yen first and then transfer three thousand from checking to rent account?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "For dinner, what do you want since we're ordering in",
+   "at_after_eou": 1.054
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.348
+ },
+ "step_latencies": [
+  0.348,
+  1.348
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 1.03,
+  "gain_db": -4.4,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": 3000,
+    "from_cur": "USD",
+    "to_cur": "JPY"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "checking",
+    "to_acct": "rent account",
+    "amount": 3000
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GE0bace2": {
+   "amount": 3000,
+   "from_cur": "USD",
+   "to_cur": "JPY"
+  },
+  "transfer_funds#TRd31e6e": {
+   "from_acct": "checking",
+   "to_acct": "rent account",
+   "amount": 3000
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv03"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.869,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "bystander",
+   "t_start": 8.563,
+   "t_end": 12.213,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

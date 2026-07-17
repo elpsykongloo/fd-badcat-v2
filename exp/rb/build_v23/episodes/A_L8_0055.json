@@ -1,0 +1,94 @@
+{
+ "id": "A_L8_0055",
+ "arm": "A",
+ "layer": "L8",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "北京",
+  "destination": "成都",
+  "date": "六月一号",
+  "seat_class": "一等座",
+  "passenger": "王磊"
+ },
+ "slots_final": {
+  "origin": "北京",
+  "destination": "成都",
+  "date": "六月一号",
+  "seat_class": "一等座",
+  "passenger": "王磊"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "北京",
+  "destination": "成都",
+  "date": "6月1日",
+  "seat_class": "一等座",
+  "passenger": "王磊"
+ },
+ "l8_action": "cancel",
+ "cancelled": true,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "zh",
+   "text": "帮我查六月一号从北京到成都的火车，订一等座，然后直接买票，乘客是王磊。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "zh",
+   "text": "算了，先别办了。",
+   "at_after_eou": 1.395
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.779
+ },
+ "step_latencies": [
+  0.779,
+  0.227,
+  3.352
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.013,
+  "gain_db": -6.0,
+  "snr_db": 24.2
+ },
+ "gold_calls": [],
+ "gold_state": {},
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.239,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 10.274,
+   "t_end": 11.933,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

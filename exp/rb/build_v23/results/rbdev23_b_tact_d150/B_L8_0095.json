@@ -1,0 +1,88 @@
+{
+ "id": "B_L8_0095",
+ "layer": "L8",
+ "arm": "B",
+ "exact": false,
+ "state_verbatim": false,
+ "state_normalized": false,
+ "commit_repair": {
+  "n_commits": 0,
+  "wrong_commits": 0,
+  "repaired": 0,
+  "unrepaired": 0,
+  "wrong_at": []
+ },
+ "comp_cost": 0.0,
+ "done_s": 3.486,
+ "U": 0.0,
+ "U_sens": {
+  "0.5": 0.0,
+  "1.0": 0.0,
+  "2.0": 0.0
+ },
+ "first_response_s": 1.64,
+ "n_eou": 2,
+ "n_commits": 2,
+ "fees": 0,
+ "decisions": [
+  {
+   "i": 0,
+   "t_eou": 12.154,
+   "ops": [
+    {
+     "type": "launch",
+     "fn": "search_trains",
+     "op_id": 2
+    },
+    {
+     "type": "launch",
+     "fn": "purchase_ticket",
+     "op_id": 3
+    }
+   ],
+   "say": "I'm on it."
+  },
+  {
+   "i": 1,
+   "t_eou": 15.87,
+   "ops": [
+    {
+     "type": "patch",
+     "op_id": 2,
+     "diff": {
+      "seat_class": "first class"
+     }
+    }
+   ],
+   "say": "Updating that to first class and buying the ticket now."
+  }
+ ],
+ "say_events": [
+  [
+   13.154,
+   "I'm on it."
+  ],
+  [
+   16.87,
+   "Updating that to first class and buying the ticket now."
+  ]
+ ],
+ "segs": [
+  [
+   0.5,
+   11.514,
+   "user"
+  ],
+  [
+   13.657,
+   15.23,
+   "user"
+  ]
+ ],
+ "armb_timing": {
+  "user_overlaps": 0,
+  "measured_gaps": [
+   2.143
+  ]
+ }
+}

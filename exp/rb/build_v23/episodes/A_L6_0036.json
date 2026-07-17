@@ -1,0 +1,154 @@
+{
+ "id": "A_L6_0036",
+ "arm": "A",
+ "layer": "L6",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "thermos bottle",
+  "qty": "one",
+  "address": "12 College Road"
+ },
+ "slots_final": {
+  "query": "wireless earbuds",
+  "qty": "two",
+  "address": "12 College Road"
+ },
+ "revisions": [
+  {
+   "slot": "query",
+   "old": "thermos bottle",
+   "new": "wireless earbuds",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.873
+  },
+  {
+   "slot": "qty",
+   "old": "one",
+   "new": "two",
+   "by": "user",
+   "kind": "second",
+   "gap": 1.978
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "wireless earbuds",
+  "qty": 2,
+  "address": "12 College Road"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Search for thermos bottle, add one to the cart, and order it to 12 College Road.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Write it, write it, Wait — make it wireless earbuds.",
+   "gap_before": 0.873
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Wait, I've got one more change — two.",
+   "gap_before": 1.978
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.328
+ },
+ "step_latencies": [
+  0.328,
+  0.338,
+  1.778
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 0.971,
+  "gain_db": -1.9,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "wireless earbuds"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE93c274",
+    "qty": 2
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "ADbaada2",
+    "address": "12 College Road"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE93c274": {
+   "query": "wireless earbuds"
+  },
+  "add_item#ADbaada2": {
+   "item_id": "SE93c274",
+   "qty": 2
+  },
+  "place_order#PL740965": {
+   "cart_id": "ADbaada2",
+   "address": "12 College Road"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv06"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 5.114,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 5.987,
+   "t_end": 9.365,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 11.343,
+   "t_end": 13.814,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.873,
+  1.978
+ ]
+}

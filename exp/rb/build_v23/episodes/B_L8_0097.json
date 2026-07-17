@@ -1,0 +1,86 @@
+{
+ "id": "B_L8_0097",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "finance",
+ "lang": "en",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "five thousand",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "slots_final": {
+  "amount": "five thousand",
+  "from_cur": "dollars",
+  "to_cur": "yen",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "amount": 5000,
+  "from_cur": "USD",
+  "to_cur": "JPY",
+  "from_acct": "checking",
+  "to_acct": "savings"
+ },
+ "l8_action": "cancel",
+ "cancelled": true,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "First get a quote for five thousand dollars to yen and then transfer five thousand from checking to savings.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "Hold up, put that on pause.",
+   "at_after_eou": 1.152
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.363,
+   "action": "cancel",
+   "role": "user",
+   "voice": "cv05",
+   "text": "Wait a second, don't do that yet."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.362
+ },
+ "step_latencies": [
+  0.362,
+  1.748
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 0.971,
+  "gain_db": -5.9,
+  "snr_db": null
+ },
+ "gold_calls": [],
+ "gold_state": {},
+ "voices": {
+  "user": "cv05",
+  "bystander": "cv02"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

@@ -1,0 +1,111 @@
+{
+ "id": "B_L4_0006",
+ "arm": "B",
+ "layer": "L4",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Boise",
+  "beds": "one-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Sunday afternoon"
+ },
+ "slots_final": {
+  "city": "Boise",
+  "beds": "one-bedroom",
+  "max_rent": "three thousand",
+  "slot": "Sunday afternoon"
+ },
+ "revisions": [
+  {
+   "slot": "max_rent",
+   "old": "two thousand",
+   "new": "three thousand",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.732
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Boise",
+  "beds": 1,
+  "max_rent": 3000,
+  "slot": "Sunday afternoon"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Can you search for a one-bedroom in Boise that costs under two thousand and then schedule a viewing for Sunday afternoon?",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.183,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv07",
+   "text": "Um... I need three thousand changed to three thousand."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.54
+ },
+ "step_latencies": [
+  0.54,
+  2.86
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 0.964,
+  "gain_db": -2.3,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Boise",
+    "beds": 1,
+    "max_rent": 3000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE529aa2",
+    "slot": "Sunday afternoon"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE529aa2": {
+   "city": "Boise",
+   "beds": 1,
+   "max_rent": 3000
+  },
+  "book_viewing#BO60dd80": {
+   "listing_id": "SE529aa2",
+   "slot": "Sunday afternoon"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv05"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

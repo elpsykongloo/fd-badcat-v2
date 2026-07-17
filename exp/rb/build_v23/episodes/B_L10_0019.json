@@ -1,0 +1,130 @@
+{
+ "id": "B_L10_0019",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "广州",
+  "destination": "西安",
+  "date": "六月一号",
+  "seat_class": "二等座",
+  "passenger": "李娜"
+ },
+ "slots_final": {
+  "origin": "广州",
+  "destination": "西安",
+  "date": "六月一号",
+  "seat_class": "二等座",
+  "passenger": "李娜"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "irrelevant",
+  "other": "一等座",
+  "state": "inflight",
+  "frac": 0.645
+ },
+ "slots_canon": {
+  "origin": "广州",
+  "destination": "西安",
+  "date": "6月1日",
+  "seat_class": "二等座",
+  "passenger": "李娜"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "zh",
+   "text": "帮我查六月一号从广州到西安的火车，订二等座，然后直接买票，乘客是李娜。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv04",
+   "lang": "zh",
+   "text": "想吃点什么，我们叫外卖好了",
+   "at_after_eou": 1.498
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.151,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv04",
+   "text": "今晚想吃什么菜，我们点外卖呗"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.772
+ },
+ "step_latencies": [
+  0.772,
+  1.158,
+  1.877
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.975,
+  "gain_db": 0.9,
+  "snr_db": 20.9
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "广州",
+    "destination": "西安",
+    "date": "6月1日"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEa76b15",
+    "seat_class": "二等座"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO70a29a",
+    "passenger": "李娜"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEa76b15": {
+   "origin": "广州",
+   "destination": "西安",
+   "date": "6月1日"
+  },
+  "hold_seat#HO70a29a": {
+   "train_id": "SEa76b15",
+   "seat_class": "二等座"
+  },
+  "purchase_ticket#PU655f46": {
+   "hold_id": "HO70a29a",
+   "passenger": "李娜"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

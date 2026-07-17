@@ -1,0 +1,123 @@
+{
+ "id": "B_L8_0021",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "finance",
+ "lang": "zh",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "八百",
+  "from_cur": "人民币",
+  "to_cur": "美元",
+  "from_acct": "工资卡",
+  "to_acct": "房租卡"
+ },
+ "slots_final": {
+  "amount": "八百",
+  "from_cur": "人民币",
+  "to_cur": "日元",
+  "from_acct": "工资卡",
+  "to_acct": "房租卡"
+ },
+ "revisions": [
+  {
+   "slot": "to_cur",
+   "old": "美元",
+   "new": "日元",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "amount": 800,
+  "from_cur": "CNY",
+  "to_cur": "JPY",
+  "from_acct": "工资卡",
+  "to_acct": "房租卡"
+ },
+ "l8_action": "revise",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "先查八百块人民币换美元的汇率，然后从工资卡转八百到房租卡。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "等一下，改回日元。",
+   "at_after_eou": 1.266
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.659,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv07",
+   "text": "嗯……等一下，改回日元。"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.667
+ },
+ "step_latencies": [
+  0.667,
+  2.752
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 0.97,
+  "gain_db": 0.9,
+  "snr_db": 23.4
+ },
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": 800,
+    "from_cur": "CNY",
+    "to_cur": "JPY"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "工资卡",
+    "to_acct": "房租卡",
+    "amount": 800
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GEf5d3a9": {
+   "amount": 800,
+   "from_cur": "CNY",
+   "to_cur": "JPY"
+  },
+  "transfer_funds#TRbc8b08": {
+   "from_acct": "工资卡",
+   "to_acct": "房租卡",
+   "amount": 800
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv01"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

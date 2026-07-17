@@ -1,0 +1,129 @@
+{
+ "id": "A_L12_0019",
+ "arm": "A",
+ "layer": "L12",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_multi",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May third",
+  "country": "Japan",
+  "nationality": "American"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May third",
+  "country": "Thailand",
+  "nationality": "American"
+ },
+ "revisions": [
+  {
+   "slot": "country",
+   "old": "Japan",
+   "new": "Thailand",
+   "by": "user",
+   "kind": "default",
+   "gap": 1.607
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May 3",
+  "country": "Thailand",
+  "nationality": "American"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Look up trains between Chicago and Atlanta on May third and also tell me if American people need a visa for Japan.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Wait — make it Thailand.",
+   "gap_before": 1.607
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.886
+ },
+ "step_latencies": [
+  0.886,
+  1.933
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "check_visa_rule"
+ ],
+ "perturb": {
+  "rate": 0.985,
+  "gain_db": -1.3,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Chicago",
+    "destination": "Atlanta",
+    "date": "May 3"
+   }
+  },
+  {
+   "fn": "check_visa_rule",
+   "args": {
+    "country": "Thailand",
+    "nationality": "American"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE1e5fcb": {
+   "origin": "Chicago",
+   "destination": "Atlanta",
+   "date": "May 3"
+  },
+  "check_visa_rule#CH14bf45": {
+   "country": "Thailand",
+   "nationality": "American"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv07"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.134,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 9.741,
+   "t_end": 11.447,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  1.607
+ ]
+}

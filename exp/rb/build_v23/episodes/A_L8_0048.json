@@ -1,0 +1,130 @@
+{
+ "id": "A_L8_0048",
+ "arm": "A",
+ "layer": "L8",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "running shoes",
+  "qty": "one",
+  "address": "12 College Road"
+ },
+ "slots_final": {
+  "query": "running shoes",
+  "qty": "one",
+  "address": "88 Century Avenue"
+ },
+ "revisions": [
+  {
+   "slot": "address",
+   "old": "12 College Road",
+   "new": "88 Century Avenue",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "running shoes",
+  "qty": 1,
+  "address": "88 Century Avenue"
+ },
+ "l8_action": "revise",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Search for running shoes, add one to the cart, and order it to 12 College Road.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Actually— Wait — make it 88 Century Avenue.",
+   "at_after_eou": 1.852
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 1.314
+ },
+ "step_latencies": [
+  1.314,
+  0.907,
+  2.85
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 1.048,
+  "gain_db": -0.5,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "running shoes"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SEd8801f",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD53452f",
+    "address": "88 Century Avenue"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SEd8801f": {
+   "query": "running shoes"
+  },
+  "add_item#AD53452f": {
+   "item_id": "SEd8801f",
+   "qty": 1
+  },
+  "place_order#PL2e090b": {
+   "cart_id": "AD53452f",
+   "address": "88 Century Avenue"
+  }
+ },
+ "voices": {
+  "user": "cv04",
+  "bystander": "cv02"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 5.386,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 7.878,
+   "t_end": 12.229,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

@@ -1,0 +1,105 @@
+{
+ "id": "A_L2_0008",
+ "arm": "A",
+ "layer": "L2",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_single",
+ "slots": {
+  "item_id": "A100",
+  "qty": "one"
+ },
+ "slots_final": {
+  "item_id": "A100",
+  "qty": "two"
+ },
+ "revisions": [
+  {
+   "slot": "qty",
+   "old": "one",
+   "new": "two",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.375
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "item_id": "A100",
+  "qty": 2
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Could you add one of item A100 to my cart?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Say it, say it, Wait — make it two.",
+   "gap_before": 0.375
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.584
+ },
+ "step_latencies": [
+  0.584
+ ],
+ "scenario_steps": [
+  "add_item"
+ ],
+ "perturb": {
+  "rate": 1.047,
+  "gain_db": -1.9,
+  "snr_db": 21.6
+ },
+ "gold_calls": [
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "A100",
+    "qty": 2
+   }
+  }
+ ],
+ "gold_state": {
+  "add_item#AD8c7796": {
+   "item_id": "A100",
+   "qty": 2
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv09"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 3.404,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 3.779,
+   "t_end": 7.675,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.375
+ ]
+}

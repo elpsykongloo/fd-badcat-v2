@@ -1,0 +1,134 @@
+{
+ "id": "B_L8_0039",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Denver",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "Denver",
+   "new": "Atlanta",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Atlanta",
+  "date": "May 3",
+  "seat_class": "coach",
+  "passenger": "Alex Chen"
+ },
+ "l8_action": "revise",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Search for a train from Chicago to Denver on May third, keep a coach seat, and buy the ticket for Alex Chen.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "Wait — make it Atlanta.",
+   "at_after_eou": 1.392
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.791,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv02",
+   "text": "Wait — make it Atlanta."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.614
+ },
+ "step_latencies": [
+  0.614,
+  0.454,
+  4.668
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.984,
+  "gain_db": -5.5,
+  "snr_db": 22.6
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Chicago",
+    "destination": "Atlanta",
+    "date": "May 3"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEda7064",
+    "seat_class": "coach"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO03e5ad",
+    "passenger": "Alex Chen"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEda7064": {
+   "origin": "Chicago",
+   "destination": "Atlanta",
+   "date": "May 3"
+  },
+  "hold_seat#HO03e5ad": {
+   "train_id": "SEda7064",
+   "seat_class": "coach"
+  },
+  "purchase_ticket#PU3f22ee": {
+   "hold_id": "HO03e5ad",
+   "passenger": "Alex Chen"
+  }
+ },
+ "voices": {
+  "user": "cv02",
+  "bystander": "cv07"
+ },
+ "split": "dev",
+ "config_hash": "e1a515c29b8a"
+}

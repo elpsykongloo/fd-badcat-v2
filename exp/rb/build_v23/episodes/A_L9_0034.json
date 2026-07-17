@@ -1,0 +1,89 @@
+{
+ "id": "A_L9_0034",
+ "arm": "A",
+ "layer": "L9",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_single",
+ "slots": {
+  "listing_id": "LST12"
+ },
+ "slots_final": {
+  "listing_id": "LST12"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "listing_id": "LST12"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "Please save listing LST12 for me.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "Any progress?",
+   "at_after_eou": 16.74
+  }
+ ],
+ "events": [],
+ "profile": "heavy",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 26.233
+ },
+ "step_latencies": [
+  26.233
+ ],
+ "scenario_steps": [
+  "save_listing"
+ ],
+ "perturb": {
+  "rate": 0.998,
+  "gain_db": -0.1,
+  "snr_db": 21.7
+ },
+ "gold_calls": [
+  {
+   "fn": "save_listing",
+   "args": {
+    "listing_id": "LST12"
+   }
+  }
+ ],
+ "gold_state": {
+  "save_listing#SAb4f027": {
+   "listing_id": "LST12"
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 4.508,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 21.888,
+   "t_end": 23.09,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

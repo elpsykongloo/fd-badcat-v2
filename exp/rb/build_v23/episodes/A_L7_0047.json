@@ -1,0 +1,110 @@
+{
+ "id": "A_L7_0047",
+ "arm": "A",
+ "layer": "L7",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_hotel",
+ "slots": {
+  "city": "杭州",
+  "checkin": "五月十号",
+  "nights": "两"
+ },
+ "slots_final": {
+  "city": "杭州",
+  "checkin": "五月十号",
+  "nights": "三"
+ },
+ "revisions": [
+  {
+   "slot": "nights",
+   "old": "两",
+   "new": "三",
+   "by": "user",
+   "kind": "default",
+   "gap": 5.094
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "杭州",
+  "checkin": "5月10日",
+  "nights": 3
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "zh",
+   "text": "帮我在杭州订一间酒店，五月十号入住，住两晚。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv09",
+   "lang": "zh",
+   "text": "不对，应该是三。",
+   "gap_before": 5.094
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 1.56
+ },
+ "step_latencies": [
+  1.56
+ ],
+ "scenario_steps": [
+  "reserve_hotel"
+ ],
+ "perturb": {
+  "rate": 0.957,
+  "gain_db": -2.4,
+  "snr_db": 15.1
+ },
+ "gold_calls": [
+  {
+   "fn": "reserve_hotel",
+   "args": {
+    "city": "杭州",
+    "checkin": "5月10日",
+    "nights": 3
+   }
+  }
+ ],
+ "gold_state": {
+  "reserve_hotel#REecb50c": {
+   "city": "杭州",
+   "checkin": "5月10日",
+   "nights": 3
+  }
+ },
+ "voices": {
+  "user": "cv09",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 6.937,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 12.031,
+   "t_end": 13.786,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  5.094
+ ]
+}

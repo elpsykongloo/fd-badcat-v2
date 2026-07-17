@@ -1,0 +1,142 @@
+{
+ "id": "A_L5_0023",
+ "arm": "A",
+ "layer": "L5",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "coach",
+  "passenger": "Jordan Lee"
+ },
+ "slots_final": {
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "May third",
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
+ },
+ "revisions": [
+  {
+   "slot": "seat_class",
+   "old": "coach",
+   "new": "first class",
+   "by": "user",
+   "kind": "default",
+   "gap": 2.642
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "Chicago",
+  "destination": "Austin",
+  "date": "May 3",
+  "seat_class": "first class",
+  "passenger": "Jordan Lee"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Can you find a train from Chicago to Austin on May third, put a coach seat on hold, and buy the ticket for Jordan Lee?",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "en",
+   "text": "Wait — make it first class.",
+   "gap_before": 2.642
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.273
+ },
+ "step_latencies": [
+  0.273,
+  0.763,
+  1.974
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.018,
+  "gain_db": 0.7,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "Chicago",
+    "destination": "Austin",
+    "date": "May 3"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE6ec603",
+    "seat_class": "first class"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO452576",
+    "passenger": "Jordan Lee"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE6ec603": {
+   "origin": "Chicago",
+   "destination": "Austin",
+   "date": "May 3"
+  },
+  "hold_seat#HO452576": {
+   "train_id": "SE6ec603",
+   "seat_class": "first class"
+  },
+  "purchase_ticket#PUc2b30e": {
+   "hold_id": "HO452576",
+   "passenger": "Jordan Lee"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv03"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.909,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 11.551,
+   "t_end": 13.358,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  2.642
+ ]
+}

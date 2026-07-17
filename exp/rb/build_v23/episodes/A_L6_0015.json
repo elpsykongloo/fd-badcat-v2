@@ -1,0 +1,164 @@
+{
+ "id": "A_L6_0015",
+ "arm": "A",
+ "layer": "L6",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "上海",
+  "destination": "西安",
+  "date": "五月三号",
+  "seat_class": "一等座",
+  "passenger": "张伟"
+ },
+ "slots_final": {
+  "origin": "上海",
+  "destination": "成都",
+  "date": "五月三号",
+  "seat_class": "商务座",
+  "passenger": "张伟"
+ },
+ "revisions": [
+  {
+   "slot": "destination",
+   "old": "西安",
+   "new": "成都",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.784
+  },
+  {
+   "slot": "seat_class",
+   "old": "一等座",
+   "new": "商务座",
+   "by": "user",
+   "kind": "second",
+   "gap": 2.564
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "上海",
+  "destination": "成都",
+  "date": "5月3日",
+  "seat_class": "商务座",
+  "passenger": "张伟"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "zh",
+   "text": "帮我查五月三号从上海到西安的火车，订一等座，然后直接买票，乘客是张伟。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "zh",
+   "text": "等等，改成成都。",
+   "gap_before": 0.784
+  },
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "zh",
+   "text": "那个我先——对了，再改改，要商务座。",
+   "gap_before": 2.564
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.55
+ },
+ "step_latencies": [
+  0.55,
+  0.588,
+  2.112
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.986,
+  "gain_db": -5.4,
+  "snr_db": 17.4
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "上海",
+    "destination": "成都",
+    "date": "5月3日"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SEe9a0d3",
+    "seat_class": "商务座"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HOc44252",
+    "passenger": "张伟"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SEe9a0d3": {
+   "origin": "上海",
+   "destination": "成都",
+   "date": "5月3日"
+  },
+  "hold_seat#HOc44252": {
+   "train_id": "SEe9a0d3",
+   "seat_class": "商务座"
+  },
+  "purchase_ticket#PU6f8718": {
+   "hold_id": "HOc44252",
+   "passenger": "张伟"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 8.614,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 9.398,
+   "t_end": 11.507,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 14.071,
+   "t_end": 18.534,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.784,
+  2.564
+ ]
+}

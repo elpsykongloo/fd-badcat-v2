@@ -1,0 +1,124 @@
+{
+ "id": "B_L8_0036",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "wireless earbuds",
+  "qty": "two",
+  "address": "12 College Road"
+ },
+ "slots_final": {
+  "query": "wireless earbuds",
+  "qty": "two",
+  "address": "88 Century Avenue"
+ },
+ "revisions": [
+  {
+   "slot": "address",
+   "old": "12 College Road",
+   "new": "88 Century Avenue",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "wireless earbuds",
+  "qty": 2,
+  "address": "88 Century Avenue"
+ },
+ "l8_action": "revise",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "Search for wireless earbuds, add two to the cart, and order it to 12 College Road.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv03",
+   "lang": "en",
+   "text": "So I was— Wait — make it 88 Century Avenue.",
+   "at_after_eou": 1.143
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.744,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv03",
+   "text": "Wait — make it 88 Century Avenue."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.467
+ },
+ "step_latencies": [
+  0.467,
+  0.927,
+  3.51
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 0.982,
+  "gain_db": 1.9,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "wireless earbuds"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE9392aa",
+    "qty": 2
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD774803",
+    "address": "88 Century Avenue"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE9392aa": {
+   "query": "wireless earbuds"
+  },
+  "add_item#AD774803": {
+   "item_id": "SE9392aa",
+   "qty": 2
+  },
+  "place_order#PLf0edea": {
+   "cart_id": "AD774803",
+   "address": "88 Century Avenue"
+  }
+ },
+ "voices": {
+  "user": "cv03",
+  "bystander": "cv06"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

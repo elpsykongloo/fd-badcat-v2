@@ -1,0 +1,126 @@
+{
+ "id": "A_L4_0022",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "housing",
+ "lang": "zh",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "厦门",
+  "beds": "两居",
+  "max_rent": "八千",
+  "slot": "周日下午"
+ },
+ "slots_final": {
+  "city": "厦门",
+  "beds": "两居",
+  "max_rent": "六千",
+  "slot": "周日下午"
+ },
+ "revisions": [
+  {
+   "slot": "max_rent",
+   "old": "八千",
+   "new": "六千",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.923
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "厦门",
+  "beds": 2,
+  "max_rent": 6000,
+  "slot": "周日下午"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "帮我找厦门那边两居的房源，租金别超八千，约周日下午看下。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "六千，改成六千。",
+   "gap_before": 0.923
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.466
+ },
+ "step_latencies": [
+  0.466,
+  3.098
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 1.047,
+  "gain_db": -2.3,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "厦门",
+    "beds": 2,
+    "max_rent": 6000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SEed5a4a",
+    "slot": "周日下午"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SEed5a4a": {
+   "city": "厦门",
+   "beds": 2,
+   "max_rent": 6000
+  },
+  "book_viewing#BO93443d": {
+   "listing_id": "SEed5a4a",
+   "slot": "周日下午"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.224,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 8.147,
+   "t_end": 9.675,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.923
+ ]
+}

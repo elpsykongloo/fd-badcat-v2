@@ -1,0 +1,88 @@
+{
+ "id": "B_L8_0055",
+ "arm": "B",
+ "layer": "L8",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "北京",
+  "destination": "成都",
+  "date": "五月三号",
+  "seat_class": "二等座",
+  "passenger": "张伟"
+ },
+ "slots_final": {
+  "origin": "北京",
+  "destination": "成都",
+  "date": "五月三号",
+  "seat_class": "二等座",
+  "passenger": "张伟"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "北京",
+  "destination": "成都",
+  "date": "5月3日",
+  "seat_class": "二等座",
+  "passenger": "张伟"
+ },
+ "l8_action": "cancel",
+ "cancelled": true,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "zh",
+   "text": "帮我查五月三号从北京到成都的火车，订二等座，然后直接买票，乘客是张伟。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "zh",
+   "text": "好吧，先取消吧",
+   "at_after_eou": 1.27
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.339,
+   "action": "cancel",
+   "role": "user",
+   "voice": "cv06",
+   "text": "算了，不弄了"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.97
+ },
+ "step_latencies": [
+  0.97,
+  0.357,
+  1.205
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 0.978,
+  "gain_db": 1.2,
+  "snr_db": 15.1
+ },
+ "gold_calls": [],
+ "gold_state": {},
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv09"
+ },
+ "split": "dev",
+ "config_hash": "e1a515c29b8a"
+}

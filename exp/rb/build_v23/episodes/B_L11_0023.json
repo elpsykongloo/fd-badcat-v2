@@ -1,0 +1,95 @@
+{
+ "id": "B_L11_0023",
+ "arm": "B",
+ "layer": "L11",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_hotel",
+ "slots": {
+  "city": "Boise",
+  "checkin": "May tenth",
+  "nights": "two"
+ },
+ "slots_final": {
+  "city": "Austin",
+  "checkin": "May tenth",
+  "nights": "two"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "Boise",
+   "new": "Austin",
+   "by": "user",
+   "kind": "default",
+   "gap": null
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Austin",
+  "checkin": "May 10",
+  "nights": 2
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "I'd like to reserve a hotel in Boise with check-in on May tenth and stay two nights.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "tts",
+   "offset": 0.229,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv05",
+   "text": "Wait — make it Austin."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 2.323
+ },
+ "step_latencies": [
+  2.323
+ ],
+ "scenario_steps": [
+  "reserve_hotel"
+ ],
+ "perturb": {
+  "rate": 0.993,
+  "gain_db": -4.5,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "reserve_hotel",
+   "args": {
+    "city": "Austin",
+    "checkin": "May 10",
+    "nights": 2
+   }
+  }
+ ],
+ "gold_state": {
+  "reserve_hotel#REd8f990": {
+   "city": "Austin",
+   "checkin": "May 10",
+   "nights": 2
+  }
+ },
+ "voices": {
+  "user": "cv05",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

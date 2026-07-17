@@ -1,0 +1,132 @@
+{
+ "id": "A_L4_0016",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "wireless earbuds",
+  "qty": "one",
+  "address": "12 College Road"
+ },
+ "slots_final": {
+  "query": "wireless earbuds",
+  "qty": "two",
+  "address": "12 College Road"
+ },
+ "revisions": [
+  {
+   "slot": "qty",
+   "old": "one",
+   "new": "two",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.876
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "wireless earbuds",
+  "qty": 2,
+  "address": "12 College Road"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "Search for wireless earbuds, add one to the cart, and order it to 12 College Road.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "You know— Let's go with two over two.",
+   "gap_before": 0.876
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.478
+ },
+ "step_latencies": [
+  0.478,
+  0.398,
+  1.415
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 1.041,
+  "gain_db": 1.5,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "wireless earbuds"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SEf7b6dc",
+    "qty": 2
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "ADa15f32",
+    "address": "12 College Road"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SEf7b6dc": {
+   "query": "wireless earbuds"
+  },
+  "add_item#ADa15f32": {
+   "item_id": "SEf7b6dc",
+   "qty": 2
+  },
+  "place_order#PL3569ca": {
+   "cart_id": "ADa15f32",
+   "address": "12 College Road"
+  }
+ },
+ "voices": {
+  "user": "cv05",
+  "bystander": "cv02"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 4.957,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 5.833,
+   "t_end": 8.6,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.876
+ ]
+}

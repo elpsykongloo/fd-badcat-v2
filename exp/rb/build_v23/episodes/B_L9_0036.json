@@ -1,0 +1,88 @@
+{
+ "id": "B_L9_0036",
+ "arm": "B",
+ "layer": "L9",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_single",
+ "slots": {
+  "item_id": "A100",
+  "qty": "two"
+ },
+ "slots_final": {
+  "item_id": "A100",
+  "qty": "two"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "item_id": "A100",
+  "qty": 2
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "I need to add two of item A100 to my shopping cart.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Any movement?",
+   "at_after_eou": 37.0
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.639,
+   "action": "progress_query",
+   "role": "user",
+   "voice": "cv08",
+   "text": "Any movement?"
+  }
+ ],
+ "profile": "heavy",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 60.0
+ },
+ "step_latencies": [
+  60.0
+ ],
+ "scenario_steps": [
+  "add_item"
+ ],
+ "perturb": {
+  "rate": 1.025,
+  "gain_db": -1.9,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "A100",
+    "qty": 2
+   }
+  }
+ ],
+ "gold_state": {
+  "add_item#AD2f8f4b": {
+   "item_id": "A100",
+   "qty": 2
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv07"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

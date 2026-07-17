@@ -1,0 +1,111 @@
+{
+ "id": "B_L4_0014",
+ "arm": "B",
+ "layer": "L4",
+ "domain": "housing",
+ "lang": "en",
+ "scenario": "hou_chain",
+ "slots": {
+  "city": "Miami",
+  "beds": "one-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Sunday afternoon"
+ },
+ "slots_final": {
+  "city": "Denver",
+  "beds": "one-bedroom",
+  "max_rent": "two thousand",
+  "slot": "Sunday afternoon"
+ },
+ "revisions": [
+  {
+   "slot": "city",
+   "old": "Miami",
+   "new": "Denver",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 0.687
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Denver",
+  "beds": 1,
+  "max_rent": 2000,
+  "slot": "Sunday afternoon"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "en",
+   "text": "Find me a one-bedroom in Miami under two thousand and arrange a viewing for Sunday afternoon.",
+   "gap_before": 0.5
+  }
+ ],
+ "events": [
+  {
+   "state": "eou",
+   "offset": 0.148,
+   "action": "revise",
+   "role": "user",
+   "voice": "cv07",
+   "text": "Switch it to Denver instead of Denver."
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.187
+ },
+ "step_latencies": [
+  0.187,
+  2.852
+ ],
+ "scenario_steps": [
+  "search_rentals",
+  "book_viewing"
+ ],
+ "perturb": {
+  "rate": 0.99,
+  "gain_db": 0.6,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_rentals",
+   "args": {
+    "city": "Denver",
+    "beds": 1,
+    "max_rent": 2000
+   }
+  },
+  {
+   "fn": "book_viewing",
+   "args": {
+    "listing_id": "SE8b2ef7",
+    "slot": "Sunday afternoon"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_rentals#SE8b2ef7": {
+   "city": "Denver",
+   "beds": 1,
+   "max_rent": 2000
+  },
+  "book_viewing#BO7eeff3": {
+   "listing_id": "SE8b2ef7",
+   "slot": "Sunday afternoon"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv03"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

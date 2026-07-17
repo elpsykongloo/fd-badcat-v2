@@ -1,0 +1,132 @@
+{
+ "id": "A_L4_0044",
+ "arm": "A",
+ "layer": "L4",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "wireless earbuds",
+  "qty": "one",
+  "address": "12 College Road"
+ },
+ "slots_final": {
+  "query": "wireless earbuds",
+  "qty": "one",
+  "address": "88 Century Avenue"
+ },
+ "revisions": [
+  {
+   "slot": "address",
+   "old": "12 College Road",
+   "new": "88 Century Avenue",
+   "by": "user",
+   "kind": "value_first",
+   "gap": 1.103
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "query": "wireless earbuds",
+  "qty": 1,
+  "address": "88 Century Avenue"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "Search for wireless earbuds, add one to the cart, and order it to 12 College Road.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv05",
+   "lang": "en",
+   "text": "Put 88 Century Avenue in place of 88 Century Avenue.",
+   "gap_before": 1.103
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.78
+ },
+ "step_latencies": [
+  0.78,
+  0.751,
+  2.029
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 1.032,
+  "gain_db": 1.0,
+  "snr_db": 23.7
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "wireless earbuds"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE40c290",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD77fd38",
+    "address": "88 Century Avenue"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE40c290": {
+   "query": "wireless earbuds"
+  },
+  "add_item#AD77fd38": {
+   "item_id": "SE40c290",
+   "qty": 1
+  },
+  "place_order#PL532c42": {
+   "cart_id": "AD77fd38",
+   "address": "88 Century Avenue"
+  }
+ },
+ "voices": {
+  "user": "cv05",
+  "bystander": "cv08"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 4.996,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 6.099,
+   "t_end": 9.82,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  1.103
+ ]
+}

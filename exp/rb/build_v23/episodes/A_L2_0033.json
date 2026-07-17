@@ -1,0 +1,110 @@
+{
+ "id": "A_L2_0033",
+ "arm": "A",
+ "layer": "L2",
+ "domain": "finance",
+ "lang": "zh",
+ "scenario": "fin_payment",
+ "slots": {
+  "payee": "房东",
+  "amount": "八百",
+  "date": "五月三号"
+ },
+ "slots_final": {
+  "payee": "房东",
+  "amount": "八百",
+  "date": "五月八号"
+ },
+ "revisions": [
+  {
+   "slot": "date",
+   "old": "五月三号",
+   "new": "五月八号",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.206
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "payee": "房东",
+  "amount": 800,
+  "date": "5月8日"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "zh",
+   "text": "帮我在五月三号给房东转八百块",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv01",
+   "lang": "zh",
+   "text": "等等，还是五月八号吧。",
+   "gap_before": 0.206
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 2.348
+ },
+ "step_latencies": [
+  2.348
+ ],
+ "scenario_steps": [
+  "schedule_payment"
+ ],
+ "perturb": {
+  "rate": 0.963,
+  "gain_db": -3.3,
+  "snr_db": 23.0
+ },
+ "gold_calls": [
+  {
+   "fn": "schedule_payment",
+   "args": {
+    "payee": "房东",
+    "amount": 800,
+    "date": "5月8日"
+   }
+  }
+ ],
+ "gold_state": {
+  "schedule_payment#SC38610e": {
+   "payee": "房东",
+   "amount": 800,
+   "date": "5月8日"
+  }
+ },
+ "voices": {
+  "user": "cv01",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 4.82,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 5.026,
+   "t_end": 7.601,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.206
+ ]
+}

@@ -1,0 +1,93 @@
+{
+ "id": "B_L9_0043",
+ "arm": "B",
+ "layer": "L9",
+ "domain": "travel",
+ "lang": "en",
+ "scenario": "travel_hotel",
+ "slots": {
+  "city": "Miami",
+  "checkin": "May third",
+  "nights": "three"
+ },
+ "slots_final": {
+  "city": "Miami",
+  "checkin": "May third",
+  "nights": "three"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "city": "Miami",
+  "checkin": "May 3",
+  "nights": 3
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "I'd like to reserve a hotel in Miami with check-in on May third and stay three nights.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Any progress?",
+   "at_after_eou": 9.776
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.511,
+   "action": "progress_query",
+   "role": "user",
+   "voice": "cv08",
+   "text": "Any update?"
+  }
+ ],
+ "profile": "heavy",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 14.627
+ },
+ "step_latencies": [
+  14.627
+ ],
+ "scenario_steps": [
+  "reserve_hotel"
+ ],
+ "perturb": {
+  "rate": 0.978,
+  "gain_db": -1.8,
+  "snr_db": 17.8
+ },
+ "gold_calls": [
+  {
+   "fn": "reserve_hotel",
+   "args": {
+    "city": "Miami",
+    "checkin": "May 3",
+    "nights": 3
+   }
+  }
+ ],
+ "gold_state": {
+  "reserve_hotel#RE16fb35": {
+   "city": "Miami",
+   "checkin": "May 3",
+   "nights": 3
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

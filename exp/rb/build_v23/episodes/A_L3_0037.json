@@ -1,0 +1,131 @@
+{
+ "id": "A_L3_0037",
+ "arm": "A",
+ "layer": "L3",
+ "domain": "finance",
+ "lang": "zh",
+ "scenario": "fin_transfer",
+ "slots": {
+  "amount": "三千",
+  "from_cur": "人民币",
+  "to_cur": "美元",
+  "from_acct": "工资卡",
+  "to_acct": "房租卡"
+ },
+ "slots_final": {
+  "amount": "三千",
+  "from_cur": "人民币",
+  "to_cur": "美元",
+  "from_acct": "工资卡",
+  "to_acct": "储蓄卡"
+ },
+ "revisions": [
+  {
+   "slot": "to_acct",
+   "old": "房租卡",
+   "new": "储蓄卡",
+   "by": "user",
+   "kind": "default",
+   "gap": 0.649
+  }
+ ],
+ "bystander": null,
+ "slots_canon": {
+  "amount": 3000,
+  "from_cur": "CNY",
+  "to_cur": "USD",
+  "from_acct": "工资卡",
+  "to_acct": "储蓄卡"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "zh",
+   "text": "先查三千块人民币换美元的汇率，然后从工资卡转三千到房租卡。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "zh",
+   "text": "稍等，改成储蓄卡行吗。",
+   "gap_before": 0.649
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.564
+ },
+ "step_latencies": [
+  0.564,
+  1.432
+ ],
+ "scenario_steps": [
+  "get_fx_quote",
+  "transfer_funds"
+ ],
+ "perturb": {
+  "rate": 0.953,
+  "gain_db": 1.3,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "get_fx_quote",
+   "args": {
+    "amount": 3000,
+    "from_cur": "CNY",
+    "to_cur": "USD"
+   }
+  },
+  {
+   "fn": "transfer_funds",
+   "args": {
+    "from_acct": "工资卡",
+    "to_acct": "储蓄卡",
+    "amount": 3000
+   }
+  }
+ ],
+ "gold_state": {
+  "get_fx_quote#GEf57f8e": {
+   "amount": 3000,
+   "from_cur": "CNY",
+   "to_cur": "USD"
+  },
+  "transfer_funds#TR543580": {
+   "from_acct": "工资卡",
+   "to_acct": "储蓄卡",
+   "amount": 3000
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.635,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 8.284,
+   "t_end": 11.055,
+   "scheduled": "sequential"
+  }
+ ],
+ "measured_gaps": [
+  0.649
+ ]
+}

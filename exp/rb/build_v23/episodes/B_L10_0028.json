@@ -1,0 +1,120 @@
+{
+ "id": "B_L10_0028",
+ "arm": "B",
+ "layer": "L10",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "running shoes",
+  "qty": "one",
+  "address": "88 Century Avenue"
+ },
+ "slots_final": {
+  "query": "running shoes",
+  "qty": "one",
+  "address": "88 Century Avenue"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "irrelevant",
+  "other": "two",
+  "state": "inflight",
+  "frac": 0.38
+ },
+ "slots_canon": {
+  "query": "running shoes",
+  "qty": 1,
+  "address": "88 Century Avenue"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv08",
+   "lang": "en",
+   "text": "Search for running shoes, add one to the cart, and order it to 88 Century Avenue.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv02",
+   "lang": "en",
+   "text": "What's your dinner choice to order in tonight",
+   "at_after_eou": 1.299
+  }
+ ],
+ "events": [
+  {
+   "state": "inflight",
+   "offset": 0.66,
+   "action": "bystander",
+   "role": "bystander",
+   "voice": "cv02",
+   "text": "What do you feel like for dinner so we can order in"
+  }
+ ],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.786
+ },
+ "step_latencies": [
+  0.786,
+  1.25,
+  1.184
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 0.945,
+  "gain_db": -3.4,
+  "snr_db": 19.4
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "running shoes"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SE9e1267",
+    "qty": 1
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "ADdbfba2",
+    "address": "88 Century Avenue"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SE9e1267": {
+   "query": "running shoes"
+  },
+  "add_item#ADdbfba2": {
+   "item_id": "SE9e1267",
+   "qty": 1
+  },
+  "place_order#PL64611b": {
+   "cart_id": "ADdbfba2",
+   "address": "88 Century Avenue"
+  }
+ },
+ "voices": {
+  "user": "cv08",
+  "bystander": "cv02"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a"
+}

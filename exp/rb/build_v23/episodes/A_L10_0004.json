@@ -1,0 +1,126 @@
+{
+ "id": "A_L10_0004",
+ "arm": "A",
+ "layer": "L10",
+ "domain": "ecommerce",
+ "lang": "en",
+ "scenario": "ecom_chain",
+ "slots": {
+  "query": "wireless earbuds",
+  "qty": "two",
+  "address": "12 College Road"
+ },
+ "slots_final": {
+  "query": "wireless earbuds",
+  "qty": "two",
+  "address": "12 College Road"
+ },
+ "revisions": [],
+ "bystander": {
+  "kind": "irrelevant",
+  "other": "88 Century Avenue",
+  "state": "inflight",
+  "frac": 0.737
+ },
+ "slots_canon": {
+  "query": "wireless earbuds",
+  "qty": 2,
+  "address": "12 College Road"
+ },
+ "l8_action": null,
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv06",
+   "lang": "en",
+   "text": "Search for wireless earbuds, add two to the cart, and order it to 12 College Road.",
+   "gap_before": 0.5
+  },
+  {
+   "role": "bystander",
+   "voice": "cv04",
+   "lang": "en",
+   "text": "Should we order in and what do you want for dinner",
+   "at_after_eou": 1.349
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.473
+ },
+ "step_latencies": [
+  0.473,
+  0.804,
+  3.185
+ ],
+ "scenario_steps": [
+  "search_catalog",
+  "add_item",
+  "place_order"
+ ],
+ "perturb": {
+  "rate": 1.039,
+  "gain_db": -4.1,
+  "snr_db": 18.9
+ },
+ "gold_calls": [
+  {
+   "fn": "search_catalog",
+   "args": {
+    "query": "wireless earbuds"
+   }
+  },
+  {
+   "fn": "add_item",
+   "args": {
+    "item_id": "SEeea096",
+    "qty": 2
+   }
+  },
+  {
+   "fn": "place_order",
+   "args": {
+    "cart_id": "AD77acc1",
+    "address": "12 College Road"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_catalog#SEeea096": {
+   "query": "wireless earbuds"
+  },
+  "add_item#AD77acc1": {
+   "item_id": "SEeea096",
+   "qty": 2
+  },
+  "place_order#PL21e136": {
+   "cart_id": "AD77acc1",
+   "address": "12 College Road"
+  }
+ },
+ "voices": {
+  "user": "cv06",
+  "bystander": "cv04"
+ },
+ "split": "test",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 7.43,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "bystander",
+   "t_start": 9.419,
+   "t_end": 13.038,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}

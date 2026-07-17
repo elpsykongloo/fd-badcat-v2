@@ -1,0 +1,131 @@
+{
+ "id": "A_L8_0011",
+ "arm": "A",
+ "layer": "L8",
+ "domain": "travel",
+ "lang": "zh",
+ "scenario": "travel_chain",
+ "slots": {
+  "origin": "北京",
+  "destination": "成都",
+  "date": "五月八号",
+  "seat_class": "二等座",
+  "passenger": "王磊"
+ },
+ "slots_final": {
+  "origin": "北京",
+  "destination": "成都",
+  "date": "五月八号",
+  "seat_class": "二等座",
+  "passenger": "王磊"
+ },
+ "revisions": [],
+ "bystander": null,
+ "slots_canon": {
+  "origin": "北京",
+  "destination": "成都",
+  "date": "5月8日",
+  "seat_class": "二等座",
+  "passenger": "王磊"
+ },
+ "l8_action": "progress",
+ "cancelled": false,
+ "pieces": [
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "帮我查五月八号从北京到成都的火车，订二等座，然后直接买票，乘客是王磊。",
+   "gap_before": 0.5
+  },
+  {
+   "role": "user",
+   "voice": "cv07",
+   "lang": "zh",
+   "text": "好了没？",
+   "at_after_eou": 1.293
+  }
+ ],
+ "events": [],
+ "profile": "default",
+ "nominal": {
+  "eou": 0.64,
+  "dec": 1.6400000000000001,
+  "tool_wall": 0.686
+ },
+ "step_latencies": [
+  0.686,
+  0.332,
+  1.397
+ ],
+ "scenario_steps": [
+  "search_trains",
+  "hold_seat",
+  "purchase_ticket"
+ ],
+ "perturb": {
+  "rate": 1.034,
+  "gain_db": -5.9,
+  "snr_db": null
+ },
+ "gold_calls": [
+  {
+   "fn": "search_trains",
+   "args": {
+    "origin": "北京",
+    "destination": "成都",
+    "date": "5月8日"
+   }
+  },
+  {
+   "fn": "hold_seat",
+   "args": {
+    "train_id": "SE4d5fba",
+    "seat_class": "二等座"
+   }
+  },
+  {
+   "fn": "purchase_ticket",
+   "args": {
+    "hold_id": "HO86245e",
+    "passenger": "王磊"
+   }
+  }
+ ],
+ "gold_state": {
+  "search_trains#SE4d5fba": {
+   "origin": "北京",
+   "destination": "成都",
+   "date": "5月8日"
+  },
+  "hold_seat#HO86245e": {
+   "train_id": "SE4d5fba",
+   "seat_class": "二等座"
+  },
+  "purchase_ticket#PUec462b": {
+   "hold_id": "HO86245e",
+   "passenger": "王磊"
+  }
+ },
+ "voices": {
+  "user": "cv07",
+  "bystander": "cv01"
+ },
+ "split": "dev",
+ "config_hash": "e1a515c29b8a",
+ "cues": [
+  {
+   "role": "user",
+   "t_start": 0.5,
+   "t_end": 12.415,
+   "scheduled": "sequential"
+  },
+  {
+   "role": "user",
+   "t_start": 14.348,
+   "t_end": 14.889,
+   "scheduled": "lifecycle_nominal"
+  }
+ ],
+ "measured_gaps": []
+}
