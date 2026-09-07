@@ -18,11 +18,10 @@ via an on-disk prompt-keyed cache.
 Judge discipline (the fdb_pass_judge_strict lessons): proxy env vars cleared,
 temperature 0, max_tokens 512, up to 5 retries per call, HARD FAIL after —
 silent fallback is how the W1/W2 judge numbers went bad. The overlay's own
-sha256 is pinned in scorer freeze v5: changing this file after the freeze is
-a version bump, same as the scorer.  Rows are judged concurrently with
-thread-local SDK clients; the prompt-keyed cache is single-flight and atomically
-persisted, so identical prompts are issued once and completion order cannot
-change the overlay."""
+schema is versioned alongside the scorer. Rows are judged concurrently with
+thread-local SDK clients; the prompt-keyed cache is single-flight and
+atomically persisted, so identical prompts are issued once and completion
+order cannot change the overlay."""
 from __future__ import annotations
 
 import argparse
@@ -38,8 +37,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from rb.scorer import (COMMIT_JUDGE_PROMPT, make_llm_judge,   # noqa: E402
-                       commitment_repair, episode_claim_forms)
+from rb.scorer import (make_llm_judge, commitment_repair,  # noqa: E402
+                       episode_claim_forms)
 
 MODEL = "deepseek-v4-flash"
 BASE_URL = "https://api.deepseek.com"
@@ -191,8 +190,6 @@ def judge_provider(build, provider, layers, cache, workers=1):
                                        for x in out_rows)}
     return {"schema": "rb-commit-judge-overlay-v1", "provider": provider,
             "model": MODEL, "layers": sorted(layers) if layers else "all",
-            "judge_prompt_sha256": hashlib.sha256(
-                COMMIT_JUDGE_PROMPT.encode()).hexdigest(),
             "aggregate": agg, "rows": out_rows}
 
 

@@ -239,22 +239,26 @@ def test_t8_reset_drops_inflight():
         vad = {1: {"start": 0.06}, 31: {"end": 1.02}}
         calls = []
 
-        def slow_llm(messages):
+        def llm(messages):
             calls.append(1)
-            import time as _t
-            _t.sleep(0.15)
             return "switch"
 
-        e = make_engine(vad, None, mode="realtime", llm_fn=slow_llm)
+        e = make_engine(vad, None, mode="realtime", llm_fn=llm)
         for ev in silence(2.0):
             e.q.put_nowait(ev)
         e.q.put_nowait(ControlMsg("session_end"))   # arrives while judge is in flight
-        # give the worker time to finish after the reset, then disconnect
-        async def late_disconnect():
-            await asyncio.sleep(0.5)
+
+        # The preloaded queue deterministically applies session_end before the
+        # just-created worker can report back. Stop on quiescence, not a wall
+        # clock guess, so the stale-result contract stays covered without a
+        # half-second sleep.
+        async def disconnect_when_idle():
+            while e._inflight or not e.q.empty():
+                await asyncio.sleep(0)
             e.q.put_nowait(ControlMsg("disconnect"))
-        asyncio.create_task(late_disconnect())
-        await e.engine_loop()
+
+        asyncio.create_task(disconnect_when_idle())
+        await asyncio.wait_for(e.engine_loop(), timeout=5.0)
         return e, calls
 
     e, calls = run(scenario())

@@ -127,18 +127,21 @@ class InjectedReplaySession:
     def __init__(self, golden_trace: Union[str, Path, list],
                  wav_path: Union[str, Path],
                  config: Optional[dict] = None,
-                 output_dir: Optional[Union[str, Path]] = None):
+                 output_dir: Optional[Union[str, Path]] = None,
+                 vad_iterator=None):
         """
         Args:
             golden_trace: path to golden .jsonl or parsed events
             wav_path: input audio file path
             config: engine config dict (prompts, delay, llm, engine sections)
             output_dir: where to write trace.jsonl and audio artifacts
+            vad_iterator: optional injected VAD (keeps synthetic tests model-free)
         """
         self.golden_trace = golden_trace
         self.wav_path = Path(wav_path)
         self.config = config or {}
         self.output_dir = Path(output_dir) if output_dir else None
+        self.vad_iterator = vad_iterator
 
         self.script = DecisionScript(golden_trace)
         self.engine = None
@@ -167,6 +170,7 @@ class InjectedReplaySession:
             engine_cfg=engine_cfg,
             replay_mode=mode,
             decision_script=self.script,
+            vad_iterator=self.vad_iterator,
         )
 
         if self.output_dir:

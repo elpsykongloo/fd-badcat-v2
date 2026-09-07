@@ -32,8 +32,6 @@ class ToolRegistry:
 
     def executor(self, fn, args):
         """Mock executor that returns success."""
-        if self.latency_profile == "realistic":
-            time.sleep(0.05)  # 50ms simulated latency
         return {"status": "success", "fn": fn, "args": dict(args)}
 
 
@@ -151,8 +149,8 @@ async def test_p4_async_concurrent():
                        {"destination": f"DEST{session_id}", "date": "2026-07-15"},
                        Reversibility.READ, t=1.0)
 
-        # Simulate async wait
-        await asyncio.sleep(0.001)
+        # Yield once so all sessions can interleave without adding wall time.
+        await asyncio.sleep(0)
 
         tx.commit(op.op_id, tools.executor, t=1.5)
         return tx
@@ -168,11 +166,6 @@ async def test_p4_async_concurrent():
         assert calls[0]["args"]["destination"] == f"DEST{i}"
 
     print(f"PASS: P4 async concurrent (16 sessions in {elapsed:.3f}s)")
-
-
-def test_p4_async_concurrent_wrapper():
-    """Wrapper to run async test."""
-    asyncio.run(test_p4_async_concurrent())
 
 
 # ---------------------------------------------------------------------------
@@ -253,47 +246,3 @@ def test_p7_cancel_restart_cycles():
     assert len(calls) == 5  # Half were cancelled
 
     print(f"PASS: P7 cancel/restart cycles (10 launches, 5 committed)")
-
-
-# ---------------------------------------------------------------------------
-# P8: Throughput comparison (instant vs realistic latency)
-# ---------------------------------------------------------------------------
-def test_p8_latency_profiles():
-    """Compare throughput under different latency profiles."""
-
-    def measure(profile):
-        tx = Transaction()
-        tools = ToolRegistry(latency_profile=profile, room=f"test_p8_{profile}")
-
-        start = time.time()
-        for i in range(5):
-            op = tx.launch("search_flights",
-                           {"destination": f"NYC{i}", "date": "2026-07-15"},
-                           Reversibility.READ, t=float(i))
-            tx.commit(op.op_id, tools.executor, t=float(i) + 0.1)
-        elapsed = time.time() - start
-        return elapsed
-
-    instant = measure("instant")
-    realistic = measure("realistic")
-
-    print(f"PASS: P8 latency profiles (instant: {instant:.3f}s, realistic: {realistic:.3f}s)")
-    assert realistic > instant  # Realistic should be slower
-
-
-# ---------------------------------------------------------------------------
-# Runner
-# ---------------------------------------------------------------------------
-if __name__ == "__main__":
-    import traceback
-    fns = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
-    failed = 0
-    for fn in fns:
-        try:
-            fn()
-        except Exception:
-            failed += 1
-            print(f"FAIL  {fn.__name__}")
-            traceback.print_exc()
-    print(f"\n{len(fns) - failed}/{len(fns)} passed")
-    sys.exit(1 if failed else 0)

@@ -15,8 +15,7 @@ Tests:
 import asyncio
 import json
 import sys
-import tempfile
-import time
+from types import SimpleNamespace
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
@@ -49,10 +48,8 @@ def mock_asr(path):
 
 
 def mock_tts(text: str, path):
-    """Mock TTS generates silent audio proportional to text length."""
-    time.sleep(len(text.split()) * 0.02)   # 20ms per word
-    duration = len(text.split()) * 0.15    # 150ms per word
-    samples = int(16000 * duration)
+    """Write a tiny valid WAV; timing is tested with a virtual clock below."""
+    samples = max(160, len(text.split()) * 160)
     audio = np.zeros(samples, dtype=np.float32)
     sf.write(str(path), audio, 16000, subtype='PCM_16')
     return str(path)
@@ -87,53 +84,44 @@ def _mk_engine(tmpdir, engine_cfg, llm=mock_llm):
     return eng
 
 
-async def _drive(engine, settle=2.0):
-    """Run the engine loop, inject one EoU decision, let it settle, shut down."""
+async def _drive(engine):
+    """Run one decision and stop as soon as its worker/queue graph is idle."""
     loop_task = asyncio.create_task(engine.engine_loop())
     engine.t_audio = 1.0
     engine.t_end_anchor = 1.0
     engine._ledger_t = 1.0
     engine._session_frames = [np.zeros(16000, dtype=np.float32)]
     engine.dispatch_tact_decision(t_eou=1.0, turn=0)
-    await asyncio.sleep(settle)
-    engine.q.put_nowait(ControlMsg("disconnect"))
-    await asyncio.wait_for(loop_task, timeout=10.0)
+
+    async def wait_until_idle():
+        while engine._inflight or not engine.q.empty():
+            await asyncio.sleep(0)
+
+    try:
+        await asyncio.wait_for(wait_until_idle(), timeout=5.0)
+    finally:
+        engine.q.put_nowait(ControlMsg("disconnect"))
+        await asyncio.wait_for(loop_task, timeout=5.0)
 
 
 # ---------------------------------------------------------------------------
-async def test_ack_enabled():
-    print("\n[Test 1] ack-v0 enabled for appropriate responses")
-    with tempfile.TemporaryDirectory() as tmpdir:
-        engine = _mk_engine(tmpdir, {"ack_enabled": True,
-                                     "ack_strategy": "context", "ack_seed": 42})
-        await _drive(engine)
-        ack_files = list(Path(tmpdir).glob("*_ack.wav"))
-        main_files = list(Path(tmpdir).glob("*_main.wav"))
-        assert engine.tx.committed, "decision did not commit the launched op"
-        if ack_files and main_files:
-            print(f"  ✓ ack-v0 triggered: {len(ack_files)} ack + {len(main_files)} main files")
-            return True
-        print(f"  ✗ ack-v0 NOT triggered (ack:{len(ack_files)}, main:{len(main_files)})")
-        return False
+async def test_ack_enabled(tmp_path):
+    engine = _mk_engine(tmp_path, {"ack_enabled": True,
+                                   "ack_strategy": "context", "ack_seed": 42})
+    await _drive(engine)
+    assert engine.tx.committed, "decision did not commit the launched op"
+    assert len(list(tmp_path.glob("*_ack.wav"))) == 1
+    assert len(list(tmp_path.glob("*_main.wav"))) == 1
 
 
-async def test_ack_disabled():
-    print("\n[Test 2] ack-v0 disabled when flag is false")
-    with tempfile.TemporaryDirectory() as tmpdir:
-        engine = _mk_engine(tmpdir, {"ack_enabled": False})
-        await _drive(engine)
-        ack_files = list(Path(tmpdir).glob("*_ack.wav"))
-        baseline_files = list(Path(tmpdir).glob("turn0_tts.wav"))
-        if not ack_files and baseline_files:
-            print("  ✓ ack-v0 correctly disabled: baseline TTS used")
-            return True
-        print(f"  ✗ Unexpected behavior (ack:{len(ack_files)}, baseline:{len(baseline_files)})")
-        return False
+async def test_ack_disabled(tmp_path):
+    engine = _mk_engine(tmp_path, {"ack_enabled": False})
+    await _drive(engine)
+    assert not list(tmp_path.glob("*_ack.wav"))
+    assert len(list(tmp_path.glob("turn0_tts.wav"))) == 1
 
 
-async def test_short_response_skip():
-    print("\n[Test 3] ack-v0 skipped for short responses (<= 8 words)")
-
+async def test_short_response_skip(tmp_path):
     def mock_llm_short(messages):
         return json.dumps({
             "dialogue": "speak",
@@ -142,66 +130,42 @@ async def test_short_response_skip():
             "say": "Okay, searching now."  # 3 words
         })
 
-    with tempfile.TemporaryDirectory() as tmpdir:
-        engine = _mk_engine(tmpdir, {"ack_enabled": True}, llm=mock_llm_short)
-        await _drive(engine)
-        ack_files = list(Path(tmpdir).glob("*_ack.wav"))
-        baseline_files = list(Path(tmpdir).glob("turn0_tts.wav"))
-        if not ack_files and baseline_files:
-            print("  ✓ ack-v0 correctly skipped for short response")
-            return True
-        print(f"  ✗ ack:{len(ack_files)} baseline:{len(baseline_files)} (want 0 / >0)")
-        return False
+    engine = _mk_engine(tmp_path, {"ack_enabled": True}, llm=mock_llm_short)
+    await _drive(engine)
+    assert not list(tmp_path.glob("*_ack.wav"))
+    assert len(list(tmp_path.glob("turn0_tts.wav"))) == 1
 
 
-async def test_latency_improvement():
-    print("\n[Test 4] First-response latency improvement")
-    with tempfile.TemporaryDirectory() as tmpdir:
-        tmpdir = Path(tmpdir)
-        say_text = ("I've searched for flights to New York on July 15th "
-                    "and found several options.")
+async def test_latency_improvement(tmp_path, monkeypatch):
+    """Compare the two synthesis paths without waiting on wall-clock sleeps."""
+    say_text = ("I've searched for flights to New York on July 15th "
+                "and found several options.")
 
-        from tts_ack import synthesize_baseline, synthesize_with_ack
-        baseline_path, baseline_lat = await synthesize_baseline(
-            say_text, mock_tts, tmpdir, turn=0)
-        ack_path, main_path, ack_lat, main_lat, total_lat = await synthesize_with_ack(
-            say_text, mock_tts, tmpdir, turn=1,
+    class VirtualClock:
+        now = 0.0
+
+        def __call__(self):
+            return self.now
+
+        def advance_for(self, text):
+            self.now += len(text.split()) * 0.02
+
+    clock = VirtualClock()
+
+    def timed_tts(text, path):
+        clock.advance_for(text)
+        return mock_tts(text, path)
+
+    import tts_ack
+    monkeypatch.setattr(tts_ack, "time", SimpleNamespace(perf_counter=clock))
+    baseline_path, baseline_lat = await tts_ack.synthesize_baseline(
+        say_text, timed_tts, tmp_path, turn=0)
+    ack_path, main_path, ack_lat, _main_lat, _total_lat = \
+        await tts_ack.synthesize_with_ack(
+            say_text, timed_tts, tmp_path, turn=1,
             ops=[{"type": "launch", "fn": "search_flights"}],
             strategy="context", seed=42)
 
-        improvement = baseline_lat - ack_lat
-        improvement_pct = (improvement / baseline_lat) * 100
-        print(f"  Baseline first-response: {baseline_lat:.3f}s")
-        print(f"  ack-v0 first-response: {ack_lat:.3f}s")
-        print(f"  Improvement: {improvement:.3f}s ({improvement_pct:.1f}%)")
-        if improvement > 0 and improvement_pct > 20:
-            print("  ✓ Significant improvement achieved")
-            return True
-        print("  ✗ Improvement insufficient")
-        return False
-
-
-async def main():
-    print("=" * 70)
-    print("ack-v0 Integration Test Suite (Phase-B v1)")
-    print("=" * 70)
-
-    results = []
-    for test in (test_ack_enabled, test_ack_disabled,
-                 test_short_response_skip, test_latency_improvement):
-        try:
-            results.append(await test())
-        except Exception as e:
-            import traceback
-            traceback.print_exc()
-            print(f"  ✗ Test failed with error: {e}")
-            results.append(False)
-
-    print("\n" + "=" * 70)
-    print(f"Results: {sum(results)}/{len(results)} tests passed")
-    print("=" * 70)
-    return 0 if all(results) else 1
-
-
-if __name__ == "__main__":
-    sys.exit(asyncio.run(main()))
+    improvement_pct = ((baseline_lat - ack_lat) / baseline_lat) * 100
+    assert improvement_pct > 20
+    assert all(Path(p).exists() for p in (baseline_path, ack_path, main_path))

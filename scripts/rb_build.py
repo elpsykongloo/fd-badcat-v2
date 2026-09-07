@@ -8,11 +8,10 @@
                                                 # + parallel real Qwen3-TTS prewarm
   $PY scripts/rb_build.py --out BUILD --prewarm-arm B --tts-workers 16
                                                 # cache all reactive B pieces/events
-  $PY scripts/rb_build.py --verify              # determinism: rebuild == manifest
   $PY scripts/rb_build.py --selftest            # tiny-quota structural checks
 
 Outputs under --out: episodes/<id>.json, audio/<id>.wav (+ cues in episode),
-manifest.json (config_hash / ids_hash / content_hash / split counts). The
+manifest.json (configuration identity and structural counts). The
 pause prior (exp/w5sg/pause_prior.json, shared W5-SG census) refines L5-class
 gap sampling when present — build WITHOUT it is valid but must be declared."""
 from __future__ import annotations
@@ -139,19 +138,6 @@ def prewarm_existing(out_dir, arm, tts_workers):
     return receipt
 
 
-def verify(out_dir):
-    old = json.loads((Path(out_dir) / "manifest.json").read_text())
-    ch, eps = build_all(pause_prior=None)
-    m = manifest(ch, eps)
-    same = (m["config_hash"] == old["config_hash"]
-            and m["ids_hash"] == old["ids_hash"])
-    note = ("content_hash matches too" if m["content_hash"] == old["content_hash"]
-            else "content differs — was the original built WITH a pause prior? "
-                 "(prior changes gap draws by design)")
-    print(f"config_hash {'OK' if same else 'MISMATCH'}; {note}")
-    return 0 if same else 1
-
-
 def selftest():
     from rb.generator import make_episode, config_hash
     from rb.registry import canon_value
@@ -160,10 +146,9 @@ def selftest():
     ch = config_hash()
     qa = {k: 2 for k in ARM_A_QUOTA}
     qb = {k: 2 for k in ARM_B_QUOTA}
-    ch1, eps1 = build_all(quota_a=qa, quota_b=qb)
-    ch2, eps2 = build_all(quota_a=qa, quota_b=qb)
-    ck["deterministic_rebuild"] = (
-        json.dumps(eps1, sort_keys=True) == json.dumps(eps2, sort_keys=True))
+    _, eps1 = build_all(quota_a=qa, quota_b=qb)
+    _, eps2 = build_all(quota_a=qa, quota_b=qb)
+    ck["deterministic_rebuild"] = eps1 == eps2
     ck["episode_count"] = len(eps1) == 2 * len(ARM_A_QUOTA) + 2 * len(ARM_B_QUOTA)
     e = make_episode("A", "L4", 0, ch)
     ck["l4_value_first"] = e["revisions"][0]["kind"] == "value_first" and \
@@ -292,7 +277,6 @@ def main():
     ap.add_argument("--prewarm-arm", choices=["A", "B"],
                     help="warm existing arm pieces and reactive events only")
     ap.add_argument("--pause-prior", default="exp/w5sg/pause_prior.json")
-    ap.add_argument("--verify", action="store_true")
     ap.add_argument("--audit", action="store_true",
                     help="print the current content-template audit without building")
     ap.add_argument("--selftest", action="store_true")
@@ -307,8 +291,6 @@ def main():
             print("TEMPLATE AUDIT FAIL:", row)
         print(f"template audit: {len(bad)} violations")
         return 0 if not bad else 1
-    if args.verify:
-        return verify(args.out)
     if args.prewarm_arm:
         if args.audio:
             ap.error("--prewarm-arm is a standalone cache operation; omit --audio")

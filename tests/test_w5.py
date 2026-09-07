@@ -84,7 +84,7 @@ def test_rb_generator_deterministic():
     qb = {"L8": 2}
     _, e1 = build_all(quota_a=qa, quota_b=qb)
     _, e2 = build_all(quota_a=qa, quota_b=qb)
-    assert json.dumps(e1, sort_keys=True) == json.dumps(e2, sort_keys=True)
+    assert e1 == e2
 
 
 def test_rb_gold_and_layers():

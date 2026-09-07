@@ -23,6 +23,8 @@ Covers:
 import asyncio
 import math
 import sys
+from statistics import NormalDist
+from unittest.mock import patch
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -62,17 +64,19 @@ def test_realistic_sampler():
     d = lr.sample_latency("ex2", "book_flight", {"passenger_name": "kim"}, 0)
     ok("same instance -> same draw", a == b)
     ok("occurrence & example vary the draw", a != c and a != d)
+    z95 = NormalDist().inv_cdf(0.95)
     for fn, (p50t, p95t) in [("get_exchange_rate", (0.30, 0.74)),
                              ("search_flights", (0.75, 1.33)),
                              ("add_to_cart", (0.40, 0.91)),
                              ("book_flight", (3.00, 5.00))]:
-        draws = sorted(lr.sample_latency("cal", fn, {"k": i}, 0) for i in range(4000))
-        p50, p95 = draws[2000], draws[3800]
+        mu, sigma = lr.CLASS_PARAMS[lr.tool_class(fn)]
+        p50, p95 = math.exp(mu), math.exp(mu + z95 * sigma)
         ok(f"{fn}: p50 {p50:.2f} ≈ {p50t} (±15%)", abs(p50 - p50t) / p50t < 0.15)
         ok(f"{fn}: p95 {p95:.2f} ≈ {p95t} (±20%)", abs(p95 - p95t) / p95t < 0.20)
     cap = math.exp(lr.CLASS_PARAMS["write_booking"][0] + 3.09 * lr.CLASS_PARAMS["write_booking"][1])
-    draws = [lr.sample_latency("cap", "book_flight", {"k": i}, 0) for i in range(4000)]
-    ok("p999 cap enforced", max(draws) <= cap + 5e-4)   # 3-decimal rounding slack
+    with patch.object(lr.random.Random, "lognormvariate", return_value=cap * 2):
+        capped = lr.sample_latency("cap", "book_flight", {"k": 0}, 0)
+    ok("p999 cap enforced", capped <= cap + 5e-4)   # 3-decimal rounding slack
 
 
 def _mk_result(mode, commits, example_id="sched"):

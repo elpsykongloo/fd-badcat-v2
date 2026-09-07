@@ -1,10 +1,17 @@
 # tests/
 
-W1 引擎回归（test_regression / test_deterministic_replay / test_asr_en / test_concurrent_*）
-+ W2 Phase-B 骨架单测（test_transaction / test_phase_b* / test_state_track / test_ack_integration / test_performance）。
+默认套件覆盖 ActorEngine/TACT 状态机、事务代数、屏障/DAG/窗口、流式语音协议、并发容量、RB 结构以及历史 HumDial 回放。不请求 LLM/TTS/ASR 网络服务，SenseVoice 只测试适配器契约；当本地 golden 音频存在时，会跑一条本地 VAD 确定性回放。
 
-跑法：`/root/miniconda3/envs/fd-sds/bin/python -m pytest tests/ -q`
+运行：
 
-注意：W2 评测的权威路径是 `scripts/w2r_stream_replay.py`（真 LLM 流式回放）+
-`scripts/w2r_score_grid.py`（exact/state/latency 三轨判分）；`src/engine_b*.py` 是
-Phase-B 引擎骨架（单测覆盖，尚未接入评测关键路径）。
+```bash
+env -u OMP_NUM_THREADS /root/miniconda3/envs/fd-sds/bin/python -m pytest -q
+```
+
+测试约束：
+
+- 并发/取消测试以事件、队列空闲或虚拟时钟推进，不用固定长时间 `sleep` 猜测完成时点。
+- 性能测试必须视察项目代码；不保留只证明测试自己的 `sleep`/计时器更慢的用例。
+- 完整性验证用语义断言、结构计数或必要时的直接内容比较；不做文件/源码/产物哈希检测。缓存键和确定性 ID 等功能性 hash 不属于检测。
+
+真模型、GPU、实时延迟、真浏览器/声卡验收仍由 `scripts/` 下的专用 smoke/eval 工具运行，不塞进日常 pytest。

@@ -6,10 +6,7 @@ import threading
 from pathlib import Path
 
 import requests
-import sherpa_onnx
 import soundfile as sf
-import torch
-import torchaudio
 
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
@@ -67,6 +64,10 @@ def _get_asr_model():
     global _ASR_MODEL
     if _ASR_MODEL is not None:
         return _ASR_MODEL
+
+    # Keep the heavyweight recognizer extension off import-only paths.  This
+    # module is imported by test and HTTP wiring that may never perform ASR.
+    import sherpa_onnx
 
     if ASR_BACKEND in ("paraformer_zh", "paraformer"):
         model_path = ASR_DIR / "model.onnx"
@@ -163,13 +164,27 @@ def _call_omni_tts(text: str) -> bytes:
 
 
 def _mono_16k(audio, sr: int):
-    tensor = torch.as_tensor(audio, dtype=torch.float32)
-    if tensor.ndim == 2:
+    import numpy as np
+
+    array = np.asarray(audio, dtype=np.float32)
+    if array.ndim == 2:
         # soundfile returns [time, channels]; ASR/TTS pipeline expects mono.
-        tensor = tensor.mean(dim=1)
+        array = array.mean(axis=1, dtype=np.float32)
     if sr != 16000:
+        # Most production assets are already mono/16 kHz.  Import torch and
+        # torchaudio only for the uncommon resampling path.
+        import torch
+        import torchaudio
+
+        tensor = torch.as_tensor(array, dtype=torch.float32)
         tensor = torchaudio.functional.resample(tensor.unsqueeze(0), sr, 16000).squeeze(0)
-    return tensor.cpu().numpy()
+        array = tensor.cpu().numpy()
+    return array
+
+
+def strip_sensevoice_tags(text: str) -> str:
+    """Remove SenseVoice language/emotion/control tags from decoded text."""
+    return _SENSEVOICE_TAG_RE.sub("", str(text)).strip()
 
 
 def tts(text, path):
@@ -197,7 +212,7 @@ def asr(path):
         model.decode_stream(stream)
         text = str(stream.result.text).strip()
     if ASR_BACKEND in ("sensevoice", "sense_voice"):
-        text = _SENSEVOICE_TAG_RE.sub("", text).strip()
+        text = strip_sensevoice_tags(text)
     return text
 
 

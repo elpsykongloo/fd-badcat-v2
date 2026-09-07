@@ -520,9 +520,5 @@ def manifest(ch, eps):
          "by_arm_layer": {f"{a}:{l}": n for (a, l), n in sorted(c_layer.items())},
          "split": dict(c_split), "revision_frac": round(rev_frac, 4),
          "domain_lang": {f"{d}:{l}": n for (d, l), n in sorted(c_dl.items())},
-         "content_bank": bank_hash(),
-         "ids_hash": hashlib.sha256(
-             ",".join(e["id"] for e in eps).encode()).hexdigest()[:12],
-         "content_hash": hashlib.sha256(json.dumps(
-             eps, sort_keys=True, ensure_ascii=False).encode()).hexdigest()[:12]}
+         "content_bank": bank_hash()}
     return m

@@ -339,12 +339,12 @@ def main():
     tmp = out.with_suffix(out.suffix + ".tmp")
     tmp.write_text(blob)
     tmp.replace(out)
-    print(f"bank -> {out}  sha256 {hashlib.sha256(blob.encode()).hexdigest()[:12]}")
+    print(f"bank -> {out}")
     print(json.dumps(bank["_provenance"], indent=1))
     print(f"DeepSeek workers: {min(args.workers, len(generation_jobs()))} "
           f"(requested {args.workers}; task-isolated user_id={USER_ID})")
-    print("REVIEW the bank (TTS-ability + content), then COMMIT it — its hash "
-          "enters config_hash; regenerating = a new bench version.")
+    print("REVIEW the bank (TTS-ability + content), then COMMIT it — "
+          "regenerating changes the benchmark version.")
     return 0
 
 
