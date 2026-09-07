@@ -1,5 +1,5 @@
 {
- "version": 4,
+ "version": 5,
  "frozen": "2026-07-17",
  "errata_v1_to_v2": "pre-test construction-validity revision after the dev LLM smoke (no test observation occurred): (1) gold args now carry the CATALOG-DECLARED canonical forms (integers as ints, ISO currency codes, canonical dates) while utterances keep spoken forms — the dev smoke showed the decider correctly canonicalizes speech (800/USD/2) and verbatim-spoken gold was unmatchable-by-design; (2) canonical_calls compares scalars as strings (int 800 == '800'); (3) benign-L10 control gap now draws the L4 bin — rescuable by construction, else it cannot separate SV-kill from window loss; (4) rb_v2.2 config_hash 9f8f4ae9edc8.",
  "oracle_gate": {
@@ -37,9 +37,10 @@
   }
  },
  "hashes": {
-  "rb/scorer.py": "548bed2e12f4b3cd5b8f0cec82107e411f27a63ba4af277930a375d240901204",
-  "rb/sandbox.py": "b0ad0842cec1d8093ddaa6d8d43bd0c2ea64080d2d88aaa8072d5db38ea83205",
-  "rb/registry.py": "b50e8aab689389580d1b5be18e3f0ccb1722615e4503873322870af0267837de"
+  "rb/scorer.py": "a4bb1712b645f2aaed3440c99647eaf82e85f7f1c316b23cbc68f886ebfb4a10",
+  "rb/sandbox.py": "eee38dc242347ce7f8cbeab6ab350e671fe16671743df758e394367bf0dc55d7",
+  "rb/registry.py": "b50e8aab689389580d1b5be18e3f0ccb1722615e4503873322870af0267837de",
+  "scripts/rb_commit_judge.py": "730744024b34cc61568f887f84f8c53f0cb4102d6c5e6ca37f59be1df8324467"
  },
  "errata_v2_to_v3": "second pre-test dev-window revision (no test observation): (1) blocking/immediate commits resolve same-batch 0-based $RESULT refs via a results_by_step base fallback (batch_of was only populated post-apply); (2) RB chain dependency templates injected into DAG_TEMPLATES (hold_seat<-search_trains, purchase_ticket<-hold_seat, add_item<-search_catalog, place_order<-add_item, book_viewing<-search_rentals) — RB chains previously had no propagation edges; (3) catalog declares string values VERBATIM in the user's language and multiword values whole; seat_class format anchor added; (4) en pools drop leading articles (landlord/property office/university campus/tech park) — prompt rule 14 strips articles, gold must not carry them. rb_v2.2.1 config_hash 265c7cd8f485.",
  "errata_v3_to_v4": "rb_v2.3.0 version increment (external-review remediation, rb_design 15/16; the v2.2.1 test archives remain scored under freeze v3 whose hashes are recorded in their receipts): (1) reverse catalog tools are first-class compensation - a reverse call matching a live forward entry voids it (COMP fee), adds no state entry, and nets out of exact; (2) execution-window state (execute(t) records completes_at) plus an abort() primitive (REV/COMP abortable while executing, fee-free; IRR never); comp_cost exempts aborted_at entries - an abort's price is time, not fees; (3) score_state excludes void ledger entries, agreeing with net_calls (dev23 fix); (4) frozen COMMIT_JUDGE_PROMPT + make_llm_judge so the commitment-repair track can score free-text external systems; (5) SANDBOX_META_KEYS strips runtime bookkeeping from state comparison; (6) sandbox latencies keyed by (episode, fn, occurrence) - interleaving-immune; (7) registry adds REVERSE_OF / REVERSE_TARGET_ARG (pure derivations of the frozen TOOLS table). Build pinned: rb_v2.3.0 config e1a515c29b8a (content bank 309c7c0d0361... included), ids acbb7984b03d, content 2cc261e7e0fd, dev/test 89/911.",
@@ -78,5 +79,127 @@
    },
    "timing_overlaps": 0
   }
+ },
+ "errata_v4_to_v5": "rb_v2.4.0 version increment (paper-mainline; design rb_design 17, protocol rb_test_protocol 11; the v2.3 test archives remain scored under freeze v4 whose hashes are recorded in their receipts): (1) L4 value_first text fix - single-{new} contrastive template with {old}, multiset placeholder validator, build-time template audit, runtime single-{new}+leading-position guard, value_first exempt from disfluency wrapping (erratum 10.7 item 1); (2) scorer row gains rev_adopted / intruder_present (slot-KEYED arg matching - misbinding does not count as adoption), bystander_kind, aborted_ops, comp_calls, pair passthrough; (3) episode_claim_forms: commitment-repair matches spoken AND canonical claim forms (>=2-char canonical guard), one source for scorer and the rb_commit_judge overlay; (4) make_llm_judge renders via .replace - the v2.3 .format raised KeyError on the prompt's literal JSON braces (latent dead instrument, never consumed by any scored run); (5) sandbox lat_ns latency-namespace override (L13 pair families share walls; default = episode_id, byte-identical); (6) completion anchor prices aborts honestly: an aborted effect ends at aborted_at, an errored execute gates nothing, reversed effects bill full wall (review fix - the phantom completes_at corrupted abort-route U by up to 13x); (7) arm-B benign-L10 is event-only (double-delivery erratum 10.7 item 2); (8) cancel op_id 'X<gid>' aborts a still-executing committed op (caps-gated, _snapshot_v24 X-namespace - collision-free with local pending ids); (9) commit-judge overlay script hash frozen alongside the scorer. Build pinned: rb_v2.4.0 config 9d338e70f770 (content bank a4a4f2db5bf0 included), ids 96b56bc0af87, content d5cfef37f9db, n 1364, dev/test 143/1221.",
+ "oracle_gate_v24_dev": {
+  "A": {
+   "provider": "rbdev24_oracle_a",
+   "n": 67,
+   "exact": 0.8955,
+   "by_layer": {
+    "L1": 1.0,
+    "L10": 1.0,
+    "L12": 1.0,
+    "L2": 1.0,
+    "L3": 1.0,
+    "L4": 1.0,
+    "L5": 0.4286,
+    "L6": 0.5,
+    "L7": 1.0,
+    "L8": 1.0,
+    "L9": 1.0
+   },
+   "who_axis": {
+    "benign": {
+     "n": 2,
+     "adopted": 1.0
+    },
+    "adversarial": {
+     "n": 2,
+     "intruded": 0.0
+    },
+    "irrelevant_control": {
+     "n": 2,
+     "intruded": 0.0
+    }
+   }
+  },
+  "B": {
+   "provider": "rbdev24_oracle_b",
+   "n": 76,
+   "exact": 0.9605,
+   "by_layer": {
+    "L10": 1.0,
+    "L11": 1.0,
+    "L13": 1.0,
+    "L14": 1.0,
+    "L15": 1.0,
+    "L4": 1.0,
+    "L5": 0.5,
+    "L6": 1.0,
+    "L7": 1.0,
+    "L8": 1.0,
+    "L9": 1.0
+   },
+   "who_axis": {
+    "benign": {
+     "n": 2,
+     "adopted": 1.0
+    },
+    "adversarial": {
+     "n": 2,
+     "intruded": 0.0
+    },
+    "irrelevant_control": {
+     "n": 2,
+     "intruded": 0.0
+    }
+   },
+   "pair_axis": {
+    "bystander:committed": {
+     "n": 2,
+     "exact": 1.0,
+     "intruded": 0.0
+    },
+    "bystander:eou": {
+     "n": 2,
+     "exact": 1.0,
+     "intruded": 0.0
+    },
+    "bystander:inflight": {
+     "n": 2,
+     "exact": 1.0,
+     "intruded": 0.0
+    },
+    "bystander:tts": {
+     "n": 2,
+     "exact": 1.0,
+     "intruded": 0.0
+    },
+    "user:committed": {
+     "n": 2,
+     "exact": 1.0,
+     "intruded": null
+    },
+    "user:eou": {
+     "n": 2,
+     "exact": 1.0,
+     "intruded": null
+    },
+    "user:inflight": {
+     "n": 2,
+     "exact": 1.0,
+     "intruded": null
+    },
+    "user:tts": {
+     "n": 2,
+     "exact": 1.0,
+     "intruded": null
+    }
+   },
+   "route_axis": {
+    "aborted_ops": 6,
+    "comp_calls": 19,
+    "l15": {
+     "n": 6,
+     "exact": 1.0,
+     "aborted": 5,
+     "feasible": 5
+    }
+   },
+   "armb_overlaps": 0
+  },
+  "hard_gates": "A: L1-L4/L7-L12 all 1.0; B: L4/L7/L9-L15 all 1.0, L13 pair_axis 8x1.0, L15 exact 1.0 & aborted>=feasible, who benign 1.0 / adversarial 0; L5/L6/L8 are declared ceiling layers (per-cell causes in the P3 record). All PASS, mirror-recomputed from rows with 0 mismatches.",
+  "manifest_sha256": "2c41ac5d8bb4f35270d54fbf6c0208679757e70ac8f26519f546904a89033312"
  }
 }
