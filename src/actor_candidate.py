@@ -235,7 +235,8 @@ class CandidateTurns:
             timeout=self.DECISION_TIMEOUT, retry=c.stage == "response" and c.restarts == 0,
             apology=RESPONSE_TIMEOUT_APOLOGY,
             packet_ms=int(self.engine_cfg.get("stream_packet_ms", 40)),
-            buffer_ms=int(self.engine_cfg.get("stream_buffer_ms", 600)), precompute_gate=gate)
+            buffer_ms=int(self.engine_cfg.get("stream_buffer_ms", 600)), precompute_gate=gate,
+            track_sentences=self.GUARDED_TURNS)
         self._speech_jobs[c.pipeline.sid] = c.pipeline
         self._speech_tasks = [t for t in self._speech_tasks if not t.done()]
         self._speech_tasks.append(c.pipeline.task)
@@ -258,6 +259,8 @@ class CandidateTurns:
     async def _publish_candidate(self, c):
         if not self._candidate_current(c) or not c.confirmed or c.published:
             return
+        if self.GUARDED_TURNS and not self._guard_can_publish(c):
+            return
         c.published = True
         self._speech = c.pipeline
         self._speech_meta = c.meta
@@ -265,6 +268,10 @@ class CandidateTurns:
         self._speech_started = False
         self._speech_audio_done = self._speech_played_reported = False
         self._answer_versions[c.turn] = c.cid
+        if self.GUARDED_TURNS:
+            if len(self._guard_outputs) >= 64:
+                self._guard_outputs.pop(next(iter(self._guard_outputs)))
+            self._guard_outputs[c.pipeline.sid] = {"turn": c.turn, "sentences": []}
         await self.send_control("speech_start", {"utterance_id": c.pipeline.sid,
             "turn": c.turn, "protocol": PROTOCOL, "buffer_ms": c.pipeline.buffer_ms,
             "candidate_id": c.cid, "timestamp": self._wall_ts()})
@@ -333,6 +340,10 @@ class CandidateTurns:
             self.assistant_history.append(meta.text)
             if self.CHAT_DEMO:
                 self._assistants_by_turn[meta.turn] = meta.text
+                if self.GUARDED_TURNS:
+                    for sid, record in self._guard_outputs.items():
+                        if record["turn"] == meta.turn and record.get("cancelled"):
+                            self._guard_history_progress(sid, record.get("played", 0))
             meta.history_written = True
 
     async def _listen_candidate_frame(self, ev, event):

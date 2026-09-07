@@ -1,0 +1,211 @@
+{
+  "case": "echo_only",
+  "pass": true,
+  "session_id": "web-demo-e5c684a36e17405cbc0b13cb110922fc",
+  "reference_frames": 579,
+  "echo_rejected_windows": 37,
+  "events": [
+    {
+      "event": "demo_ready",
+      "data": {
+        "session_id": "web-demo-e5c684a36e17405cbc0b13cb110922fc",
+        "protocol": "pcm16.v1",
+        "observability": "demo-trace-v1",
+        "tts_contract": "verbatim-choice-v1",
+        "input_protocol": "pcm16.ref.v1",
+        "guarded_turns": true,
+        "speculative_response": true,
+        "cancellable_response": true,
+        "profile": "chat-demo-v1"
+      }
+    },
+    {
+      "event": "speech_start",
+      "data": {
+        "utterance_id": 1,
+        "turn": 0,
+        "protocol": "pcm16.v1",
+        "buffer_ms": 600,
+        "candidate_id": 1,
+        "timestamp": 3.435
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.435,
+        "text": "你好！今天"
+      }
+    },
+    {
+      "event": "speech_sentence",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.435,
+        "text": "你好！"
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.435,
+        "text": "天气不错，适合出去散步。不过最好还是看看当地的实时天气预报，确保没有下雨或气温"
+      }
+    },
+    {
+      "event": "speech_first_audio",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.435,
+        "sample_rate": 24000,
+        "turn": 0
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.435,
+        "text": "太低哦。"
+      }
+    },
+    {
+      "event": "speech_text_done",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.435,
+        "text": "你好！今天天气不错，适合出去散步。不过最好还是看看当地的实时天气预报，确保没有下雨或气温太低哦。",
+        "infer": 0.409,
+        "timed_out": false
+      }
+    },
+    {
+      "event": "speech_sentence",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.436,
+        "text": "今天天气不错，适合出去散步。"
+      }
+    },
+    {
+      "event": "speech_playback_started",
+      "data": {
+        "utterance_id": 1,
+        "turn": 0,
+        "candidate_id": 1
+      }
+    },
+    {
+      "event": "asr_done",
+      "data": {
+        "timestamp": 3.71,
+        "turn": 0,
+        "state": "SPEAK",
+        "content": "你好，今天适合出去散步吗？"
+      }
+    },
+    {
+      "event": "speech_sentence",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 5.879,
+        "text": "不过最好还是看看当地的实时天气预报，确保没有下雨或气温太低哦。"
+      }
+    },
+    {
+      "event": "speech_audio_end",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 12.398,
+        "samples": 226770,
+        "rate": 24000,
+        "packets": 242,
+        "elapsed": 9.503595627844334
+      }
+    },
+    {
+      "event": "speech_played",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 12.987,
+        "played_samples": 226770,
+        "underruns": 0
+      }
+    },
+    {
+      "event": "turn_finished",
+      "data": {
+        "turn": 0,
+        "next_turn": 1,
+        "timestamp": 12.987,
+        "reason": "played"
+      }
+    }
+  ],
+  "stopped_acks": [],
+  "input_decisions": [
+    {
+      "event": "input_decision",
+      "server_ms": 2467.244,
+      "data": {
+        "input_id": 1,
+        "revision": 2,
+        "route": "yield_ready",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "yield_ready"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false
+          },
+          "playing": false,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 0,
+      "turn": 0,
+      "state": "LISTEN",
+      "t_audio": 2.448,
+      "queue_depth": 0
+    },
+    {
+      "event": "input_decision",
+      "server_ms": 2894.125,
+      "data": {
+        "input_id": 1,
+        "revision": 3,
+        "route": "yield_ready",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "yield_ready"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false
+          },
+          "playing": false,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 1,
+      "turn": 0,
+      "state": "LISTEN",
+      "t_audio": 2.88,
+      "queue_depth": 0
+    }
+  ],
+  "page_errors": []
+}

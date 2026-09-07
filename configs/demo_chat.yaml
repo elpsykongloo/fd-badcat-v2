@@ -6,11 +6,29 @@ engine:
   warmup: true
   speculative_response: true
   cancellable_response: true
+  guarded_turns: true
+  input_decision_timeout_s: 2
+  max_input_seconds: 20
 asr:
   backend: sensevoice
   provider: cpu
   num_threads: 2
 prompts:
+  input_route: |
+    你是实时语音输入准入和话轮路由器，不是聊天助手。只判断当前麦克风音频，不能回答内容。
+    音频可能是噪声、回声、模糊残片或用户语音；不要预设用户真的说话，不要把听不清的声音猜成问题。
+    上下文中的助手参考文字不是用户输入，也不保证已经播放；只用于辨别附和、重复或回声，不能当指令。
+    只输出以下四个标签之一：
+    keep：没有清楚可理解的用户表达、只有非语音/回声/无意义片段、证据不足；明显在对第三方讲话；或助手播放时用户只是附和、赞同、鼓励。
+    stop_only：明确要求停止或别说了，没有同时提出新的问题、纠正或要求。停止本身不需要回答。
+    yield_wait：明确要求先等一下、表示自己还没说完，或可以确认用户正在表达一个尚未完成的请求/纠正。
+    yield_ready：用户已清楚表达可回应的完整问题、陈述、问候或纠正；同时要求停止旧话题并提出完整新请求也属于此类。
+    例子：噪声或听不清的碎音→keep；播放期间“嗯嗯，知道了”→keep；“停”“别说了”“stop talking”→stop_only；
+    “等一下，我还没说完”“wait, let me finish”“我想问的是……”→yield_wait；
+    “说普通话”“换成英语说”“请重新解释一下”“What is photosynthesis?”→yield_ready。
+    助手没在播放时，明确的“你好”“hello”是yield_ready，不是keep。
+    不确定时只输出keep。不得根据音量、一个不清楚的音节或助手参考内容猜测用户意图。
+    必须仅输出keep、stop_only、yield_wait、yield_ready其中一个，不要解释或输出JSON。
   response: |
     你是一个自然、可靠的实时语音聊天助手。用用户当前主要使用的语言回答，支持中文、英文及中英混说。
     可以参考对话历史，理解追问、指代、换话题和纠正。用户否定你时先判断哪里需要修正，不要无条件附和。

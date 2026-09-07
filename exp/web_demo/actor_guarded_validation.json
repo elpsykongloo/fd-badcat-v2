@@ -1,0 +1,103 @@
+{
+  "version": "guarded-turns-v1",
+  "date_utc": "2026-09-07",
+  "scope": "Negotiated laptop-demo ActorEngine only; baseline HumDial, legacy and TACT remain unchanged",
+  "original_interrupt": "Inherited verbatim from src/config.yaml as the flag-off baseline. The guarded path uses a separate typed input_route, not a rewritten binary prompt or binary AND veto.",
+  "mechanisms": [
+    "Strict keep/stop_only/yield_wait/yield_ready admission with one repair and a shared 2-second timeout; safe fallback is keep",
+    "Independent raw input ID/revision and accepted epoch; no raw VAD cancellation of already-playing audio",
+    "Stop-only and explicit waiting never arm the old 2.5-second forced response; long VAD triggers classification, not a blind stop",
+    "VAD-END audio snapshot, private response and first-sentence TTS, hold-gated publication, real SSE cancellation and request capacity accounting",
+    "Synchronized mic/render-reference PCM16 upload, exact packet validation, bounded delayed waveform fit and original-band residual check",
+    "Preplay-only hold/release with retained PCM; typed acceptance cancels obsolete candidates and merges continued input",
+    "Playback EOF preserves input identity; reset cancels all input tasks and invalidates late stop acknowledgements",
+    "Partial-node playback-stopped acknowledgement and sentence-boundary interrupted-history prefix"
+  ],
+  "targeted_tests": {
+    "pytest_passed": 115,
+    "pytest_seconds": 2.56,
+    "command": "env -u OMP_NUM_THREADS /root/miniconda3/envs/fd-sds/bin/python -m pytest -q tests/test_guarded_turns.py tests/test_chat_demo.py tests/test_actor_candidate.py tests/test_engine.py tests/test_speech_stream.py tests/test_web_demo.py tests/test_tts_verbatim.py",
+    "node_contracts": "PASS: playback, 16/44.1/48k capture, paired protocol, preplay hold/release, partial stop ACK, telemetry",
+    "full_repository_or_RB_run": false
+  },
+  "model_checks": {
+    "canonical_live_request_canaries": "exp/web_demo/guarded_turns_canary_context_fixed/receipt.json",
+    "typed_route_correct": "6/6 self-authored Chinese/English samples",
+    "original_binary_correct": "5/6 on the same samples; language-switch request was continue",
+    "local_incident_rechecks": {
+      "ambiguous_1": "keep",
+      "ambiguous_2": "keep",
+      "clear_request": "yield_ready",
+      "silence": "keep",
+      "deterministic_noise": "keep",
+      "user_recordings_or_transcripts_published": false
+    }
+  },
+  "browser_normal_turns": {
+    "receipt": "exp/web_demo/guarded_browser_live_final/receipt.json",
+    "completed_turns": 2,
+    "binary_packets": 446,
+    "played_samples": [213885, 204285],
+    "sample_rate": 24000,
+    "underruns": 0,
+    "page_errors": 0,
+    "notes": "Virtual 48k microphone through the real two-input worklet; not physical listening. Response factual quality is not certified. This preceded the additional original-band residual protection."
+  },
+  "deployment_interactions": {
+    "receipt": "exp/web_demo/guarded_interactions_release/receipt.json",
+    "echo_only": {
+      "pass": true,
+      "actual_render_reference_frames": 485,
+      "echo_rejected_trace_windows": 31,
+      "old_reply_completed_without_cancellation": true
+    },
+    "wait_continue_stop": {
+      "pass": true,
+      "no_answer_after_explicit_wait_over_2_5s": true,
+      "one_answer_after_continuation": true,
+      "no_answer_after_stop_over_2_5s": true,
+      "accepted_cancellations": 2,
+      "stopped_ack_samples": [42662, 24968]
+    },
+    "page_errors": 0,
+    "trace_dropped": 0,
+    "acoustic_setup": "Digital 96ms delayed, gain-0.35 render-reference echo injection; actual browser playback and Omni/VAD/engine, not a physical room"
+  },
+  "failures_preserved": [
+    {"receipt": "exp/web_demo/guarded_turns_canary/receipt.json", "cause": "Original-binary AND gate rejected a clear request; guarded route alone was correct. Removed the redundant veto, preserved original baseline."},
+    {"receipt": "exp/web_demo/guarded_browser_live/receipt.json", "cause": "Trailing assistant-reference colon with an empty reference misattributed microphone audio; same unchanged question gave keep before explicit metadata/audio separation and yield_ready after. Production/warmup/canary now share route_messages."},
+    {"local_log": "exp/web_demo/20260907T151553Z-43176/backend.log", "cause": "Startup ASR readback mismatch for a bilingual greeting; service correctly refused readiness. Warmup now allows one logged retry without relaxing the equality check. Final deployment passed on first attempts."},
+    {"cause": "EOF cleanup initially left a finished-output pipeline waiting for credit; deterministic cleanup test caught the orphan and the actor now cancels/retires it without marking completed playback cancelled."},
+    {"cause": "Reset originally cleared guard records before cancellation could recreate them; reordered cleanup and added stale-stop-ACK regression."}
+  ],
+  "deployment": {
+    "tmux": "humdial-demo",
+    "launcher_pid": 45987,
+    "omni_pid": 45993,
+    "proxy_pid": 46942,
+    "backend_pid": 46954,
+    "logs": "exp/web_demo/20260907T153145Z-45987/",
+    "warmup_s": 3.584,
+    "demo_http": 200,
+    "info_http": 200,
+    "streaming": true,
+    "guarded_turns": true,
+    "input_protocol": "pcm16.ref.v1",
+    "listen": "127.0.0.1:10003, 127.0.0.1:10004, 127.0.0.1:18000",
+    "shadow_port_18001_closed": true,
+    "kept_running_for_laptop": true,
+    "restart_notes": "Validated owned launcher targets; listener/GPU empty before each full start. Final extra restart loaded the original-band residual enhancement.",
+    "normal_shutdown_cleanup_warnings": [
+      {"launcher": 39336, "semaphore": 2, "shared_memory": 118},
+      {"launcher": 44618, "semaphore": 2, "shared_memory": 15}
+    ]
+  },
+  "limitations": [
+    "No physical laptop microphone/speaker or real-room echo acceptance; no speaker verification or general AEC guarantee",
+    "Semantic admission remains model-dependent; false rejection/false interruption is still possible",
+    "Waveform thresholds are conservative uncalibrated engineering defaults; nonlinear/long-delay echo may not match",
+    "History uses completed sentence boundaries and WebAudio acknowledgement, not word-aligned or physically heard prefixes",
+    "Additional routing and speculative work consume capacity; smoke timings are not formal benchmark scores",
+    "No file/source/artifact integrity hashes computed or checked; private user sessions and unrelated user edits excluded from publication"
+  ]
+}

@@ -1,14 +1,26 @@
 // Arrival is never a playback acknowledgement. Cancellation also fences
 // packets already on the wire. The PCM contract is independent of the UI.
 export class SpeechPlayer {
-  constructor(context, send, update = () => {}) {
+  constructor(context, send, update = () => {}, destination = context.destination) {
     this.context = context;
     this.send = send;
     this.update = update;
     this.nodes = new Set();
     this.speech = null;
+    this.destination = destination;
   }
   cancel() {
+    const s = this.speech;
+    let stopped;
+    if (s) {
+      // Account the partial node using the same WebAudio clock as scheduling.
+      let played = s.played;
+      for (const node of this.nodes) {
+        if (node.fdStart !== undefined && this.context.currentTime >= node.fdStart) played = Math.max(played, node.fdOffset + Math.max(0,
+          Math.min(node.fdCount, Math.floor((this.context.currentTime - node.fdStart) * s.rate))));
+      }
+      stopped = {utterance_id: s.id, played_samples: Math.min(played, s.received)};
+    }
     this.speech = null;
     for (const node of this.nodes) {
       node.onended = null;
@@ -16,6 +28,7 @@ export class SpeechPlayer {
       node.disconnect();
     }
     this.nodes.clear();
+    if (stopped) this.send("playback_stopped", stopped);
   }
   start(data) {
     this.cancel();
@@ -23,6 +36,7 @@ export class SpeechPlayer {
         || data.buffer_ms <= 0 || data.buffer_ms > 2000) throw Error("无效播放配置");
     this.speech = {id: data.utterance_id, seq: 0, received: 0, played: 0, next: 0,
       limit: data.buffer_ms, start: performance.now(), underruns: 0, eof: false};
+    this.speech.pending = [];
     this.update(this.speech);
   }
   text() {
@@ -49,6 +63,40 @@ export class SpeechPlayer {
     const s = this.speech;
     if (s && !s.started && s.received && this.context.currentTime >= s.playAt) this.progress(s);
   }
+  hold(held) {
+    const s = this.speech;
+    if (!s) return;
+    this.pollStart();
+    if (s.started) return; // Never pause already-playing speech on raw VAD.
+    if (held && !s.held) {
+      s.held = true;
+      for (const node of this.nodes) {
+        node.onended = null; node.stop(); node.disconnect();
+        s.pending.push({buffer: node.buffer, offset: node.fdOffset, count: node.fdCount});
+      }
+      this.nodes.clear();
+      s.pending.sort((a, b) => a.offset - b.offset);
+      s.playAt = Infinity;
+    } else if (!held && s.held) {
+      s.held = false;
+      s.next = this.context.currentTime + .08;
+      s.playAt = s.next;
+      for (const chunk of s.pending) this.schedule(s, chunk.buffer, chunk.offset, chunk.count);
+      s.pending = [];
+    }
+  }
+  schedule(s, buffer, offset, count) {
+    const node = this.context.createBufferSource();
+    node.buffer = buffer; node.connect(this.destination); this.nodes.add(node);
+    node.fdStart = s.next; node.fdOffset = offset; node.fdCount = count;
+    node.onended = () => {
+      this.nodes.delete(node); node.disconnect();
+      if (this.speech !== s) return;
+      s.played = Math.max(s.played, offset + count);
+      this.progress(s);
+    };
+    node.start(s.next); s.next += count / s.rate;
+  }
   packet(raw) {
     if (raw.byteLength < 18 || (raw.byteLength - 16) % 2) throw Error("无效 PCM 包");
     const view = new DataView(raw);
@@ -65,25 +113,19 @@ export class SpeechPlayer {
     if ((s.received - s.played) / rate * 1000 > s.limit + 1) throw Error("播放缓冲超限");
     const buffer = this.context.createBuffer(1, count, rate), values = buffer.getChannelData(0);
     for (let i = 0; i < count; i++) values[i] = view.getInt16(16 + 2 * i, true) / 32768;
-    const node = this.context.createBufferSource();
-    node.buffer = buffer; node.connect(this.context.destination); this.nodes.add(node);
     if (s.firstAudio === undefined) {
       s.firstAudio = Math.round(performance.now() - s.start);
       s.next = this.context.currentTime + 0.08;
       s.playAt = s.next;
       s.scheduledLeadMs = (s.next - this.context.currentTime) * 1000;
-    } else if (s.next < this.context.currentTime) {
+    } else if (!s.held && s.next < this.context.currentTime) {
       s.underruns++;
       s.next = this.context.currentTime + 0.08;
     }
-    const endSamples = s.received;
-    node.onended = () => {
-      this.nodes.delete(node); node.disconnect();
-      if (this.speech !== s) return;
-      s.played = Math.max(s.played, endSamples);
-      this.progress(s);
-    };
-    node.start(s.next); s.next += count / rate;
+    if (s.held) {
+      s.pending.push({buffer, offset: s.received - count, count});
+      s.playAt = Infinity;
+    } else this.schedule(s, buffer, s.received - count, count);
     this.progress(s);
   }
 }

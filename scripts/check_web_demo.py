@@ -254,7 +254,10 @@ async def live_check(browser, url, audio, output, turns=1, no_speculation=False)
     def sent(payload):
         if isinstance(payload, bytes):
             uploads["frames"] += 1
-            samples = struct.unpack("<" + "f" * (len(payload) // 4), payload)
+            if payload[:4] == b"FDM1":
+                samples = [x / 32768 for x in struct.unpack("<512h", payload[16:])[::2]]
+            else:
+                samples = struct.unpack("<" + "f" * (len(payload) // 4), payload)
             uploads["max_rms"] = max(uploads["max_rms"], math.sqrt(sum(x * x for x in samples) / len(samples)))
         else:
             value = json.loads(payload)

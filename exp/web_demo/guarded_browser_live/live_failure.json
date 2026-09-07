@@ -1,0 +1,204 @@
+{
+  "uploads": {
+    "frames": 5627,
+    "max_rms": 0.6505325507774081
+  },
+  "events": [
+    {
+      "event": "demo_ready",
+      "data": {
+        "session_id": "web-demo-58d7da67841b46968120dfb8e17f2604",
+        "protocol": "pcm16.v1",
+        "observability": "demo-trace-v1",
+        "tts_contract": "verbatim-choice-v1",
+        "input_protocol": "pcm16.ref.v1",
+        "guarded_turns": true,
+        "speculative_response": true,
+        "cancellable_response": true,
+        "profile": "chat-demo-v1"
+      }
+    },
+    {
+      "event": "demo_pong",
+      "data": {
+        "seq": 1
+      }
+    },
+    {
+      "event": "vad_start",
+      "data": {
+        "turn": 0,
+        "state": "LISTEN",
+        "input_id": 1,
+        "timestamp": 1.059
+      }
+    },
+    {
+      "event": "vad_done",
+      "data": {
+        "turn": 0,
+        "state": "LISTEN",
+        "input_id": 1,
+        "timestamp": 1.729
+      }
+    },
+    {
+      "event": "vad_start",
+      "data": {
+        "turn": 0,
+        "state": "LISTEN",
+        "input_id": 1,
+        "timestamp": 1.799
+      }
+    },
+    {
+      "event": "vad_done",
+      "data": {
+        "turn": 0,
+        "state": "LISTEN",
+        "input_id": 1,
+        "timestamp": 3.679
+      }
+    },
+    {
+      "event": "demo_pong",
+      "data": {
+        "seq": 2
+      }
+    },
+    {
+      "event": "demo_pong",
+      "data": {
+        "seq": 3
+      }
+    },
+    {
+      "event": "demo_pong",
+      "data": {
+        "seq": 4
+      }
+    },
+    {
+      "event": "demo_pong",
+      "data": {
+        "seq": 5
+      }
+    },
+    {
+      "event": "vad_start",
+      "data": {
+        "turn": 0,
+        "state": "LISTEN",
+        "input_id": 2,
+        "timestamp": 23.62
+      }
+    },
+    {
+      "event": "vad_done",
+      "data": {
+        "turn": 0,
+        "state": "LISTEN",
+        "input_id": 2,
+        "timestamp": 24.36
+      }
+    },
+    {
+      "event": "vad_start",
+      "data": {
+        "turn": 0,
+        "state": "LISTEN",
+        "input_id": 2,
+        "timestamp": 24.389
+      }
+    },
+    {
+      "event": "demo_pong",
+      "data": {
+        "seq": 6
+      }
+    },
+    {
+      "event": "vad_done",
+      "data": {
+        "turn": 0,
+        "state": "LISTEN",
+        "input_id": 2,
+        "timestamp": 26.28
+      }
+    },
+    {
+      "event": "demo_pong",
+      "data": {
+        "seq": 7
+      }
+    },
+    {
+      "event": "demo_pong",
+      "data": {
+        "seq": 8
+      }
+    },
+    {
+      "event": "demo_pong",
+      "data": {
+        "seq": 9
+      }
+    },
+    {
+      "event": "demo_pong",
+      "data": {
+        "seq": 10
+      }
+    },
+    {
+      "event": "demo_pong",
+      "data": {
+        "seq": 11
+      }
+    },
+    {
+      "event": "demo_pong",
+      "data": {
+        "seq": 12
+      }
+    },
+    {
+      "event": "demo_pong",
+      "data": {
+        "seq": 13
+      }
+    },
+    {
+      "event": "demo_pong",
+      "data": {
+        "seq": 14
+      }
+    },
+    {
+      "event": "demo_pong",
+      "data": {
+        "seq": 15
+      }
+    },
+    {
+      "event": "demo_pong",
+      "data": {
+        "seq": 16
+      }
+    },
+    {
+      "event": "demo_pong",
+      "data": {
+        "seq": 17
+      }
+    },
+    {
+      "event": "demo_pong",
+      "data": {
+        "seq": 18
+      }
+    }
+  ],
+  "page_errors": [],
+  "ui": "跳到对话控制\nHumDial\nVOICE LAB\nRESEARCH DEMO\n全屏展示 ↗\n\n半级联 · 全双工语音对话\n\n自然接话，随时打断。\n\n不必按住说话，也不用等它讲完。让对话跟上你的节奏。\n\n实时连接已建立\n语音空间 LIVE AUDIO\n01:30\nHUMDIAL\n我在听，你说。\n\n直接开口就好，不需要按住任何按钮。\n\n◉ 开始对话\n静音麦克风\n结束\n输入设备\n系统默认麦克风\nFake Audio Input 1\nFake Audio Input 2\n\n↔ 回复时麦克风仍保持开启；是否打断由模型判断。\n\n对话记录 CONVERSATION\n清空记录\n“\n从一句「你好」开始\n\n你的话和它的回应，会出现在这里。\n转写可能稍晚到达，不影响语音回应。\n\n聊聊今天的计划\n在回答时说「等一下」\n转写可能晚于回复到达；未播完的回复会保留并标注。\nSTREAMING PIPELINE\n边生成文本\n→\n边合成语音\n→\n小缓冲播放\n建议使用耳机 · 保持页面在前台\n连接与运行详情\n现场排查 / 指标口径 / 使用说明\nHumDial / An experiment in natural conversation.\n点击开始即允许将本次语音发送至服务器。请勿输入敏感信息。"
+}

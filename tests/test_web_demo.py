@@ -86,6 +86,35 @@ def test_old_client_keeps_handshake_path_and_whole_wav(monkeypatch, tmp_path):
     assert not (made[0].output_dir / "events.jsonl").exists()
 
 
+@pytest.mark.parametrize("protocol,guard", [(None, False), ("pcm16.ref.v1", True)])
+def test_guard_requires_negotiated_reference_protocol(protocol, guard, monkeypatch, tmp_path):
+    made = []
+    class Engine:
+        def __init__(self, **kwargs):
+            self.kwargs = kwargs
+            made.append(self)
+        async def run_realtime(self, ws):
+            await ws.close()
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(engine, "ActorEngine", Engine)
+    with TestClient(create_app({}, {}, engine_cfg={"stream_response": True, "guarded_turns": True})) as client:
+        assert client.get("/api/demo/info").json()["input_protocol"] == "pcm16.ref.v1"
+        with client.websocket_connect("/realtime", headers={"origin": "http://testserver"}) as ws:
+            ws.send_json({"data": {"client": "humdial-web", "audio_protocol": "pcm16.v1", "input_protocol": protocol}})
+            assert ws.receive_json()["data"]["guarded_turns"] is guard
+    assert made[0].kwargs["engine_cfg"]["guarded_turns"] is guard
+
+
+def test_unknown_input_protocol_is_not_decoded_as_legacy_float(monkeypatch, tmp_path):
+    monkeypatch.chdir(tmp_path)
+    with TestClient(create_app({}, {}, engine_cfg={"stream_response": True})) as client:
+        with client.websocket_connect("/realtime") as ws:
+            ws.send_json({"data": {"input_protocol": "pcm16.ref.v999"}})
+            assert ws.receive_json()["event"] == "error"
+            assert ws.receive()["code"] == 1008
+    assert not (tmp_path / "exp").exists()
+
+
 def load_launcher():
     spec = importlib.util.spec_from_file_location("serve_demo", ROOT / "scripts/serve_demo.py")
     module = importlib.util.module_from_spec(spec)

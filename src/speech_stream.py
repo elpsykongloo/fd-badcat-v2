@@ -77,7 +77,8 @@ class SocketOutbox:
 
 class SpeechPipeline:
     def __init__(self, sid, queue, messages, text_fn, tts_fn, *, timeout=15,
-                 retry=True, apology="", packet_ms=40, buffer_ms=600, precompute_gate=None):
+                 retry=True, apology="", packet_ms=40, buffer_ms=600, precompute_gate=None,
+                 track_sentences=False):
         if not 10 <= packet_ms <= 100 or not 2 * packet_ms <= buffer_ms <= 2000:
             raise ValueError("stream packet/buffer sizes outside safe limits")
         self.sid, self.queue = sid, queue
@@ -89,6 +90,7 @@ class SpeechPipeline:
         self.credit = asyncio.Event()
         self.sentences = asyncio.Queue(maxsize=2)
         self.precompute_gate = precompute_gate
+        self.track_sentences = track_sentences
         self.task = asyncio.create_task(self.run())
 
     def progress(self, samples):
@@ -191,6 +193,8 @@ class SpeechPipeline:
                         seq += 1
             if not produced:
                 raise RuntimeError("Empty TTS sentence stream")
+            if self.track_sentences:
+                await self.emit("sentence_end", text=sentence, end_sample=self.sent)
         await self.emit("audio_end", samples=self.sent, rate=self.rate,
                         packets=seq, elapsed=time.perf_counter() - t0)
 

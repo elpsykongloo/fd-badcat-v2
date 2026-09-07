@@ -150,6 +150,7 @@ function control(s, msg) {
       ? "聊天展示配置：双语 ASR、正常上下文、无 15 字限制、自动收尾；"
         + (d.speculative_response ? "已启用完整投机，确认前不播；" : "投机关闭；")
         + (d.cancellable_response ? "播放开始前续说可撤销旧回答；" : "")
+        + (d.guarded_turns ? "输入准入、回声参考与停止/回答分离已启用；" : "")
         + (d.tts_contract === "verbatim-choice-v1" ? "TTS 原文约束与校验已启用。" : "")
       : "HumDial 配置：保留比赛短答提示词和轮次策略。";
     $("trace-status").textContent = s.telemetry.enabled ? "逐轮记录已启用 · demo-trace-v1" : "旧后端：逐轮记录未启用";
@@ -194,8 +195,8 @@ function control(s, msg) {
     activity(s, "thinking");
   } else if (msg.event === "speech_cancelled" && d.utterance_id === s.player.speech?.id) {
     s.telemetry.snapshot("cancel", s.player.speech);
-    const interrupted = ["shot_interrupt", "long_interrupt"].includes(d.reason);
-    const resumed = d.reason === "user_resumed_before_playback";
+    const interrupted = ["shot_interrupt", "long_interrupt", "accepted_interrupt"].includes(d.reason);
+    const resumed = ["user_resumed_before_playback", "accepted_user_input"].includes(d.reason);
     if (interrupted) s.interrupts++;
     const failed = d.reason === "stream_error";
     tagSpeech(s, failed ? "生成失败，可能未播完" : resumed ? "续说，旧回答已撤销"
@@ -206,7 +207,18 @@ function control(s, msg) {
     $("interrupts").textContent = s.underruns + " / " + s.interrupts;
     activity(s, s.hearing ? "hearing" : "listening");
     if (interrupted) $("status").textContent = s.muted ? STATES.muted[1] : "旧回复已停止，继续说就好。";
+  } else if (msg.event === "input_waiting") {
+    s.hearing = d.reason === "user_speaking";
+    activity(s, s.hearing ? "hearing" : "listening");
+    $("status").textContent = d.reason === "stop_only" ? "已停止播报，等你继续。" : "我在听，等你说完。";
+  } else if (msg.event === "input_ignored") {
+    s.hearing = false;
+    const p = s.player.speech;
+    activity(s, p && (!p.eof || p.played < p.received) ? "speaking" : "listening");
+  } else if (msg.event === "input_notice") {
+    $("status").textContent = d.message || "请继续说。";
   } else if (s.player.speech && d.utterance_id === s.player.speech.id) {
+    if (msg.event === "speech_hold") { s.player.hold(d.held === true); return; }
     if (msg.event === "speech_text_delta") {
       s.player.text();
       const key = "assistant-" + d.utterance_id;
@@ -247,6 +259,7 @@ async function release(s) {
     s.capture.disconnect();
   }
   s.mic?.disconnect();
+  s.render?.disconnect();
   s.media?.getTracks().forEach(track => { track.onended = null; track.stop(); });
   if (s.ws) {
     s.ws.onopen = s.ws.onclose = s.ws.onmessage = s.ws.onerror = null;
@@ -301,6 +314,7 @@ async function connect() {
     } finally { clearTimeout(timeout); }
     alive(s);
     if (!info.streaming) throw Error("服务器未启用流式 ActorEngine。请用 bash setup/start_demo.sh 启动，或给 backend 加 --streaming。");
+    s.referenceInput = !!info.guarded_turns && info.input_protocol === "pcm16.ref.v1";
     s.media = await navigator.mediaDevices.getUserMedia({audio: {
       channelCount: 1, echoCancellation: true, noiseSuppression: true, autoGainControl: true,
       ...(selectedDevice ? {deviceId: {exact: selectedDevice}} : {}),
@@ -310,8 +324,11 @@ async function connect() {
     await s.context.audioWorklet.addModule(new URL("./mic-worklet.js", import.meta.url));
     alive(s);
     s.mic = s.context.createMediaStreamSource(s.media);
-    s.capture = new AudioWorkletNode(s.context, "mic-frames");
-    s.player = new SpeechPlayer(s.context, (event, data) => send(s, event, data), state => playback(s, state));
+    s.capture = new AudioWorkletNode(s.context, "mic-frames", {numberOfInputs: s.referenceInput ? 2 : 1,
+      processorOptions: {inputReference: s.referenceInput}});
+    s.render = s.context.createGain(); s.render.connect(s.context.destination);
+    if (s.referenceInput) s.render.connect(s.capture, 0, 1);
+    s.player = new SpeechPlayer(s.context, (event, data) => send(s, event, data), state => playback(s, state), s.render);
     s.telemetry = new DemoTelemetry((event, data) => send(s, event, data), s.context,
       () => s.ws?.bufferedAmount || 0, ms => { $("socket-rtt").textContent = Math.round(ms) + " ms"; });
     s.ws = new WebSocket(socketURL);
@@ -320,7 +337,8 @@ async function connect() {
       s.reject = reject;
       s.accept = () => { clearTimeout(s.openTimer); s.reject = null; s.accept = null; resolve(); };
       s.openTimer = setTimeout(() => reject(Error("服务握手超时。请检查 SSH 转发与服务器日志后重试。")), 30000);
-      s.ws.onopen = () => send(s, "config", {client: "humdial-web", audio_protocol: "pcm16.v1"});
+      s.ws.onopen = () => send(s, "config", {client: "humdial-web", audio_protocol: "pcm16.v1",
+        ...(s.referenceInput ? {input_protocol: "pcm16.ref.v1"} : {})});
       s.ws.onmessage = event => {
         if (active !== s) return;
         try {
@@ -355,6 +373,9 @@ async function connect() {
     const track = s.media.getAudioTracks()[0];
     track.onended = () => { void stop(s, "麦克风已断开或权限被撤销，请重新连接设备。", true); };
     const settings = track.getSettings();
+    if (s.referenceInput) send(s, "input_settings", Object.fromEntries(
+      ["echoCancellation", "noiseSuppression", "autoGainControl", "sampleRate", "channelCount"]
+        .filter(key => settings[key] !== undefined).map(key => [key, settings[key]])));
     $("audio-format").textContent = (settings.sampleRate || "未知") + " Hz 设备 → 16 kHz 上传 / 256 样本";
     let lastLevel = 0;
     s.capture.port.onmessage = event => {
@@ -363,13 +384,18 @@ async function connect() {
       // WebAudio clock boundary, not an estimate of physical speaker latency.
       s.player.pollStart();
       // Keep the engine's audio clock advancing during explicit user mute.
-      if (s.muted) new Float32Array(event.data).fill(0);
+      const view = s.referenceInput ? new DataView(event.data) : null;
+      if (s.muted) {
+        if (view) for (let i = 0; i < 256; i++) view.setInt16(16 + i * 4, 0, true);
+        else new Float32Array(event.data).fill(0);
+      }
       if (s.ws.bufferedAmount > 128 * 1024) {
         void stop(s, "上传网络拥塞，已停止对话以避免继续积压音频。请检查网络后重连。", true);
         return;
       }
       if (performance.now() - lastLevel > 80) {
-        const frame = new Float32Array(event.data);
+        const frame = view ? Float32Array.from({length: 256}, (_, i) => view.getInt16(16 + i * 4, true) / 32768)
+          : new Float32Array(event.data);
         const rms = Math.sqrt(frame.reduce((sum, value) => sum + value * value, 0) / frame.length);
         setLevel(Math.min(1, rms * 6));
         lastLevel = performance.now();

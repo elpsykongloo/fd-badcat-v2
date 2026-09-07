@@ -1,0 +1,40 @@
+{
+  "version": "guarded-turns-v1",
+  "physical_acoustic_test": false,
+  "cases": [
+    {
+      "case": "echo_only",
+      "pass": true,
+      "session_id": "web-demo-0d08df1f690543f49cbd6b5438a84bae",
+      "reference_frames": 485,
+      "echo_rejected_windows": 31,
+      "stopped_acks": [],
+      "page_errors": []
+    },
+    {
+      "case": "wait_continue_stop",
+      "pass": true,
+      "session_id": "web-demo-b7abc55e4b86475da1407f1b987f1bfb",
+      "reference_frames": 168,
+      "echo_rejected_windows": 0,
+      "stopped_acks": [
+        {
+          "event": "playback_stopped",
+          "data": {
+            "utterance_id": 1,
+            "played_samples": 42662
+          }
+        },
+        {
+          "event": "playback_stopped",
+          "data": {
+            "utterance_id": 2,
+            "played_samples": 24968
+          }
+        }
+      ],
+      "page_errors": []
+    }
+  ],
+  "pass": true
+}

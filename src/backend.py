@@ -437,9 +437,12 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
     async def demo_info():
         # Configuration only, not a claim that the upstream GPU is healthy.
         # Never expose prompts, environment variables, paths, or credentials.
-        return {"protocol": "pcm16.v1", "streaming": bool(
+        info = {"protocol": "pcm16.v1", "streaming": bool(
             arch == "actor" and (engine_cfg or {}).get("phase", "a") == "a"
             and (engine_cfg or {}).get("stream_response"))}
+        if info["streaming"] and (engine_cfg or {}).get("guarded_turns"):
+            info.update(input_protocol="pcm16.ref.v1", guarded_turns=True)
+        return info
 
     @app.websocket("/realtime")
     async def realtime_ws(websocket: WebSocket):
@@ -450,6 +453,14 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
         exp = data.get("exp", {})
         lang = data.get("lang", {})
         web_demo = data.get("client") == "humdial-web"
+        if (data.get("input_protocol") not in (None, "pcm16.ref.v1") or (
+                data.get("input_protocol") == "pcm16.ref.v1" and (
+                    arch != "actor" or (engine_cfg or {}).get("phase", "a") != "a"
+                    or not (engine_cfg or {}).get("stream_response")
+                    or data.get("audio_protocol") != "pcm16.v1"))):
+            await websocket.send_json({"event": "error", "data": {"message": "Unsupported input protocol"}})
+            await websocket.close(code=1008)
+            return
         if web_demo:
             # The new browser page does not control any filesystem path. Keep
             # historical non-demo clients' experiment naming unchanged.
@@ -490,6 +501,9 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
             # this server enables the new demo. Both sides must opt in.
             session_cfg["stream_response"] = bool(session_cfg.get("stream_response")
                                                    and data.get("audio_protocol") == "pcm16.v1")
+            session_cfg["input_protocol"] = data.get("input_protocol")
+            session_cfg["guarded_turns"] = bool(session_cfg.get("guarded_turns")
+                and data.get("input_protocol") == "pcm16.ref.v1" and session_cfg["stream_response"])
             # Read-only comparison knob: a client can disable speculation, never
             # enable a server-disabled feature. Snapshot/cancellation stay equal.
             if data.get("speculative_response") is False:
@@ -509,6 +523,8 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
                     "session_id": exp, "protocol": "pcm16.v1",
                     "observability": "demo-trace-v1",
                     "tts_contract": "verbatim-choice-v1",
+                    "input_protocol": session_cfg.get("input_protocol"),
+                    "guarded_turns": bool(session_cfg.get("guarded_turns")),
                     "speculative_response": bool(session_cfg.get("speculative_response")),
                     "cancellable_response": bool(session_cfg.get("cancellable_response")),
                     "profile": "chat-demo-v1" if (engine_cfg or {}).get("chat_demo") else "humdial"}})

@@ -58,6 +58,8 @@ from request_capacity import CONTROL, NORMAL, process_request_capacity
 from speech_stream import PROTOCOL, SpeechEvent, SpeechPipeline, SocketOutbox
 from control_labels import LABELS, FALLBACK, parse_label, decide_control
 from actor_candidate import CandidateTurns, CandidateResult
+from guarded_turns import GuardedTurns, InputDecision
+from input_audio import decode_input_packet
 
 SAMPLE_RATE = 16000
 WINDOW_SIZE = 256
@@ -94,6 +96,7 @@ class FrameEvent:
     t_audio: float        # end-of-frame time on the audio clock (cum samples / SR)
     t_wall: float         # perf_counter at reader receive (freeze measurement)
     pcm: np.ndarray
+    reference: object = None
 
 
 @dataclass
@@ -122,7 +125,7 @@ class ControlMsg:
     data: dict = field(default_factory=dict)
 
 
-class ActorEngine(CandidateTurns):
+class ActorEngine(GuardedTurns, CandidateTurns):
     """Single-writer conversation engine. All state mutations happen in engine_loop."""
 
     def __init__(self, websocket=None, prompts: dict = None, delay: dict = None,
@@ -198,6 +201,7 @@ class ActorEngine(CandidateTurns):
         self._speech_audio_done = False
         self._speech_played_reported = False
         self._init_candidates()
+        self._init_guarded()
 
         # ---- replay ----
         assert replay_mode in ("realtime", "injected", "oracle"), replay_mode
@@ -576,8 +580,12 @@ class ActorEngine(CandidateTurns):
             await self._on_speech_event(ev)
         elif isinstance(ev, CandidateResult):
             await self._on_candidate_result(ev)
+        elif isinstance(ev, InputDecision):
+            await self._on_input_decision(ev)
         elif isinstance(ev, ControlMsg):
-            if ev.kind == "demo_telemetry" and self.demo_trace is not None:
+            if self.GUARDED_TURNS and ev.kind in {"input_settings", "playback_stopped"}:
+                await self._guard_control(ev.kind, ev.data)
+            elif ev.kind == "demo_telemetry" and self.demo_trace is not None:
                 clean = self.demo_trace.client(ev.data)
                 if clean and clean["kind"] == "ping":
                     await self.send_control("demo_pong", {"seq": clean["seq"]})
@@ -587,12 +595,14 @@ class ActorEngine(CandidateTurns):
             elif ev.kind == "disconnect":
                 self._observe("disconnect")
                 return False
-            elif ev.kind in ("speech_start", "speech_cancelled"):
+            elif ev.kind in ("speech_start", "speech_cancelled", "input_notice"):
                 await self.send_control(ev.kind, ev.data)
             elif ev.kind == "playback_progress" and self._speech is not None:
                 data = ev.data
                 if (data.get("utterance_id") == self._speech.sid
                         and self._speech.progress(data.get("played_samples"))):
+                    if self.GUARDED_TURNS:
+                        self._guard_history_progress(self._speech.sid, self._speech.played)
                     if self.CANDIDATE_TURNS and (data.get("started") is True or self._speech.played > 0):
                         await self._candidate_playback_started()
                     if (data.get("ended") and self._speech_audio_done
@@ -617,6 +627,11 @@ class ActorEngine(CandidateTurns):
         self.t_audio = ev.t_audio
         if self.demo_trace is not None:
             self.demo_trace.input_health(ev.t_wall, t_audio=self.t_audio, queue_depth=self.q.qsize())
+        if self.GUARDED_TURNS:
+            clean = self._guard_detect(ev)
+            event = self.detect_vad_frame(clean)
+            await self._guard_frame(FrameEvent(ev.seq, ev.t_audio, ev.t_wall, clean, ev.reference), event)
+            return
         event = self.detect_vad_frame(ev.pcm)
         if event and "start" in event:
             # new speech falsifies any in-flight judge/shift/interrupt evidence
@@ -643,6 +658,9 @@ class ActorEngine(CandidateTurns):
         Old interrupt classifications are invalid in LISTEN. A closed segment
         is reclassified as a normal user turn, not lost or treated as old audio.
         """
+        if self.GUARDED_TURNS:
+            await self._guard_finish_turn(turn, reason)
+            return
         if turn is None or turn != self.TURN_IDX:
             return
         if reason == "played":
@@ -887,6 +905,10 @@ class ActorEngine(CandidateTurns):
         # neither -> dead end (legacy parity: no response is produced)
 
     async def _on_interrupt(self, ev: ModelDone):
+        if self.GUARDED_TURNS:
+            # Guarded input decisions are applied only by _on_input_decision.
+            # A legacy/stale callback can never bypass semantic admission.
+            return
         await self._trace_llm_done(ev)
         audio = self._pending_audio.pop(("interrupt", ev.epoch), None)
         frames = self._pending_frames.pop(("interrupt", ev.epoch), [])
@@ -951,6 +973,8 @@ class ActorEngine(CandidateTurns):
             return
         if self._speech is None:
             return
+        if self.GUARDED_TURNS and self._speech_started:
+            self._guard_mark_cancelled()
         old = self._speech
         self._speech = None
         self._speech_candidate = None
@@ -1033,6 +1057,11 @@ class ActorEngine(CandidateTurns):
                 self._cancel_speech("stream_error")
                 if self.PLAYBACK_AUTOEND:
                     await self._finish_turn(failed_turn, "speech_error")
+            elif ev.kind == "sentence_end" and self.GUARDED_TURNS:
+                record = self._guard_outputs.setdefault(ev.sid, {
+                    "turn": self._speech_meta.turn, "sentences": []})
+                record["sentences"].append((data["end_sample"], data["text"]))
+                self._observe("speech_sentence_end", data)
             else:
                 if ev.kind == "audio_end":
                     self._speech_audio_done = True
@@ -1044,6 +1073,7 @@ class ActorEngine(CandidateTurns):
     def _reset_session(self):
         self._invalidate_candidate("session_reset")
         self._cancel_speech("session_reset")
+        self._guard_reset()
         self._speech_candidate = None
         self._answer_versions.clear()
         self.session_gen += 1
@@ -1092,16 +1122,29 @@ class ActorEngine(CandidateTurns):
                     self.q.put_nowait(ControlMsg("playback_progress", obj.get("data") or {}))
                 elif self.demo_trace is not None and obj.get("event") == "demo_telemetry":
                     self.q.put_nowait(ControlMsg("demo_telemetry", obj.get("data")))
+                elif self.GUARDED_TURNS and obj.get("event") in {"input_settings", "playback_stopped"}:
+                    data = obj.get("data")
+                    if isinstance(data, dict) and len(data) <= 12:
+                        self.q.put_nowait(ControlMsg(obj["event"], data))
                 continue
             if "bytes" in message and message["bytes"]:
-                pcm = np.frombuffer(message["bytes"], dtype=np.float32)
+                reference = None
+                if self.INPUT_REFERENCE:
+                    try:
+                        pcm, reference = decode_input_packet(message["bytes"], seq)
+                    except ValueError as exc:
+                        self.q.put_nowait(ControlMsg("input_notice", {"message": str(exc)}))
+                        self.q.put_nowait(ControlMsg("disconnect"))
+                        return
+                else:
+                    pcm = np.frombuffer(message["bytes"], dtype=np.float32)
                 if pcm.size == 0:
                     continue
                 seq += 1
                 rx_samples += pcm.size
                 self.q.put_nowait(FrameEvent(
                     seq=seq, t_audio=rx_samples / SAMPLE_RATE,
-                    t_wall=time.perf_counter(), pcm=pcm))
+                    t_wall=time.perf_counter(), pcm=pcm, reference=reference))
 
     async def run_realtime(self, websocket):
         """Signature-compatible with the legacy engine (create_app calls this)."""
@@ -1126,7 +1169,8 @@ class ActorEngine(CandidateTurns):
             reader.cancel()
             self.vad_iterator.reset_states()
             self._reset_session()
-            await asyncio.gather(reader, *self._speech_tasks, *self._candidate_tasks, return_exceptions=True)
+            await asyncio.gather(reader, *self._speech_tasks, *self._candidate_tasks,
+                                 *self._guard_tasks, return_exceptions=True)
             if self._outbox is not None:
                 await self._outbox.close()
                 self._outbox = None

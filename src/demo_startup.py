@@ -23,6 +23,7 @@ async def warmup(prompts):
     import module
     from messages import build_audio_content
     from control_labels import parse_label
+    from guarded_turns import route_messages
 
     started = time.perf_counter()
     fixture = Path(__file__).resolve().parents[1] / "exp/streaming_demo/synthetic_question.wav"
@@ -43,6 +44,11 @@ async def warmup(prompts):
             {"role": "system", "content": prompts["judge"]}, {"role": "user", "content": [content]}])
         if parse_label("judge", judge) is None:
             raise RuntimeError("Control model warmup returned an invalid label")
+        if prompts.get("input_route"):
+            routed = await asyncio.to_thread(module.llm_qwen3o_strict,
+                route_messages(prompts["input_route"], content))
+            if parse_label("input_route", routed) != "yield_ready":
+                raise RuntimeError("Input route warmup rejected the clear self-authored question")
         # Exercise the same SSE text and native PCM decoder as the real demo.
         pieces = [p async for p in module.llm_qwen3o_stream([
             {"role": "system", "content": prompts["response"]},
@@ -51,17 +57,29 @@ async def warmup(prompts):
             raise RuntimeError("Text SSE warmup returned no text")
         checks, total_chunks = [], 0
         for expected in ("你好。Hello, how are you?", "你能告诉我你在哪个城市吗？"):
-            chunks = [p async for p in module.tts_omni_stream(expected)]
-            if not chunks or len({p.sample_rate for p in chunks}) != 1:
-                raise RuntimeError("TTS warmup returned invalid PCM")
-            pcm = np.frombuffer(b"".join(p.pcm for p in chunks), dtype="<i2").astype(np.float32) / 32768
-            wav = io.BytesIO()
-            sf.write(wav, pcm, chunks[0].sample_rate, format="WAV", subtype="PCM_16")
-            wav.seek(0)
-            actual = await asyncio.to_thread(module.asr, wav)
-            verify_spoken_text(expected, actual)
-            checks.append({"expected": expected, "recognized": actual})
-            total_chunks += len(chunks)
+            attempts = []
+            for attempt in range(2):
+                chunks = [p async for p in module.tts_omni_stream(expected)]
+                if not chunks or len({p.sample_rate for p in chunks}) != 1:
+                    raise RuntimeError("TTS warmup returned invalid PCM")
+                pcm = np.frombuffer(b"".join(p.pcm for p in chunks), dtype="<i2").astype(np.float32) / 32768
+                wav = io.BytesIO()
+                sf.write(wav, pcm, chunks[0].sample_rate, format="WAV", subtype="PCM_16")
+                wav.seek(0)
+                actual = await asyncio.to_thread(module.asr, wav)
+                attempts.append(actual)
+                total_chunks += len(chunks)
+                try:
+                    verify_spoken_text(expected, actual)
+                    break
+                except RuntimeError:
+                    # ASR/Talker have acoustic variation despite exact text
+                    # constraints. One visible retry, never relaxed comparison.
+                    print(json.dumps({"event": "demo_warmup_readback_mismatch", "expected": expected,
+                        "recognized": actual, "attempt": attempt + 1}, ensure_ascii=False), flush=True)
+                    if attempt:
+                        raise
+            checks.append({"expected": expected, "recognized": actual, "attempts": attempts})
         return transcript, checks, total_chunks
     transcript, checks, total_chunks = await asyncio.wait_for(run(), 90)
     result = {"event": "demo_warmup_done", "asr": module.ASR_BACKEND,

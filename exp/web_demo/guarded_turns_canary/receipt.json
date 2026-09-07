@@ -1,0 +1,61 @@
+{
+  "version": "guarded-turns-v1",
+  "physical_acoustic_test": false,
+  "cases": [
+    {
+      "text": "停。",
+      "expected_route": "stop_only",
+      "route": "stop_only",
+      "expected_interrupt": "switch",
+      "interrupt": "switch",
+      "audio_s": 2.810625,
+      "pass": true
+    },
+    {
+      "text": "别说了。",
+      "expected_route": "stop_only",
+      "route": "stop_only",
+      "expected_interrupt": "switch",
+      "interrupt": "switch",
+      "audio_s": 0.67375,
+      "pass": true
+    },
+    {
+      "text": "等一下，我还没说完。",
+      "expected_route": "yield_wait",
+      "route": "yield_wait",
+      "expected_interrupt": "switch",
+      "interrupt": "switch",
+      "audio_s": 1.71375,
+      "pass": true
+    },
+    {
+      "text": "请用普通话说。",
+      "expected_route": "yield_ready",
+      "route": "yield_ready",
+      "expected_interrupt": "switch",
+      "interrupt": "continue",
+      "audio_s": 1.31375,
+      "pass": false
+    },
+    {
+      "text": "嗯嗯，知道了。",
+      "expected_route": "keep",
+      "route": "keep",
+      "expected_interrupt": "continue",
+      "interrupt": "continue",
+      "audio_s": 3.450625,
+      "pass": true
+    },
+    {
+      "text": "Wait, let me finish.",
+      "expected_route": "yield_wait",
+      "route": "yield_wait",
+      "expected_interrupt": "switch",
+      "interrupt": "switch",
+      "audio_s": 1.07375,
+      "pass": true
+    }
+  ],
+  "pass": false
+}

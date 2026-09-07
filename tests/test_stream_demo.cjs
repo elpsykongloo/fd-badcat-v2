@@ -98,6 +98,45 @@ for (const rate of [16000, 44100, 48000]) {
 }
 console.log("microphone: 16k/44.1k/48k input, fractional carry, fixed 256-sample frames PASS");
 
+for (const rate of [16000, 44100, 48000]) {
+  const packets = [];
+  let Processor;
+  const worklet = vm.createContext({sampleRate: rate, Float32Array, ArrayBuffer, DataView,
+    AudioWorkletProcessor: class { constructor() { this.port = {postMessage(raw) { packets.push(raw); }}; } },
+    registerProcessor(name, value) { Processor = value; }});
+  vm.runInContext(fs.readFileSync(path.join(root, "mic-worklet.js"), "utf8"), worklet);
+  const processor = new Processor({processorOptions: {inputReference: true}});
+  for (let i = 0; i < 24; i++) processor.process([[new Float32Array(128).fill(.5)], [new Float32Array(128).fill(-.25)]]);
+  assert.equal(packets.length, Math.floor(3072 * 16000 / rate / 256));
+  packets.forEach((raw, index) => {
+    assert.equal(raw.byteLength, 1040);
+    const d = new DataView(raw);
+    assert.equal(d.getUint32(0, true), 0x314d4446);
+    assert.equal(d.getUint32(4, true), index);
+    assert.equal(d.getUint32(8, true), 256); assert.equal(d.getUint32(12, true), 16000);
+    for (let j = 0; j < 256; j++) {
+      assert.equal(d.getInt16(16 + j * 4, true), 16384);
+      assert.equal(d.getInt16(18 + j * 4, true), -8192);
+    }
+  });
+}
+context.currentTime = 0;
+start(8); player.packet(packet(8, 0)); player.packet(packet(8, 1));
+player.hold(true);
+context.currentTime = .2;
+player.packet(packet(8, 2)); player.pollStart();
+assert.ok(!player.speech.started && player.speech.held);
+assert.equal(player.nodes.size, 0);
+player.hold(false);
+assert.equal(player.nodes.size, 3);
+context.currentTime = .3;
+player.cancel();
+const stopped = sent.filter(x => x.event === "playback_stopped").at(-1).data;
+assert.equal(stopped.utterance_id, 8);
+assert.ok(stopped.played_samples >= 479 && stopped.played_samples <= 480,
+  "future queued nodes cannot count as played; partial node uses render clock");
+console.log("guarded playback/input: paired clock/rates/sequence, preplay hold/release, partial stop ACK PASS");
+
 vm.runInContext(fs.readFileSync(path.join(root, "demo-telemetry.js"), "utf8").replace("export class", "class"), scope);
 const DemoTelemetry = vm.runInContext("DemoTelemetry", scope);
 const measured = [], rtts = [];

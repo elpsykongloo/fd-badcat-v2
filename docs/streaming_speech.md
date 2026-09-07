@@ -30,9 +30,9 @@ TTS 请求逐句有序执行。文本生产和 TTS 消费是独立任务，最�
 
 判定为短打断、长打断、回复替换或会话重置时，取消文本/TTS HTTP 流、丢弃待合成句子和旧音频包；浏览器按 utterance ID 停掉已经排程的旧音频。普通 `continue` 不取消，也不引入新的 VAD 即停策略。代理使用异步 HTTP 和 SSE 透传，上游取消会关闭实际连接；GPU 已在执行的单个 kernel 不保证瞬时抢占。
 
-独立 `--demo-chat` 配置另外启用候选投机与**开播之前**的 VAD 续说撤销；开播之后沿用上述语义策略。候选冻结段尾输入与历史，确认前不发文本/音频，详见 [web_demo.md](web_demo.md) 的 actor-candidate-v1 小节。基础 HumDial 开关仍默认关闭。
+独立 `--demo-chat` 配置另外启用候选投机和 `guarded-turns-v1` 输入准入：原始 VAD 只暂缓未开播候选，确认真实续说才撤销；播放期间按 keep/stop_only/yield_wait/yield_ready 分开停止与回答，噪声、含糊输入和附和不直接打断。此为独立策略版本，详见 [web_demo.md](web_demo.md) §9；基础 HumDial 开关仍默认关闭。
 
-生成过程中出错则显式 `speech_error` 并停止该回复；没有输出任何文本前保留 response 的一次超时重试与道歉回退，有部分输出后不重试，避免重复播报。TTS 失败不会伪造完成。历史仍使用完整生成文本，尚未做词级“用户实际听到的前缀”裁剪；更严格的打断后历史一致性需要文本/音频对齐，属于后续改进。
+生成过程中出错则显式 `speech_error` 并停止该回复；没有输出任何文本前保留 response 的一次超时重试与道歉回退，有部分输出后不重试，避免重复播报。TTS 失败不会伪造完成。未开启输入准入时历史仍使用完整生成文本；开启后对已取消回复使用确认播完的完整句子与打断标记，审计史保留全文。仍不是词级或物理“听到前缀”对齐。
 
 流式 TTS 已从提示词式朗读升级为 `verbatim-choice-v1`：Thinker 单一原文解码约束 + 文本全文/结束证明校验，防止 Omni 把待读疑问句重新回答；早到音频在校验前隔离（512KiB硬上限），没有证明不放行。需要启动器安装的窄范围服务适配，机制、旧整 WAV 兼容边界和音频回读验收见 [web_demo.md](web_demo.md) §8。
 
@@ -48,6 +48,8 @@ TTS 请求逐句有序执行。文本生产和 TTS 消费是独立任务，最�
 
 客户端上传 mono float32 / 16 kHz，每包 256 样本。浏览器 worklet 在设备不接受 16 kHz 时做带跨块累积的重采样，保持输入音频钟不丢余数。
 
+新展示页若 `/api/demo/info` 声明 `guarded_turns: true`，握手另外发送 `input_protocol: "pcm16.ref.v1"`。此时上传改成1040字节：小端头 `<4sIII>` = `FDM1`、从0递增序号、256、16000；后面256对交错 `int16 mic, int16 render_reference`。两个通道来自同一 worklet 音频钟；参考是实际播放排程的输出而非任意刚收包音频。静音只清 mic，保留参考。缺协商仍用上述旧 float32；未知协议或错序/尺寸拒绝，不自动猜格式。
+
 服务器下发：
 
 - `speech_start`：`utterance_id`、`protocol`、`buffer_ms`。
@@ -56,6 +58,8 @@ TTS 请求逐句有序执行。文本生产和 TTS 消费是独立任务，最�
 - 二进制：16 字节小端头 `<4sIII>`，依次为 `FDS1`、utterance ID、从 0 递增的包序号、采样率；后面为 mono little-endian PCM16。**不是 WAV**，不能交给旧客户端解码。
 - `speech_audio_end`：总 `samples`、`rate`、`packets`；合成发送结束不等于播放结束。
 - `speech_cancelled` / `speech_error`：清空对应 ID，不接受旧包复活播放。
+- `speech_hold {utterance_id,held}`：新准入专用，只暂缓尚未起播的排程，保留有界 PCM；已起播则忽略 hold 并回报 started，不因原始 VAD 暂停旧回答。它不是取消后恢复播放。
+- `input_waiting / input_ignored / input_notice`：明确停止、等待续说、输入被忽略或长度限制；不凭这些事件制造新回答。
 
 客户端按累计播放样本回报（不是收包确认）：
 
@@ -66,6 +70,8 @@ TTS 请求逐句有序执行。文本生产和 TTS 消费是独立任务，最�
 ID、单调性与 `played_samples <= sent_samples` 均检查；服务器收到真正的尾部播放确认后只记录一次 `speech_played`。`playback_autoend: false` 的 HumDial 默认状态语义继续保持。
 
 `started` 是可选兼容字段：仅 WebAudio 时间轴到达首包排程时间后为 true，可以早于第一块的完成回执，此时 `played_samples` 仍为 0。到包、建缓冲或开始排程均不应报 true；旧客户端缺此字段时以首个正数播放样本回执确认开播。候选版据此关闭“开播前自动撤销”的窗口并开始 ASR/提交完整回复历史。回执过网有延迟，不代表物理声卡听检。
+
+新页取消时另报 `playback_stopped {utterance_id,played_samples}`，计入当前包已经排程播放的部分，未开始的未来包不算。服务端仅对已取消、已知 ID 且样本数合法的记录更新句子前缀；重置后迟到回执无效。`input_settings` 只上报实际 echoCancellation/noiseSuppression/autoGainControl/sampleRate/channelCount，不上报设备 ID；“申请 AEC”不等于“实际声学验收通过”。
 
 新版 HTML 页面使用附加握手 `{"event":"config","data":{"client":"humdial-web","audio_protocol":"pcm16.v1"}}`；服务端检查同源 Origin、生成归档会话 ID，并在 ActorEngine 初始化后发送 `demo_ready {session_id, protocol}`。浏览器收到此消息后才上传音频。只读 `/api/demo/info` 仅报告流式配置，不宣称 GPU 推理健康。其他旧客户端握手/归档命名不变。
 

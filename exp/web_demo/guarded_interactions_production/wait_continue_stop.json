@@ -1,0 +1,410 @@
+{
+  "case": "wait_continue_stop",
+  "pass": true,
+  "session_id": "web-demo-9e08dc5f741c4a43addf237d51534a68",
+  "reference_frames": 164,
+  "echo_rejected_windows": 0,
+  "events": [
+    {
+      "event": "demo_ready",
+      "data": {
+        "session_id": "web-demo-9e08dc5f741c4a43addf237d51534a68",
+        "protocol": "pcm16.v1",
+        "observability": "demo-trace-v1",
+        "tts_contract": "verbatim-choice-v1",
+        "input_protocol": "pcm16.ref.v1",
+        "guarded_turns": true,
+        "speculative_response": true,
+        "cancellable_response": true,
+        "profile": "chat-demo-v1"
+      }
+    },
+    {
+      "event": "speech_start",
+      "data": {
+        "utterance_id": 1,
+        "turn": 0,
+        "protocol": "pcm16.v1",
+        "buffer_ms": 600,
+        "candidate_id": 1,
+        "timestamp": 3.432
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.432,
+        "text": "你好！今天"
+      }
+    },
+    {
+      "event": "speech_sentence",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.432,
+        "text": "你好！"
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.432,
+        "text": "天气不错，适合出去散步。不过最好还是看看你那边的实时天气预报，确保没有"
+      }
+    },
+    {
+      "event": "speech_first_audio",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.432,
+        "sample_rate": 24000,
+        "turn": 0
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.432,
+        "text": "下雨或者太热哦～"
+      }
+    },
+    {
+      "event": "speech_text_done",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.432,
+        "text": "你好！今天天气不错，适合出去散步。不过最好还是看看你那边的实时天气预报，确保没有下雨或者太热哦～",
+        "infer": 0.401,
+        "timed_out": false
+      }
+    },
+    {
+      "event": "speech_sentence",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.434,
+        "text": "今天天气不错，适合出去散步。"
+      }
+    },
+    {
+      "event": "speech_playback_started",
+      "data": {
+        "utterance_id": 1,
+        "turn": 0,
+        "candidate_id": 1
+      }
+    },
+    {
+      "event": "asr_done",
+      "data": {
+        "timestamp": 3.65,
+        "turn": 0,
+        "state": "SPEAK",
+        "content": "你好，今天适合出去散步吗？"
+      }
+    },
+    {
+      "event": "speech_cancelled",
+      "data": {
+        "utterance_id": 1,
+        "reason": "accepted_interrupt",
+        "timestamp": 5.269
+      }
+    },
+    {
+      "event": "input_waiting",
+      "data": {
+        "reason": "awaiting_user",
+        "input_id": 2
+      }
+    },
+    {
+      "event": "speech_start",
+      "data": {
+        "utterance_id": 2,
+        "turn": 1,
+        "protocol": "pcm16.v1",
+        "buffer_ms": 600,
+        "candidate_id": 2,
+        "timestamp": 10.602
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 2,
+        "timestamp": 10.602,
+        "text": "抱歉，我刚才没听清你说的。你"
+      }
+    },
+    {
+      "event": "speech_sentence",
+      "data": {
+        "utterance_id": 2,
+        "timestamp": 10.602,
+        "text": "抱歉，我刚才没听清你说的。"
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 2,
+        "timestamp": 10.602,
+        "text": "刚才是不是想问今天适合出去散步吗？"
+      }
+    },
+    {
+      "event": "speech_text_done",
+      "data": {
+        "utterance_id": 2,
+        "timestamp": 10.602,
+        "text": "抱歉，我刚才没听清你说的。你刚才是不是想问今天适合出去散步吗？",
+        "infer": 0.325,
+        "timed_out": false
+      }
+    },
+    {
+      "event": "speech_first_audio",
+      "data": {
+        "utterance_id": 2,
+        "timestamp": 10.602,
+        "sample_rate": 24000,
+        "turn": 1
+      }
+    },
+    {
+      "event": "speech_playback_started",
+      "data": {
+        "utterance_id": 2,
+        "turn": 1,
+        "candidate_id": 2
+      }
+    },
+    {
+      "event": "asr_done",
+      "data": {
+        "timestamp": 10.821,
+        "turn": 1,
+        "state": "SPEAK",
+        "content": "等一下，我还没说完，请用普通话说。"
+      }
+    },
+    {
+      "event": "input_waiting",
+      "data": {
+        "reason": "stop_only",
+        "input_id": 4
+      }
+    },
+    {
+      "event": "speech_cancelled",
+      "data": {
+        "utterance_id": 2,
+        "reason": "accepted_interrupt",
+        "timestamp": 11.697
+      }
+    }
+  ],
+  "stopped_acks": [
+    {
+      "event": "playback_stopped",
+      "data": {
+        "utterance_id": 1,
+        "played_samples": 42035
+      }
+    },
+    {
+      "event": "playback_stopped",
+      "data": {
+        "utterance_id": 2,
+        "played_samples": 24272
+      }
+    }
+  ],
+  "input_decisions": [
+    {
+      "event": "input_decision",
+      "server_ms": 2477.64,
+      "data": {
+        "input_id": 1,
+        "revision": 2,
+        "route": "yield_ready",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "yield_ready"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false
+          },
+          "playing": false,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 0,
+      "turn": 0,
+      "state": "LISTEN",
+      "t_audio": 2.464,
+      "queue_depth": 0
+    },
+    {
+      "event": "input_decision",
+      "server_ms": 2896.181,
+      "data": {
+        "input_id": 1,
+        "revision": 3,
+        "route": "yield_ready",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "yield_ready"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false
+          },
+          "playing": false,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 1,
+      "turn": 0,
+      "state": "LISTEN",
+      "t_audio": 2.88,
+      "queue_depth": 0
+    },
+    {
+      "event": "input_decision",
+      "server_ms": 5269.949,
+      "data": {
+        "input_id": 2,
+        "revision": 0,
+        "route": "yield_wait",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "yield_wait"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false
+          },
+          "playing": true,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 1,
+      "turn": 0,
+      "state": "SPEAK",
+      "t_audio": 5.248,
+      "queue_depth": 0
+    },
+    {
+      "event": "input_decision",
+      "server_ms": 5558.118,
+      "data": {
+        "input_id": 2,
+        "revision": 1,
+        "route": "yield_wait",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "yield_wait"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false
+          },
+          "playing": false,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 2,
+      "turn": 1,
+      "state": "LISTEN",
+      "t_audio": 5.536,
+      "queue_depth": 0
+    },
+    {
+      "event": "input_decision",
+      "server_ms": 10073.66,
+      "data": {
+        "input_id": 3,
+        "revision": 1,
+        "route": "yield_ready",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "yield_ready"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false
+          },
+          "playing": false,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 2,
+      "turn": 1,
+      "state": "LISTEN",
+      "t_audio": 10.064,
+      "queue_depth": 0
+    },
+    {
+      "event": "input_decision",
+      "server_ms": 11698.13,
+      "data": {
+        "input_id": 4,
+        "revision": 1,
+        "route": "stop_only",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "stop_only"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false
+          },
+          "playing": true,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 3,
+      "turn": 1,
+      "state": "SPEAK",
+      "t_audio": 11.68,
+      "queue_depth": 0
+    }
+  ],
+  "page_errors": []
+}

@@ -4,8 +4,8 @@ import time
 from async_utils import cancellable_wait
 
 LABELS = {"judge": ("continue", "switch"), "interrupt": ("continue", "switch"),
-          "shift": ("no", "yes")}
-FALLBACK = {"judge": "continue", "interrupt": "continue", "shift": "no"}
+          "shift": ("no", "yes"), "input_route": ("keep", "stop_only", "yield_wait", "yield_ready")}
+FALLBACK = {"judge": "continue", "interrupt": "continue", "shift": "no", "input_route": "keep"}
 
 
 def parse_label(kind, raw):
