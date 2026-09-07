@@ -31,8 +31,8 @@ Staleness protocol (W1 core):
     evidence -- "the user finished speaking" -- has been falsified by new
     speech). `continue` results are equally droppable because their semantics
     is "do nothing". response/shift_re are exempt in W1 (legacy semantics:
-    an answer in flight completes; flag engine.cancellable_response reserved
-    for W3).
+    an answer in flight completes). The opt-in streaming candidate path instead
+    cancels the entire answer on resumed speech before playback starts.
 
 Replay modes:
   - realtime: models actually run in worker threads (production path).
@@ -57,6 +57,7 @@ from messages import build_audio_content, scrub_audio_blocks
 from request_capacity import CONTROL, NORMAL, process_request_capacity
 from speech_stream import PROTOCOL, SpeechEvent, SpeechPipeline, SocketOutbox
 from control_labels import LABELS, FALLBACK, parse_label, decide_control
+from actor_candidate import CandidateTurns, CandidateResult
 
 SAMPLE_RATE = 16000
 WINDOW_SIZE = 256
@@ -111,6 +112,8 @@ class ModelDone:
     timed_out: bool = False
     error: str = ""
     control_audit: dict = None
+    answer_id: int = 0
+    history_written: bool = False
 
 
 @dataclass
@@ -119,7 +122,7 @@ class ControlMsg:
     data: dict = field(default_factory=dict)
 
 
-class ActorEngine:
+class ActorEngine(CandidateTurns):
     """Single-writer conversation engine. All state mutations happen in engine_loop."""
 
     def __init__(self, websocket=None, prompts: dict = None, delay: dict = None,
@@ -194,6 +197,7 @@ class ActorEngine:
         self._stream_listen_start = None
         self._speech_audio_done = False
         self._speech_played_reported = False
+        self._init_candidates()
 
         # ---- replay ----
         assert replay_mode in ("realtime", "injected", "oracle"), replay_mode
@@ -282,7 +286,11 @@ class ActorEngine:
             self._trace_fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
         if self.websocket is not None:
             if self._outbox is not None:
-                self._outbox.put(json.dumps(payload))
+                sid = (payload["data"].get("utterance_id") if self.CANDIDATE_TURNS
+                       and event_type in {"speech_start", "speech_text_delta", "speech_text_done",
+                                          "speech_sentence", "speech_first_audio", "speech_audio_end",
+                                          "speech_error"} else None)
+                self._outbox.put(json.dumps(payload), sid=sid)
             else:
                 await self.websocket.send_text(json.dumps(payload))
         summary = self._observe(event_type, payload["data"])
@@ -304,7 +312,7 @@ class ActorEngine:
     # ------------------------------------------------------------------
     # message building (legacy role structure, bounded complete-turn history)
     # ------------------------------------------------------------------
-    def build_messages(self, system_prompt, user_audio, use_history, shift_history):
+    def build_messages(self, system_prompt, user_audio, use_history, shift_history, audio_content=None):
         messages = [{"role": "system", "content": system_prompt}]
         user_history, assistant_history = self.user_history, self.assistant_history
         if self.CHAT_DEMO:
@@ -320,7 +328,8 @@ class ActorEngine:
             if user_audio is not None:
                 messages.append({
                     "role": "user",
-                    "content": [build_audio_content(user_audio, SAMPLE_RATE, self.AUDIO_BLOCK)]
+                    "content": [audio_content if audio_content is not None else
+                                build_audio_content(user_audio, SAMPLE_RATE, self.AUDIO_BLOCK)]
                 })
             return messages
         first, used = rounds, 0
@@ -338,7 +347,8 @@ class ActorEngine:
         if user_audio is not None:
             messages.append({
                 "role": "user",
-                "content": [build_audio_content(user_audio, SAMPLE_RATE, self.AUDIO_BLOCK)]
+                "content": [audio_content if audio_content is not None else
+                            build_audio_content(user_audio, SAMPLE_RATE, self.AUDIO_BLOCK)]
             })
         return messages
 
@@ -386,6 +396,11 @@ class ActorEngine:
     # ------------------------------------------------------------------
     def dispatch_llm(self, kind, system_prompt, user_audio, turn,
                      add_to_history=False, shift_history=False):
+        if self.CANDIDATE_TURNS and kind in ("response", "shift_re"):
+            audio = user_audio if user_audio is not None else (
+                np.concatenate(self.BUFFER) if self.BUFFER else np.zeros(0, dtype=np.float32))
+            self._begin_candidate(audio, confirmed=True, stage=kind)
+            return
         self._observe("llm_dispatch", {"kind": kind, "turn": turn})
         messages = self.build_messages(system_prompt, user_audio, add_to_history, shift_history)
         snapshot = scrub_audio_blocks(messages)
@@ -452,11 +467,12 @@ class ActorEngine:
         self._inflight += 1
         asyncio.create_task(_run())
 
-    def dispatch_asr(self, user_audio, turn):
+    def dispatch_asr(self, user_audio, turn, answer_id=0):
         gen, epoch = self.session_gen, self.seg_epoch
         out_path = None
         if self.output_dir is not None:
-            out_path = Path(self.output_dir) / f"stream_turn{turn}_input.wav"
+            suffix = f"_answer{answer_id}" if answer_id else ""
+            out_path = Path(self.output_dir) / f"stream_turn{turn}{suffix}_input.wav"
 
         if self.replay_mode != "realtime":
             res = self.decision_script("asr", {"turn": turn, "t_audio": self.t_audio})
@@ -487,7 +503,7 @@ class ActorEngine:
                 print(f"[ASR ERROR] {exc}")
             infer = round(time.perf_counter() - t0, 3)
             self.q.put_nowait(ModelDone(kind="asr", gen=gen, epoch=epoch, turn=turn,
-                                        text=str(text), infer=infer, error=error))
+                                        text=str(text), infer=infer, error=error, answer_id=answer_id))
         self._inflight += 1
         asyncio.create_task(_run())
 
@@ -558,6 +574,8 @@ class ActorEngine:
             await self._on_model_done(ev)
         elif isinstance(ev, SpeechEvent):
             await self._on_speech_event(ev)
+        elif isinstance(ev, CandidateResult):
+            await self._on_candidate_result(ev)
         elif isinstance(ev, ControlMsg):
             if ev.kind == "demo_telemetry" and self.demo_trace is not None:
                 clean = self.demo_trace.client(ev.data)
@@ -575,6 +593,8 @@ class ActorEngine:
                 data = ev.data
                 if (data.get("utterance_id") == self._speech.sid
                         and self._speech.progress(data.get("played_samples"))):
+                    if self.CANDIDATE_TURNS and (data.get("started") is True or self._speech.played > 0):
+                        await self._candidate_playback_started()
                     if (data.get("ended") and self._speech_audio_done
                             and not self._speech_played_reported
                             and self._speech.played == self._speech.sent):
@@ -601,8 +621,12 @@ class ActorEngine:
         if event and "start" in event:
             # new speech falsifies any in-flight judge/shift/interrupt evidence
             self.seg_epoch += 1
+            if self.CANDIDATE_TURNS and self._candidate is not None:
+                self._resume_candidate_input()
             if self.STREAMING and self.STATE == "LISTEN":
                 self._stream_listen_start = ev.t_audio
+        elif self.CANDIDATE_TURNS and self._candidate is not None and self.STATE == "SPEAK":
+            self._candidate.resume_frames.append(ev.pcm)
         if self.STATE == "LISTEN":
             await self._listen_frame(ev, event)
         else:
@@ -626,6 +650,9 @@ class ActorEngine:
             # Retire it without sending a cancellation when the next reply starts.
             # The independent `finished` event still owns inflight accounting.
             self._speech = None
+        if self.CANDIDATE_TURNS:
+            self._invalidate_candidate("turn_finished")
+            self._speech_candidate = None
         speaking = self.STATE == "SPEAK"
         carried = list(self.interrupt_buf if speaking else self.BUFFER) if self.IN_SPEECH else []
         closed = speaking and self._seg_closed and bool(carried)
@@ -651,12 +678,18 @@ class ActorEngine:
         if closed:
             self.SILENCE_COUNTER = 0
             self._judged_seg_end = self.t_audio
-            self.dispatch_llm("judge", self.JUDGE_PROMPT, np.concatenate(carried), self.TURN_IDX)
+            if self.CANDIDATE_TURNS:
+                self._begin_candidate(np.concatenate(carried), confirmed=True)
+            else:
+                self.dispatch_llm("judge", self.JUDGE_PROMPT, np.concatenate(carried), self.TURN_IDX)
 
     # ------------------------------------------------------------------
     # LISTEN state (port of legacy handle_listen, audio clock + dispatch)
     # ------------------------------------------------------------------
     async def _listen_frame(self, ev: FrameEvent, event):
+        if self.CANDIDATE_TURNS:
+            await self._listen_candidate_frame(ev, event)
+            return
         frame, t = ev.pcm, ev.t_audio
         if event and "start" in event and not self.IN_SPEECH:
             await self.send_control("vad_start", {
@@ -773,7 +806,9 @@ class ActorEngine:
     def _start_answer_chain(self, user_audio, use_shift):
         """LISTEN EoU / continue-timeout: shift gate (non-first turn) then answer.
         Interrupt switch path calls with use_shift=False (legacy parity)."""
-        if use_shift:
+        if self.CANDIDATE_TURNS:
+            self._begin_candidate(user_audio, confirmed=True, stage="shift" if use_shift else "response")
+        elif use_shift:
             self.dispatch_llm("shift", self.SHIFT_PROMPT, user_audio, self.TURN_IDX,
                               add_to_history=False, shift_history=True)
         else:
@@ -799,6 +834,9 @@ class ActorEngine:
         # --- staleness gates ---
         if ev.gen != self.session_gen:
             return  # pre-reset result: drop silently (legacy could not even reach here)
+        if ev.answer_id and self._answer_versions.get(ev.turn) != ev.answer_id:
+            self._candidate_log("candidate_asr_discarded", candidate_id=ev.answer_id, turn=ev.turn)
+            return
         if ev.kind in ("judge", "shift", "interrupt") and ev.epoch != self.seg_epoch:
             await self.send_control("llm_stale_dropped", {
                 "timestamp": self._wall_ts(), "kind": ev.kind, "turn": ev.turn,
@@ -839,7 +877,8 @@ class ActorEngine:
         audio = self._pending_audio.pop(("shift", ev.epoch), None)
         low = ev.text.lower()
         if (low == "no" if self.CONTROL_VALIDATION else "no" in low):
-            self.dispatch_asr(audio, self.TURN_IDX)
+            if not self.CANDIDATE_TURNS:
+                self.dispatch_asr(audio, self.TURN_IDX)
             self.dispatch_llm("response", self.RESPONSE_PROMPT, audio, self.TURN_IDX,
                               add_to_history=True)
         elif (low == "yes" if self.CONTROL_VALIDATION else "yes" in low):
@@ -860,7 +899,8 @@ class ActorEngine:
             self.seg_epoch += 1
             if self.PLAYBACK_AUTOEND:
                 self.STATE = "LISTEN"
-            self.dispatch_asr(audio, self.TURN_IDX)
+            if not self.CANDIDATE_TURNS:
+                self.dispatch_asr(audio, self.TURN_IDX)
             self.dispatch_llm("response", self.RESPONSE_PROMPT, audio, self.TURN_IDX,
                               add_to_history=True)
         else:
@@ -905,10 +945,15 @@ class ActorEngine:
     # lifecycle
     # ------------------------------------------------------------------
     def _cancel_speech(self, reason):
+        if (self.CANDIDATE_TURNS and self._candidate is not None
+                and self._speech is not None and self._candidate.pipeline is self._speech):
+            self._invalidate_candidate(reason)
+            return
         if self._speech is None:
             return
         old = self._speech
         self._speech = None
+        self._speech_candidate = None
         old.cancel()
         if self._speech_jobs.pop(old.sid, None) is not None:
             self._inflight = max(0, self._inflight - 1)
@@ -943,6 +988,12 @@ class ActorEngine:
                 if self._speech_jobs.pop(ev.sid, None) is not None:
                     self._inflight = max(0, self._inflight - 1)
                 return
+            c = self._candidate
+            if (self.CANDIDATE_TURNS and c is not None and c.pipeline is not None
+                    and ev.sid == c.pipeline.sid and not c.published):
+                if self._candidate_current(c):
+                    self._stage_candidate_speech(c, ev)
+                return
             if self._speech is None or ev.sid != self._speech.sid:
                 return
             data = {"utterance_id": ev.sid, "timestamp": self._wall_ts(), **ev.data}
@@ -951,15 +1002,20 @@ class ActorEngine:
                 meta.text, meta.infer = data["text"], data["infer"]
                 meta.timed_out = data["timed_out"]
                 if meta.add_to_history:
-                    self.assistant_history.append(meta.text)
-                    if self.CHAT_DEMO:
-                        self._assistants_by_turn[meta.turn] = meta.text
+                    if not self.CANDIDATE_TURNS or self._speech_started:
+                        self._commit_speech_history(meta)
                 await self._trace_llm_done(meta)
                 await self.send_control("speech_text_done", data)
             elif ev.kind == "audio":
                 if data["seq"] == 0:
                     # Preserve speech that began while text/first audio was in flight.
-                    if self.STATE == "LISTEN" and self.IN_SPEECH:
+                    if self.CANDIDATE_TURNS and self._speech_candidate is not None:
+                        # Original question stays with the candidate for a possible
+                        # pre-playback resume, not in the interrupt buffer.
+                        self.IN_SPEECH = False
+                        self.BUFFER = []
+                        self.interrupt_buf = []
+                    elif self.STATE == "LISTEN" and self.IN_SPEECH:
                         self.interrupt_buf = list(self.BUFFER)
                         self.t_interrupt_start = self._stream_listen_start or self.t_audio
                     self.STATE = "SPEAK"
@@ -986,7 +1042,10 @@ class ActorEngine:
                 ev.delivered.set_result(None)
 
     def _reset_session(self):
+        self._invalidate_candidate("session_reset")
         self._cancel_speech("session_reset")
+        self._speech_candidate = None
+        self._answer_versions.clear()
         self.session_gen += 1
         self.seg_epoch += 1
         self.vad_iterator.reset_states()
@@ -1067,7 +1126,7 @@ class ActorEngine:
             reader.cancel()
             self.vad_iterator.reset_states()
             self._reset_session()
-            await asyncio.gather(reader, *self._speech_tasks, return_exceptions=True)
+            await asyncio.gather(reader, *self._speech_tasks, *self._candidate_tasks, return_exceptions=True)
             if self._outbox is not None:
                 await self._outbox.close()
                 self._outbox = None

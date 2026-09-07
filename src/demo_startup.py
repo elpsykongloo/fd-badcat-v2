@@ -3,7 +3,16 @@ import asyncio
 import io
 import json
 import time
+import unicodedata
 from pathlib import Path
+
+
+def verify_spoken_text(expected, actual):
+    # This is a narrow startup canary, not a general-purpose ASR accuracy score.
+    def normalized(text):
+        return "".join(c for c in unicodedata.normalize("NFKC", text).casefold() if c.isalnum())
+    if normalized(expected) != normalized(actual):
+        raise RuntimeError(f"TTS readback mismatch: expected {expected!r}, recognized {actual!r}")
 
 
 async def warmup(prompts):
@@ -40,22 +49,25 @@ async def warmup(prompts):
             {"role": "user", "content": "用中文和英文各打一个简短招呼。"}])]
         if not "".join(pieces).strip():
             raise RuntimeError("Text SSE warmup returned no text")
-        chunks = [p async for p in module.tts_omni_stream("你好。Hello, how are you?")]
-        if not chunks or len({p.sample_rate for p in chunks}) != 1:
-            raise RuntimeError("TTS warmup returned invalid PCM")
-        # Decode bilingual speech with the selected ASR, not just model loading.
-        pcm = np.frombuffer(b"".join(p.pcm for p in chunks), dtype="<i2").astype(np.float32) / 32768
-        wav = io.BytesIO()
-        sf.write(wav, pcm, chunks[0].sample_rate, format="WAV", subtype="PCM_16")
-        wav.seek(0)
-        bilingual = await asyncio.to_thread(module.asr, wav)
-        if not bilingual:
-            raise RuntimeError("Bilingual ASR warmup returned no text")
-        return transcript, bilingual, chunks
-    transcript, bilingual, chunks = await asyncio.wait_for(run(), 90)
+        checks, total_chunks = [], 0
+        for expected in ("你好。Hello, how are you?", "你能告诉我你在哪个城市吗？"):
+            chunks = [p async for p in module.tts_omni_stream(expected)]
+            if not chunks or len({p.sample_rate for p in chunks}) != 1:
+                raise RuntimeError("TTS warmup returned invalid PCM")
+            pcm = np.frombuffer(b"".join(p.pcm for p in chunks), dtype="<i2").astype(np.float32) / 32768
+            wav = io.BytesIO()
+            sf.write(wav, pcm, chunks[0].sample_rate, format="WAV", subtype="PCM_16")
+            wav.seek(0)
+            actual = await asyncio.to_thread(module.asr, wav)
+            verify_spoken_text(expected, actual)
+            checks.append({"expected": expected, "recognized": actual})
+            total_chunks += len(chunks)
+        return transcript, checks, total_chunks
+    transcript, checks, total_chunks = await asyncio.wait_for(run(), 90)
     result = {"event": "demo_warmup_done", "asr": module.ASR_BACKEND,
               "asr_provider": module.ASR_PROVIDER, "transcript": transcript,
-              "bilingual_transcript": bilingual, "tts_chunks": len(chunks),
+              "bilingual_transcript": checks[0]["recognized"], "tts_chunks": total_chunks,
+              "tts_contract": "verbatim-choice-v1", "tts_readback_checks": checks,
               "elapsed_s": round(time.perf_counter() - started, 3)}
     print(json.dumps(result, ensure_ascii=False), flush=True)
     return result

@@ -11,6 +11,7 @@ from contextlib import aclosing
 from dataclasses import dataclass, field
 
 from tts_sentence import StreamingSentenceBuffer
+from async_utils import cancellable_wait
 
 PCM_HEADER = struct.Struct("<4sIII")  # magic, utterance id, packet sequence, rate
 PROTOCOL = "pcm16.v1"
@@ -54,7 +55,7 @@ class SocketOutbox:
                         started = time.perf_counter()
                         send = (self.websocket.send_bytes(payload) if isinstance(payload, bytes)
                                 else self.websocket.send_text(payload))
-                        await asyncio.wait_for(send, self.timeout)
+                        await cancellable_wait(send, self.timeout)
                         if self.observed is not None:
                             self.observed(payload, queued, started, time.perf_counter())
                 finally:
@@ -76,7 +77,7 @@ class SocketOutbox:
 
 class SpeechPipeline:
     def __init__(self, sid, queue, messages, text_fn, tts_fn, *, timeout=15,
-                 retry=True, apology="", packet_ms=40, buffer_ms=600):
+                 retry=True, apology="", packet_ms=40, buffer_ms=600, precompute_gate=None):
         if not 10 <= packet_ms <= 100 or not 2 * packet_ms <= buffer_ms <= 2000:
             raise ValueError("stream packet/buffer sizes outside safe limits")
         self.sid, self.queue = sid, queue
@@ -87,6 +88,7 @@ class SpeechPipeline:
         self.rate = None
         self.credit = asyncio.Event()
         self.sentences = asyncio.Queue(maxsize=2)
+        self.precompute_gate = precompute_gate
         self.task = asyncio.create_task(self.run())
 
     def progress(self, samples):
@@ -115,7 +117,7 @@ class SpeechPipeline:
                 async with aclosing(self.text_fn(self.messages)) as source:
                     while True:
                         try:
-                            delta = await asyncio.wait_for(source.__anext__(), self.timeout)
+                            delta = await cancellable_wait(source.__anext__(), self.timeout)
                         except StopAsyncIteration:
                             break
                         chunks.append(delta)
@@ -147,6 +149,7 @@ class SpeechPipeline:
 
     async def synthesize(self):
         seq = 0
+        sentence_index = 0
         t0 = time.perf_counter()
         while True:
             sentence = await self.sentences.get()
@@ -154,12 +157,15 @@ class SpeechPipeline:
                 break
             if not sentence.strip():
                 continue
+            if sentence_index and self.precompute_gate is not None:
+                await self.precompute_gate.wait()
+            sentence_index += 1
             await self.emit("sentence", text=sentence)
             produced = False
             async with aclosing(self.tts_fn(sentence)) as source:
                 while True:
                     try:
-                        chunk = await asyncio.wait_for(source.__anext__(), 60)
+                        chunk = await cancellable_wait(source.__anext__(), 60)
                     except StopAsyncIteration:
                         break
                     if not chunk.pcm or len(chunk.pcm) % 2:
@@ -177,7 +183,7 @@ class SpeechPipeline:
                         count = len(pcm) // 2
                         while self.sent + count - self.played > self.rate * self.buffer_ms / 1000:
                             self.credit.clear()
-                            await asyncio.wait_for(self.credit.wait(), 5)
+                            await cancellable_wait(self.credit.wait(), 5)
                         self.sent += count
                         wire = PCM_HEADER.pack(b"FDS1", self.sid, seq, self.rate) + pcm
                         await self.emit("audio", wire=wire, seq=seq, samples=count,

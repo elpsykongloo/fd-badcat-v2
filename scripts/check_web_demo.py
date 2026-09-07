@@ -214,22 +214,42 @@ async def mock_checks(browser, output):
                 "microphone_frames": len(fixture.frames), "sessions": fixture.sessions, "page_errors": errors}
 
 
-async def live_check(browser, url, audio, output, turns=1):
+async def live_check(browser, url, audio, output, turns=1, no_speculation=False):
     context = await browser.new_context(permissions=["microphone"], viewport={"width": 1440, "height": 1050}, reduced_motion="reduce")
     await context.add_init_script(TRACKS)
+    if no_speculation:
+        await context.add_init_script("""(() => {
+          const send = WebSocket.prototype.send;
+          WebSocket.prototype.send = function(data) {
+            if (typeof data === 'string') {
+              const value = JSON.parse(data);
+              if (value.event === 'config') {
+                value.data.speculative_response = false;
+                data = JSON.stringify(value);
+              }
+            }
+            return send.call(this, data);
+          };
+        })();""")
     page = await context.new_page()
     errors, controls, playback_ack = [], [], []
     binary_packets = 0
+    captured_audio = {}
     uploads = {"frames": 0, "max_rms": 0.0}
     page.on("pageerror", lambda error: errors.append(str(error)))
     def receive(payload):
         nonlocal binary_packets
         if isinstance(payload, bytes):
             binary_packets += 1
+            magic, sid, seq, rate = struct.unpack_from("<4sIII", payload)
+            assert magic == b"FDS1"
+            entry = captured_audio.setdefault(sid, {"rate": rate, "packets": []})
+            assert entry["rate"] == rate and seq == len(entry["packets"])
+            entry["packets"].append(payload[16:])
         else:
             value = json.loads(payload)
             # Do not archive giant prompt/audio blobs from llm_done.
-            if value.get("event", "").startswith(("speech_", "demo_", "vad_", "turn_")) or value.get("event") in ("asr_done", "control_validation"):
+            if value.get("event", "").startswith(("speech_", "demo_", "vad_", "turn_", "candidate_")) or value.get("event") in ("asr_done", "control_validation"):
                 controls.append(value)
     def sent(payload):
         if isinstance(payload, bytes):
@@ -258,7 +278,7 @@ async def live_check(browser, url, audio, output, turns=1):
                     "session_id": await page.locator("#session-id").text_content(),
                     "audio_format": await page.locator("#audio-format").text_content(),
                     "diagnostics": {key: await page.locator("#" + key).text_content() for key in
-                                    ("stage-hold", "stage-decision", "stage-generation", "stage-total", "socket-rtt", "trace-status")}}
+                                    ("stage-hold", "stage-decision", "stage-generation", "stage-total", "socket-rtt", "trace-status", "speculation-status")}}
         assert "已启用" in snapshot["diagnostics"]["trace-status"]
         assert any(e["event"] == "demo_latency" for e in controls)
         assert snapshot["diagnostics"]["socket-rtt"] != "—"
@@ -270,8 +290,19 @@ async def live_check(browser, url, audio, output, turns=1):
         await stopped(page)
         assert binary_packets > 0 and any(p.get("ended") for p in playback_ack)
         assert not errors, errors
+        audio_files = []
+        for sid, entry in captured_audio.items():
+            path = output / f"received-utterance-{sid}.wav"
+            with wave.open(str(path), "wb") as wav:
+                wav.setnchannels(1)
+                wav.setsampwidth(2)
+                wav.setframerate(entry["rate"])
+                wav.writeframes(b"".join(entry["packets"]))
+            audio_files.append({"utterance_id": sid, "path": str(path),
+                                "kind": "received PCM, not physical speaker recording"})
         return {"kind": "live ActorEngine + Omni, Chromium virtual microphone/speaker; not physical listening",
-                "input": str(audio), "turns": turns,
+                "input": str(audio), "turns": turns, "speculation_disabled_by_client": no_speculation,
+                "received_audio_files": audio_files,
                 "binary_packets": binary_packets, "last_playback_ack": playback_ack[-1],
                 "completed_playbacks": [p for p in playback_ack if p.get("ended")],
                 "ui_snapshot": snapshot, "uploads": uploads, "events": controls, "page_errors": errors}
@@ -292,6 +323,8 @@ async def main():
     parser.add_argument("--audio", type=Path, help="Your own WAV input, required for --live-url")
     parser.add_argument("--turns", type=int, choices=[1, 2], default=1,
                         help="One or two independent turns; two repeats the input after 20 seconds of silence")
+    parser.add_argument("--no-speculation", action="store_true",
+                        help="Disable only speculative scheduling in the live handshake; keep VAD-END snapshots/cancellation")
     args = parser.parse_args()
     if args.live_url and (not args.audio or not args.audio.is_file()):
         parser.error("--live-url requires an existing --audio WAV owned by you")
@@ -319,7 +352,7 @@ async def main():
         receipt["browser"] = browser.version
         try:
             if args.live_url:
-                receipt["result"] = await live_check(browser, args.live_url, args.audio.resolve(), args.output, args.turns)
+                receipt["result"] = await live_check(browser, args.live_url, args.audio.resolve(), args.output, args.turns, args.no_speculation)
             else:
                 receipt["result"] = await mock_checks(browser, args.output)
             receipt["pass"] = True

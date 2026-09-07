@@ -30,7 +30,11 @@ TTS 请求逐句有序执行。文本生产和 TTS 消费是独立任务，最�
 
 判定为短打断、长打断、回复替换或会话重置时，取消文本/TTS HTTP 流、丢弃待合成句子和旧音频包；浏览器按 utterance ID 停掉已经排程的旧音频。普通 `continue` 不取消，也不引入新的 VAD 即停策略。代理使用异步 HTTP 和 SSE 透传，上游取消会关闭实际连接；GPU 已在执行的单个 kernel 不保证瞬时抢占。
 
+独立 `--demo-chat` 配置另外启用候选投机与**开播之前**的 VAD 续说撤销；开播之后沿用上述语义策略。候选冻结段尾输入与历史，确认前不发文本/音频，详见 [web_demo.md](web_demo.md) 的 actor-candidate-v1 小节。基础 HumDial 开关仍默认关闭。
+
 生成过程中出错则显式 `speech_error` 并停止该回复；没有输出任何文本前保留 response 的一次超时重试与道歉回退，有部分输出后不重试，避免重复播报。TTS 失败不会伪造完成。历史仍使用完整生成文本，尚未做词级“用户实际听到的前缀”裁剪；更严格的打断后历史一致性需要文本/音频对齐，属于后续改进。
+
+流式 TTS 已从提示词式朗读升级为 `verbatim-choice-v1`：Thinker 单一原文解码约束 + 文本全文/结束证明校验，防止 Omni 把待读疑问句重新回答；早到音频在校验前隔离（512KiB硬上限），没有证明不放行。需要启动器安装的窄范围服务适配，机制、旧整 WAV 兼容边界和音频回读验收见 [web_demo.md](web_demo.md) §8。
 
 当前单用户生产部署为三阶段 `max_num_seqs: 4`、stage 0 上下文 4096、FCFS；backend 全局最多放行三个普通请求，给 judge/interrupt 留一个总容量槽。这样流式文本与逐句 TTS 可以重叠，同时不会让普通合成队列堵死控制判定。它不是 GPU 抢占：已经运行的 kernel 不会被 judge 中断。完整准入语义、历史预算和真机收据见 `docs/production_capacity.md`；旧 `seq=1` 测量由独立串行配置保留。
 
@@ -56,10 +60,12 @@ TTS 请求逐句有序执行。文本生产和 TTS 消费是独立任务，最�
 客户端按累计播放样本回报（不是收包确认）：
 
 ```json
-{"event":"playback_progress","data":{"utterance_id":1,"played_samples":1920,"ended":false,"underruns":0}}
+{"event":"playback_progress","data":{"utterance_id":1,"played_samples":1920,"started":true,"ended":false,"underruns":0}}
 ```
 
 ID、单调性与 `played_samples <= sent_samples` 均检查；服务器收到真正的尾部播放确认后只记录一次 `speech_played`。`playback_autoend: false` 的 HumDial 默认状态语义继续保持。
+
+`started` 是可选兼容字段：仅 WebAudio 时间轴到达首包排程时间后为 true，可以早于第一块的完成回执，此时 `played_samples` 仍为 0。到包、建缓冲或开始排程均不应报 true；旧客户端缺此字段时以首个正数播放样本回执确认开播。候选版据此关闭“开播前自动撤销”的窗口并开始 ASR/提交完整回复历史。回执过网有延迟，不代表物理声卡听检。
 
 新版 HTML 页面使用附加握手 `{"event":"config","data":{"client":"humdial-web","audio_protocol":"pcm16.v1"}}`；服务端检查同源 Origin、生成归档会话 ID，并在 ActorEngine 初始化后发送 `demo_ready {session_id, protocol}`。浏览器收到此消息后才上传音频。只读 `/api/demo/info` 仅报告流式配置，不宣称 GPU 推理健康。其他旧客户端握手/归档命名不变。
 

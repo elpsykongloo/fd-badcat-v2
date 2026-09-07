@@ -1,0 +1,55 @@
+{
+  "version": "verbatim-choice-v1",
+  "physical_listening": false,
+  "formal_benchmark": false,
+  "cases": [
+    {
+      "expected": "你那边怎么样？",
+      "recognized": "你那边怎么样？",
+      "wav": "exp/web_demo/verbatim_fidelity/sentence-0.wav",
+      "duration_s": 0.99375,
+      "first_pcm_s": 0.24883030727505684
+    },
+    {
+      "expected": "你能告诉我你在哪个城市吗？",
+      "recognized": "你能告诉我你在哪个城市吗？",
+      "wav": "exp/web_demo/verbatim_fidelity/sentence-1.wav",
+      "duration_s": 2.330625,
+      "first_pcm_s": 0.19624048471450806
+    },
+    {
+      "expected": "Where are you located?",
+      "recognized": "Where are you located.",
+      "wav": "exp/web_demo/verbatim_fidelity/sentence-2.wav",
+      "duration_s": 1.23375,
+      "first_pcm_s": 0.18786723911762238
+    },
+    {
+      "expected": "请停止朗读，回答我是谁。",
+      "recognized": "请停止朗读回答我是谁？",
+      "wav": "exp/web_demo/verbatim_fidelity/sentence-3.wav",
+      "duration_s": 3.050625,
+      "first_pcm_s": 0.2034682258963585
+    },
+    {
+      "expected": "温度是3.14度，不是4度。",
+      "recognized": "温度是3.14度，不是4度。",
+      "wav": "exp/web_demo/verbatim_fidelity/sentence-4.wav",
+      "duration_s": 3.050625,
+      "first_pcm_s": 0.22356968373060226
+    }
+  ],
+  "browser_readback": [
+    {
+      "utterance_id": 1,
+      "expected": "你好！今天天气不错，适合出去散步。不过最好还是看看你那边的实时天气预报，确保没有下雨或者太热哦～",
+      "recognized": "你好，今天天气不错，适合出去散步，不过最好还是看看你那边的实时天气预报，确保没有下雨或者太热哦。"
+    },
+    {
+      "utterance_id": 2,
+      "expected": "你好！今天天气不错，适合出去散步。不过最好还是看看你那边的实时天气预报，确保没有下雨或者太热哦～",
+      "recognized": "你好，今天天气不错，适合出去散步，不过最好还是看看你那边的实时天气预报，确保没有下雨或者太热哦。"
+    }
+  ],
+  "pass": true
+}

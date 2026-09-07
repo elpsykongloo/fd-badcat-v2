@@ -1,0 +1,51 @@
+{
+  "version": "actor-candidate-v1 + verbatim-choice-v1",
+  "date_utc": "2026-09-07",
+  "status": "implemented, targeted checks passed, service running for laptop",
+  "formal_benchmark": false,
+  "physical_listening": false,
+  "baseline_tts_failure": [
+    {
+      "requested": "你那边怎么样？",
+      "recognized": "我这边一切都好，谢谢关心。你呢？",
+      "audio_duration_s": 3.530625
+    },
+    {
+      "requested": "你能告诉我你在哪个城市吗？",
+      "recognized_summary": "Generated an unsolicited self-introduction about having no physical location instead of reading the question",
+      "audio_duration_s": 14.135
+    }
+  ],
+  "baseline_scope": "Direct sequential requests with the old omni_tts_payload, captured in diagnostic tool output; not the user's original speaker recording",
+  "mechanism": {
+    "candidate": "VAD-END frozen audio/history, private judge/shift/response/first-sentence TTS, hold-confirmed publication, resumed-input whole-chain cancellation",
+    "capacity": "Unconfirmed control requests also use NORMAL; process total=4, normal=3; one current candidate per session",
+    "history": "ASR and complete response history wait for browser playback-start acknowledgement; answer versions reject stale ASR",
+    "tts": "Single literal choice constrains comprehension-stage text; streaming consumer verifies full exact text and successful text termination before releasing PCM",
+    "server_adapter": "scripts/patch_omni_verbatim_tts.py forwards structured_outputs to comprehension only and emits fd_text_finish_reason for constrained text completion",
+    "limits": "1024 UTF-8 bytes per TTS sentence; 512KiB pre-verification PCM quarantine; first speculative TTS sentence only; existing 600ms playback credit and 80ms browser start lead"
+  },
+  "targeted_validation": {
+    "pytest": {"passed": 89, "elapsed_s": 2.31, "files": ["tests/test_tts_verbatim.py", "tests/test_actor_candidate.py", "tests/test_chat_demo.py", "tests/test_engine.py", "tests/test_speech_stream.py", "tests/test_web_demo.py"]},
+    "node": {"command": "node tests/test_stream_demo.cjs", "passed": true},
+    "tts_readback": {"receipt": "exp/web_demo/verbatim_fidelity/receipt.json", "sentences_passed": 5, "completed_browser_utterances_passed": 2, "normalization": "Unicode NFKC, casefold, alphanumeric characters only; narrow canary, not a general ASR score"},
+    "browser": {"receipt": "exp/web_demo/verbatim_browser_live/receipt.json", "session_id": "web-demo-79fb629d1dc54f90924d5aacae175194", "turns": 2, "binary_packets": 426, "played_samples": [191400, 208125], "underruns": 0, "javascript_errors": 0, "candidates_created": 4, "confirmed": 2, "cancelled_before_publication": 2, "trace_dropped": 0, "vad_end_to_first_audio_send_chain_ms": [650.3, 641.7]},
+    "earlier_transport_only_smoke": {"receipt": "exp/web_demo/speculative_live/receipt.json", "interpretation": "Transport/turn/cancellation passed; does not establish speech fidelity. The subsequent user listening report revealed the old unconstrained-TTS flaw."},
+    "implementation_findings": ["Cancellation concurrent with read completion could be swallowed by Python 3.10 wait_for; cancellable_wait and stage-cancellation regression tests now cover it", "Slow socket queues must fence old text/start events as well as PCM", "Literal TTS needs a successful text-stage completion proof, not just matching a text prefix"]
+  },
+  "running_service": {
+    "tmux": "humdial-demo",
+    "launcher_pid": 36100,
+    "omni_pid": 36105,
+    "proxy_pid": 37033,
+    "backend_pid": 37045,
+    "logs": "exp/web_demo/20260907T140208Z-36100/",
+    "bind": "127.0.0.1",
+    "ports": [10003, 10004, 18000],
+    "warmup_s": 3.715,
+    "kept_running": true,
+    "laptop_url": "http://localhost:18000/demo/"
+  },
+  "operational_notes": ["Controlled restarts checked empty listeners and GPU process lists before starting replacements", "Old 30018 stack shutdown reported 2 semaphore / 14 shared_memory cleanup warnings", "Old 33632 stack shutdown reported 2 semaphore / 16 shared_memory cleanup warnings", "Running service logs and real user recordings/conversation logs are not part of this receipt's committed artifacts"],
+  "limitations": ["No physical microphone/speaker or subjective prosody acceptance", "No per-utterance production ASR verification; constrained text is not a proof of every acoustic pronunciation", "The answer model can still make unsupported factual claims", "Candidate VAD-END snapshots differ from the old hold-expiry input/history snapshots", "Speculation consumes resources and may be discarded; no zero-cost or formal latency claim", "Legacy whole-WAV and frozen TACT/RB payloads remain unchanged and do not gain the new verbatim contract", "No new RB/FDB/HumDial score or full-suite run"]
+}

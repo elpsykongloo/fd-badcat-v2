@@ -180,6 +180,24 @@ def _call_omni_tts(text: str) -> bytes:
     return _extract_omni_audio(response.json())
 
 
+def verbatim_tts_payload(text: str):
+    """Constrain Thinker to the one literal sentence; never ask it to answer.
+
+    Separate from the legacy/evaluation payload. UTF-8 byte count conservatively
+    bounds byte-BPE tokens, including room for EOS; the fixed sentence cap also
+    leaves room for prompt + output under the production 4096-token context.
+    """
+    if not isinstance(text, str) or not text.strip():
+        raise ValueError("Verbatim TTS requires nonempty text")
+    size = len(text.encode("utf-8"))
+    if size > 1024 or "<|" in text or "|>" in text:
+        raise ValueError("Verbatim TTS sentence too long or contains model control tokens")
+    payload = omni_tts_payload(text)
+    payload.update(modalities=["text", "audio"],
+                   structured_outputs={"choice": [text]}, max_tokens=size + 8)
+    return payload
+
+
 def _mono_16k(audio, sr: int):
     import numpy as np
 
@@ -275,5 +293,5 @@ def tts_omni_stream(text):
     from stream_transport import audio_stream
     if TTS_PROVIDER not in {"omni", "qwen3omni", "qwen3-omni"}:
         raise ValueError("Streaming speech currently requires the Omni TTS provider")
-    return audio_stream(OMNI_TTS_URL, omni_tts_payload(text),
-                        int(os.getenv("FDBC_OMNI_TTS_TIMEOUT", "600")))
+    return audio_stream(OMNI_TTS_URL, verbatim_tts_payload(text),
+                        int(os.getenv("FDBC_OMNI_TTS_TIMEOUT", "600")), expected_text=text)

@@ -4,6 +4,8 @@ engine:
   playback_autoend: true
   control_validation: true
   warmup: true
+  speculative_response: true
+  cancellable_response: true
 asr:
   backend: sensevoice
   provider: cpu

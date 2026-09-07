@@ -39,9 +39,15 @@ export class SpeechPlayer {
   }
   progress(s) {
     if (this.speech !== s) return;
+    s.started ||= s.played > 0 || (s.received > 0 && this.context.state === "running"
+      && this.context.currentTime >= s.playAt);
     this.send("playback_progress", {utterance_id: s.id, played_samples: s.played,
-      ended: s.eof && s.played === s.received, underruns: s.underruns});
+      started: !!s.started, ended: s.eof && s.played === s.received, underruns: s.underruns});
     this.update(s);
+  }
+  pollStart() {
+    const s = this.speech;
+    if (s && !s.started && s.received && this.context.currentTime >= s.playAt) this.progress(s);
   }
   packet(raw) {
     if (raw.byteLength < 18 || (raw.byteLength - 16) % 2) throw Error("无效 PCM 包");
@@ -64,6 +70,7 @@ export class SpeechPlayer {
     if (s.firstAudio === undefined) {
       s.firstAudio = Math.round(performance.now() - s.start);
       s.next = this.context.currentTime + 0.08;
+      s.playAt = s.next;
       s.scheduledLeadMs = (s.next - this.context.currentTime) * 1000;
     } else if (s.next < this.context.currentTime) {
       s.underruns++;

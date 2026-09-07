@@ -1,6 +1,7 @@
 """Actor binary control protocol: exact label -> one repair -> safe fallback."""
 import asyncio
 import time
+from async_utils import cancellable_wait
 
 LABELS = {"judge": ("continue", "switch"), "interrupt": ("continue", "switch"),
           "shift": ("no", "yes")}
@@ -28,7 +29,7 @@ async def decide_control(call, messages, kind, timeout):
             break
         audit["attempts"] += 1
         try:
-            raw = await asyncio.wait_for(call(request), remaining)
+            raw = await cancellable_wait(call(request), remaining)
         except asyncio.TimeoutError:
             audit["timed_out"] = True
             break

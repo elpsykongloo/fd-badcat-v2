@@ -70,13 +70,45 @@ async def text_stream(url, payload, timeout=60):
                     yield content
 
 
-async def audio_stream(url, payload, timeout=60):
+async def audio_stream(url, payload, timeout=60, *, expected_text=None):
+    """Decode native PCM; optional fail-closed literal-text contract for TTS.
+
+    Quarantine early audio until the complete sentence and its successful text
+    termination are verified. This waits for neither the whole reply nor audio
+    EOF. A server ignoring constraints/proof, a mismatch or truncation is an
+    error, never a reason to retry unconstrained chat synthesis.
+    """
     count = 0
+    spoken_text = ""
+    verified = expected_text is None
+    pending, pending_bytes = [], 0
     async with aclosing(sse_json(url, payload, timeout)) as records:
         async for obj in records:
+            if expected_text is not None and obj.get("modality") == "text":
+                for choice in obj.get("choices", []):
+                    if choice.get("index", 0) != 0:
+                        raise RuntimeError("Unexpected TTS text choice")
+                    delta = (choice.get("delta") or {}).get("content") or ""
+                    if not isinstance(delta, str) or (verified and delta):
+                        raise RuntimeError("Invalid or extra TTS text after verification")
+                    spoken_text += delta
+                    if not expected_text.startswith(spoken_text):
+                        raise RuntimeError("TTS text differs from the requested literal sentence")
+                    reason = obj.get("fd_text_finish_reason") or choice.get("finish_reason")
+                    if reason is not None:
+                        if reason != "stop" or spoken_text != expected_text:
+                            raise RuntimeError("TTS text incomplete or did not terminate normally")
+                        verified = True
+                        for chunk in pending:
+                            yield chunk
+                        pending.clear()
+                        pending_bytes = 0
+                continue
             if obj.get("modality") != "audio":
                 continue
             for choice in obj.get("choices", []):
+                if expected_text is not None and choice.get("index", 0) != 0:
+                    raise RuntimeError("Unexpected TTS audio choice")
                 data = (choice.get("delta") or {}).get("content")
                 if not data:
                     continue
@@ -87,6 +119,15 @@ async def audio_stream(url, payload, timeout=60):
                 pcm = (np.clip(audio.mean(axis=1), -1, 32767 / 32768) * 32768).round().astype("<i2")
                 if pcm.size:
                     count += 1
-                    yield PCMChunk(pcm.tobytes(), sr)
+                    chunk = PCMChunk(pcm.tobytes(), sr)
+                    if verified:
+                        yield chunk
+                    else:
+                        pending_bytes += len(chunk.pcm)
+                        if pending_bytes > 512 * 1024:
+                            raise RuntimeError("TTS unverified audio exceeded quarantine limit")
+                        pending.append(chunk)
+    if not verified:
+        raise RuntimeError("TTS server did not prove verbatim text completion; check server adapter")
     if not count:
         raise RuntimeError("TTS stream produced no audio")

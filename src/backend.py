@@ -490,6 +490,10 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
             # this server enables the new demo. Both sides must opt in.
             session_cfg["stream_response"] = bool(session_cfg.get("stream_response")
                                                    and data.get("audio_protocol") == "pcm16.v1")
+            # Read-only comparison knob: a client can disable speculation, never
+            # enable a server-disabled feature. Snapshot/cancellation stay equal.
+            if data.get("speculative_response") is False:
+                session_cfg["speculative_response"] = False
             engine = ActorEngine(websocket=websocket, prompts=prompts, delay=delay,
                                  llm_cfg=llm_cfg, engine_cfg=session_cfg)
         engine.output_dir = Path("exp") / exp / f"realtimeout_{lang}"
@@ -504,6 +508,9 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
                 await websocket.send_json({"event": "demo_ready", "data": {
                     "session_id": exp, "protocol": "pcm16.v1",
                     "observability": "demo-trace-v1",
+                    "tts_contract": "verbatim-choice-v1",
+                    "speculative_response": bool(session_cfg.get("speculative_response")),
+                    "cancellable_response": bool(session_cfg.get("cancellable_response")),
                     "profile": "chat-demo-v1" if (engine_cfg or {}).get("chat_demo") else "humdial"}})
             await engine.run_realtime(websocket)
         finally:

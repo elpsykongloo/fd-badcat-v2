@@ -65,6 +65,7 @@
           <p>应用层往返：<strong id="socket-rtt">—</strong>（含 SSH、服务队列与浏览器调度，不是纯网络 RTT）</p>
           <p id="trace-status">连接后检查逐轮记录状态</p>
           <p id="profile-note">连接后显示当前聊天配置</p>
+          <p id="speculation-status">候选预计算与确认状态将在对话后显示</p>
           <dl class="connection-info"><div><dt>服务地址</dt><dd id="endpoint">—</dd></div><div><dt>会话编号</dt><dd id="session-id">未建立</dd></div><div><dt>最近事件</dt><dd id="last-event">—</dd></div><div><dt>音频设备</dt><dd id="audio-format">连接后显示</dd></div></dl>
           <div class="help-grid"><div><h3>在笔记本上展示</h3><p>通过 SSH 将服务器的 18000 端口转发到本机，再打开 <code>http://localhost:18000/demo/</code>。不需要在笔记本上安装模型。不要直接双击 HTML 文件。</p></div><div><h3>麦克风与隐私</h3><p>浏览器需要 HTTPS 或 localhost 才能使用麦克风。点击开始后，音频会发送到服务器；输入音频与转写可能被保存。结束会释放麦克风，清空页面记录不会删除服务器文件。</p></div></div>
           <p class="boundary-note">当前为 ActorEngine 研究演示，具体策略以上方配置为准。首文本／首音频到达从回复开始事件计时；①②③另计服务器等待与生成。转写及回复文本不代表实际已听到的音频前缀；指标不作为正式评测分数，也不是嘴停到扬声器出声延迟。逐轮事件、文本及浏览器性能指标会保存在服务器，清空页面不会删除它们。服务未内置公网鉴权，建议仅通过 SSH 转发展示。</p>

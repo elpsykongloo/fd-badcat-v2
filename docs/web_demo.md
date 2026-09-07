@@ -2,7 +2,7 @@
 
 页面入口是 `src/static/index.html`，由 backend 的 `/demo/` 提供。纯 HTML/CSS/JavaScript，没有前端构建步骤、CDN、账号密钥或笔记本端 Python 依赖。
 
-模型仍运行在 GPU 服务器；笔记本浏览器负责录音、播放与页面展示。使用 HumDial ActorEngine，展示启动器现默认选择独立 `chat-demo-v1` 配置：自然中英聊天、双语 ASR、播放后轮次收尾与启动预热。原 HumDial 评测配置及默认关闭的行为开关保留，未启用投机。
+模型仍运行在 GPU 服务器；笔记本浏览器负责录音、播放与页面展示。使用 HumDial ActorEngine，展示启动器默认选择独立 `chat-demo-v1` 配置：自然中英聊天、双语 ASR、播放后轮次收尾与启动预热，并启用完整候选投机和开播前续说撤销。原 HumDial 评测配置及默认关闭的行为开关保留。
 
 ## 1. 在服务器启动
 
@@ -14,7 +14,7 @@ tmux new -s humdial-demo
 bash setup/start_demo.sh
 ```
 
-等待终端打印 `DEMO READY`。首次加载模型需要几分钟；期间会显示日志路径和就绪进度，不要反复启动。READY 前还会实际预热 VAD、CPU ASR、Omni 控制判定、流式文本和流式 TTS，并回读一段中英合成音频；失败会阻止启动，不在首位用户身上执行冷启动。backend.log 的 `demo_warmup_done` 记录实际 ASR 后端、转写和耗时。**READY 不代表笔记本麦克风或物理扬声器已经验收**。
+等待终端打印 `DEMO READY`。首次加载模型需要几分钟；期间会显示日志路径和就绪进度，不要反复启动。READY 前实际预热 VAD、CPU ASR、Omni 控制判定、流式文本和流式 TTS，并回读中英音频及易被误答的城市疑问句，要求内容匹配（忽略大小写/标点/空白）；失败会阻止启动。backend.log 的 `demo_warmup_done` 记录实际 ASR 后端、转写、`tts_readback_checks` 和耗时。**READY 不代表笔记本麦克风或物理扬声器已经验收**。
 
 启动器按顺序启动：
 
@@ -62,7 +62,7 @@ ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -L 127.0.0.1:18080:
 
 1. 戴耳机，打开页面。点击“开始对话”，允许麦克风访问；握手完成前不会上传录音。
 2. 看到“我在听，你说。”后自然说话，不用按住按钮。页面显示输入音量、实时回复和稍晚到达的 ASR 转写。
-3. 在回答时继续说话可测试打断；是否打断仍由语义判定和长打断规则决定，不是“检测到声音就停”。聊天配置通常回答一至三句，已不强制 15 字；正常换话题不会被提示词要求拒答。播放完成后自动进入下一轮，已经开始说的话会继续保留。
+3. 在回答前继续说话，会撤销尚未开播的旧回答、合并原问题与续说。已经开播后仍由原语义判定和长打断规则决定，不是所有声音都停。聊天配置通常回答一至三句，已不强制 15 字；正常换话题不会被提示词要求拒答。播放完成后自动进入下一轮，已经开始说的话会继续保留。
 4. “静音麦克风”会关闭输入轨的声音并显式上传零值帧，已有回复仍可播放；持续发送静音帧是为了保持既有音频时钟，不是暂停服务器时间。
 5. “结束”关闭 WebSocket、停止全部排程音频、释放麦克风；再次开始会分配新的服务器会话，清空上一段页面记录。已有记录也可以在断开后手动清空。
 6. “全屏展示”隐藏浏览器外框；“连接与运行详情”显示当前会话、缓冲、计时口径和排错帮助。
@@ -103,6 +103,9 @@ ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -L 127.0.0.1:18080:
 | `vad_done` / `vad_640_done` / `speech_start` / `speech_first_audio` | 服务器三个阶段的边界；`server_ms` 是同一会话单调钟，`t_audio` 仍是驱动业务判据的音频钟 |
 | `demo_latency` | ①停顿窗、②轮次判定/继续等待、③文本/分句/TTS/排队，以及 VAD 结束到首音频入发送链路的总和；按 generation/epoch 与 utterance ID 关联，缺锚或续说失配显示 null，不借前轮锚凑数 |
 | `llm_dispatch` / `llm_done` / `llm_stale_dropped` / `capacity_acquired` | 请求类别、结果/过期、进程闸门等待；可查 continue / shift / interrupt 分支。容量时间包含在上述阶段内，不再次累加 |
+| `candidate_created` / `candidate_dispatch` / `candidate_control_done` / `candidate_speech_started` | 私有预计算轨，仅服务器审计，不向浏览器展示未确认判断/文本；含候选 ID、段尾样本数、请求类别及阶段 |
+| `candidate_confirmed` / `candidate_cancelled` / `candidate_result_discarded` | 确认时已准备音频量、预计算墙钟；作废原因、阶段、已准备样本及候选存活时间；存活时间不等于 GPU 计算费用 |
+| `speech_playback_started` | 浏览器 WebAudio 开播回执被服务器接受；此后恢复原语义打断规则，不是物理扬声器测量 |
 | `socket_first_audio_sent` / `socket_slow_send` | 首二进制包及总排队/发送超过 50ms 的发送；完成只表示服务器 socket 发送返回，不表示笔记本已收到 |
 | `client_rtt` | 浏览器每 5 秒一次应用层 ping/pong，同一浏览器时钟差；包含网络、SSH、服务排队和浏览器调度，不是纯网络 RTT，不可除以 2 冒充单向延迟 |
 | `client_first_audio` / `client_playback_end` / `client_cancel` / `client_stop` | 浏览器首包、播放完成、取消/结束；包含样本数、断流次数、上传 bufferedAmount。第一包的 `scheduled_lead_ms` 为 WebAudio 起播调度余量，设备 latency 为浏览器估计，均非物理扬声器听检 |
@@ -110,13 +113,22 @@ ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -L 127.0.0.1:18080:
 
 服务器 `server_ms` 与浏览器 `client_ms` 不同源，**不能直接相减**。旧的首文本/首音频到达指标仍从浏览器收到 `speech_start` 起算；完整三阶段用服务端指标另列。读完/生成完的文本不是用户实际听到的前缀。观测本身不改变判据；聊天配置的独立行为开关见下节，0.64/2.5/1.5s 阈值保持不变。
 
-### 为什么异步仍会出现阶段累加？
+### 完整候选管线（actor-candidate-v1）
 
-ActorEngine 的异步派发让收音不中断；它没有 `speculative_dispatch`。该开关在 `engine_b.py` 的 Phase-B TACT 路径，VAD END 时预计算决策，hold 确认前结果保持无效、续说则丢弃。TACT 普通与投机分支都通过 `_cumulative_prefix(anchor)` 截取相同段尾；Actor 目前在 hold 到期后拼 BUFFER（包含随后音频），不能直接提前调用并宣称输入逐字节等价。Phase-B 还把 judge→shift→response 换成一个事务决策，不能整体搬来当作 HumDial 性能开关。
+旧 Actor 异步收音不等于提前推理。新版只在流式 Actor 的显式开关下启用 `src/actor_candidate.py`：借用 TACT 的“候选→确认/作废”思想，不搬入事务工具判据，也不修改 TACT 冻结实现。
 
-可研究的独立方案：冻结候选输入/历史，投机 judge 或回答/TTS，在原判据确认前禁止播放、前端展示和写历史；续说、shift、取消、重置需整链作废。只提前 judge 主要重叠①②；要重叠③还须提前回答/TTS。若从 VAD END 跑判定→生成，在成功命中且无争用时，理想式从 `H+J+G` 变为 `max(H,J+G)`；若只投机判定则为 `max(H,J)+G`。这是调度上界，不是实测提升承诺，不能消除原 hold 门槛。
+1. VAD END 当场复制只读音频、一次编码，并冻结 judge/shift/response 的消息及历史。停顿窗口内运行 judge→必要的 shift→所选回答流→首句 TTS；这些步骤相互仍有依赖，但整条链可以与 640ms hold 重叠。
+2. 确认前不发送回复文本/音频、不展示候选、不写用户或助手历史。只预合成第一句，最多积压两句待合成文本，PCM 信用上限 600ms；确认后放开后续句。不是提前生成无限长音频。
+3. 原 hold 满足且候选仍对应当前 generation/epoch/turn 时确认；直接释放已经准备好的首音频，不重新生成命中的回答。judge=`continue` 仍走原 2.5 秒继续等待，不绕过它抢答；shift=`yes` 只生成原 shift_re 分支，不泄漏普通回答或将旁路话语写进用户历史。
+4. 新 VAD START 在开播回执之前到达，撤销 judge/shift/文本/TTS 的整条真实 SSE 请求与队列，保留原问题、间隙和续说音频，下一个 END 重新冻结。旧候选不升级轮次，不触发旧 ASR，不污染历史。重置/断线同样撤销；candidate ID、epoch 与 utterance ID 拦截迟到结果、已排队旧文本和旧音频。
 
-还须验证：少了真实尾部音频是否改变判定、历史快照是否一致、废弃率/取消是否真正释放 HTTP，以及 seq4 的 GPU 争用是否拖慢 judge。W3 已有 full-engine 投机记录为 604 派发/197 确认/407 作废（67.4%），仅说明成本确实存在，不是本 demo 的预测值。因此可保持对外提交规则，但不应在未验证时称为“无条件、无成本、逐位等价的纯提升”。当前聊天配置也未启用投机。
+所有未确认 judge/shift 也走 **normal** 槽，不侵占 interrupt/judge 的控制保留槽。每会话仅一个当前候选；取消传播到异步 HTTP，关闭后才释放容量。迁移另外修复了超时等待与取消同时发生时可能吞掉取消、导致管线卡在候选门上的竞态，以及取消尚未发出的文本仍在 socket 队列里的漏洞。私有流失败不会展示失败草稿：确认后最多重新启动一次选定回答链；已公开的失败流不重放部分文本。
+
+助手历史和 ASR 延迟到浏览器确认开播；晚到 ASR 用回答版本号防覆盖。浏览器在既有麦克风帧发送前检查 WebAudio 时间轴并上报 `started`（旧客户端用首个正数 played_samples 回执）；**不是收到音频就算开播**。跨网络传递仍有时延，边界以服务器接受回执为准，不能声称精确物理“用户已听见”；开播后也仍保存完整生成文本，不是听到前缀对齐。
+
+页面详情新增“投机”状态，展示确认时已经准备的音频毫秒数及重叠预计算时间。若理想无争用且 judge 接受结束，首音频从旧 `H+J+G` 调度形态变为 `max(H,J+G)`（J 含必要 shift，G 含文本与首句 TTS）；不是固定减去 640ms 或零成本保证，模型较慢时仍会在 hold 后等待。
+
+**输入边界明确变化**：原 Actor 在 hold 后拼 BUFFER，包含窗口后的尾部音频且历史可能已更新；候选路径冻结在 VAD END。因此只承诺新路径投机开/关使用相同快照，不承诺与原路径输入等价或质量不变。可以在 WebSocket config 中指定 `speculative_response: false` 仅关闭提前派发，保留取消与段尾快照作对照；客户端不能反向开启服务器关闭的投机。彻底恢复旧路径需在独立 demo YAML 同时关闭两个开关并重启。实际收益、作废成本及听感仍需笔记本试用。
 
 ## 7. 独立聊天配置（chat-demo-v1）
 
@@ -127,16 +139,32 @@ ActorEngine 的异步派发让收音不中断；它没有 `speculative_dispatch`
 - **双语 ASR**：选择已在仓内的 SenseVoice int8 / CPU / 2 线程，不占 Omni GPU。YAML 的 `asr` 段现在实际应用到延迟初始化的识别器；显式 `FDBC_ASR_BACKEND`、`FDBC_ASR_PROVIDER`、`FDBC_ASR_NUM_THREADS` 环境变量优先。切换后需重启 backend，已加载的模型不会在会话中热换。ASR 用于页面转写与后续文字历史，当前语音判定和回答仍由 Omni 直接听音频。
 - **聊天提示词**：不再强制 15 字、不无条件附和；支持追问、纠正和中英切换，正常换话题不判 shift。仅明确对第三方说话才判 shift；这不是声纹识别。仍无工具和实时查询能力。
 - **二分类容错**：judge/interrupt 仅接受 `continue|switch`，shift 仅接受 `no|yes`，拒绝空串、含糊解释及子串碰撞。首次无效或请求异常时最多修复一次，与首次请求共享 `llm.decision_timeout_s` 总预算；超时不继续重试。仍失败时 judge/interrupt 回退 `continue`，shift 回退 `no`。judge 的回退继续走已有等待超时机制，避免空输出立刻抢话；shift 不会再静默卡住。`control_validation` 记录原始标签、尝试次数、修复/回退/超时；不套用 TACT 工具 JSON 解析器。
+- **完整投机与开播前撤销**：`speculative_response: true`、`cancellable_response: true` 仅在新流式协议下生效；前者必须伴随整链撤销保障，不能单独禁掉安全撤销。展示配置默认开启，基础 HumDial 配置默认关闭。机制和限制见上节。
 
 历史仍保存完整生成文本，不是精确“用户已听到前缀”。预热不是持续健康检查，也不能消除每次会话的所有初始化耗时。提示词不是事实性保证：自造天气问题的功能烟测仍出现无依据的天气断言，不能据此宣称聊天质量已验收。这些变更没有修改 RB/TACT 评测配置或建立新的正式成绩。
+
+## 8. 逐字合成修复（verbatim-choice-v1）
+
+原实现把每个分句作为新的 user 消息交给 Omni，只用 system 提示“逐字读”，实际会重新回答问题。例如“你那边怎么样？”被读成“我这边一切都好……”；“你能告诉我你在哪个城市吗？”变成 14 秒的模型自我介绍。它不是分句乱序或投机误打断，而是音频内容背离页面文字。先前短输入/播放契约检查不能证明合成忠实性。
+
+流式 Actor 现在用 `module.verbatim_tts_payload()`：通过 `structured_outputs.choice=[原文]` 对 Thinker 做单一字面值解码约束，再由同一个 Omni 的 Talker 合成；不更换模型、不增加第二套 GPU 服务。`choice` 不是正则拼接，问号、引号等不会被当作语法。[vLLM 结构化解码说明](https://docs.vllm.ai/en/latest/features/structured_outputs/)
+
+- 当前 vLLM-Omni 版本的普通请求转换漏掉了 `structured_outputs`。启动器先执行仓内 `scripts/patch_omni_verbatim_tts.py`：仅向 comprehension stage 转发该参数，音频阶段仍用原采样配置；另给受约束的文本末帧增加 `fd_text_finish_reason`。适配幂等，未知或半修补的依赖源码布局会拒绝启动，不能静默忽略约束。普通无约束请求不改动。
+- 请求同时返回文本和音频；`stream_transport.audio_stream(expected_text=...)` 逐块检查原文前缀，要求最终全文严格相同且文本以 `stop` 正常结束，才放行音频。Omni 通用 `finish_reason` 会等全部模态结束，所以使用上述单独文本完成证明；只等一个短句的文本，不等整段回答或整段音频。提前到达的 PCM 暂存有 512KiB 硬上限，取消仍关闭 HTTP。
+- 上游不支持约束、回传缺失、文本不符、超长或截断均显式失败，不回退到自由聊天合成。单句 UTF-8 最多1024 bytes，禁止模型控制标记；文本生成预算按 byte-BPE 安全上界留足 EOS 余量，避免旧 max_tokens 环境值把指定原文截断。确认后的音频仍受原 600ms 播放信用和 utterance ID 栅栏约束。
+- `tts_omni_stream()` 接入新契约；旧整 WAV `omni_tts_payload()` / `tts()` 仅为 legacy/RB/TACT 复现兼容保持原样，**不把它们称为已修复的可靠逐字 TTS**。展示页应通过新版流式 Actor 使用本修复。
+
+启动预热与 `scripts/check_verbatim_tts.py` 同时核对真正合成音频的 ASR 回读；浏览器检查另保存它收到的逐 utterance PCM，供整段多句回读，避免只看页面文本就宣布语音通过。它仍不是每个线上回答的声学证明：专名、数字读法、韵律和设备听感要单独评估；ASR canary 是窄范围护栏，不能当成通用音质分数。
 
 ## 开发核验
 
 ```bash
 node tests/test_stream_demo.cjs
-env -u OMP_NUM_THREADS /root/miniconda3/envs/fd-sds/bin/python -m pytest tests/test_web_demo.py tests/test_speech_stream.py -q
+env -u OMP_NUM_THREADS /root/miniconda3/envs/fd-sds/bin/python -m pytest tests/test_tts_verbatim.py tests/test_actor_candidate.py tests/test_chat_demo.py tests/test_engine.py tests/test_speech_stream.py tests/test_web_demo.py -q
 ```
 
 浏览器检查脚本 `scripts/check_web_demo.py` 使用 Playwright 和真实 Chromium 的 WebAudio/AudioWorklet；默认使用明确标注的合成协议测试服务器，不调用模型、不提供模拟回答给正式演示页。`--live-url` 可接真实 backend 与自有 mono PCM16 WAV 做链路烟测：默认播一次，`--turns 2` 在 20 秒静音后再播一次以检查跨轮收尾和 ASR 配对；不循环输入。工具的截图/机器检查不能代替笔记本真实耳机、麦克风、声卡及外放回声听检。Linux 截图环境需安装中文字体，否则系统字体缺字可能显示方框；页面不依赖在线字体服务。
+
+`--no-speculation` 只在检查脚本的 live 握手关闭提前派发，适合与同输入的正常 live 烟测做顺序比较；不是正式延迟基准，不能和旧 seq1 数据相减。
 
 协议细节见 [streaming_speech.md](streaming_speech.md)，生产容量见 [production_capacity.md](production_capacity.md)。

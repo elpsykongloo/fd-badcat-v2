@@ -1,0 +1,550 @@
+{
+  "utc": "2026-09-07T13:44:54.702075+00:00",
+  "physical_listening": false,
+  "formal_benchmark": false,
+  "demo_version": "web-demo-v1",
+  "sources": [
+    "src/static/demo-telemetry.js",
+    "src/static/demo.css",
+    "src/static/demo.js",
+    "src/static/favicon.svg",
+    "src/static/index.html",
+    "src/static/mic-worklet.js",
+    "src/static/speech-player.js"
+  ],
+  "browser": "151.0.7922.34",
+  "result": {
+    "kind": "live ActorEngine + Omni, Chromium virtual microphone/speaker; not physical listening",
+    "input": "/root/autodl-tmp/fd-badcat/exp/streaming_demo/synthetic_question.wav",
+    "turns": 2,
+    "speculation_disabled_by_client": false,
+    "binary_packets": 450,
+    "last_playback_ack": {
+      "utterance_id": 3,
+      "played_samples": 213885,
+      "started": true,
+      "ended": true,
+      "underruns": 0
+    },
+    "completed_playbacks": [
+      {
+        "utterance_id": 2,
+        "played_samples": 208125,
+        "started": true,
+        "ended": true,
+        "underruns": 0
+      },
+      {
+        "utterance_id": 3,
+        "played_samples": 213885,
+        "started": true,
+        "ended": true,
+        "underruns": 0
+      }
+    ],
+    "ui_snapshot": {
+      "first_text": "0 ms",
+      "first_audio": "1 ms",
+      "buffer": "0 ms",
+      "session_id": "web-demo-356d7d5806444a4384350e509280fe9a",
+      "audio_format": "48000 Hz 设备 → 16 kHz 上传 / 256 样本",
+      "diagnostics": {
+        "stage-hold": "639 ms",
+        "stage-decision": "0 ms",
+        "stage-generation": "0 ms",
+        "stage-total": "640 ms",
+        "socket-rtt": "1 ms",
+        "trace-status": "逐轮记录已启用 · demo-trace-v1",
+        "speculation-status": "候选已确认 · 预备音频 576.9 ms · 预计算 636.6 ms（与停顿窗重叠）"
+      }
+    },
+    "uploads": {
+      "frames": 2259,
+      "max_rms": 0.6486336533553877
+    },
+    "events": [
+      {
+        "event": "demo_ready",
+        "data": {
+          "session_id": "web-demo-356d7d5806444a4384350e509280fe9a",
+          "protocol": "pcm16.v1",
+          "observability": "demo-trace-v1",
+          "speculative_response": true,
+          "cancellable_response": true,
+          "profile": "chat-demo-v1"
+        }
+      },
+      {
+        "event": "demo_pong",
+        "data": {
+          "seq": 1
+        }
+      },
+      {
+        "event": "vad_start",
+        "data": {
+          "turn": 0,
+          "state": "LISTEN",
+          "timestamp": 1.058
+        }
+      },
+      {
+        "event": "vad_done",
+        "data": {
+          "turn": 0,
+          "state": "LISTEN",
+          "timestamp": 1.728
+        }
+      },
+      {
+        "event": "vad_start",
+        "data": {
+          "turn": 0,
+          "state": "LISTEN",
+          "timestamp": 1.829
+        }
+      },
+      {
+        "event": "vad_done",
+        "data": {
+          "turn": 0,
+          "state": "LISTEN",
+          "timestamp": 3.678
+        }
+      },
+      {
+        "event": "vad_640_done",
+        "data": {
+          "turn": 0,
+          "state": "LISTEN",
+          "timestamp": 4.328
+        }
+      },
+      {
+        "event": "candidate_confirmed",
+        "data": {
+          "candidate_id": 2,
+          "turn": 0,
+          "stage": "response",
+          "speculative": true,
+          "prepared_audio_samples": 14250,
+          "prepared_audio_ms": 593.8,
+          "precompute_ms": 648.9
+        }
+      },
+      {
+        "event": "control_validation",
+        "data": {
+          "kind": "judge",
+          "attempts": 1,
+          "raw": [
+            "switch"
+          ],
+          "errors": [],
+          "repaired": false,
+          "fallback": false,
+          "timed_out": false,
+          "turn": 0,
+          "candidate_id": 2,
+          "timestamp": 4.328
+        }
+      },
+      {
+        "event": "speech_start",
+        "data": {
+          "utterance_id": 2,
+          "turn": 0,
+          "protocol": "pcm16.v1",
+          "buffer_ms": 600,
+          "candidate_id": 2,
+          "timestamp": 4.328
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 4.328,
+          "text": "你好！今天"
+        }
+      },
+      {
+        "event": "speech_sentence",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 4.328,
+          "text": "你好！"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 4.328,
+          "text": "天气不错，适合出去散步。不过最好还是看看你那边的实时天气预报，确保没有"
+        }
+      },
+      {
+        "event": "speech_first_audio",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 4.328,
+          "sample_rate": 24000,
+          "turn": 0
+        }
+      },
+      {
+        "event": "demo_latency",
+        "data": {
+          "utterance_id": 2,
+          "hold_ms": 650.1,
+          "decision_ms": 0.2,
+          "generation_ms": 0.1,
+          "vad_to_audio_ms": 650.3
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 4.328,
+          "text": "下雨或者太热哦～"
+        }
+      },
+      {
+        "event": "speech_text_done",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 4.328,
+          "text": "你好！今天天气不错，适合出去散步。不过最好还是看看你那边的实时天气预报，确保没有下雨或者太热哦～",
+          "infer": 0.424,
+          "timed_out": false
+        }
+      },
+      {
+        "event": "speech_sentence",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 4.329,
+          "text": "今天天气不错，适合出去散步。"
+        }
+      },
+      {
+        "event": "speech_playback_started",
+        "data": {
+          "utterance_id": 2,
+          "turn": 0,
+          "candidate_id": 2
+        }
+      },
+      {
+        "event": "asr_done",
+        "data": {
+          "timestamp": 4.595,
+          "turn": 0,
+          "state": "SPEAK",
+          "content": "你好，今天适合出去散步吗？"
+        }
+      },
+      {
+        "event": "demo_pong",
+        "data": {
+          "seq": 2
+        }
+      },
+      {
+        "event": "speech_sentence",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 6.838,
+          "text": "不过最好还是看看你那边的实时天气预报，确保没有下雨或者太热哦～"
+        }
+      },
+      {
+        "event": "demo_pong",
+        "data": {
+          "seq": 3
+        }
+      },
+      {
+        "event": "speech_audio_end",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 12.521,
+          "samples": 208125,
+          "rate": 24000,
+          "packets": 222,
+          "elapsed": 8.752380821853876
+        }
+      },
+      {
+        "event": "speech_played",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 13.096,
+          "played_samples": 208125,
+          "underruns": 0
+        }
+      },
+      {
+        "event": "turn_finished",
+        "data": {
+          "timestamp": 13.097,
+          "turn": 0,
+          "next_turn": 1,
+          "state": "LISTEN",
+          "reason": "played",
+          "carried_samples": 0
+        }
+      },
+      {
+        "event": "demo_pong",
+        "data": {
+          "seq": 4
+        }
+      },
+      {
+        "event": "demo_pong",
+        "data": {
+          "seq": 5
+        }
+      },
+      {
+        "event": "vad_start",
+        "data": {
+          "turn": 1,
+          "state": "LISTEN",
+          "timestamp": 23.647
+        }
+      },
+      {
+        "event": "vad_done",
+        "data": {
+          "turn": 1,
+          "state": "LISTEN",
+          "timestamp": 24.318
+        }
+      },
+      {
+        "event": "vad_start",
+        "data": {
+          "turn": 1,
+          "state": "LISTEN",
+          "timestamp": 24.388
+        }
+      },
+      {
+        "event": "vad_done",
+        "data": {
+          "turn": 1,
+          "state": "LISTEN",
+          "timestamp": 26.278
+        }
+      },
+      {
+        "event": "vad_640_done",
+        "data": {
+          "turn": 1,
+          "state": "LISTEN",
+          "timestamp": 26.918
+        }
+      },
+      {
+        "event": "candidate_confirmed",
+        "data": {
+          "candidate_id": 4,
+          "turn": 1,
+          "stage": "response",
+          "speculative": true,
+          "prepared_audio_samples": 13845,
+          "prepared_audio_ms": 576.9,
+          "precompute_ms": 636.6
+        }
+      },
+      {
+        "event": "control_validation",
+        "data": {
+          "kind": "judge",
+          "attempts": 1,
+          "raw": [
+            "switch"
+          ],
+          "errors": [],
+          "repaired": false,
+          "fallback": false,
+          "timed_out": false,
+          "turn": 1,
+          "candidate_id": 4,
+          "timestamp": 26.918
+        }
+      },
+      {
+        "event": "control_validation",
+        "data": {
+          "kind": "shift",
+          "attempts": 1,
+          "raw": [
+            "no"
+          ],
+          "errors": [],
+          "repaired": false,
+          "fallback": false,
+          "timed_out": false,
+          "turn": 1,
+          "candidate_id": 4,
+          "timestamp": 26.918
+        }
+      },
+      {
+        "event": "speech_start",
+        "data": {
+          "utterance_id": 3,
+          "turn": 1,
+          "protocol": "pcm16.v1",
+          "buffer_ms": 600,
+          "candidate_id": 4,
+          "timestamp": 26.918
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 3,
+          "timestamp": 26.919,
+          "text": "你好！今天"
+        }
+      },
+      {
+        "event": "speech_sentence",
+        "data": {
+          "utterance_id": 3,
+          "timestamp": 26.919,
+          "text": "你好！"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 3,
+          "timestamp": 26.919,
+          "text": "天气不错，适合出去散步。不过最好还是看看你那边的实时天气预报，确保没有下雨"
+        }
+      },
+      {
+        "event": "speech_first_audio",
+        "data": {
+          "utterance_id": 3,
+          "timestamp": 26.919,
+          "sample_rate": 24000,
+          "turn": 1
+        }
+      },
+      {
+        "event": "demo_latency",
+        "data": {
+          "utterance_id": 3,
+          "hold_ms": 639.4,
+          "decision_ms": 0.3,
+          "generation_ms": 0.1,
+          "vad_to_audio_ms": 639.7
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 3,
+          "timestamp": 26.919,
+          "text": "或者太热哦～"
+        }
+      },
+      {
+        "event": "speech_text_done",
+        "data": {
+          "utterance_id": 3,
+          "timestamp": 26.919,
+          "text": "你好！今天天气不错，适合出去散步。不过最好还是看看你那边的实时天气预报，确保没有下雨或者太热哦～",
+          "infer": 0.409,
+          "timed_out": false
+        }
+      },
+      {
+        "event": "demo_pong",
+        "data": {
+          "seq": 6
+        }
+      },
+      {
+        "event": "speech_playback_started",
+        "data": {
+          "utterance_id": 3,
+          "turn": 1,
+          "candidate_id": 4
+        }
+      },
+      {
+        "event": "speech_sentence",
+        "data": {
+          "utterance_id": 3,
+          "timestamp": 27.088,
+          "text": "今天天气不错，适合出去散步。"
+        }
+      },
+      {
+        "event": "asr_done",
+        "data": {
+          "timestamp": 27.177,
+          "turn": 1,
+          "state": "SPEAK",
+          "content": "你好，今天适合出去散步吗？"
+        }
+      },
+      {
+        "event": "speech_sentence",
+        "data": {
+          "utterance_id": 3,
+          "timestamp": 29.578,
+          "text": "不过最好还是看看你那边的实时天气预报，确保没有下雨或者太热哦～"
+        }
+      },
+      {
+        "event": "demo_pong",
+        "data": {
+          "seq": 7
+        }
+      },
+      {
+        "event": "speech_audio_end",
+        "data": {
+          "utterance_id": 3,
+          "timestamp": 35.342,
+          "samples": 213885,
+          "rate": 24000,
+          "packets": 228,
+          "elapsed": 8.901955183595419
+        }
+      },
+      {
+        "event": "speech_played",
+        "data": {
+          "utterance_id": 3,
+          "timestamp": 35.916,
+          "played_samples": 213885,
+          "underruns": 0
+        }
+      },
+      {
+        "event": "turn_finished",
+        "data": {
+          "timestamp": 35.916,
+          "turn": 1,
+          "next_turn": 2,
+          "state": "LISTEN",
+          "reason": "played",
+          "carried_samples": 0
+        }
+      }
+    ],
+    "page_errors": []
+  },
+  "pass": true
+}

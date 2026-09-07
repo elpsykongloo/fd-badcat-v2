@@ -17,6 +17,7 @@ export VLLM_USE_FLASHINFER_SAMPLER="${VLLM_USE_FLASHINFER_SAMPLER:-0}"
 eval "$(conda shell.bash hook)"
 conda activate "${QWEN_ENV_NAME:-fdbc-qwen3o-vllm}"
 python "$ROOT_DIR/scripts/patch_prometheus_instrumentator.py"
+python "$ROOT_DIR/scripts/patch_omni_verbatim_tts.py"
 
 MODEL_DIR="${QWEN_MODEL_DIR:-$ROOT_DIR/model/Qwen3-Omni-30B-A3B-Instruct}"
 SERVED_MODEL_NAME="${FDBC_QWEN_MODEL:-Qwen3-Omni-30B-A3B-Instruct}"

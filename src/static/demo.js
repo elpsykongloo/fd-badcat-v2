@@ -147,7 +147,10 @@ function control(s, msg) {
     $("session-id").textContent = d.session_id;
     s.telemetry.enabled = d.observability === "demo-trace-v1";
     $("profile-note").textContent = d.profile === "chat-demo-v1"
-      ? "聊天展示配置：双语 ASR、正常上下文、无 15 字限制、播放后自动收尾；未启用投机。"
+      ? "聊天展示配置：双语 ASR、正常上下文、无 15 字限制、自动收尾；"
+        + (d.speculative_response ? "已启用完整投机，确认前不播；" : "投机关闭；")
+        + (d.cancellable_response ? "播放开始前续说可撤销旧回答；" : "")
+        + (d.tts_contract === "verbatim-choice-v1" ? "TTS 原文约束与校验已启用。" : "")
       : "HumDial 配置：保留比赛短答提示词和轮次策略。";
     $("trace-status").textContent = s.telemetry.enabled ? "逐轮记录已启用 · demo-trace-v1" : "旧后端：逐轮记录未启用";
     s.accept?.();
@@ -164,7 +167,11 @@ function control(s, msg) {
     }
     return;
   }
-  if (msg.event === "turn_finished") {
+  if (msg.event === "candidate_confirmed") {
+    $("speculation-status").textContent = d.speculative
+      ? `候选已确认 · 预备音频 ${d.prepared_audio_ms} ms · 预计算 ${d.precompute_ms} ms（与停顿窗重叠）`
+      : "投机关闭 · 使用同一 VAD-END 快照";
+  } else if (msg.event === "turn_finished") {
     activity(s, s.hearing ? "hearing" : "listening");
   } else if (msg.event === "vad_start") {
     s.hearing = true;
@@ -188,9 +195,11 @@ function control(s, msg) {
   } else if (msg.event === "speech_cancelled" && d.utterance_id === s.player.speech?.id) {
     s.telemetry.snapshot("cancel", s.player.speech);
     const interrupted = ["shot_interrupt", "long_interrupt"].includes(d.reason);
+    const resumed = d.reason === "user_resumed_before_playback";
     if (interrupted) s.interrupts++;
     const failed = d.reason === "stream_error";
-    tagSpeech(s, failed ? "生成失败，可能未播完" : interrupted ? "已打断，可能未播完" : "已停止，可能未播完", true);
+    tagSpeech(s, failed ? "生成失败，可能未播完" : resumed ? "续说，旧回答已撤销"
+      : interrupted ? "已打断，可能未播完" : "已停止，可能未播完", true);
     s.underruns += s.player.speech.underruns;
     s.player.cancel();
     $("buffer").textContent = "0 ms";
@@ -350,6 +359,9 @@ async function connect() {
     let lastLevel = 0;
     s.capture.port.onmessage = event => {
       if (active !== s || s.ws.readyState !== WebSocket.OPEN) return;
+      // Ordered before the next mic frame on the same WebSocket. This is the
+      // WebAudio clock boundary, not an estimate of physical speaker latency.
+      s.player.pollStart();
       // Keep the engine's audio clock advancing during explicit user mute.
       if (s.muted) new Float32Array(event.data).fill(0);
       if (s.ws.bufferedAmount > 128 * 1024) {
