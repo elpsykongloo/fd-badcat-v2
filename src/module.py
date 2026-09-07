@@ -136,8 +136,8 @@ def _extract_omni_audio(response_data: dict) -> bytes:
     return base64.b64decode(audio_b64)
 
 
-def _call_omni_tts(text: str) -> bytes:
-    payload = {
+def omni_tts_payload(text: str):
+    return {
         "model": QWEN_MODEL,
         "messages": [
             {"role": "system", "content": OMNI_TTS_SYSTEM_PROMPT},
@@ -148,6 +148,10 @@ def _call_omni_tts(text: str) -> bytes:
         "max_tokens": int(os.getenv("FDBC_OMNI_TTS_MAX_TOKENS", "256")),
         "seed": int(os.getenv("FDBC_OMNI_TTS_SEED", "42")),
     }
+
+
+def _call_omni_tts(text: str) -> bytes:
+    payload = omni_tts_payload(text)
     response = _http().post(
         OMNI_TTS_URL,
         headers={"Content-Type": "application/json"},
@@ -197,8 +201,8 @@ def asr(path):
     return text
 
 
-def llm_qwen3o(messages: list):
-    payload = {
+def qwen_text_payload(messages: list):
+    return {
         "model": QWEN_MODEL,
         "temperature": float(os.getenv("FDBC_QWEN_TEMPERATURE", "0")),
         "top_p": float(os.getenv("FDBC_QWEN_TOP_P", "0.7")),
@@ -210,6 +214,10 @@ def llm_qwen3o(messages: list):
         "modalities": ["text"],
         "messages": messages,
     }
+
+
+def llm_qwen3o(messages: list):
+    payload = qwen_text_payload(messages)
     try:
         response = _http().post(
             QWEN_URL,
@@ -223,3 +231,17 @@ def llm_qwen3o(messages: list):
     except Exception as exc:
         print(f"[QWEN REQUEST ERROR] {exc}")
         return ""
+
+
+def llm_qwen3o_stream(messages):
+    from stream_transport import text_stream
+    return text_stream(QWEN_URL, qwen_text_payload(messages),
+                       int(os.getenv("FDBC_QWEN_TIMEOUT", "300")))
+
+
+def tts_omni_stream(text):
+    from stream_transport import audio_stream
+    if TTS_PROVIDER not in {"omni", "qwen3omni", "qwen3-omni"}:
+        raise ValueError("Streaming speech currently requires the Omni TTS provider")
+    return audio_stream(OMNI_TTS_URL, omni_tts_payload(text),
+                        int(os.getenv("FDBC_OMNI_TTS_TIMEOUT", "600")))

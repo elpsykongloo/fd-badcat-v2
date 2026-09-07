@@ -1,6 +1,10 @@
 # fd-badcat
 full duplex-spoken dialogue system
 
+ActorEngine also has an opt-in streaming speech demo: run the backend with
+`--streaming`, then open `/demo/`. Existing HumDial clients keep the whole-WAV
+protocol. See [streaming setup and protocol](docs/streaming_speech.md).
+
 > [Unit-Based Agent for Semi-Cascaded Full-Duplex Dialogue Systems](https://arxiv.org/abs/2601.20230) <br>
 > [Haoyuan Yu](https://yu-haoyuan.github.io/), [Yuxuan Chen], [Minjie Cai](https://cai-mj.github.io/) <br>
 > ICASSP 2026 Grand Challenge

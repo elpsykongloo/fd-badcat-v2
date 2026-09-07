@@ -45,6 +45,7 @@ import asyncio
 import heapq
 import json
 import time
+from contextlib import suppress
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -53,6 +54,7 @@ import torch
 from silero_vad import load_silero_vad, VADIterator
 
 from messages import build_audio_content, scrub_audio_blocks
+from speech_stream import PROTOCOL, SpeechEvent, SpeechPipeline, SocketOutbox
 
 SAMPLE_RATE = 16000
 WINDOW_SIZE = 256
@@ -108,7 +110,8 @@ class ActorEngine:
                  llm_cfg: dict = None, engine_cfg: dict = None,
                  llm_fn=None, asr_fn=None, tts_fn=None,
                  replay_mode: str = "realtime", decision_script=None,
-                 trace_path=None, vad_model=None, vad_iterator=None):
+                 trace_path=None, vad_model=None, vad_iterator=None,
+                 text_stream_fn=None, tts_stream_fn=None):
         self.websocket = websocket
         self.q: asyncio.Queue = asyncio.Queue()
 
@@ -139,6 +142,23 @@ class ActorEngine:
         self.AUDIO_BLOCK = self.llm_cfg.get("audio_block", "audio_url")
         self.DECISION_TIMEOUT = float(self.llm_cfg.get("decision_timeout_s", 15))
         self.PLAYBACK_AUTOEND = bool(self.engine_cfg.get("playback_autoend", False))
+        self.STREAMING = bool(self.engine_cfg.get("stream_response", False))
+        if self.STREAMING and replay_mode != "realtime":
+            raise ValueError("Streaming playback requires realtime mode and playback acknowledgements")
+        if self.STREAMING and (text_stream_fn is None or tts_stream_fn is None):
+            import module as _module
+            text_stream_fn = text_stream_fn or _module.llm_qwen3o_stream
+            tts_stream_fn = tts_stream_fn or _module.tts_omni_stream
+        self.text_stream_fn, self.tts_stream_fn = text_stream_fn, tts_stream_fn
+        self._speech = None
+        self._speech_serial = 0
+        self._speech_meta = None
+        self._speech_jobs = {}
+        self._speech_tasks = []
+        self._outbox = None
+        self._stream_listen_start = None
+        self._speech_audio_done = False
+        self._speech_played_reported = False
 
         # ---- replay ----
         assert replay_mode in ("realtime", "injected", "oracle"), replay_mode
@@ -222,7 +242,10 @@ class ActorEngine:
         if self._trace_fh:
             self._trace_fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
         if self.websocket is not None:
-            await self.websocket.send_text(json.dumps(payload))
+            if self._outbox is not None:
+                self._outbox.put(json.dumps(payload))
+            else:
+                await self.websocket.send_text(json.dumps(payload))
 
     def _wall_ts(self):
         if self.start_wall is None:
@@ -261,6 +284,11 @@ class ActorEngine:
         messages = self.build_messages(system_prompt, user_audio, add_to_history, shift_history)
         snapshot = scrub_audio_blocks(messages)
         gen, epoch = self.session_gen, self.seg_epoch
+        if self.STREAMING and kind in ("response", "shift_re"):
+            self._dispatch_speech(messages, ModelDone(
+                kind=kind, gen=gen, epoch=epoch, turn=turn,
+                add_to_history=add_to_history, prompt_snapshot=snapshot))
+            return
         if user_audio is not None and kind in ("judge", "shift", "interrupt"):
             # snapshot consumed by the handler when the (fresh) result arrives
             self._pending_audio[(kind, epoch)] = user_audio
@@ -410,11 +438,29 @@ class ActorEngine:
         elif isinstance(ev, ModelDone):
             self._inflight = max(0, self._inflight - 1) if self.replay_mode == "realtime" else self._inflight
             await self._on_model_done(ev)
+        elif isinstance(ev, SpeechEvent):
+            await self._on_speech_event(ev)
         elif isinstance(ev, ControlMsg):
             if ev.kind == "session_end":
                 self._reset_session()
             elif ev.kind == "disconnect":
                 return False
+            elif ev.kind in ("speech_start", "speech_cancelled"):
+                await self.send_control(ev.kind, ev.data)
+            elif ev.kind == "playback_progress" and self._speech is not None:
+                data = ev.data
+                if (data.get("utterance_id") == self._speech.sid
+                        and self._speech.progress(data.get("played_samples"))):
+                    if (data.get("ended") and self._speech_audio_done
+                            and not self._speech_played_reported
+                            and self._speech.played == self._speech.sent):
+                        self._speech_played_reported = True
+                        await self.send_control("speech_played", {
+                            "utterance_id": self._speech.sid, "timestamp": self._wall_ts(),
+                            "played_samples": self._speech.played,
+                            "underruns": data.get("underruns", 0)})
+                        if self.PLAYBACK_AUTOEND:
+                            self.STATE = "LISTEN"
         return True
 
     async def engine_loop(self):
@@ -429,6 +475,8 @@ class ActorEngine:
         if event and "start" in event:
             # new speech falsifies any in-flight judge/shift/interrupt evidence
             self.seg_epoch += 1
+            if self.STREAMING and self.STATE == "LISTEN":
+                self._stream_listen_start = ev.t_audio
         if self.STATE == "LISTEN":
             await self._listen_frame(ev, event)
         else:
@@ -544,6 +592,7 @@ class ActorEngine:
             if (self.interrupt_buf and self.SILENCE_COUNTER == 0
                     and not self._seg_closed
                     and (t - (self.t_interrupt_start or 0.0)) >= LONG_INTERRUPT_SEC):
+                self._cancel_speech("long_interrupt")
                 self.TURN_IDX += 1
                 self.seg_epoch += 1
                 self.STATE = "LISTEN"
@@ -635,6 +684,7 @@ class ActorEngine:
         audio = self._pending_audio.pop(("interrupt", ev.epoch), None)
         frames = self._pending_frames.pop(("interrupt", ev.epoch), [])
         if "switch" in ev.text.lower():
+            self._cancel_speech("shot_interrupt")
             await self.send_control("shot_interrupt", {
                 "timestamp": self._wall_ts(), "turn": self.TURN_IDX, "state": self.STATE})
             self.BUFFER = list(frames)
@@ -679,7 +729,83 @@ class ActorEngine:
     # ------------------------------------------------------------------
     # lifecycle
     # ------------------------------------------------------------------
+    def _cancel_speech(self, reason):
+        if self._speech is None:
+            return
+        old = self._speech
+        self._speech = None
+        old.cancel()
+        if self._speech_jobs.pop(old.sid, None) is not None:
+            self._inflight = max(0, self._inflight - 1)
+        self.q.put_nowait(ControlMsg("speech_cancelled", {
+            "utterance_id": old.sid, "reason": reason, "timestamp": self._wall_ts()}))
+
+    def _dispatch_speech(self, messages, meta):
+        self._cancel_speech("superseded")
+        self._speech_serial += 1
+        self._speech_meta = meta
+        self._speech_audio_done = False
+        self._speech_played_reported = False
+        self._speech = SpeechPipeline(
+            self._speech_serial, self.q, messages, self.text_stream_fn, self.tts_stream_fn,
+            timeout=self.DECISION_TIMEOUT, retry=meta.kind == "response",
+            apology=RESPONSE_TIMEOUT_APOLOGY,
+            packet_ms=int(self.engine_cfg.get("stream_packet_ms", 40)),
+            buffer_ms=int(self.engine_cfg.get("stream_buffer_ms", 600)))
+        self._speech_jobs[self._speech.sid] = self._speech
+        self._speech_tasks = [task for task in self._speech_tasks if not task.done()]
+        self._speech_tasks.append(self._speech.task)
+        self._inflight += 1
+        self.q.put_nowait(ControlMsg("speech_start", {
+            "utterance_id": self._speech.sid, "turn": meta.turn, "protocol": PROTOCOL,
+            "buffer_ms": self._speech.buffer_ms, "timestamp": self._wall_ts()}))
+
+    async def _on_speech_event(self, ev):
+        deferred = False
+        try:
+            if ev.kind == "finished":
+                if self._speech_jobs.pop(ev.sid, None) is not None:
+                    self._inflight = max(0, self._inflight - 1)
+                return
+            if self._speech is None or ev.sid != self._speech.sid:
+                return
+            data = {"utterance_id": ev.sid, "timestamp": self._wall_ts(), **ev.data}
+            if ev.kind == "text_done":
+                meta = self._speech_meta
+                meta.text, meta.infer = data["text"], data["infer"]
+                meta.timed_out = data["timed_out"]
+                if meta.add_to_history:
+                    self.assistant_history.append(meta.text)
+                await self._trace_llm_done(meta)
+                await self.send_control("speech_text_done", data)
+            elif ev.kind == "audio":
+                if data["seq"] == 0:
+                    # Preserve speech that began while text/first audio was in flight.
+                    if self.STATE == "LISTEN" and self.IN_SPEECH:
+                        self.interrupt_buf = list(self.BUFFER)
+                        self.t_interrupt_start = self._stream_listen_start or self.t_audio
+                    self.STATE = "SPEAK"
+                    await self.send_control("speech_first_audio", {
+                        "utterance_id": ev.sid, "timestamp": self._wall_ts(),
+                        "sample_rate": data["rate"], "turn": self._speech_meta.turn})
+                if self._outbox is not None:
+                    self._outbox.put(data["wire"], sid=ev.sid, delivered=ev.delivered)
+                    deferred = True
+                elif self.websocket is not None:
+                    await self.websocket.send_bytes(data["wire"])
+            elif ev.kind == "error":
+                await self.send_control("speech_error", data)
+                self._cancel_speech("stream_error")
+            else:
+                if ev.kind == "audio_end":
+                    self._speech_audio_done = True
+                await self.send_control("speech_" + ev.kind, data)
+        finally:
+            if not deferred and ev.delivered is not None and not ev.delivered.done():
+                ev.delivered.set_result(None)
+
     def _reset_session(self):
+        self._cancel_speech("session_reset")
         self.session_gen += 1
         self.seg_epoch += 1
         self.vad_iterator.reset_states()
@@ -701,6 +827,7 @@ class ActorEngine:
         self._pending_frames = {}
         self._scheduled = []
         self.playback_end_audio = None
+        self._stream_listen_start = None
 
     async def _reader(self, websocket):
         """The ONLY consumer of the websocket. Never awaits models, never touches state."""
@@ -718,6 +845,8 @@ class ActorEngine:
                     continue
                 if obj.get("event") == "end":
                     self.q.put_nowait(ControlMsg("session_end"))
+                elif self.STREAMING and obj.get("event") == "playback_progress":
+                    self.q.put_nowait(ControlMsg("playback_progress", obj.get("data") or {}))
                 continue
             if "bytes" in message and message["bytes"]:
                 pcm = np.frombuffer(message["bytes"], dtype=np.float32)
@@ -734,6 +863,10 @@ class ActorEngine:
         print("client ok (actor engine)")
         self.websocket = websocket
         self.start_wall = time.time()
+        if self.STREAMING:
+            self._outbox = SocketOutbox(
+                websocket, lambda sid: self._speech is not None and self._speech.sid == sid,
+                lambda: self.q.put_nowait(ControlMsg("disconnect")))
         if self.trace_path:
             self.trace_path.parent.mkdir(parents=True, exist_ok=True)
             self._trace_fh = self.trace_path.open("w", encoding="utf-8")
@@ -746,6 +879,12 @@ class ActorEngine:
             reader.cancel()
             self.vad_iterator.reset_states()
             self._reset_session()
+            await asyncio.gather(reader, *self._speech_tasks, return_exceptions=True)
+            if self._outbox is not None:
+                await self._outbox.close()
+                self._outbox = None
+                with suppress(Exception):
+                    await asyncio.wait_for(websocket.close(), 1)
             if self._trace_fh:
                 self._trace_fh.close()
                 self._trace_fh = None

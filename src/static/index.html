@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HumDial · 流式语音</title>
+<style>
+body { max-width: 760px; margin: 8vh auto; padding: 0 24px; font: 17px/1.7 system-ui; color: #22303a; background: #f5f7f8; }
+button { padding: 10px 22px; margin-right: 12px; font: inherit; cursor: pointer; }
+pre { white-space: pre-wrap; background: white; padding: 20px; border-radius: 8px; min-height: 60px; }
+small { color: #52616b; }
+</style>
+<h1>HumDial 流式语音</h1>
+<p>文本生成 → 分句 → 流式语音 → 小缓冲播放。可在回复时继续说话。</p>
+<p><button id="start">开始对话</button><button id="stop" disabled>断开</button></p>
+<p id="status" role="status">请使用耳机；麦克风需通过 HTTPS 或 localhost 访问。</p>
+<pre id="text" aria-live="polite"></pre>
+<pre id="metrics"></pre>
+<small>保留 HumDial 的提示词、15 字限制与打断规则。后端需加 --streaming；旧客户端不受影响。音频与转写可能在服务器记录，请勿输入敏感内容。</small>
+<script type="module" src="./demo.js"></script>
+</html>

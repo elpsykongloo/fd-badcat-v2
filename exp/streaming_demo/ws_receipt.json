@@ -1,0 +1,472 @@
+{
+  "scope": "serial synthetic WebSocket smoke; simulated playback",
+  "input": "exp/streaming_demo/synthetic_question.wav",
+  "trials": [
+    {
+      "streaming": false,
+      "post_hold_first_audio_ms": 870.5,
+      "post_hold_text_done_ms": 411.3,
+      "response": "今天天气不错，适合散步。",
+      "packets": 1,
+      "sample_rate": 16000,
+      "audio_samples": 36380,
+      "events": [
+        {
+          "event": "vad_start",
+          "at_s": 0.23375069350004196
+        },
+        {
+          "event": "vad_done",
+          "at_s": 0.8820365965366364
+        },
+        {
+          "event": "vad_done",
+          "at_s": 2.8322788029909134
+        },
+        {
+          "event": "vad_640_done",
+          "at_s": 3.471843861043453
+        },
+        {
+          "event": "llm_done",
+          "at_s": 3.7460470385849476,
+          "kind": "judge",
+          "infer_time": 0.271,
+          "content": "switch"
+        },
+        {
+          "event": "llm_done",
+          "at_s": 3.883099514991045,
+          "kind": "response",
+          "infer_time": 0.135,
+          "content": "今天天气不错，适合散步。"
+        },
+        {
+          "event": "tts_done",
+          "at_s": 4.337077867239714,
+          "infer_time": 0.454
+        }
+      ],
+      "repeat": 0
+    },
+    {
+      "streaming": true,
+      "post_hold_first_audio_ms": 461.9,
+      "post_hold_text_done_ms": 275.9,
+      "response": "今天天气不错，适合散步。",
+      "packets": 56,
+      "sample_rate": 24000,
+      "audio_samples": 52650,
+      "events": [
+        {
+          "event": "vad_start",
+          "at_s": 0.08889176696538925
+        },
+        {
+          "event": "vad_done",
+          "at_s": 0.794135931879282
+        },
+        {
+          "event": "vad_done",
+          "at_s": 2.7450114116072655
+        },
+        {
+          "event": "vad_640_done",
+          "at_s": 3.387370590120554
+        },
+        {
+          "event": "llm_done",
+          "at_s": 3.4787511229515076,
+          "kind": "judge",
+          "infer_time": 0.088,
+          "content": "switch"
+        },
+        {
+          "event": "speech_start",
+          "at_s": 3.5414219312369823
+        },
+        {
+          "event": "asr_done",
+          "at_s": 3.6039856635034084,
+          "content": "你好今天适合出去散步吗"
+        },
+        {
+          "event": "speech_text_delta",
+          "at_s": 3.612529017031193,
+          "text": "今天"
+        },
+        {
+          "event": "speech_text_delta",
+          "at_s": 3.620015375316143,
+          "text": "天气"
+        },
+        {
+          "event": "speech_text_delta",
+          "at_s": 3.6267638318240643,
+          "text": "不错"
+        },
+        {
+          "event": "speech_text_delta",
+          "at_s": 3.633568223565817,
+          "text": "，"
+        },
+        {
+          "event": "speech_text_delta",
+          "at_s": 3.6408624686300755,
+          "text": "适合"
+        },
+        {
+          "event": "speech_text_delta",
+          "at_s": 3.647323329001665,
+          "text": "散步"
+        },
+        {
+          "event": "speech_text_delta",
+          "at_s": 3.6544016785919666,
+          "text": "。"
+        },
+        {
+          "event": "llm_done",
+          "at_s": 3.663291424512863,
+          "kind": "response",
+          "infer_time": 0.184,
+          "content": "今天天气不错，适合散步。"
+        },
+        {
+          "event": "speech_text_done",
+          "at_s": 3.6642126590013504,
+          "text": "今天天气不错，适合散步。"
+        },
+        {
+          "event": "speech_sentence",
+          "at_s": 3.664606586098671,
+          "text": "今天天气不错，适合散步。"
+        },
+        {
+          "event": "speech_first_audio",
+          "at_s": 3.848970402032137
+        },
+        {
+          "event": "speech_audio_end",
+          "at_s": 5.548109881579876,
+          "samples": 52650
+        }
+      ],
+      "repeat": 0
+    },
+    {
+      "streaming": true,
+      "post_hold_first_audio_ms": 388.0,
+      "post_hold_text_done_ms": 207.5,
+      "response": "今天天气不错，适合散步。",
+      "packets": 52,
+      "sample_rate": 24000,
+      "audio_samples": 48810,
+      "events": [
+        {
+          "event": "vad_start",
+          "at_s": 0.08824697509407997
+        },
+        {
+          "event": "vad_done",
+          "at_s": 0.7901196517050266
+        },
+        {
+          "event": "vad_done",
+          "at_s": 2.7421565502882004
+        },
+        {
+          "event": "vad_640_done",
+          "at_s": 3.3841963596642017
+        },
+        {
+          "event": "llm_done",
+          "at_s": 3.4742612801492214,
+          "kind": "judge",
+          "infer_time": 0.086,
+          "content": "switch"
+        },
+        {
+          "event": "speech_start",
+          "at_s": 3.475118052214384
+        },
+        {
+          "event": "speech_text_delta",
+          "at_s": 3.5420455150306225,
+          "text": "今天"
+        },
+        {
+          "event": "speech_text_delta",
+          "at_s": 3.5482686422765255,
+          "text": "天气"
+        },
+        {
+          "event": "speech_text_delta",
+          "at_s": 3.555063158273697,
+          "text": "不错"
+        },
+        {
+          "event": "speech_text_delta",
+          "at_s": 3.5623645149171352,
+          "text": "，"
+        },
+        {
+          "event": "speech_text_delta",
+          "at_s": 3.569829221814871,
+          "text": "适合"
+        },
+        {
+          "event": "speech_text_delta",
+          "at_s": 3.576621603220701,
+          "text": "散步"
+        },
+        {
+          "event": "speech_text_delta",
+          "at_s": 3.5832487121224403,
+          "text": "。"
+        },
+        {
+          "event": "llm_done",
+          "at_s": 3.5916922837495804,
+          "kind": "response",
+          "infer_time": 0.117,
+          "content": "今天天气不错，适合散步。"
+        },
+        {
+          "event": "speech_text_done",
+          "at_s": 3.5925974994897842,
+          "text": "今天天气不错，适合散步。"
+        },
+        {
+          "event": "speech_sentence",
+          "at_s": 3.59287728369236,
+          "text": "今天天气不错，适合散步。"
+        },
+        {
+          "event": "asr_done",
+          "at_s": 3.6066113524138927,
+          "content": "你好今天适合出去散步吗"
+        },
+        {
+          "event": "speech_first_audio",
+          "at_s": 3.7718720212578773
+        },
+        {
+          "event": "speech_audio_end",
+          "at_s": 5.312661465257406,
+          "samples": 48810
+        }
+      ],
+      "repeat": 1
+    },
+    {
+      "streaming": false,
+      "post_hold_first_audio_ms": 700.7,
+      "post_hold_text_done_ms": 215.7,
+      "response": "今天天气不错，适合散步。",
+      "packets": 1,
+      "sample_rate": 16000,
+      "audio_samples": 39850,
+      "events": [
+        {
+          "event": "vad_start",
+          "at_s": 0.08467661589384079
+        },
+        {
+          "event": "vad_done",
+          "at_s": 0.7900362759828568
+        },
+        {
+          "event": "vad_done",
+          "at_s": 2.74098202213645
+        },
+        {
+          "event": "vad_640_done",
+          "at_s": 3.3814125284552574
+        },
+        {
+          "event": "llm_done",
+          "at_s": 3.4730018749833107,
+          "kind": "judge",
+          "infer_time": 0.09,
+          "content": "switch"
+        },
+        {
+          "event": "asr_done",
+          "at_s": 3.5927236266434193,
+          "content": "你好今天适合出去散步吗"
+        },
+        {
+          "event": "llm_done",
+          "at_s": 3.597087737172842,
+          "kind": "response",
+          "infer_time": 0.122,
+          "content": "今天天气不错，适合散步。"
+        },
+        {
+          "event": "tts_done",
+          "at_s": 4.0759664215147495,
+          "infer_time": 0.478
+        }
+      ],
+      "repeat": 1
+    },
+    {
+      "streaming": false,
+      "post_hold_first_audio_ms": 674.7,
+      "post_hold_text_done_ms": 207.7,
+      "response": "今天天气不错，适合散步。",
+      "packets": 1,
+      "sample_rate": 16000,
+      "audio_samples": 37290,
+      "events": [
+        {
+          "event": "vad_start",
+          "at_s": 0.09045512229204178
+        },
+        {
+          "event": "vad_done",
+          "at_s": 0.7955134510993958
+        },
+        {
+          "event": "vad_done",
+          "at_s": 2.746654249727726
+        },
+        {
+          "event": "vad_640_done",
+          "at_s": 3.386902119964361
+        },
+        {
+          "event": "llm_done",
+          "at_s": 3.477902080863714,
+          "kind": "judge",
+          "infer_time": 0.089,
+          "content": "switch"
+        },
+        {
+          "event": "llm_done",
+          "at_s": 3.5945855900645256,
+          "kind": "response",
+          "infer_time": 0.114,
+          "content": "今天天气不错，适合散步。"
+        },
+        {
+          "event": "asr_done",
+          "at_s": 3.6397961266338825,
+          "content": "你好今天适合出去散步吗"
+        },
+        {
+          "event": "tts_done",
+          "at_s": 4.055819936096668,
+          "infer_time": 0.461
+        }
+      ],
+      "repeat": 2
+    },
+    {
+      "streaming": true,
+      "post_hold_first_audio_ms": 386.0,
+      "post_hold_text_done_ms": 199.1,
+      "response": "今天天气不错，适合散步。",
+      "packets": 66,
+      "sample_rate": 24000,
+      "audio_samples": 61695,
+      "events": [
+        {
+          "event": "vad_start",
+          "at_s": 0.08957986533641815
+        },
+        {
+          "event": "vad_done",
+          "at_s": 0.7926119826734066
+        },
+        {
+          "event": "vad_done",
+          "at_s": 2.7445451840758324
+        },
+        {
+          "event": "vad_640_done",
+          "at_s": 3.3852446414530277
+        },
+        {
+          "event": "llm_done",
+          "at_s": 3.4706704653799534,
+          "kind": "judge",
+          "infer_time": 0.083,
+          "content": "switch"
+        },
+        {
+          "event": "speech_start",
+          "at_s": 3.4724625274538994
+        },
+        {
+          "event": "speech_text_delta",
+          "at_s": 3.535159718245268,
+          "text": "今天"
+        },
+        {
+          "event": "speech_text_delta",
+          "at_s": 3.54119473695755,
+          "text": "天气"
+        },
+        {
+          "event": "speech_text_delta",
+          "at_s": 3.547601528465748,
+          "text": "不错"
+        },
+        {
+          "event": "speech_text_delta",
+          "at_s": 3.554620783776045,
+          "text": "，"
+        },
+        {
+          "event": "speech_text_delta",
+          "at_s": 3.5614613704383373,
+          "text": "适合"
+        },
+        {
+          "event": "speech_text_delta",
+          "at_s": 3.568629126995802,
+          "text": "散步"
+        },
+        {
+          "event": "speech_text_delta",
+          "at_s": 3.575667303055525,
+          "text": "。"
+        },
+        {
+          "event": "llm_done",
+          "at_s": 3.5843227952718735,
+          "kind": "response",
+          "infer_time": 0.113,
+          "content": "今天天气不错，适合散步。"
+        },
+        {
+          "event": "speech_text_done",
+          "at_s": 3.584882263094187,
+          "text": "今天天气不错，适合散步。"
+        },
+        {
+          "event": "speech_sentence",
+          "at_s": 3.58512394875288,
+          "text": "今天天气不错，适合散步。"
+        },
+        {
+          "event": "speech_first_audio",
+          "at_s": 3.770620636641979
+        },
+        {
+          "event": "asr_done",
+          "at_s": 4.233761832118034,
+          "content": "你好今天适合出去散步吗"
+        },
+        {
+          "event": "speech_audio_end",
+          "at_s": 5.831292606890202,
+          "samples": 61695
+        }
+      ],
+      "repeat": 2
+    }
+  ]
+}

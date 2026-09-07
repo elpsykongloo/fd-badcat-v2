@@ -18,6 +18,9 @@ engine:
   arch: actor            # actor | legacy (src/backend_legacy.py inline engine)
   playback_autoend: false     # true: SPEAK auto-returns to LISTEN at playback end (agent mode)
   cancellable_response: false # W3+: cancel in-flight response on user speech
+  stream_response: false     # opt-in ActorEngine SSE text/TTS + PCM playback; also needs client pcm16.v1
+  stream_packet_ms: 40        # native-rate PCM packets (no WAV files on streaming critical path)
+  stream_buffer_ms: 600       # maximum sent-but-not-played audio, bounded by client progress
   # ---- Phase-B / TACT (W3 D1 wiring; phase "a" keeps HumDial behavior frozen) ----
   phase: a               # a = HumDial judge/shift/response | b = transactional TACT engine
   # The keys below only take effect when phase: b (see docs/engine_b_spec.md):
@@ -158,4 +161,3 @@ prompts_agent:
     You are a helpful real-time voice assistant with tool access. Answer concisely and
     naturally. If the user corrects or negates something, treat it as a revision of their
     request — never simply agree. Respond in the language you hear.
-    

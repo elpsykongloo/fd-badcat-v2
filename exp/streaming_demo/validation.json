@@ -1,0 +1,179 @@
+{
+  "date_utc": "2026-09-07",
+  "source_base_commit": "d42faac297c0d564c46816b13d589c1d1f70f1dc",
+  "scope": "synthetic single-input serial smoke only; no HumDial/FDB/RB corpus; no acoustic/browser listening claim",
+  "sources_sha256": {
+    "src/engine.py": "7e78ab729cb8e598fa31275a448e8efcd6be8bd5ceccb3a736a70797bffc0303",
+    "src/speech_stream.py": "a9e2028ad53e7110aaa9364d1bf5b68335065affc85b9554e72e104494023a05",
+    "src/stream_transport.py": "3cafd7c427b961476821cfd01ff69e06f8e1e0d7c6f310a69a8db0d909ac4aa6",
+    "src/tts_sentence.py": "fa0a482222e83a4ac5b80456c1b2019224013c8c6958bd189f983eef11e9b3b5",
+    "src/module.py": "b4385003ad3cb2188ff69ad96cc34f18ec16b741e49c6f31b435dcf87279ac82",
+    "src/qwen3_api.py": "1ae383fc787900d8aa353c8631d2cff7b9682888b791538ba81dc131b9796839",
+    "src/backend.py": "595526a9aa3652e327853750a409955a3149575ca9f92f77358f88b18ed2707d",
+    "src/config.yaml": "873744253af7f6aeca5aceba330cca177437cf583929a85158d209250463cfdf",
+    "src/static/demo.js": "3bebb55f81ce9f944a8a251fe30fc5a47242b40a6b2b67ee0ea48b2e3761b6cb",
+    "src/static/mic-worklet.js": "eb7b5f02e799b50ad0af53c1658a523112cabe01755b9597f3f98680d13a0b0c",
+    "configs/qwen3_omni_audio_single_gpu.yaml": "338fc9035be05fd59a5a05fc4823189490f1233068f6a197dc326b999b39734f",
+    "scripts/smoke_streaming_ws.py": "65ef7d8d896069fc94975494d7ef3c38451e5294110e231921d748438d53f834"
+  },
+  "python_tests_passed": 102,
+  "streaming_python_tests_passed": 24,
+  "node_playback_and_mic_contract_suites": "PASS",
+  "final_trials_per_path": 3,
+  "metric": "client vad_640_done receipt to first binary audio receipt; excludes 640ms hold and physical playback latency",
+  "whole_median_ms": 653,
+  "stream_median_ms": 387.1,
+  "reduction_percent": 40.72,
+  "all_12_answers_equal": true,
+  "all_12_output_asr_readbacks_equal": true,
+  "native_cancel_probe": {
+    "old_packets_after_cancel": 0,
+    "observation_ms": 700,
+    "upstream_abort_observed": true
+  },
+  "existing_yaml_values_and_prompts_identical": true,
+  "nonstream_request_payloads_ast_identical": true,
+  "serving": {
+    "vllm": "0.22.0",
+    "vllm_omni": "0.22.0",
+    "max_num_seqs_stage0": 1,
+    "gpu": "RTX PRO 6000 Blackwell 96GB"
+  },
+  "limitations": [
+    "3 paired trials on one synthetic utterance; not a formal benchmark",
+    "physical browser playback, audible prosody, speaker echo and long-response quality not validated",
+    "complete generated text remains the history unit, not word-aligned played prefixes",
+    "long-response GPU overlap is constrained by the unchanged single-sequence serving config"
+  ],
+  "shutdown": {
+    "gpu_memory_used_mib": 0,
+    "listeners_10003_10004_18000": 0,
+    "warning": "vLLM resource_tracker reported 27 shared_memory objects to clean up; all stages stopped and GPU cleared"
+  },
+  "artifacts": {
+    "exp/streaming_demo/final/probe_0_stream.wav": {
+      "sha256": "3209b5f216c835b67d3e455e34627de3cf5efa5f7a22ccfb46d43146207c807e",
+      "bytes": 93824,
+      "sample_rate": 24000,
+      "samples": 46890,
+      "channels": 1,
+      "subtype": "PCM_16",
+      "asr_readback_verified": "今天天气不错适合散步"
+    },
+    "exp/streaming_demo/final/probe_0_whole.wav": {
+      "sha256": "765841c288baeb7e1e9a256d70412bf055a8073db26b5f734e746be585c87cee",
+      "bytes": 70244,
+      "sample_rate": 16000,
+      "samples": 35100,
+      "channels": 1,
+      "subtype": "PCM_16",
+      "asr_readback_verified": "今天天气不错适合散步"
+    },
+    "exp/streaming_demo/final/probe_1_stream.wav": {
+      "sha256": "99a6d1d2ed5df03df5fb865f230ffe9c9dc3ce163bdecf0d14b308cdd46d06b3",
+      "bytes": 105344,
+      "sample_rate": 24000,
+      "samples": 52650,
+      "channels": 1,
+      "subtype": "PCM_16",
+      "asr_readback_verified": "今天天气不错适合散步"
+    },
+    "exp/streaming_demo/final/probe_1_whole.wav": {
+      "sha256": "496161a29a81923c8c6300022fc88e1807f636a92e1d70ab602509f1d26aabf6",
+      "bytes": 65124,
+      "sample_rate": 16000,
+      "samples": 32540,
+      "channels": 1,
+      "subtype": "PCM_16",
+      "asr_readback_verified": "今天天气不错适合散步"
+    },
+    "exp/streaming_demo/final/probe_2_stream.wav": {
+      "sha256": "94623d1dd39b0c299150a17aadcb127f68264c7e182b934b23a7b1a1a0e4f22c",
+      "bytes": 101504,
+      "sample_rate": 24000,
+      "samples": 50730,
+      "channels": 1,
+      "subtype": "PCM_16",
+      "asr_readback_verified": "今天天气不错适合散步"
+    },
+    "exp/streaming_demo/final/probe_2_whole.wav": {
+      "sha256": "1a717833c34a2ac53c11cdf0d2a7e5ccfd3742d6562bb7f98f439b8da6f2255f",
+      "bytes": 70244,
+      "sample_rate": 16000,
+      "samples": 35100,
+      "channels": 1,
+      "subtype": "PCM_16",
+      "asr_readback_verified": "今天天气不错适合散步"
+    },
+    "exp/streaming_demo/final/ws_receipt.json": {
+      "sha256": "12d9cf1cf1616d65a61814d4632fa36eedc42a4917b34e5d3f8644468a79b042",
+      "bytes": 12002
+    },
+    "exp/streaming_demo/probe_0_stream.wav": {
+      "sha256": "cc11af1b2e8af51149ef56fe7fe4b557079b462f0b6587cdd1f091837fa9ba3e",
+      "bytes": 105344,
+      "sample_rate": 24000,
+      "samples": 52650,
+      "channels": 1,
+      "subtype": "PCM_16",
+      "asr_readback_verified": "今天天气不错适合散步"
+    },
+    "exp/streaming_demo/probe_0_whole.wav": {
+      "sha256": "b994b7da42f18026aaa3a36814504004a8e516dc2b703e48985c8091433131a1",
+      "bytes": 72804,
+      "sample_rate": 16000,
+      "samples": 36380,
+      "channels": 1,
+      "subtype": "PCM_16",
+      "asr_readback_verified": "今天天气不错适合散步"
+    },
+    "exp/streaming_demo/probe_1_stream.wav": {
+      "sha256": "e31b853405fbfe8238f3398d26327be2d968f8faa26d6055b25932d827409e4f",
+      "bytes": 97664,
+      "sample_rate": 24000,
+      "samples": 48810,
+      "channels": 1,
+      "subtype": "PCM_16",
+      "asr_readback_verified": "今天天气不错适合散步"
+    },
+    "exp/streaming_demo/probe_1_whole.wav": {
+      "sha256": "f1f566ef6f99a28475e5a522f334bf54323fabdf310cbf7bcbfb95b9718b2228",
+      "bytes": 79744,
+      "sample_rate": 16000,
+      "samples": 39850,
+      "channels": 1,
+      "subtype": "PCM_16",
+      "asr_readback_verified": "今天天气不错适合散步"
+    },
+    "exp/streaming_demo/probe_2_stream.wav": {
+      "sha256": "682f647d6df11494a1cb848ec1ca650817ce84bd39e75b9ed1edb44da4f634bc",
+      "bytes": 123434,
+      "sample_rate": 24000,
+      "samples": 61695,
+      "channels": 1,
+      "subtype": "PCM_16",
+      "asr_readback_verified": "今天天气不错适合散步"
+    },
+    "exp/streaming_demo/probe_2_whole.wav": {
+      "sha256": "1e56831c5b1fde8ca0f27127353f4a4f7b7e1e31f855125db411150157d296ba",
+      "bytes": 74624,
+      "sample_rate": 16000,
+      "samples": 37290,
+      "channels": 1,
+      "subtype": "PCM_16",
+      "asr_readback_verified": "今天天气不错适合散步"
+    },
+    "exp/streaming_demo/synthetic_question.wav": {
+      "sha256": "4a1576f0924d711f4daaef79490133040e00d1e9ec1f835ace29331258779d1e",
+      "bytes": 82304,
+      "sample_rate": 16000,
+      "samples": 41130,
+      "channels": 1,
+      "subtype": "PCM_16"
+    },
+    "exp/streaming_demo/ws_receipt.json": {
+      "sha256": "9bd321ec98999ae7b3e9d565d8e943a2aae23975cb3027e065ae14b2ec182fc4",
+      "bytes": 12004
+    }
+  }
+}

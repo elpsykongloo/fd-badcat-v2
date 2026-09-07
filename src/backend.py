@@ -423,6 +423,8 @@ class ConversationEngine:
 def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
     app = FastAPI()
     arch = (engine_cfg or {}).get("arch", "actor")
+    from fastapi.staticfiles import StaticFiles
+    app.mount("/demo", StaticFiles(directory=Path(__file__).parent / "static", html=True), name="demo")
 
     @app.websocket("/realtime")
     async def realtime_ws(websocket: WebSocket):
@@ -432,6 +434,13 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
         data = msg.get("data", {})
         exp = data.get("exp", {})
         lang = data.get("lang", {})
+        if data.get("audio_protocol") == "pcm16.v1" and (
+                arch != "actor" or (engine_cfg or {}).get("phase", "a") != "a"
+                or not (engine_cfg or {}).get("stream_response")):
+            await websocket.send_json({"event": "error", "data": {
+                "message": "Use HumDial ActorEngine with --streaming for this demo"}})
+            await websocket.close(code=1008)
+            return
         if arch == "legacy":
             engine = ConversationEngine(websocket=websocket, prompts=prompts, delay=delay, llm_cfg=llm_cfg)
         elif (engine_cfg or {}).get("phase") == "b":
@@ -446,8 +455,13 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
                                 tool_executor=reg.executor)
         else:
             from engine import ActorEngine
+            session_cfg = dict(engine_cfg or {})
+            # Existing HumDial clients keep their whole-WAV protocol, even when
+            # this server enables the new demo. Both sides must opt in.
+            session_cfg["stream_response"] = bool(session_cfg.get("stream_response")
+                                                   and data.get("audio_protocol") == "pcm16.v1")
             engine = ActorEngine(websocket=websocket, prompts=prompts, delay=delay,
-                                 llm_cfg=llm_cfg, engine_cfg=engine_cfg)
+                                 llm_cfg=llm_cfg, engine_cfg=session_cfg)
         engine.output_dir = Path("exp") / exp / f"realtimeout_{lang}"
         engine.output_dir.mkdir(parents=True, exist_ok=True)
         await engine.run_realtime(websocket)
@@ -463,6 +477,7 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, default="src/config.yaml")
+    parser.add_argument("--streaming", action="store_true", help="Enable negotiated ActorEngine streaming demo")
     args = parser.parse_args()
 
     with open(args.config, "r", encoding="utf-8") as f:
@@ -473,6 +488,10 @@ def main():
     server_cfg = cfg.get("server", {})
     llm_cfg = cfg.get("llm", {})
     engine_cfg = cfg.get("engine", {})
+    if args.streaming:
+        if engine_cfg.get("arch", "actor") != "actor" or engine_cfg.get("phase", "a") != "a":
+            parser.error("--streaming is only supported by the HumDial ActorEngine (phase a)")
+        engine_cfg["stream_response"] = True
 
     # bridge yaml asr section -> module.py env config (explicit env wins)
     asr_cfg = cfg.get("asr", {})
