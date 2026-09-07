@@ -421,7 +421,14 @@ class ConversationEngine:
 
 # FastAPI
 def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
-    app = FastAPI()
+    from contextlib import asynccontextmanager
+    @asynccontextmanager
+    async def lifespan(app):
+        if (engine_cfg or {}).get("warmup"):
+            from demo_startup import warmup
+            await warmup(prompts)
+        yield
+    app = FastAPI(lifespan=lifespan)
     arch = (engine_cfg or {}).get("arch", "actor")
     from fastapi.staticfiles import StaticFiles
     app.mount("/demo", StaticFiles(directory=Path(__file__).parent / "static", html=True), name="demo")
@@ -496,7 +503,8 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
             if web_demo:
                 await websocket.send_json({"event": "demo_ready", "data": {
                     "session_id": exp, "protocol": "pcm16.v1",
-                    "observability": "demo-trace-v1"}})
+                    "observability": "demo-trace-v1",
+                    "profile": "chat-demo-v1" if (engine_cfg or {}).get("chat_demo") else "humdial"}})
             await engine.run_realtime(websocket)
         finally:
             if web_demo:
@@ -510,16 +518,30 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
     return app
 
 
+def load_runtime_config(path, demo_chat=False):
+    with open(path, "r", encoding="utf-8") as handle:
+        cfg = yaml.safe_load(handle)
+    if demo_chat:
+        profile = Path(__file__).resolve().parents[1] / "configs/demo_chat.yaml"
+        with profile.open(encoding="utf-8") as handle:
+            overlay = yaml.safe_load(handle)
+        for section, values in overlay.items():
+            cfg.setdefault(section, {}).update(values)
+        if cfg["engine"].get("arch", "actor") != "actor" or cfg["engine"].get("phase", "a") != "a":
+            raise ValueError("Chat demo profile requires the Phase-A ActorEngine")
+    return cfg
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, default="src/config.yaml")
     parser.add_argument("--streaming", action="store_true", help="Enable negotiated ActorEngine streaming demo")
+    parser.add_argument("--demo-chat", action="store_true", help="Chat profile, bilingual ASR, complete turns and startup warmup")
     parser.add_argument("--host", default=None, help="Override server bind address (demo: 127.0.0.1)")
     parser.add_argument("--port", type=int, default=None, help="Override server port")
     args = parser.parse_args()
 
-    with open(args.config, "r", encoding="utf-8") as f:
-        cfg = yaml.safe_load(f)
+    cfg = load_runtime_config(args.config, args.demo_chat)
 
     prompts_cfg = cfg.get("prompts", {})
     delay_cfg = cfg.get("time", {})
@@ -531,12 +553,10 @@ def main():
             parser.error("--streaming is only supported by the HumDial ActorEngine (phase a)")
         engine_cfg["stream_response"] = True
 
-    # bridge yaml asr section -> module.py env config (explicit env wins)
-    asr_cfg = cfg.get("asr", {})
-    if asr_cfg.get("backend"):
-        os.environ.setdefault("FDBC_ASR_BACKEND", str(asr_cfg["backend"]))
-    if asr_cfg.get("provider"):
-        os.environ.setdefault("FDBC_ASR_PROVIDER", str(asr_cfg["provider"]))
+    # module is imported above for legacy compatibility; configure the actual
+    # factory constants, not environment variables too late to be consumed.
+    import module
+    module.configure_asr(cfg.get("asr", {}))
 
     host = args.host if args.host is not None else server_cfg.get("host", {})
     port = args.port if args.port is not None else server_cfg.get("port", {})

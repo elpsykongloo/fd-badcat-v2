@@ -146,6 +146,9 @@ function control(s, msg) {
     if (d.protocol !== "pcm16.v1") throw Error("服务器音频协议不兼容，请更新后端。");
     $("session-id").textContent = d.session_id;
     s.telemetry.enabled = d.observability === "demo-trace-v1";
+    $("profile-note").textContent = d.profile === "chat-demo-v1"
+      ? "聊天展示配置：双语 ASR、正常上下文、无 15 字限制、播放后自动收尾；未启用投机。"
+      : "HumDial 配置：保留比赛短答提示词和轮次策略。";
     $("trace-status").textContent = s.telemetry.enabled ? "逐轮记录已启用 · demo-trace-v1" : "旧后端：逐轮记录未启用";
     s.accept?.();
     return;
@@ -161,7 +164,9 @@ function control(s, msg) {
     }
     return;
   }
-  if (msg.event === "vad_start") {
+  if (msg.event === "turn_finished") {
+    activity(s, s.hearing ? "hearing" : "listening");
+  } else if (msg.event === "vad_start") {
     s.hearing = true;
     if (s.mode !== "speaking") activity(s, "hearing");
   } else if (msg.event === "vad_done" || msg.event === "vad_640_done") {

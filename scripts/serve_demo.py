@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Start the laptop demo stack on loopback; stop only processes we started.
 
-No daemon, no global pkill, no model/config changes, no port reuse by accident.
+No daemon, no global pkill, no inference-config changes or listener takeover.
+The backend explicitly selects the isolated chat-demo profile.
 Use --backend-only explicitly when the two inference services already exist.
 """
 import argparse
@@ -29,6 +30,9 @@ def get_json(url):
 
 def require_free(port):
     with socket.socket() as probe:
+        # Match uvicorn's bind semantics: TIME_WAIT from our previous server
+        # is not a live owner. An actual listener still makes bind fail.
+        probe.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         try:
             probe.bind(("127.0.0.1", port))
         except OSError as exc:
@@ -132,7 +136,7 @@ def main():
                   "http://127.0.0.1:10003/v1/models", args.startup_timeout, lambda d: bool(d.get("data")))
             start("proxy", ["bash", "setup/start_qwen3_proxy.sh"],
                   "http://127.0.0.1:10004/openapi.json", 60)
-        start("backend", [sys.executable, "src/backend.py", "--streaming", "--host", "127.0.0.1", "--port", str(args.port)],
+        start("backend", [sys.executable, "src/backend.py", "--streaming", "--demo-chat", "--host", "127.0.0.1", "--port", str(args.port)],
               f"http://127.0.0.1:{args.port}/api/demo/info", 120, lambda d: d.get("streaming") is True)
         print(f"\nDEMO READY → http://localhost:{args.port}/demo/\n"
               "现在在笔记本建立 SSH 端口转发，详见 docs/web_demo.md。\n"

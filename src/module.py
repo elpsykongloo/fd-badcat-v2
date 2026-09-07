@@ -51,6 +51,23 @@ _SENSEVOICE_TAG_RE = re.compile(r"<\|[^|]*\|>")
 _TLS = threading.local()
 
 
+def configure_asr(config):
+    """Apply startup configuration even when this module was imported earlier.
+
+    Explicit process environment wins. Never swap a live recognizer silently.
+    """
+    global ASR_BACKEND, ASR_PROVIDER, ASR_NUM_THREADS
+    desired = (os.getenv("FDBC_ASR_BACKEND", str(config.get("backend", ASR_BACKEND))).strip().lower(),
+               os.getenv("FDBC_ASR_PROVIDER", str(config.get("provider", ASR_PROVIDER))),
+               int(os.getenv("FDBC_ASR_NUM_THREADS", config.get("num_threads", ASR_NUM_THREADS))))
+    if desired[0] not in {"paraformer_zh", "paraformer", "sensevoice", "sense_voice"} or desired[2] < 1:
+        raise ValueError("Invalid ASR backend or thread count")
+    with _ASR_LOCK:
+        if _ASR_MODEL is not None and desired != (ASR_BACKEND, ASR_PROVIDER, ASR_NUM_THREADS):
+            raise RuntimeError("ASR already initialized; restart to change its configuration")
+        ASR_BACKEND, ASR_PROVIDER, ASR_NUM_THREADS = desired
+
+
 def _http():
     s = getattr(_TLS, "session", None)
     if s is None:
@@ -232,20 +249,20 @@ def qwen_text_payload(messages: list):
 
 
 def llm_qwen3o(messages: list):
-    payload = qwen_text_payload(messages)
     try:
-        response = _http().post(
-            QWEN_URL,
-            headers={"Content-Type": "application/json"},
-            data=json.dumps(payload),
-            timeout=int(os.getenv("FDBC_QWEN_TIMEOUT", "300")),
-        )
-        response.raise_for_status()
-        data = response.json()
-        return data["choices"][0]["message"]["content"]
+        return llm_qwen3o_strict(messages)
     except Exception as exc:
         print(f"[QWEN REQUEST ERROR] {exc}")
         return ""
+
+
+def llm_qwen3o_strict(messages: list):
+    response = _http().post(
+        QWEN_URL, headers={"Content-Type": "application/json"},
+        data=json.dumps(qwen_text_payload(messages)),
+        timeout=int(os.getenv("FDBC_QWEN_TIMEOUT", "300")))
+    response.raise_for_status()
+    return response.json()["choices"][0]["message"]["content"]
 
 
 def llm_qwen3o_stream(messages):

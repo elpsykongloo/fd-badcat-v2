@@ -1,0 +1,267 @@
+{"event": "session_start", "server_ms": 0.28, "data": {"version": "demo-trace-v1", "utc": "2026-09-07T12:58:41.078364+00:00"}}
+{"event": "client_ping", "server_ms": 2.043, "data": {"kind": "ping", "seq": 1, "client_ms": 280.10000228881836, "upload_buffer_bytes": 0}}
+{"event": "demo_pong", "server_ms": 2.093, "data": {"seq": 1}, "generation": 0, "epoch": 0, "turn": 0, "state": "LISTEN", "t_audio": 0.0, "queue_depth": 0}
+{"event": "client_rtt", "server_ms": 2.663, "data": {"kind": "rtt", "seq": 1, "client_ms": 281, "rtt_ms": 0.7999992370605469, "upload_buffer_bytes": 0}}
+{"event": "input_health", "server_ms": 14.094, "data": {"reader_to_actor_ms": 0.071}, "t_audio": 0.016, "queue_depth": 0}
+{"event": "input_health", "server_ms": 1023.859, "data": {"reader_to_actor_ms": 0.102}, "t_audio": 1.024, "queue_depth": 0}
+{"event": "vad_start", "server_ms": 1054.916, "data": {"timestamp": 1.054, "turn": 0, "state": "LISTEN"}, "generation": 0, "epoch": 1, "turn": 0, "state": "LISTEN", "t_audio": 1.056, "queue_depth": 0}
+{"event": "vad_done", "server_ms": 1724.902, "data": {"timestamp": 1.724, "turn": 0, "state": "LISTEN"}, "generation": 0, "epoch": 1, "turn": 0, "state": "LISTEN", "t_audio": 1.728, "queue_depth": 0}
+{"event": "input_health", "server_ms": 2034.158, "data": {"reader_to_actor_ms": 0.136}, "t_audio": 2.032, "queue_depth": 0}
+{"event": "input_health", "server_ms": 3043.804, "data": {"reader_to_actor_ms": 0.058}, "t_audio": 3.04, "queue_depth": 0}
+{"event": "vad_done", "server_ms": 3675.53, "data": {"timestamp": 3.675, "turn": 0, "state": "LISTEN"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 3.68, "queue_depth": 0}
+{"event": "input_health", "server_ms": 4064.043, "data": {"reader_to_actor_ms": 0.095}, "t_audio": 4.064, "queue_depth": 0}
+{"event": "vad_640_done", "server_ms": 4324.957, "data": {"timestamp": 4.324, "turn": 0, "state": "LISTEN"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.32, "queue_depth": 0}
+{"event": "llm_dispatch", "server_ms": 4325.151, "data": {"kind": "judge", "turn": 0}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.32, "queue_depth": 0}
+{"event": "capacity_acquired", "server_ms": 4327.095, "data": {"kind": "judge", "wait_ms": 0.034}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.32, "queue_depth": 0}
+{"event": "control_validation", "server_ms": 4450.123, "data": {"kind": "judge", "attempts": 1, "raw": ["switch"], "errors": [], "repaired": false, "fallback": false, "timed_out": false, "turn": 0, "timestamp": 4.449}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.448, "queue_depth": 0}
+{"event": "llm_done", "server_ms": 4450.172, "data": {"timestamp": 4.45, "infer_time": 0.123, "content": "switch", "prompt": [{"role": "system", "content": "判断用户是否已经表达完当前想说的话，从自然对话而非语法完整性判断。\n如果明显还没说完，或者明确要求你先等一下，只输出 continue。\n如果已经表达了可回应的问题、陈述、问候或请求，只输出 switch。\n只能输出 continue 或 switch，不要解释。\n"}, {"role": "user", "content": [{"type": "audio_url", "audio_url": {"url": "<AUDIO_BASE64_OMITTED>"}}]}], "turn": 0, "state": "LISTEN", "kind": "judge"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.448, "queue_depth": 0}
+{"event": "llm_dispatch", "server_ms": 4450.236, "data": {"kind": "response", "turn": 0}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.448, "queue_depth": 0}
+{"event": "speech_start", "server_ms": 4451.256, "data": {"utterance_id": 1, "turn": 0, "protocol": "pcm16.v1", "buffer_ms": 600, "timestamp": 4.451}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.448, "queue_depth": 0}
+{"event": "capacity_acquired", "server_ms": 4451.814, "data": {"kind": "response", "wait_ms": 0.019}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.448, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4520.095, "data": {"utterance_id": 1, "timestamp": 4.519, "text": "你好"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.512, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4526.53, "data": {"utterance_id": 1, "timestamp": 4.526, "text": "！"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.528, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4533.227, "data": {"utterance_id": 1, "timestamp": 4.533, "text": "今天"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.528, "queue_depth": 0}
+{"event": "speech_sentence", "server_ms": 4533.564, "data": {"utterance_id": 1, "timestamp": 4.533, "text": "你好！"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.528, "queue_depth": 0}
+{"event": "capacity_acquired", "server_ms": 4533.775, "data": {"kind": "tts", "wait_ms": 0.026}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.528, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4540.612, "data": {"utterance_id": 1, "timestamp": 4.54, "text": "天气"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.528, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4547.069, "data": {"utterance_id": 1, "timestamp": 4.546, "text": "不错"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.544, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4555.034, "data": {"utterance_id": 1, "timestamp": 4.554, "text": "，"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.544, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4597.919, "data": {"utterance_id": 1, "timestamp": 4.597, "text": "适合"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.592, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4609.257, "data": {"utterance_id": 1, "timestamp": 4.609, "text": "出去"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.608, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4621.951, "data": {"utterance_id": 1, "timestamp": 4.621, "text": "散步"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.608, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4638.667, "data": {"utterance_id": 1, "timestamp": 4.638, "text": "。"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.64, "queue_depth": 0}
+{"event": "asr_done", "server_ms": 4639.785, "data": {"timestamp": 4.639, "turn": 0, "state": "LISTEN", "content": "你好，今天适合出去散步吗？"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.64, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4640.843, "data": {"utterance_id": 1, "timestamp": 4.64, "text": "不过"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.64, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4647.342, "data": {"utterance_id": 1, "timestamp": 4.647, "text": "最好"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.64, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4654.838, "data": {"utterance_id": 1, "timestamp": 4.654, "text": "还是"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.656, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4662.99, "data": {"utterance_id": 1, "timestamp": 4.662, "text": "查"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.656, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4672.932, "data": {"utterance_id": 1, "timestamp": 4.672, "text": "一下"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.656, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4684.066, "data": {"utterance_id": 1, "timestamp": 4.683, "text": "当地的"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.688, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4695.432, "data": {"utterance_id": 1, "timestamp": 4.695, "text": "实时"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.688, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4709.959, "data": {"utterance_id": 1, "timestamp": 4.709, "text": "天气"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.704, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4725.88, "data": {"utterance_id": 1, "timestamp": 4.725, "text": "预报"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.72, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4736.943, "data": {"utterance_id": 1, "timestamp": 4.736, "text": "，"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.736, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4749.126, "data": {"utterance_id": 1, "timestamp": 4.748, "text": "确保"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.736, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4759.69, "data": {"utterance_id": 1, "timestamp": 4.759, "text": "没有"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.752, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4771.879, "data": {"utterance_id": 1, "timestamp": 4.771, "text": "下雨"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.768, "queue_depth": 0}
+{"event": "speech_first_audio", "server_ms": 4793.547, "data": {"utterance_id": 1, "timestamp": 4.793, "sample_rate": 24000, "turn": 0}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 4.784, "queue_depth": 0}
+{"event": "demo_latency", "server_ms": 4793.592, "data": {"utterance_id": 1, "hold_ms": 649.4, "decision_ms": 126.3, "generation_ms": 342.3, "vad_to_audio_ms": 1118.0}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 4.784, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4793.682, "data": {"utterance_id": 1, "timestamp": 4.793, "text": "或"}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 4.784, "queue_depth": 0}
+{"event": "socket_first_audio_sent", "server_ms": 4795.422, "data": {"queue_ms": 1.56, "send_ms": 0.253, "utterance_id": 1, "packet_seq": 0}}
+{"event": "client_first_audio", "server_ms": 4796.503, "data": {"kind": "first_audio", "utterance_id": 1, "client_ms": 5074.600002288818, "first_audio_ms": 341, "scheduled_lead_ms": 80.00000000000007, "base_latency_ms": 10, "output_latency_ms": 30, "upload_buffer_bytes": 102}}
+{"event": "speech_text_delta", "server_ms": 4801.344, "data": {"utterance_id": 1, "timestamp": 4.801, "text": "气温"}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 4.8, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4813.787, "data": {"utterance_id": 1, "timestamp": 4.813, "text": "太"}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 4.816, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4829.53, "data": {"utterance_id": 1, "timestamp": 4.829, "text": "低"}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 4.816, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4839.488, "data": {"utterance_id": 1, "timestamp": 4.839, "text": "哦"}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 4.832, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4855.026, "data": {"utterance_id": 1, "timestamp": 4.854, "text": "。"}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 4.848, "queue_depth": 0}
+{"event": "llm_done", "server_ms": 4862.532, "data": {"timestamp": 4.862, "infer_time": 0.411, "content": "你好！今天天气不错，适合出去散步。不过最好还是查一下当地的实时天气预报，确保没有下雨或气温太低哦。", "prompt": [{"role": "system", "content": "你是一个自然、可靠的实时语音聊天助手。用用户当前主要使用的语言回答，支持中文、英文及中英混说。\n可以参考对话历史，理解追问、指代、换话题和纠正。用户否定你时先判断哪里需要修正，不要无条件附和。\n通常用一到三句简洁、口语化的话直接回答；需要解释时可以更完整。必要时可以提出一个简短澄清问题。\n不输出 Markdown、列表标记或舞台说明。不要编造事实，不确定就说明不确定。\n你没有外部工具、实时查询或执行操作的能力，不要声称已查询、预订或完成现实中的操作。\n历史中的助手文本可能未被用户听完；用户要求重复或继续时自然衔接。\n"}, {"role": "user", "content": [{"type": "audio_url", "audio_url": {"url": "<AUDIO_BASE64_OMITTED>"}}]}], "turn": 0, "state": "SPEAK", "kind": "response"}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 4.848, "queue_depth": 0}
+{"event": "speech_text_done", "server_ms": 4862.561, "data": {"utterance_id": 1, "timestamp": 4.862, "text": "你好！今天天气不错，适合出去散步。不过最好还是查一下当地的实时天气预报，确保没有下雨或气温太低哦。", "infer": 0.411, "timed_out": false}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 4.848, "queue_depth": 0}
+{"event": "speech_sentence", "server_ms": 4907.875, "data": {"utterance_id": 1, "timestamp": 4.907, "text": "今天天气不错，适合出去散步。"}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 4.896, "queue_depth": 0}
+{"event": "capacity_acquired", "server_ms": 4908.17, "data": {"kind": "tts", "wait_ms": 0.016}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 4.896, "queue_depth": 0}
+{"event": "client_ping", "server_ms": 5002.148, "data": {"kind": "ping", "seq": 2, "client_ms": 5280.299999237061, "upload_buffer_bytes": 0}}
+{"event": "demo_pong", "server_ms": 5002.219, "data": {"seq": 2}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 4.992, "queue_depth": 0}
+{"event": "client_rtt", "server_ms": 5002.7, "data": {"kind": "rtt", "seq": 2, "client_ms": 5281.100002288818, "rtt_ms": 0.8000030517578125, "upload_buffer_bytes": 0}}
+{"event": "input_health", "server_ms": 5073.875, "data": {"reader_to_actor_ms": 0.078}, "t_audio": 5.072, "queue_depth": 0}
+{"event": "input_health", "server_ms": 6093.913, "data": {"reader_to_actor_ms": 0.06}, "t_audio": 6.096, "queue_depth": 0}
+{"event": "input_health", "server_ms": 7103.683, "data": {"reader_to_actor_ms": 0.044}, "t_audio": 7.104, "queue_depth": 0}
+{"event": "speech_sentence", "server_ms": 7297.463, "data": {"utterance_id": 1, "timestamp": 7.297, "text": "不过最好还是查一下当地的实时天气预报，确保没有下雨或气温太低哦。"}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 7.296, "queue_depth": 0}
+{"event": "capacity_acquired", "server_ms": 7297.912, "data": {"kind": "tts", "wait_ms": 0.066}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 7.296, "queue_depth": 0}
+{"event": "input_health", "server_ms": 8113.936, "data": {"reader_to_actor_ms": 0.121}, "t_audio": 8.112, "queue_depth": 0}
+{"event": "input_health", "server_ms": 9123.378, "data": {"reader_to_actor_ms": 0.04}, "t_audio": 9.12, "queue_depth": 0}
+{"event": "client_ping", "server_ms": 10002.364, "data": {"kind": "ping", "seq": 3, "client_ms": 10280.400001525879, "upload_buffer_bytes": 0}}
+{"event": "demo_pong", "server_ms": 10002.461, "data": {"seq": 3}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 9.984, "queue_depth": 0}
+{"event": "client_rtt", "server_ms": 10003.135, "data": {"kind": "rtt", "seq": 3, "client_ms": 10281.400001525879, "rtt_ms": 1.1000022888183594, "upload_buffer_bytes": 0}}
+{"event": "input_health", "server_ms": 10123.695, "data": {"reader_to_actor_ms": 0.077}, "t_audio": 10.128, "queue_depth": 0}
+{"event": "input_health", "server_ms": 11133.579, "data": {"reader_to_actor_ms": 0.059}, "t_audio": 11.136, "queue_depth": 0}
+{"event": "input_health", "server_ms": 12143.375, "data": {"reader_to_actor_ms": 0.031}, "t_audio": 12.144, "queue_depth": 0}
+{"event": "input_health", "server_ms": 13153.562, "data": {"reader_to_actor_ms": 0.064}, "t_audio": 13.152, "queue_depth": 0}
+{"event": "speech_audio_end", "server_ms": 13454.723, "data": {"utterance_id": 1, "timestamp": 13.454, "samples": 219645, "rate": 24000, "packets": 234, "elapsed": 9.002868074923754}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 13.456, "queue_depth": 0}
+{"event": "speech_played", "server_ms": 14033.865, "data": {"utterance_id": 1, "timestamp": 14.033, "played_samples": 219645, "underruns": 0}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 14.032, "queue_depth": 0}
+{"event": "turn_finished", "server_ms": 14034.138, "data": {"timestamp": 14.033, "turn": 0, "next_turn": 1, "state": "LISTEN", "reason": "played", "carried_samples": 0}, "generation": 0, "epoch": 3, "turn": 1, "state": "LISTEN", "t_audio": 14.032, "queue_depth": 0}
+{"event": "client_playback_end", "server_ms": 14034.908, "data": {"kind": "playback_end", "utterance_id": 1, "client_ms": 14312, "played_samples": 219645, "received_samples": 219645, "underruns": 0, "upload_buffer_bytes": 1130}}
+{"event": "input_health", "server_ms": 14153.598, "data": {"reader_to_actor_ms": 0.056}, "t_audio": 14.16, "queue_depth": 0}
+{"event": "client_ping", "server_ms": 15002.321, "data": {"kind": "ping", "seq": 4, "client_ms": 15280.5, "upload_buffer_bytes": 0}}
+{"event": "demo_pong", "server_ms": 15002.425, "data": {"seq": 4}, "generation": 0, "epoch": 3, "turn": 1, "state": "LISTEN", "t_audio": 14.992, "queue_depth": 0}
+{"event": "client_rtt", "server_ms": 15003.207, "data": {"kind": "rtt", "seq": 4, "client_ms": 15281.5, "rtt_ms": 1, "upload_buffer_bytes": 0}}
+{"event": "input_health", "server_ms": 15153.855, "data": {"reader_to_actor_ms": 0.112}, "t_audio": 15.152, "queue_depth": 0}
+{"event": "input_health", "server_ms": 16173.705, "data": {"reader_to_actor_ms": 0.087}, "t_audio": 16.176, "queue_depth": 0}
+{"event": "input_health", "server_ms": 17183.491, "data": {"reader_to_actor_ms": 0.05}, "t_audio": 17.184, "queue_depth": 0}
+{"event": "input_health", "server_ms": 18193.547, "data": {"reader_to_actor_ms": 0.075}, "t_audio": 18.192, "queue_depth": 0}
+{"event": "input_health", "server_ms": 19213.75, "data": {"reader_to_actor_ms": 0.068}, "t_audio": 19.216, "queue_depth": 0}
+{"event": "input_health", "server_ms": 20223.649, "data": {"reader_to_actor_ms": 0.068}, "t_audio": 20.224, "queue_depth": 0}
+{"event": "client_ping", "server_ms": 21002.202, "data": {"kind": "ping", "seq": 5, "client_ms": 21280.29999923706, "upload_buffer_bytes": 0}}
+{"event": "demo_pong", "server_ms": 21002.272, "data": {"seq": 5}, "generation": 0, "epoch": 3, "turn": 1, "state": "LISTEN", "t_audio": 20.992, "queue_depth": 0}
+{"event": "client_rtt", "server_ms": 21002.9, "data": {"kind": "rtt", "seq": 5, "client_ms": 21281.20000076294, "rtt_ms": 0.8000030517578125, "upload_buffer_bytes": 0}}
+{"event": "input_health", "server_ms": 21233.558, "data": {"reader_to_actor_ms": 0.065}, "t_audio": 21.232, "queue_depth": 0}
+{"event": "input_health", "server_ms": 22243.64, "data": {"reader_to_actor_ms": 0.092}, "t_audio": 22.24, "queue_depth": 0}
+{"event": "input_health", "server_ms": 23263.399, "data": {"reader_to_actor_ms": 0.045}, "t_audio": 23.264, "queue_depth": 0}
+{"event": "vad_start", "server_ms": 23644.407, "data": {"timestamp": 23.644, "turn": 1, "state": "LISTEN"}, "generation": 0, "epoch": 4, "turn": 1, "state": "LISTEN", "t_audio": 23.648, "queue_depth": 0}
+{"event": "input_health", "server_ms": 24274.059, "data": {"reader_to_actor_ms": 0.139}, "t_audio": 24.272, "queue_depth": 0}
+{"event": "vad_done", "server_ms": 24315.635, "data": {"timestamp": 24.315, "turn": 1, "state": "LISTEN"}, "generation": 0, "epoch": 4, "turn": 1, "state": "LISTEN", "t_audio": 24.32, "queue_depth": 0}
+{"event": "input_health", "server_ms": 25293.718, "data": {"reader_to_actor_ms": 0.059}, "t_audio": 25.296, "queue_depth": 0}
+{"event": "client_ping", "server_ms": 26002.179, "data": {"kind": "ping", "seq": 6, "client_ms": 26280.40000152588, "upload_buffer_bytes": 0}}
+{"event": "demo_pong", "server_ms": 26002.252, "data": {"seq": 6}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 26.0, "queue_depth": 0}
+{"event": "client_rtt", "server_ms": 26002.8, "data": {"kind": "rtt", "seq": 6, "client_ms": 26281.10000228882, "rtt_ms": 0.8000030517578125, "upload_buffer_bytes": 0}}
+{"event": "vad_done", "server_ms": 26275.405, "data": {"timestamp": 26.275, "turn": 1, "state": "LISTEN"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 26.272, "queue_depth": 0}
+{"event": "input_health", "server_ms": 26303.719, "data": {"reader_to_actor_ms": 0.101}, "t_audio": 26.304, "queue_depth": 0}
+{"event": "vad_640_done", "server_ms": 26914.538, "data": {"timestamp": 26.914, "turn": 1, "state": "LISTEN"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 26.912, "queue_depth": 0}
+{"event": "llm_dispatch", "server_ms": 26914.828, "data": {"kind": "judge", "turn": 1}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 26.912, "queue_depth": 0}
+{"event": "capacity_acquired", "server_ms": 26916.617, "data": {"kind": "judge", "wait_ms": 0.107}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 26.912, "queue_depth": 0}
+{"event": "control_validation", "server_ms": 27014.906, "data": {"kind": "judge", "attempts": 1, "raw": ["switch"], "errors": [], "repaired": false, "fallback": false, "timed_out": false, "turn": 1, "timestamp": 27.014}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.008, "queue_depth": 0}
+{"event": "llm_done", "server_ms": 27014.964, "data": {"timestamp": 27.014, "infer_time": 0.098, "content": "switch", "prompt": [{"role": "system", "content": "判断用户是否已经表达完当前想说的话，从自然对话而非语法完整性判断。\n如果明显还没说完，或者明确要求你先等一下，只输出 continue。\n如果已经表达了可回应的问题、陈述、问候或请求，只输出 switch。\n只能输出 continue 或 switch，不要解释。\n"}, {"role": "user", "content": [{"type": "audio_url", "audio_url": {"url": "<AUDIO_BASE64_OMITTED>"}}]}], "turn": 1, "state": "LISTEN", "kind": "judge"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.008, "queue_depth": 0}
+{"event": "llm_dispatch", "server_ms": 27014.982, "data": {"kind": "shift", "turn": 1}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.008, "queue_depth": 0}
+{"event": "capacity_acquired", "server_ms": 27016.215, "data": {"kind": "shift", "wait_ms": 0.024}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.008, "queue_depth": 0}
+{"event": "control_validation", "server_ms": 27095.24, "data": {"kind": "shift", "attempts": 1, "raw": ["no"], "errors": [], "repaired": false, "fallback": false, "timed_out": false, "turn": 1, "timestamp": 27.095}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.088, "queue_depth": 0}
+{"event": "llm_done", "server_ms": 27095.331, "data": {"timestamp": 27.095, "infer_time": 0.079, "content": "no", "prompt": [{"role": "system", "content": "判断这段语音是否明确在对第三方讲话，而不是向语音助手讲话。\n正常换话题、追问、问候以及用户主动改变要求都属于向助手讲话，输出 no。\n只有内容明确是在对其他人讲话时输出 yes。无法确定时输出 no。\n只能输出 yes 或 no，不要解释。不要仅因话题不同就输出 yes。\n"}, {"role": "user", "content": [{"type": "text", "text": "你好，今天适合出去散步吗？"}]}, {"role": "assistant", "content": "你好！今天天气不错，适合出去散步。不过最好还是查一下当地的实时天气预报，确保没有下雨或气温太低哦。"}, {"role": "user", "content": [{"type": "audio_url", "audio_url": {"url": "<AUDIO_BASE64_OMITTED>"}}]}], "turn": 1, "state": "LISTEN", "kind": "shift"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.088, "queue_depth": 0}
+{"event": "llm_dispatch", "server_ms": 27095.486, "data": {"kind": "response", "turn": 1}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.088, "queue_depth": 0}
+{"event": "speech_cancelled", "server_ms": 27096.701, "data": {"utterance_id": 1, "reason": "superseded", "timestamp": 27.096}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.088, "queue_depth": 1}
+{"event": "speech_start", "server_ms": 27096.747, "data": {"utterance_id": 2, "turn": 1, "protocol": "pcm16.v1", "buffer_ms": 600, "timestamp": 27.096}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.088, "queue_depth": 0}
+{"event": "capacity_acquired", "server_ms": 27097.349, "data": {"kind": "response", "wait_ms": 0.022}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.088, "queue_depth": 0}
+{"event": "client_cancel", "server_ms": 27100.599, "data": {"kind": "cancel", "utterance_id": 1, "client_ms": 27378.79999923706, "played_samples": 219645, "received_samples": 219645, "underruns": 0, "upload_buffer_bytes": 0}}
+{"event": "speech_text_delta", "server_ms": 27167.896, "data": {"utterance_id": 2, "timestamp": 27.167, "text": "你好"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.168, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27174.453, "data": {"utterance_id": 2, "timestamp": 27.174, "text": "！"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.168, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27180.939, "data": {"utterance_id": 2, "timestamp": 27.18, "text": "今天"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.168, "queue_depth": 0}
+{"event": "speech_sentence", "server_ms": 27181.314, "data": {"utterance_id": 2, "timestamp": 27.181, "text": "你好！"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.168, "queue_depth": 0}
+{"event": "capacity_acquired", "server_ms": 27181.599, "data": {"kind": "tts", "wait_ms": 0.027}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.168, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27187.731, "data": {"utterance_id": 2, "timestamp": 27.187, "text": "天气"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.184, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27196.88, "data": {"utterance_id": 2, "timestamp": 27.196, "text": "不错"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.184, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27235.732, "data": {"utterance_id": 2, "timestamp": 27.235, "text": "，"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.232, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27246.396, "data": {"utterance_id": 2, "timestamp": 27.246, "text": "适合"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.248, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27257.791, "data": {"utterance_id": 2, "timestamp": 27.257, "text": "出去"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.248, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27271.146, "data": {"utterance_id": 2, "timestamp": 27.27, "text": "散步"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.264, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27273.315, "data": {"utterance_id": 2, "timestamp": 27.273, "text": "。"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.264, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27281.095, "data": {"utterance_id": 2, "timestamp": 27.28, "text": "不过"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.28, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27287.79, "data": {"utterance_id": 2, "timestamp": 27.287, "text": "最好"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.28, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27295.49, "data": {"utterance_id": 2, "timestamp": 27.295, "text": "还是"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.296, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27304.399, "data": {"utterance_id": 2, "timestamp": 27.304, "text": "查"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.296, "queue_depth": 0}
+{"event": "input_health", "server_ms": 27313.492, "data": {"reader_to_actor_ms": 0.051}, "t_audio": 27.312, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27318.646, "data": {"utterance_id": 2, "timestamp": 27.318, "text": "一下"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.312, "queue_depth": 0}
+{"event": "asr_done", "server_ms": 27328.111, "data": {"timestamp": 27.327, "turn": 1, "state": "LISTEN", "content": "你好，今天适合出去散步吗？"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.328, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27330.67, "data": {"utterance_id": 2, "timestamp": 27.33, "text": "当地的"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.328, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27342.802, "data": {"utterance_id": 2, "timestamp": 27.342, "text": "实时"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.328, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27357.452, "data": {"utterance_id": 2, "timestamp": 27.357, "text": "天气"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.344, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27366.838, "data": {"utterance_id": 2, "timestamp": 27.366, "text": "预报"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.36, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27383.045, "data": {"utterance_id": 2, "timestamp": 27.382, "text": "，"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.376, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27394.67, "data": {"utterance_id": 2, "timestamp": 27.394, "text": "确保"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.392, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27409.658, "data": {"utterance_id": 2, "timestamp": 27.409, "text": "没有"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.408, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27425.663, "data": {"utterance_id": 2, "timestamp": 27.425, "text": "下雨"}, "generation": 0, "epoch": 5, "turn": 1, "state": "LISTEN", "t_audio": 27.424, "queue_depth": 0}
+{"event": "speech_first_audio", "server_ms": 27429.656, "data": {"utterance_id": 2, "timestamp": 27.429, "sample_rate": 24000, "turn": 1}, "generation": 0, "epoch": 5, "turn": 1, "state": "SPEAK", "t_audio": 27.424, "queue_depth": 0}
+{"event": "demo_latency", "server_ms": 27429.697, "data": {"utterance_id": 2, "hold_ms": 639.1, "decision_ms": 182.2, "generation_ms": 332.9, "vad_to_audio_ms": 1154.2}, "generation": 0, "epoch": 5, "turn": 1, "state": "SPEAK", "t_audio": 27.424, "queue_depth": 0}
+{"event": "socket_first_audio_sent", "server_ms": 27430.265, "data": {"queue_ms": 0.296, "send_ms": 0.257, "utterance_id": 2, "packet_seq": 0}}
+{"event": "client_first_audio", "server_ms": 27431.177, "data": {"kind": "first_audio", "utterance_id": 2, "client_ms": 27709.10000228882, "first_audio_ms": 328, "scheduled_lead_ms": 79.9999999999983, "base_latency_ms": 10, "output_latency_ms": 30, "upload_buffer_bytes": 102}}
+{"event": "speech_text_delta", "server_ms": 27436.501, "data": {"utterance_id": 2, "timestamp": 27.436, "text": "或"}, "generation": 0, "epoch": 5, "turn": 1, "state": "SPEAK", "t_audio": 27.44, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27450.861, "data": {"utterance_id": 2, "timestamp": 27.45, "text": "气温"}, "generation": 0, "epoch": 5, "turn": 1, "state": "SPEAK", "t_audio": 27.44, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27467.006, "data": {"utterance_id": 2, "timestamp": 27.466, "text": "太"}, "generation": 0, "epoch": 5, "turn": 1, "state": "SPEAK", "t_audio": 27.456, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27473.642, "data": {"utterance_id": 2, "timestamp": 27.473, "text": "低"}, "generation": 0, "epoch": 5, "turn": 1, "state": "SPEAK", "t_audio": 27.472, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27484.641, "data": {"utterance_id": 2, "timestamp": 27.484, "text": "哦"}, "generation": 0, "epoch": 5, "turn": 1, "state": "SPEAK", "t_audio": 27.488, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 27491.189, "data": {"utterance_id": 2, "timestamp": 27.491, "text": "。"}, "generation": 0, "epoch": 5, "turn": 1, "state": "SPEAK", "t_audio": 27.488, "queue_depth": 0}
+{"event": "llm_done", "server_ms": 27499.871, "data": {"timestamp": 27.499, "infer_time": 0.403, "content": "你好！今天天气不错，适合出去散步。不过最好还是查一下当地的实时天气预报，确保没有下雨或气温太低哦。", "prompt": [{"role": "system", "content": "你是一个自然、可靠的实时语音聊天助手。用用户当前主要使用的语言回答，支持中文、英文及中英混说。\n可以参考对话历史，理解追问、指代、换话题和纠正。用户否定你时先判断哪里需要修正，不要无条件附和。\n通常用一到三句简洁、口语化的话直接回答；需要解释时可以更完整。必要时可以提出一个简短澄清问题。\n不输出 Markdown、列表标记或舞台说明。不要编造事实，不确定就说明不确定。\n你没有外部工具、实时查询或执行操作的能力，不要声称已查询、预订或完成现实中的操作。\n历史中的助手文本可能未被用户听完；用户要求重复或继续时自然衔接。\n"}, {"role": "user", "content": [{"type": "text", "text": "你好，今天适合出去散步吗？"}]}, {"role": "assistant", "content": "你好！今天天气不错，适合出去散步。不过最好还是查一下当地的实时天气预报，确保没有下雨或气温太低哦。"}, {"role": "user", "content": [{"type": "audio_url", "audio_url": {"url": "<AUDIO_BASE64_OMITTED>"}}]}], "turn": 1, "state": "SPEAK", "kind": "response"}, "generation": 0, "epoch": 5, "turn": 1, "state": "SPEAK", "t_audio": 27.488, "queue_depth": 0}
+{"event": "speech_text_done", "server_ms": 27499.9, "data": {"utterance_id": 2, "timestamp": 27.499, "text": "你好！今天天气不错，适合出去散步。不过最好还是查一下当地的实时天气预报，确保没有下雨或气温太低哦。", "infer": 0.403, "timed_out": false}, "generation": 0, "epoch": 5, "turn": 1, "state": "SPEAK", "t_audio": 27.488, "queue_depth": 0}
+{"event": "speech_sentence", "server_ms": 27527.774, "data": {"utterance_id": 2, "timestamp": 27.527, "text": "今天天气不错，适合出去散步。"}, "generation": 0, "epoch": 5, "turn": 1, "state": "SPEAK", "t_audio": 27.52, "queue_depth": 0}
+{"event": "capacity_acquired", "server_ms": 27528.061, "data": {"kind": "tts", "wait_ms": 0.021}, "generation": 0, "epoch": 5, "turn": 1, "state": "SPEAK", "t_audio": 27.52, "queue_depth": 0}
+{"event": "input_health", "server_ms": 28323.719, "data": {"reader_to_actor_ms": 0.061}, "t_audio": 28.32, "queue_depth": 0}
+{"event": "input_health", "server_ms": 29343.935, "data": {"reader_to_actor_ms": 0.128}, "t_audio": 29.344, "queue_depth": 0}
+{"event": "speech_sentence", "server_ms": 29995.101, "data": {"utterance_id": 2, "timestamp": 29.994, "text": "不过最好还是查一下当地的实时天气预报，确保没有下雨或气温太低哦。"}, "generation": 0, "epoch": 5, "turn": 1, "state": "SPEAK", "t_audio": 30.0, "queue_depth": 0}
+{"event": "capacity_acquired", "server_ms": 29995.372, "data": {"kind": "tts", "wait_ms": 0.028}, "generation": 0, "epoch": 5, "turn": 1, "state": "SPEAK", "t_audio": 30.0, "queue_depth": 0}
+{"event": "input_health", "server_ms": 30353.634, "data": {"reader_to_actor_ms": 0.084}, "t_audio": 30.352, "queue_depth": 0}
+{"event": "client_ping", "server_ms": 31002.458, "data": {"kind": "ping", "seq": 7, "client_ms": 31280.29999923706, "upload_buffer_bytes": 0}}
+{"event": "demo_pong", "server_ms": 31002.539, "data": {"seq": 7}, "generation": 0, "epoch": 5, "turn": 1, "state": "SPEAK", "t_audio": 30.992, "queue_depth": 0}
+{"event": "client_rtt", "server_ms": 31003.19, "data": {"kind": "rtt", "seq": 7, "client_ms": 31281.40000152588, "rtt_ms": 1.1000022888183594, "upload_buffer_bytes": 0}}
+{"event": "input_health", "server_ms": 31363.518, "data": {"reader_to_actor_ms": 0.076}, "t_audio": 31.36, "queue_depth": 1}
+{"event": "input_health", "server_ms": 32363.63, "data": {"reader_to_actor_ms": 0.066}, "t_audio": 32.368, "queue_depth": 0}
+{"event": "input_health", "server_ms": 33373.977, "data": {"reader_to_actor_ms": 0.099}, "t_audio": 33.376, "queue_depth": 0}
+{"event": "input_health", "server_ms": 34384.29, "data": {"reader_to_actor_ms": 0.143}, "t_audio": 34.384, "queue_depth": 1}
+{"event": "input_health", "server_ms": 35393.808, "data": {"reader_to_actor_ms": 0.082}, "t_audio": 35.392, "queue_depth": 0}
+{"event": "client_ping", "server_ms": 36002.412, "data": {"kind": "ping", "seq": 8, "client_ms": 36280.40000152588, "upload_buffer_bytes": 0}}
+{"event": "demo_pong", "server_ms": 36002.522, "data": {"seq": 8}, "generation": 0, "epoch": 5, "turn": 1, "state": "SPEAK", "t_audio": 35.984, "queue_depth": 0}
+{"event": "client_rtt", "server_ms": 36003.157, "data": {"kind": "rtt", "seq": 8, "client_ms": 36281.5, "rtt_ms": 1.0999984741210938, "upload_buffer_bytes": 0}}
+{"event": "input_health", "server_ms": 36413.547, "data": {"reader_to_actor_ms": 0.039}, "t_audio": 36.416, "queue_depth": 0}
+{"event": "input_health", "server_ms": 37423.913, "data": {"reader_to_actor_ms": 0.056}, "t_audio": 37.424, "queue_depth": 0}
+{"event": "speech_audio_end", "server_ms": 37425.421, "data": {"utterance_id": 2, "timestamp": 37.425, "samples": 251730, "rate": 24000, "packets": 268, "elapsed": 10.327997330576181}, "generation": 0, "epoch": 5, "turn": 1, "state": "SPEAK", "t_audio": 37.424, "queue_depth": 0}
+{"event": "speech_played", "server_ms": 37993.754, "data": {"utterance_id": 2, "timestamp": 37.993, "played_samples": 251730, "underruns": 0}, "generation": 0, "epoch": 5, "turn": 1, "state": "SPEAK", "t_audio": 37.984, "queue_depth": 0}
+{"event": "turn_finished", "server_ms": 37993.935, "data": {"timestamp": 37.993, "turn": 1, "next_turn": 2, "state": "LISTEN", "reason": "played", "carried_samples": 0}, "generation": 0, "epoch": 6, "turn": 2, "state": "LISTEN", "t_audio": 37.984, "queue_depth": 0}
+{"event": "client_playback_end", "server_ms": 37994.579, "data": {"kind": "playback_end", "utterance_id": 2, "client_ms": 38271.90000152588, "played_samples": 251730, "received_samples": 251730, "underruns": 0, "upload_buffer_bytes": 106}}
+{"event": "input_health", "server_ms": 38433.755, "data": {"reader_to_actor_ms": 0.089}, "t_audio": 38.432, "queue_depth": 0}
+{"event": "input_health", "server_ms": 39443.882, "data": {"reader_to_actor_ms": 0.16}, "t_audio": 39.44, "queue_depth": 0}
+{"event": "input_health", "server_ms": 40443.893, "data": {"reader_to_actor_ms": 0.072}, "t_audio": 40.448, "queue_depth": 0}
+{"event": "input_health", "server_ms": 41453.505, "data": {"reader_to_actor_ms": 0.055}, "t_audio": 41.456, "queue_depth": 0}
+{"event": "client_ping", "server_ms": 42002.23, "data": {"kind": "ping", "seq": 9, "client_ms": 42280.29999923706, "upload_buffer_bytes": 0}}
+{"event": "demo_pong", "server_ms": 42002.338, "data": {"seq": 9}, "generation": 0, "epoch": 6, "turn": 2, "state": "LISTEN", "t_audio": 41.984, "queue_depth": 0}
+{"event": "client_rtt", "server_ms": 42003.09, "data": {"kind": "rtt", "seq": 9, "client_ms": 42281.40000152588, "rtt_ms": 1, "upload_buffer_bytes": 0}}
+{"event": "input_health", "server_ms": 42463.715, "data": {"reader_to_actor_ms": 0.046}, "t_audio": 42.464, "queue_depth": 0}
+{"event": "input_health", "server_ms": 43473.64, "data": {"reader_to_actor_ms": 0.077}, "t_audio": 43.472, "queue_depth": 0}
+{"event": "input_health", "server_ms": 44493.778, "data": {"reader_to_actor_ms": 0.093}, "t_audio": 44.496, "queue_depth": 0}
+{"event": "input_health", "server_ms": 45503.448, "data": {"reader_to_actor_ms": 0.045}, "t_audio": 45.504, "queue_depth": 0}
+{"event": "input_health", "server_ms": 46513.742, "data": {"reader_to_actor_ms": 0.114}, "t_audio": 46.512, "queue_depth": 0}
+{"event": "client_ping", "server_ms": 47002.486, "data": {"kind": "ping", "seq": 10, "client_ms": 47280.29999923706, "upload_buffer_bytes": 0}}
+{"event": "demo_pong", "server_ms": 47002.649, "data": {"seq": 10}, "generation": 0, "epoch": 6, "turn": 2, "state": "LISTEN", "t_audio": 46.992, "queue_depth": 0}
+{"event": "client_rtt", "server_ms": 47006.108, "data": {"kind": "rtt", "seq": 10, "client_ms": 47282.20000076294, "rtt_ms": 1.9000015258789062, "upload_buffer_bytes": 0}}
+{"event": "input_health", "server_ms": 47523.411, "data": {"reader_to_actor_ms": 0.028}, "t_audio": 47.52, "queue_depth": 0}
+{"event": "input_health", "server_ms": 48523.561, "data": {"reader_to_actor_ms": 0.069}, "t_audio": 48.528, "queue_depth": 0}
+{"event": "input_health", "server_ms": 49523.679, "data": {"reader_to_actor_ms": 0.086}, "t_audio": 49.52, "queue_depth": 0}
+{"event": "input_health", "server_ms": 50543.438, "data": {"reader_to_actor_ms": 0.047}, "t_audio": 50.544, "queue_depth": 0}
+{"event": "input_health", "server_ms": 51553.596, "data": {"reader_to_actor_ms": 0.069}, "t_audio": 51.552, "queue_depth": 0}
+{"event": "client_ping", "server_ms": 52002.279, "data": {"kind": "ping", "seq": 11, "client_ms": 52280.29999923706, "upload_buffer_bytes": 0}}
+{"event": "demo_pong", "server_ms": 52002.381, "data": {"seq": 11}, "generation": 0, "epoch": 6, "turn": 2, "state": "LISTEN", "t_audio": 52.0, "queue_depth": 0}
+{"event": "client_rtt", "server_ms": 52004.58, "data": {"kind": "rtt", "seq": 11, "client_ms": 52282.79999923706, "rtt_ms": 2.5, "upload_buffer_bytes": 0}}
+{"event": "input_health", "server_ms": 52574.022, "data": {"reader_to_actor_ms": 0.201}, "t_audio": 52.576, "queue_depth": 0}
+{"event": "input_health", "server_ms": 53583.742, "data": {"reader_to_actor_ms": 0.117}, "t_audio": 53.584, "queue_depth": 0}
+{"event": "input_health", "server_ms": 54593.642, "data": {"reader_to_actor_ms": 0.09}, "t_audio": 54.592, "queue_depth": 0}
+{"event": "input_health", "server_ms": 55593.809, "data": {"reader_to_actor_ms": 0.066}, "t_audio": 55.6, "queue_depth": 0}
+{"event": "input_health", "server_ms": 56593.849, "data": {"reader_to_actor_ms": 0.148}, "t_audio": 56.592, "queue_depth": 0}
+{"event": "client_ping", "server_ms": 57002.394, "data": {"kind": "ping", "seq": 12, "client_ms": 57280.40000152588, "upload_buffer_bytes": 0}}
+{"event": "demo_pong", "server_ms": 57002.505, "data": {"seq": 12}, "generation": 0, "epoch": 6, "turn": 2, "state": "LISTEN", "t_audio": 56.992, "queue_depth": 0}
+{"event": "client_rtt", "server_ms": 57003.537, "data": {"kind": "rtt", "seq": 12, "client_ms": 57281.70000076294, "rtt_ms": 1.4000015258789062, "upload_buffer_bytes": 0}}
+{"event": "input_health", "server_ms": 57613.965, "data": {"reader_to_actor_ms": 0.136}, "t_audio": 57.616, "queue_depth": 0}
+{"event": "input_health", "server_ms": 58623.783, "data": {"reader_to_actor_ms": 0.064}, "t_audio": 58.624, "queue_depth": 0}
+{"event": "input_health", "server_ms": 59633.465, "data": {"reader_to_actor_ms": 0.062}, "t_audio": 59.632, "queue_depth": 0}
+{"event": "input_health", "server_ms": 60643.636, "data": {"reader_to_actor_ms": 0.091}, "t_audio": 60.64, "queue_depth": 0}
+{"event": "input_health", "server_ms": 61663.441, "data": {"reader_to_actor_ms": 0.06}, "t_audio": 61.664, "queue_depth": 0}
+{"event": "client_ping", "server_ms": 62002.375, "data": {"kind": "ping", "seq": 13, "client_ms": 62280.40000152588, "upload_buffer_bytes": 0}}
+{"event": "demo_pong", "server_ms": 62002.565, "data": {"seq": 13}, "generation": 0, "epoch": 6, "turn": 2, "state": "LISTEN", "t_audio": 62.0, "queue_depth": 0}
+{"event": "client_rtt", "server_ms": 62004.026, "data": {"kind": "rtt", "seq": 13, "client_ms": 62282.20000076294, "rtt_ms": 1.9000015258789062, "upload_buffer_bytes": 0}}
+{"event": "input_health", "server_ms": 62673.829, "data": {"reader_to_actor_ms": 0.143}, "t_audio": 62.672, "queue_depth": 0}
+{"event": "input_health", "server_ms": 63693.558, "data": {"reader_to_actor_ms": 0.052}, "t_audio": 63.696, "queue_depth": 0}
+{"event": "input_health", "server_ms": 64703.622, "data": {"reader_to_actor_ms": 0.08}, "t_audio": 64.704, "queue_depth": 0}
+{"event": "input_health", "server_ms": 65713.861, "data": {"reader_to_actor_ms": 0.159}, "t_audio": 65.712, "queue_depth": 0}
+{"event": "input_health", "server_ms": 66723.484, "data": {"reader_to_actor_ms": 0.056}, "t_audio": 66.72, "queue_depth": 0}
+{"event": "client_ping", "server_ms": 67002.37, "data": {"kind": "ping", "seq": 14, "client_ms": 67280.29999923706, "upload_buffer_bytes": 0}}
+{"event": "demo_pong", "server_ms": 67002.516, "data": {"seq": 14}, "generation": 0, "epoch": 6, "turn": 2, "state": "LISTEN", "t_audio": 66.992, "queue_depth": 0}
+{"event": "client_rtt", "server_ms": 67004.089, "data": {"kind": "rtt", "seq": 14, "client_ms": 67282, "rtt_ms": 1.7000007629394531, "upload_buffer_bytes": 0}}
+{"event": "input_health", "server_ms": 67723.524, "data": {"reader_to_actor_ms": 0.063}, "t_audio": 67.728, "queue_depth": 0}
+{"event": "input_health", "server_ms": 68724.607, "data": {"reader_to_actor_ms": 0.047}, "t_audio": 68.736, "queue_depth": 0}
+{"event": "input_health", "server_ms": 69734.29, "data": {"reader_to_actor_ms": 0.064}, "t_audio": 69.744, "queue_depth": 0}
+{"event": "input_health", "server_ms": 70744.103, "data": {"reader_to_actor_ms": 0.099}, "t_audio": 70.752, "queue_depth": 0}
+{"event": "input_health", "server_ms": 71764.312, "data": {"reader_to_actor_ms": 0.047}, "t_audio": 71.776, "queue_depth": 0}
+{"event": "client_ping", "server_ms": 72002.287, "data": {"kind": "ping", "seq": 15, "client_ms": 72280.40000152588, "upload_buffer_bytes": 0}}
+{"event": "demo_pong", "server_ms": 72002.386, "data": {"seq": 15}, "generation": 0, "epoch": 6, "turn": 2, "state": "LISTEN", "t_audio": 72.0, "queue_depth": 0}
+{"event": "client_rtt", "server_ms": 72003.095, "data": {"kind": "rtt", "seq": 15, "client_ms": 72281.40000152588, "rtt_ms": 1, "upload_buffer_bytes": 0}}
+{"event": "input_health", "server_ms": 72774.967, "data": {"reader_to_actor_ms": 0.103}, "t_audio": 72.784, "queue_depth": 0}
+{"event": "input_health", "server_ms": 73784.094, "data": {"reader_to_actor_ms": 0.124}, "t_audio": 73.792, "queue_depth": 0}
+{"event": "input_health", "server_ms": 74784.616, "data": {"reader_to_actor_ms": 0.05}, "t_audio": 74.8, "queue_depth": 0}
+{"event": "input_health", "server_ms": 75794.017, "data": {"reader_to_actor_ms": 0.038}, "t_audio": 75.808, "queue_depth": 0}
+{"event": "input_health", "server_ms": 76804.615, "data": {"reader_to_actor_ms": 0.115}, "t_audio": 76.816, "queue_depth": 0}
+{"event": "input_health", "server_ms": 77814.082, "data": {"reader_to_actor_ms": 0.052}, "t_audio": 77.824, "queue_depth": 0}
+{"event": "client_ping", "server_ms": 78002.232, "data": {"kind": "ping", "seq": 16, "client_ms": 78280.29999923706, "upload_buffer_bytes": 0}}
+{"event": "demo_pong", "server_ms": 78002.318, "data": {"seq": 16}, "generation": 0, "epoch": 6, "turn": 2, "state": "LISTEN", "t_audio": 78.0, "queue_depth": 0}
+{"event": "client_rtt", "server_ms": 78002.985, "data": {"kind": "rtt", "seq": 16, "client_ms": 78281.20000076294, "rtt_ms": 0.9000015258789062, "upload_buffer_bytes": 0}}
+{"event": "input_health", "server_ms": 78824.549, "data": {"reader_to_actor_ms": 0.126}, "t_audio": 78.832, "queue_depth": 0}
+{"event": "input_health", "server_ms": 79834.276, "data": {"reader_to_actor_ms": 0.094}, "t_audio": 79.84, "queue_depth": 0}
+{"event": "input_health", "server_ms": 80834.8, "data": {"reader_to_actor_ms": 0.045}, "t_audio": 80.848, "queue_depth": 0}
+{"event": "input_health", "server_ms": 81834.982, "data": {"reader_to_actor_ms": 0.127}, "t_audio": 81.84, "queue_depth": 0}
+{"event": "input_health", "server_ms": 82854.344, "data": {"reader_to_actor_ms": 0.068}, "t_audio": 82.864, "queue_depth": 0}
+{"event": "client_ping", "server_ms": 83002.216, "data": {"kind": "ping", "seq": 17, "client_ms": 83280.29999923706, "upload_buffer_bytes": 0}}
+{"event": "demo_pong", "server_ms": 83002.293, "data": {"seq": 17}, "generation": 0, "epoch": 6, "turn": 2, "state": "LISTEN", "t_audio": 83.008, "queue_depth": 0}
+{"event": "client_rtt", "server_ms": 83002.921, "data": {"kind": "rtt", "seq": 17, "client_ms": 83281.20000076294, "rtt_ms": 0.9000015258789062, "upload_buffer_bytes": 0}}
+{"event": "input_health", "server_ms": 83864.747, "data": {"reader_to_actor_ms": 0.064}, "t_audio": 83.872, "queue_depth": 0}
+{"event": "input_health", "server_ms": 84884.624, "data": {"reader_to_actor_ms": 0.052}, "t_audio": 84.896, "queue_depth": 0}
+{"event": "input_health", "server_ms": 85894.442, "data": {"reader_to_actor_ms": 0.105}, "t_audio": 85.904, "queue_depth": 0}
+{"event": "input_health", "server_ms": 86904.419, "data": {"reader_to_actor_ms": 0.093}, "t_audio": 86.912, "queue_depth": 0}
+{"event": "input_health", "server_ms": 87914.312, "data": {"reader_to_actor_ms": 0.086}, "t_audio": 87.92, "queue_depth": 0}
+{"event": "client_ping", "server_ms": 88002.218, "data": {"kind": "ping", "seq": 18, "client_ms": 88280.29999923706, "upload_buffer_bytes": 0}}
+{"event": "demo_pong", "server_ms": 88002.293, "data": {"seq": 18}, "generation": 0, "epoch": 6, "turn": 2, "state": "LISTEN", "t_audio": 88.0, "queue_depth": 0}
+{"event": "client_rtt", "server_ms": 88002.843, "data": {"kind": "rtt", "seq": 18, "client_ms": 88281.20000076294, "rtt_ms": 0.9000015258789062, "upload_buffer_bytes": 0}}
+{"event": "input_health", "server_ms": 88934.698, "data": {"reader_to_actor_ms": 0.056}, "t_audio": 88.944, "queue_depth": 0}
+{"event": "input_health", "server_ms": 89944.28, "data": {"reader_to_actor_ms": 0.109}, "t_audio": 89.952, "queue_depth": 0}
+{"event": "disconnect", "server_ms": 90161.52, "data": {}, "generation": 0, "epoch": 6, "turn": 2, "state": "LISTEN", "t_audio": 90.16, "queue_depth": 0}
+{"event": "trace_closed", "dropped": 0}

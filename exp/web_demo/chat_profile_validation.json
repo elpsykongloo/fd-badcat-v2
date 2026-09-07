@@ -1,0 +1,81 @@
+{
+  "version": "chat-demo-v1",
+  "utc": "2026-09-07T13:04:28Z",
+  "implemented": [
+    "playback-confirmed once-only turn finalization and retired completed speech",
+    "preserved ongoing user audio and rejudged closed carryover segments",
+    "ASR and assistant history paired by turn ID",
+    "isolated startup VAD, ASR, control, SSE text and SSE TTS warmup",
+    "SenseVoice int8 CPU bilingual ASR and effective YAML configuration",
+    "independent natural bilingual chat prompt profile without 15-character cap",
+    "exact binary labels, one bounded repair, conservative fallback and audit"
+  ],
+  "unit_tests": {
+    "initial_focused_command": "env -u OMP_NUM_THREADS /root/miniconda3/envs/fd-sds/bin/python -m pytest -q tests/test_chat_demo.py tests/test_engine.py tests/test_speech_stream.py tests/test_asr_en.py tests/test_web_demo.py",
+    "passed": 60,
+    "pytest_seconds": 2.38,
+    "after_completion_retirement_fix_command": "env -u OMP_NUM_THREADS /root/miniconda3/envs/fd-sds/bin/python -m pytest -q tests/test_chat_demo.py tests/test_speech_stream.py",
+    "after_fix_passed": 37,
+    "after_fix_pytest_seconds": 1.96,
+    "full_suite_or_rb_run": false
+  },
+  "startup": {
+    "event": "demo_warmup_done",
+    "asr": "sensevoice",
+    "asr_provider": "cpu",
+    "transcript": "你好，今天适合出去散步吗？",
+    "bilingual_transcript": "你好，hello ,how are you.",
+    "tts_chunks": 3,
+    "elapsed_s": 2.654,
+    "ready_after_warmup": true
+  },
+  "live_validation": {
+    "command": "scripts/check_web_demo.py --live-url http://127.0.0.1:18000 --audio exp/streaming_demo/synthetic_question.wav --turns 2 --output exp/web_demo/chat_profile_live_final",
+    "browser": "Chromium 151.0.7922.34",
+    "input": "repository-owned synthetic speech, repeated after 20 seconds of silence",
+    "initial_receipt": "exp/web_demo/chat_profile_live/receipt.json",
+    "initial_issue": "Both replies played and turns advanced, but the next dispatch cancelled the already completed previous stream and overwrote its UI completion tag. The two-completed-tags check correctly failed.",
+    "fix": "Final playback ACK retires the completed stream without emitting speech_cancelled; inflight accounting stays with its finished event.",
+    "final_receipt": "exp/web_demo/chat_profile_live_final/receipt.json",
+    "final_session": "web-demo-05e86413b751492489c896e1f8719c6c",
+    "pass": true,
+    "turns": [0, 1],
+    "next_turns": [1, 2],
+    "asr_turns": [0, 1],
+    "binary_packets": 502,
+    "completed_samples": [219645, 251730],
+    "underruns": [0, 0],
+    "js_errors": 0,
+    "trace_dropped": 0,
+    "unexpected_cancellations": 0,
+    "control_labels": ["switch", "switch", "no"],
+    "control_live_repairs_or_fallbacks": 0,
+    "malformed_control_paths_tested_with_unit_injection": true
+  },
+  "running": {
+    "tmux": "humdial-demo",
+    "launcher_pid": 30018,
+    "omni_pid": 30023,
+    "proxy_pid": 30924,
+    "backend_pid": 30936,
+    "bind_host": "127.0.0.1",
+    "ports": [10003, 10004, 18000],
+    "log_dir": "exp/web_demo/20260907T130110Z-30018",
+    "left_running_for_laptop": true
+  },
+  "operational_notes": [
+    "Controlled restart of the old launcher emitted cleanup warnings for 2 semaphores and 15 shared memory objects.",
+    "Restart to deploy the completion-retirement fix emitted cleanup warnings for 2 semaphores and 7 shared memory objects.",
+    "Ports and GPU compute processes were empty before each restart; no unknown process was terminated.",
+    "Launcher port probing now allows TIME_WAIT with SO_REUSEADDR but continues to reject live listeners."
+  ],
+  "limits": [
+    "No physical laptop microphone, speaker or echo-cancellation listening test.",
+    "Functionality smoke only, not a formal latency comparison or quality evaluation.",
+    "The synthetic weather question still elicited an unsupported assertion about today's weather; no factuality improvement claim.",
+    "No speculative execution, tools or speaker verification added.",
+    "History is complete generated text, not the exact heard prefix.",
+    "HumDial base YAML, legacy and RB/TACT evaluation configs unchanged.",
+    "No integrity hashes computed or compared; real user sessions and unrelated user edits excluded."
+  ]
+}

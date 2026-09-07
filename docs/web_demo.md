@@ -2,7 +2,7 @@
 
 页面入口是 `src/static/index.html`，由 backend 的 `/demo/` 提供。纯 HTML/CSS/JavaScript，没有前端构建步骤、CDN、账号密钥或笔记本端 Python 依赖。
 
-模型仍运行在 GPU 服务器；笔记本浏览器负责录音、播放与页面展示。默认 HumDial ActorEngine，不改提示词、15 字要求或打断规则。
+模型仍运行在 GPU 服务器；笔记本浏览器负责录音、播放与页面展示。使用 HumDial ActorEngine，展示启动器现默认选择独立 `chat-demo-v1` 配置：自然中英聊天、双语 ASR、播放后轮次收尾与启动预热。原 HumDial 评测配置及默认关闭的行为开关保留，未启用投机。
 
 ## 1. 在服务器启动
 
@@ -14,13 +14,13 @@ tmux new -s humdial-demo
 bash setup/start_demo.sh
 ```
 
-等待终端打印 `DEMO READY`。首次加载模型需要几分钟；期间会显示日志路径和就绪进度，不要反复启动。看到 READY 表示模型列表、代理接口和流式后端配置的检查通过，**不代表麦克风、实际生成和扬声器已经验收**。
+等待终端打印 `DEMO READY`。首次加载模型需要几分钟；期间会显示日志路径和就绪进度，不要反复启动。READY 前还会实际预热 VAD、CPU ASR、Omni 控制判定、流式文本和流式 TTS，并回读一段中英合成音频；失败会阻止启动，不在首位用户身上执行冷启动。backend.log 的 `demo_warmup_done` 记录实际 ASR 后端、转写和耗时。**READY 不代表笔记本麦克风或物理扬声器已经验收**。
 
 启动器按顺序启动：
 
 - Omni 音频模型：服务器 `127.0.0.1:10003`，沿用生产 seq=4 / context=4096 / FCFS 配置。
 - 流式代理：服务器 `127.0.0.1:10004`。
-- ActorEngine 与页面：服务器 `127.0.0.1:18000`，显式启用 `--streaming`。
+- ActorEngine 与页面：服务器 `127.0.0.1:18000`，显式启用 `--streaming --demo-chat`。
 
 启动器不会停止或接管已有进程，端口占用会明确报错。如果 **10003 的 Omni 和 10004 的新版代理已经启动**、只是缺少 backend：
 
@@ -62,7 +62,7 @@ ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -L 127.0.0.1:18080:
 
 1. 戴耳机，打开页面。点击“开始对话”，允许麦克风访问；握手完成前不会上传录音。
 2. 看到“我在听，你说。”后自然说话，不用按住按钮。页面显示输入音量、实时回复和稍晚到达的 ASR 转写。
-3. 在回答时继续说话可测试打断；是否打断沿用模型判据，不是“检测到声音就停”。当前 15 字短答较短，演示时不要把它误当成长答版模型。
+3. 在回答时继续说话可测试打断；是否打断仍由语义判定和长打断规则决定，不是“检测到声音就停”。聊天配置通常回答一至三句，已不强制 15 字；正常换话题不会被提示词要求拒答。播放完成后自动进入下一轮，已经开始说的话会继续保留。
 4. “静音麦克风”会关闭输入轨的声音并显式上传零值帧，已有回复仍可播放；持续发送静音帧是为了保持既有音频时钟，不是暂停服务器时间。
 5. “结束”关闭 WebSocket、停止全部排程音频、释放麦克风；再次开始会分配新的服务器会话，清空上一段页面记录。已有记录也可以在断开后手动清空。
 6. “全屏展示”隐藏浏览器外框；“连接与运行详情”显示当前会话、缓冲、计时口径和排错帮助。
@@ -108,7 +108,7 @@ ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -L 127.0.0.1:18080:
 | `client_first_audio` / `client_playback_end` / `client_cancel` / `client_stop` | 浏览器首包、播放完成、取消/结束；包含样本数、断流次数、上传 bufferedAmount。第一包的 `scheduled_lead_ms` 为 WebAudio 起播调度余量，设备 latency 为浏览器估计，均非物理扬声器听检 |
 | `input_health` | 每秒一次 reader→actor 排队时长、音频钟和队列深度，帮助辨别服务内部积压 |
 
-服务器 `server_ms` 与浏览器 `client_ms` 不同源，**不能直接相减**。旧的首文本/首音频到达指标仍从浏览器收到 `speech_start` 起算；完整三阶段用服务端指标另列。读完/生成完的文本不是用户实际听到的前缀。本次观测不改 prompt、15字、0.64/2.5/1.5s、播放结束状态或投机开关。
+服务器 `server_ms` 与浏览器 `client_ms` 不同源，**不能直接相减**。旧的首文本/首音频到达指标仍从浏览器收到 `speech_start` 起算；完整三阶段用服务端指标另列。读完/生成完的文本不是用户实际听到的前缀。观测本身不改变判据；聊天配置的独立行为开关见下节，0.64/2.5/1.5s 阈值保持不变。
 
 ### 为什么异步仍会出现阶段累加？
 
@@ -116,7 +116,19 @@ ActorEngine 的异步派发让收音不中断；它没有 `speculative_dispatch`
 
 可研究的独立方案：冻结候选输入/历史，投机 judge 或回答/TTS，在原判据确认前禁止播放、前端展示和写历史；续说、shift、取消、重置需整链作废。只提前 judge 主要重叠①②；要重叠③还须提前回答/TTS。若从 VAD END 跑判定→生成，在成功命中且无争用时，理想式从 `H+J+G` 变为 `max(H,J+G)`；若只投机判定则为 `max(H,J)+G`。这是调度上界，不是实测提升承诺，不能消除原 hold 门槛。
 
-还须验证：少了真实尾部音频是否改变判定、历史快照是否一致、废弃率/取消是否真正释放 HTTP，以及 seq4 的 GPU 争用是否拖慢 judge。W3 已有 full-engine 投机记录为 604 派发/197 确认/407 作废（67.4%），仅说明成本确实存在，不是本 demo 的预测值。因此可保持对外提交规则，但不应在未验证时称为“无条件、无成本、逐位等价的纯提升”。本补丁只做观测，没有启用这项优化。
+还须验证：少了真实尾部音频是否改变判定、历史快照是否一致、废弃率/取消是否真正释放 HTTP，以及 seq4 的 GPU 争用是否拖慢 judge。W3 已有 full-engine 投机记录为 604 派发/197 确认/407 作废（67.4%），仅说明成本确实存在，不是本 demo 的预测值。因此可保持对外提交规则，但不应在未验证时称为“无条件、无成本、逐位等价的纯提升”。当前聊天配置也未启用投机。
+
+## 7. 独立聊天配置（chat-demo-v1）
+
+`--demo-chat` 将 `configs/demo_chat.yaml` 覆盖到基础 YAML，限定 ActorEngine。展示启动器自动添加它；直接运行 `src/backend.py --streaming` 而不加该参数仍使用原 HumDial 配置。网页连接后会显示实际 profile，不能只凭页面版本判断后端已升级。
+
+- **轮次收尾**：流式音频收到实际播放回执后只结算一次，递增轮次并回到 LISTEN；保留正在收取的插话音频。旧 interrupt 结果不能跨轮生效，已结束的插话片段改走新一轮 judge。迟到 ASR 通过轮次 ID 与回复配对，不再靠两个列表的到达顺序。流式生成失败也会清理并回到监听。非流式兼容路径只能用音频钟估计播放结束，不能声称是浏览器回执。
+- **启动预热**：独立于用户会话，无用户历史或预热回复广播；总预算 90 秒。使用仓内自造样例，不读取用户录音。预热失败会退出启动流程。
+- **双语 ASR**：选择已在仓内的 SenseVoice int8 / CPU / 2 线程，不占 Omni GPU。YAML 的 `asr` 段现在实际应用到延迟初始化的识别器；显式 `FDBC_ASR_BACKEND`、`FDBC_ASR_PROVIDER`、`FDBC_ASR_NUM_THREADS` 环境变量优先。切换后需重启 backend，已加载的模型不会在会话中热换。ASR 用于页面转写与后续文字历史，当前语音判定和回答仍由 Omni 直接听音频。
+- **聊天提示词**：不再强制 15 字、不无条件附和；支持追问、纠正和中英切换，正常换话题不判 shift。仅明确对第三方说话才判 shift；这不是声纹识别。仍无工具和实时查询能力。
+- **二分类容错**：judge/interrupt 仅接受 `continue|switch`，shift 仅接受 `no|yes`，拒绝空串、含糊解释及子串碰撞。首次无效或请求异常时最多修复一次，与首次请求共享 `llm.decision_timeout_s` 总预算；超时不继续重试。仍失败时 judge/interrupt 回退 `continue`，shift 回退 `no`。judge 的回退继续走已有等待超时机制，避免空输出立刻抢话；shift 不会再静默卡住。`control_validation` 记录原始标签、尝试次数、修复/回退/超时；不套用 TACT 工具 JSON 解析器。
+
+历史仍保存完整生成文本，不是精确“用户已听到前缀”。预热不是持续健康检查，也不能消除每次会话的所有初始化耗时。提示词不是事实性保证：自造天气问题的功能烟测仍出现无依据的天气断言，不能据此宣称聊天质量已验收。这些变更没有修改 RB/TACT 评测配置或建立新的正式成绩。
 
 ## 开发核验
 
@@ -125,6 +137,6 @@ node tests/test_stream_demo.cjs
 env -u OMP_NUM_THREADS /root/miniconda3/envs/fd-sds/bin/python -m pytest tests/test_web_demo.py tests/test_speech_stream.py -q
 ```
 
-浏览器检查脚本 `scripts/check_web_demo.py` 使用 Playwright 和真实 Chromium 的 WebAudio/AudioWorklet；默认使用明确标注的合成协议测试服务器，不调用模型、不提供模拟回答给正式演示页。`--live-url` 可接真实 backend 与自有 mono PCM16 WAV 做单条链路烟测：探针为输入加前后静音并只播一次，避免 Chromium 默认循环文件导致永不满足停顿判定。工具的截图/机器检查不能代替笔记本真实耳机、麦克风、声卡及外放回声听检。Linux 截图环境需安装中文字体，否则系统字体缺字可能显示方框；页面不依赖在线字体服务。
+浏览器检查脚本 `scripts/check_web_demo.py` 使用 Playwright 和真实 Chromium 的 WebAudio/AudioWorklet；默认使用明确标注的合成协议测试服务器，不调用模型、不提供模拟回答给正式演示页。`--live-url` 可接真实 backend 与自有 mono PCM16 WAV 做链路烟测：默认播一次，`--turns 2` 在 20 秒静音后再播一次以检查跨轮收尾和 ASR 配对；不循环输入。工具的截图/机器检查不能代替笔记本真实耳机、麦克风、声卡及外放回声听检。Linux 截图环境需安装中文字体，否则系统字体缺字可能显示方框；页面不依赖在线字体服务。
 
 协议细节见 [streaming_speech.md](streaming_speech.md)，生产容量见 [production_capacity.md](production_capacity.md)。

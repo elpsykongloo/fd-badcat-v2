@@ -1,0 +1,904 @@
+{
+  "utc": "2026-09-07T13:03:16.610744+00:00",
+  "physical_listening": false,
+  "formal_benchmark": false,
+  "demo_version": "web-demo-v1",
+  "sources": [
+    "src/static/demo-telemetry.js",
+    "src/static/demo.css",
+    "src/static/demo.js",
+    "src/static/favicon.svg",
+    "src/static/index.html",
+    "src/static/mic-worklet.js",
+    "src/static/speech-player.js"
+  ],
+  "browser": "151.0.7922.34",
+  "result": {
+    "kind": "live ActorEngine + Omni, Chromium virtual microphone/speaker; not physical listening",
+    "input": "/root/autodl-tmp/fd-badcat/exp/streaming_demo/synthetic_question.wav",
+    "turns": 2,
+    "binary_packets": 502,
+    "last_playback_ack": {
+      "utterance_id": 2,
+      "played_samples": 251730,
+      "ended": true,
+      "underruns": 0
+    },
+    "completed_playbacks": [
+      {
+        "utterance_id": 1,
+        "played_samples": 219645,
+        "ended": true,
+        "underruns": 0
+      },
+      {
+        "utterance_id": 2,
+        "played_samples": 251730,
+        "ended": true,
+        "underruns": 0
+      }
+    ],
+    "ui_snapshot": {
+      "first_text": "67 ms",
+      "first_audio": "332 ms",
+      "buffer": "0 ms",
+      "session_id": "web-demo-05e86413b751492489c896e1f8719c6c",
+      "audio_format": "48000 Hz 设备 → 16 kHz 上传 / 256 样本",
+      "diagnostics": {
+        "stage-hold": "638 ms",
+        "stage-decision": "185 ms",
+        "stage-generation": "334 ms",
+        "stage-total": "1157 ms",
+        "socket-rtt": "2 ms",
+        "trace-status": "逐轮记录已启用 · demo-trace-v1"
+      }
+    },
+    "uploads": {
+      "frames": 2388,
+      "max_rms": 0.6486336533553877
+    },
+    "events": [
+      {
+        "event": "demo_ready",
+        "data": {
+          "session_id": "web-demo-05e86413b751492489c896e1f8719c6c",
+          "protocol": "pcm16.v1",
+          "observability": "demo-trace-v1",
+          "profile": "chat-demo-v1"
+        }
+      },
+      {
+        "event": "demo_pong",
+        "data": {
+          "seq": 1
+        }
+      },
+      {
+        "event": "vad_start",
+        "data": {
+          "timestamp": 1.057,
+          "turn": 0,
+          "state": "LISTEN"
+        }
+      },
+      {
+        "event": "vad_done",
+        "data": {
+          "timestamp": 1.727,
+          "turn": 0,
+          "state": "LISTEN"
+        }
+      },
+      {
+        "event": "vad_done",
+        "data": {
+          "timestamp": 3.676,
+          "turn": 0,
+          "state": "LISTEN"
+        }
+      },
+      {
+        "event": "vad_640_done",
+        "data": {
+          "timestamp": 4.326,
+          "turn": 0,
+          "state": "LISTEN"
+        }
+      },
+      {
+        "event": "control_validation",
+        "data": {
+          "kind": "judge",
+          "attempts": 1,
+          "raw": [
+            "switch"
+          ],
+          "errors": [],
+          "repaired": false,
+          "fallback": false,
+          "timed_out": false,
+          "turn": 0,
+          "timestamp": 4.427
+        }
+      },
+      {
+        "event": "speech_start",
+        "data": {
+          "utterance_id": 1,
+          "turn": 0,
+          "protocol": "pcm16.v1",
+          "buffer_ms": 600,
+          "timestamp": 4.429
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.497,
+          "text": "你好"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.504,
+          "text": "！"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.512,
+          "text": "今天"
+        }
+      },
+      {
+        "event": "speech_sentence",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.512,
+          "text": "你好！"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.522,
+          "text": "天气"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.523,
+          "text": "不错"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.53,
+          "text": "，"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.572,
+          "text": "适合"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.585,
+          "text": "出去"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.596,
+          "text": "散步"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.613,
+          "text": "。"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.614,
+          "text": "不过"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.622,
+          "text": "最好"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.629,
+          "text": "还是"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.636,
+          "text": "查"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.643,
+          "text": "一下"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.654,
+          "text": "当地的"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.666,
+          "text": "实时"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.677,
+          "text": "天气"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.691,
+          "text": "预报"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.708,
+          "text": "，"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.717,
+          "text": "确保"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.731,
+          "text": "没有"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.747,
+          "text": "下雨"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.759,
+          "text": "或"
+        }
+      },
+      {
+        "event": "speech_first_audio",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.774,
+          "sample_rate": 24000,
+          "turn": 0
+        }
+      },
+      {
+        "event": "demo_latency",
+        "data": {
+          "utterance_id": 1,
+          "hold_ms": 650.2,
+          "decision_ms": 102.2,
+          "generation_ms": 345.2,
+          "vad_to_audio_ms": 1097.6
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.777,
+          "text": "气温"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.788,
+          "text": "太"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.799,
+          "text": "低"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.813,
+          "text": "哦"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.825,
+          "text": "。"
+        }
+      },
+      {
+        "event": "speech_text_done",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.841,
+          "text": "你好！今天天气不错，适合出去散步。不过最好还是查一下当地的实时天气预报，确保没有下雨或气温太低哦。",
+          "infer": 0.412,
+          "timed_out": false
+        }
+      },
+      {
+        "event": "asr_done",
+        "data": {
+          "timestamp": 4.851,
+          "turn": 0,
+          "state": "SPEAK",
+          "content": "你好，今天适合出去散步吗？"
+        }
+      },
+      {
+        "event": "speech_sentence",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.889,
+          "text": "今天天气不错，适合出去散步。"
+        }
+      },
+      {
+        "event": "demo_pong",
+        "data": {
+          "seq": 2
+        }
+      },
+      {
+        "event": "speech_sentence",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 7.277,
+          "text": "不过最好还是查一下当地的实时天气预报，确保没有下雨或气温太低哦。"
+        }
+      },
+      {
+        "event": "demo_pong",
+        "data": {
+          "seq": 3
+        }
+      },
+      {
+        "event": "speech_audio_end",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 13.436,
+          "samples": 219645,
+          "rate": 24000,
+          "packets": 234,
+          "elapsed": 9.006688609719276
+        }
+      },
+      {
+        "event": "speech_played",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 14.015,
+          "played_samples": 219645,
+          "underruns": 0
+        }
+      },
+      {
+        "event": "turn_finished",
+        "data": {
+          "timestamp": 14.015,
+          "turn": 0,
+          "next_turn": 1,
+          "state": "LISTEN",
+          "reason": "played",
+          "carried_samples": 0
+        }
+      },
+      {
+        "event": "demo_pong",
+        "data": {
+          "seq": 4
+        }
+      },
+      {
+        "event": "demo_pong",
+        "data": {
+          "seq": 5
+        }
+      },
+      {
+        "event": "vad_start",
+        "data": {
+          "timestamp": 23.646,
+          "turn": 1,
+          "state": "LISTEN"
+        }
+      },
+      {
+        "event": "vad_done",
+        "data": {
+          "timestamp": 24.317,
+          "turn": 1,
+          "state": "LISTEN"
+        }
+      },
+      {
+        "event": "demo_pong",
+        "data": {
+          "seq": 6
+        }
+      },
+      {
+        "event": "vad_done",
+        "data": {
+          "timestamp": 26.278,
+          "turn": 1,
+          "state": "LISTEN"
+        }
+      },
+      {
+        "event": "vad_640_done",
+        "data": {
+          "timestamp": 26.916,
+          "turn": 1,
+          "state": "LISTEN"
+        }
+      },
+      {
+        "event": "control_validation",
+        "data": {
+          "kind": "judge",
+          "attempts": 1,
+          "raw": [
+            "switch"
+          ],
+          "errors": [],
+          "repaired": false,
+          "fallback": false,
+          "timed_out": false,
+          "turn": 1,
+          "timestamp": 27.016
+        }
+      },
+      {
+        "event": "control_validation",
+        "data": {
+          "kind": "shift",
+          "attempts": 1,
+          "raw": [
+            "no"
+          ],
+          "errors": [],
+          "repaired": false,
+          "fallback": false,
+          "timed_out": false,
+          "turn": 1,
+          "timestamp": 27.099
+        }
+      },
+      {
+        "event": "speech_start",
+        "data": {
+          "utterance_id": 2,
+          "turn": 1,
+          "protocol": "pcm16.v1",
+          "buffer_ms": 600,
+          "timestamp": 27.101
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.171,
+          "text": "你好"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.177,
+          "text": "！"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.184,
+          "text": "今天"
+        }
+      },
+      {
+        "event": "speech_sentence",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.184,
+          "text": "你好！"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.188,
+          "text": "天气"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.196,
+          "text": "不错"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.239,
+          "text": "，"
+        }
+      },
+      {
+        "event": "asr_done",
+        "data": {
+          "timestamp": 27.25,
+          "turn": 1,
+          "state": "LISTEN",
+          "content": "你好，今天适合出去散步吗？"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.252,
+          "text": "适合"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.263,
+          "text": "出去"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.276,
+          "text": "散步"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.278,
+          "text": "。"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.284,
+          "text": "不过"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.292,
+          "text": "最好"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.304,
+          "text": "还是"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.31,
+          "text": "查"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.321,
+          "text": "一下"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.332,
+          "text": "当地的"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.349,
+          "text": "实时"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.36,
+          "text": "天气"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.375,
+          "text": "预报"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.387,
+          "text": "，"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.401,
+          "text": "确保"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.411,
+          "text": "没有"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.434,
+          "text": "下雨"
+        }
+      },
+      {
+        "event": "speech_first_audio",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.435,
+          "sample_rate": 24000,
+          "turn": 1
+        }
+      },
+      {
+        "event": "demo_latency",
+        "data": {
+          "utterance_id": 2,
+          "hold_ms": 638.2,
+          "decision_ms": 184.7,
+          "generation_ms": 333.7,
+          "vad_to_audio_ms": 1156.7
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.441,
+          "text": "或"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.457,
+          "text": "气温"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.473,
+          "text": "太"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.478,
+          "text": "低"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.489,
+          "text": "哦"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.496,
+          "text": "。"
+        }
+      },
+      {
+        "event": "speech_text_done",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.503,
+          "text": "你好！今天天气不错，适合出去散步。不过最好还是查一下当地的实时天气预报，确保没有下雨或气温太低哦。",
+          "infer": 0.402,
+          "timed_out": false
+        }
+      },
+      {
+        "event": "speech_sentence",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 27.525,
+          "text": "今天天气不错，适合出去散步。"
+        }
+      },
+      {
+        "event": "speech_sentence",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 30.018,
+          "text": "不过最好还是查一下当地的实时天气预报，确保没有下雨或气温太低哦。"
+        }
+      },
+      {
+        "event": "demo_pong",
+        "data": {
+          "seq": 7
+        }
+      },
+      {
+        "event": "demo_pong",
+        "data": {
+          "seq": 8
+        }
+      },
+      {
+        "event": "speech_audio_end",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 37.437,
+          "samples": 251730,
+          "rate": 24000,
+          "packets": 268,
+          "elapsed": 10.334943626075983
+        }
+      },
+      {
+        "event": "speech_played",
+        "data": {
+          "utterance_id": 2,
+          "timestamp": 38.006,
+          "played_samples": 251730,
+          "underruns": 0
+        }
+      },
+      {
+        "event": "turn_finished",
+        "data": {
+          "timestamp": 38.006,
+          "turn": 1,
+          "next_turn": 2,
+          "state": "LISTEN",
+          "reason": "played",
+          "carried_samples": 0
+        }
+      }
+    ],
+    "page_errors": []
+  },
+  "pass": true
+}

@@ -214,7 +214,7 @@ async def mock_checks(browser, output):
                 "microphone_frames": len(fixture.frames), "sessions": fixture.sessions, "page_errors": errors}
 
 
-async def live_check(browser, url, audio, output):
+async def live_check(browser, url, audio, output, turns=1):
     context = await browser.new_context(permissions=["microphone"], viewport={"width": 1440, "height": 1050}, reduced_motion="reduce")
     await context.add_init_script(TRACKS)
     page = await context.new_page()
@@ -229,7 +229,7 @@ async def live_check(browser, url, audio, output):
         else:
             value = json.loads(payload)
             # Do not archive giant prompt/audio blobs from llm_done.
-            if value.get("event", "").startswith(("speech_", "demo_", "vad_")) or value.get("event") == "asr_done":
+            if value.get("event", "").startswith(("speech_", "demo_", "vad_", "turn_")) or value.get("event") in ("asr_done", "control_validation"):
                 controls.append(value)
     def sent(payload):
         if isinstance(payload, bytes):
@@ -248,9 +248,9 @@ async def live_check(browser, url, audio, output):
         await page.goto(url.rstrip("/") + "/demo/")
         await page.click("#start")
         await connected(page)
-        await page.wait_for_function("document.getElementById('messages').innerText.includes('播放完成')", timeout=60000)
+        await page.wait_for_function("n => [...document.querySelectorAll('.message.assistant .message-tag')].filter(x => x.textContent === '播放完成').length >= n", arg=turns, timeout=90000)
         await page.click("#mute")
-        await page.wait_for_function("document.querySelector('.message.user .message-text:not(.pending)') !== null", timeout=20000)
+        await page.wait_for_function("n => document.querySelectorAll('.message.user .message-text:not(.pending)').length >= n", arg=turns, timeout=20000)
         await page.screenshot(path=str(output / "live-conversation.png"), full_page=True)
         snapshot = {"first_text": await page.locator("#first-text").text_content(),
                     "first_audio": await page.locator("#first-audio").text_content(),
@@ -262,13 +262,18 @@ async def live_check(browser, url, audio, output):
         assert "已启用" in snapshot["diagnostics"]["trace-status"]
         assert any(e["event"] == "demo_latency" for e in controls)
         assert snapshot["diagnostics"]["socket-rtt"] != "—"
+        if turns > 1:
+            finished = [e["data"] for e in controls if e["event"] == "turn_finished"]
+            assert [e["turn"] for e in finished] == list(range(turns)), finished
+            assert len({e["data"]["turn"] for e in controls if e["event"] == "asr_done"}) == turns
         await page.click("#stop")
         await stopped(page)
         assert binary_packets > 0 and any(p.get("ended") for p in playback_ack)
         assert not errors, errors
         return {"kind": "live ActorEngine + Omni, Chromium virtual microphone/speaker; not physical listening",
-                "input": str(audio),
+                "input": str(audio), "turns": turns,
                 "binary_packets": binary_packets, "last_playback_ack": playback_ack[-1],
+                "completed_playbacks": [p for p in playback_ack if p.get("ended")],
                 "ui_snapshot": snapshot, "uploads": uploads, "events": controls, "page_errors": errors}
     except Exception:
         debug = {"uploads": uploads, "events": controls, "page_errors": errors,
@@ -285,6 +290,8 @@ async def main():
     parser.add_argument("--output", type=Path, required=True, help="New directory; never overwrite prior evidence")
     parser.add_argument("--live-url", default=None)
     parser.add_argument("--audio", type=Path, help="Your own WAV input, required for --live-url")
+    parser.add_argument("--turns", type=int, choices=[1, 2], default=1,
+                        help="One or two independent turns; two repeats the input after 20 seconds of silence")
     args = parser.parse_args()
     if args.live_url and (not args.audio or not args.audio.is_file()):
         parser.error("--live-url requires an existing --audio WAV owned by you")
@@ -292,7 +299,7 @@ async def main():
     launch_args = ["--use-fake-device-for-media-stream", "--use-fake-ui-for-media-stream", "--no-proxy-server"]
     if args.live_url:
         # Chrome loops file capture by default. A repeated short question may
-        # never meet EoU hold; feed it ONCE, with time for the initial handshake.
+        # never meet EoU hold; prepare only the requested turns, with a quiet gap.
         prepared = args.output / "microphone-input.wav"
         with wave.open(str(args.audio), "rb") as source:
             params = source.getparams()
@@ -302,7 +309,7 @@ async def main():
         with wave.open(str(prepared), "wb") as destination:
             destination.setparams(params)
             silence = bytes(params.framerate * params.sampwidth)
-            destination.writeframes(silence + pcm + silence * 2)
+            destination.writeframes(silence + pcm + (silence * 20 + pcm if args.turns == 2 else b"") + silence * 2)
         launch_args.append("--use-file-for-fake-audio-capture=" + str(prepared.resolve()) + "%noloop")
     receipt = {"utc": datetime.now(timezone.utc).isoformat(), "physical_listening": False,
                "formal_benchmark": False, "demo_version": "web-demo-v1",
@@ -312,7 +319,7 @@ async def main():
         receipt["browser"] = browser.version
         try:
             if args.live_url:
-                receipt["result"] = await live_check(browser, args.live_url, args.audio.resolve(), args.output)
+                receipt["result"] = await live_check(browser, args.live_url, args.audio.resolve(), args.output, args.turns)
             else:
                 receipt["result"] = await mock_checks(browser, args.output)
             receipt["pass"] = True

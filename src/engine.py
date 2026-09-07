@@ -56,6 +56,7 @@ from silero_vad import load_silero_vad, VADIterator
 from messages import build_audio_content, scrub_audio_blocks
 from request_capacity import CONTROL, NORMAL, process_request_capacity
 from speech_stream import PROTOCOL, SpeechEvent, SpeechPipeline, SocketOutbox
+from control_labels import LABELS, FALLBACK, parse_label, decide_control
 
 SAMPLE_RATE = 16000
 WINDOW_SIZE = 256
@@ -109,6 +110,7 @@ class ModelDone:
     prompt_snapshot: list = None
     timed_out: bool = False
     error: str = ""
+    control_audit: dict = None
 
 
 @dataclass
@@ -129,6 +131,7 @@ class ActorEngine:
                  request_capacity=None):
         self.websocket = websocket
         self.q: asyncio.Queue = asyncio.Queue()
+        default_llm = llm_fn is None
 
         # ---- injectable model functions (tests / mocks) ----
         # module.py is imported lazily: it pulls sherpa_onnx/torchaudio/requests,
@@ -147,6 +150,11 @@ class ActorEngine:
         self.delay = delay or {}
         self.llm_cfg = llm_cfg or {}
         self.engine_cfg = engine_cfg or {}
+        self.CHAT_DEMO = bool(self.engine_cfg.get("chat_demo", False))
+        self.CONTROL_VALIDATION = bool(self.engine_cfg.get("control_validation", False))
+        self.control_llm_fn = self.llm_fn
+        if default_llm and self.CONTROL_VALIDATION:
+            self.control_llm_fn = _module.llm_qwen3o_strict
         self.END_HOLD = float(self.delay.get("end_hold_frame", 0.64))
         self.AFTER_CONTINUE_TIMEOUT = float(self.delay.get("after_continue_time", 2.5))
         self.JUDGE_PROMPT = self.prompts.get("judge", "")
@@ -215,6 +223,8 @@ class ActorEngine:
         self.interrupt_buf = []
         self.assistant_history = []
         self.user_history = []
+        self._users_by_turn = {}
+        self._assistants_by_turn = {}
 
         # ---- audio-clock anchors (replace legacy wall-clock anchors) ----
         self.t_end_anchor = None          # vad end   -> END_HOLD window
@@ -233,6 +243,7 @@ class ActorEngine:
 
         # ---- playback bookkeeping (record-only unless playback_autoend) ----
         self.playback_end_audio = None
+        self._playback_turn = None
 
         # ---- observability ----
         self.output_dir = None
@@ -296,6 +307,10 @@ class ActorEngine:
     def build_messages(self, system_prompt, user_audio, use_history, shift_history):
         messages = [{"role": "system", "content": system_prompt}]
         user_history, assistant_history = self.user_history, self.assistant_history
+        if self.CHAT_DEMO:
+            turns = sorted(self._users_by_turn.keys() & self._assistants_by_turn.keys())
+            user_history = [self._users_by_turn[t] for t in turns]
+            assistant_history = [self._assistants_by_turn[t] for t in turns]
         rounds = min(len(user_history), len(assistant_history))
         self.last_history_window = {
             "available_pairs": rounds, "included_pairs": 0,
@@ -399,6 +414,16 @@ class ActorEngine:
             timed_out = False
             text = ""
             error = ""
+            if self.CONTROL_VALIDATION and kind in LABELS:
+                async def call(request):
+                    worker = self._start_capacity_thread_call(kind, self.control_llm_fn, request)
+                    return await asyncio.shield(worker)
+                text, audit = await decide_control(call, messages, kind, self.DECISION_TIMEOUT)
+                self.q.put_nowait(ModelDone(
+                    kind=kind, gen=gen, epoch=epoch, turn=turn, text=text,
+                    infer=round(time.perf_counter() - t0, 3),
+                    prompt_snapshot=snapshot, timed_out=audit["timed_out"], control_audit=audit))
+                return
             retries = 1 if kind == "response" else 0
             while True:
                 try:
@@ -559,7 +584,7 @@ class ActorEngine:
                             "played_samples": self._speech.played,
                             "underruns": data.get("underruns", 0)})
                         if self.PLAYBACK_AUTOEND:
-                            self.STATE = "LISTEN"
+                            await self._finish_turn(self._speech_meta.turn, "played")
         return True
 
     async def engine_loop(self):
@@ -586,10 +611,47 @@ class ActorEngine:
         if (self.PLAYBACK_AUTOEND and self.STATE == "SPEAK"
                 and self.playback_end_audio is not None
                 and ev.t_audio >= self.playback_end_audio):
-            self.STATE = "LISTEN"
-            self.playback_end_audio = None
-            await self.send_control("playback_end", {
-                "timestamp": self._wall_ts(), "turn": self.TURN_IDX, "state": self.STATE})
+            await self._finish_turn(self._playback_turn, "playback_end")
+
+    async def _finish_turn(self, turn, reason):
+        """Close one reply once; preserve speech already captured during playback.
+
+        Old interrupt classifications are invalid in LISTEN. A closed segment
+        is reclassified as a normal user turn, not lost or treated as old audio.
+        """
+        if turn is None or turn != self.TURN_IDX:
+            return
+        if reason == "played":
+            # EOF plus the final playback ACK has already drained this stream.
+            # Retire it without sending a cancellation when the next reply starts.
+            # The independent `finished` event still owns inflight accounting.
+            self._speech = None
+        speaking = self.STATE == "SPEAK"
+        carried = list(self.interrupt_buf if speaking else self.BUFFER) if self.IN_SPEECH else []
+        closed = speaking and self._seg_closed and bool(carried)
+        self.TURN_IDX += 1
+        self.seg_epoch += 1
+        self.STATE = "LISTEN"
+        self.playback_end_audio = self._playback_turn = None
+        self.BUFFER = carried
+        self.interrupt_buf = []
+        self.IN_SPEECH = bool(carried)
+        self.CONTINUE_ARMED = False
+        self.t_continue_anchor = None
+        self.t_interrupt_start = None
+        self._seg_closed = False
+        self._pending_audio.clear()
+        self._pending_frames.clear()
+        if not carried:
+            self.SILENCE_COUNTER = 0
+            self.t_end_anchor = None
+        await self.send_control("turn_finished", {
+            "timestamp": self._wall_ts(), "turn": turn, "next_turn": self.TURN_IDX,
+            "state": self.STATE, "reason": reason, "carried_samples": sum(map(len, carried))})
+        if closed:
+            self.SILENCE_COUNTER = 0
+            self._judged_seg_end = self.t_audio
+            self.dispatch_llm("judge", self.JUDGE_PROMPT, np.concatenate(carried), self.TURN_IDX)
 
     # ------------------------------------------------------------------
     # LISTEN state (port of legacy handle_listen, audio clock + dispatch)
@@ -746,6 +808,11 @@ class ActorEngine:
             self._pending_frames.pop((ev.kind, ev.epoch), None)
             return
 
+        if self.CONTROL_VALIDATION and ev.kind in LABELS:
+            if ev.control_audit is not None:
+                await self.send_control("control_validation", {**ev.control_audit, "turn": ev.turn,
+                                        "timestamp": self._wall_ts()})
+            ev.text = parse_label(ev.kind, ev.text) or FALLBACK[ev.kind]
         handler = {
             "judge": self._on_judge, "shift": self._on_shift,
             "interrupt": self._on_interrupt, "response": self._on_response,
@@ -756,7 +823,7 @@ class ActorEngine:
     async def _on_judge(self, ev: ModelDone):
         await self._trace_llm_done(ev)
         audio = self._pending_audio.pop(("judge", ev.epoch), None)
-        if "continue" in ev.text.lower():
+        if (ev.text == "continue" if self.CONTROL_VALIDATION else "continue" in ev.text.lower()):
             self.CONTINUE_ARMED = True
             # audio-clock anchor = end of the judged segment (documented deviation:
             # legacy anchored at judge-return wall time, stacking judge latency
@@ -771,11 +838,11 @@ class ActorEngine:
         await self._trace_llm_done(ev)
         audio = self._pending_audio.pop(("shift", ev.epoch), None)
         low = ev.text.lower()
-        if "no" in low:
+        if (low == "no" if self.CONTROL_VALIDATION else "no" in low):
             self.dispatch_asr(audio, self.TURN_IDX)
             self.dispatch_llm("response", self.RESPONSE_PROMPT, audio, self.TURN_IDX,
                               add_to_history=True)
-        elif "yes" in low:
+        elif (low == "yes" if self.CONTROL_VALIDATION else "yes" in low):
             self.dispatch_llm("shift_re", self.SHIFT_RE_PROMPT, None, self.TURN_IDX,
                               add_to_history=False, shift_history=True)
         # neither -> dead end (legacy parity: no response is produced)
@@ -784,13 +851,15 @@ class ActorEngine:
         await self._trace_llm_done(ev)
         audio = self._pending_audio.pop(("interrupt", ev.epoch), None)
         frames = self._pending_frames.pop(("interrupt", ev.epoch), [])
-        if "switch" in ev.text.lower():
+        if (ev.text == "switch" if self.CONTROL_VALIDATION else "switch" in ev.text.lower()):
             self._cancel_speech("shot_interrupt")
             await self.send_control("shot_interrupt", {
                 "timestamp": self._wall_ts(), "turn": self.TURN_IDX, "state": self.STATE})
             self.BUFFER = list(frames)
             self.TURN_IDX += 1
             self.seg_epoch += 1
+            if self.PLAYBACK_AUTOEND:
+                self.STATE = "LISTEN"
             self.dispatch_asr(audio, self.TURN_IDX)
             self.dispatch_llm("response", self.RESPONSE_PROMPT, audio, self.TURN_IDX,
                               add_to_history=True)
@@ -806,6 +875,8 @@ class ActorEngine:
     async def _on_response(self, ev: ModelDone):
         if ev.add_to_history:
             self.assistant_history.append(str(ev.text))
+            if self.CHAT_DEMO:
+                self._assistants_by_turn[ev.turn] = str(ev.text)
         await self._trace_llm_done(ev)
         self.dispatch_tts(ev.text, ev.turn)
 
@@ -814,11 +885,14 @@ class ActorEngine:
             "timestamp": self._wall_ts(), "turn": ev.turn,
             "state": self.STATE, "content": ev.text})
         self.user_history.append(str(ev.text))
+        if self.CHAT_DEMO:
+            self._users_by_turn[ev.turn] = str(ev.text)
         # deviation (documented): legacy cleared BUFFER here from a worker task,
         # which could clobber a fresh segment; the buffer is snapshot-consumed at
         # dispatch time instead, so no clear is needed.
 
     async def _on_tts(self, ev: ModelDone):
+        self._playback_turn = ev.turn
         await self.send_control("tts_done", {
             "timestamp": self._wall_ts(), "infer_time": ev.infer,
             "turn": ev.turn, "state": self.STATE, "dur_audio": round(ev.dur_audio, 3)})
@@ -878,6 +952,8 @@ class ActorEngine:
                 meta.timed_out = data["timed_out"]
                 if meta.add_to_history:
                     self.assistant_history.append(meta.text)
+                    if self.CHAT_DEMO:
+                        self._assistants_by_turn[meta.turn] = meta.text
                 await self._trace_llm_done(meta)
                 await self.send_control("speech_text_done", data)
             elif ev.kind == "audio":
@@ -896,8 +972,11 @@ class ActorEngine:
                 elif self.websocket is not None:
                     await self.websocket.send_bytes(data["wire"])
             elif ev.kind == "error":
+                failed_turn = self._speech_meta.turn
                 await self.send_control("speech_error", data)
                 self._cancel_speech("stream_error")
+                if self.PLAYBACK_AUTOEND:
+                    await self._finish_turn(failed_turn, "speech_error")
             else:
                 if ev.kind == "audio_end":
                     self._speech_audio_done = True
@@ -925,10 +1004,13 @@ class ActorEngine:
         self.interrupt_buf = []
         self.assistant_history = []
         self.user_history = []
+        self._users_by_turn = {}
+        self._assistants_by_turn = {}
         self._pending_audio = {}
         self._pending_frames = {}
         self._scheduled = []
         self.playback_end_audio = None
+        self._playback_turn = None
         self._stream_listen_start = None
 
     async def _reader(self, websocket):
