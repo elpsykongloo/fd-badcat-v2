@@ -21,6 +21,9 @@ engine:
   stream_response: false     # opt-in ActorEngine SSE text/TTS + PCM playback; also needs client pcm16.v1
   stream_packet_ms: 40        # native-rate PCM packets (no WAV files on streaming critical path)
   stream_buffer_ms: 600       # maximum sent-but-not-played audio, bounded by client progress
+  history_token_budget: 3000  # newest complete user/assistant pairs; conservative UTF-8 token ceiling
+  request_total_limit: 4      # process-wide Omni admission cap; matches production max_num_seqs
+  normal_request_limit: 3     # response/shift/TTS/TACT cap; leaves one judge/interrupt slot
   # ---- Phase-B / TACT (W3 D1 wiring; phase "a" keeps HumDial behavior frozen) ----
   phase: a               # a = HumDial judge/shift/response | b = transactional TACT engine
   # The keys below only take effect when phase: b (see docs/engine_b_spec.md):

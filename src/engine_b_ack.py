@@ -66,11 +66,16 @@ class TactEngineWithAck(TactEngine):
 
         async def _run():
             try:
+                async def _gated_tts(text, path):
+                    call = self._start_capacity_thread_call("tts", self.tts_fn, text, path)
+                    return await asyncio.shield(call)
+
                 ack_path, main_path, ack_lat, main_lat, _total = \
                     await synthesize_with_ack(say, self.tts_fn, self.output_dir,
                                               turn, ops=ops,
                                               strategy=self.ack_strategy,
-                                              seed=self.ack_seed)
+                                              seed=self.ack_seed,
+                                              tts_async_fn=_gated_tts)
                 import soundfile as sf
                 for kind, path, lat in (("tts_ack", ack_path, ack_lat),
                                         ("tts_main", main_path, main_lat)):

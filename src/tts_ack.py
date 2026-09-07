@@ -121,7 +121,8 @@ async def synthesize_with_ack(
     turn: int,
     ops: list = None,
     strategy: str = "random",
-    seed: Optional[int] = None
+    seed: Optional[int] = None,
+    tts_async_fn=None,
 ) -> Tuple[str, str, float, float, float]:
     """
     Two-phase TTS synthesis: ack phrase first, then main response.
@@ -152,13 +153,19 @@ async def synthesize_with_ack(
     # Phase 1: Synthesize ack (fast path)
     t0_ack = time.perf_counter()
     ack_path = output_dir / f"turn{turn}_ack.wav"
-    await asyncio.to_thread(tts_fn, ack_phrase, ack_path)
+    if tts_async_fn is None:
+        await asyncio.to_thread(tts_fn, ack_phrase, ack_path)
+    else:
+        await tts_async_fn(ack_phrase, ack_path)
     ack_latency = time.perf_counter() - t0_ack
 
     # Phase 2: Synthesize main response (parallel if possible, but we need sequential for now)
     t0_main = time.perf_counter()
     main_path = output_dir / f"turn{turn}_main.wav"
-    await asyncio.to_thread(tts_fn, say_text, main_path)
+    if tts_async_fn is None:
+        await asyncio.to_thread(tts_fn, say_text, main_path)
+    else:
+        await tts_async_fn(say_text, main_path)
     main_latency = time.perf_counter() - t0_main
 
     total_latency = ack_latency + main_latency

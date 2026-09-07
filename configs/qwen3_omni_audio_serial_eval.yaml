@@ -1,8 +1,8 @@
 # Qwen3-Omni full audio-output pipeline on one RTX PRO 6000 Blackwell.
 #
-# Production single-user profile: four FCFS sequence slots let response text,
-# sentence TTS and a control decision overlap.  ActorEngine admits at most three
-# normal requests globally, reserving the fourth slot for judge/interrupt.
+# This is intentionally low-concurrency. HumDial generation is benchmarked as a
+# single-user realtime interaction, so we prefer deterministic capacity over
+# throughput: one request at a time through thinker -> talker -> code2wav.
 async_chunk: true
 
 connectors:
@@ -19,8 +19,8 @@ connectors:
 stages:
   - stage_id: 0
     max_num_batched_tokens: 8192
-    max_model_len: 4096
-    max_num_seqs: 4
+    max_model_len: 8192
+    max_num_seqs: 1
     gpu_memory_utilization: 0.72
     trust_remote_code: true
     enable_prefix_caching: false
@@ -35,7 +35,7 @@ stages:
   - stage_id: 1
     max_num_batched_tokens: 8192
     max_model_len: 8192
-    max_num_seqs: 4
+    max_num_seqs: 1
     gpu_memory_utilization: 0.16
     trust_remote_code: true
     enable_prefix_caching: false
@@ -54,7 +54,7 @@ stages:
   - stage_id: 2
     max_num_batched_tokens: 65536
     max_model_len: 65536
-    max_num_seqs: 4
+    max_num_seqs: 1
     gpu_memory_utilization: 0.08
     enforce_eager: true
     trust_remote_code: true

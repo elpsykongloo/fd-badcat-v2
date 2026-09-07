@@ -144,10 +144,11 @@ class TactEngine(ActorEngine):
                  llm_fn=None, asr_fn=None, tts_fn=None,
                  replay_mode: str = "realtime", decision_script=None,
                  trace_path=None, vad_model=None, vad_iterator=None,
-                 tool_executor=None):
+                 tool_executor=None, request_capacity=None):
         super().__init__(websocket, prompts, delay, llm_cfg, engine_cfg,
                          llm_fn, asr_fn, tts_fn, replay_mode, decision_script,
-                         trace_path, vad_model, vad_iterator)
+                         trace_path, vad_model, vad_iterator,
+                         request_capacity=request_capacity)
 
         cfg = self.engine_cfg
         self.phase = cfg.get("phase", "a")
@@ -378,8 +379,10 @@ class TactEngine(ActorEngine):
                 return str(raw), round(time.perf_counter() - w0, 3)
 
             try:
+                call = self._start_capacity_thread_call(
+                    "tact", decide_from_msgs, _call, msgs)
                 dec, infer = await asyncio.wait_for(
-                    asyncio.to_thread(decide_from_msgs, _call, msgs),
+                    asyncio.shield(call),
                     self.DECISION_TIMEOUT)
             except asyncio.TimeoutError:
                 timed_out = True
@@ -580,7 +583,8 @@ class TactEngine(ActorEngine):
                     with open(fp, "rb") as f:
                         return fp, len(data) / sr, f.read()
                 try:
-                    path, dur, raw = await asyncio.to_thread(_work)
+                    call = self._start_capacity_thread_call("tts", _work)
+                    path, dur, raw = await asyncio.shield(call)
                 except Exception as exc:
                     err = str(exc)
                     print(f"[TTS SENT ERROR] {exc}")

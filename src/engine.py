@@ -45,7 +45,7 @@ import asyncio
 import heapq
 import json
 import time
-from contextlib import suppress
+from contextlib import aclosing, suppress
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -54,6 +54,7 @@ import torch
 from silero_vad import load_silero_vad, VADIterator
 
 from messages import build_audio_content, scrub_audio_blocks
+from request_capacity import CONTROL, NORMAL, process_request_capacity
 from speech_stream import PROTOCOL, SpeechEvent, SpeechPipeline, SocketOutbox
 
 SAMPLE_RATE = 16000
@@ -67,6 +68,19 @@ TIMEOUT_FALLBACK = {
     "shift": "no",           # treat as same-topic (normal answer path)
 }
 RESPONSE_TIMEOUT_APOLOGY = "抱歉，我刚才没有听清，请再说一遍。"
+CONTROL_REQUEST_KINDS = frozenset({"judge", "interrupt"})
+HISTORY_MESSAGE_OVERHEAD = 16
+
+
+def conservative_history_tokens(text):
+    """Upper-bound Qwen byte-BPE text tokens without loading a tokenizer.
+
+    A byte-level tokenizer cannot emit more content tokens than UTF-8 bytes.
+    The fixed allowance covers role/template markers for one message.  This is
+    intentionally conservative: the configured budget protects context rather
+    than trying to maximize the number of retained turns.
+    """
+    return len(str(text).encode("utf-8")) + HISTORY_MESSAGE_OVERHEAD
 
 
 # ---------------------------------------------------------------------------
@@ -111,7 +125,8 @@ class ActorEngine:
                  llm_fn=None, asr_fn=None, tts_fn=None,
                  replay_mode: str = "realtime", decision_script=None,
                  trace_path=None, vad_model=None, vad_iterator=None,
-                 text_stream_fn=None, tts_stream_fn=None):
+                 text_stream_fn=None, tts_stream_fn=None,
+                 request_capacity=None):
         self.websocket = websocket
         self.q: asyncio.Queue = asyncio.Queue()
 
@@ -143,6 +158,18 @@ class ActorEngine:
         self.DECISION_TIMEOUT = float(self.llm_cfg.get("decision_timeout_s", 15))
         self.PLAYBACK_AUTOEND = bool(self.engine_cfg.get("playback_autoend", False))
         self.STREAMING = bool(self.engine_cfg.get("stream_response", False))
+        self.HISTORY_TOKEN_BUDGET = int(self.engine_cfg.get("history_token_budget", 3000))
+        if self.HISTORY_TOKEN_BUDGET < 0:
+            raise ValueError("engine.history_token_budget must be >= 0")
+        total_limit = int(self.engine_cfg.get("request_total_limit", 4))
+        normal_limit = int(self.engine_cfg.get("normal_request_limit", 3))
+        self.request_capacity = request_capacity or process_request_capacity(
+            total_limit, normal_limit)
+        self._capacity_tasks = set()
+        self.last_history_window = {
+            "available_pairs": 0, "included_pairs": 0,
+            "estimated_tokens": 0, "budget": self.HISTORY_TOKEN_BUDGET,
+        }
         if self.STREAMING and replay_mode != "realtime":
             raise ValueError("Streaming playback requires realtime mode and playback acknowledgements")
         if self.STREAMING and (text_stream_fn is None or tts_stream_fn is None):
@@ -253,11 +280,16 @@ class ActorEngine:
         return round(time.time() - self.start_wall, 3)
 
     # ------------------------------------------------------------------
-    # message building (identical semantics to legacy build_messages)
+    # message building (legacy role structure, bounded complete-turn history)
     # ------------------------------------------------------------------
     def build_messages(self, system_prompt, user_audio, use_history, shift_history):
         messages = [{"role": "system", "content": system_prompt}]
         user_history, assistant_history = self.user_history, self.assistant_history
+        rounds = min(len(user_history), len(assistant_history))
+        self.last_history_window = {
+            "available_pairs": rounds, "included_pairs": 0,
+            "estimated_tokens": 0, "budget": self.HISTORY_TOKEN_BUDGET,
+        }
         if not shift_history and ((len(user_history) == 0 and len(assistant_history) == 0) or not use_history):
             if user_audio is not None:
                 messages.append({
@@ -265,8 +297,16 @@ class ActorEngine:
                     "content": [build_audio_content(user_audio, SAMPLE_RATE, self.AUDIO_BLOCK)]
                 })
             return messages
-        rounds = min(len(user_history), len(assistant_history))
-        for i in range(rounds):
+        first, used = rounds, 0
+        for i in range(rounds - 1, -1, -1):
+            cost = (conservative_history_tokens(user_history[i])
+                    + conservative_history_tokens(assistant_history[i]))
+            if used + cost > self.HISTORY_TOKEN_BUDGET:
+                break
+            first, used = i, used + cost
+        self.last_history_window.update({
+            "included_pairs": rounds - first, "estimated_tokens": used})
+        for i in range(first, rounds):
             messages.append({"role": "user", "content": [{"type": "text", "text": user_history[i]}]})
             messages.append({"role": "assistant", "content": assistant_history[i]})
         if user_audio is not None:
@@ -275,6 +315,39 @@ class ActorEngine:
                 "content": [build_audio_content(user_audio, SAMPLE_RATE, self.AUDIO_BLOCK)]
             })
         return messages
+
+    @staticmethod
+    def _request_class(kind):
+        return CONTROL if kind in CONTROL_REQUEST_KINDS else NORMAL
+
+    async def _capacity_thread_call(self, kind, fn, *args):
+        async with self.request_capacity.slot(self._request_class(kind)):
+            return await asyncio.to_thread(fn, *args)
+
+    def _start_capacity_thread_call(self, kind, fn, *args):
+        """Keep the slot owned by the real worker even if its caller times out."""
+        task = asyncio.create_task(self._capacity_thread_call(kind, fn, *args))
+        self._capacity_tasks.add(task)
+
+        def _finished(done):
+            self._capacity_tasks.discard(done)
+            if not done.cancelled():
+                done.exception()  # retrieve detached exceptions after wait_for timeout
+
+        task.add_done_callback(_finished)
+        return task
+
+    async def _capacity_stream(self, kind, stream_fn, arg):
+        async with self.request_capacity.slot(self._request_class(kind)):
+            async with aclosing(stream_fn(arg)) as source:
+                async for item in source:
+                    yield item
+
+    def _response_text_stream(self, messages):
+        return self._capacity_stream("response", self.text_stream_fn, messages)
+
+    def _response_tts_stream(self, text):
+        return self._capacity_stream("tts", self.tts_stream_fn, text)
 
     # ------------------------------------------------------------------
     # dispatch: fork a decision and return to the event loop immediately
@@ -311,8 +384,9 @@ class ActorEngine:
             retries = 1 if kind == "response" else 0
             while True:
                 try:
+                    call = self._start_capacity_thread_call(kind, self.llm_fn, messages)
                     text = await asyncio.wait_for(
-                        asyncio.to_thread(self.llm_fn, messages), self.DECISION_TIMEOUT)
+                        asyncio.shield(call), self.DECISION_TIMEOUT)
                     break
                 except asyncio.TimeoutError:
                     if retries > 0:
@@ -400,7 +474,8 @@ class ActorEngine:
                 with open(p, "rb") as f:
                     return p, len(data) / sr, f.read()
             try:
-                path, dur, raw = await asyncio.to_thread(_work)
+                call = self._start_capacity_thread_call("tts", _work)
+                path, dur, raw = await asyncio.shield(call)
             except Exception as exc:
                 error = str(exc)
                 print(f"[TTS ERROR] {exc}")
@@ -747,7 +822,8 @@ class ActorEngine:
         self._speech_audio_done = False
         self._speech_played_reported = False
         self._speech = SpeechPipeline(
-            self._speech_serial, self.q, messages, self.text_stream_fn, self.tts_stream_fn,
+            self._speech_serial, self.q, messages,
+            self._response_text_stream, self._response_tts_stream,
             timeout=self.DECISION_TIMEOUT, retry=meta.kind == "response",
             apology=RESPONSE_TIMEOUT_APOLOGY,
             packet_ms=int(self.engine_cfg.get("stream_packet_ms", 40)),

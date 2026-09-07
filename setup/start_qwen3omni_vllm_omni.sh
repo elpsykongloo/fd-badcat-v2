@@ -26,6 +26,7 @@ HOST="${QWEN_HOST:-0.0.0.0}"
 TP_SIZE="${QWEN_TP:-1}"
 MAX_MODEL_LEN="${QWEN_MAX_MODEL_LEN-32768}"
 GPU_MEMORY_UTILIZATION="${QWEN_GPU_MEMORY_UTILIZATION-0.78}"
+SCHEDULING_POLICY="${QWEN_SCHEDULING_POLICY:-fcfs}"
 
 ARGS=(
     vllm serve "$MODEL_DIR"
@@ -37,6 +38,7 @@ ARGS=(
     --dtype bfloat16
     --allowed-local-media-path /
     --tensor-parallel-size "$TP_SIZE"
+    --scheduling-policy "$SCHEDULING_POLICY"
 )
 
 if [[ -n "$MAX_MODEL_LEN" ]]; then

@@ -1,0 +1,112 @@
+{
+  "schema": "fd-badcat.production-capacity.v1",
+  "date": "2026-09-07",
+  "parent_commit": "b4a69d2",
+  "hardware": {
+    "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+    "memory_total_mib": 97887,
+    "idle_service_memory_used_mib_observed": [95851, 95859],
+    "idle_service_memory_free_mib_observed": [1392, 1400]
+  },
+  "software": {
+    "vllm": "0.22.0",
+    "vllm_omni": "0.22.0"
+  },
+  "production_configuration": {
+    "deploy_config": "configs/qwen3_omni_audio_single_gpu.yaml",
+    "max_num_seqs_by_stage": {"0": 4, "1": 4, "2": 4},
+    "max_model_len_by_stage": {"0": 4096, "1": 8192, "2": 65536},
+    "scheduling_policy": "fcfs",
+    "request_total_limit": 4,
+    "normal_request_limit": 3,
+    "reserved_control_slots": 1,
+    "control_kinds": ["judge", "interrupt"],
+    "history_token_budget": 3000,
+    "history_estimator": "utf8_bytes_plus_16_per_message"
+  },
+  "runtime_evidence": {
+    "default_launcher_started": true,
+    "api_reported_max_model_len": 4096,
+    "stage0_kv_cache_tokens": 87920,
+    "stage0_reported_max_concurrency_at_4096": 21.46,
+    "process_cmdline_contained": "--scheduling-policy fcfs",
+    "stages_initialized": 3,
+    "startup_seconds": 122.97
+  },
+  "live_gate_probes": [
+    {
+      "round": 1,
+      "wall_s": 4.2947,
+      "before_control": {
+        "active_total": 3,
+        "active_normal": 3,
+        "waiting_normal": 1
+      },
+      "peak_total": 4,
+      "peak_normal": 3,
+      "records": [
+        {"name": "normal-0", "start_s": 0.0005, "end_s": 2.9210, "audio_bytes": 245204},
+        {"name": "normal-1", "start_s": 0.0034, "end_s": 2.9604, "audio_bytes": 237524},
+        {"name": "normal-2", "start_s": 0.0064, "end_s": 3.0029, "audio_bytes": 264404},
+        {"name": "judge", "start_s": 0.0074, "end_s": 1.6964, "text": "OK"},
+        {"name": "normal-3", "start_s": 2.9212, "end_s": 4.2945, "audio_bytes": 222164}
+      ]
+    },
+    {
+      "round": 2,
+      "wall_s": 3.5143,
+      "before_control": {
+        "active_total": 3,
+        "active_normal": 3,
+        "waiting_normal": 1
+      },
+      "peak_total": 4,
+      "peak_normal": 3,
+      "records": [
+        {"name": "normal-0", "start_s": 0.0005, "end_s": 2.3761, "audio_bytes": 264404},
+        {"name": "normal-1", "start_s": 0.0043, "end_s": 2.5400, "audio_bytes": 287444},
+        {"name": "normal-2", "start_s": 0.0094, "end_s": 2.6170, "audio_bytes": 295124},
+        {"name": "judge", "start_s": 0.0120, "end_s": 1.1539, "text": "switch"},
+        {"name": "normal-3", "start_s": 2.3764, "end_s": 3.5140, "audio_bytes": 305534}
+      ]
+    }
+  ],
+  "validation": {
+    "pytest": {"passed": 187, "failed": 0, "warnings": 4},
+    "new_capacity_history_tests": 7,
+    "live_http_requests": 10,
+    "live_http_failures": 0,
+    "oom": false,
+    "engine_crash": false,
+    "serial_archive_byte_identical_to_parent_production_config": true,
+    "serial_archive_sha256": "338fc9035be05fd59a5a05fc4823189490f1233068f6a197dc326b999b39734f"
+  },
+  "shutdown": {
+    "ports_10003_10004_18000_listening": false,
+    "gpu_memory_used_mib": 0,
+    "resource_tracker_warnings": {"semaphore": 2, "shared_memory": 2},
+    "leftover_processes": 0
+  },
+  "process_notes": [
+    "git fetch confirmed origin/main equals parent b4a69d2",
+    "existing git auto-gc warning recurred: unreachable historical object d215c907 could not be read while repacking; no cleanup, history rewrite, or force push was attempted"
+  ],
+  "source_sha256": {
+    "configs/qwen3_omni_audio_single_gpu.yaml": "08115843a28a2c841a96c65b2ffe829b2655195964108c5b2d0f9fae6a5fe88a",
+    "configs/qwen3_omni_audio_serial_eval.yaml": "338fc9035be05fd59a5a05fc4823189490f1233068f6a197dc326b999b39734f",
+    "setup/start_qwen3omni_vllm_omni.sh": "cd6c1a7327096aba1dc35b4dd2a7543e832ed029a20687cdef9ff384b642f71a",
+    "src/config.yaml": "9dd062ef233de144dbb1170647feeae69c5d002a3617f27fecc897948f836bec",
+    "src/request_capacity.py": "0af92807cce864606e112da25795db9e79d8ed8b6805ce92bf7f809d3c4d1b71",
+    "src/engine.py": "e787b7ca2dae0bdad83391d2ba83700ab125c9d5f1f7a4004f812601497e52a9",
+    "src/engine_b.py": "20de6c743cb995238b47915887c635d23970859eda741c60273d06d14d15fbee",
+    "src/engine_b_ack.py": "dc4282c68688e33bb659f99e9fb6360fc3098316989881eb3fcf16460948cb0e",
+    "src/tts_ack.py": "4bd405c6c2b9a99c9f67d6626c5a4e056be9ea34318535c4a4de9e63c3930b59",
+    "tests/test_production_capacity.py": "a0997eabeb40c5607d4c9e4c83eb392472db1abfc07499fd9c0b1e7e500c02b8"
+  },
+  "scope_limits": [
+    "single-user smoke test, not a formal latency distribution",
+    "no GPU kernel preemption",
+    "process-local gate does not cover clients that bypass backend",
+    "text-history budget does not bound pathological current audio or TACT cumulative audio prefixes"
+  ]
+}
