@@ -1,0 +1,61 @@
+{
+  "version": "actor-interrupt-original-v1",
+  "validated_utc": "2026-09-07T14:37:09Z",
+  "change": {
+    "demo_interrupt_override_removed": true,
+    "runtime_matches_base_prompt": true,
+    "prompt_characters": 386,
+    "prompt_examples": 8,
+    "other_prompt_and_engine_settings_changed": false,
+    "semantic_admission_implemented": false,
+    "stop_and_response_decoupled": false,
+    "proposed_design": "docs/web_demo.md section 9"
+  },
+  "targeted_tests": {
+    "command": "/root/miniconda3/envs/fd-sds/bin/python -m pytest -q tests/test_chat_demo.py",
+    "passed": 13,
+    "elapsed_s": 1.58
+  },
+  "post_restart_local_inference": {
+    "model": "Qwen3-Omni-30B-A3B-Instruct",
+    "temperature": 0,
+    "seed": 42,
+    "cases": [
+      {"case": "ambiguous_clip_1", "http": 200, "expected": "continue", "actual": "continue"},
+      {"case": "ambiguous_clip_2", "http": 200, "expected": "continue", "actual": "continue"},
+      {"case": "clear_language_request", "http": 200, "expected": "switch", "actual": "switch"}
+    ],
+    "raw_user_recordings_and_transcripts_included": false,
+    "scope": "Three diagnostic examples only; not an aggregate accuracy or acoustic echo evaluation"
+  },
+  "runtime": {
+    "tmux": "humdial-demo",
+    "launcher_pid": 39336,
+    "omni_pid": 39340,
+    "proxy_pid": 40145,
+    "backend_pid": 40158,
+    "log_directory": "exp/web_demo/20260907T143250Z-39336",
+    "host": "127.0.0.1",
+    "ports": [10003, 10004, 18000],
+    "demo_http_status": 200,
+    "info_http_status": 200,
+    "streaming": true,
+    "warmup_elapsed_s": 3.593,
+    "warmup_tts_contract": "verbatim-choice-v1",
+    "warmup_readback_checks": 2,
+    "kept_running_for_laptop": true
+  },
+  "restart": {
+    "old_launcher_pid": 36100,
+    "stop_requested_utc": "2026-09-07T14:31:34Z",
+    "old_listeners_and_gpu_processes_cleared_before_start": true,
+    "shutdown_resource_tracker_warnings": {"semaphore": 2, "shared_memory": 43}
+  },
+  "boundaries": {
+    "full_repository_tests_run": false,
+    "rb_evaluation_run": false,
+    "physical_microphone_speaker_test_run": false,
+    "original_humdial_config_modified": false,
+    "legacy_or_tact_modified": false
+  }
+}

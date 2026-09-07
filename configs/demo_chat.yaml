@@ -23,11 +23,8 @@ prompts:
     如果明显还没说完，或者明确要求你先等一下，只输出 continue。
     如果已经表达了可回应的问题、陈述、问候或请求，只输出 switch。
     只能输出 continue 或 switch，不要解释。
-  interrupt: |
-    用户在助手回复时发出了一段语音。判断是否真的要打断。
-    明确提出问题、反驳、纠正、要求停止或更换内容：只输出 switch。
-    只是附和、赞同、鼓励，如嗯嗯、好的、知道了、uh-huh、okay：只输出 continue。
-    只能输出 continue 或 switch，不要解释。
+  # Keep the original HumDial interrupt prompt from src/config.yaml verbatim.
+  # Conversational response wording must not silently rewrite barge-in policy.
   shift: |
     判断这段语音是否明确在对第三方讲话，而不是向语音助手讲话。
     正常换话题、追问、问候以及用户主动改变要求都属于向助手讲话，输出 no。

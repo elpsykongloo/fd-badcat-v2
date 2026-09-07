@@ -109,6 +109,7 @@ def test_demo_profile_is_separate_and_asr_configuration_reaches_factory(monkeypa
     assert not frozen["engine"]["playback_autoend"] and "15" in frozen["prompts"]["response"]
     assert demo["engine"]["control_validation"] and demo["engine"]["warmup"]
     assert "15" not in demo["prompts"]["response"]
+    assert demo["prompts"]["interrupt"] == frozen["prompts"]["interrupt"]
     assert frozen["time"] == demo["time"]
     for key in ("FDBC_ASR_BACKEND", "FDBC_ASR_PROVIDER", "FDBC_ASR_NUM_THREADS"):
         monkeypatch.delenv(key, raising=False)
