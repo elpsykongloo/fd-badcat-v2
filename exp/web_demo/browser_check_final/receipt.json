@@ -1,0 +1,38 @@
+{
+  "utc": "2026-09-07T11:42:26.862543+00:00",
+  "physical_listening": false,
+  "formal_benchmark": false,
+  "browser": "151.0.7922.34",
+  "result": {
+    "kind": "synthetic protocol fixture + real Chromium WebAudio/AudioWorklet",
+    "checks": [
+      "desktop/mobile layout",
+      "no mic before start",
+      "256xfloat32 upload",
+      "PCM playback completion ACK",
+      "late ASR ordering",
+      "text XSS escaping",
+      "mute sends silence",
+      "cancel + stale audio fence",
+      "reconnect",
+      "server disconnect cleanup",
+      "stream-disabled preflight",
+      "cancelled permission race",
+      "permission denied",
+      "zero uncaught JS errors"
+    ],
+    "microphone_frames": 52,
+    "sessions": 3,
+    "page_errors": []
+  },
+  "pass": true,
+  "sources": [
+    "src/static/demo.css",
+    "src/static/demo.js",
+    "src/static/favicon.svg",
+    "src/static/index.html",
+    "src/static/mic-worklet.js",
+    "src/static/speech-player.js"
+  ],
+  "demo_version": "web-demo-v1"
+}

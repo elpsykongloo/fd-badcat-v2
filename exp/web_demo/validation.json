@@ -1,0 +1,57 @@
+{
+  "demo_version": "web-demo-v1",
+  "date_utc": "2026-09-07",
+  "scope": "Laptop presentation page, same-origin ActorEngine integration and owned-process launcher. No corpus evaluation, no physical listening, no public deployment.",
+  "entry_page": "src/static/index.html",
+  "instructions": "docs/web_demo.md",
+  "launch_command": "bash setup/start_demo.sh",
+  "checks": {
+    "backend_launcher_unit_tests": {"passed": 9, "command": "python -m pytest tests/test_web_demo.py -q"},
+    "node_player_worklet": {"passed": true, "command": "node tests/test_stream_demo.cjs"},
+    "targeted_python_regression": {"passed": 61, "command": "python -m pytest tests/test_web_demo.py tests/test_speech_stream.py tests/test_engine.py tests/test_regression.py tests/test_production_capacity.py -q"},
+    "whole_worktree_pytest_observed": {"passed": 188, "failed": 0, "seconds": 2.98, "note": "Concurrent separate test-cleanup task changed collection; this is an observed worktree result, not a claim that this demo fixed historical golden traces."},
+    "chromium_fixture": {"passed": true, "classes": 15, "receipt": "exp/web_demo/browser_check_release/receipt.json"},
+    "chromium_live_omni": {
+      "passed": true,
+      "receipt": "exp/web_demo/browser_live_02/receipt.json",
+      "virtual_input_rate_hz": 48000,
+      "upload_rate_hz": 16000,
+      "upload_frame_samples": 256,
+      "output_rate_hz": 24000,
+      "pcm_packets": 78,
+      "played_samples": 73215,
+      "ended_ack": true,
+      "underruns": 0,
+      "page_errors": 0,
+      "first_audio_arrival_ui_ms": 501,
+      "metric_scope": "One virtual-microphone smoke, from browser receipt of speech_start. Excludes preceding hold/judge, excludes physical speaker delay. Not a formal benchmark or historical latency comparison."
+    },
+    "syntax": {"python_compile": true, "bash_n": true},
+    "unchanged_task_boundaries": ["src/engine.py", "src/config.yaml", "src/backend_legacy.py", "configs/qwen3_omni_audio_single_gpu.yaml"]
+  },
+  "launcher": {
+    "full_stack_log_dir": "exp/web_demo/20260907T113424Z-14553",
+    "backend_only_log_dir": "exp/web_demo/20260907T114431Z-18674",
+    "full_start_ready": true,
+    "bind_addresses": ["127.0.0.1:10003", "127.0.0.1:10004", "127.0.0.1:18000"],
+    "duplicate_start": "Refused occupied 18000 with exit 1; existing services untouched.",
+    "backend_only": "Started on 18001 against existing 10003/10004; stopping it closed only 18001. Observed original 10003/10004/18000 still listening.",
+    "final_shutdown": "Both launchers exited 0 after TERM. No listeners on 10003/10004/18000/18001; nvidia-smi memory.used = 0 MiB.",
+    "shutdown_warnings": {"semaphore": 2, "shared_memory": 2}
+  },
+  "development_attempts_retained": [
+    {"paths": ["browser_check_01", "browser_check_02"], "reason": "Headless Chromium required --use-fake-ui-for-media-stream in addition to fake device/permission. Test harness configuration fixed; first screenshots also lacked system CJK fonts."},
+    {"paths": ["browser_check_03", "browser_check_04"], "reason": "Harness queried innerText inside a collapsed details element and received empty text. Fixed to textContent; runtime counter was correct."},
+    {"paths": ["browser_check_05"], "reason": "Playwright evaluate auto-invoked the returned permission-denial function. Wrapped the test setter in a block."},
+    {"paths": ["browser_check_final"], "reason": "14 classes passed; release run adds explicit 1366x768 control visibility check."},
+    {"paths": ["browser_live_01"], "reason": "Chrome looped the short input WAV, never leaving sufficient EoU hold. Harness now adds leading/trailing silence and uses %noloop; production code unchanged."},
+    {"paths": [], "reason": "First full-worktree pytest during concurrent cleanup: 190 passed, 1 historical test_w1_golden_traces failed (9/20 equivalence versus 90% threshold). Demo work did not edit or remove that test; a later separate cleanup removed it. Final observed worktree collection was 188 passing tests."}
+  ],
+  "limitations": [
+    "No real laptop microphone/headphone/speaker or external echo listening test.",
+    "No real laptop SSH endpoint was available; standard OpenSSH forwarding instructions are provided, and same-origin browser/server paths were tested locally.",
+    "No public authentication, quotas, tenant isolation or server-side data deletion feature. Use SSH forwarding for controlled presentation.",
+    "HumDial prompts and 15-character request remain unchanged. Transcript/generated text is not a word-aligned heard-prefix record.",
+    "Heavy browser test dependencies and Chinese fonts were installed only in an isolated temporary test environment; laptop users need only a browser and SSH client."
+  ]
+}

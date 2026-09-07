@@ -1,12 +1,11 @@
-// Node-only playback/worklet contract tests. These do NOT replace listening in
-// a browser: they exercise the production JS with mocked WebAudio/WebSocket.
+// Node-only tests of the production player/worklet; no GPU or browser required.
+// Real browser coverage lives in scripts/check_web_demo.py.
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const vm = require("node:vm");
 const path = require("node:path");
 const root = path.resolve(__dirname, "../src/static");
 const sent = [], sources = [];
-const elements = new Map();
 class AudioContext {
   constructor() { this.currentTime = 0; this.state = "running"; }
   createBuffer(channels, count, rate) {
@@ -14,27 +13,18 @@ class AudioContext {
     return {getChannelData: () => data, duration: count / rate};
   }
   createBufferSource() {
-    const node = {connect() {}, start(time) { this.at = time; }, stop() { this.stopped = true; }};
+    const node = {connect() {}, disconnect() { this.disconnected = true; },
+      start(time) { this.at = time; }, stop() { this.stopped = true; }};
     sources.push(node); return node;
   }
-  async close() { this.state = "closed"; }
 }
-const scope = vm.createContext({
-  document: {getElementById(id) {
-    if (!elements.has(id)) elements.set(id, {textContent: ""});
-    return elements.get(id);
-  }},
-  window: {addEventListener() {}}, AudioContext, WebSocket: {OPEN: 1},
-  performance: {now: () => 100}, location: {protocol: "http:", host: "localhost"},
-  URL, Float32Array, DataView, sent,
-});
-const source = fs.readFileSync(path.join(root, "demo.js"), "utf8")
-  .replaceAll("import.meta.url", '"http://localhost/demo/demo.js"');
+const scope = vm.createContext({performance: {now: () => 100}, Float32Array, DataView});
+const source = fs.readFileSync(path.join(root, "speech-player.js"), "utf8").replace("export class", "class");
 vm.runInContext(source, scope);
-vm.runInContext(`context = new AudioContext(); ws = {
-  readyState: 1, send(value) { sent.push(JSON.parse(value)); }, close() {}
-};`, scope);
-function control(event, data) { scope.control({event, data}); }
+const SpeechPlayer = vm.runInContext("SpeechPlayer", scope);
+const context = new AudioContext();
+const player = new SpeechPlayer(context, (event, data) => sent.push({event, data}));
+function start(id) { player.start({utterance_id: id, buffer_ms: 600}); }
 function packet(id, seq, samples = 960) {
   const raw = new ArrayBuffer(16 + samples * 2), view = new DataView(raw);
   view.setUint32(0, 0x31534446, true);
@@ -42,31 +32,46 @@ function packet(id, seq, samples = 960) {
   for (let i = 0; i < samples; i++) view.setInt16(16 + i * 2, 8192, true);
   return raw;
 }
-control("speech_start", {utterance_id: 1, buffer_ms: 600});
-scope.audioPacket(packet(1, 0)); scope.audioPacket(packet(1, 1));
+start(1);
+player.packet(packet(1, 0)); player.packet(packet(1, 1));
 assert.equal(sources[0].at, .08);
 assert.ok(Math.abs(sources[1].at - .12) < 1e-9);
 assert.equal(sources[0].buffer.getChannelData()[0], .25);
 assert.equal(sent.at(-1).data.played_samples, 0, "arrival is not playback acknowledgement");
 sources[0].onended();
 assert.equal(sent.at(-1).data.played_samples, 960);
-control("speech_audio_end", {utterance_id: 1, samples: 1920});
+assert.equal(sources[0].disconnected, true);
+player.finish({utterance_id: 1, samples: 1920});
 assert.equal(sent.at(-1).data.ended, false);
 sources[1].onended();
 assert.equal(sent.at(-1).data.ended, true);
-control("speech_start", {utterance_id: 2, buffer_ms: 600});
-scope.audioPacket(packet(2, 0));
-control("speech_cancelled", {utterance_id: 2, reason: "shot_interrupt"});
+assert.throws(() => player.packet(packet(1, 2)), /额外/);
+start(2);
+player.packet(packet(2, 0));
+player.cancel();
 assert.equal(sources.at(-1).stopped, true);
+assert.equal(sources.at(-1).disconnected, true);
 const before = sources.length;
-scope.audioPacket(packet(2, 1));
+player.packet(packet(2, 1));
 assert.equal(sources.length, before, "late old packets must not resurrect playback");
-control("speech_start", {utterance_id: 3, buffer_ms: 600});
-assert.throws(() => scope.audioPacket(packet(3, 1)), /顺序/);
-control("speech_start", {utterance_id: 4, buffer_ms: 600});
-for (let i = 0; i < 15; i++) scope.audioPacket(packet(4, i));
-assert.throws(() => scope.audioPacket(packet(4, 15)), /超限/);
-console.log("playback: ordering, 80 ms startup, acknowledgements, cancellation, buffer cap PASS");
+start(3);
+assert.throws(() => player.packet(packet(3, 1)), /顺序/);
+start(4);
+for (let i = 0; i < 15; i++) player.packet(packet(4, i));
+assert.throws(() => player.packet(packet(4, 15)), /超限/);
+start(5);
+assert.throws(() => player.finish({utterance_id: 5, samples: 1}), /计数/);
+const badRate = packet(5, 0);
+new DataView(badRate).setUint32(12, 0, true);
+assert.throws(() => player.packet(badRate), /采样率/);
+assert.throws(() => player.start({utterance_id: 6, buffer_ms: Infinity}), /配置/);
+start(7);
+player.packet(packet(7, 0));
+context.currentTime = .5;
+player.packet(packet(7, 1));
+assert.equal(player.speech.underruns, 1);
+assert.equal(sources.at(-1).at, .58);
+console.log("playback: 80 ms startup, ordering, native rate, acknowledgements, cancel, cap, EOF, underruns PASS");
 
 for (const rate of [16000, 44100, 48000]) {
   const frames = [];

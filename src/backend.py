@@ -426,6 +426,14 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
     from fastapi.staticfiles import StaticFiles
     app.mount("/demo", StaticFiles(directory=Path(__file__).parent / "static", html=True), name="demo")
 
+    @app.get("/api/demo/info")
+    async def demo_info():
+        # Configuration only, not a claim that the upstream GPU is healthy.
+        # Never expose prompts, environment variables, paths, or credentials.
+        return {"protocol": "pcm16.v1", "streaming": bool(
+            arch == "actor" and (engine_cfg or {}).get("phase", "a") == "a"
+            and (engine_cfg or {}).get("stream_response"))}
+
     @app.websocket("/realtime")
     async def realtime_ws(websocket: WebSocket):
         await websocket.accept()
@@ -434,6 +442,21 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
         data = msg.get("data", {})
         exp = data.get("exp", {})
         lang = data.get("lang", {})
+        web_demo = data.get("client") == "humdial-web"
+        if web_demo:
+            # The new browser page does not control any filesystem path. Keep
+            # historical non-demo clients' experiment naming unchanged.
+            from uuid import uuid4
+            from urllib.parse import urlsplit
+            origin = urlsplit(websocket.headers.get("origin", ""))
+            if (origin.scheme not in ("http", "https")
+                    or origin.netloc != websocket.headers.get("host")
+                    or data.get("audio_protocol") != "pcm16.v1"):
+                await websocket.send_json({"event": "error", "data": {
+                    "message": "Web demo requires same-origin access and pcm16.v1"}})
+                await websocket.close(code=1008)
+                return
+            exp, lang = "web-demo-" + uuid4().hex, "live"
         if data.get("audio_protocol") == "pcm16.v1" and (
                 arch != "actor" or (engine_cfg or {}).get("phase", "a") != "a"
                 or not (engine_cfg or {}).get("stream_response")):
@@ -464,6 +487,11 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
                                  llm_cfg=llm_cfg, engine_cfg=session_cfg)
         engine.output_dir = Path("exp") / exp / f"realtimeout_{lang}"
         engine.output_dir.mkdir(parents=True, exist_ok=True)
+        if web_demo:
+            # The browser waits before opening the input pipe. VAD construction
+            # may take time on the first connection; do not accumulate mic frames.
+            await websocket.send_json({"event": "demo_ready", "data": {
+                "session_id": exp, "protocol": "pcm16.v1"}})
         await engine.run_realtime(websocket)
         if (engine_cfg or {}).get("phase") == "b" and hasattr(engine, "trace"):
             trace_file = engine.output_dir / "trace_full.jsonl"
@@ -478,6 +506,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, default="src/config.yaml")
     parser.add_argument("--streaming", action="store_true", help="Enable negotiated ActorEngine streaming demo")
+    parser.add_argument("--host", default=None, help="Override server bind address (demo: 127.0.0.1)")
+    parser.add_argument("--port", type=int, default=None, help="Override server port")
     args = parser.parse_args()
 
     with open(args.config, "r", encoding="utf-8") as f:
@@ -500,8 +530,8 @@ def main():
     if asr_cfg.get("provider"):
         os.environ.setdefault("FDBC_ASR_PROVIDER", str(asr_cfg["provider"]))
 
-    host = server_cfg.get("host", {})
-    port = server_cfg.get("port", {})
+    host = args.host if args.host is not None else server_cfg.get("host", {})
+    port = args.port if args.port is not None else server_cfg.get("port", {})
 
     app = create_app(prompts_cfg, delay_cfg, llm_cfg, engine_cfg)
     uvicorn.run(app, host=host, port=port)

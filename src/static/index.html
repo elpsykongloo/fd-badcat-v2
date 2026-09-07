@@ -1,20 +1,69 @@
 <!doctype html>
 <html lang="zh-CN">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HumDial · 流式语音</title>
-<style>
-body { max-width: 760px; margin: 8vh auto; padding: 0 24px; font: 17px/1.7 system-ui; color: #22303a; background: #f5f7f8; }
-button { padding: 10px 22px; margin-right: 12px; font: inherit; cursor: pointer; }
-pre { white-space: pre-wrap; background: white; padding: 20px; border-radius: 8px; min-height: 60px; }
-small { color: #52616b; }
-</style>
-<h1>HumDial 流式语音</h1>
-<p>文本生成 → 分句 → 流式语音 → 小缓冲播放。可在回复时继续说话。</p>
-<p><button id="start">开始对话</button><button id="stop" disabled>断开</button></p>
-<p id="status" role="status">请使用耳机；麦克风需通过 HTTPS 或 localhost 访问。</p>
-<pre id="text" aria-live="polite"></pre>
-<pre id="metrics"></pre>
-<small>保留 HumDial 的提示词、15 字限制与打断规则。后端需加 --streaming；旧客户端不受影响。音频与转写可能在服务器记录，请勿输入敏感内容。</small>
-<script type="module" src="./demo.js"></script>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7f2">
+  <meta name="description" content="HumDial 半级联全双工语音对话演示。模型在服务器运行，直接使用浏览器麦克风交流。">
+  <title>HumDial · 自然接话，随时打断</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./demo.css">
+  <script type="module" src="./demo.js"></script>
+</head>
+<body data-mode="idle">
+  <a class="skip-link" href="#start">跳到对话控制</a>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="HumDial 首页"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>HumDial<span class="brand-label">VOICE LAB</span></a>
+      <div class="top-actions"><span class="research-label">RESEARCH DEMO</span><button id="fullscreen" class="text-button" type="button">全屏展示 <span aria-hidden="true">↗</span></button></div>
+    </header>
+    <main>
+      <section class="intro" aria-labelledby="title">
+        <div><p class="eyebrow"><span></span> 半级联 · 全双工语音对话</p><h1 id="title">自然接话，<em>随时打断。</em></h1><p class="intro-copy">不必按住说话，也不用等它讲完。让对话跟上你的节奏。</p></div>
+        <div class="connection-badge" id="connection" role="status"><span class="dot"></span><span id="connection-label">尚未连接</span></div>
+      </section>
+      <div class="workspace">
+        <section class="voice-panel panel" aria-labelledby="voice-heading">
+          <div class="panel-heading"><h2 id="voice-heading">语音空间 <span>LIVE AUDIO</span></h2><span id="duration" class="mono" aria-label="本次连接时长">00:00</span></div>
+          <div class="voice-stage">
+            <div class="orb-scene" aria-hidden="true"><div class="orb-ring ring-one"></div><div class="orb-ring ring-two"></div><div class="orb"><div class="orb-light"></div><div class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><span class="orb-caption">HUMDIAL</span></div>
+            <h3 id="activity">准备好，聊两句？</h3><p id="status" role="status" aria-live="polite">戴上耳机，点击下方按钮开始。</p>
+          </div>
+          <div id="notice" class="notice" role="alert" hidden></div>
+          <div class="controls"><button id="start" class="primary-button" type="button"><span aria-hidden="true">◉</span> 开始对话</button><button id="mute" class="secondary-button" type="button" aria-pressed="false" disabled>静音麦克风</button><button id="stop" class="stop-button" type="button" disabled>结束</button></div>
+          <div class="device-row"><label for="microphone">输入设备</label><select id="microphone"><option value="">系统默认麦克风</option></select><div class="level-track" id="mic-level" role="meter" aria-label="麦克风输入音量" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="level-fill"></span></div></div>
+          <p class="voice-note"><span aria-hidden="true">↔</span> 回复时麦克风仍保持开启；是否打断由模型判断。</p>
+        </section>
+        <section class="conversation-panel panel" aria-labelledby="conversation-heading">
+          <div class="panel-heading"><h2 id="conversation-heading">对话记录 <span>CONVERSATION</span></h2><button id="clear" class="text-button" type="button" disabled>清空记录</button></div>
+          <div id="conversation" class="conversation" tabindex="0" aria-label="对话文本记录">
+            <div id="empty-state" class="empty-state"><div class="conversation-glyph" aria-hidden="true">“</div><h3>从一句「你好」开始</h3><p>你的话和它的回应，会出现在这里。<br>转写可能稍晚到达，不影响语音回应。</p><div class="suggestions"><span>聊聊今天的计划</span><span>在回答时说「等一下」</span></div></div>
+            <div id="messages"></div>
+          </div>
+          <div class="conversation-footer"><span class="dot"></span><span id="transcript-note">只展示本次页面中的对话，不自动恢复历史。</span></div>
+        </section>
+      </div>
+      <section class="underbar" aria-label="演示说明">
+        <div class="pipeline"><span class="pipeline-label">STREAMING PIPELINE</span><span>边生成文本</span><b aria-hidden="true">→</b><span>边合成语音</span><b aria-hidden="true">→</b><span>小缓冲播放</span></div>
+        <span class="headphone-tip">建议使用耳机 · 保持页面在前台</span>
+      </section>
+      <details class="details" id="diagnostics">
+        <summary>连接与运行详情 <span>现场排查 / 指标口径 / 使用说明</span></summary>
+        <div class="details-content">
+          <div class="metrics-grid">
+            <div><span>首文本到达</span><strong id="first-text">—</strong><small>从本次回复开始事件计时</small></div>
+            <div><span>首音频到达</span><strong id="first-audio">—</strong><small>网络收包，不是扬声器出声</small></div>
+            <div><span>未确认播放缓冲</span><strong id="buffer">0 ms</strong><small>按播放完成回执计算</small></div>
+            <div><span>播放断流 / 语音打断</span><strong id="interrupts">0 / 0</strong><small>本次连接累计次数</small></div>
+          </div>
+          <dl class="connection-info"><div><dt>服务地址</dt><dd id="endpoint">—</dd></div><div><dt>会话编号</dt><dd id="session-id">未建立</dd></div><div><dt>最近事件</dt><dd id="last-event">—</dd></div><div><dt>音频设备</dt><dd id="audio-format">连接后显示</dd></div></dl>
+          <div class="help-grid"><div><h3>在笔记本上展示</h3><p>通过 SSH 将服务器的 18000 端口转发到本机，再打开 <code>http://localhost:18000/demo/</code>。不需要在笔记本上安装模型。不要直接双击 HTML 文件。</p></div><div><h3>麦克风与隐私</h3><p>浏览器需要 HTTPS 或 localhost 才能使用麦克风。点击开始后，音频会发送到服务器；输入音频与转写可能被保存。结束会释放麦克风，清空页面记录不会删除服务器文件。</p></div></div>
+          <p class="boundary-note">当前为 HumDial ActorEngine 研究演示，保留原有短回复提示词（15 字要求）和打断判据。转写及回复文本不代表实际已听到的音频前缀；上方计时不含此前的停顿判定，也不作为正式评测分数。服务未内置公网鉴权，建议仅通过 SSH 转发展示。</p>
+        </div>
+      </details>
+    </main>
+    <footer class="footer"><span>HumDial <span class="footer-separator">/</span> An experiment in natural conversation.</span><span>点击开始即允许将本次语音发送至服务器。请勿输入敏感信息。</span></footer>
+  </div>
+  <noscript><p class="notice">此演示需要 JavaScript 才能连接麦克风和语音服务。</p></noscript>
+</body>
 </html>

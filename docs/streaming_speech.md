@@ -4,7 +4,9 @@
 
 ## 启动
 
-在仓库根目录分别启动原有 Omni 音频服务、更新后的代理、backend：
+笔记本展示推荐 `bash setup/start_demo.sh` + SSH 转发。完整的服务器/笔记本分步命令、页面说明与关停方法见 [web_demo.md](web_demo.md)。
+
+如果要手动启动，在仓库根目录的**三个独立终端**分别启动原有 Omni 音频服务、更新后的代理、backend：
 
 ```bash
 bash setup/start_qwen3omni_audio.sh
@@ -59,6 +61,8 @@ TTS 请求逐句有序执行。文本生产和 TTS 消费是独立任务，最�
 
 ID、单调性与 `played_samples <= sent_samples` 均检查；服务器收到真正的尾部播放确认后只记录一次 `speech_played`。`playback_autoend: false` 的 HumDial 默认状态语义继续保持。
 
+新版 HTML 页面使用附加握手 `{"event":"config","data":{"client":"humdial-web","audio_protocol":"pcm16.v1"}}`；服务端检查同源 Origin、生成归档会话 ID，并在 ActorEngine 初始化后发送 `demo_ready {session_id, protocol}`。浏览器收到此消息后才上传音频。只读 `/api/demo/info` 仅报告流式配置，不宣称 GPU 推理健康。其他旧客户端握手/归档命名不变。
+
 ## 验证与测量
 
 ```bash
@@ -69,6 +73,6 @@ env -u OMP_NUM_THREADS /root/miniconda3/envs/fd-sds/bin/python scripts/smoke_str
 
 探针串行交替全 WAV / PCM 流式请求；检查包序、采样率、尾计数与 600 ms 信用上限，保存可复查的合成 WAV 和 JSON。使用自造或本人有权使用的输入，不自动选择 HumDial/FDB/RB 测试集。
 
-`post_hold_first_audio_ms` 从客户端收到 `vad_640_done` 到收到首音频包，包含 judge/response/TTS 和传输，但**不包含已经过去的 0.64 秒 hold**，也不是物理扬声器延迟。播放器是实时节拍模拟；浏览器逻辑有 Node 契约测试，本容器没有做真实浏览器/声卡听检。短输入小样本收据只能证明链路与方向，不代替正式串行专机 P50/P95、长回复流畅度和打断恢复测量。流式 `llm_done.infer_time` 包含本地句子队列回压，不能直接当模型纯推理时长。
+`post_hold_first_audio_ms` 从客户端收到 `vad_640_done` 到收到首音频包，包含 judge/response/TTS 和传输，但**不包含已经过去的 0.64 秒 hold**，也不是物理扬声器延迟。该 WS 探针的播放器是实时节拍模拟；浏览器逻辑另有 Node 契约测试，以及 `scripts/check_web_demo.py` 的真实 Chromium/WebAudio/AudioWorklet 检查（含虚拟麦克风接真实 Omni 的单输入烟测）。仍未做笔记本真实麦克风/声卡听检。短输入小样本收据只能证明链路与方向，不代替正式串行专机 P50/P95、长回复流畅度和打断恢复测量。流式 `llm_done.infer_time` 包含本地句子队列回压，不能直接当模型纯推理时长。新版页面详情区的计时起点则是 `speech_start`，不要和本段探针口径混用。
 
 实跑事实、验收数量和后续状态以 `AGENTS.md` 的流式增量条目为准。

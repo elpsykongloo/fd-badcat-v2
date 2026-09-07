@@ -60,4 +60,5 @@ async def chat_proxy(request: Request):
         return JSONResponse({"error": "Invalid JSON request"}, status_code=400)
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=10004)
+    uvicorn.run(app, host=os.getenv("FDBC_PROXY_HOST", "0.0.0.0"),
+                port=int(os.getenv("FDBC_PROXY_PORT", "10004")))
