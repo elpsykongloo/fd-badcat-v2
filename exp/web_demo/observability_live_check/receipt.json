@@ -1,0 +1,242 @@
+{
+  "utc": "2026-09-07T12:26:00.179650+00:00",
+  "physical_listening": false,
+  "formal_benchmark": false,
+  "demo_version": "web-demo-v1",
+  "sources": [
+    "src/static/demo-telemetry.js",
+    "src/static/demo.css",
+    "src/static/demo.js",
+    "src/static/favicon.svg",
+    "src/static/index.html",
+    "src/static/mic-worklet.js",
+    "src/static/speech-player.js"
+  ],
+  "browser": "151.0.7922.34",
+  "result": {
+    "kind": "live ActorEngine + Omni, Chromium virtual microphone/speaker; not physical listening",
+    "input": "/root/autodl-tmp/fd-badcat/exp/streaming_demo/synthetic_question.wav",
+    "binary_packets": 78,
+    "last_playback_ack": {
+      "utterance_id": 1,
+      "played_samples": 73215,
+      "ended": true,
+      "underruns": 0
+    },
+    "ui_snapshot": {
+      "first_text": "82 ms",
+      "first_audio": "477 ms",
+      "buffer": "0 ms",
+      "session_id": "web-demo-7586ddfbf53f4e0b91fadbde4bd0188d",
+      "audio_format": "48000 Hz 设备 → 16 kHz 上传 / 256 样本",
+      "diagnostics": {
+        "stage-hold": "650 ms",
+        "stage-decision": "398 ms",
+        "stage-generation": "555 ms",
+        "stage-total": "1604 ms",
+        "socket-rtt": "1 ms",
+        "trace-status": "逐轮记录已启用 · demo-trace-v1"
+      }
+    },
+    "uploads": {
+      "frames": 539,
+      "max_rms": 0.6636318411491031
+    },
+    "events": [
+      {
+        "event": "demo_ready",
+        "data": {
+          "session_id": "web-demo-7586ddfbf53f4e0b91fadbde4bd0188d",
+          "protocol": "pcm16.v1",
+          "observability": "demo-trace-v1"
+        }
+      },
+      {
+        "event": "demo_pong",
+        "data": {
+          "seq": 1
+        }
+      },
+      {
+        "event": "vad_start",
+        "data": {
+          "timestamp": 1.025,
+          "turn": 0,
+          "state": "LISTEN"
+        }
+      },
+      {
+        "event": "vad_done",
+        "data": {
+          "timestamp": 1.725,
+          "turn": 0,
+          "state": "LISTEN"
+        }
+      },
+      {
+        "event": "vad_done",
+        "data": {
+          "timestamp": 3.674,
+          "turn": 0,
+          "state": "LISTEN"
+        }
+      },
+      {
+        "event": "vad_640_done",
+        "data": {
+          "timestamp": 4.325,
+          "turn": 0,
+          "state": "LISTEN"
+        }
+      },
+      {
+        "event": "speech_start",
+        "data": {
+          "utterance_id": 1,
+          "turn": 0,
+          "protocol": "pcm16.v1",
+          "buffer_ms": 600,
+          "timestamp": 4.723
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.885,
+          "text": "天气"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.892,
+          "text": "不错"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.899,
+          "text": "，"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.905,
+          "text": "适合"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.909,
+          "text": "散步"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.916,
+          "text": "放松"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.922,
+          "text": "心情"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.929,
+          "text": "。"
+        }
+      },
+      {
+        "event": "speech_text_done",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.937,
+          "text": "天气不错，适合散步放松心情。",
+          "infer": 0.213,
+          "timed_out": false
+        }
+      },
+      {
+        "event": "speech_sentence",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.937,
+          "text": "天气不错，适合散步放松心情。"
+        }
+      },
+      {
+        "event": "demo_pong",
+        "data": {
+          "seq": 2
+        }
+      },
+      {
+        "event": "speech_first_audio",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 5.278,
+          "sample_rate": 24000,
+          "turn": 0
+        }
+      },
+      {
+        "event": "demo_latency",
+        "data": {
+          "utterance_id": 1,
+          "hold_ms": 650.3,
+          "decision_ms": 398.3,
+          "generation_ms": 555.0,
+          "vad_to_audio_ms": 1603.6
+        }
+      },
+      {
+        "event": "speech_audio_end",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 7.834,
+          "samples": 73215,
+          "rate": 24000,
+          "packets": 78,
+          "elapsed": 3.1102747805416584
+        }
+      },
+      {
+        "event": "asr_done",
+        "data": {
+          "timestamp": 7.869,
+          "turn": 0,
+          "state": "SPEAK",
+          "content": "你好今天适合出去散步吗"
+        }
+      },
+      {
+        "event": "speech_played",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 8.413,
+          "played_samples": 73215,
+          "underruns": 0
+        }
+      }
+    ],
+    "page_errors": []
+  },
+  "pass": true
+}

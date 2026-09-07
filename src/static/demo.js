@@ -1,4 +1,5 @@
 import {SpeechPlayer} from "./speech-player.js";
+import {DemoTelemetry} from "./demo-telemetry.js";
 
 const $ = id => document.getElementById(id);
 const socketURL = (location.protocol === "https:" ? "wss://" : "ws://") + location.host + "/realtime";
@@ -69,6 +70,7 @@ function resetView() {
   $("buffer").textContent = "0 ms";
   $("interrupts").textContent = "0 / 0";
   $("last-event").textContent = "—";
+  for (const id of ["stage-hold", "stage-decision", "stage-generation", "stage-total", "socket-rtt"]) $(id).textContent = "—";
   $("duration").textContent = "00:00";
   $("transcript-note").textContent = "转写可能晚于回复到达；未播完的回复会保留并标注。";
 }
@@ -122,6 +124,7 @@ function tagSpeech(s, label, cancelled = false) {
 }
 function playback(s, state) {
   if (active !== s) return;
+  s.telemetry?.playback(state);
   $("first-text").textContent = state.firstText === undefined ? "—" : state.firstText + " ms";
   $("first-audio").textContent = state.firstAudio === undefined ? "—" : state.firstAudio + " ms";
   $("buffer").textContent = Math.round((state.received - state.played) / (state.rate || 24000) * 1000) + " ms";
@@ -142,7 +145,20 @@ function control(s, msg) {
   if (msg.event === "demo_ready") {
     if (d.protocol !== "pcm16.v1") throw Error("服务器音频协议不兼容，请更新后端。");
     $("session-id").textContent = d.session_id;
+    s.telemetry.enabled = d.observability === "demo-trace-v1";
+    $("trace-status").textContent = s.telemetry.enabled ? "逐轮记录已启用 · demo-trace-v1" : "旧后端：逐轮记录未启用";
     s.accept?.();
+    return;
+  }
+  if (msg.event === "demo_pong") {
+    s.telemetry.pong(d);
+    return;
+  }
+  if (msg.event === "demo_latency") {
+    for (const [id, field] of [["stage-hold", "hold_ms"], ["stage-decision", "decision_ms"],
+      ["stage-generation", "generation_ms"], ["stage-total", "vad_to_audio_ms"]]) {
+      $(id).textContent = Number.isFinite(d[field]) ? Math.round(d[field]) + " ms" : "—（无匹配锚点）";
+    }
     return;
   }
   if (msg.event === "vad_start") {
@@ -165,6 +181,7 @@ function control(s, msg) {
     s.player.start(d);
     activity(s, "thinking");
   } else if (msg.event === "speech_cancelled" && d.utterance_id === s.player.speech?.id) {
+    s.telemetry.snapshot("cancel", s.player.speech);
     const interrupted = ["shot_interrupt", "long_interrupt"].includes(d.reason);
     if (interrupted) s.interrupts++;
     const failed = d.reason === "stream_error";
@@ -228,6 +245,7 @@ async function release(s) {
 }
 async function stop(s = active, reason = "", failed = false) {
   if (!s || active !== s) return;
+  s.telemetry?.snapshot("stop", s.player?.speech);
   if (s.player?.speech && (!s.player.speech.eof || s.player.speech.played !== s.player.speech.received)) {
     tagSpeech(s, "连接结束，可能未播完", true);
   }
@@ -280,6 +298,8 @@ async function connect() {
     s.mic = s.context.createMediaStreamSource(s.media);
     s.capture = new AudioWorkletNode(s.context, "mic-frames");
     s.player = new SpeechPlayer(s.context, (event, data) => send(s, event, data), state => playback(s, state));
+    s.telemetry = new DemoTelemetry((event, data) => send(s, event, data), s.context,
+      () => s.ws?.bufferedAmount || 0, ms => { $("socket-rtt").textContent = Math.round(ms) + " ms"; });
     s.ws = new WebSocket(socketURL);
     s.ws.binaryType = "arraybuffer";
     await new Promise((resolve, reject) => {
@@ -312,7 +332,9 @@ async function connect() {
     resetView();
     s.ready = true;
     s.started = performance.now();
+    s.telemetry.tick();
     s.timer = setInterval(() => {
+      s.telemetry.tick();
       const seconds = Math.floor((performance.now() - s.started) / 1000);
       $("duration").textContent = String(Math.floor(seconds / 60)).padStart(2, "0") + ":" + String(seconds % 60).padStart(2, "0");
     }, 1000);

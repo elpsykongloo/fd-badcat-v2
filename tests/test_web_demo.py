@@ -22,7 +22,7 @@ def test_demo_static_and_config_do_not_claim_upstream_health():
             page = client.get("/demo/")
             assert page.status_code == 200
             assert "自然接话" in page.text
-            for file in ("demo.js", "demo.css", "speech-player.js", "mic-worklet.js", "favicon.svg"):
+            for file in ("demo.js", "demo.css", "speech-player.js", "demo-telemetry.js", "mic-worklet.js", "favicon.svg"):
                 assert client.get("/demo/" + file).status_code == 200
 
 
@@ -42,10 +42,12 @@ def test_browser_handshake_assigns_path_and_waits_for_engine(monkeypatch, tmp_pa
                           "exp": "../../escape", "lang": "../../escape"}})
             ready = ws.receive_json()
             assert ready["event"] == "demo_ready"
+            assert ready["data"]["observability"] == "demo-trace-v1"
             assert ready["data"]["session_id"].startswith("web-demo-")
             assert made[0].output_dir == Path("exp") / ready["data"]["session_id"] / "realtimeout_live"
             assert made[0].kwargs["engine_cfg"]["stream_response"] is True
     assert not (tmp_path / "escape").exists()
+    assert (made[0].output_dir / "events.jsonl").is_file()
 
 
 @pytest.mark.parametrize("origin,protocol,enabled", [
@@ -81,6 +83,7 @@ def test_old_client_keeps_handshake_path_and_whole_wav(monkeypatch, tmp_path):
             assert ws.receive_json()["event"] == "legacy-stub"
     assert made[0].output_dir == Path("exp/old-session/realtimeout_zh")
     assert made[0].kwargs["engine_cfg"]["stream_response"] is False
+    assert not (made[0].output_dir / "events.jsonl").exists()
 
 
 def load_launcher():
@@ -88,6 +91,29 @@ def load_launcher():
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
+
+
+def test_real_actor_demo_ping_and_disconnect_persist(monkeypatch, tmp_path):
+    import json
+    from test_engine import ScriptedVAD
+    original = engine.ActorEngine
+    made = []
+    def factory(**kwargs):
+        actor = original(**kwargs, vad_iterator=ScriptedVAD({}))
+        made.append(actor)
+        return actor
+    monkeypatch.setattr(engine, "ActorEngine", factory)
+    monkeypatch.chdir(tmp_path)
+    with TestClient(create_app({}, {}, engine_cfg={"stream_response": True})) as client:
+        with client.websocket_connect("/realtime", headers={"origin": "http://testserver"}) as ws:
+            ws.send_json({"event": "config", "data": {"client": "humdial-web", "audio_protocol": "pcm16.v1"}})
+            assert ws.receive_json()["event"] == "demo_ready"
+            ws.send_json({"event": "demo_telemetry", "data": {"kind": "ping", "seq": 1}})
+            assert ws.receive_json() == {"event": "demo_pong", "data": {"seq": 1}}
+            ws.send_json({"event": "demo_telemetry", "data": {"kind": "rtt", "rtt_ms": 25}})
+    rows = [json.loads(line) for line in (made[0].output_dir / "events.jsonl").read_text().splitlines()]
+    assert {"client_ping", "client_rtt", "demo_pong", "disconnect", "trace_closed"} <= {r["event"] for r in rows}
+    assert made[0].STATE == "LISTEN" and not made[0].assistant_history
 
 
 def test_launcher_refuses_occupied_port_without_touching_owner():

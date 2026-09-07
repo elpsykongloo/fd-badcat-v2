@@ -91,3 +91,28 @@ for (const rate of [16000, 44100, 48000]) {
   assert.ok(frames.every(frame => frame.length === 256 && frame.every(x => x === .5)));
 }
 console.log("microphone: 16k/44.1k/48k input, fractional carry, fixed 256-sample frames PASS");
+
+vm.runInContext(fs.readFileSync(path.join(root, "demo-telemetry.js"), "utf8").replace("export class", "class"), scope);
+const DemoTelemetry = vm.runInContext("DemoTelemetry", scope);
+const measured = [], rtts = [];
+let now = 100;
+const telemetry = new DemoTelemetry((event, data) => measured.push({event, data}), context,
+  () => 1024, ms => rtts.push(ms), () => now);
+telemetry.tick();
+assert.equal(measured.length, 0, "old backend must not receive telemetry");
+telemetry.enabled = true;
+telemetry.tick(); now += 80;
+telemetry.pong({seq: 9}); assert.equal(rtts.length, 0);
+telemetry.pong({seq: 1}); assert.equal(rtts[0], 80);
+assert.equal(measured.at(-1).data.rtt_ms, 80);
+telemetry.tick(); assert.equal(measured.length, 2, "ping interval bound");
+const diagnosticSpeech = {id: 99, firstAudio: 449, scheduledLeadMs: 80,
+  received: 960, played: 0, underruns: 0, eof: false};
+telemetry.playback(diagnosticSpeech); telemetry.playback(diagnosticSpeech);
+assert.equal(measured.filter(m => m.data.kind === "first_audio").length, 1);
+diagnosticSpeech.eof = true; diagnosticSpeech.played = 960;
+telemetry.playback(diagnosticSpeech); telemetry.playback(diagnosticSpeech);
+assert.equal(measured.filter(m => m.data.kind === "playback_end").length, 1);
+assert.equal(measured.at(-1).data.played_samples, 960);
+assert.equal(measured.at(-1).data.upload_buffer_bytes, 1024);
+console.log("telemetry: opt-in, same-clock RTT, bounded pings, first/played milestones exactly once PASS");

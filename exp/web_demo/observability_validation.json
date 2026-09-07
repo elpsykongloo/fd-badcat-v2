@@ -1,0 +1,51 @@
+{
+  "version": "demo-trace-v1",
+  "validated_utc": "2026-09-07T12:27:21Z",
+  "scope": "Observability only; no speculative execution or turn-policy change",
+  "formal_benchmark": false,
+  "physical_listening": false,
+  "laptop_network_test": false,
+  "tests": {
+    "pytest_passed": 195,
+    "pytest_failed": 0,
+    "node_player_worklet_telemetry": "PASS",
+    "chromium_fixture_checks": 17,
+    "browser_receipt": "exp/web_demo/observability_browser_check/receipt.json",
+    "live_receipt": "exp/web_demo/observability_live_check/receipt.json"
+  },
+  "live_trace": {
+    "path": "exp/web-demo-7586ddfbf53f4e0b91fadbde4bd0188d/realtimeout_live/events.jsonl",
+    "rows": 51,
+    "dropped": 0,
+    "closed": true,
+    "required_events_present": ["session_start", "llm_dispatch", "llm_done", "capacity_acquired", "demo_latency", "socket_first_audio_sent", "client_rtt", "client_first_audio", "client_playback_end", "input_health", "disconnect", "trace_closed"],
+    "server_stages_ms": [650.3, 398.3, 555.0],
+    "server_vad_to_audio_ms": 1603.6,
+    "first_packet_queue_ms": 0.803,
+    "first_packet_send_ms": 0.621,
+    "client_first_audio_from_speech_start_ms": 477,
+    "client_application_rtt_ms_approx": 0.8,
+    "reader_to_actor_ms_max_sampled": 0.132,
+    "packets": 78,
+    "played_samples": 73215,
+    "underruns": 0,
+    "note": "Single self-created utterance, local virtual Chromium audio; server socket completion is not client receipt. Clock domains are not subtracted. Includes cold-start conditions; not an optimization A/B."
+  },
+  "deployment": {
+    "user_approved_restart": true,
+    "tmux_session": "humdial-demo",
+    "launcher_pid": 25405,
+    "omni_pid": 25410,
+    "proxy_pid": 26327,
+    "backend_pid": 26348,
+    "logs": "exp/web_demo/20260907T122355Z-25405/",
+    "loopback_ports": [10003, 10004, 18000],
+    "streaming": true,
+    "left_running_for_user": true
+  },
+  "restart_notes": [
+    "Old owned stack exited; no inference processes or listeners remained before restart.",
+    "Old Omni shutdown reported cleanup of 2 semaphore and 12 shared_memory objects.",
+    "First restart refused a transient bind conflict on 18000. Read-only recheck found no listener; second launch succeeded. No other port owner was killed."
+  ]
+}

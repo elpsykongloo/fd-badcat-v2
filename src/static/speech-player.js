@@ -64,6 +64,7 @@ export class SpeechPlayer {
     if (s.firstAudio === undefined) {
       s.firstAudio = Math.round(performance.now() - s.start);
       s.next = this.context.currentTime + 0.08;
+      s.scheduledLeadMs = (s.next - this.context.currentTime) * 1000;
     } else if (s.next < this.context.currentTime) {
       s.underruns++;
       s.next = this.context.currentTime + 0.08;

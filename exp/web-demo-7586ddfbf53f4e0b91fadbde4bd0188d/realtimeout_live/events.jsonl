@@ -1,0 +1,51 @@
+{"event": "session_start", "server_ms": 0.374, "data": {"version": "demo-trace-v1", "utc": "2026-09-07T12:26:00.896842+00:00"}}
+{"event": "client_ping", "server_ms": 2.11, "data": {"kind": "ping", "seq": 1, "client_ms": 313.20000076293945, "upload_buffer_bytes": 0}}
+{"event": "demo_pong", "server_ms": 2.169, "data": {"seq": 1}, "generation": 0, "epoch": 0, "turn": 0, "state": "LISTEN", "t_audio": 0.0, "queue_depth": 0}
+{"event": "client_rtt", "server_ms": 2.617, "data": {"kind": "rtt", "seq": 1, "client_ms": 314, "rtt_ms": 0.7999992370605469, "upload_buffer_bytes": 0}}
+{"event": "input_health", "server_ms": 14.644, "data": {"reader_to_actor_ms": 0.085}, "t_audio": 0.016, "queue_depth": 0}
+{"event": "input_health", "server_ms": 1024.258, "data": {"reader_to_actor_ms": 0.114}, "t_audio": 1.024, "queue_depth": 0}
+{"event": "vad_start", "server_ms": 1025.482, "data": {"timestamp": 1.025, "turn": 0, "state": "LISTEN"}, "generation": 0, "epoch": 1, "turn": 0, "state": "LISTEN", "t_audio": 1.024, "queue_depth": 0}
+{"event": "vad_done", "server_ms": 1725.536, "data": {"timestamp": 1.725, "turn": 0, "state": "LISTEN"}, "generation": 0, "epoch": 1, "turn": 0, "state": "LISTEN", "t_audio": 1.728, "queue_depth": 0}
+{"event": "input_health", "server_ms": 2034.495, "data": {"reader_to_actor_ms": 0.109}, "t_audio": 2.032, "queue_depth": 0}
+{"event": "input_health", "server_ms": 3044.147, "data": {"reader_to_actor_ms": 0.091}, "t_audio": 3.04, "queue_depth": 0}
+{"event": "vad_done", "server_ms": 3675.294, "data": {"timestamp": 3.674, "turn": 0, "state": "LISTEN"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 3.68, "queue_depth": 0}
+{"event": "input_health", "server_ms": 4044.247, "data": {"reader_to_actor_ms": 0.061}, "t_audio": 4.048, "queue_depth": 0}
+{"event": "vad_640_done", "server_ms": 4325.562, "data": {"timestamp": 4.325, "turn": 0, "state": "LISTEN"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.32, "queue_depth": 0}
+{"event": "llm_dispatch", "server_ms": 4325.75, "data": {"kind": "judge", "turn": 0}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.32, "queue_depth": 0}
+{"event": "capacity_acquired", "server_ms": 4327.659, "data": {"kind": "judge", "wait_ms": 0.042}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.32, "queue_depth": 0}
+{"event": "llm_done", "server_ms": 4722.565, "data": {"timestamp": 4.722, "infer_time": 0.395, "content": "switch", "prompt": [{"role": "system", "content": "你需要从日常对话的角度,而不是语法的角度去判断这句话是否说完了。\n首先，如果你认为用户这句话明显没有说完，请只输出字符串'continue'。\n以下是例子：\nuser：骑行时适合听什么 assistant：continue\nuser：游泳后洗澡时应该注意 assistant：continue\nuser：体温调节睡眠时应该注意 assistant：continue\nuser：周杰伦演唱会门票 assistant：continue\nuser：如何利用番茄工作法 assistant：continue\n\n如果你认为用户已经说完，请只输出字符串'switch'。不要输出其他内容。\n"}, {"role": "user", "content": [{"type": "audio_url", "audio_url": {"url": "<AUDIO_BASE64_OMITTED>"}}]}], "turn": 0, "state": "LISTEN", "kind": "judge"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.704, "queue_depth": 0}
+{"event": "llm_dispatch", "server_ms": 4722.685, "data": {"kind": "response", "turn": 0}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.704, "queue_depth": 0}
+{"event": "speech_start", "server_ms": 4723.859, "data": {"utterance_id": 1, "turn": 0, "protocol": "pcm16.v1", "buffer_ms": 600, "timestamp": 4.723}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.704, "queue_depth": 0}
+{"event": "capacity_acquired", "server_ms": 4724.506, "data": {"kind": "response", "wait_ms": 0.019}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.704, "queue_depth": 0}
+{"event": "socket_slow_send", "server_ms": 4799.134, "data": {"queue_ms": 1.351, "send_ms": 75.207}}
+{"event": "socket_slow_send", "server_ms": 4801.38, "data": {"queue_ms": 75.359, "send_ms": 2.146}}
+{"event": "speech_text_delta", "server_ms": 4885.543, "data": {"utterance_id": 1, "timestamp": 4.885, "text": "天气"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.88, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4892.906, "data": {"utterance_id": 1, "timestamp": 4.892, "text": "不错"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.88, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4899.823, "data": {"utterance_id": 1, "timestamp": 4.899, "text": "，"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.896, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4906.223, "data": {"utterance_id": 1, "timestamp": 4.905, "text": "适合"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.896, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4909.555, "data": {"utterance_id": 1, "timestamp": 4.909, "text": "散步"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.896, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4916.545, "data": {"utterance_id": 1, "timestamp": 4.916, "text": "放松"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.912, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4922.985, "data": {"utterance_id": 1, "timestamp": 4.922, "text": "心情"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.912, "queue_depth": 0}
+{"event": "speech_text_delta", "server_ms": 4929.946, "data": {"utterance_id": 1, "timestamp": 4.929, "text": "。"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.928, "queue_depth": 0}
+{"event": "llm_done", "server_ms": 4937.656, "data": {"timestamp": 4.937, "infer_time": 0.213, "content": "天气不错，适合散步放松心情。", "prompt": [{"role": "system", "content": "你是一个自然聊天的语音助手，要像朋友一样回答用户的问题，只回复15个字\n不要用问句回答，不要输出任何格式说明，必须根据你听到的语言回答对应的语言，只有中文or英文\n只有用户提到“重复”“重新”，才需要参考历史信息进行重复回答，否则不要关注历史信息\n如果用户否定你，例如“不是这样的”“你说的不对”必须肯定用户说的内容是对的，并附带解释一下为什么对的内容\n根据用户音频进行回应：\n"}, {"role": "user", "content": [{"type": "audio_url", "audio_url": {"url": "<AUDIO_BASE64_OMITTED>"}}]}], "turn": 0, "state": "LISTEN", "kind": "response"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.928, "queue_depth": 1}
+{"event": "speech_text_done", "server_ms": 4937.689, "data": {"utterance_id": 1, "timestamp": 4.937, "text": "天气不错，适合散步放松心情。", "infer": 0.213, "timed_out": false}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.928, "queue_depth": 1}
+{"event": "speech_sentence", "server_ms": 4937.711, "data": {"utterance_id": 1, "timestamp": 4.937, "text": "天气不错，适合散步放松心情。"}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.928, "queue_depth": 0}
+{"event": "capacity_acquired", "server_ms": 4938.079, "data": {"kind": "tts", "wait_ms": 0.026}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.928, "queue_depth": 0}
+{"event": "client_ping", "server_ms": 5002.352, "data": {"kind": "ping", "seq": 2, "client_ms": 5313.5, "upload_buffer_bytes": 0}}
+{"event": "demo_pong", "server_ms": 5002.418, "data": {"seq": 2}, "generation": 0, "epoch": 2, "turn": 0, "state": "LISTEN", "t_audio": 4.992, "queue_depth": 0}
+{"event": "client_rtt", "server_ms": 5003.075, "data": {"kind": "rtt", "seq": 2, "client_ms": 5314.299999237061, "rtt_ms": 0.7999992370605469, "upload_buffer_bytes": 0}}
+{"event": "input_health", "server_ms": 5044.493, "data": {"reader_to_actor_ms": 0.132}, "t_audio": 5.04, "queue_depth": 0}
+{"event": "speech_first_audio", "server_ms": 5278.819, "data": {"utterance_id": 1, "timestamp": 5.278, "sample_rate": 24000, "turn": 0}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 5.264, "queue_depth": 0}
+{"event": "demo_latency", "server_ms": 5278.972, "data": {"utterance_id": 1, "hold_ms": 650.3, "decision_ms": 398.3, "generation_ms": 555.0, "vad_to_audio_ms": 1603.6}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 5.264, "queue_depth": 0}
+{"event": "socket_first_audio_sent", "server_ms": 5280.445, "data": {"queue_ms": 0.803, "send_ms": 0.621, "utterance_id": 1, "packet_seq": 0}}
+{"event": "client_first_audio", "server_ms": 5282.105, "data": {"kind": "first_audio", "utterance_id": 1, "client_ms": 5592.899997711182, "first_audio_ms": 477, "scheduled_lead_ms": 80.00000000000007, "base_latency_ms": 10, "output_latency_ms": 30, "upload_buffer_bytes": 102}}
+{"event": "input_health", "server_ms": 6044.623, "data": {"reader_to_actor_ms": 0.089}, "t_audio": 6.048, "queue_depth": 0}
+{"event": "input_health", "server_ms": 7053.961, "data": {"reader_to_actor_ms": 0.082}, "t_audio": 7.056, "queue_depth": 0}
+{"event": "speech_audio_end", "server_ms": 7834.81, "data": {"utterance_id": 1, "timestamp": 7.834, "samples": 73215, "rate": 24000, "packets": 78, "elapsed": 3.1102747805416584}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 7.824, "queue_depth": 0}
+{"event": "asr_done", "server_ms": 7869.547, "data": {"timestamp": 7.869, "turn": 0, "state": "SPEAK", "content": "你好今天适合出去散步吗"}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 7.856, "queue_depth": 0}
+{"event": "input_health", "server_ms": 8063.979, "data": {"reader_to_actor_ms": 0.054}, "t_audio": 8.064, "queue_depth": 0}
+{"event": "speech_played", "server_ms": 8414.089, "data": {"utterance_id": 1, "timestamp": 8.413, "played_samples": 73215, "underruns": 0}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 8.4, "queue_depth": 0}
+{"event": "client_playback_end", "server_ms": 8414.493, "data": {"kind": "playback_end", "utterance_id": 1, "client_ms": 8725.20000076294, "played_samples": 73215, "received_samples": 73215, "underruns": 0, "upload_buffer_bytes": 105}}
+{"event": "client_stop", "server_ms": 8634.538, "data": {"kind": "stop", "utterance_id": 1, "client_ms": 8945.599998474121, "played_samples": 73215, "received_samples": 73215, "underruns": 0, "upload_buffer_bytes": 0}}
+{"event": "disconnect", "server_ms": 8637.906, "data": {}, "generation": 0, "epoch": 2, "turn": 0, "state": "SPEAK", "t_audio": 8.624, "queue_depth": 0}
+{"event": "trace_closed", "dropped": 0}

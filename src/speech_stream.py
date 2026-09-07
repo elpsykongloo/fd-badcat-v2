@@ -30,15 +30,16 @@ class SocketOutbox:
     A stalled client is disconnected, not given an unbounded queue. Tagged old
     audio is dropped before sending; a packet already on wire is fenced by id.
     """
-    def __init__(self, websocket, valid, failed, timeout=5):
+    def __init__(self, websocket, valid, failed, timeout=5, observed=None):
         self.websocket, self.valid, self.failed = websocket, valid, failed
         self.timeout = timeout
+        self.observed = observed
         self.queue = asyncio.Queue(maxsize=128)
         self.task = asyncio.create_task(self.run())
 
     def put(self, payload, sid=None, delivered=None):
         try:
-            self.queue.put_nowait((payload, sid, delivered))
+            self.queue.put_nowait((payload, sid, delivered, time.perf_counter()))
         except asyncio.QueueFull:
             self.failed()
             if delivered is not None and not delivered.done():
@@ -47,12 +48,15 @@ class SocketOutbox:
     async def run(self):
         try:
             while True:
-                payload, sid, delivered = await self.queue.get()
+                payload, sid, delivered, queued = await self.queue.get()
                 try:
                     if sid is None or self.valid(sid):
+                        started = time.perf_counter()
                         send = (self.websocket.send_bytes(payload) if isinstance(payload, bytes)
                                 else self.websocket.send_text(payload))
                         await asyncio.wait_for(send, self.timeout)
+                        if self.observed is not None:
+                            self.observed(payload, queued, started, time.perf_counter())
                 finally:
                     if delivered is not None and not delivered.done():
                         delivered.set_result(None)
@@ -65,7 +69,7 @@ class SocketOutbox:
         self.task.cancel()
         await asyncio.gather(self.task, return_exceptions=True)
         while not self.queue.empty():
-            _, _, delivered = self.queue.get_nowait()
+            _, _, delivered, _ = self.queue.get_nowait()
             if delivered is not None and not delivered.done():
                 delivered.cancel()
 

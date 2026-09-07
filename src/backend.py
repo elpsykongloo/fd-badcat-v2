@@ -488,11 +488,19 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
         engine.output_dir = Path("exp") / exp / f"realtimeout_{lang}"
         engine.output_dir.mkdir(parents=True, exist_ok=True)
         if web_demo:
+            from demo_trace import DemoTrace
+            engine.demo_trace = DemoTrace(engine.output_dir / "events.jsonl")
             # The browser waits before opening the input pipe. VAD construction
             # may take time on the first connection; do not accumulate mic frames.
-            await websocket.send_json({"event": "demo_ready", "data": {
-                "session_id": exp, "protocol": "pcm16.v1"}})
-        await engine.run_realtime(websocket)
+        try:
+            if web_demo:
+                await websocket.send_json({"event": "demo_ready", "data": {
+                    "session_id": exp, "protocol": "pcm16.v1",
+                    "observability": "demo-trace-v1"}})
+            await engine.run_realtime(websocket)
+        finally:
+            if web_demo:
+                await engine.demo_trace.close()
         if (engine_cfg or {}).get("phase") == "b" and hasattr(engine, "trace"):
             trace_file = engine.output_dir / "trace_full.jsonl"
             with trace_file.open("w", encoding="utf-8") as f:

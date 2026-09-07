@@ -240,6 +240,7 @@ class ActorEngine:
         self.trace = []
         self.trace_path = Path(trace_path) if trace_path else None
         self._trace_fh = None
+        self.demo_trace = None  # attached only by the browser-demo handshake
         self.frame_lags = []              # perf-lag reader->engine per frame (freeze metric)
         self.max_queue_depth = 0
         self._inflight = 0                # realtime worker tasks not yet reported back
@@ -273,6 +274,16 @@ class ActorEngine:
                 self._outbox.put(json.dumps(payload))
             else:
                 await self.websocket.send_text(json.dumps(payload))
+        summary = self._observe(event_type, payload["data"])
+        if summary is not None:
+            await self.send_control("demo_latency", summary)
+
+    def _observe(self, event, data=None):
+        if self.demo_trace is not None:
+            return self.demo_trace.observe(event, data or {}, generation=self.session_gen,
+                                           epoch=self.seg_epoch, turn=self.TURN_IDX,
+                                           state=self.STATE, t_audio=self.t_audio,
+                                           queue_depth=self.q.qsize())
 
     def _wall_ts(self):
         if self.start_wall is None:
@@ -321,7 +332,10 @@ class ActorEngine:
         return CONTROL if kind in CONTROL_REQUEST_KINDS else NORMAL
 
     async def _capacity_thread_call(self, kind, fn, *args):
+        started = time.perf_counter()
         async with self.request_capacity.slot(self._request_class(kind)):
+            self._observe("capacity_acquired", {"kind": kind, "wait_ms":
+                          round((time.perf_counter() - started) * 1000, 3)})
             return await asyncio.to_thread(fn, *args)
 
     def _start_capacity_thread_call(self, kind, fn, *args):
@@ -338,7 +352,10 @@ class ActorEngine:
         return task
 
     async def _capacity_stream(self, kind, stream_fn, arg):
+        started = time.perf_counter()
         async with self.request_capacity.slot(self._request_class(kind)):
+            self._observe("capacity_acquired", {"kind": kind, "wait_ms":
+                          round((time.perf_counter() - started) * 1000, 3)})
             async with aclosing(stream_fn(arg)) as source:
                 async for item in source:
                     yield item
@@ -354,6 +371,7 @@ class ActorEngine:
     # ------------------------------------------------------------------
     def dispatch_llm(self, kind, system_prompt, user_audio, turn,
                      add_to_history=False, shift_history=False):
+        self._observe("llm_dispatch", {"kind": kind, "turn": turn})
         messages = self.build_messages(system_prompt, user_audio, add_to_history, shift_history)
         snapshot = scrub_audio_blocks(messages)
         gen, epoch = self.session_gen, self.seg_epoch
@@ -516,9 +534,15 @@ class ActorEngine:
         elif isinstance(ev, SpeechEvent):
             await self._on_speech_event(ev)
         elif isinstance(ev, ControlMsg):
-            if ev.kind == "session_end":
+            if ev.kind == "demo_telemetry" and self.demo_trace is not None:
+                clean = self.demo_trace.client(ev.data)
+                if clean and clean["kind"] == "ping":
+                    await self.send_control("demo_pong", {"seq": clean["seq"]})
+            elif ev.kind == "session_end":
+                self._observe("session_reset")
                 self._reset_session()
             elif ev.kind == "disconnect":
+                self._observe("disconnect")
                 return False
             elif ev.kind in ("speech_start", "speech_cancelled"):
                 await self.send_control(ev.kind, ev.data)
@@ -546,6 +570,8 @@ class ActorEngine:
 
     async def _on_frame(self, ev: FrameEvent):
         self.t_audio = ev.t_audio
+        if self.demo_trace is not None:
+            self.demo_trace.input_health(ev.t_wall, t_audio=self.t_audio, queue_depth=self.q.qsize())
         event = self.detect_vad_frame(ev.pcm)
         if event and "start" in event:
             # new speech falsifies any in-flight judge/shift/interrupt evidence
@@ -923,6 +949,8 @@ class ActorEngine:
                     self.q.put_nowait(ControlMsg("session_end"))
                 elif self.STREAMING and obj.get("event") == "playback_progress":
                     self.q.put_nowait(ControlMsg("playback_progress", obj.get("data") or {}))
+                elif self.demo_trace is not None and obj.get("event") == "demo_telemetry":
+                    self.q.put_nowait(ControlMsg("demo_telemetry", obj.get("data")))
                 continue
             if "bytes" in message and message["bytes"]:
                 pcm = np.frombuffer(message["bytes"], dtype=np.float32)
@@ -942,7 +970,8 @@ class ActorEngine:
         if self.STREAMING:
             self._outbox = SocketOutbox(
                 websocket, lambda sid: self._speech is not None and self._speech.sid == sid,
-                lambda: self.q.put_nowait(ControlMsg("disconnect")))
+                lambda: self.q.put_nowait(ControlMsg("disconnect")),
+                observed=self.demo_trace.sent if self.demo_trace is not None else None)
         if self.trace_path:
             self.trace_path.parent.mkdir(parents=True, exist_ok=True)
             self._trace_fh = self.trace_path.open("w", encoding="utf-8")
@@ -950,6 +979,7 @@ class ActorEngine:
         try:
             await self.engine_loop()
         except Exception as e:
+            self._observe("engine_error", {"type": type(e).__name__, "message": str(e)})
             print("Realtime wrong:", e)
         finally:
             reader.cancel()

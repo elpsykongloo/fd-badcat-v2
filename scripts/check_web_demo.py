@@ -64,7 +64,8 @@ class Fixture:
         config = await ws.receive_json()
         assert config["data"] == {"client": "humdial-web", "audio_protocol": "pcm16.v1"}
         self.sessions += 1
-        await self.event("demo_ready", protocol="pcm16.v1", session_id=f"synthetic-ui-{self.sessions}")
+        await self.event("demo_ready", protocol="pcm16.v1", session_id=f"synthetic-ui-{self.sessions}",
+                         observability="demo-trace-v1")
         count = 0
         async for msg in ws:
             if msg.type == WSMsgType.BINARY:
@@ -74,7 +75,10 @@ class Fixture:
                 if count == 4:
                     await self.respond()
             elif msg.type == WSMsgType.TEXT:
-                self.progress.append(json.loads(msg.data))
+                value = json.loads(msg.data)
+                self.progress.append(value)
+                if value.get("event") == "demo_telemetry" and value["data"].get("kind") == "ping":
+                    await self.event("demo_pong", seq=value["data"]["seq"])
         self.closed += 1
         return ws
 
@@ -138,6 +142,10 @@ async def mock_checks(browser, output):
         assert await page.locator("#messages img").count() == 0, "ASR text must not be interpreted as HTML"
         assert await page.locator(".message").first.get_attribute("class") == "message user"
         assert any(p["data"].get("ended") and p["data"].get("played_samples") == 4800 for p in fixture.progress)
+        assert {"first_audio", "playback_end", "rtt"} <= {p["data"].get("kind") for p in fixture.progress}
+        await fixture.event("demo_latency", utterance_id=1, hold_ms=641, decision_ms=363,
+                            generation_ms=518, vad_to_audio_ms=1522)
+        await page.wait_for_function("document.getElementById('stage-total').textContent === '1522 ms'")
         assert await page.evaluate("window.__tracks[0].readyState") == "live"
         await page.click("#mute")
         await page.wait_for_timeout(180)
@@ -202,7 +210,7 @@ async def mock_checks(browser, output):
                 "checks": ["desktop/mobile layout", "1366x768 laptop controls above fold", "no mic before start", "256xfloat32 upload", "PCM playback completion ACK",
                            "late ASR ordering", "text XSS escaping", "mute sends silence", "cancel + stale audio fence",
                            "reconnect", "server disconnect cleanup", "stream-disabled preflight", "cancelled permission race",
-                           "permission denied", "zero uncaught JS errors"],
+                           "permission denied", "zero uncaught JS errors", "three-stage metrics", "browser telemetry and RTT"],
                 "microphone_frames": len(fixture.frames), "sessions": fixture.sessions, "page_errors": errors}
 
 
@@ -248,7 +256,12 @@ async def live_check(browser, url, audio, output):
                     "first_audio": await page.locator("#first-audio").text_content(),
                     "buffer": await page.locator("#buffer").text_content(),
                     "session_id": await page.locator("#session-id").text_content(),
-                    "audio_format": await page.locator("#audio-format").text_content()}
+                    "audio_format": await page.locator("#audio-format").text_content(),
+                    "diagnostics": {key: await page.locator("#" + key).text_content() for key in
+                                    ("stage-hold", "stage-decision", "stage-generation", "stage-total", "socket-rtt", "trace-status")}}
+        assert "已启用" in snapshot["diagnostics"]["trace-status"]
+        assert any(e["event"] == "demo_latency" for e in controls)
+        assert snapshot["diagnostics"]["socket-rtt"] != "—"
         await page.click("#stop")
         await stopped(page)
         assert binary_packets > 0 and any(p.get("ended") for p in playback_ack)
