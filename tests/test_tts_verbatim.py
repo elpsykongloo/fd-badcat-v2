@@ -3,6 +3,7 @@ import asyncio
 import base64
 import importlib.util
 import io
+import json
 import sys
 from pathlib import Path
 
@@ -21,14 +22,35 @@ def test_payload_constrains_literal_not_regex_and_preserves_legacy_request(monke
     text = '“你好吗？” Dr. Li paid $3.14 (not $5). [a-z]*'
     legacy = module.omni_tts_payload(text)
     payload = module.verbatim_tts_payload(text)
-    assert payload["structured_outputs"] == {"choice": [text]}
+    assert payload["structured_outputs"] == {"grammar": "root ::= " + json.dumps(text, ensure_ascii=False)}
     assert payload["modalities"] == ["text", "audio"]
     assert payload["max_tokens"] == len(text.encode("utf-8")) + 8
     assert payload["messages"] == legacy["messages"]
     assert "structured_outputs" not in legacy and legacy["max_tokens"] == 1
 
 
-@pytest.mark.parametrize("text", [None, "", "  ", "中" * 342, "<|im_end|>"])
+@pytest.mark.parametrize("text", [
+    "那我给你讲一个奇幻小故事吧：\n", "Hello.\r\n\tNext.",
+    'He said "Hi". Path: C:\\notes. [a-z]* $3.14.',
+    "中😀\u2028\u2029", "\n\r\tHello.\n\r\t",
+])
+def test_literal_escapes_controls_without_changing_text(text):
+    payload = module.verbatim_tts_payload(text)
+    literal = payload["structured_outputs"]["grammar"].removeprefix("root ::= ")
+    assert json.loads(literal) == text
+    assert not any(chr(i) in literal for i in range(32))
+    assert payload["messages"][-1]["content"] == text
+    assert "choice" not in payload["structured_outputs"]
+
+
+def test_production_core_pins_one_grammar_backend():
+    import yaml
+    root = Path(__file__).resolve().parents[1]
+    config = yaml.safe_load((root / "configs/qwen3_omni_audio_single_gpu.yaml").read_text())
+    assert config["stages"][0]["structured_outputs_config"] == {"backend": "xgrammar"}
+
+
+@pytest.mark.parametrize("text", [None, "", "  ", "中" * 342, "<|im_end|>", "x\0y", "x\by", "x\fy", "x\x7fy"])
 def test_unsafe_or_unbounded_literal_rejected(text):
     with pytest.raises(ValueError): module.verbatim_tts_payload(text)
 

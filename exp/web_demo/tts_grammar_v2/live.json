@@ -1,0 +1,36 @@
+{
+  "version": "verbatim-grammar-v2",
+  "mode": "live",
+  "physical_listening": false,
+  "cases": [
+    {
+      "text": "你好。Hello, how are you?",
+      "text_proof": true,
+      "samples": 61695,
+      "elapsed_ms": 551.5,
+      "readback": "你好 hello how are you"
+    },
+    {
+      "text": "那我给你讲一个奇幻小故事吧：\n",
+      "text_proof": true,
+      "samples": 55935,
+      "elapsed_ms": 686.4,
+      "readback": "那我给你讲一个奇幻小故事吧"
+    },
+    {
+      "text": "你能告诉我你在哪个城市吗？\r\n\t",
+      "text_proof": true,
+      "samples": 52650,
+      "elapsed_ms": 599.4,
+      "readback": "你能告诉我你在哪个城市吗"
+    },
+    {
+      "text": "He said \"Hi\". Path: C:\\notes. [a-z]* $3.14.",
+      "text_proof": true,
+      "samples": 240510,
+      "elapsed_ms": 1696.9
+    }
+  ],
+  "pass": false,
+  "error": "TTS readback mismatch: expected '\\n\\r\\tHello.\\n\\r\\t', recognized '桑娜 hello'"
+}

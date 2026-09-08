@@ -2,7 +2,7 @@ import json, asyncio, time, torch, soundfile as sf, numpy as np, base64, tempfil
 from pathlib import Path
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from silero_vad import load_silero_vad, VADIterator
-from module import asr, llm_qwen3o, tts
+from module import asr, llm_qwen3o, tts, VERBATIM_TTS_CONTRACT
 from messages import build_audio_content, scrub_audio_blocks
 import argparse
 import uvicorn
@@ -540,7 +540,7 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
                 await websocket.send_json({"event": "demo_ready", "data": {
                     "session_id": exp, "protocol": "pcm16.v1",
                     "observability": "demo-trace-v1",
-                    "tts_contract": "verbatim-choice-v1",
+                    "tts_contract": VERBATIM_TTS_CONTRACT,
                     "case_capture": engine.demo_cases is not None,
                     "input_protocol": session_cfg.get("input_protocol"),
                     "guarded_turns": bool(session_cfg.get("guarded_turns")),

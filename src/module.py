@@ -180,6 +180,9 @@ def _call_omni_tts(text: str) -> bytes:
     return _extract_omni_audio(response.json())
 
 
+VERBATIM_TTS_CONTRACT = "verbatim-grammar-v2"
+
+
 def verbatim_tts_payload(text: str):
     """Constrain Thinker to the one literal sentence; never ask it to answer.
 
@@ -190,11 +193,18 @@ def verbatim_tts_payload(text: str):
     if not isinstance(text, str) or not text.strip():
         raise ValueError("Verbatim TTS requires nonempty text")
     size = len(text.encode("utf-8"))
-    if size > 1024 or "<|" in text or "|>" in text:
-        raise ValueError("Verbatim TTS sentence too long or contains model control tokens")
+    if (size > 1024 or "<|" in text or "|>" in text
+            or any((ord(c) < 32 and c not in "\n\r\t") or ord(c) == 127 for c in text)):
+        raise ValueError("Verbatim TTS sentence too long or contains unsupported control characters/tokens")
     payload = omni_tts_payload(text)
+    # A single EBNF literal denotes exactly the original string, including
+    # whitespace. vLLM's choice converter only escapes quotes/backslashes and
+    # emits invalid grammar for real newlines. JSON string escaping also covers
+    # LF/CR/tab; other C0/DEL controls are not supported speech input. Never
+    # strip text to make validation pass.
+    grammar = "root ::= " + json.dumps(text, ensure_ascii=False)
     payload.update(modalities=["text", "audio"],
-                   structured_outputs={"choice": [text]}, max_tokens=size + 8)
+                   structured_outputs={"grammar": grammar}, max_tokens=size + 8)
     return payload
 
 

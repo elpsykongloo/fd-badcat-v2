@@ -1,0 +1,90 @@
+{
+  "version": "verbatim-grammar-v2",
+  "mode": "live",
+  "physical_listening": false,
+  "cases": [
+    {
+      "text": "你好。Hello, how are you?",
+      "text_proof": true,
+      "samples": 71295,
+      "elapsed_ms": 769.4,
+      "readback": "你好 hello how are you",
+      "readback_pass": true
+    },
+    {
+      "text": "那我给你讲一个奇幻小故事吧：\n",
+      "text_proof": true,
+      "samples": 48810,
+      "elapsed_ms": 569.5,
+      "readback": "那我给你讲一个奇幻小故事吧",
+      "readback_pass": true
+    },
+    {
+      "text": "你能告诉我你在哪个城市吗？\r\n\t",
+      "text_proof": true,
+      "samples": 43050,
+      "elapsed_ms": 610.9,
+      "readback": "你能告诉我你在哪个城市吗",
+      "readback_pass": true
+    },
+    {
+      "text": "He said \"Hi\". Path: C:\\notes. [a-z]* $3.14.",
+      "text_proof": true,
+      "samples": 198270,
+      "elapsed_ms": 1397.0
+    },
+    {
+      "text": "\n\r\tHello.\n\r\t",
+      "text_proof": true,
+      "samples": 43050,
+      "elapsed_ms": 481.4,
+      "readback": "西莲 hello",
+      "readback_pass": false
+    },
+    {
+      "text": "你好。",
+      "text_proof": true,
+      "samples": 12330,
+      "elapsed_ms": 368.3,
+      "readback": "你好",
+      "readback_pass": true
+    },
+    {
+      "text": "你好。",
+      "text_proof": true,
+      "samples": 18090,
+      "elapsed_ms": 417.5,
+      "readback": "你好",
+      "readback_pass": true
+    },
+    {
+      "text": "你好。",
+      "text_proof": true,
+      "samples": 16170,
+      "elapsed_ms": 432.3,
+      "readback": "你好",
+      "readback_pass": true
+    }
+  ],
+  "pass": false,
+  "readback_failures": [
+    "TTS readback mismatch: expected '\\n\\r\\tHello.\\n\\r\\t', recognized '西莲 hello'"
+  ],
+  "rejections": [
+    {
+      "kind": "choice",
+      "status": 400
+    },
+    {
+      "kind": "grammar",
+      "status": 400
+    },
+    {
+      "kind": "regex",
+      "status": 400
+    }
+  ],
+  "good_bad_good": true,
+  "transport_contract_pass": true,
+  "error": "Transport passed but acoustic readback mismatched; see readback_failures"
+}

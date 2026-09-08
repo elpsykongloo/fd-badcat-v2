@@ -1,0 +1,66 @@
+{
+  "version": "verbatim-grammar-v2",
+  "date": "2026-09-08",
+  "crash_fix_accepted": true,
+  "general_acoustic_fidelity_accepted": false,
+  "implementation": {
+    "literal": "JSON-escaped single EBNF literal; original text unchanged",
+    "thinker_backend": "xgrammar",
+    "auto_fallback": false,
+    "lf_cr_tab_supported": true,
+    "other_c0_del_rejected_before_http": true,
+    "strict_text_and_completion_proof_preserved": true,
+    "talker_codec_sampling_changed": false,
+    "routing_policy_changed": false
+  },
+  "checks": {
+    "targeted_pytest_passed": 157,
+    "pytest_seconds": 2.46,
+    "node_playback_input_telemetry": "PASS",
+    "actual_xgrammar_exact_truncated_extended_cases": 6,
+    "unsupported_control_codepoints_rejected": 30,
+    "installed_deploy_parser_and_running_core_backend_verified": true,
+    "original_trigger_text_new_payload": "Strict text proof, nonempty PCM and normalized ASR readback passed twice",
+    "invalid_requests": {"old_newline_choice": 400, "broken_grammar": 400, "invalid_regex": 400},
+    "normal_tts_and_health_after_each_invalid_request": "PASS",
+    "browser_long_answer_backchannel_and_stop": "PASS",
+    "browser_before_text_done": true,
+    "browser_stopped_ack_samples": 104748,
+    "browser_page_errors": 0,
+    "physical_listening": false
+  },
+  "failures_preserved": [
+    "Initial CPU matcher exposed NUL accepted by grammar parser but not matched literally; payload now rejects it and other unsupported C0/DEL controls.",
+    "live.json stopped on leading LF/CR/TAB plus Hello acoustic readback mismatch.",
+    "live_complete.json completed all isolation checks but retains overall failure due to the same acoustic stress case; its transport_contract_pass is true.",
+    "Text constraint does not guarantee Talker pronunciation or ASR accuracy; no manual listening attribution was performed."
+  ],
+  "reply_admission_diagnosis": {
+    "real_clips": 2,
+    "calls": 36,
+    "method": "24 counterfactual calls plus 12 checks using playback windows frozen at input start; two repeats per condition, serial, same saved audio and sampling parameters",
+    "current_playing": ["keep", "keep"],
+    "counterfactual_idle": ["yield_ready", "yield_ready"],
+    "answer_rule_only": ["keep", "yield_ready"],
+    "frozen_question_context_only": ["keep", "yield_ready"],
+    "answer_rule_and_frozen_question_context": ["yield_ready", "yield_ready"],
+    "answer_rule_and_narrative_context": ["keep", "keep"],
+    "errors_or_fallbacks": 0,
+    "deployed": false,
+    "limitation": "Two known clips and correlated repeats, not a robustness score. Context wording also changes outcomes. Does not authorize restoring reference text to the transcription input."
+  },
+  "deployment": {
+    "tmux": "humdial-demo",
+    "launcher_pid": 16749,
+    "omni_pid": 16756,
+    "proxy_pid": 17671,
+    "backend_pid": 17683,
+    "log_directory": "exp/web_demo/20260908T064154Z-16749",
+    "loopback_ports": [10003, 10004, 18000],
+    "warmup_seconds": 4.217,
+    "warmup_readback_first_attempts_passed": true,
+    "service_kept_running": true
+  },
+  "privacy": "Only self-authored test inputs and aggregate diagnostics are distributed; real recordings, prompts with user history and raw diagnostic outputs remain in the ignored private archive.",
+  "integrity_hash_checks": false
+}

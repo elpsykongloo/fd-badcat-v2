@@ -56,7 +56,9 @@ async def warmup(prompts):
         if not "".join(pieces).strip():
             raise RuntimeError("Text SSE warmup returned no text")
         checks, total_chunks = [], 0
-        for expected in ("你好。Hello, how are you?", "你能告诉我你在哪个城市吗？"):
+        # First initialize the grammar backend, then exercise the newline/CR/tab
+        # path that used to switch backends and kill an already healthy core.
+        for expected in ("你好。Hello, how are you?", "你能告诉我你在哪个城市吗？\r\n\t"):
             attempts = []
             for attempt in range(2):
                 chunks = [p async for p in module.tts_omni_stream(expected)]
@@ -85,7 +87,7 @@ async def warmup(prompts):
     result = {"event": "demo_warmup_done", "asr": module.ASR_BACKEND,
               "asr_provider": module.ASR_PROVIDER, "transcript": transcript,
               "bilingual_transcript": checks[0]["recognized"], "tts_chunks": total_chunks,
-              "tts_contract": "verbatim-choice-v1", "tts_readback_checks": checks,
+              "tts_contract": module.VERBATIM_TTS_CONTRACT, "tts_readback_checks": checks,
               "route_protocol": ROUTE_PROTOCOL if prompts.get("input_route") else None,
               "elapsed_s": round(time.perf_counter() - started, 3)}
     print(json.dumps(result, ensure_ascii=False), flush=True)

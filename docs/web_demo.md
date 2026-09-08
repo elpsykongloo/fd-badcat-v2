@@ -146,18 +146,24 @@ ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -L 127.0.0.1:18080:
 
 未开启 §9 时历史仍保存完整生成文本；开启后对取消回复使用完整播完的句子及打断标记，不是词级“用户已听到前缀”。预热不是持续健康检查，也不能消除每次会话的所有初始化耗时。提示词不是事实性保证：自造天气问题的功能烟测仍出现无依据的天气断言，不能据此宣称聊天质量已验收。这些变更没有修改 RB/TACT 评测配置或建立新的正式成绩。
 
-## 8. 逐字合成修复（verbatim-choice-v1）
+## 8. 逐字合成修复（verbatim-grammar-v2）
 
 原实现把每个分句作为新的 user 消息交给 Omni，只用 system 提示“逐字读”，实际会重新回答问题。例如“你那边怎么样？”被读成“我这边一切都好……”；“你能告诉我你在哪个城市吗？”变成 14 秒的模型自我介绍。它不是分句乱序或投机误打断，而是音频内容背离页面文字。先前短输入/播放契约检查不能证明合成忠实性。
 
-流式 Actor 现在用 `module.verbatim_tts_payload()`：通过 `structured_outputs.choice=[原文]` 对 Thinker 做单一字面值解码约束，再由同一个 Omni 的 Talker 合成；不更换模型、不增加第二套 GPU 服务。`choice` 不是正则拼接，问号、引号等不会被当作语法。[vLLM 结构化解码说明](https://docs.vllm.ai/en/latest/features/structured_outputs/)
+流式 Actor 现在用 `module.verbatim_tts_payload()`：通过 `structured_outputs.grammar` 的单个 EBNF 字符串字面量约束 Thinker，再由同一个 Omni 的 Talker 合成；不更换模型、不增加第二套 GPU 服务。原文通过 JSON 字符串编码安全转义，换行、回车、制表符和引号保持原样，不是正则拼接，也不通过删空白放宽原文匹配。
+
+旧 `verbatim-choice-v1` 于2026-09-08暴露真实崩溃：上游 choice→EBNF 转换未转义换行，auto 校验回退 guidance，但已初始化的推理核心仍使用 xgrammar，未转换的 CHOICE 导致 EngineDeadError。v2 不经过这条转换；默认生产配置的 stage0 显式固定 `structured_outputs_config.backend: xgrammar`，不允许请求级自动回退造成校验/执行后端不一致。其他阶段的 Talker/codec 采样及原 serial-eval 配置不改。自定义部署配置也必须固定一致的约束后端，不能套用默认部署的故障隔离结论。
 
 - 当前 vLLM-Omni 版本的普通请求转换漏掉了 `structured_outputs`。启动器先执行仓内 `scripts/patch_omni_verbatim_tts.py`：仅向 comprehension stage 转发该参数，音频阶段仍用原采样配置；另给受约束的文本末帧增加 `fd_text_finish_reason`。适配幂等，未知或半修补的依赖源码布局会拒绝启动，不能静默忽略约束。普通无约束请求不改动。
 - 请求同时返回文本和音频；`stream_transport.audio_stream(expected_text=...)` 逐块检查原文前缀，要求最终全文严格相同且文本以 `stop` 正常结束，才放行音频。Omni 通用 `finish_reason` 会等全部模态结束，所以使用上述单独文本完成证明；只等一个短句的文本，不等整段回答或整段音频。提前到达的 PCM 暂存有 512KiB 硬上限，取消仍关闭 HTTP。
-- 上游不支持约束、回传缺失、文本不符、超长或截断均显式失败，不回退到自由聊天合成。单句 UTF-8 最多1024 bytes，禁止模型控制标记；文本生成预算按 byte-BPE 安全上界留足 EOS 余量，避免旧 max_tokens 环境值把指定原文截断。确认后的音频仍受原 600ms 播放信用和 utterance ID 栅栏约束。
+- 上游不支持约束、回传缺失、文本不符、超长或截断均显式失败，不回退到自由聊天合成。单句 UTF-8 最多1024 bytes，禁止模型控制标记及 LF/CR/TAB 以外的 C0/DEL 控制字符（NUL 的实际语法匹配不可靠，不能只看解析成功）；文本生成预算按 byte-BPE 安全上界留足 EOS 余量，避免旧 max_tokens 环境值把指定原文截断。确认后的音频仍受原 600ms 播放信用和 utterance ID 栅栏约束。
 - `tts_omni_stream()` 接入新契约；旧整 WAV `omni_tts_payload()` / `tts()` 仅为 legacy/RB/TACT 复现兼容保持原样，**不把它们称为已修复的可靠逐字 TTS**。展示页应通过新版流式 Actor 使用本修复。
 
 启动预热与 `scripts/check_verbatim_tts.py` 同时核对真正合成音频的 ASR 回读；浏览器检查另保存它收到的逐 utterance PCM，供整段多句回读，避免只看页面文本就宣布语音通过。它仍不是每个线上回答的声学证明：专名、数字读法、韵律和设备听感要单独评估；ASR canary 是窄范围护栏，不能当成通用音质分数。
+
+v2 预热先合成普通句，再合成带 CR/LF/TAB 的疑问句。`scripts/check_tts_grammar.py --compile-only --output NEW.json` 在 Omni 环境使用实际 xgrammar 做完整字符串匹配、前缀不完成、额外字符拒绝及配置解析检查；去掉 `--compile-only` 在 backend 环境做真实合成和“正常→异常请求→正常”检查。默认部署下，旧换行 choice、损坏 grammar、非法 regex 实测均400，后续正常合成/模型健康检查全部通过；浏览器长回答期间附和/停止通过。收据在 `exp/web_demo/tts_grammar_v2/`。
+
+声学边界诚实保留：两次极端前置空白加英文问候的回读出现额外音节/词，完整文本证明仍通过、服务未崩溃；整体 `live*.json` 保持失败，`live_complete.json` 单列故障隔离与传输通过。尚未用人工听检区分 Talker 发音与 ASR 误识；本次只验收崩溃修复，不宣称声学逐字零误差。
 
 ## 9. 输入准入与停止/回答分离（guarded-turns-v1，已实现）
 

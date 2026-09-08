@@ -18,6 +18,10 @@ connectors:
 
 stages:
   - stage_id: 0
+    # The core retains one grammar backend for its lifetime. Reject unsupported
+    # requests during validation; auto fallback can disagree with that backend.
+    structured_outputs_config:
+      backend: xgrammar
     max_num_batched_tokens: 8192
     max_model_len: 4096
     max_num_seqs: 4

@@ -28,7 +28,7 @@ async def main():
                         help="Also read back completed PCM received by our browser smoke")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
-    receipt = {"version": "verbatim-choice-v1", "physical_listening": False,
+    receipt = {"version": module.VERBATIM_TTS_CONTRACT, "physical_listening": False,
                "formal_benchmark": False, "cases": [], "browser_readback": [], "pass": False}
     try:
         for index, expected in enumerate(CASES):

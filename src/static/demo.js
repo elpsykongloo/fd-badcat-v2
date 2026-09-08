@@ -151,7 +151,7 @@ function control(s, msg) {
         + (d.speculative_response ? "已启用完整投机，确认前不播；" : "投机关闭；")
         + (d.cancellable_response ? "播放开始前续说可撤销旧回答；" : "")
         + (d.guarded_turns ? "输入准入、回声参考与停止/回答分离已启用；" : "")
-        + (d.tts_contract === "verbatim-choice-v1" ? "TTS 原文约束与校验已启用。" : "")
+        + (["verbatim-choice-v1", "verbatim-grammar-v2"].includes(d.tts_contract) ? "TTS 原文约束与校验已启用。" : "")
       : "HumDial 配置：保留比赛短答提示词和轮次策略。";
     $("trace-status").textContent = s.telemetry.enabled ? "逐轮记录已启用 · demo-trace-v1" : "旧后端：逐轮记录未启用";
     if (d.case_capture) $("trace-status").textContent += " · 调用音频、上下文及结果将归档为本机候选案例（容量有限，不自动认作标准答案）";
