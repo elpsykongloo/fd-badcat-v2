@@ -183,3 +183,26 @@ async def test_replay_rejects_escape_and_remote_audio(tmp_path):
     bad["messages"][1]["content"][1]["audio_url"]["url"] = "http://private-network/secret"
     with pytest.raises(ValueError):
         pack_audio(bad)
+
+
+@pytest.mark.parametrize("current", [False, True])
+async def test_route_replay_versions_keep_saved_baseline_and_strip_current_reference(tmp_path, monkeypatch, current):
+    from types import SimpleNamespace
+    import stream_transport
+    _, path = await saved(tmp_path)
+    cli.label(path, "keep", "Synthetic no-action replay contract")
+    got = []
+    async def fake(url, payload, timeout):
+        got.append(payload)
+        yield '{"transcript":"","label":"keep"}' if current else "keep"
+    monkeypatch.setattr(stream_transport, "text_stream", fake)
+    args = SimpleNamespace(root=tmp_path, current_prompt=current, timeout=1, url="unused")
+    assert await cli.replay(args, cli.cases(tmp_path, reviewed=True)) == 0
+    if current:
+        user = got[0]["messages"][1]["content"]
+        assert "assistant reference" not in user[0]["text"]
+        assert "assistant_reference_text" not in user[0]["text"]
+        assert user[1] == request()["messages"][1]["content"][1]
+        assert got[0]["seed"] == 42
+    else:
+        assert got == [request()]

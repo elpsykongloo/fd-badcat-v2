@@ -11,18 +11,17 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
-from control_labels import decide_control
+from control_labels import decide_control, ROUTE_PROTOCOL, ROUTE_MAX_OUTPUT
 from input_audio import EchoEvidence, INPUT_PROTOCOL
 from messages import build_audio_content
 from speech_reference import SpeechReference
 
 
 def route_messages(prompt, content, *, playing=False, reference=""):
-    # Quote/bound metadata and explicitly delimit the following microphone block.
-    # A bare trailing "assistant reference:" made Omni misattribute even a clear
-    # user question to the assistant, especially when that reference was empty.
-    context = "情境资料：" + json.dumps({"assistant_playing": bool(playing),
-        "assistant_reference_text": reference[:512]}, ensure_ascii=False)
+    # Keep the keyword for existing callers, but never send assistant text: the
+    # transcriber can copy it into fictitious microphone speech. Acoustic
+    # reference filtering and playback-aligned diagnostic snapshots are intact.
+    context = "情境资料：" + json.dumps({"assistant_playing": bool(playing)}, ensure_ascii=False)
     context += "\n接下来的音频块是本次待判断的麦克风采样，请分类。"
     return [{"role": "system", "content": prompt},
             {"role": "user", "content": [{"type": "text", "text": context}, content]}]
@@ -209,7 +208,8 @@ class GuardedTurns:
             "reference_chars": len(span.reference_text), "reference_played_samples": span.reference_played})
         reference_context = {"reference_kind": span.reference_kind,
             "reference_utterance_id": span.reference_sid,
-            "reference_played_samples": span.reference_played}
+            "reference_played_samples": span.reference_played,
+            "route_protocol": ROUTE_PROTOCOL, "reference_sent_to_model": False}
 
         async def classify(kind, request):
             async def call(msgs):
@@ -221,7 +221,7 @@ class GuardedTurns:
                                       **reference_context})) as source:
                     async for part in source:
                         parts.append(part)
-                        if sum(map(len, parts)) > 1024:
+                        if sum(map(len, parts)) > ROUTE_MAX_OUTPUT:
                             raise ValueError("Oversized input decision")
                 return "".join(parts)
             return await decide_control(call, request, kind,

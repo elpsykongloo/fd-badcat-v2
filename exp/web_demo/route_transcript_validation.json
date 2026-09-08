@@ -1,0 +1,78 @@
+{
+  "version": "transcript-first-v1",
+  "date": "2026-09-08",
+  "implementation": {
+    "normal_route_calls": 1,
+    "order": ["transcript", "label"],
+    "assistant_reference_text_sent": false,
+    "separate_asr_or_voting_added": false,
+    "existing_repair_attempts_max": 1,
+    "total_route_budget_seconds": 2,
+    "fallback": "keep",
+    "existing_actions_speculation_and_acoustic_filter_preserved": true
+  },
+  "validation": {
+    "targeted_pytest_passed": 131,
+    "node_playback_input_telemetry": "PASS",
+    "paired_model_calls": 1190,
+    "input_variants": 595,
+    "request_errors": 0,
+    "repairs": 0,
+    "fallbacks": 0,
+    "humdial_source_clips": 320,
+    "humdial_semantic": {"n": 278, "old_correct": 243, "new_correct": 267, "gain": 25, "loss": 1},
+    "humdial_ambiguous_unscored": 2,
+    "humdial_source_attribution_stress": {"n": 40, "old_keep": 6, "new_keep": 8},
+    "humdial_pause_prefix": {"available_from_40_sources": 34, "ambiguous_unscored": 3, "scored": 31, "old_safe_wait": 5, "new_safe_wait": 19, "new_premature_ready": 12},
+    "saved_route_snapshots": {"n": 41, "human_confirmed": 2, "old_correct": 0, "new_correct": 1, "unlabeled": 39},
+    "synthetic_variants": {"n": 200, "old_correct": 186, "new_correct": 191, "gain": 8, "loss": 3},
+    "nonspeech_context_probes": {"n": 72, "old_keep": 72, "new_keep": 72},
+    "humdial_local_route_p50_ms": {"old": 115.2, "new": 298.85},
+    "shadow_browser": {
+      "echo_only": "PASS",
+      "wait_continue_stop": "PASS",
+      "real_short_question_during_story": "PASS",
+      "page_errors": 0,
+      "physical_acoustic_test": false
+    }
+  },
+  "deployment": {
+    "tmux": "humdial-demo",
+    "launcher_pid": 13543,
+    "omni_pid": 13554,
+    "proxy_pid": 14463,
+    "backend_pid": 14475,
+    "log_directory": "exp/web_demo/20260908T060543Z-13543",
+    "loopback_ports": [10003, 10004, 18000],
+    "shadow_port_18001_stopped": true,
+    "warmup_seconds": 4.225,
+    "warmup_readback_first_attempts_passed": true,
+    "real_short_question_browser_after_restart": "PASS",
+    "long_answer_reference_browser_after_restart": {
+      "result": "PASS",
+      "backchannel_keeps_playing": true,
+      "explicit_stop_cancels": true,
+      "before_text_done": true,
+      "internal_playback_sentence_reference_retained": true,
+      "assistant_reference_text_sent": false,
+      "stopped_ack_samples": 109625,
+      "page_errors": 0
+    },
+    "previous_stack_shutdown_cleanup_warnings": {"semaphores": 2, "shared_memory": 2290},
+    "listeners_and_gpu_clear_before_restart": true
+  },
+  "acceptance": "Net improvement accepted for controlled demo; not zero-regression or general acoustic robustness acceptance.",
+  "unresolved": [
+    "Known real short stop command remains missed.",
+    "One primary semantic regression: an English backchannel was mistranscribed and admitted.",
+    "Twelve of 31 unfinished prefixes still classify ready.",
+    "Third-party source attribution remains weak and is not identifiable from every isolated clip.",
+    "Synthetic variants, context probes and prefixes are correlated, not independent real recordings.",
+    "Added single-call transcription latency is not necessarily hidden by speculation."
+  ],
+  "privacy": {
+    "real_recordings_and_transcripts": "Private ignored case archive only; not distributed.",
+    "humdial": "Uses data provided by the Hum-Dial Challenge for non-commercial research. No audio or transcripts copied to artifacts or redistributed.",
+    "integrity_hash_checks": false
+  }
+}

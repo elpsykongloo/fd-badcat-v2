@@ -42,7 +42,10 @@ class Models:
             if self.blocked == kind:
                 await self.gate.wait()
             if kind in self.labels:
-                yield self.labels[kind]
+                value = self.labels[kind]
+                if kind == "input_route" and value in {"keep", "stop_only", "yield_wait", "yield_ready"}:
+                    value = json.dumps({"transcript": "测试语音", "label": value}, ensure_ascii=False)
+                yield value
             else:
                 self.responses += 1
                 if self.fail_first and self.responses == 1:

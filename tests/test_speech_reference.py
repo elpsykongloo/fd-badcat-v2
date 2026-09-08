@@ -63,7 +63,8 @@ async def test_real_pipeline_reference_available_while_long_text_done_is_backpre
         await pump(e, lambda: e._guard_input.decided)
         msg = [request for kind, request in m.calls if kind == "input_route"][-1]
         context = msg[1]["content"][0]["text"].split("\n")[0].removeprefix("情境资料：")
-        assert json.loads(context)["assistant_reference_text"] == "正在播放的开场句。"
+        assert json.loads(context) == {"assistant_playing": True}
+        assert e._guard_input.reference_text == "正在播放的开场句。"
         assert e._guard_input.reference_kind == "playback_sentence_window"
         assert e._speech_meta.text == "" and not e._assistants_by_turn
     finally:

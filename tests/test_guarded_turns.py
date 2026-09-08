@@ -333,8 +333,8 @@ def test_echo_evidence_rejects_delayed_echo_but_preserves_double_talk():
 
 
 def test_route_protocol_is_exact_and_has_no_implicit_ready():
-    assert parse_label("input_route", "'STOP_ONLY'.") == "stop_only"
-    for value in ["", "probably yield_ready", "keep or yield_ready", None]:
+    assert parse_label("input_route", '{"transcript":"停","label":"stop_only"}') == "stop_only"
+    for value in ["", "keep", "'STOP_ONLY'.", "probably yield_ready", "keep or yield_ready", None]:
         assert parse_label("input_route", value) is None
 
 
@@ -344,6 +344,6 @@ def test_route_metadata_cannot_absorb_following_microphone_block():
         messages = route_messages("route", content, playing=True, reference=reference)
         metadata, delim = messages[1]["content"][0]["text"].split("\n")
         fields = json.loads(metadata.removeprefix("情境资料："))
-        assert fields["assistant_playing"] and fields["assistant_reference_text"] == reference[:512]
+        assert fields == {"assistant_playing": True}
         assert "麦克风采样" in delim
         assert messages[1]["content"][1] is content

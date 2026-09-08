@@ -15,7 +15,7 @@ from uuid import uuid4
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from demo_cases import load_case, restore_request, private_write, json_bytes
-from control_labels import LABELS, parse_label
+from control_labels import LABELS, parse_label, ROUTE_PROTOCOL
 
 
 def case_path(root, case_id):
@@ -83,6 +83,13 @@ async def replay(args, selected):
                 if case["kind"] not in LABELS or case["kind"] not in replacement:
                     raise ValueError("--current-prompt is only for named control calls")
                 payload["messages"][0]["content"] = replacement[case["kind"]]
+                if case["kind"] == "input_route":
+                    from guarded_turns import route_messages
+                    audio = [c for c in payload["messages"][1]["content"] if c.get("type") != "text"]
+                    if len(audio) != 1:
+                        raise ValueError("Expected exactly one captured routing audio block")
+                    payload["messages"] = route_messages(replacement["input_route"], audio[0],
+                        playing=case["context"].get("playing", False))
             review_path = path / "review.json"
             if review_path.exists():
                 review = json.loads(review_path.read_text())
@@ -116,7 +123,9 @@ async def replay(args, selected):
                 raw = await asyncio.wait_for(text_call(), args.timeout)
                 row["observed"] = raw
                 if "expected" in row:
-                    row["pass"] = parse_label(case["kind"], raw) == row["expected"]
+                    row["pass"] = parse_label(case["kind"], raw, legacy_route=(
+                        not replacement and case["kind"] == "input_route"
+                        and case["context"].get("route_protocol") != ROUTE_PROTOCOL)) == row["expected"]
         except Exception as exc:
             row.update(error_type=type(exc).__name__)
             row["pass"] = False

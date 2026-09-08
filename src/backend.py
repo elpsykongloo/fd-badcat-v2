@@ -452,7 +452,9 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
             arch == "actor" and (engine_cfg or {}).get("phase", "a") == "a"
             and (engine_cfg or {}).get("stream_response"))}
         if info["streaming"] and (engine_cfg or {}).get("guarded_turns"):
-            info.update(input_protocol="pcm16.ref.v1", guarded_turns=True)
+            from control_labels import ROUTE_PROTOCOL
+            info.update(input_protocol="pcm16.ref.v1", guarded_turns=True,
+                        route_protocol=ROUTE_PROTOCOL, route_reference_text=False)
         archive = getattr(app.state, "demo_cases", None)
         if archive is not None:
             info["case_capture"] = archive.stats()

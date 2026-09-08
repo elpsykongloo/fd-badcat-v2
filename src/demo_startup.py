@@ -22,7 +22,7 @@ async def warmup(prompts):
     from silero_vad import load_silero_vad, VADIterator
     import module
     from messages import build_audio_content
-    from control_labels import parse_label
+    from control_labels import parse_label, ROUTE_PROTOCOL
     from guarded_turns import route_messages
 
     started = time.perf_counter()
@@ -86,6 +86,7 @@ async def warmup(prompts):
               "asr_provider": module.ASR_PROVIDER, "transcript": transcript,
               "bilingual_transcript": checks[0]["recognized"], "tts_chunks": total_chunks,
               "tts_contract": "verbatim-choice-v1", "tts_readback_checks": checks,
+              "route_protocol": ROUTE_PROTOCOL if prompts.get("input_route") else None,
               "elapsed_s": round(time.perf_counter() - started, 3)}
     print(json.dumps(result, ensure_ascii=False), flush=True)
     return result

@@ -98,7 +98,10 @@ def test_guard_requires_negotiated_reference_protocol(protocol, guard, monkeypat
     monkeypatch.chdir(tmp_path)
     monkeypatch.setattr(engine, "ActorEngine", Engine)
     with TestClient(create_app({}, {}, engine_cfg={"stream_response": True, "guarded_turns": True})) as client:
-        assert client.get("/api/demo/info").json()["input_protocol"] == "pcm16.ref.v1"
+        info = client.get("/api/demo/info").json()
+        assert info["input_protocol"] == "pcm16.ref.v1"
+        assert info["route_protocol"] == "transcript-first-v1"
+        assert info["route_reference_text"] is False
         with client.websocket_connect("/realtime", headers={"origin": "http://testserver"}) as ws:
             ws.send_json({"data": {"client": "humdial-web", "audio_protocol": "pcm16.v1", "input_protocol": protocol}})
             assert ws.receive_json()["data"]["guarded_turns"] is guard

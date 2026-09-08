@@ -29,6 +29,8 @@ async def make_input(output):
 
 
 async def check(url, output):
+    sys.path.insert(0, str(ROOT / "src"))
+    from control_labels import parse_label
     from playwright.async_api import async_playwright
     from check_guarded_interactions import INIT, feed, started, cancelled
     if (output / "receipt.json").exists():
@@ -71,13 +73,13 @@ async def check(url, output):
                             and case["context"].get("playing")):
                         metadata = json.loads(case["request"]["messages"][1]["content"][0]["text"].split("\n")[0].removeprefix("情境资料："))
                         cases.append({"case_id": case["case_id"], "input_id": case["context"]["input_id"],
-                            "reference": metadata["assistant_reference_text"],
+                            "reference_sent": "assistant_reference_text" in metadata,
                             "source": case["context"].get("reference_kind"),
-                            "outcome": case["outcome"]["text"]})
+                            "outcome": parse_label("input_route", case["outcome"]["text"])})
                 dispatch = [r for r in rows if r["event"] == "input_dispatch" and r["data"]["playing"]]
                 assert dispatch and all(r["data"]["reference_chars"] > 0 for r in dispatch)
                 assert not any(r["event"] == "speech_text_done" and r["server_ms"] < dispatch[0]["server_ms"] for r in rows)
-                assert len(cases) >= 2 and all(c["reference"] and c["source"] == "playback_sentence_window" for c in cases)
+                assert len(cases) >= 2 and all(not c["reference_sent"] and c["source"] == "playback_sentence_window" for c in cases)
                 assert "keep" in {c["outcome"] for c in cases} and "stop_only" in {c["outcome"] for c in cases}
                 assert not errors and not any(r["event"] == "engine_error" for r in rows)
                 report.update(session_id=session, input_route_cases=cases, text_done_pending_at_barge_in=True,
