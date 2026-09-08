@@ -52,7 +52,7 @@ async def main():
                                      reference="你好，我可以为你介绍语音助手。")
             interrupt_messages = [{"role": "system", "content": prompts["interrupt"]},
                                   {"role": "user", "content": [content]}]
-            route = parse_label("input_route", "".join([p async for p in module.llm_qwen3o_stream(request)]))
+            route = parse_label("input_route", "".join([p async for p in module.llm_qwen3o_stream(request, route=True)]))
             interrupt = parse_label("interrupt", await asyncio.to_thread(module.llm_qwen3o_strict, interrupt_messages))
             row = {"text": text, "expected_route": expected_route, "route": route,
                    "expected_interrupt": expected_interrupt, "interrupt": interrupt,

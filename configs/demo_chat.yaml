@@ -8,6 +8,9 @@ engine:
   cancellable_response: true
   guarded_turns: true
   input_decision_timeout_s: 2
+  # Retain actual pre-trigger audio; does not wait another 160ms to dispatch.
+  # VAD threshold/end silence stay at 0.5/100ms after paired tuning.
+  input_preroll_ms: 320
   max_input_seconds: 20
   # Private, bounded actual-call cases; observation is NOT a human gold label.
   case_capture: true

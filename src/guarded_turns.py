@@ -17,6 +17,15 @@ from messages import build_audio_content
 from speech_reference import SpeechReference
 
 
+def input_timing(config=None):
+    """Only pre-roll is tuned; keep the evaluated Silero threshold/end window."""
+    config = config or {}
+    preroll = config.get("input_preroll_ms", 160)
+    if type(preroll) is not int or not 0 <= preroll <= 960 or preroll % 16:
+        raise ValueError("input_preroll_ms must be a multiple of 16 in [0, 960]")
+    return {"vad_threshold": 0.5, "vad_silence_ms": 100, "preroll_ms": preroll}
+
+
 def route_messages(prompt, content, *, playing=False, reference=""):
     # Keep the keyword for existing callers, but never send assistant text: the
     # transcriber can copy it into fictitious microphone speech. Acoustic
@@ -50,6 +59,7 @@ class InputSpan:
     reference_kind: str = "unavailable"
     reference_played: int = 0
     end_index: int = None
+    preroll_samples: int = 0
 
 
 @dataclass
@@ -69,7 +79,8 @@ class GuardedTurns:
         self._input_serial = 0
         self._guard_tasks = []
         self._guard_input = None
-        self._guard_preroll = deque(maxlen=10)
+        self.input_timing = input_timing(self.engine_cfg if self.GUARDED_TURNS else {})
+        self._guard_preroll = deque(maxlen=self.input_timing["preroll_ms"] // 16)
         self._guard_wait_audio = []
         self._guard_wait_reason = None
         self._guard_outputs = {}
@@ -143,7 +154,8 @@ class GuardedTurns:
                 mode = "playing" if self._speech is not None and self._speech_started else (
                     "preplay" if held is not None else "listening")
                 span = InputSpan(self._input_serial, t, mode,
-                                 list(self._guard_preroll) + [frame.copy()], held_candidate=held)
+                                 list(self._guard_preroll) + [frame.copy()], held_candidate=held,
+                                 preroll_samples=sum(map(len, self._guard_preroll)))
                 self._guard_capture_reference(span)
                 self._guard_input = span
                 await self._guard_hold(held, True)
@@ -209,13 +221,15 @@ class GuardedTurns:
         reference_context = {"reference_kind": span.reference_kind,
             "reference_utterance_id": span.reference_sid,
             "reference_played_samples": span.reference_played,
-            "route_protocol": ROUTE_PROTOCOL, "reference_sent_to_model": False}
+            "route_protocol": ROUTE_PROTOCOL, "reference_sent_to_model": False,
+            "input_timing": self.input_timing, "preroll_samples": span.preroll_samples,
+            "route_penalties": {"presence": 0.0, "frequency": 0.0}}
 
         async def classify(kind, request):
             async def call(msgs):
                 parts = []
                 request_kind = "interrupt" if playing else "spec_judge"
-                async with aclosing(self._capacity_stream(request_kind, self.text_stream_fn, msgs,
+                async with aclosing(self._capacity_stream(request_kind, self.text_stream_fn, msgs, route=True,
                         case_context={"input_id": span.sid, "revision": revision, "closed": closed,
                                       "input_generation": gen, "playing": playing,
                                       **reference_context})) as source:

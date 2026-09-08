@@ -218,7 +218,9 @@ class ActorEngine(GuardedTurns, CandidateTurns):
             self.vad_iterator = vad_iterator
         else:
             self.vad_model = vad_model if vad_model is not None else load_silero_vad()
-            self.vad_iterator = VADIterator(self.vad_model, sampling_rate=SAMPLE_RATE)
+            self.vad_iterator = VADIterator(self.vad_model, sampling_rate=SAMPLE_RATE,
+                threshold=self.input_timing["vad_threshold"],
+                min_silence_duration_ms=self.input_timing["vad_silence_ms"])
         self._vad_buf = np.zeros(0, dtype=np.float32)
 
         # ---- conversation state (legacy names kept for trace/diff parity) ----
@@ -382,12 +384,17 @@ class ActorEngine(GuardedTurns, CandidateTurns):
         task.add_done_callback(_finished)
         return task
 
-    async def _capacity_stream(self, kind, stream_fn, arg, *, case_context=None):
+    async def _capacity_stream(self, kind, stream_fn, arg, *, case_context=None, route=False):
         started = time.perf_counter()
         async with self.request_capacity.slot(self._request_class(kind)):
             self._observe("capacity_acquired", {"kind": kind, "wait_ms":
                           round((time.perf_counter() - started) * 1000, 3)})
             recording = None
+            stream_options = {}
+            if route:
+                import module as adapters
+                if stream_fn is adapters.llm_qwen3o_stream:
+                    stream_options["route"] = True
             if self.demo_cases is not None:
                 try:
                     import module as adapters
@@ -396,7 +403,7 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                     if stream_fn in (adapters.llm_qwen3o_stream, adapters.tts_omni_stream):
                         is_tts = stream_fn is adapters.tts_omni_stream
                         payload = (adapters.verbatim_tts_payload(arg) if is_tts
-                                   else adapters.qwen_text_payload(arg))
+                                   else adapters.qwen_text_payload(arg, route=route))
                         payload = {**payload, "stream": True}
                         role = "tts" if is_tts else next((name for name, prompt in self.prompts.items()
                             if arg and arg[0].get("content") == prompt), kind.removeprefix("spec_"))
@@ -411,7 +418,7 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                     self._observe("model_case_error", {"error_type": type(exc).__name__})
             status, error = "cancelled", None
             try:
-                async with aclosing(stream_fn(arg)) as source:
+                async with aclosing(stream_fn(arg, **stream_options)) as source:
                     async for item in source:
                         if recording:
                             try:

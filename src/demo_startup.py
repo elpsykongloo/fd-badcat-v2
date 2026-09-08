@@ -15,7 +15,7 @@ def verify_spoken_text(expected, actual):
         raise RuntimeError(f"TTS readback mismatch: expected {expected!r}, recognized {actual!r}")
 
 
-async def warmup(prompts):
+async def warmup(prompts, engine_cfg=None):
     import numpy as np
     import soundfile as sf
     import torch
@@ -23,14 +23,17 @@ async def warmup(prompts):
     import module
     from messages import build_audio_content
     from control_labels import parse_label, ROUTE_PROTOCOL
-    from guarded_turns import route_messages
+    from guarded_turns import input_timing, route_messages
+
+    timing = input_timing(engine_cfg if (engine_cfg or {}).get("guarded_turns") else {})
 
     started = time.perf_counter()
     fixture = Path(__file__).resolve().parents[1] / "exp/streaming_demo/synthetic_question.wav"
 
     def warm_cpu():
         audio, rate = sf.read(fixture, dtype="float32")
-        vad = VADIterator(load_silero_vad(), sampling_rate=16000)
+        vad = VADIterator(load_silero_vad(), sampling_rate=16000,
+            threshold=timing["vad_threshold"], min_silence_duration_ms=timing["vad_silence_ms"])
         vad(torch.zeros(512), return_seconds=True)
         transcript = module.asr(str(fixture))
         if not transcript:
@@ -46,7 +49,7 @@ async def warmup(prompts):
             raise RuntimeError("Control model warmup returned an invalid label")
         if prompts.get("input_route"):
             routed = await asyncio.to_thread(module.llm_qwen3o_strict,
-                route_messages(prompts["input_route"], content))
+                route_messages(prompts["input_route"], content), route=True)
             if parse_label("input_route", routed) != "yield_ready":
                 raise RuntimeError("Input route warmup rejected the clear self-authored question")
         # Exercise the same SSE text and native PCM decoder as the real demo.
@@ -89,6 +92,7 @@ async def warmup(prompts):
               "bilingual_transcript": checks[0]["recognized"], "tts_chunks": total_chunks,
               "tts_contract": module.VERBATIM_TTS_CONTRACT, "tts_readback_checks": checks,
               "route_protocol": ROUTE_PROTOCOL if prompts.get("input_route") else None,
+              "input_timing": timing,
               "elapsed_s": round(time.perf_counter() - started, 3)}
     print(json.dumps(result, ensure_ascii=False), flush=True)
     return result

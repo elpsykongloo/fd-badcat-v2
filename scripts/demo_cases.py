@@ -90,6 +90,11 @@ async def replay(args, selected):
                         raise ValueError("Expected exactly one captured routing audio block")
                     payload["messages"] = route_messages(replacement["input_route"], audio[0],
                         playing=case["context"].get("playing", False))
+                    from module import qwen_text_payload
+                    current = qwen_text_payload(payload["messages"], route=True)
+                    for key in ("presence_penalty", "frequency_penalty"):
+                        payload[key] = current[key]
+                    row["sampling"] = "current_route_penalties; other saved parameters retained"
             review_path = path / "review.json"
             if review_path.exists():
                 review = json.loads(review_path.read_text())
@@ -162,7 +167,8 @@ def main():
     selection.add_argument("--case", dest="case_id")
     selection.add_argument("--reviewed", action="store_true")
     running.add_argument("--url", default="http://127.0.0.1:10004/v1/chat/completions")
-    running.add_argument("--current-prompt", action="store_true")
+    running.add_argument("--current-prompt", action="store_true",
+                         help="Use current control prompt; input_route also uses current route penalties")
     running.add_argument("--timeout", type=float, default=30)
     args = parser.parse_args()
     args.root = args.root.resolve()

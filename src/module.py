@@ -261,8 +261,8 @@ def asr(path):
     return text
 
 
-def qwen_text_payload(messages: list):
-    return {
+def qwen_text_payload(messages: list, *, route=False):
+    payload = {
         "model": QWEN_MODEL,
         "temperature": float(os.getenv("FDBC_QWEN_TEMPERATURE", "0")),
         "top_p": float(os.getenv("FDBC_QWEN_TOP_P", "0.7")),
@@ -274,6 +274,11 @@ def qwen_text_payload(messages: list):
         "modalities": ["text"],
         "messages": messages,
     }
+    if route:
+        # Transcription/control is not creative generation. Keep this override
+        # explicit so response, legacy binary controls and TACT stay unchanged.
+        payload.update(presence_penalty=0.0, frequency_penalty=0.0)
+    return payload
 
 
 def llm_qwen3o(messages: list):
@@ -284,18 +289,18 @@ def llm_qwen3o(messages: list):
         return ""
 
 
-def llm_qwen3o_strict(messages: list):
+def llm_qwen3o_strict(messages: list, *, route=False):
     response = _http().post(
         QWEN_URL, headers={"Content-Type": "application/json"},
-        data=json.dumps(qwen_text_payload(messages)),
+        data=json.dumps(qwen_text_payload(messages, route=route)),
         timeout=int(os.getenv("FDBC_QWEN_TIMEOUT", "300")))
     response.raise_for_status()
     return response.json()["choices"][0]["message"]["content"]
 
 
-def llm_qwen3o_stream(messages):
+def llm_qwen3o_stream(messages, *, route=False):
     from stream_transport import text_stream
-    return text_stream(QWEN_URL, qwen_text_payload(messages),
+    return text_stream(QWEN_URL, qwen_text_payload(messages, route=route),
                        int(os.getenv("FDBC_QWEN_TIMEOUT", "300")))
 
 

@@ -1,0 +1,450 @@
+{
+  "case": "wait_continue_stop",
+  "pass": true,
+  "session_id": "web-demo-414de7fe4aa0408a870f7a0f234873f2",
+  "reference_frames": 188,
+  "echo_rejected_windows": 1,
+  "events": [
+    {
+      "event": "demo_ready",
+      "data": {
+        "session_id": "web-demo-414de7fe4aa0408a870f7a0f234873f2",
+        "protocol": "pcm16.v1",
+        "observability": "demo-trace-v1",
+        "tts_contract": "verbatim-grammar-v2",
+        "case_capture": true,
+        "input_protocol": "pcm16.ref.v1",
+        "guarded_turns": true,
+        "speculative_response": true,
+        "cancellable_response": true,
+        "profile": "chat-demo-v1"
+      }
+    },
+    {
+      "event": "speech_start",
+      "data": {
+        "utterance_id": 1,
+        "turn": 0,
+        "protocol": "pcm16.v1",
+        "buffer_ms": 600,
+        "candidate_id": 1,
+        "timestamp": 3.459
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.459,
+        "text": "你好！今天"
+      }
+    },
+    {
+      "event": "speech_sentence",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.459,
+        "text": "你好！",
+        "start_sample": 0
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.459,
+        "text": "天气不错，适合出去散步。不过最好还是看看当地的天气预报，确保没有下雨或者太热哦。"
+      }
+    },
+    {
+      "event": "speech_text_done",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.465,
+        "text": "你好！今天天气不错，适合出去散步。不过最好还是看看当地的天气预报，确保没有下雨或者太热哦。",
+        "infer": 0.336,
+        "timed_out": false
+      }
+    },
+    {
+      "event": "speech_first_audio",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.54,
+        "sample_rate": 24000,
+        "turn": 0
+      }
+    },
+    {
+      "event": "speech_playback_started",
+      "data": {
+        "utterance_id": 1,
+        "turn": 0,
+        "candidate_id": 1
+      }
+    },
+    {
+      "event": "speech_sentence",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.715,
+        "text": "今天天气不错，适合出去散步。",
+        "start_sample": 16170
+      }
+    },
+    {
+      "event": "asr_done",
+      "data": {
+        "timestamp": 3.775,
+        "turn": 0,
+        "state": "SPEAK",
+        "content": "你好，今天适合出去散步吗？"
+      }
+    },
+    {
+      "event": "speech_cancelled",
+      "data": {
+        "utterance_id": 1,
+        "reason": "accepted_interrupt",
+        "timestamp": 5.587
+      }
+    },
+    {
+      "event": "input_waiting",
+      "data": {
+        "reason": "awaiting_user",
+        "input_id": 2
+      }
+    },
+    {
+      "event": "speech_start",
+      "data": {
+        "utterance_id": 2,
+        "turn": 1,
+        "protocol": "pcm16.v1",
+        "buffer_ms": 600,
+        "candidate_id": 2,
+        "timestamp": 10.951
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 2,
+        "timestamp": 10.951,
+        "text": "抱歉，我刚才没听清你说的。你"
+      }
+    },
+    {
+      "event": "speech_sentence",
+      "data": {
+        "utterance_id": 2,
+        "timestamp": 10.951,
+        "text": "抱歉，我刚才没听清你说的。",
+        "start_sample": 0
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 2,
+        "timestamp": 10.951,
+        "text": "刚才是不是想问今天适合"
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 2,
+        "timestamp": 10.952,
+        "text": "出去"
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 2,
+        "timestamp": 10.961,
+        "text": "散步"
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 2,
+        "timestamp": 10.972,
+        "text": "吗"
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 2,
+        "timestamp": 10.985,
+        "text": "？"
+      }
+    },
+    {
+      "event": "speech_text_done",
+      "data": {
+        "utterance_id": 2,
+        "timestamp": 11,
+        "text": "抱歉，我刚才没听清你说的。你刚才是不是想问今天适合出去散步吗？",
+        "infer": 0.306,
+        "timed_out": false
+      }
+    },
+    {
+      "event": "speech_first_audio",
+      "data": {
+        "utterance_id": 2,
+        "timestamp": 11.124,
+        "sample_rate": 24000,
+        "turn": 1
+      }
+    },
+    {
+      "event": "speech_playback_started",
+      "data": {
+        "utterance_id": 2,
+        "turn": 1,
+        "candidate_id": 2
+      }
+    },
+    {
+      "event": "asr_done",
+      "data": {
+        "timestamp": 11.38,
+        "turn": 1,
+        "state": "SPEAK",
+        "content": "等一下，我还没说完，请用普通话说。"
+      }
+    },
+    {
+      "event": "input_waiting",
+      "data": {
+        "reason": "stop_only",
+        "input_id": 4
+      }
+    },
+    {
+      "event": "speech_cancelled",
+      "data": {
+        "utterance_id": 2,
+        "reason": "accepted_interrupt",
+        "timestamp": 12.392
+      }
+    }
+  ],
+  "stopped_acks": [
+    {
+      "event": "playback_stopped",
+      "data": {
+        "utterance_id": 1,
+        "played_samples": 47259
+      }
+    },
+    {
+      "event": "playback_stopped",
+      "data": {
+        "utterance_id": 2,
+        "played_samples": 28521
+      }
+    }
+  ],
+  "input_decisions": [
+    {
+      "event": "input_decision",
+      "server_ms": 2730.915,
+      "data": {
+        "input_id": 1,
+        "revision": 2,
+        "route": "yield_ready",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "```json\n{\n  \"transcript\": \"你好，今天适合出去散步。\",\n  \"label\": \"yield_ready\"\n}\n```"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false,
+            "protocol": "transcript-first-v1",
+            "transcript": "你好，今天适合出去散步。"
+          },
+          "playing": false,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 0,
+      "turn": 0,
+      "state": "LISTEN",
+      "t_audio": 2.72,
+      "queue_depth": 0
+    },
+    {
+      "event": "input_decision",
+      "server_ms": 3123.129,
+      "data": {
+        "input_id": 1,
+        "revision": 3,
+        "route": "yield_ready",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "```json\n{\n  \"transcript\": \"你好，今天适合出去散步吗？\",\n  \"label\": \"yield_ready\"\n}\n```"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false,
+            "protocol": "transcript-first-v1",
+            "transcript": "你好，今天适合出去散步吗？"
+          },
+          "playing": false,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 1,
+      "turn": 0,
+      "state": "LISTEN",
+      "t_audio": 3.12,
+      "queue_depth": 0
+    },
+    {
+      "event": "input_decision",
+      "server_ms": 5587.402,
+      "data": {
+        "input_id": 2,
+        "revision": 0,
+        "route": "yield_wait",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "{\n  \"transcript\": \"等一下，我还没说完\",\n  \"label\": \"yield_wait\"\n}"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false,
+            "protocol": "transcript-first-v1",
+            "transcript": "等一下，我还没说完"
+          },
+          "playing": true,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 1,
+      "turn": 0,
+      "state": "SPEAK",
+      "t_audio": 5.568,
+      "queue_depth": 0
+    },
+    {
+      "event": "input_decision",
+      "server_ms": 5886.074,
+      "data": {
+        "input_id": 2,
+        "revision": 1,
+        "route": "yield_wait",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "```json\n{\n  \"transcript\": \"等一下，我还没说完\",\n  \"label\": \"yield_wait\"\n}\n```"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false,
+            "protocol": "transcript-first-v1",
+            "transcript": "等一下，我还没说完"
+          },
+          "playing": false,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 2,
+      "turn": 1,
+      "state": "LISTEN",
+      "t_audio": 5.872,
+      "queue_depth": 0
+    },
+    {
+      "event": "input_decision",
+      "server_ms": 10574.774,
+      "data": {
+        "input_id": 3,
+        "revision": 1,
+        "route": "yield_ready",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "{\"transcript\": \"请用普通话说\", \"label\": \"yield_ready\"}"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false,
+            "protocol": "transcript-first-v1",
+            "transcript": "请用普通话说"
+          },
+          "playing": false,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 2,
+      "turn": 1,
+      "state": "LISTEN",
+      "t_audio": 10.56,
+      "queue_depth": 0
+    },
+    {
+      "event": "input_decision",
+      "server_ms": 12392.182,
+      "data": {
+        "input_id": 4,
+        "revision": 1,
+        "route": "stop_only",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "```json\n{\n  \"transcript\": \"别说了\",\n  \"label\": \"stop_only\"\n}\n```"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false,
+            "protocol": "transcript-first-v1",
+            "transcript": "别说了"
+          },
+          "playing": true,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 3,
+      "turn": 1,
+      "state": "SPEAK",
+      "t_audio": 12.384,
+      "queue_depth": 0
+    }
+  ],
+  "page_errors": []
+}

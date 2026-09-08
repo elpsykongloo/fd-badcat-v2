@@ -426,7 +426,7 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
     async def lifespan(app):
         if (engine_cfg or {}).get("warmup"):
             from demo_startup import warmup
-            await warmup(prompts)
+            await warmup(prompts, engine_cfg)
         app.state.demo_cases = None
         if (engine_cfg or {}).get("case_capture"):
             from demo_cases import CaseArchive
@@ -453,8 +453,11 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
             and (engine_cfg or {}).get("stream_response"))}
         if info["streaming"] and (engine_cfg or {}).get("guarded_turns"):
             from control_labels import ROUTE_PROTOCOL
+            from guarded_turns import input_timing
             info.update(input_protocol="pcm16.ref.v1", guarded_turns=True,
-                        route_protocol=ROUTE_PROTOCOL, route_reference_text=False)
+                        route_protocol=ROUTE_PROTOCOL, route_reference_text=False,
+                        input_timing=input_timing(engine_cfg),
+                        route_penalties={"presence": 0.0, "frequency": 0.0})
         archive = getattr(app.state, "demo_cases", None)
         if archive is not None:
             info["case_capture"] = archive.stats()

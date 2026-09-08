@@ -127,12 +127,14 @@ def test_warmup_blocks_readiness_and_failure_is_not_ready(monkeypatch):
     from fastapi.testclient import TestClient
     import demo_startup
     calls = []
-    async def warm(prompts): calls.append(prompts)
+    async def warm(prompts, engine_cfg):
+        assert engine_cfg["warmup"]
+        calls.append(prompts)
     monkeypatch.setattr(demo_startup, "warmup", warm)
     with TestClient(create_app({"response": "R"}, {}, engine_cfg={"warmup": True})) as client:
         assert calls == [{"response": "R"}]
         assert client.get("/api/demo/info").status_code == 200
-    async def fail(_): raise RuntimeError("warmup failed")
+    async def fail(_, engine_cfg): raise RuntimeError("warmup failed")
     monkeypatch.setattr(demo_startup, "warmup", fail)
     with pytest.raises(RuntimeError, match="warmup failed"):
         with TestClient(create_app({}, {}, engine_cfg={"warmup": True})):
