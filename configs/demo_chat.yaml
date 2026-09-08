@@ -9,6 +9,11 @@ engine:
   guarded_turns: true
   input_decision_timeout_s: 2
   max_input_seconds: 20
+  # Private, bounded actual-call cases; observation is NOT a human gold label.
+  case_capture: true
+  case_capture_dir: exp/demo_cases
+  case_capture_max_bytes: 536870912
+  case_capture_max_cases: 2000
 asr:
   backend: sensevoice
   provider: cpu

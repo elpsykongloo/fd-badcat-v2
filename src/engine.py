@@ -260,6 +260,8 @@ class ActorEngine(GuardedTurns, CandidateTurns):
         self.trace_path = Path(trace_path) if trace_path else None
         self._trace_fh = None
         self.demo_trace = None  # attached only by the browser-demo handshake
+        self.demo_cases = None
+        self.demo_session_id = None
         self.frame_lags = []              # perf-lag reader->engine per frame (freeze metric)
         self.max_queue_depth = 0
         self._inflight = 0                # realtime worker tasks not yet reported back
@@ -380,14 +382,55 @@ class ActorEngine(GuardedTurns, CandidateTurns):
         task.add_done_callback(_finished)
         return task
 
-    async def _capacity_stream(self, kind, stream_fn, arg):
+    async def _capacity_stream(self, kind, stream_fn, arg, *, case_context=None):
         started = time.perf_counter()
         async with self.request_capacity.slot(self._request_class(kind)):
             self._observe("capacity_acquired", {"kind": kind, "wait_ms":
                           round((time.perf_counter() - started) * 1000, 3)})
-            async with aclosing(stream_fn(arg)) as source:
-                async for item in source:
-                    yield item
+            recording = None
+            if self.demo_cases is not None:
+                try:
+                    import module as adapters
+                    # Only these adapters have the saved payload contract. Never
+                    # misdescribe an injected/custom model's request as Omni's.
+                    if stream_fn in (adapters.llm_qwen3o_stream, adapters.tts_omni_stream):
+                        is_tts = stream_fn is adapters.tts_omni_stream
+                        payload = (adapters.verbatim_tts_payload(arg) if is_tts
+                                   else adapters.qwen_text_payload(arg))
+                        payload = {**payload, "stream": True}
+                        role = "tts" if is_tts else next((name for name, prompt in self.prompts.items()
+                            if arg and arg[0].get("content") == prompt), kind.removeprefix("spec_"))
+                        context = {"session_id": self.demo_session_id, "generation": self.session_gen,
+                            "epoch": self.seg_epoch, "turn": self.TURN_IDX, "capacity_kind": kind,
+                            "state_at_call": self.STATE, **(case_context or {})}
+                        recording = self.demo_cases.begin(role, payload, context, arg if is_tts else None)
+                        if recording:
+                            self._observe("model_case_started", {"case_id": recording.case["case_id"],
+                                                                  "kind": role, **context})
+                except Exception as exc:
+                    self._observe("model_case_error", {"error_type": type(exc).__name__})
+            status, error = "cancelled", None
+            try:
+                async with aclosing(stream_fn(arg)) as source:
+                    async for item in source:
+                        if recording:
+                            try:
+                                recording.feed(item)
+                            except Exception:
+                                recording.truncated = True
+                        yield item
+                status = "completed"
+            except Exception as exc:
+                status, error = "error", type(exc).__name__
+                raise
+            finally:
+                if recording:
+                    try:
+                        queued = recording.finish(status, error)
+                        self._observe("model_case_queued", {"case_id": recording.case["case_id"],
+                            "status": status, "queued": queued})
+                    except Exception as exc:
+                        self._observe("model_case_error", {"error_type": type(exc).__name__})
 
     def _response_text_stream(self, messages):
         return self._capacity_stream("response", self.text_stream_fn, messages)

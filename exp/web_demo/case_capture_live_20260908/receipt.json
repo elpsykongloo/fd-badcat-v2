@@ -1,0 +1,285 @@
+{
+  "utc": "2026-09-08T04:15:22.021796+00:00",
+  "physical_listening": false,
+  "formal_benchmark": false,
+  "demo_version": "web-demo-v1",
+  "sources": [
+    "src/static/demo-telemetry.js",
+    "src/static/demo.css",
+    "src/static/demo.js",
+    "src/static/favicon.svg",
+    "src/static/index.html",
+    "src/static/mic-worklet.js",
+    "src/static/speech-player.js"
+  ],
+  "browser": "151.0.7922.34",
+  "result": {
+    "kind": "live ActorEngine + Omni, Chromium virtual microphone/speaker; not physical listening",
+    "input": "/root/autodl-tmp/fd-badcat/exp/streaming_demo/synthetic_question.wav",
+    "turns": 1,
+    "speculation_disabled_by_client": false,
+    "received_audio_files": [
+      {
+        "utterance_id": 1,
+        "path": "exp/web_demo/case_capture_live_20260908/received-utterance-1.wav",
+        "kind": "received PCM, not physical speaker recording"
+      }
+    ],
+    "binary_packets": 204,
+    "last_playback_ack": {
+      "utterance_id": 1,
+      "played_samples": 191400,
+      "started": true,
+      "ended": true,
+      "underruns": 0
+    },
+    "completed_playbacks": [
+      {
+        "utterance_id": 1,
+        "played_samples": 191400,
+        "started": true,
+        "ended": true,
+        "underruns": 0
+      }
+    ],
+    "ui_snapshot": {
+      "first_text": "1 ms",
+      "first_audio": "5 ms",
+      "buffer": "0 ms",
+      "session_id": "web-demo-e9f5f03450494e0ca679baec7cf1c321",
+      "audio_format": "48000 Hz 设备 → 16 kHz 上传 / 256 样本",
+      "diagnostics": {
+        "stage-hold": "640 ms",
+        "stage-decision": "0 ms",
+        "stage-generation": "0 ms",
+        "stage-total": "641 ms",
+        "socket-rtt": "2 ms",
+        "trace-status": "逐轮记录已启用 · demo-trace-v1 · 调用音频、上下文及结果将归档为本机候选案例（容量有限，不自动认作标准答案）",
+        "speculation-status": "候选已确认 · 预备音频 296.9 ms · 预计算 501.6 ms（与停顿窗重叠）"
+      }
+    },
+    "uploads": {
+      "frames": 795,
+      "max_rms": 0.6505325507774081
+    },
+    "events": [
+      {
+        "event": "demo_ready",
+        "data": {
+          "session_id": "web-demo-e9f5f03450494e0ca679baec7cf1c321",
+          "protocol": "pcm16.v1",
+          "observability": "demo-trace-v1",
+          "tts_contract": "verbatim-choice-v1",
+          "case_capture": true,
+          "input_protocol": "pcm16.ref.v1",
+          "guarded_turns": true,
+          "speculative_response": true,
+          "cancellable_response": true,
+          "profile": "chat-demo-v1"
+        }
+      },
+      {
+        "event": "demo_pong",
+        "data": {
+          "seq": 1
+        }
+      },
+      {
+        "event": "vad_start",
+        "data": {
+          "turn": 0,
+          "state": "LISTEN",
+          "input_id": 1,
+          "timestamp": 0.96
+        }
+      },
+      {
+        "event": "vad_done",
+        "data": {
+          "turn": 0,
+          "state": "LISTEN",
+          "input_id": 1,
+          "timestamp": 1.67
+        }
+      },
+      {
+        "event": "vad_start",
+        "data": {
+          "turn": 0,
+          "state": "LISTEN",
+          "input_id": 1,
+          "timestamp": 1.76
+        }
+      },
+      {
+        "event": "vad_done",
+        "data": {
+          "turn": 0,
+          "state": "LISTEN",
+          "input_id": 1,
+          "timestamp": 3.62
+        }
+      },
+      {
+        "event": "vad_640_done",
+        "data": {
+          "turn": 0,
+          "state": "LISTEN",
+          "timestamp": 4.26
+        }
+      },
+      {
+        "event": "candidate_confirmed",
+        "data": {
+          "candidate_id": 1,
+          "turn": 0,
+          "stage": "response",
+          "speculative": true,
+          "prepared_audio_samples": 7125,
+          "prepared_audio_ms": 296.9,
+          "precompute_ms": 501.6
+        }
+      },
+      {
+        "event": "speech_start",
+        "data": {
+          "utterance_id": 1,
+          "turn": 0,
+          "protocol": "pcm16.v1",
+          "buffer_ms": 600,
+          "candidate_id": 1,
+          "timestamp": 4.26
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.26,
+          "text": "你好！今天"
+        }
+      },
+      {
+        "event": "speech_sentence",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.26,
+          "text": "你好！"
+        }
+      },
+      {
+        "event": "speech_text_delta",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.26,
+          "text": "天气不错，适合出去散步。不过最好还是看看当地的天气预报，确保没有下雨或者太热哦。"
+        }
+      },
+      {
+        "event": "speech_text_done",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.26,
+          "text": "你好！今天天气不错，适合出去散步。不过最好还是看看当地的天气预报，确保没有下雨或者太热哦。",
+          "infer": 0.343,
+          "timed_out": false
+        }
+      },
+      {
+        "event": "speech_first_audio",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.261,
+          "sample_rate": 24000,
+          "turn": 0
+        }
+      },
+      {
+        "event": "demo_latency",
+        "data": {
+          "utterance_id": 1,
+          "hold_ms": 639.9,
+          "decision_ms": 0.2,
+          "generation_ms": 0.4,
+          "vad_to_audio_ms": 640.5
+        }
+      },
+      {
+        "event": "speech_sentence",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 4.292,
+          "text": "今天天气不错，适合出去散步。"
+        }
+      },
+      {
+        "event": "speech_playback_started",
+        "data": {
+          "utterance_id": 1,
+          "turn": 0,
+          "candidate_id": 1
+        }
+      },
+      {
+        "event": "asr_done",
+        "data": {
+          "timestamp": 4.541,
+          "turn": 0,
+          "state": "SPEAK",
+          "content": "你好，今天适合出去散步吗？"
+        }
+      },
+      {
+        "event": "demo_pong",
+        "data": {
+          "seq": 2
+        }
+      },
+      {
+        "event": "speech_sentence",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 6.491,
+          "text": "不过最好还是看看当地的天气预报，确保没有下雨或者太热哦。"
+        }
+      },
+      {
+        "event": "demo_pong",
+        "data": {
+          "seq": 3
+        }
+      },
+      {
+        "event": "speech_audio_end",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 11.754,
+          "samples": 191400,
+          "rate": 24000,
+          "packets": 204,
+          "elapsed": 7.994721321389079
+        }
+      },
+      {
+        "event": "speech_played",
+        "data": {
+          "utterance_id": 1,
+          "timestamp": 12.329,
+          "played_samples": 191400,
+          "underruns": 0
+        }
+      },
+      {
+        "event": "turn_finished",
+        "data": {
+          "turn": 0,
+          "next_turn": 1,
+          "timestamp": 12.329,
+          "reason": "played"
+        }
+      }
+    ],
+    "page_errors": []
+  },
+  "pass": true
+}

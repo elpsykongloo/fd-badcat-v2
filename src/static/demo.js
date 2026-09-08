@@ -154,6 +154,7 @@ function control(s, msg) {
         + (d.tts_contract === "verbatim-choice-v1" ? "TTS 原文约束与校验已启用。" : "")
       : "HumDial 配置：保留比赛短答提示词和轮次策略。";
     $("trace-status").textContent = s.telemetry.enabled ? "逐轮记录已启用 · demo-trace-v1" : "旧后端：逐轮记录未启用";
+    if (d.case_capture) $("trace-status").textContent += " · 调用音频、上下文及结果将归档为本机候选案例（容量有限，不自动认作标准答案）";
     s.accept?.();
     return;
   }

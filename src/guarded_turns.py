@@ -177,7 +177,9 @@ class GuardedTurns:
             async def call(msgs):
                 parts = []
                 request_kind = "interrupt" if playing else "spec_judge"
-                async with aclosing(self._capacity_stream(request_kind, self.text_stream_fn, msgs)) as source:
+                async with aclosing(self._capacity_stream(request_kind, self.text_stream_fn, msgs,
+                        case_context={"input_id": span.sid, "revision": revision, "closed": closed,
+                                      "input_generation": gen, "playing": playing})) as source:
                     async for part in source:
                         parts.append(part)
                         if sum(map(len, parts)) > 1024:

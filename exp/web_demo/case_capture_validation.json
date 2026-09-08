@@ -1,0 +1,76 @@
+{
+  "version": "demo-case-v1",
+  "date_utc": "2026-09-08",
+  "scope": "Actual demo-call capture, human/known-fixture review, serial single-call replay; not a benchmark",
+  "changes": [
+    "Private bounded asynchronous exact-request audio/context and model-output capture",
+    "Completed/cancelled/error status, explicit truncated-output flag, session/turn/input IDs and trace join",
+    "CLI list/label/replay; no inferred gold labels, no overwritten human reviews",
+    "Demo-only opt-in config, visible privacy status, loopback API archive health",
+    "No change to routing prompts, four-state semantics, speculative scheduling or playback rules"
+  ],
+  "tests": {
+    "pytest": {"passed": 64, "elapsed_s": 2.41, "files": ["tests/test_demo_cases.py", "tests/test_web_demo.py", "tests/test_guarded_turns.py", "tests/test_actor_candidate.py"]},
+    "node": "tests/test_stream_demo.cjs PASS",
+    "real_browser": {
+      "receipt": "exp/web_demo/case_capture_live_20260908/receipt.json",
+      "input": "exp/streaming_demo/synthetic_question.wav",
+      "input_source": "self-authored synthetic fixture; not user conversation",
+      "session_id": "web-demo-e9f5f03450494e0ca679baec7cf1c321",
+      "turns": 1,
+      "packets": 204,
+      "played_samples": 191400,
+      "underruns": 0,
+      "page_errors": 0,
+      "engine_errors": 0,
+      "trace_dropped": 0,
+      "automatic_cases": 7,
+      "input_route_calls": 3,
+      "cancelled_route_calls": 1,
+      "response_calls": 1,
+      "tts_calls": 3,
+      "capture_dropped": 0,
+      "capture_error": null,
+      "all_case_ids_join_trace": true,
+      "archived_tts_concatenation_equals_browser_pcm": true,
+      "permissions_private": true,
+      "automatically_assigned_gold_labels": 0
+    },
+    "real_replay": {
+      "case_id": "20260908T041526751190Z-ccf64e7d9800",
+      "label_source": "synthetic_fixture",
+      "expected_source": "Known complete self-authored question, not the observed prediction",
+      "expected": "yield_ready",
+      "observed": "yield_ready",
+      "pass": true,
+      "private_report": "exp/demo_cases/replays/20260908T041640279954Z-26e3c370/report.json"
+    },
+    "real_tts_replay": {
+      "case_id": "20260908T041526986807Z-d71d0da363fb",
+      "saved_contract_pass": true,
+      "audio_samples": 14250,
+      "acoustic_fidelity_tested": false,
+      "private_report": "exp/demo_cases/replays/20260908T041908078498Z-571a7fc3/report.json"
+    }
+  },
+  "runtime": {
+    "tmux": "humdial-demo",
+    "launcher_pid": 3015,
+    "omni_pid": 3039,
+    "proxy_pid": 4040,
+    "backend_pid": 4054,
+    "log_dir": "exp/web_demo/20260908T041120Z-3015",
+    "loopback_ports": [10003, 10004, 18000],
+    "warmup_elapsed_s": 55.531,
+    "warmup_readback_both_first_attempt_pass": true,
+    "left_running_for_laptop": true
+  },
+  "limits": [
+    "Actual request WAV is after the input evidence filter, not raw dual-channel room audio",
+    "Output is before playback and may be unplayed; TTS text proof is not acoustic-fidelity proof",
+    "Queued or in-flight cases may be lost on hard termination; .partial cases are not published",
+    "512 MiB / 2000-case automatic quota; explicit replay reports are outside automatic capture quota",
+    "No physical listening, full turn-timing replay, formal latency comparison or RB evaluation",
+    "No user audio or private case archive is committed; no integrity hashes computed"
+  ]
+}

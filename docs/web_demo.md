@@ -201,11 +201,48 @@ ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -L 127.0.0.1:18080:
 
 此机制不提供声纹识别、通用 AEC 或零误判保证；未对真实笔记本房间/扬声器/麦克风完成声学验收。强相关门可能漏掉非线性/长延迟回声，语义路由仍可能错分。请分别用耳机与外放验证，不能将少量 canary/数字回声的通过率当成真实误打断率；本次不跑 RB 全量或产生正式成绩。
 
+## 10. 自动调用案例库（demo-case-v1）
+
+聊天 demo 默认开启 `engine.case_capture`，只挂在 `humdial-web` 会话；原 HumDial/legacy/RB/TACT 配置不改。每次真正取得请求槽、调用线上流式模型时，自动保存请求里的音频、完整提示词/历史/参考文字、采样参数与输出。包括路由、其格式修复请求、shift、回答和逐句 TTS，以及失败、取消的私有候选。不把被取消的回答当作已播放内容。纯声学门已拒绝、没有实际模型调用的片段不进入这个库，仍可在逐轮 trace 中查拒绝原因。
+
+默认私有目录：`exp/demo_cases/captures/<case_id>/`，每例含 `case.json`、原请求 WAV `input-00.wav` 等、收到合格 TTS PCM 时的 `output.wav`。请求音频是**证据处理后实际送模型的输入**，不是原始双通道麦克风/扬声器参考录制；输出是**播放前的模型输出**，不是用户实际听到的前缀。原音频块三种格式可无损重建；采样参数和消息也按当次冻结，不偷偷换成当前 prompt。`context` 含会话、轮次、调用时 generation/epoch，四态请求额外带固定 input ID/revision/closed/输入 generation。每次模型调用 ID 通过 `model_case_started/model_case_queued` 接回原会话 `events.jsonl`；queued 只表示已排队，最终成功以可见 `case.json` 为准，是否真正接纳/过期/播放需结合该 trace。
+
+后台线程写入，队列8例、单请求估计上限4MiB、单输出前缀上限2MiB（截断显式标记）；自动采集默认最多2000例或512MiB，先到即停止新增，**不自动删除旧案例**。文件600/目录700，默认目录 gitignored，不提供 Web 下载接口，不自动提交或对外上传。失败/满额不会改变会话判据；`GET /api/demo/info` 的 `case_capture` 显示 saved/dropped/queued/error/容量，重启按已占空间继续计数。计数 saved/dropped 为本次进程值；自动容量统计不包含操作员显式运行生成的 `replays/`。硬关机可能丢失在飞/排队项，未完成目录以 `.partial` 隐藏并保留，不冒充完整案例。需要更换自定义目录时也须自行排除 Git 跟踪；关闭 `case_capture` 只关闭此新增案例库，不会删除过去文件，也不关闭原有会话归档。
+
+以下命令在服务器仓库内执行（`conda activate fd-sds` 后的 `python`）：
+
+真实用户片段由人听检后标注。自造、内容已知的测试音频可以显式使用 `label --source synthetic_fixture`，与人工听检来源分开记录；它仍不能从模型输出自动产生标签。
+
+`outcome.elapsed_ms` 从实际调用到流消费结束，可能包含播放信用导致的背压，不能当作纯模型推理耗时。
+
+```bash
+# 不调用模型：按时间自动列出最新路由案例，附结果、轮次、会话、状态。
+python scripts/demo_cases.py list --kind input_route --latest 20
+python scripts/demo_cases.py list --session web-demo-会话编号 --latest 50
+python scripts/demo_cases.py list --status cancelled
+python scripts/demo_cases.py list --kind tts
+
+# 人工听 input-00.wav，并结合 case.json 上下文定标签。
+# 将 CASE_ID 替换为上一条列出的 id；note 必填，不允许覆盖已有标注。
+python scripts/demo_cases.py label CASE_ID --expected keep --note '听检为含糊残片，没有清楚请求'
+
+# 显式调用本机模型：单例诊断或所有已人工标注的控制案例。
+python scripts/demo_cases.py replay --case CASE_ID
+python scripts/demo_cases.py replay --reviewed
+
+# 只替换控制调用的 system prompt；保留原音频/上下文/参数作对照。
+python scripts/demo_cases.py replay --reviewed --current-prompt
+```
+
+自动存档的 `expected` 永远为 null。`label` 写独立 `review.json`，只有人工标注过的 judge/interrupt/shift/input_route 进入 `--reviewed` 回归集；**模型曾输出 keep 不等于 keep 正确**。误判案例也可标正确答案留下来，重放不通过就返回非零。回归集为空报错，异常/超时报错，无标注单例只作诊断、不宣称通过。每次串行重放创建新的私有 `replays/<run_id>/` 报告，不改原案例/标注；TTS 单例复用线上逐字文本证明并检查音频非空，但不自动宣称发音正确，随机 PCM 不作逐字节 golden。一般回答也不以旧模型回答作为事实性标准。
+
+这是**单次调用回归**，不是整段会话/物理回声/停止回执时序重放。格式修复的两次尝试各自成例，单例重放不会自动执行整个“失败→修复→回退”状态机；引擎取消、四态动作、EOF、历史与播放仍由已有状态机测试覆盖。真实环境噪声、韵律和扬声器听检仍需人工确认。服务模型权重或适配器版本改变也可能改变结果；保存请求不能保证跨模型确定性。自动归档只减少找证据的工作，不替代人工定义正确行为。
+
 ## 开发核验
 
 ```bash
 node tests/test_stream_demo.cjs
-env -u OMP_NUM_THREADS /root/miniconda3/envs/fd-sds/bin/python -m pytest tests/test_guarded_turns.py tests/test_tts_verbatim.py tests/test_actor_candidate.py tests/test_chat_demo.py tests/test_engine.py tests/test_speech_stream.py tests/test_web_demo.py -q
+env -u OMP_NUM_THREADS /root/miniconda3/envs/fd-sds/bin/python -m pytest tests/test_demo_cases.py tests/test_guarded_turns.py tests/test_tts_verbatim.py tests/test_actor_candidate.py tests/test_chat_demo.py tests/test_engine.py tests/test_speech_stream.py tests/test_web_demo.py -q
 ```
 
 浏览器检查脚本 `scripts/check_web_demo.py` 使用 Playwright 和真实 Chromium 的 WebAudio/AudioWorklet；默认使用明确标注的合成协议测试服务器，不调用模型、不提供模拟回答给正式演示页。`--live-url` 可接真实 backend 与自有 mono PCM16 WAV 做链路烟测：默认播一次，`--turns 2` 在 20 秒静音后再播一次以检查跨轮收尾和 ASR 配对；不循环输入。工具的截图/机器检查不能代替笔记本真实耳机、麦克风、声卡及外放回声听检。Linux 截图环境需安装中文字体，否则系统字体缺字可能显示方框；页面不依赖在线字体服务。

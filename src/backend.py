@@ -427,7 +427,18 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
         if (engine_cfg or {}).get("warmup"):
             from demo_startup import warmup
             await warmup(prompts)
-        yield
+        app.state.demo_cases = None
+        if (engine_cfg or {}).get("case_capture"):
+            from demo_cases import CaseArchive
+            app.state.demo_cases = CaseArchive(
+                (engine_cfg or {}).get("case_capture_dir", "exp/demo_cases"),
+                max_bytes=int((engine_cfg or {}).get("case_capture_max_bytes", 536870912)),
+                max_cases=int((engine_cfg or {}).get("case_capture_max_cases", 2000)))
+        try:
+            yield
+        finally:
+            if app.state.demo_cases is not None:
+                await app.state.demo_cases.close()
     app = FastAPI(lifespan=lifespan)
     arch = (engine_cfg or {}).get("arch", "actor")
     from fastapi.staticfiles import StaticFiles
@@ -442,6 +453,9 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
             and (engine_cfg or {}).get("stream_response"))}
         if info["streaming"] and (engine_cfg or {}).get("guarded_turns"):
             info.update(input_protocol="pcm16.ref.v1", guarded_turns=True)
+        archive = getattr(app.state, "demo_cases", None)
+        if archive is not None:
+            info["case_capture"] = archive.stats()
         return info
 
     @app.websocket("/realtime")
@@ -515,6 +529,8 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
         if web_demo:
             from demo_trace import DemoTrace
             engine.demo_trace = DemoTrace(engine.output_dir / "events.jsonl")
+            engine.demo_cases = getattr(app.state, "demo_cases", None)
+            engine.demo_session_id = exp
             # The browser waits before opening the input pipe. VAD construction
             # may take time on the first connection; do not accumulate mic frames.
         try:
@@ -523,6 +539,7 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
                     "session_id": exp, "protocol": "pcm16.v1",
                     "observability": "demo-trace-v1",
                     "tts_contract": "verbatim-choice-v1",
+                    "case_capture": engine.demo_cases is not None,
                     "input_protocol": session_cfg.get("input_protocol"),
                     "guarded_turns": bool(session_cfg.get("guarded_turns")),
                     "speculative_response": bool(session_cfg.get("speculative_response")),
