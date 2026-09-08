@@ -1063,6 +1063,8 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                 return
             if self._speech is None or ev.sid != self._speech.sid:
                 return
+            if self.GUARDED_TURNS:
+                self._guard_reference_event(ev)
             data = {"utterance_id": ev.sid, "timestamp": self._wall_ts(), **ev.data}
             if ev.kind == "text_done":
                 meta = self._speech_meta

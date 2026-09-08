@@ -162,7 +162,7 @@ class SpeechPipeline:
             if sentence_index and self.precompute_gate is not None:
                 await self.precompute_gate.wait()
             sentence_index += 1
-            await self.emit("sentence", text=sentence)
+            await self.emit("sentence", text=sentence, start_sample=self.sent)
             produced = False
             async with aclosing(self.tts_fn(sentence)) as source:
                 while True:

@@ -1,0 +1,41 @@
+{
+  "version": "speech-reference-v1",
+  "question": "请讲一个五百字以上的长故事，分成至少十句话，不要只讲开头。",
+  "physical_listening": false,
+  "formal_benchmark": false,
+  "pass": true,
+  "session_id": "web-demo-9dc2d77efec04f629e0cf4d92e83dcf6",
+  "input_route_cases": [
+    {
+      "case_id": "20260908T045654063763Z-6a2c5f0c9086",
+      "input_id": 2,
+      "reference": "从前有个叫阿木的年轻樵夫，住在云雾缭绕的大山深处。",
+      "source": "playback_sentence_window",
+      "outcome": "keep"
+    },
+    {
+      "case_id": "20260908T045655924748Z-f303fe60f3bb",
+      "input_id": 3,
+      "reference": "从前有个叫阿木的年轻樵夫，住在云雾缭绕的大山深处。",
+      "source": "playback_sentence_window",
+      "outcome": "keep"
+    },
+    {
+      "case_id": "20260908T045657773737Z-28b8daf4de27",
+      "input_id": 4,
+      "reference": "从前有个叫阿木的年轻樵夫，住在云雾缭绕的大山深处。",
+      "source": "playback_sentence_window",
+      "outcome": "stop_only"
+    }
+  ],
+  "text_done_pending_at_barge_in": true,
+  "backchannel_kept_playing": true,
+  "explicit_stop_cancelled": true,
+  "stopped_ack": [
+    {
+      "utterance_id": 1,
+      "played_samples": 104818
+    }
+  ],
+  "page_errors": []
+}

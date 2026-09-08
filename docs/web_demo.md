@@ -193,7 +193,17 @@ ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -L 127.0.0.1:18080:
 3. **等待与上限**：stop_only 清掉待答输入并安静监听；yield_wait 保留音频与等待原因，续说可合并后只答一次。单段/合并送模型音频上限20秒（可配置1–30秒），超限提示分段，不截断后瞎答。无效输入不触发 ASR、不写用户问题、不因 EOF 或超时复活。
 4. **投机与资源**：路由在 VAD END 即派发，固定 END 音频，不把模型返回前的随机尾音拼入候选。判为 ready 后 private 文本/首句 TTS 与余下 hold 重叠。监听/开播前路由占 normal，播放期路由占 control，继续使用进程4/3双闸门。没有瞬时 GPU 抢占或无成本承诺。
 5. **停止回执与历史**：浏览器销毁旧排程，按 WebAudio 时钟计入当前包已播部分，报告 `playback_stopped`；未来包不计已播。服务端校验 ID/样本范围，仅已取消流可更新。按句末音频样本边界保留可确认完整播完的句子，加“已打断，其余未确认播完”标记供后续提示；完整生成文本留审计史/页面。不是词级对齐或物理听到证明；新候选的固定历史快照不被晚回执改写。
-6. **消息与观测**：助手参考文字以有界 JSON 字符串和实际 playing 标志附带，明确将后续麦克风块分隔；不再使用会把音频归到参考文字的悬空冒号。预热、线上路由、真实 canary 共用 `route_messages()`。trace 记录 input_dispatch/decision/admitted/rejected/stale、声学证据和停止回执，UI 显示等待/忽略状态。启动回读偶发不符最多可见重试一次，仍须严格归一相等；连续失败拒绝启动。
+6. **消息与观测**：助手参考文字以有界 JSON 字符串和实际 playing 标志附带，明确将后续麦克风块分隔；不再使用会把音频归到参考文字的悬空冒号。预热、线上路由、真实 canary 共用 `route_messages()`。参考文字现按下方 `speech-reference-v1` 增量维护，不再等待整个 `text_done`。trace 记录 input_dispatch/decision/admitted/rejected/stale、声学证据和停止回执，UI 显示等待/忽略状态。启动回读偶发不符最多可见重试一次，仍须严格归一相等；连续失败拒绝启动。
+
+### 长回答增量参考（speech-reference-v1）
+
+原缺口：参考从 `_speech_meta.text` 取值，但该字段到 `text_done` 才更新。文本生成受“两句待合成 + 播放信用”背压时，已经播了多句也可能没有 `text_done`，实际路由上下文仍为空。不能直接对 `meta.text` 追加 token：它还控制起播后的历史提交，会把半成品写入正式历史；也不能把长答的最新生成尾巴当成正在播放的文字。
+
+现在 `SpeechReference` 与完整回答/历史分开：只处理已公开且 utterance ID 匹配的流事件，维护512字符生成尾部，以及最多64条有 PCM 起点的句子。`sentence.start_sample` 在合成前固定，候选暂存/确认重放时不依赖已经推进的可变 `sent`。尚未起播取生成尾部，标记 `generated_unplayed`；收到起播回执后，按校验过的 `played_samples` 选择当前句及最多两条前邻句，总长≤512，标记 `playback_sentence_window`，不拿未来尚未播放的生成句来替代。正在播放却无可靠句边界时留空，不伪造参考。
+
+输入开始时冻结文本、来源、回复 ID 和播放样本数；正常播放期的同一输入在 END/修复/EOF 后仍使用这一快照。若输入开始时尚未起播，可在起播后重判时刷新**同一个回复**的参考，不替换为另一条回复。新输入会取得随播放推进的新窗口；未公开投机不暴露，旧包/取消/reset 被 ID 栅栏隔离，EOF 后新输入不再读取残留 `_speech_meta`。`input_dispatch` 和私有案例上下文包含 reference_kind/reference_utterance_id/reference_played_samples，trace 另外记字符数以便查空参考。
+
+窗口包含完整当前句，可能带有该句尚未听到的后半段；ACK 有延迟，参考还固定于输入开始时，不是逐字实际听到前缀。它是辅助判据，不是回声证明或声纹。此次不改四态 prompt、停止判据或历史提交时点，也不声称补参考就能纠正已知短停止漏判；同一事故录音补故事参考后的诊断仍是 keep。
 
 ### 验收与剩余边界
 
@@ -238,15 +248,32 @@ python scripts/demo_cases.py replay --reviewed --current-prompt
 
 这是**单次调用回归**，不是整段会话/物理回声/停止回执时序重放。格式修复的两次尝试各自成例，单例重放不会自动执行整个“失败→修复→回退”状态机；引擎取消、四态动作、EOF、历史与播放仍由已有状态机测试覆盖。真实环境噪声、韵律和扬声器听检仍需人工确认。服务模型权重或适配器版本改变也可能改变结果；保存请求不能保证跨模型确定性。自动归档只减少找证据的工作，不替代人工定义正确行为。
 
+## 11. 短停止指令的改进分析（未启用新判据）
+
+已知真实失败不是“取消命令执行慢”：VAD闭合后约132ms正常返回keep，原版interrupt对同音频也返回continue；独立SenseVoice回读停止，而Omni独立转写为其他词，文字输入“停”能得到stop_only。首先定位为短音频识别/语义拒识的漏检；不能用一次ASR正确或6条自造canary证明稳定性。模型间有分歧也不能证明录音在物理声学上清楚，更不能仅凭模型生成的文本把真实输入自动标成gold。
+
+建议按以下顺序验证，当前都不改变线上停止策略：
+
+1. **固定题目、先看声音是否保全**：人听检失败案例，确认标签/语言/说话对象，核对VAD段前后辅音是否保全、麦克风AEC/降噪影响、剪切/饱和和外放混音。现在库保存的是处理后模型输入，不能倒推出已丢弃的原始声学细节。若要定位采集端，应另行明确授权、限时/有界采集原始麦克风与渲染参考，而不是声称现有WAV足以还原全链路。不能为了一个漏判全局降低VAD阈值或扩大噪声准入。
+2. **复用现有SenseVoice做影子短命令候选**：只针对正在播放的有效短VAD片段，先观察原路由keep时是否可补出明确停止意图；带同样input ID/revision/utterance ID和截止时间，独立CPU有界排队、去重，不占Omni请求槽。先不影响动作，只记录与原路由的分歧和额外延迟。现有ASR函数只返回字符串，没有可直接使用的校准置信度，不能编造“置信度0.9”门；它与普通转写共用锁，正式接入前必须检查是否被旧转写排队阻塞，不能在Actor循环里同步识别。
+3. **补判只争取停止权，不获得回答权**：经回归验证后，最多让高精度停止候选补充stop_only；不把ASR文本送入回答、不写用户历史、不自动说“好的”，不覆盖已经明确ready的新请求。原始Omni的合法stop_only不能被第二个ASR的漏识强行否决。不能使用“转写包含停”即停：不要停/不停地讲/亭子/停是什么意思/故事中引用“停”、第三方语音和扬声器回声都必须成为硬负例。助手当前句出现相同词时尤其需要声学和语义消歧；文本重复本身也不能证明一定是回声。
+4. **若候选精度不够，再做专门短命令检测器**：需要带困难负例的训练/校准和模型版本管理，不是给通用聊天prompt多加一句“停必须停”。比较独立短命令音频检测与ASR候选验证的召回、误停和延迟，不能把两个相关模型的一致性当成独立概率相乘。二次Omni验证会增加延迟，并可能重复同一个声学误识，必须通过同输入对照证明有价值。
+
+验收不能只报总体正确率：单独看“明确停止的漏检率”“非停止片段的误停率”“短否定/含停的新问题/附和/回声各类损失”“语音结束→停止ACK的延迟”和“新增请求/CPU争用/超时”。对原版和四态均正确的保留集，候选方案的新增误停或其他动作变化必须逐例解释；调阈值用开发集，最终使用未调参保留集和真实耳机/外放录音，不把同一失败样本反复调到过当成泛化。数量不足就只报告计数与不确定性，零次误停不等于真实误停率为零。
+
+**不存在一般性的“增加停止召回且绝不伤及其他输入”保证**：只要让原keep的样本获得停止权，就改变了判定边界。可保证的是工程隔离、输入身份、取消幂等、绝不偷偷派生新回答；效果上的无回退需要有代表性的成对数据支持。最稳妥路径是默认关闭的新分支先影子运行→固定保留集过门→用户同意后启用，并保留一键回退，而不是此轮顺手改prompt或加关键词强停。
+
 ## 开发核验
 
 ```bash
 node tests/test_stream_demo.cjs
-env -u OMP_NUM_THREADS /root/miniconda3/envs/fd-sds/bin/python -m pytest tests/test_demo_cases.py tests/test_guarded_turns.py tests/test_tts_verbatim.py tests/test_actor_candidate.py tests/test_chat_demo.py tests/test_engine.py tests/test_speech_stream.py tests/test_web_demo.py -q
+env -u OMP_NUM_THREADS /root/miniconda3/envs/fd-sds/bin/python -m pytest tests/test_speech_reference.py tests/test_demo_cases.py tests/test_guarded_turns.py tests/test_tts_verbatim.py tests/test_actor_candidate.py tests/test_chat_demo.py tests/test_engine.py tests/test_speech_stream.py tests/test_web_demo.py -q
 ```
 
 浏览器检查脚本 `scripts/check_web_demo.py` 使用 Playwright 和真实 Chromium 的 WebAudio/AudioWorklet；默认使用明确标注的合成协议测试服务器，不调用模型、不提供模拟回答给正式演示页。`--live-url` 可接真实 backend 与自有 mono PCM16 WAV 做链路烟测：默认播一次，`--turns 2` 在 20 秒静音后再播一次以检查跨轮收尾和 ASR 配对；不循环输入。工具的截图/机器检查不能代替笔记本真实耳机、麦克风、声卡及外放回声听检。Linux 截图环境需安装中文字体，否则系统字体缺字可能显示方框；页面不依赖在线字体服务。
 
 `--no-speculation` 只在检查脚本的 live 握手关闭提前派发，适合与同输入的正常 live 烟测做顺序比较；不是正式延迟基准，不能和旧 seq1 数据相减。
+
+长回答参考专项烟测：先用 `fd-sds` Python 运行 `scripts/check_speech_reference_live.py --make-input --output NEW_DIR` 生成自造长故事请求 WAV，再用已安装 Playwright 的 Python 运行同脚本 `--url http://127.0.0.1:18000 --output NEW_DIR`。检查无text_done时真实路由参考非空、附和保留播放、明确停止收到ACK；不复用用户录音、不覆盖旧收据。
 
 协议细节见 [streaming_speech.md](streaming_speech.md)，生产容量见 [production_capacity.md](production_capacity.md)。

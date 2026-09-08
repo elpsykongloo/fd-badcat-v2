@@ -1,0 +1,63 @@
+{
+  "version": "speech-reference-v1",
+  "date_utc": "2026-09-08",
+  "scope": "Incremental reference for guarded Actor long responses; short-stop policy analysis only",
+  "implementation": {
+    "history_separate_from_incremental_reference": true,
+    "published_current_utterance_events_only": true,
+    "reference_chars_max": 512,
+    "sentence_records_max": 64,
+    "playing_source": "ACK-selected current and up to two preceding sentences",
+    "preplay_source": "generated tail, not guaranteed played",
+    "input_onset_snapshot_frozen": true,
+    "same_utterance_preplay_refresh": true,
+    "cross_utterance_cancel_eof_reset_isolation": true,
+    "original_and_four_state_prompts_changed": false,
+    "new_stop_detection_policy_enabled": false
+  },
+  "targeted_tests": {
+    "passed": 94,
+    "elapsed_s": 2.31,
+    "files": ["tests/test_speech_reference.py", "tests/test_guarded_turns.py", "tests/test_actor_candidate.py", "tests/test_speech_stream.py", "tests/test_demo_cases.py", "tests/test_web_demo.py"],
+    "node_playback_input_telemetry": "PASS",
+    "initial_test_collection_issue": "New test imported src before setting its test path; corrected import order before successful run",
+    "probe_compile_issue": "Missing closing bracket caught by py_compile and fixed before execution"
+  },
+  "live": {
+    "receipt": "exp/web_demo/speech_reference_live_20260908/receipt.json",
+    "session_id": "web-demo-9dc2d77efec04f629e0cf4d92e83dcf6",
+    "self_authored_audio_only": true,
+    "long_answer_text_done_pending_at_first_barge_in": true,
+    "playing_route_requests_with_nonempty_sentence_reference": 3,
+    "backchannel_results": ["keep", "keep"],
+    "explicit_stop_result": "stop_only",
+    "cancellations": 1,
+    "stopped_ack_samples": 104818,
+    "trace_dropped": 0,
+    "engine_errors": 0,
+    "page_errors": 0,
+    "pass": true
+  },
+  "deployment": {
+    "tmux": "humdial-demo",
+    "launcher_pid": 6773,
+    "omni_pid": 6790,
+    "proxy_pid": 7640,
+    "backend_pid": 7654,
+    "loopback_ports": [10003, 10004, 18000],
+    "logs": "exp/web_demo/20260908T045409Z-6773/",
+    "warmup_s": 3.942,
+    "warmup_readback_first_attempts_pass": true,
+    "old_listeners_and_gpu_cleared_before_start": true,
+    "previous_shutdown_warnings": {"semaphore": 2, "shared_memory": 55},
+    "previous_capture_close": {"saved": 66, "dropped": 0, "error": null},
+    "kept_running_for_laptop": true
+  },
+  "limits": [
+    "Sentence-window reference is not word alignment or physical audibility proof; ACKs can lag",
+    "No claim that known short-stop false rejection is fixed; richer reference did not resolve that diagnostic sample",
+    "No short-stop ASR fallback, keyword override, VAD threshold or routing prompt change",
+    "No formal quality/latency score, physical room test, full repository or RB evaluation",
+    "No integrity hash checks; private user recordings and case archive excluded from publication"
+  ]
+}

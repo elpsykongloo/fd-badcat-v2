@@ -14,6 +14,7 @@ import numpy as np
 from control_labels import decide_control
 from input_audio import EchoEvidence, INPUT_PROTOCOL
 from messages import build_audio_content
+from speech_reference import SpeechReference
 
 
 def route_messages(prompt, content, *, playing=False, reference=""):
@@ -46,6 +47,9 @@ class InputSpan:
     frame_count: int = 0
     provisional_keep: bool = False
     reference_text: str = ""
+    reference_sid: int = None
+    reference_kind: str = "unavailable"
+    reference_played: int = 0
     end_index: int = None
 
 
@@ -94,6 +98,30 @@ class GuardedTurns:
         span = self._guard_input
         return span is None or span.decided or span.admitted or span.provisional_keep
 
+    def _guard_reference_event(self, ev):
+        # Called AFTER the engine's private-candidate and stale-utterance gates.
+        # Do not update ModelDone.text: that would commit partial history on ACK.
+        record = self._guard_outputs.setdefault(ev.sid, {
+            "turn": self._speech_meta.turn, "sentences": []})
+        if "reference" not in record:
+            record["reference"] = SpeechReference()
+        record["reference"].observe(ev.kind, ev.data)
+
+    def _guard_capture_reference(self, span):
+        speech = self._speech
+        if speech is None:
+            return
+        # Never replace the onset snapshot with a different answer's text.
+        if span.reference_sid is not None and span.reference_sid != speech.sid:
+            return
+        record = self._guard_outputs.get(speech.sid, {})
+        reference = record.get("reference")
+        if reference is None or record.get("cancelled") or record.get("completed"):
+            return
+        span.reference_text, span.reference_kind = reference.snapshot(
+            started=self._speech_started, played=speech.played, sent=speech.sent)
+        span.reference_sid, span.reference_played = speech.sid, speech.played
+
     async def _guard_hold(self, c, held):
         if c is not None and c.published and self._speech is c.pipeline and not self._speech_started:
             await self.send_control("speech_hold", {"utterance_id": c.pipeline.sid, "held": held})
@@ -117,7 +145,7 @@ class GuardedTurns:
                     "preplay" if held is not None else "listening")
                 span = InputSpan(self._input_serial, t, mode,
                                  list(self._guard_preroll) + [frame.copy()], held_candidate=held)
-                span.reference_text = self._speech_meta.text if self._speech_meta else ""
+                self._guard_capture_reference(span)
                 self._guard_input = span
                 await self._guard_hold(held, True)
             self.IN_SPEECH = True
@@ -168,10 +196,20 @@ class GuardedTurns:
             self._speech is not None and self._speech_started))
         if playing:
             span.mode = "playing"
+            # An input may start before first playback/first text and be checked
+            # again after the start ACK. Refresh that same utterance once; normal
+            # playing input retains its onset snapshot across END/repair/EOF.
+            if span.reference_kind != "playback_sentence_window":
+                self._guard_capture_reference(span)
         messages = route_messages(self.prompts["input_route"], content,
                                   playing=playing, reference=span.reference_text)
         self._observe("input_dispatch", {"input_id": span.sid, "revision": revision,
-            "closed": closed, "playing": playing, "audio_samples": len(audio)})
+            "closed": closed, "playing": playing, "audio_samples": len(audio),
+            "reference_kind": span.reference_kind, "reference_utterance_id": span.reference_sid,
+            "reference_chars": len(span.reference_text), "reference_played_samples": span.reference_played})
+        reference_context = {"reference_kind": span.reference_kind,
+            "reference_utterance_id": span.reference_sid,
+            "reference_played_samples": span.reference_played}
 
         async def classify(kind, request):
             async def call(msgs):
@@ -179,7 +217,8 @@ class GuardedTurns:
                 request_kind = "interrupt" if playing else "spec_judge"
                 async with aclosing(self._capacity_stream(request_kind, self.text_stream_fn, msgs,
                         case_context={"input_id": span.sid, "revision": revision, "closed": closed,
-                                      "input_generation": gen, "playing": playing})) as source:
+                                      "input_generation": gen, "playing": playing,
+                                      **reference_context})) as source:
                     async for part in source:
                         parts.append(part)
                         if sum(map(len, parts)) > 1024:
