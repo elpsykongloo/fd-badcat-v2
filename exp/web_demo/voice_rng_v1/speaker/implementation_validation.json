@@ -1,0 +1,28 @@
+{
+  "strict_head_checkpoint_load": true,
+  "reference": "WeSpeaker dfa7419 W2VBert_Adapter_MFA + ASP and Transformers standard full encoder forward",
+  "mode": "float32 eval serial GPU",
+  "checks": [
+    {
+      "id": "serial/legacy-t0-0",
+      "max_abs_embedding_difference": 0.0,
+      "cosine": 1.0000000000000002
+    },
+    {
+      "id": "serial/controlled-t1-0",
+      "max_abs_embedding_difference": 0.0,
+      "cosine": 1.0
+    },
+    {
+      "id": "isolation/mixed-b",
+      "max_abs_embedding_difference": 0.0,
+      "cosine": 1.0
+    }
+  ],
+  "scope": "Inference adapter parity on three self-authored waveforms; not reproduction of VoxCeleb EER",
+  "unit_tests": {
+    "command": "env -u OMP_NUM_THREADS /root/miniconda3/envs/fd-sds/bin/python -m pytest -q tests/test_demo_speaker_embeddings.py",
+    "passed": 13
+  },
+  "full_extraction_repeat_comparisons_equal": true
+}

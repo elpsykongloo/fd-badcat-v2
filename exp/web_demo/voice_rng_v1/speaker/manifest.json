@@ -1,0 +1,438 @@
+{
+  "design": {
+    "source": "Existing demo-voice-rng-v1 serial/isolation receipts; all 45 complete self-authored syntheses included, no reselection",
+    "independent_target_texts": 2,
+    "unique_synthesis_texts": 4,
+    "human_audio": false,
+    "physical_device": false,
+    "synthesis": "serial seq4 probe + separate concurrent/cancel/invalid-input smoke test",
+    "embedding_extraction": "serial offline; GPU otherwise idle",
+    "pair_dependence": "Pairs share references and repeat only two target texts; not independent trials. Cross-text pairs align repeat positions; not a calibrated identity test.",
+    "negative_speakers": 0,
+    "threshold_calibrated": false
+  },
+  "audio": [
+    {
+      "id": "serial/legacy-t0-0",
+      "path": "../serial/audio/legacy-t0-0.wav",
+      "text": "你好，我们接着聊这件事情。"
+    },
+    {
+      "id": "serial/legacy-t0-1",
+      "path": "../serial/audio/legacy-t0-1.wav",
+      "text": "你好，我们接着聊这件事情。"
+    },
+    {
+      "id": "serial/legacy-t0-2",
+      "path": "../serial/audio/legacy-t0-2.wav",
+      "text": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。"
+    },
+    {
+      "id": "serial/legacy-t0-3",
+      "path": "../serial/audio/legacy-t0-3.wav",
+      "text": "你好，我们接着聊这件事情。"
+    },
+    {
+      "id": "serial/legacy-t0-4",
+      "path": "../serial/audio/legacy-t0-4.wav",
+      "text": "The blue cup is next to the window."
+    },
+    {
+      "id": "serial/legacy-t0-5",
+      "path": "../serial/audio/legacy-t0-5.wav",
+      "text": "你好，我们接着聊这件事情。"
+    },
+    {
+      "id": "serial/legacy-t1-0",
+      "path": "../serial/audio/legacy-t1-0.wav",
+      "text": "我可以慢慢解释，你也可以随时打断我。"
+    },
+    {
+      "id": "serial/legacy-t1-1",
+      "path": "../serial/audio/legacy-t1-1.wav",
+      "text": "我可以慢慢解释，你也可以随时打断我。"
+    },
+    {
+      "id": "serial/legacy-t1-2",
+      "path": "../serial/audio/legacy-t1-2.wav",
+      "text": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。"
+    },
+    {
+      "id": "serial/legacy-t1-3",
+      "path": "../serial/audio/legacy-t1-3.wav",
+      "text": "我可以慢慢解释，你也可以随时打断我。"
+    },
+    {
+      "id": "serial/legacy-t1-4",
+      "path": "../serial/audio/legacy-t1-4.wav",
+      "text": "The blue cup is next to the window."
+    },
+    {
+      "id": "serial/legacy-t1-5",
+      "path": "../serial/audio/legacy-t1-5.wav",
+      "text": "我可以慢慢解释，你也可以随时打断我。"
+    },
+    {
+      "id": "serial/speaker-t0-0",
+      "path": "../serial/audio/speaker-t0-0.wav",
+      "text": "你好，我们接着聊这件事情。"
+    },
+    {
+      "id": "serial/speaker-t0-1",
+      "path": "../serial/audio/speaker-t0-1.wav",
+      "text": "你好，我们接着聊这件事情。"
+    },
+    {
+      "id": "serial/speaker-t0-2",
+      "path": "../serial/audio/speaker-t0-2.wav",
+      "text": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。"
+    },
+    {
+      "id": "serial/speaker-t0-3",
+      "path": "../serial/audio/speaker-t0-3.wav",
+      "text": "你好，我们接着聊这件事情。"
+    },
+    {
+      "id": "serial/speaker-t0-4",
+      "path": "../serial/audio/speaker-t0-4.wav",
+      "text": "The blue cup is next to the window."
+    },
+    {
+      "id": "serial/speaker-t0-5",
+      "path": "../serial/audio/speaker-t0-5.wav",
+      "text": "你好，我们接着聊这件事情。"
+    },
+    {
+      "id": "serial/speaker-t1-0",
+      "path": "../serial/audio/speaker-t1-0.wav",
+      "text": "我可以慢慢解释，你也可以随时打断我。"
+    },
+    {
+      "id": "serial/speaker-t1-1",
+      "path": "../serial/audio/speaker-t1-1.wav",
+      "text": "我可以慢慢解释，你也可以随时打断我。"
+    },
+    {
+      "id": "serial/speaker-t1-2",
+      "path": "../serial/audio/speaker-t1-2.wav",
+      "text": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。"
+    },
+    {
+      "id": "serial/speaker-t1-3",
+      "path": "../serial/audio/speaker-t1-3.wav",
+      "text": "我可以慢慢解释，你也可以随时打断我。"
+    },
+    {
+      "id": "serial/speaker-t1-4",
+      "path": "../serial/audio/speaker-t1-4.wav",
+      "text": "The blue cup is next to the window."
+    },
+    {
+      "id": "serial/speaker-t1-5",
+      "path": "../serial/audio/speaker-t1-5.wav",
+      "text": "我可以慢慢解释，你也可以随时打断我。"
+    },
+    {
+      "id": "serial/controlled-t0-0",
+      "path": "../serial/audio/controlled-t0-0.wav",
+      "text": "你好，我们接着聊这件事情。"
+    },
+    {
+      "id": "serial/controlled-t0-1",
+      "path": "../serial/audio/controlled-t0-1.wav",
+      "text": "你好，我们接着聊这件事情。"
+    },
+    {
+      "id": "serial/controlled-t0-2",
+      "path": "../serial/audio/controlled-t0-2.wav",
+      "text": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。"
+    },
+    {
+      "id": "serial/controlled-t0-3",
+      "path": "../serial/audio/controlled-t0-3.wav",
+      "text": "你好，我们接着聊这件事情。"
+    },
+    {
+      "id": "serial/controlled-t0-4",
+      "path": "../serial/audio/controlled-t0-4.wav",
+      "text": "The blue cup is next to the window."
+    },
+    {
+      "id": "serial/controlled-t0-5",
+      "path": "../serial/audio/controlled-t0-5.wav",
+      "text": "你好，我们接着聊这件事情。"
+    },
+    {
+      "id": "serial/controlled-t1-0",
+      "path": "../serial/audio/controlled-t1-0.wav",
+      "text": "我可以慢慢解释，你也可以随时打断我。"
+    },
+    {
+      "id": "serial/controlled-t1-1",
+      "path": "../serial/audio/controlled-t1-1.wav",
+      "text": "我可以慢慢解释，你也可以随时打断我。"
+    },
+    {
+      "id": "serial/controlled-t1-2",
+      "path": "../serial/audio/controlled-t1-2.wav",
+      "text": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。"
+    },
+    {
+      "id": "serial/controlled-t1-3",
+      "path": "../serial/audio/controlled-t1-3.wav",
+      "text": "我可以慢慢解释，你也可以随时打断我。"
+    },
+    {
+      "id": "serial/controlled-t1-4",
+      "path": "../serial/audio/controlled-t1-4.wav",
+      "text": "The blue cup is next to the window."
+    },
+    {
+      "id": "serial/controlled-t1-5",
+      "path": "../serial/audio/controlled-t1-5.wav",
+      "text": "我可以慢慢解释，你也可以随时打断我。"
+    },
+    {
+      "id": "isolation/mixed-a",
+      "path": "../isolation/audio/mixed-a.wav",
+      "text": "你好，我们接着聊这件事情。"
+    },
+    {
+      "id": "isolation/mixed-b",
+      "path": "../isolation/audio/mixed-b.wav",
+      "text": "我可以慢慢解释，你也可以随时打断我。"
+    },
+    {
+      "id": "isolation/mixed-legacy",
+      "path": "../isolation/audio/mixed-legacy.wav",
+      "text": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。"
+    },
+    {
+      "id": "isolation/reordered-a",
+      "path": "../isolation/audio/reordered-a.wav",
+      "text": "你好，我们接着聊这件事情。"
+    },
+    {
+      "id": "isolation/reordered-b",
+      "path": "../isolation/audio/reordered-b.wav",
+      "text": "我可以慢慢解释，你也可以随时打断我。"
+    },
+    {
+      "id": "isolation/seed43",
+      "path": "../isolation/audio/seed43.wav",
+      "text": "你好，我们接着聊这件事情。"
+    },
+    {
+      "id": "isolation/seed43-repeat",
+      "path": "../isolation/audio/seed43-repeat.wav",
+      "text": "你好，我们接着聊这件事情。"
+    },
+    {
+      "id": "isolation/after-cancel",
+      "path": "../isolation/audio/after-cancel.wav",
+      "text": "你好，我们接着聊这件事情。"
+    },
+    {
+      "id": "isolation/after-invalid",
+      "path": "../isolation/audio/after-invalid.wav",
+      "text": "你好，我们接着聊这件事情。"
+    }
+  ],
+  "pairs": [
+    {
+      "group": "repeat/legacy",
+      "reference": "serial/legacy-t0-0",
+      "candidate": "serial/legacy-t0-1"
+    },
+    {
+      "group": "repeat/legacy",
+      "reference": "serial/legacy-t0-0",
+      "candidate": "serial/legacy-t0-3"
+    },
+    {
+      "group": "repeat/legacy",
+      "reference": "serial/legacy-t0-0",
+      "candidate": "serial/legacy-t0-5"
+    },
+    {
+      "group": "repeat/legacy",
+      "reference": "serial/legacy-t1-0",
+      "candidate": "serial/legacy-t1-1"
+    },
+    {
+      "group": "repeat/legacy",
+      "reference": "serial/legacy-t1-0",
+      "candidate": "serial/legacy-t1-3"
+    },
+    {
+      "group": "repeat/legacy",
+      "reference": "serial/legacy-t1-0",
+      "candidate": "serial/legacy-t1-5"
+    },
+    {
+      "group": "repeat/speaker",
+      "reference": "serial/speaker-t0-0",
+      "candidate": "serial/speaker-t0-1"
+    },
+    {
+      "group": "repeat/speaker",
+      "reference": "serial/speaker-t0-0",
+      "candidate": "serial/speaker-t0-3"
+    },
+    {
+      "group": "repeat/speaker",
+      "reference": "serial/speaker-t0-0",
+      "candidate": "serial/speaker-t0-5"
+    },
+    {
+      "group": "repeat/speaker",
+      "reference": "serial/speaker-t1-0",
+      "candidate": "serial/speaker-t1-1"
+    },
+    {
+      "group": "repeat/speaker",
+      "reference": "serial/speaker-t1-0",
+      "candidate": "serial/speaker-t1-3"
+    },
+    {
+      "group": "repeat/speaker",
+      "reference": "serial/speaker-t1-0",
+      "candidate": "serial/speaker-t1-5"
+    },
+    {
+      "group": "repeat/controlled",
+      "reference": "serial/controlled-t0-0",
+      "candidate": "serial/controlled-t0-1"
+    },
+    {
+      "group": "repeat/controlled",
+      "reference": "serial/controlled-t0-0",
+      "candidate": "serial/controlled-t0-3"
+    },
+    {
+      "group": "repeat/controlled",
+      "reference": "serial/controlled-t0-0",
+      "candidate": "serial/controlled-t0-5"
+    },
+    {
+      "group": "repeat/controlled",
+      "reference": "serial/controlled-t1-0",
+      "candidate": "serial/controlled-t1-1"
+    },
+    {
+      "group": "repeat/controlled",
+      "reference": "serial/controlled-t1-0",
+      "candidate": "serial/controlled-t1-3"
+    },
+    {
+      "group": "repeat/controlled",
+      "reference": "serial/controlled-t1-0",
+      "candidate": "serial/controlled-t1-5"
+    },
+    {
+      "group": "cross_text/legacy",
+      "reference": "serial/legacy-t0-0",
+      "candidate": "serial/legacy-t1-0"
+    },
+    {
+      "group": "cross_text/legacy",
+      "reference": "serial/legacy-t0-1",
+      "candidate": "serial/legacy-t1-1"
+    },
+    {
+      "group": "cross_text/legacy",
+      "reference": "serial/legacy-t0-3",
+      "candidate": "serial/legacy-t1-3"
+    },
+    {
+      "group": "cross_text/legacy",
+      "reference": "serial/legacy-t0-5",
+      "candidate": "serial/legacy-t1-5"
+    },
+    {
+      "group": "cross_text/speaker",
+      "reference": "serial/speaker-t0-0",
+      "candidate": "serial/speaker-t1-0"
+    },
+    {
+      "group": "cross_text/speaker",
+      "reference": "serial/speaker-t0-1",
+      "candidate": "serial/speaker-t1-1"
+    },
+    {
+      "group": "cross_text/speaker",
+      "reference": "serial/speaker-t0-3",
+      "candidate": "serial/speaker-t1-3"
+    },
+    {
+      "group": "cross_text/speaker",
+      "reference": "serial/speaker-t0-5",
+      "candidate": "serial/speaker-t1-5"
+    },
+    {
+      "group": "cross_text/controlled",
+      "reference": "serial/controlled-t0-0",
+      "candidate": "serial/controlled-t1-0"
+    },
+    {
+      "group": "cross_text/controlled",
+      "reference": "serial/controlled-t0-1",
+      "candidate": "serial/controlled-t1-1"
+    },
+    {
+      "group": "cross_text/controlled",
+      "reference": "serial/controlled-t0-3",
+      "candidate": "serial/controlled-t1-3"
+    },
+    {
+      "group": "cross_text/controlled",
+      "reference": "serial/controlled-t0-5",
+      "candidate": "serial/controlled-t1-5"
+    },
+    {
+      "group": "concurrent",
+      "reference": "serial/controlled-t0-0",
+      "candidate": "isolation/mixed-a"
+    },
+    {
+      "group": "concurrent",
+      "reference": "serial/controlled-t1-0",
+      "candidate": "isolation/mixed-b"
+    },
+    {
+      "group": "concurrent",
+      "reference": "serial/controlled-t0-0",
+      "candidate": "isolation/reordered-a"
+    },
+    {
+      "group": "concurrent",
+      "reference": "serial/controlled-t1-0",
+      "candidate": "isolation/reordered-b"
+    },
+    {
+      "group": "seed42_vs_43",
+      "reference": "serial/controlled-t0-0",
+      "candidate": "isolation/seed43"
+    },
+    {
+      "group": "seed42_vs_43",
+      "reference": "serial/controlled-t0-0",
+      "candidate": "isolation/seed43-repeat"
+    },
+    {
+      "group": "recovery",
+      "reference": "serial/controlled-t0-0",
+      "candidate": "isolation/after-cancel"
+    },
+    {
+      "group": "recovery",
+      "reference": "serial/controlled-t0-0",
+      "candidate": "isolation/after-invalid"
+    },
+    {
+      "group": "seed43_repeat",
+      "reference": "isolation/seed43",
+      "candidate": "isolation/seed43-repeat"
+    }
+  ]
+}
