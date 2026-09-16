@@ -1,0 +1,46 @@
+{
+  "protocol": "played-reply-v1",
+  "pass": true,
+  "physical_audio": false,
+  "session_id": "web-demo-0e739b57082f4c5db1a0ad584789cba1",
+  "setup_speech_starts": 1,
+  "setup_cancellations": 0,
+  "early": true,
+  "decisions": [
+    {
+      "event": "input_decision",
+      "server_ms": 9994.276,
+      "data": {
+        "input_id": 2,
+        "revision": 1,
+        "route": "keep",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "```json\n{\n  \"transcript\": \"都可以\",\n  \"label\": \"keep\"\n}\n```"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false,
+            "protocol": "transcript-first-v1",
+            "transcript": "都可以",
+            "base_label": "keep"
+          },
+          "playing": true,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 1,
+      "turn": 0,
+      "state": "SPEAK",
+      "t_audio": 9.968,
+      "queue_depth": 0
+    }
+  ],
+  "old_playback_continued": true,
+  "page_errors": []
+}

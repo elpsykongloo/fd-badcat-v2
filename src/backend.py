@@ -452,10 +452,12 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
             arch == "actor" and (engine_cfg or {}).get("phase", "a") == "a"
             and (engine_cfg or {}).get("stream_response"))}
         if info["streaming"] and (engine_cfg or {}).get("guarded_turns"):
-            from control_labels import ROUTE_PROTOCOL
+            from control_labels import ROUTE_PROTOCOL, REPLY_PROTOCOL
             from guarded_turns import input_timing
             info.update(input_protocol="pcm16.ref.v1", guarded_turns=True,
                         route_protocol=ROUTE_PROTOCOL, route_reference_text=False,
+                        reply_protocol=REPLY_PROTOCOL if prompts.get("input_reply") else None,
+                        reply_context="completed_sentences_at_input_onset",
                         input_timing=input_timing(engine_cfg),
                         route_penalties={"presence": 0.0, "frequency": 0.0})
         archive = getattr(app.state, "demo_cases", None)

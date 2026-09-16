@@ -1,0 +1,273 @@
+{
+  "protocol": "played-reply-v1",
+  "pass": true,
+  "physical_audio": false,
+  "session_id": "web-demo-86ab0bd6f8b8443da6c428cae17999db",
+  "setup_speech_starts": 2,
+  "setup_cancellations": 1,
+  "question_sentence": "你想听童话故事还是科幻故事呢？",
+  "question_end_sample": 65535,
+  "decisions": [
+    {
+      "event": "input_decision",
+      "server_ms": 2006.92,
+      "data": {
+        "input_id": 1,
+        "revision": 0,
+        "route": "yield_ready",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "```json\n{\n  \"transcript\": \"请先问我想听童话\",\n  \"label\": \"yield_ready\"\n}\n```"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false,
+            "protocol": "transcript-first-v1",
+            "transcript": "请先问我想听童话",
+            "base_label": "yield_ready"
+          },
+          "playing": false,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 0,
+      "turn": 0,
+      "state": "LISTEN",
+      "t_audio": 1.984,
+      "queue_depth": 0
+    },
+    {
+      "event": "input_decision",
+      "server_ms": 5369.186,
+      "data": {
+        "input_id": 1,
+        "revision": 4,
+        "route": "yield_ready",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "```json\n{\n  \"transcript\": \"请先问我想听童话还是科幻故事，再分别介绍童话和\",\n  \"label\": \"yield_ready\"\n}\n```"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false,
+            "protocol": "transcript-first-v1",
+            "transcript": "请先问我想听童话还是科幻故事，再分别介绍童话和",
+            "base_label": "yield_ready"
+          },
+          "playing": false,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 1,
+      "turn": 0,
+      "state": "LISTEN",
+      "t_audio": 5.36,
+      "queue_depth": 0
+    },
+    {
+      "event": "input_decision",
+      "server_ms": 6902.627,
+      "data": {
+        "input_id": 1,
+        "revision": 5,
+        "route": "yield_ready",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "```json\n{\n  \"transcript\": \"请先问我想听童话还是科幻故事，再分别介绍童话和科幻故事的特点。\",\n  \"label\": \"yield_ready\"\n}\n```"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false,
+            "protocol": "transcript-first-v1",
+            "transcript": "请先问我想听童话还是科幻故事，再分别介绍童话和科幻故事的特点。",
+            "base_label": "yield_ready"
+          },
+          "playing": false,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 1,
+      "turn": 0,
+      "state": "LISTEN",
+      "t_audio": 6.88,
+      "queue_depth": 0
+    },
+    {
+      "event": "input_decision",
+      "server_ms": 7946.04,
+      "data": {
+        "input_id": 2,
+        "revision": 0,
+        "route": "keep",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "```json\n{\n  \"transcript\": \"回\",\n  \"label\": \"keep\"\n}\n```"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false,
+            "protocol": "transcript-first-v1",
+            "transcript": "回",
+            "base_label": "keep"
+          },
+          "playing": false,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 1,
+      "turn": 0,
+      "state": "SPEAK",
+      "t_audio": 7.936,
+      "queue_depth": 0
+    },
+    {
+      "event": "input_decision",
+      "server_ms": 9223.679,
+      "data": {
+        "input_id": 2,
+        "revision": 0,
+        "route": "yield_ready",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "```json\n{\n  \"transcript\": \"回复必须包含这三\",\n  \"label\": \"yield_ready\"\n}\n```"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false,
+            "protocol": "transcript-first-v1",
+            "transcript": "回复必须包含这三",
+            "base_label": "yield_ready"
+          },
+          "playing": true,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 1,
+      "turn": 0,
+      "state": "SPEAK",
+      "t_audio": 9.216,
+      "queue_depth": 0
+    },
+    {
+      "event": "input_decision",
+      "server_ms": 9988.465,
+      "data": {
+        "input_id": 2,
+        "revision": 1,
+        "route": "yield_ready",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "{\"transcript\": \"回复必须包含这三句话。\", \"label\": \"yield_ready\"}"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false,
+            "protocol": "transcript-first-v1",
+            "transcript": "回复必须包含这三句话。",
+            "base_label": "yield_ready"
+          },
+          "playing": false,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 2,
+      "turn": 1,
+      "state": "LISTEN",
+      "t_audio": 9.968,
+      "queue_depth": 0
+    },
+    {
+      "event": "input_decision",
+      "server_ms": 14628.418,
+      "data": {
+        "input_id": 3,
+        "revision": 1,
+        "route": "yield_ready",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "{\"transcript\": \"都可以\", \"label\": \"keep\"}"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false,
+            "protocol": "transcript-first-v1",
+            "transcript": "都可以",
+            "base_label": "keep",
+            "reply_review": {
+              "protocol": "played-reply-v1",
+              "attempts": 1,
+              "fallback": false,
+              "timed_out": false,
+              "label": "yield_ready",
+              "raw": "yield_ready",
+              "elapsed_ms": 80.704
+            }
+          },
+          "playing": true,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 2,
+      "turn": 1,
+      "state": "SPEAK",
+      "t_audio": 14.608,
+      "queue_depth": 0
+    }
+  ],
+  "stopped_acks": [
+    {
+      "event": "playback_stopped",
+      "data": {
+        "utterance_id": 1,
+        "played_samples": 28800
+      }
+    },
+    {
+      "event": "playback_stopped",
+      "data": {
+        "utterance_id": 2,
+        "played_samples": 93464
+      }
+    }
+  ],
+  "page_errors": [],
+  "speech_starts": 3,
+  "cancellations": 2,
+  "reply_responses": 1,
+  "reply_cancellations": 1
+}

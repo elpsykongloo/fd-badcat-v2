@@ -206,3 +206,33 @@ async def test_route_replay_versions_keep_saved_baseline_and_strip_current_refer
         assert got[0]["seed"] == 42
     else:
         assert got == [request()]
+
+
+@pytest.mark.parametrize("current", [False, True])
+async def test_reply_text_capture_and_replay_preserves_frozen_evidence(tmp_path, monkeypatch, current):
+    from types import SimpleNamespace
+    import stream_transport
+    from control_labels import reply_messages
+    writer = CaseArchive(tmp_path)
+    payload = {"model": "test-only", "seed": 42, "stream": True,
+        "presence_penalty": .4, "frequency_penalty": .4,
+        "messages": reply_messages("saved reply prompt", "都可以", "你想听什么故事？")}
+    call = writer.begin("input_reply", payload, {"input_id": 7, "revision": 2,
+        "reply_protocol": "played-reply-v1", "reply_played_samples": 1234})
+    call.feed("yield_ready"); call.finish("completed")
+    await writer.close()
+    path = tmp_path / "captures" / call.case["case_id"]
+    assert restore_request(path) == payload and not list(path.glob("*.wav"))
+    cli.label(path, "yield_ready", "Self-authored reply fixture")
+    got = []
+    async def fake(url, request, timeout):
+        got.append(request)
+        yield "yield_ready"
+    monkeypatch.setattr(stream_transport, "text_stream", fake)
+    args = SimpleNamespace(root=tmp_path, current_prompt=current, timeout=1, url="unused")
+    assert await cli.replay(args, cli.cases(tmp_path, reviewed=True)) == 0
+    assert got[0]["messages"][1] == payload["messages"][1]
+    if current:
+        assert got[0]["presence_penalty"] == got[0]["frequency_penalty"] == 0
+    else:
+        assert got[0] == payload

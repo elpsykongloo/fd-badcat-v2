@@ -5,10 +5,60 @@ import time
 from async_utils import cancellable_wait
 
 LABELS = {"judge": ("continue", "switch"), "interrupt": ("continue", "switch"),
-          "shift": ("no", "yes"), "input_route": ("keep", "stop_only", "yield_wait", "yield_ready")}
+          "shift": ("no", "yes"), "input_route": ("keep", "stop_only", "yield_wait", "yield_ready"),
+          "input_reply": ("keep", "yield_ready")}
 FALLBACK = {"judge": "continue", "interrupt": "continue", "shift": "no", "input_route": "keep"}
 ROUTE_PROTOCOL = "transcript-first-v1"
 ROUTE_MAX_OUTPUT = 4096
+REPLY_PROTOCOL = "played-reply-v1"
+
+
+def reply_messages(prompt, transcript, context):
+    # Data stays out of the instruction role. No audio and no generated future
+    # text: this call cannot rewrite the independently obtained transcription.
+    return [{"role": "system", "content": prompt}, {"role": "user", "content":
+        json.dumps({"played_assistant": context, "user_transcript": transcript}, ensure_ascii=False)}]
+
+
+async def decide_input_route(call, messages, timeout, *, playing=False, closed=True,
+                             reply_prompt=None, reply_context=""):
+    """Audio decision + optional text-only reply check share ONE deadline.
+
+    call(messages, stage) includes queue acquisition. The review is one attempt,
+    only promotes a valid nonempty KEEP, and never authorizes STOP/WAIT.
+    """
+    deadline = time.perf_counter() + timeout
+    label, audit = await decide_control(lambda msgs: call(msgs, "input_route"),
+                                        messages, "input_route", timeout)
+    audit["base_label"] = label
+    if not (reply_prompt and playing and closed and reply_context and label == "keep"
+            and not audit["fallback"] and audit.get("transcript", "").strip()):
+        return label, audit
+    review = {"protocol": REPLY_PROTOCOL, "attempts": 0, "fallback": False,
+              "timed_out": False, "label": "keep"}
+    audit["reply_review"] = review
+    remaining = deadline - time.perf_counter()
+    if remaining <= 0:
+        review.update(timed_out=True, fallback=True)
+        return label, audit
+    started = time.perf_counter()
+    try:
+        review["attempts"] = 1
+        raw = await cancellable_wait(call(reply_messages(reply_prompt, audit["transcript"],
+                                                        reply_context), "input_reply"), remaining)
+        review["raw"] = str(raw)[:128]
+        # Deliberately no repair, label extraction, or extra action authority.
+        checked = parse_label("input_reply", raw)
+        if checked is None:
+            review["fallback"] = True
+        else:
+            label = review["label"] = checked
+    except asyncio.TimeoutError:
+        review.update(timed_out=True, fallback=True)
+    except Exception as exc:
+        review.update(error=type(exc).__name__, fallback=True)
+    review["elapsed_ms"] = round((time.perf_counter() - started) * 1000, 3)
+    return label, audit
 
 
 def parse_route(raw):
@@ -40,6 +90,8 @@ def parse_route(raw):
 
 
 def parse_label(kind, raw, *, legacy_route=False):
+    if kind == "input_reply":
+        return raw.strip() if isinstance(raw, str) and raw.strip() in LABELS[kind] else None
     if kind == "input_route" and not legacy_route:
         result = parse_route(raw)
         return result["label"] if result is not None else None

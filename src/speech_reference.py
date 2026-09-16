@@ -8,6 +8,21 @@ from collections import deque
 REFERENCE_CHARS = 512
 
 
+def completed_context(sentences, played):
+    """Last three fully ACKed sentences, bounded without cutting a sentence.
+
+    sentence_end offsets already exist for heard-history tracking. Never infer
+    completion from the next sentence's start or from generated text.
+    """
+    completed = [text for end, text in sentences if end <= played]
+    tail = []
+    for text in reversed(completed[-3:]):
+        if len(text) + sum(map(len, tail)) > REFERENCE_CHARS:
+            break
+        tail.append(text)
+    return "".join(reversed(tail))
+
+
 class SpeechReference:
     def __init__(self):
         self.generated_tail = ""

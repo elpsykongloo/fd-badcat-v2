@@ -95,6 +95,11 @@ async def replay(args, selected):
                     for key in ("presence_penalty", "frequency_penalty"):
                         payload[key] = current[key]
                     row["sampling"] = "current_route_penalties; other saved parameters retained"
+                elif case["kind"] == "input_reply":
+                    from module import qwen_text_payload
+                    current = qwen_text_payload(payload["messages"], route=True)
+                    for key in ("presence_penalty", "frequency_penalty"):
+                        payload[key] = current[key]
             review_path = path / "review.json"
             if review_path.exists():
                 review = json.loads(review_path.read_text())

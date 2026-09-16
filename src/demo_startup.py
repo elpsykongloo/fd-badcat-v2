@@ -22,7 +22,7 @@ async def warmup(prompts, engine_cfg=None):
     from silero_vad import load_silero_vad, VADIterator
     import module
     from messages import build_audio_content
-    from control_labels import parse_label, ROUTE_PROTOCOL
+    from control_labels import parse_label, ROUTE_PROTOCOL, REPLY_PROTOCOL, reply_messages
     from guarded_turns import input_timing, route_messages
 
     timing = input_timing(engine_cfg if (engine_cfg or {}).get("guarded_turns") else {})
@@ -52,6 +52,13 @@ async def warmup(prompts, engine_cfg=None):
                 route_messages(prompts["input_route"], content), route=True)
             if parse_label("input_route", routed) != "yield_ready":
                 raise RuntimeError("Input route warmup rejected the clear self-authored question")
+        if prompts.get("input_reply"):
+            for context, expected in (("请告诉我，你想听童话还是科幻故事。", "yield_ready"),
+                                      ("小猫走进森林，看到一条小河。", "keep")):
+                checked = await asyncio.to_thread(module.llm_qwen3o_strict,
+                    reply_messages(prompts["input_reply"], "都可以", context), route=True)
+                if parse_label("input_reply", checked) != expected:
+                    raise RuntimeError("Played reply warmup failed its semantic control")
         # Exercise the same SSE text and native PCM decoder as the real demo.
         pieces = [p async for p in module.llm_qwen3o_stream([
             {"role": "system", "content": prompts["response"]},
@@ -92,6 +99,7 @@ async def warmup(prompts, engine_cfg=None):
               "bilingual_transcript": checks[0]["recognized"], "tts_chunks": total_chunks,
               "tts_contract": module.VERBATIM_TTS_CONTRACT, "tts_readback_checks": checks,
               "route_protocol": ROUTE_PROTOCOL if prompts.get("input_route") else None,
+              "reply_protocol": REPLY_PROTOCOL if prompts.get("input_reply") else None,
               "input_timing": timing,
               "elapsed_s": round(time.perf_counter() - started, 3)}
     print(json.dumps(result, ensure_ascii=False), flush=True)

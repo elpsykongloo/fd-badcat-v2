@@ -1,0 +1,237 @@
+{
+  "version": "played-reply-v1",
+  "date": "2026-09-16",
+  "pass": true,
+  "implementation": {
+    "audio_protocol": "transcript-first-v1",
+    "review": "same Omni, text-only, one attempt",
+    "context": "last at most three fully ACKed sentences frozen at input onset; <=512 characters, whole units; empty snapshots immutable",
+    "eligible": "closed + playing + valid nonempty audio transcript + base KEEP + completed context",
+    "authority": "KEEP -> YIELD_READY only",
+    "budget": "audio, its one permitted repair, review and capacity waits share the original 2 seconds",
+    "baseline_prompt_unchanged": true,
+    "word_alignment": false,
+    "question_mark_gate": false
+  },
+  "tests": {
+    "pytest_passed": 197,
+    "pytest_s": 2.22,
+    "node_playback_input_telemetry_pass": true,
+    "scope": "targeted tests; not full repository or RB"
+  },
+  "model_regression": {
+    "n": 344,
+    "groups": {
+      "constructed_answer": {
+        "n": 126,
+        "base_correct": 0,
+        "final_correct": 123,
+        "gain": 123,
+        "loss": 0
+      },
+      "constructed_narrative": {
+        "n": 24,
+        "base_correct": 24,
+        "final_correct": 24,
+        "gain": 0,
+        "loss": 0
+      },
+      "constructed_rhetorical": {
+        "n": 24,
+        "base_correct": 24,
+        "final_correct": 24,
+        "gain": 0,
+        "loss": 0
+      },
+      "nonspeech": {
+        "n": 8,
+        "base_correct": 8,
+        "final_correct": 8,
+        "gain": 0,
+        "loss": 0
+      },
+      "original_backchannel": {
+        "n": 60,
+        "base_correct": 59,
+        "final_correct": 59,
+        "gain": 0,
+        "loss": 0
+      },
+      "original_ready": {
+        "n": 40,
+        "base_correct": 38,
+        "final_correct": 38,
+        "gain": 0,
+        "loss": 0
+      },
+      "original_source_stress": {
+        "n": 20,
+        "base_correct": 4,
+        "final_correct": 4,
+        "gain": 0,
+        "loss": 0
+      },
+      "original_stop_wait": {
+        "n": 40,
+        "base_correct": 40,
+        "final_correct": 40,
+        "gain": 0,
+        "loss": 0
+      },
+      "real_after_question_completed": {
+        "n": 1,
+        "base_correct": 0,
+        "final_correct": 1,
+        "gain": 1,
+        "loss": 0
+      },
+      "real_before_question_completed": {
+        "n": 1,
+        "base_correct": 1,
+        "final_correct": 1,
+        "gain": 0,
+        "loss": 0
+      }
+    },
+    "calls": {
+      "input_route": 344,
+      "input_reply": 239
+    },
+    "review_ms_median": 73.146,
+    "errors": 0,
+    "fallbacks": 0,
+    "timeouts": 0,
+    "repairs": 0,
+    "schema_no_corpus_audio_or_transcripts": true,
+    "unique_input_variants": true,
+    "rescore_includes_documented_early_reply_expectation_erratum": true
+  },
+  "semantic_development": {
+    "v1_correct": 18,
+    "v2_correct": 23,
+    "v3_correct": 24,
+    "development_n": 24,
+    "v3_confirmation_correct": 22,
+    "confirmation_n": 24,
+    "v4_confirmation_correct": 24,
+    "reason_first_pilot": {
+      "n": 48,
+      "correct": 47,
+      "adopted": false,
+      "raw_outputs_not_archived": true
+    },
+    "notes": "Confirmation examples that informed v4 are development evidence, not held-out. Initial failures preserved."
+  },
+  "frozen_semantic_holdout": {
+    "n": 16,
+    "correct": 16,
+    "scope": "new self-authored Chinese/English text pairs; no natural audio or physical devices"
+  },
+  "shadow_browser": {
+    "played_reply_browser_v4_20260916": {
+      "protocol": "played-reply-v1",
+      "pass": true,
+      "physical_audio": false,
+      "setup_speech_starts": 2,
+      "setup_cancellations": 1,
+      "question_end_sample": 59775,
+      "page_errors": [],
+      "speech_starts": 3,
+      "cancellations": 2,
+      "reply_responses": 1,
+      "reply_cancellations": 1,
+      "trace_dropped": 0
+    },
+    "played_reply_browser_early_v2_20260916": {
+      "protocol": "played-reply-v1",
+      "pass": true,
+      "physical_audio": false,
+      "setup_speech_starts": 1,
+      "setup_cancellations": 0,
+      "early": true,
+      "old_playback_continued": true,
+      "page_errors": [],
+      "trace_dropped": 0
+    },
+    "guarded": {
+      "version": "guarded-turns-v1",
+      "physical_acoustic_test": false,
+      "pass": true,
+      "cases": [
+        {
+          "case": "echo_only",
+          "pass": true,
+          "reference_frames": 559,
+          "echo_rejected_windows": 35,
+          "page_errors": []
+        },
+        {
+          "case": "wait_continue_stop",
+          "pass": true,
+          "reference_frames": 199,
+          "echo_rejected_windows": 0,
+          "page_errors": []
+        }
+      ]
+    }
+  },
+  "deployed_browser": {
+    "pass": true,
+    "page_errors": [],
+    "reply_responses": 1,
+    "reply_cancellations": 1,
+    "question_end_sample": 65535,
+    "reply_played_samples": 69375,
+    "trace_dropped": 0,
+    "engine_errors": 0,
+    "actual_capture_matches_prompt_and_sampling": true,
+    "actual_review_excludes_unfinished_sentence": true,
+    "call_identity_linked": true,
+    "review_ms": [
+      80.704
+    ]
+  },
+  "deployment": {
+    "tmux": "humdial-demo",
+    "launcher_pid": 7822,
+    "omni_pid": 7826,
+    "proxy_pid": 8655,
+    "backend_pid": 8669,
+    "ports": [
+      "127.0.0.1:10003",
+      "127.0.0.1:10004",
+      "127.0.0.1:18000"
+    ],
+    "validation_ports_closed": [
+      18001,
+      18002
+    ],
+    "logdir": "exp/web_demo/20260916T072102Z-7822",
+    "warmup_s": 3.722,
+    "readback_first_attempt_pass": true,
+    "case_capture_dropped": 0,
+    "case_capture_error": null,
+    "service_left_running": true
+  },
+  "known_validation_failures": [
+    "First browser setup produced only a question and no continued playback; not a test of the target overlap.",
+    "Two syntheses of the longer setup request failed exact normalized ASR readback (initial 请 read as 哎); excluded. Retained fixtures_v2/v3.",
+    "One browser attempt used the failed setup fixture before the fixture preflight was added; excluded.",
+    "Setup request's own VAD continuation cancelled its first answer; harness now waits for settled closed-input decision and current playback, reports setup and reply cancellations separately.",
+    "Early-answer harness originally waited 45s for a requested long story to finish; timed out. Corrected assertion observes continued playback/no cancellation beyond 2.5s instead; final early run passes."
+  ],
+  "limitations": [
+    "126 answer clips reuse prior real recordings with constructed context; not unseen audio or official scores.",
+    "Baseline is the actual first-stage result of each composite request, not an independent rerun.",
+    "Other source contexts are simulated as completed; only the two historical snapshots reconstruct actual ACKs.",
+    "The early historical answer intentionally stays KEEP; original inherited READY expectation was corrected in a separate documented erratum before observing those replay outcomes.",
+    "Third-party attribution remains weak (4/20); incomplete-question answers may stay KEEP.",
+    "No physical laptop microphone or speaker test, no proof of zero real-world regression, no global short-stop fix.",
+    "73.146ms is local median extra review time; not end-to-end or formal serial-eval latency."
+  ],
+  "evidence": {
+    "private_model_rows": "exp/demo_cases/diagnostics/played_reply_release_20260916",
+    "semantic_holdout": "exp/web_demo/played_reply_semantic_holdout_20260916/receipt.json",
+    "deployed": "exp/web_demo/played_reply_deployed_20260916/receipt.json"
+  }
+}

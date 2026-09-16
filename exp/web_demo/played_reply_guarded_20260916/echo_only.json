@@ -1,0 +1,253 @@
+{
+  "case": "echo_only",
+  "pass": true,
+  "session_id": "web-demo-cebbab965f05419ab348603f60c49c9f",
+  "reference_frames": 559,
+  "echo_rejected_windows": 35,
+  "events": [
+    {
+      "event": "demo_ready",
+      "data": {
+        "session_id": "web-demo-cebbab965f05419ab348603f60c49c9f",
+        "protocol": "pcm16.v1",
+        "observability": "demo-trace-v1",
+        "tts_contract": "verbatim-grammar-v2",
+        "case_capture": true,
+        "input_protocol": "pcm16.ref.v1",
+        "guarded_turns": true,
+        "speculative_response": true,
+        "cancellable_response": true,
+        "profile": "chat-demo-v1"
+      }
+    },
+    {
+      "event": "speech_start",
+      "data": {
+        "utterance_id": 1,
+        "turn": 0,
+        "protocol": "pcm16.v1",
+        "buffer_ms": 600,
+        "candidate_id": 1,
+        "timestamp": 3.456
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.456,
+        "text": "你好！今天"
+      }
+    },
+    {
+      "event": "speech_sentence",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.456,
+        "text": "你好！",
+        "start_sample": 0
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.456,
+        "text": "天气不错，适合出去散步。不过最好还是看看你那边的实时天气预报，确保没有下雨"
+      }
+    },
+    {
+      "event": "speech_first_audio",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.456,
+        "sample_rate": 24000,
+        "turn": 0
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.456,
+        "text": "或者"
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.46,
+        "text": "太"
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.476,
+        "text": "热"
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.486,
+        "text": "哦"
+      }
+    },
+    {
+      "event": "speech_text_delta",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.499,
+        "text": "～"
+      }
+    },
+    {
+      "event": "speech_text_done",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.516,
+        "text": "你好！今天天气不错，适合出去散步。不过最好还是看看你那边的实时天气预报，确保没有下雨或者太热哦～",
+        "infer": 0.414,
+        "timed_out": false
+      }
+    },
+    {
+      "event": "speech_playback_started",
+      "data": {
+        "utterance_id": 1,
+        "turn": 0,
+        "candidate_id": 1
+      }
+    },
+    {
+      "event": "speech_sentence",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 3.637,
+        "text": "今天天气不错，适合出去散步。",
+        "start_sample": 16170
+      }
+    },
+    {
+      "event": "asr_done",
+      "data": {
+        "timestamp": 3.684,
+        "turn": 0,
+        "state": "SPEAK",
+        "content": "你好，今天适合出去散步吗？"
+      }
+    },
+    {
+      "event": "speech_sentence",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 6.447,
+        "text": "不过最好还是看看你那边的实时天气预报，确保没有下雨或者太热哦～",
+        "start_sample": 83625
+      }
+    },
+    {
+      "event": "speech_audio_end",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 12.047,
+        "samples": 217725,
+        "rate": 24000,
+        "packets": 232,
+        "elapsed": 8.94510941579938
+      }
+    },
+    {
+      "event": "speech_played",
+      "data": {
+        "utterance_id": 1,
+        "timestamp": 12.625,
+        "played_samples": 217725,
+        "underruns": 0
+      }
+    },
+    {
+      "event": "turn_finished",
+      "data": {
+        "turn": 0,
+        "next_turn": 1,
+        "timestamp": 12.626,
+        "reason": "played"
+      }
+    }
+  ],
+  "stopped_acks": [],
+  "input_decisions": [
+    {
+      "event": "input_decision",
+      "server_ms": 2641.494,
+      "data": {
+        "input_id": 1,
+        "revision": 2,
+        "route": "yield_ready",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "```json\n{\n  \"transcript\": \"你好，今天适合出去散步。\",\n  \"label\": \"yield_ready\"\n}\n```"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false,
+            "protocol": "transcript-first-v1",
+            "transcript": "你好，今天适合出去散步。",
+            "base_label": "yield_ready"
+          },
+          "playing": false,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 0,
+      "turn": 0,
+      "state": "LISTEN",
+      "t_audio": 2.624,
+      "queue_depth": 0
+    },
+    {
+      "event": "input_decision",
+      "server_ms": 3098.857,
+      "data": {
+        "input_id": 1,
+        "revision": 3,
+        "route": "yield_ready",
+        "audit": {
+          "route": {
+            "kind": "input_route",
+            "attempts": 1,
+            "raw": [
+              "```json\n{\n  \"transcript\": \"你好，今天适合出去散步吗？\",\n  \"label\": \"yield_ready\"\n}\n```"
+            ],
+            "errors": [],
+            "repaired": false,
+            "fallback": false,
+            "timed_out": false,
+            "protocol": "transcript-first-v1",
+            "transcript": "你好，今天适合出去散步吗？",
+            "base_label": "yield_ready"
+          },
+          "playing": false,
+          "accounted": true
+        }
+      },
+      "generation": 0,
+      "epoch": 1,
+      "turn": 0,
+      "state": "LISTEN",
+      "t_audio": 3.088,
+      "queue_depth": 0
+    }
+  ],
+  "page_errors": []
+}

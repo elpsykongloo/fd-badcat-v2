@@ -11,10 +11,10 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
-from control_labels import decide_control, ROUTE_PROTOCOL, ROUTE_MAX_OUTPUT
+from control_labels import decide_input_route, ROUTE_PROTOCOL, ROUTE_MAX_OUTPUT, REPLY_PROTOCOL
 from input_audio import EchoEvidence, INPUT_PROTOCOL
 from messages import build_audio_content
-from speech_reference import SpeechReference
+from speech_reference import SpeechReference, completed_context
 
 
 def input_timing(config=None):
@@ -60,6 +60,8 @@ class InputSpan:
     reference_played: int = 0
     end_index: int = None
     preroll_samples: int = 0
+    reply_context: str = ""
+    reply_played_samples: int = 0
 
 
 @dataclass
@@ -157,6 +159,14 @@ class GuardedTurns:
                                  list(self._guard_preroll) + [frame.copy()], held_candidate=held,
                                  preroll_samples=sum(map(len, self._guard_preroll)))
                 self._guard_capture_reference(span)
+                # Freeze once at VAD onset, including an empty snapshot. Later
+                # ACKs/END/first-playback refreshes must never fill in the future.
+                if mode == "playing":
+                    record = self._guard_outputs.get(self._speech.sid, {})
+                    if not record.get("cancelled") and not record.get("completed"):
+                        span.reply_played_samples = self._speech.played
+                        span.reply_context = completed_context(record.get("sentences", []),
+                                                               span.reply_played_samples)
                 self._guard_input = span
                 await self._guard_hold(held, True)
             self.IN_SPEECH = True
@@ -217,35 +227,40 @@ class GuardedTurns:
         self._observe("input_dispatch", {"input_id": span.sid, "revision": revision,
             "closed": closed, "playing": playing, "audio_samples": len(audio),
             "reference_kind": span.reference_kind, "reference_utterance_id": span.reference_sid,
-            "reference_chars": len(span.reference_text), "reference_played_samples": span.reference_played})
+            "reference_chars": len(span.reference_text), "reference_played_samples": span.reference_played,
+            "reply_context_chars": len(span.reply_context), "reply_played_samples": span.reply_played_samples})
         reference_context = {"reference_kind": span.reference_kind,
             "reference_utterance_id": span.reference_sid,
             "reference_played_samples": span.reference_played,
             "route_protocol": ROUTE_PROTOCOL, "reference_sent_to_model": False,
             "input_timing": self.input_timing, "preroll_samples": span.preroll_samples,
             "route_penalties": {"presence": 0.0, "frequency": 0.0}}
+        reply_context = span.reply_context
+        reference_context.update(reply_protocol=REPLY_PROTOCOL,
+            reply_context_chars=len(reply_context), reply_played_samples=span.reply_played_samples)
 
-        async def classify(kind, request):
-            async def call(msgs):
-                parts = []
-                request_kind = "interrupt" if playing else "spec_judge"
-                async with aclosing(self._capacity_stream(request_kind, self.text_stream_fn, msgs, route=True,
-                        case_context={"input_id": span.sid, "revision": revision, "closed": closed,
-                                      "input_generation": gen, "playing": playing,
-                                      **reference_context})) as source:
-                    async for part in source:
-                        parts.append(part)
-                        if sum(map(len, parts)) > ROUTE_MAX_OUTPUT:
-                            raise ValueError("Oversized input decision")
-                return "".join(parts)
-            return await decide_control(call, request, kind,
-                min(self.DECISION_TIMEOUT, float(self.engine_cfg.get("input_decision_timeout_s", 2))))
+        async def call(msgs, stage):
+            parts = []
+            request_kind = "interrupt" if playing else "spec_judge"
+            async with aclosing(self._capacity_stream(request_kind, self.text_stream_fn, msgs, route=True,
+                    case_context={"input_id": span.sid, "revision": revision, "closed": closed,
+                                  "input_generation": gen, "playing": playing,
+                                  **reference_context, "decision_stage": stage,
+                                  "reference_sent_to_model": stage == "input_reply"})) as source:
+                async for part in source:
+                    parts.append(part)
+                    if sum(map(len, parts)) > (128 if stage == "input_reply" else ROUTE_MAX_OUTPUT):
+                        raise ValueError("Oversized input decision")
+            return "".join(parts)
 
         async def run():
             # One typed decision owns admission, stopping and readiness. The
             # original HumDial binary classifier remains the flag-off baseline,
             # not a second veto: an AND gate compounds its false negatives.
-            route, audit = await classify("input_route", messages)
+            route, audit = await decide_input_route(call, messages,
+                min(self.DECISION_TIMEOUT, float(self.engine_cfg.get("input_decision_timeout_s", 2))),
+                playing=playing, closed=closed, reply_prompt=self.prompts.get("input_reply"),
+                reply_context=reply_context)
             return InputDecision(gen, span.sid, revision, closed, route,
                                  {"route": audit, "playing": playing})
 
