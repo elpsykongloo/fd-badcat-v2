@@ -1,0 +1,450 @@
+{
+  "contract": "demo-speaker-embedding-v1",
+  "completed": true,
+  "model": "zl389/w2v-bert-2.0_SV/model_lmft_0.14.pth",
+  "architecture": "w2v-BERT2.0 + merged LoRA + layer adapters + MFA/ASP + LMFT",
+  "strict_checkpoint_load": true,
+  "parameters": 586652736,
+  "embedding_dimension": 256,
+  "dtype": "float32",
+  "batch_size": 1,
+  "torch": "2.11.0+cu130",
+  "transformers": "5.8.1",
+  "device": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+  "preprocessing": "mono, torchaudio resample 16kHz, whole utterance; no VAD/trim/padding",
+  "scoring": "L2 normalized raw cosine; no mean centering, AS-Norm or QMF",
+  "decision_threshold": null,
+  "human_judgment_required": false,
+  "formal_speaker_verification_benchmark": false,
+  "design": {
+    "source": "check_demo_voice_concurrency.py self-authored fixtures",
+    "independent_target_texts": 6,
+    "human_audio": false,
+    "physical_device": false,
+    "pair_dependence": "Repeated texts/shared serial references; not independent identity trials",
+    "negative_speakers": 0,
+    "threshold_calibrated": false
+  },
+  "exclusions": [],
+  "audio_count": 34,
+  "repeat_extraction_max_abs_error": 0.0,
+  "audio": [
+    {
+      "id": "solo-0-a",
+      "duration_s_16k": 2.330625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "solo-0-b",
+      "duration_s_16k": 2.330625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "solo-1-a",
+      "duration_s_16k": 3.050625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "solo-1-b",
+      "duration_s_16k": 3.050625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "solo-2-a",
+      "duration_s_16k": 3.130625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "solo-2-b",
+      "duration_s_16k": 3.130625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "solo-3-a",
+      "duration_s_16k": 3.770625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "solo-3-b",
+      "duration_s_16k": 3.770625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "solo-4-a",
+      "duration_s_16k": 3.770625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "solo-4-b",
+      "duration_s_16k": 3.770625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "solo-5-a",
+      "duration_s_16k": 1.95375,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "solo-5-b",
+      "duration_s_16k": 1.95375,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "mixed-0-0",
+      "duration_s_16k": 2.19375,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "mixed-1-0",
+      "duration_s_16k": 3.130625,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "mixed-2-0",
+      "duration_s_16k": 3.530625,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "legacy-0-0",
+      "duration_s_16k": 4.8675,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "mixed-5-0",
+      "duration_s_16k": 1.95375,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "mixed-3-0",
+      "duration_s_16k": 3.290625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "mixed-4-0",
+      "duration_s_16k": 3.930625,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "legacy-1-0",
+      "duration_s_16k": 4.3875,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "mixed-0-1",
+      "duration_s_16k": 2.19375,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "mixed-1-1",
+      "duration_s_16k": 3.130625,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "mixed-2-1",
+      "duration_s_16k": 4.090625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "legacy-0-1",
+      "duration_s_16k": 4.5475,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "mixed-5-1",
+      "duration_s_16k": 1.87375,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "mixed-3-1",
+      "duration_s_16k": 3.850625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "legacy-1-1",
+      "duration_s_16k": 4.3875,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "mixed-4-1",
+      "duration_s_16k": 5.0275,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "recovery-0",
+      "duration_s_16k": 2.330625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "recovery-1",
+      "duration_s_16k": 3.050625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "recovery-2",
+      "duration_s_16k": 3.130625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "recovery-3",
+      "duration_s_16k": 3.770625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "recovery-4",
+      "duration_s_16k": 3.770625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "recovery-5",
+      "duration_s_16k": 1.95375,
+      "embedding_l2_norm": 1.0
+    }
+  ],
+  "comparisons": [
+    {
+      "group": "serial_repeat",
+      "reference": "solo-0-a",
+      "candidate": "solo-0-b",
+      "cosine": 1.0,
+      "distance": 0.0
+    },
+    {
+      "group": "serial_repeat",
+      "reference": "solo-1-a",
+      "candidate": "solo-1-b",
+      "cosine": 1.0,
+      "distance": 0.0
+    },
+    {
+      "group": "serial_repeat",
+      "reference": "solo-2-a",
+      "candidate": "solo-2-b",
+      "cosine": 1.0,
+      "distance": 0.0
+    },
+    {
+      "group": "serial_repeat",
+      "reference": "solo-3-a",
+      "candidate": "solo-3-b",
+      "cosine": 1.0,
+      "distance": 0.0
+    },
+    {
+      "group": "serial_repeat",
+      "reference": "solo-4-a",
+      "candidate": "solo-4-b",
+      "cosine": 1.0,
+      "distance": 0.0
+    },
+    {
+      "group": "serial_repeat",
+      "reference": "solo-5-a",
+      "candidate": "solo-5-b",
+      "cosine": 1.0,
+      "distance": 0.0
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-0-a",
+      "candidate": "mixed-0-0",
+      "cosine": 0.8911901005703654,
+      "distance": 0.1088098994296346
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-1-a",
+      "candidate": "mixed-1-0",
+      "cosine": 0.9150996828637374,
+      "distance": 0.08490031713626256
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-2-a",
+      "candidate": "mixed-2-0",
+      "cosine": 0.8802133779517671,
+      "distance": 0.11978662204823287
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-3-a",
+      "candidate": "mixed-3-0",
+      "cosine": 0.8632603989294354,
+      "distance": 0.1367396010705646
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-4-a",
+      "candidate": "mixed-4-0",
+      "cosine": 0.8975095767943142,
+      "distance": 0.1024904232056858
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-5-a",
+      "candidate": "mixed-5-0",
+      "cosine": 0.8705749713635926,
+      "distance": 0.12942502863640737
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-2-a",
+      "candidate": "mixed-2-1",
+      "cosine": 0.8910498097855502,
+      "distance": 0.10895019021444985
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-1-a",
+      "candidate": "mixed-1-1",
+      "cosine": 0.9150996828637374,
+      "distance": 0.08490031713626256
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-0-a",
+      "candidate": "mixed-0-1",
+      "cosine": 0.8760903884415706,
+      "distance": 0.12390961155842939
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-5-a",
+      "candidate": "mixed-5-1",
+      "cosine": 0.9362529205073361,
+      "distance": 0.0637470794926639
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-4-a",
+      "candidate": "mixed-4-1",
+      "cosine": 0.8875902750983596,
+      "distance": 0.11240972490164036
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-3-a",
+      "candidate": "mixed-3-1",
+      "cosine": 0.8970276139135422,
+      "distance": 0.10297238608645776
+    },
+    {
+      "group": "recovery",
+      "reference": "solo-0-a",
+      "candidate": "recovery-0",
+      "cosine": 1.0,
+      "distance": 0.0
+    },
+    {
+      "group": "recovery",
+      "reference": "solo-1-a",
+      "candidate": "recovery-1",
+      "cosine": 1.0,
+      "distance": 0.0
+    },
+    {
+      "group": "cross_text_zh",
+      "reference": "solo-0-a",
+      "candidate": "solo-1-a",
+      "cosine": 0.8273974299154987,
+      "distance": 0.1726025700845013
+    },
+    {
+      "group": "recovery",
+      "reference": "solo-2-a",
+      "candidate": "recovery-2",
+      "cosine": 1.0,
+      "distance": 0.0
+    },
+    {
+      "group": "cross_text_zh",
+      "reference": "solo-0-a",
+      "candidate": "solo-2-a",
+      "cosine": 0.8620709348073119,
+      "distance": 0.1379290651926881
+    },
+    {
+      "group": "recovery",
+      "reference": "solo-3-a",
+      "candidate": "recovery-3",
+      "cosine": 1.0,
+      "distance": 0.0
+    },
+    {
+      "group": "cross_text_zh",
+      "reference": "solo-0-a",
+      "candidate": "solo-3-a",
+      "cosine": 0.8166844590121487,
+      "distance": 0.1833155409878513
+    },
+    {
+      "group": "recovery",
+      "reference": "solo-4-a",
+      "candidate": "recovery-4",
+      "cosine": 1.0,
+      "distance": 0.0
+    },
+    {
+      "group": "cross_text_zh",
+      "reference": "solo-0-a",
+      "candidate": "solo-4-a",
+      "cosine": 0.8282498177533453,
+      "distance": 0.17175018224665473
+    },
+    {
+      "group": "recovery",
+      "reference": "solo-5-a",
+      "candidate": "recovery-5",
+      "cosine": 1.0,
+      "distance": 0.0
+    },
+    {
+      "group": "cross_language",
+      "reference": "solo-0-a",
+      "candidate": "solo-5-a",
+      "cosine": 0.7083775601624528,
+      "distance": 0.2916224398375472
+    }
+  ],
+  "summary": {
+    "serial_repeat": {
+      "pairs": 6,
+      "unique_audio_ids": 12,
+      "unique_texts": 6,
+      "mean_cosine": 1.0,
+      "min_cosine": 1.0,
+      "max_cosine": 1.0
+    },
+    "concurrent": {
+      "pairs": 12,
+      "unique_audio_ids": 18,
+      "unique_texts": 6,
+      "mean_cosine": 0.8934132332569423,
+      "min_cosine": 0.8632603989294354,
+      "max_cosine": 0.9362529205073361
+    },
+    "recovery": {
+      "pairs": 6,
+      "unique_audio_ids": 12,
+      "unique_texts": 6,
+      "mean_cosine": 1.0,
+      "min_cosine": 1.0,
+      "max_cosine": 1.0
+    },
+    "cross_text_zh": {
+      "pairs": 4,
+      "unique_audio_ids": 5,
+      "unique_texts": 5,
+      "mean_cosine": 0.8336006603720763,
+      "min_cosine": 0.8166844590121487,
+      "max_cosine": 0.8620709348073119
+    },
+    "cross_language": {
+      "pairs": 1,
+      "unique_audio_ids": 2,
+      "unique_texts": 2,
+      "mean_cosine": 0.7083775601624528,
+      "min_cosine": 0.7083775601624528,
+      "max_cosine": 0.7083775601624528
+    }
+  }
+}

@@ -6,6 +6,7 @@ isolation. Only opted-in Omni MTP calls bypass CUDA graph replay. Never reseed
 the process-global RNG. No sampling-distribution changes for residual codes.
 """
 import ast
+import argparse
 import importlib.util
 from pathlib import Path
 
@@ -24,7 +25,7 @@ def patch_sources(sources):
     if any(marked):
         if not all(marked):
             raise RuntimeError("Partially patched Omni voice adapter; refusing to proceed")
-        return result
+        return patch_trace(result)
     f = "entrypoints/openai/serving_chat.py"
     s = sources[f]
     s = replace_once(s, "        return sampling_params_list\n\n    def _log_inputs(",
@@ -95,6 +96,32 @@ def patch_sources(sources):
     result[f] = s
     for s in result.values():
         ast.parse(s)
+    return patch_trace(result)
+
+
+def patch_trace(sources):
+    result = dict(sources)
+    f = "worker/gpu_model_runner.py"
+    marker = "# fd-badcat: demo-voice-trace-v1"
+    if marker not in result[f]:
+        result[f] = replace_once(result[f],
+            "        # update the inputs_embeds and code_predictor_codes\n",
+            f"""        {marker}
+        from vllm_omni.fd_demo_voice import trace_mtp
+        trace_mtp(self, decode_req_ids, req_input_ids, last_talker_hidden, text_step, code_predictor_codes)
+        # update the inputs_embeds and code_predictor_codes
+""")
+        ast.parse(result[f])
+    marker = "# fd-badcat: demo-native-numerics-v1"
+    if marker not in result[f]:
+        result[f] = replace_once(result[f],
+            "        super().load_model(*args, **kwargs)\n",
+            f"""        {marker}
+        from vllm_omni.fd_demo_voice import configure_native_numerics
+        configure_native_numerics(self.model_config.model_stage)
+        super().load_model(*args, **kwargs)
+""")
+        ast.parse(result[f])
     return result
 
 
@@ -103,7 +130,29 @@ FILES = ("entrypoints/openai/serving_chat.py", "worker/gpu_model_runner.py",
          "model_executor/models/qwen3_omni/qwen3_omni_moe_talker.py")
 
 
+def write_talker_numerics_deploy(source, target, mode):
+    """Derive a local config; keep the shared/frozen YAML untouched."""
+    import yaml
+    if Path(source).resolve() == Path(target).resolve():
+        raise ValueError("Demo deployment must not overwrite its source config")
+    if mode not in ("native", "invariant"):
+        raise ValueError("Demo Talker numerical mode must be native or invariant")
+    config = yaml.safe_load(Path(source).read_text())
+    stages = config.get("stages", [])
+    if [stage.get("stage_id") for stage in stages] != [0, 1, 2]:
+        raise ValueError("Demo Talker mode requires the three-stage Omni deployment")
+    env = dict(stages[1].get("env") or {})
+    env.pop("VLLM_BATCH_INVARIANT", None)
+    env.pop("FDBC_DEMO_TALKER_NATIVE_NUMERICS", None)
+    env["FDBC_DEMO_TALKER_NATIVE_NUMERICS" if mode == "native" else "VLLM_BATCH_INVARIANT"] = "1"
+    stages[1]["env"] = env
+    Path(target).write_text(yaml.safe_dump(config, sort_keys=False))
+
+
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--talker-numerics-deploy", nargs=3, metavar=("MODE", "SOURCE", "TARGET"))
+    args = parser.parse_args()
     spec = importlib.util.find_spec("vllm_omni")
     if spec is None or not spec.submodule_search_locations:
         raise SystemExit("vllm_omni not installed")
@@ -116,7 +165,10 @@ def main():
     for f, source in patched.items():
         if source != sources[f]:
             (root / f).write_text(source)
-    print("Omni demo voice adapter ready (request opt-in only)")
+    if args.talker_numerics_deploy:
+        mode, source, target = args.talker_numerics_deploy
+        write_talker_numerics_deploy(source, target, mode)
+    print("Omni demo voice adapter ready (request RNG opt-in; optional Talker process numerics)")
 
 
 if __name__ == "__main__":

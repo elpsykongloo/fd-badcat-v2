@@ -1,0 +1,21 @@
+{
+  "source": "Live worker process environments, only these two diagnostic keys inspected",
+  "stages": [
+    {
+      "stage_id": 0,
+      "VLLM_BATCH_INVARIANT": "unset",
+      "trace_enabled": false
+    },
+    {
+      "stage_id": 1,
+      "VLLM_BATCH_INVARIANT": "1",
+      "trace_enabled": false
+    },
+    {
+      "stage_id": 2,
+      "VLLM_BATCH_INVARIANT": "unset",
+      "trace_enabled": false
+    }
+  ],
+  "launcher_flag": "FDBC_DEMO_TALKER_BATCH_INVARIANT=1"
+}

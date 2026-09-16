@@ -1,0 +1,13 @@
+{
+  "source": "Final startup log and live stage-native flag check",
+  "launcher_mode": "native",
+  "stage_native_flags": [
+    "unset",
+    "1",
+    "unset"
+  ],
+  "one_talker_initialization_confirmed": true,
+  "bf16_reduced": false,
+  "bf16_split_k": false,
+  "note": "Public launcher variables need not propagate to every worker; actual stage env and initialized torch policy are checked."
+}

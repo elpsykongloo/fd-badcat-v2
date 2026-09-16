@@ -1,0 +1,414 @@
+{
+  "comparison": "same-text traces aligned by residual decode step; no waveform alignment",
+  "limitation": "Tracing copies tensors to CPU and perturbs timing; earliest observed boundary, not full causal attribution",
+  "comparisons": [
+    {
+      "group": "serial_repeat",
+      "reference": "solo-0-a",
+      "candidate": "solo-0-b",
+      "pcm_equal": true,
+      "trace_steps": [
+        35,
+        35
+      ],
+      "max_active_requests": 1,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "serial_repeat",
+      "reference": "solo-1-a",
+      "candidate": "solo-1-b",
+      "pcm_equal": true,
+      "trace_steps": [
+        41,
+        41
+      ],
+      "max_active_requests": 1,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "serial_repeat",
+      "reference": "solo-2-a",
+      "candidate": "solo-2-b",
+      "pcm_equal": true,
+      "trace_steps": [
+        49,
+        49
+      ],
+      "max_active_requests": 1,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "serial_repeat",
+      "reference": "solo-3-a",
+      "candidate": "solo-3-b",
+      "pcm_equal": true,
+      "trace_steps": [
+        49,
+        49
+      ],
+      "max_active_requests": 1,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "serial_repeat",
+      "reference": "solo-4-a",
+      "candidate": "solo-4-b",
+      "pcm_equal": true,
+      "trace_steps": [
+        53,
+        53
+      ],
+      "max_active_requests": 1,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "serial_repeat",
+      "reference": "solo-5-a",
+      "candidate": "solo-5-b",
+      "pcm_equal": true,
+      "trace_steps": [
+        25,
+        25
+      ],
+      "max_active_requests": 1,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-0-a",
+      "candidate": "mixed-0-0",
+      "pcm_equal": true,
+      "trace_steps": [
+        35,
+        35
+      ],
+      "max_active_requests": 4,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-1-a",
+      "candidate": "mixed-1-0",
+      "pcm_equal": false,
+      "trace_steps": [
+        41,
+        41
+      ],
+      "max_active_requests": 4,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-2-a",
+      "candidate": "mixed-2-0",
+      "pcm_equal": false,
+      "trace_steps": [
+        49,
+        49
+      ],
+      "max_active_requests": 4,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-3-a",
+      "candidate": "mixed-3-0",
+      "pcm_equal": true,
+      "trace_steps": [
+        49,
+        49
+      ],
+      "max_active_requests": 4,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-4-a",
+      "candidate": "mixed-4-0",
+      "pcm_equal": false,
+      "trace_steps": [
+        53,
+        53
+      ],
+      "max_active_requests": 4,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-5-a",
+      "candidate": "mixed-5-0",
+      "pcm_equal": false,
+      "trace_steps": [
+        25,
+        25
+      ],
+      "max_active_requests": 4,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-2-a",
+      "candidate": "mixed-2-1",
+      "pcm_equal": false,
+      "trace_steps": [
+        49,
+        49
+      ],
+      "max_active_requests": 4,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-1-a",
+      "candidate": "mixed-1-1",
+      "pcm_equal": false,
+      "trace_steps": [
+        41,
+        41
+      ],
+      "max_active_requests": 4,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-0-a",
+      "candidate": "mixed-0-1",
+      "pcm_equal": false,
+      "trace_steps": [
+        35,
+        35
+      ],
+      "max_active_requests": 4,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-5-a",
+      "candidate": "mixed-5-1",
+      "pcm_equal": true,
+      "trace_steps": [
+        25,
+        25
+      ],
+      "max_active_requests": 4,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-4-a",
+      "candidate": "mixed-4-1",
+      "pcm_equal": false,
+      "trace_steps": [
+        53,
+        53
+      ],
+      "max_active_requests": 4,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-3-a",
+      "candidate": "mixed-3-1",
+      "pcm_equal": false,
+      "trace_steps": [
+        49,
+        49
+      ],
+      "max_active_requests": 4,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "recovery",
+      "reference": "solo-0-a",
+      "candidate": "recovery-0",
+      "pcm_equal": true,
+      "trace_steps": [
+        35,
+        35
+      ],
+      "max_active_requests": 1,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "recovery",
+      "reference": "solo-1-a",
+      "candidate": "recovery-1",
+      "pcm_equal": true,
+      "trace_steps": [
+        41,
+        41
+      ],
+      "max_active_requests": 1,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "recovery",
+      "reference": "solo-2-a",
+      "candidate": "recovery-2",
+      "pcm_equal": true,
+      "trace_steps": [
+        49,
+        49
+      ],
+      "max_active_requests": 1,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "recovery",
+      "reference": "solo-3-a",
+      "candidate": "recovery-3",
+      "pcm_equal": true,
+      "trace_steps": [
+        49,
+        49
+      ],
+      "max_active_requests": 1,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "recovery",
+      "reference": "solo-4-a",
+      "candidate": "recovery-4",
+      "pcm_equal": true,
+      "trace_steps": [
+        53,
+        53
+      ],
+      "max_active_requests": 1,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    },
+    {
+      "group": "recovery",
+      "reference": "solo-5-a",
+      "candidate": "recovery-5",
+      "pcm_equal": true,
+      "trace_steps": [
+        25,
+        25
+      ],
+      "max_active_requests": 1,
+      "primary_first_difference": null,
+      "codes_first_difference": null,
+      "hidden_first_difference": null,
+      "text_first_difference": null,
+      "primary_rng_offset_first_difference": null,
+      "residual_rng_offset_first_difference": null
+    }
+  ]
+}

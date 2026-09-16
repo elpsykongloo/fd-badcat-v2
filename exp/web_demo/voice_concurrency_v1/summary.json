@@ -1,0 +1,231 @@
+{
+  "formal_benchmark": false,
+  "human_audio": false,
+  "physical_device": false,
+  "complete_probe_requests": 238,
+  "additional_tts_canaries": 2,
+  "conditions": {
+    "baseline": {
+      "complete_requests": 34,
+      "independent_target_texts": 6,
+      "concurrent_pairs": 12,
+      "pcm_equal": 0,
+      "speaker": {
+        "pairs": 12,
+        "unique_audio_ids": 18,
+        "unique_texts": 6,
+        "mean_cosine": 0.8953610594763196,
+        "min_cosine": 0.8368783816947478,
+        "max_cosine": 0.9362529205073361
+      },
+      "asr_normalized_exact": 27,
+      "controlled_asr_normalized_exact": 23,
+      "controlled_requests": 30,
+      "max_duration_delta_s": 1.256875,
+      "max_f0_median_delta_hz": 16.977928692699464,
+      "zh_cross_text": {
+        "pairs": 4,
+        "unique_audio_ids": 5,
+        "unique_texts": 5,
+        "mean_cosine": 0.8336006603720763,
+        "min_cosine": 0.8166844590121487,
+        "max_cosine": 0.8620709348073119
+      }
+    },
+    "talker_invariant": {
+      "complete_requests": 34,
+      "independent_target_texts": 6,
+      "concurrent_pairs": 12,
+      "pcm_equal": 3,
+      "speaker": {
+        "pairs": 12,
+        "unique_audio_ids": 18,
+        "unique_texts": 6,
+        "mean_cosine": 0.9999214920436894,
+        "min_cosine": 0.9997709296246337,
+        "max_cosine": 1.0
+      },
+      "asr_normalized_exact": 29,
+      "controlled_asr_normalized_exact": 25,
+      "controlled_requests": 30,
+      "max_duration_delta_s": 0.0,
+      "max_f0_median_delta_hz": 0.0,
+      "zh_cross_text": {
+        "pairs": 4,
+        "unique_audio_ids": 5,
+        "unique_texts": 5,
+        "mean_cosine": 0.8128671909704743,
+        "min_cosine": 0.7946620231416297,
+        "max_cosine": 0.8522984278580812
+      }
+    },
+    "untraced_baseline": {
+      "complete_requests": 34,
+      "independent_target_texts": 6,
+      "concurrent_pairs": 12,
+      "pcm_equal": 0,
+      "speaker": {
+        "pairs": 12,
+        "unique_audio_ids": 18,
+        "unique_texts": 6,
+        "mean_cosine": 0.8934132332569423,
+        "min_cosine": 0.8632603989294354,
+        "max_cosine": 0.9362529205073361
+      },
+      "asr_normalized_exact": 28,
+      "controlled_asr_normalized_exact": 24,
+      "controlled_requests": 30,
+      "max_duration_delta_s": 1.256875,
+      "max_f0_median_delta_hz": 16.977928692699464,
+      "zh_cross_text": {
+        "pairs": 4,
+        "unique_audio_ids": 5,
+        "unique_texts": 5,
+        "mean_cosine": 0.8336006603720763,
+        "min_cosine": 0.8166844590121487,
+        "max_cosine": 0.8620709348073119
+      },
+      "warm_serial_diagnostic": {
+        "samples": 6,
+        "first_pcm_median_s": 0.22658883780241013,
+        "total_median_s": 1.0463245119899511,
+        "rtf_median": 0.3385300848829329
+      }
+    },
+    "untraced_invariant": {
+      "complete_requests": 34,
+      "independent_target_texts": 6,
+      "concurrent_pairs": 12,
+      "pcm_equal": 5,
+      "speaker": {
+        "pairs": 12,
+        "unique_audio_ids": 18,
+        "unique_texts": 6,
+        "mean_cosine": 0.9999415084442833,
+        "min_cosine": 0.9997878155023434,
+        "max_cosine": 1.0
+      },
+      "asr_normalized_exact": 29,
+      "controlled_asr_normalized_exact": 25,
+      "controlled_requests": 30,
+      "max_duration_delta_s": 0.0,
+      "max_f0_median_delta_hz": 0.0,
+      "zh_cross_text": {
+        "pairs": 4,
+        "unique_audio_ids": 5,
+        "unique_texts": 5,
+        "mean_cosine": 0.8128671909704743,
+        "min_cosine": 0.7946620231416297,
+        "max_cosine": 0.8522984278580812
+      },
+      "warm_serial_diagnostic": {
+        "samples": 6,
+        "first_pcm_median_s": 0.42789313942193985,
+        "total_median_s": 3.4123761393129826,
+        "rtf_median": 0.9969532779623267
+      }
+    },
+    "cublas": {
+      "complete_requests": 34,
+      "independent_target_texts": 6,
+      "concurrent_pairs": 12,
+      "pcm_equal": 0,
+      "speaker": {
+        "pairs": 12,
+        "unique_audio_ids": 18,
+        "unique_texts": 6,
+        "mean_cosine": 0.8780510514613565,
+        "min_cosine": 0.854126594022045,
+        "max_cosine": 0.9147275719447922
+      },
+      "asr_normalized_exact": 29,
+      "controlled_asr_normalized_exact": 25,
+      "controlled_requests": 30,
+      "max_duration_delta_s": 0.31999999999999984,
+      "max_f0_median_delta_hz": 45.234011271747136,
+      "zh_cross_text": {
+        "pairs": 4,
+        "unique_audio_ids": 5,
+        "unique_texts": 5,
+        "mean_cosine": 0.8165358612497855,
+        "min_cosine": 0.79539154134064,
+        "max_cosine": 0.8522596556075932
+      },
+      "warm_serial_diagnostic": {
+        "samples": 6,
+        "first_pcm_median_s": 0.42513004317879677,
+        "total_median_s": 3.1714189145714045,
+        "rtf_median": 0.9754525078854502
+      }
+    },
+    "native": {
+      "complete_requests": 34,
+      "independent_target_texts": 6,
+      "concurrent_pairs": 12,
+      "pcm_equal": 5,
+      "speaker": {
+        "pairs": 12,
+        "unique_audio_ids": 18,
+        "unique_texts": 6,
+        "mean_cosine": 0.9999420701659391,
+        "min_cosine": 0.9997878155023434,
+        "max_cosine": 1.0
+      },
+      "asr_normalized_exact": 28,
+      "controlled_asr_normalized_exact": 25,
+      "controlled_requests": 30,
+      "max_duration_delta_s": 0.0,
+      "max_f0_median_delta_hz": 0.0,
+      "zh_cross_text": {
+        "pairs": 4,
+        "unique_audio_ids": 5,
+        "unique_texts": 5,
+        "mean_cosine": 0.8128671909704743,
+        "min_cosine": 0.7946620231416297,
+        "max_cosine": 0.8522984278580812
+      },
+      "warm_serial_diagnostic": {
+        "samples": 6,
+        "first_pcm_median_s": 0.23734192363917828,
+        "total_median_s": 1.1504177637398243,
+        "rtf_median": 0.33669732150775433
+      }
+    },
+    "final_native": {
+      "complete_requests": 34,
+      "independent_target_texts": 6,
+      "concurrent_pairs": 12,
+      "pcm_equal": 7,
+      "speaker": {
+        "pairs": 12,
+        "unique_audio_ids": 18,
+        "unique_texts": 6,
+        "mean_cosine": 0.9999569127001352,
+        "min_cosine": 0.9997709296246337,
+        "max_cosine": 1.0
+      },
+      "asr_normalized_exact": 29,
+      "controlled_asr_normalized_exact": 25,
+      "controlled_requests": 30,
+      "max_duration_delta_s": 0.0,
+      "max_f0_median_delta_hz": 0.0,
+      "zh_cross_text": {
+        "pairs": 4,
+        "unique_audio_ids": 5,
+        "unique_texts": 5,
+        "mean_cosine": 0.8128671909704743,
+        "min_cosine": 0.7946620231416297,
+        "max_cosine": 0.8522984278580812
+      }
+    }
+  },
+  "additional_failed_connection_attempts": 1,
+  "failure_receipts": [
+    "startup_failures.json",
+    "untraced_invariant_startup_race/receipt.json"
+  ],
+  "selected_mode": "native",
+  "demo_default": "native",
+  "generic_launcher_default": "off",
+  "note": "All complete synthesis outputs retained. Repeated texts/shared references are not independent identity trials. Timing is same-host seq4 engineering diagnostic, not formal latency benchmark."
+}

@@ -4,6 +4,8 @@
 
 模型仍运行在 GPU 服务器；笔记本浏览器负责录音、播放与页面展示。使用 HumDial ActorEngine，展示启动器默认选择独立 `chat-demo-v1` 配置：自然中英聊天、双语 ASR、播放后轮次收尾与启动预热，并启用完整候选投机和开播前续说撤销。原 HumDial 评测配置及默认关闭的行为开关保留。
 
+声音数值模式：启动器默认 `FDBC_DEMO_TALKER_NUMERICS=native`，仅给 Talker 设置 cuBLASLt 与 BF16 归约策略，保留四路批处理；显式 `off` 可恢复原模式，`invariant` 只作较慢的完整数值对照。需要重启 Omni，`--backend-only` 不会改变既有推理服务。机制、自动嵌入比较及开销见 [并发声音报告](demo_voice_concurrency.md)。
+
 ## 1. 在服务器启动
 
 先用平时的 SSH 方式登录服务器。建议在 `tmux` 中运行，避免 SSH 断开后模型退出：

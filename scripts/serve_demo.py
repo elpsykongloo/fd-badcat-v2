@@ -114,6 +114,7 @@ def main():
                    FDBC_VLLM_URL="http://127.0.0.1:10003/v1/chat/completions",
                    FDBC_DEMO_VOICE_ADAPTER="1",
                    PYTHONUNBUFFERED="1")
+        env.setdefault("FDBC_DEMO_TALKER_NUMERICS", "native")
         for key in ("OMP_NUM_THREADS", "MKL_NUM_THREADS"):
             if env.get(key, "") in ("", "0"):
                 env[key] = "8"

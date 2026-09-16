@@ -1,0 +1,19 @@
+{
+  "scope": "Two actual demo TTS startup canaries; not full browser/control warmup",
+  "human_audio": false,
+  "physical_device": false,
+  "checks": [
+    {
+      "expected": "你好。Hello, how are you?",
+      "recognized": "你好，hello ,how are you.",
+      "first_attempt_matched": true,
+      "chunks": 3
+    },
+    {
+      "expected": "你能告诉我你在哪个城市吗？\r\n\t",
+      "recognized": "你能告诉我你在哪个城市吗？",
+      "first_attempt_matched": true,
+      "chunks": 2
+    }
+  ]
+}

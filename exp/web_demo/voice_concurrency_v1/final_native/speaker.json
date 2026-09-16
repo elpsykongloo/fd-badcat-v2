@@ -1,0 +1,450 @@
+{
+  "contract": "demo-speaker-embedding-v1",
+  "completed": true,
+  "model": "zl389/w2v-bert-2.0_SV/model_lmft_0.14.pth",
+  "architecture": "w2v-BERT2.0 + merged LoRA + layer adapters + MFA/ASP + LMFT",
+  "strict_checkpoint_load": true,
+  "parameters": 586652736,
+  "embedding_dimension": 256,
+  "dtype": "float32",
+  "batch_size": 1,
+  "torch": "2.11.0+cu130",
+  "transformers": "5.8.1",
+  "device": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+  "preprocessing": "mono, torchaudio resample 16kHz, whole utterance; no VAD/trim/padding",
+  "scoring": "L2 normalized raw cosine; no mean centering, AS-Norm or QMF",
+  "decision_threshold": null,
+  "human_judgment_required": false,
+  "formal_speaker_verification_benchmark": false,
+  "design": {
+    "source": "check_demo_voice_concurrency.py self-authored fixtures",
+    "independent_target_texts": 6,
+    "human_audio": false,
+    "physical_device": false,
+    "pair_dependence": "Repeated texts/shared serial references; not independent identity trials",
+    "negative_speakers": 0,
+    "threshold_calibrated": false
+  },
+  "exclusions": [],
+  "audio_count": 34,
+  "repeat_extraction_max_abs_error": 0.0,
+  "audio": [
+    {
+      "id": "solo-0-a",
+      "duration_s_16k": 2.650625,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "solo-0-b",
+      "duration_s_16k": 2.650625,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "solo-1-a",
+      "duration_s_16k": 3.130625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "solo-1-b",
+      "duration_s_16k": 3.130625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "solo-2-a",
+      "duration_s_16k": 3.770625,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "solo-2-b",
+      "duration_s_16k": 3.770625,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "solo-3-a",
+      "duration_s_16k": 3.770625,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "solo-3-b",
+      "duration_s_16k": 3.770625,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "solo-4-a",
+      "duration_s_16k": 4.090625,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "solo-4-b",
+      "duration_s_16k": 4.090625,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "solo-5-a",
+      "duration_s_16k": 1.87375,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "solo-5-b",
+      "duration_s_16k": 1.87375,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "mixed-0-0",
+      "duration_s_16k": 2.650625,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "mixed-1-0",
+      "duration_s_16k": 3.130625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "mixed-2-0",
+      "duration_s_16k": 3.770625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "legacy-0-0",
+      "duration_s_16k": 4.7875,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "mixed-5-0",
+      "duration_s_16k": 1.87375,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "mixed-3-0",
+      "duration_s_16k": 3.770625,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "mixed-4-0",
+      "duration_s_16k": 4.090625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "legacy-1-0",
+      "duration_s_16k": 5.5075,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "mixed-0-1",
+      "duration_s_16k": 2.650625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "mixed-1-1",
+      "duration_s_16k": 3.130625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "mixed-2-1",
+      "duration_s_16k": 3.770625,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "legacy-0-1",
+      "duration_s_16k": 4.9475,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "mixed-5-1",
+      "duration_s_16k": 1.87375,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "mixed-3-1",
+      "duration_s_16k": 3.770625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "mixed-4-1",
+      "duration_s_16k": 4.090625,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "legacy-1-1",
+      "duration_s_16k": 4.7875,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "recovery-0",
+      "duration_s_16k": 2.650625,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "recovery-1",
+      "duration_s_16k": 3.130625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "recovery-2",
+      "duration_s_16k": 3.770625,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "recovery-3",
+      "duration_s_16k": 3.770625,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "recovery-4",
+      "duration_s_16k": 4.090625,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "recovery-5",
+      "duration_s_16k": 1.87375,
+      "embedding_l2_norm": 1.0
+    }
+  ],
+  "comparisons": [
+    {
+      "group": "serial_repeat",
+      "reference": "solo-0-a",
+      "candidate": "solo-0-b",
+      "cosine": 0.9999999999999999,
+      "distance": 1.1102230246251565e-16
+    },
+    {
+      "group": "serial_repeat",
+      "reference": "solo-1-a",
+      "candidate": "solo-1-b",
+      "cosine": 1.0,
+      "distance": 0.0
+    },
+    {
+      "group": "serial_repeat",
+      "reference": "solo-2-a",
+      "candidate": "solo-2-b",
+      "cosine": 0.9999999999999998,
+      "distance": 2.220446049250313e-16
+    },
+    {
+      "group": "serial_repeat",
+      "reference": "solo-3-a",
+      "candidate": "solo-3-b",
+      "cosine": 0.9999999999999998,
+      "distance": 2.220446049250313e-16
+    },
+    {
+      "group": "serial_repeat",
+      "reference": "solo-4-a",
+      "candidate": "solo-4-b",
+      "cosine": 0.9999999999999999,
+      "distance": 1.1102230246251565e-16
+    },
+    {
+      "group": "serial_repeat",
+      "reference": "solo-5-a",
+      "candidate": "solo-5-b",
+      "cosine": 1.0,
+      "distance": 0.0
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-0-a",
+      "candidate": "mixed-0-0",
+      "cosine": 0.9999999999999999,
+      "distance": 1.1102230246251565e-16
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-1-a",
+      "candidate": "mixed-1-0",
+      "cosine": 1.0,
+      "distance": 0.0
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-2-a",
+      "candidate": "mixed-2-0",
+      "cosine": 0.9999259635212061,
+      "distance": 7.403647879389297e-05
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-3-a",
+      "candidate": "mixed-3-0",
+      "cosine": 0.9999999999999998,
+      "distance": 2.220446049250313e-16
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-4-a",
+      "candidate": "mixed-4-0",
+      "cosine": 0.9999707846826319,
+      "distance": 2.9215317368103122e-05
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-5-a",
+      "candidate": "mixed-5-0",
+      "cosine": 0.9997709296246337,
+      "distance": 0.000229070375366347
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-2-a",
+      "candidate": "mixed-2-1",
+      "cosine": 0.9999999999999998,
+      "distance": 2.220446049250313e-16
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-1-a",
+      "candidate": "mixed-1-1",
+      "cosine": 1.0,
+      "distance": 0.0
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-0-a",
+      "candidate": "mixed-0-1",
+      "cosine": 0.9999217197921142,
+      "distance": 7.828020788580581e-05
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-5-a",
+      "candidate": "mixed-5-1",
+      "cosine": 1.0,
+      "distance": 0.0
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-4-a",
+      "candidate": "mixed-4-1",
+      "cosine": 0.9999999999999999,
+      "distance": 1.1102230246251565e-16
+    },
+    {
+      "group": "concurrent",
+      "reference": "solo-3-a",
+      "candidate": "mixed-3-1",
+      "cosine": 0.9998935547810369,
+      "distance": 0.00010644521896308046
+    },
+    {
+      "group": "recovery",
+      "reference": "solo-0-a",
+      "candidate": "recovery-0",
+      "cosine": 0.9999999999999999,
+      "distance": 1.1102230246251565e-16
+    },
+    {
+      "group": "recovery",
+      "reference": "solo-1-a",
+      "candidate": "recovery-1",
+      "cosine": 1.0,
+      "distance": 0.0
+    },
+    {
+      "group": "cross_text_zh",
+      "reference": "solo-0-a",
+      "candidate": "solo-1-a",
+      "cosine": 0.7946620231416297,
+      "distance": 0.2053379768583703
+    },
+    {
+      "group": "recovery",
+      "reference": "solo-2-a",
+      "candidate": "recovery-2",
+      "cosine": 0.9999999999999998,
+      "distance": 2.220446049250313e-16
+    },
+    {
+      "group": "cross_text_zh",
+      "reference": "solo-0-a",
+      "candidate": "solo-2-a",
+      "cosine": 0.8522984278580812,
+      "distance": 0.1477015721419188
+    },
+    {
+      "group": "recovery",
+      "reference": "solo-3-a",
+      "candidate": "recovery-3",
+      "cosine": 0.9999999999999998,
+      "distance": 2.220446049250313e-16
+    },
+    {
+      "group": "cross_text_zh",
+      "reference": "solo-0-a",
+      "candidate": "solo-3-a",
+      "cosine": 0.8004277633565757,
+      "distance": 0.19957223664342427
+    },
+    {
+      "group": "recovery",
+      "reference": "solo-4-a",
+      "candidate": "recovery-4",
+      "cosine": 0.9999999999999999,
+      "distance": 1.1102230246251565e-16
+    },
+    {
+      "group": "cross_text_zh",
+      "reference": "solo-0-a",
+      "candidate": "solo-4-a",
+      "cosine": 0.8040805495256107,
+      "distance": 0.1959194504743893
+    },
+    {
+      "group": "recovery",
+      "reference": "solo-5-a",
+      "candidate": "recovery-5",
+      "cosine": 1.0,
+      "distance": 0.0
+    },
+    {
+      "group": "cross_language",
+      "reference": "solo-0-a",
+      "candidate": "solo-5-a",
+      "cosine": 0.6620904847514797,
+      "distance": 0.3379095152485203
+    }
+  ],
+  "summary": {
+    "serial_repeat": {
+      "pairs": 6,
+      "unique_audio_ids": 12,
+      "unique_texts": 6,
+      "mean_cosine": 1.0,
+      "min_cosine": 0.9999999999999998,
+      "max_cosine": 1.0
+    },
+    "concurrent": {
+      "pairs": 12,
+      "unique_audio_ids": 18,
+      "unique_texts": 6,
+      "mean_cosine": 0.9999569127001352,
+      "min_cosine": 0.9997709296246337,
+      "max_cosine": 1.0
+    },
+    "recovery": {
+      "pairs": 6,
+      "unique_audio_ids": 12,
+      "unique_texts": 6,
+      "mean_cosine": 1.0,
+      "min_cosine": 0.9999999999999998,
+      "max_cosine": 1.0
+    },
+    "cross_text_zh": {
+      "pairs": 4,
+      "unique_audio_ids": 5,
+      "unique_texts": 5,
+      "mean_cosine": 0.8128671909704743,
+      "min_cosine": 0.7946620231416297,
+      "max_cosine": 0.8522984278580812
+    },
+    "cross_language": {
+      "pairs": 1,
+      "unique_audio_ids": 2,
+      "unique_texts": 2,
+      "mean_cosine": 0.6620904847514797,
+      "min_cosine": 0.6620904847514797,
+      "max_cosine": 0.6620904847514797
+    }
+  }
+}

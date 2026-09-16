@@ -128,7 +128,7 @@ Manifest 包含 `audio: [{id,path,text?}]` 和 `pairs: [{group,reference,candida
 
 同句受控串行 cosine=1 与 PCM 完全一致相符；单纯固定 speaker 不消除本样本的嵌入波动。并发下不仅 PCM 不同，嵌入也发生变化；但这些分数不足以判定身份切换或主观不自然。跨句受控均值较高仅为该文本对的描述，**不能据两句、四次重复宣称跨文本音色问题已解决**。
 
-下一步迭代以这套自动指标为固定观测：扩大自造中文文本覆盖及固定参考，再对剩余并发差异定位最早出现分歧的生成阶段；保留 ASR、F0、时长约束，避免通过牺牲内容/韵律来提高 speaker cosine。不要因尚未校准的余弦分数直接修改线上判定或引入重训练。
+后续已扩大到六个目标文本，并定位、修复该组样本中的 Talker 并发数值漂移，详见 [并发声音诊断与 native 修复](demo_voice_concurrency.md)。demo 启动器默认 `FDBC_DEMO_TALKER_NUMERICS=native`，普通部署默认关闭。仍保留 ASR、F0、时长约束；跨文本身份一致性与自然度不能由这组未校准 cosine 自动宣告解决，不据此修改线上决策或引入重训练。
 
 实现核验：全部推理权重严格加载；本地适配与原 WeSpeaker `W2VBert_Adapter_MFA`/`ASP`（代码版本 `dfa7419`）及 Transformers 标准 backbone forward，在3段自造音频上 FP32 嵌入最大绝对差均为0；评测器穿插45条后的重复提取最大绝对差为0。13项输入/计分/重采样边界测试通过。这不是完整 VoxCeleb benchmark 复现。
 

@@ -18,9 +18,6 @@ eval "$(conda shell.bash hook)"
 conda activate "${QWEN_ENV_NAME:-fdbc-qwen3o-vllm}"
 python "$ROOT_DIR/scripts/patch_prometheus_instrumentator.py"
 python "$ROOT_DIR/scripts/patch_omni_verbatim_tts.py"
-if [[ "${FDBC_DEMO_VOICE_ADAPTER:-0}" == "1" ]]; then
-    python "$ROOT_DIR/scripts/patch_omni_demo_voice.py"
-fi
 
 MODEL_DIR="${QWEN_MODEL_DIR:-$ROOT_DIR/model/Qwen3-Omni-30B-A3B-Instruct}"
 SERVED_MODEL_NAME="${FDBC_QWEN_MODEL:-Qwen3-Omni-30B-A3B-Instruct}"
@@ -31,6 +28,26 @@ TP_SIZE="${QWEN_TP:-1}"
 MAX_MODEL_LEN="${QWEN_MAX_MODEL_LEN-32768}"
 GPU_MEMORY_UTILIZATION="${QWEN_GPU_MEMORY_UTILIZATION-0.78}"
 SCHEDULING_POLICY="${QWEN_SCHEDULING_POLICY:-fcfs}"
+
+# Only the demo opts in. Derive the stage env from the caller's existing YAML;
+# this vLLM-Omni release does not forward runtime env via --stage-overrides.
+VOICE_PATCH_ARGS=()
+DEMO_NUMERICS="${FDBC_DEMO_TALKER_NUMERICS:-off}"
+if [[ "$DEMO_NUMERICS" == "native" || "$DEMO_NUMERICS" == "invariant" ]]; then
+    if [[ "${FDBC_DEMO_VOICE_ADAPTER:-0}" != "1" ]]; then
+        echo "FDBC_DEMO_TALKER_NUMERICS requires FDBC_DEMO_VOICE_ADAPTER=1" >&2
+        exit 1
+    fi
+    DEMO_DEPLOY_CONFIG=$(mktemp "${TMPDIR:-/tmp}/fd-demo-voice-XXXXXX.yaml")
+    VOICE_PATCH_ARGS+=(--talker-numerics-deploy "$DEMO_NUMERICS" "$DEPLOY_CONFIG" "$DEMO_DEPLOY_CONFIG")
+    DEPLOY_CONFIG="$DEMO_DEPLOY_CONFIG"
+elif [[ "$DEMO_NUMERICS" != "off" ]]; then
+    echo "FDBC_DEMO_TALKER_NUMERICS must be off, native or invariant" >&2
+    exit 1
+fi
+if [[ "${FDBC_DEMO_VOICE_ADAPTER:-0}" == "1" ]]; then
+    python "$ROOT_DIR/scripts/patch_omni_demo_voice.py" "${VOICE_PATCH_ARGS[@]}"
+fi
 
 ARGS=(
     vllm serve "$MODEL_DIR"

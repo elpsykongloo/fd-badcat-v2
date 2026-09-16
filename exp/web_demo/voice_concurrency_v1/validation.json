@@ -1,0 +1,16 @@
+{
+  "unit_tests": {
+    "command": "env -u OMP_NUM_THREADS /root/miniconda3/envs/fd-sds/bin/python -m pytest -q tests/test_demo_voice_rng.py tests/test_demo_speaker_embeddings.py",
+    "passed": 31
+  },
+  "bash_syntax": true,
+  "native_final_concurrent_trace_pairs": 12,
+  "native_final_all_hidden_text_codes_and_rng_offsets_equal": true,
+  "native_final_active_requests_observed": 4,
+  "tts_canaries_first_attempt_matched": 2,
+  "full_browser_validation": false,
+  "physical_device": false,
+  "formal_benchmark": false,
+  "source_config_unchanged": true,
+  "experimental_servers_stopped": true
+}

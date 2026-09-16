@@ -1,0 +1,12 @@
+{
+  "connection_attempt": {
+    "receipt": "untraced_invariant_startup_race/receipt.json",
+    "synthesized_audio_count": 0,
+    "reason": "client started before listener was ready; preserved failed receipt"
+  },
+  "native_initialization": {
+    "synthesized_audio_count": 0,
+    "reason": "PyTorch requires cuBLASLt when allow_splitk=False; worker rejected during code predictor warmup",
+    "correction": "explicit preferred_blas_library(cublaslt) before setting BF16 reduction policy"
+  }
+}

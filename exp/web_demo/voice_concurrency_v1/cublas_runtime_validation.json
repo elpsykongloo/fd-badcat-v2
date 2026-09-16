@@ -1,0 +1,28 @@
+{
+  "stages": [
+    {
+      "stage_id": 0,
+      "VLLM_BATCH_INVARIANT": "unset",
+      "CUBLAS_WORKSPACE_CONFIG": "unset",
+      "CUBLASLT_WORKSPACE_SIZE": "unset",
+      "TORCH_BLAS_PREFER_CUBLASLT": "unset",
+      "FDBC_DEMO_VOICE_TRACE_DIR": "unset"
+    },
+    {
+      "stage_id": 1,
+      "VLLM_BATCH_INVARIANT": "unset",
+      "CUBLAS_WORKSPACE_CONFIG": ":16:8",
+      "CUBLASLT_WORKSPACE_SIZE": "1",
+      "TORCH_BLAS_PREFER_CUBLASLT": "1",
+      "FDBC_DEMO_VOICE_TRACE_DIR": "unset"
+    },
+    {
+      "stage_id": 2,
+      "VLLM_BATCH_INVARIANT": "unset",
+      "CUBLAS_WORKSPACE_CONFIG": "unset",
+      "CUBLASLT_WORKSPACE_SIZE": "unset",
+      "TORCH_BLAS_PREFER_CUBLASLT": "unset",
+      "FDBC_DEMO_VOICE_TRACE_DIR": "unset"
+    }
+  ]
+}

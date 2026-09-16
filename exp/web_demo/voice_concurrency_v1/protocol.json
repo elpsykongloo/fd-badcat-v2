@@ -1,0 +1,52 @@
+{
+  "scope": "Engineering diagnostic, not frozen formal test or latency benchmark",
+  "base_config": "configs/qwen3_omni_audio_single_gpu.yaml",
+  "candidate_change": {
+    "stage_id": 1,
+    "env": {
+      "VLLM_BATCH_INVARIANT": "1"
+    }
+  },
+  "other_config_fields_equal": true,
+  "trace_env": "FDBC_DEMO_VOICE_TRACE_DIR",
+  "sampling": "same chelsie, seed42, Talker temperature0.5 top_k20 and unchanged residual sampling",
+  "targets": {
+    "zh": 5,
+    "en": 1
+  },
+  "per_condition": {
+    "complete_requests": 34,
+    "controlled_targets": 30,
+    "legacy_interference": 4
+  },
+  "order": "serial duplicate per text; two mixed rounds with reversed submission order; serial recovery",
+  "metrics": [
+    "direct PCM equality",
+    "first divergent hidden/text/code step and RNG offsets",
+    "raw LMFT speaker cosine",
+    "ASR normalized exact with unchanged verifier",
+    "F0 and duration diagnostics"
+  ],
+  "human_audio": false,
+  "physical_device": false,
+  "formal_benchmark": false,
+  "conditions": [
+    "baseline",
+    "talker_invariant",
+    "untraced_baseline",
+    "untraced_invariant",
+    "cublas",
+    "native",
+    "final_native"
+  ],
+  "timing": "Untraced first-PCM/total client wall times are seq4 engineering diagnostics only, not formal serial-eval latency",
+  "native_change": {
+    "stage_id": 1,
+    "preferred_blas_library": "cublaslt",
+    "allow_bf16_reduced_precision_reduction": [
+      false,
+      false
+    ]
+  },
+  "experiments": "Exploratory ordered ablations, not preregistered held-out test"
+}

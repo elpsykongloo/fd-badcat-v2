@@ -103,6 +103,56 @@ def installed_sources():
     return {f: (OMNI / f).read_text() for f in patcher.FILES}
 
 
+def test_trace_is_noop_without_explicit_directory(monkeypatch):
+    monkeypatch.delenv("FDBC_DEMO_VOICE_TRACE_DIR", raising=False)
+    # No access to tensors/runner, CPU copies or files in the normal path.
+    helper.trace_mtp(None, None, None, None, None, None)
+
+
+def test_native_numerics_requires_explicit_worker_opt_in(monkeypatch):
+    fake = NS(backends=NS(cuda=NS(preferred_blas_library=lambda **kwargs: None, matmul=NS(
+        allow_bf16_reduced_precision_reduction=True,
+        allow_bf16_reduced_precision_reduction_split_k=True))))
+    monkeypatch.setitem(sys.modules, "torch", fake)
+    monkeypatch.delenv("FDBC_DEMO_TALKER_NATIVE_NUMERICS", raising=False)
+    helper.configure_native_numerics("talker")
+    assert fake.backends.cuda.matmul.allow_bf16_reduced_precision_reduction is True
+    monkeypatch.setenv("FDBC_DEMO_TALKER_NATIVE_NUMERICS", "1")
+    helper.configure_native_numerics("thinker")
+    assert fake.backends.cuda.matmul.allow_bf16_reduced_precision_reduction is True
+    helper.configure_native_numerics("talker")
+    assert fake.backends.cuda.matmul.allow_bf16_reduced_precision_reduction == (False, False)
+
+
+def test_trace_excludes_uncontrolled_requests(monkeypatch, tmp_path):
+    monkeypatch.setenv("FDBC_DEMO_VOICE_TRACE_DIR", str(tmp_path))
+    runner = NS(requests={"old": NS(sampling_params=NS(extra_args=None))})
+    helper.trace_mtp(runner, ["old"], None, None, None, None)
+    assert list(tmp_path.iterdir()) == []
+
+
+@pytest.mark.parametrize("mode,key", [("native", "FDBC_DEMO_TALKER_NATIVE_NUMERICS"),
+                                      ("invariant", "VLLM_BATCH_INVARIANT")])
+def test_talker_mode_derives_config_without_changing_frozen_source(tmp_path, mode, key):
+    import yaml
+    config = yaml.safe_load((ROOT / "configs/qwen3_omni_audio_single_gpu.yaml").read_text())
+    config["stages"][1]["env"] = {"EXISTING_SETTING": "kept"}
+    source, target = tmp_path / "base.yaml", tmp_path / "demo.yaml"
+    source.write_text(yaml.safe_dump(config))
+    original = source.read_text()
+    with pytest.raises(ValueError, match="overwrite"):
+        patcher.write_talker_numerics_deploy(source, source, mode)
+    patcher.write_talker_numerics_deploy(source, target, mode)
+    actual = yaml.safe_load(target.read_text())
+    assert source.read_text() == original
+    assert actual["stages"][1]["env"].pop(key) == "1"
+    assert actual == config
+    config["stages"] = config["stages"][:1]
+    source.write_text(yaml.safe_dump(config))
+    with pytest.raises(ValueError, match="three-stage"):
+        patcher.write_talker_numerics_deploy(source, target, mode)
+
+
 def test_patch_idempotence_and_unknown_layout():
     sources = installed_sources()
     patched = patcher.patch_sources(sources)
