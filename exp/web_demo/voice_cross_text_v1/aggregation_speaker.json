@@ -1,0 +1,433 @@
+{
+  "contract": "demo-speaker-embedding-v1",
+  "completed": true,
+  "model": "zl389/w2v-bert-2.0_SV/model_lmft_0.14.pth",
+  "architecture": "w2v-BERT2.0 + merged LoRA + layer adapters + MFA/ASP + LMFT",
+  "strict_checkpoint_load": true,
+  "parameters": 586652736,
+  "embedding_dimension": 256,
+  "dtype": "float32",
+  "batch_size": 1,
+  "torch": "2.11.0+cu130",
+  "transformers": "5.8.1",
+  "device": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+  "preprocessing": "mono, torchaudio resample 16kHz, whole utterance; no VAD/trim/padding",
+  "scoring": "L2 normalized raw cosine; no mean centering, AS-Norm or QMF",
+  "decision_threshold": null,
+  "human_judgment_required": false,
+  "formal_speaker_verification_benchmark": false,
+  "design": {
+    "type": "Exploratory follow-up after duration effect observed; not held-out confirmation",
+    "rule": "Concatenate all four independently synthesized short utterances, family order 0,1,2,3; no gaps/trim/repeat/selection",
+    "new_syntheses": 0,
+    "human_audio": false,
+    "threshold_calibrated": false,
+    "limitation": "Concatenation changes content coverage, duration and boundaries together; cannot isolate causes or prove identity stability; longer scoring context may average over real turn drift"
+  },
+  "exclusions": [],
+  "audio_count": 14,
+  "repeat_extraction_max_abs_error": 0.0,
+  "audio": [
+    {
+      "id": "f0-short-s42",
+      "duration_s_16k": 1.39375,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "f0-long-s42",
+      "duration_s_16k": 16.88875,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "f1-short-s42",
+      "duration_s_16k": 1.39375,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "f1-long-s42",
+      "duration_s_16k": 19.905625,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "f2-short-s42",
+      "duration_s_16k": 1.15375,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "f2-long-s42",
+      "duration_s_16k": 20.1225,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "f3-short-s42",
+      "duration_s_16k": 1.15375,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "f3-long-s42",
+      "duration_s_16k": 19.185625,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "f3-short-s43",
+      "duration_s_16k": 1.31375,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "f2-short-s43",
+      "duration_s_16k": 1.15375,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "f1-short-s43",
+      "duration_s_16k": 1.39375,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "f0-short-s43",
+      "duration_s_16k": 1.39375,
+      "embedding_l2_norm": 1.0
+    },
+    {
+      "id": "short-concat-s42",
+      "duration_s_16k": 5.095,
+      "embedding_l2_norm": 0.9999999999999999
+    },
+    {
+      "id": "short-concat-s43",
+      "duration_s_16k": 5.255,
+      "embedding_l2_norm": 1.0
+    }
+  ],
+  "comparisons": [
+    {
+      "group": "concat_to_long_s42",
+      "reference": "f0-long-s42",
+      "candidate": "short-concat-s42",
+      "cosine": 0.8595103188803588,
+      "distance": 0.14048968111964122
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f0-long-s42",
+      "candidate": "f0-short-s42",
+      "cosine": 0.7653474513786157,
+      "distance": 0.2346525486213843
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f0-long-s42",
+      "candidate": "f1-short-s42",
+      "cosine": 0.5506202563606364,
+      "distance": 0.4493797436393636
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f0-long-s42",
+      "candidate": "f2-short-s42",
+      "cosine": 0.6856632755719778,
+      "distance": 0.3143367244280222
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f0-long-s42",
+      "candidate": "f3-short-s42",
+      "cosine": 0.7831638842942084,
+      "distance": 0.21683611570579164
+    },
+    {
+      "group": "concat_to_long_s42",
+      "reference": "f1-long-s42",
+      "candidate": "short-concat-s42",
+      "cosine": 0.8521650289698466,
+      "distance": 0.14783497103015342
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f1-long-s42",
+      "candidate": "f0-short-s42",
+      "cosine": 0.7475333027392006,
+      "distance": 0.2524666972607994
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f1-long-s42",
+      "candidate": "f1-short-s42",
+      "cosine": 0.5457377057185346,
+      "distance": 0.45426229428146536
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f1-long-s42",
+      "candidate": "f2-short-s42",
+      "cosine": 0.7132863645028499,
+      "distance": 0.2867136354971501
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f1-long-s42",
+      "candidate": "f3-short-s42",
+      "cosine": 0.779018089549259,
+      "distance": 0.220981910450741
+    },
+    {
+      "group": "concat_to_long_s42",
+      "reference": "f2-long-s42",
+      "candidate": "short-concat-s42",
+      "cosine": 0.815429638628929,
+      "distance": 0.18457036137107097
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f2-long-s42",
+      "candidate": "f0-short-s42",
+      "cosine": 0.7373790161081983,
+      "distance": 0.26262098389180166
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f2-long-s42",
+      "candidate": "f1-short-s42",
+      "cosine": 0.499845056202245,
+      "distance": 0.500154943797755
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f2-long-s42",
+      "candidate": "f2-short-s42",
+      "cosine": 0.6693506594564509,
+      "distance": 0.3306493405435491
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f2-long-s42",
+      "candidate": "f3-short-s42",
+      "cosine": 0.7687956147325419,
+      "distance": 0.23120438526745812
+    },
+    {
+      "group": "concat_to_long_s42",
+      "reference": "f3-long-s42",
+      "candidate": "short-concat-s42",
+      "cosine": 0.8328018848544229,
+      "distance": 0.16719811514557714
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f3-long-s42",
+      "candidate": "f0-short-s42",
+      "cosine": 0.7014711599236811,
+      "distance": 0.29852884007631886
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f3-long-s42",
+      "candidate": "f1-short-s42",
+      "cosine": 0.4663143348931824,
+      "distance": 0.5336856651068176
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f3-long-s42",
+      "candidate": "f2-short-s42",
+      "cosine": 0.6826165309582299,
+      "distance": 0.31738346904177006
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f3-long-s42",
+      "candidate": "f3-short-s42",
+      "cosine": 0.7603254664308758,
+      "distance": 0.23967453356912416
+    },
+    {
+      "group": "concat_to_long_s43",
+      "reference": "f0-long-s42",
+      "candidate": "short-concat-s43",
+      "cosine": 0.8829007082575895,
+      "distance": 0.11709929174241052
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f0-long-s42",
+      "candidate": "f0-short-s43",
+      "cosine": 0.8087775341116746,
+      "distance": 0.19122246588832537
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f0-long-s42",
+      "candidate": "f1-short-s43",
+      "cosine": 0.6741641992957309,
+      "distance": 0.3258358007042691
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f0-long-s42",
+      "candidate": "f2-short-s43",
+      "cosine": 0.7353230088821924,
+      "distance": 0.2646769911178076
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f0-long-s42",
+      "candidate": "f3-short-s43",
+      "cosine": 0.7629818626110076,
+      "distance": 0.23701813738899236
+    },
+    {
+      "group": "concat_to_long_s43",
+      "reference": "f1-long-s42",
+      "candidate": "short-concat-s43",
+      "cosine": 0.8602150698133744,
+      "distance": 0.13978493018662563
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f1-long-s42",
+      "candidate": "f0-short-s43",
+      "cosine": 0.8059574350980672,
+      "distance": 0.19404256490193283
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f1-long-s42",
+      "candidate": "f1-short-s43",
+      "cosine": 0.6809202584521312,
+      "distance": 0.3190797415478688
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f1-long-s42",
+      "candidate": "f2-short-s43",
+      "cosine": 0.7112893772148152,
+      "distance": 0.2887106227851848
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f1-long-s42",
+      "candidate": "f3-short-s43",
+      "cosine": 0.7666916298297884,
+      "distance": 0.23330837017021155
+    },
+    {
+      "group": "concat_to_long_s43",
+      "reference": "f2-long-s42",
+      "candidate": "short-concat-s43",
+      "cosine": 0.8572170222804965,
+      "distance": 0.14278297771950355
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f2-long-s42",
+      "candidate": "f0-short-s43",
+      "cosine": 0.7424210729196659,
+      "distance": 0.25757892708033414
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f2-long-s42",
+      "candidate": "f1-short-s43",
+      "cosine": 0.6107819726564011,
+      "distance": 0.3892180273435989
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f2-long-s42",
+      "candidate": "f2-short-s43",
+      "cosine": 0.7542048122936404,
+      "distance": 0.24579518770635955
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f2-long-s42",
+      "candidate": "f3-short-s43",
+      "cosine": 0.7654902171007079,
+      "distance": 0.23450978289929214
+    },
+    {
+      "group": "concat_to_long_s43",
+      "reference": "f3-long-s42",
+      "candidate": "short-concat-s43",
+      "cosine": 0.8615726880720168,
+      "distance": 0.1384273119279832
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f3-long-s42",
+      "candidate": "f0-short-s43",
+      "cosine": 0.7343517765850859,
+      "distance": 0.2656482234149141
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f3-long-s42",
+      "candidate": "f1-short-s43",
+      "cosine": 0.6217243693757954,
+      "distance": 0.37827563062420455
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f3-long-s42",
+      "candidate": "f2-short-s43",
+      "cosine": 0.7582316474360409,
+      "distance": 0.24176835256395912
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f3-long-s42",
+      "candidate": "f3-short-s43",
+      "cosine": 0.7898834535199879,
+      "distance": 0.2101165464800121
+    },
+    {
+      "group": "concat_seed",
+      "reference": "short-concat-s42",
+      "candidate": "short-concat-s43",
+      "cosine": 0.8945821977774508,
+      "distance": 0.10541780222254915
+    }
+  ],
+  "summary": {
+    "concat_to_long_s42": {
+      "pairs": 4,
+      "unique_audio_ids": 5,
+      "unique_texts": 5,
+      "mean_cosine": 0.8399767178333893,
+      "min_cosine": 0.815429638628929,
+      "max_cosine": 0.8595103188803588
+    },
+    "single_short_to_long_s42": {
+      "pairs": 16,
+      "unique_audio_ids": 8,
+      "unique_texts": 8,
+      "mean_cosine": 0.678529260551293,
+      "min_cosine": 0.4663143348931824,
+      "max_cosine": 0.7831638842942084
+    },
+    "concat_to_long_s43": {
+      "pairs": 4,
+      "unique_audio_ids": 5,
+      "unique_texts": 5,
+      "mean_cosine": 0.8654763721058694,
+      "min_cosine": 0.8572170222804965,
+      "max_cosine": 0.8829007082575895
+    },
+    "single_short_to_long_s43": {
+      "pairs": 16,
+      "unique_audio_ids": 8,
+      "unique_texts": 8,
+      "mean_cosine": 0.7326996642114207,
+      "min_cosine": 0.6107819726564011,
+      "max_cosine": 0.8087775341116746
+    },
+    "concat_seed": {
+      "pairs": 1,
+      "unique_audio_ids": 2,
+      "unique_texts": 1,
+      "mean_cosine": 0.8945821977774508,
+      "min_cosine": 0.8945821977774508,
+      "max_cosine": 0.8945821977774508
+    }
+  }
+}

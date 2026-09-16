@@ -77,7 +77,7 @@
 ## 架构事实（读码验证过，可直接引用）
 
 - demo 声音控制：`demo-voice-rng-v1`，`engine.demo_voice_control` 固定 chelsie/seed42，残差声码按请求维护 RNG；小样本串行重复可复现，并发波形仍有变化，不宣称跨文本音色稳定。机制与收据入口：`docs/demo_voice_rng.md`。
-- demo 离线音色对比：`demo-speaker-embedding-v1`，作者 w2v-BERT2.0 + LoRA/Layer Adapter/MFA 最终 LMFT 权重，自动提取256维嵌入并计算 cosine；无人工评分依赖，不接线上决策，分数未校准为身份阈值。入口：`docs/demo_voice_rng.md`。
+- demo 离线音色对比：`demo-speaker-embedding-v1`，作者 w2v-BERT2.0 + LoRA/Layer Adapter/MFA 最终 LMFT 权重，自动提取256维嵌入并计算 cosine；无人工评分依赖，不接线上决策，分数未校准为身份阈值。入口：`docs/demo_voice_rng.md`；跨文本评测按句长分组并补充固定短句聚合，保留逐句指标，见 `docs/demo_voice_cross_text.md`。
 - demo 启动默认 `FDBC_DEMO_TALKER_NUMERICS=native`：仅 Talker 采用 cuBLASLt 并关闭 BF16 低精度归约/split-K，保留动态批处理；通用启动默认 off，完整 invariant 模式仅作较慢对照。受控样本并发声码一致，仍不宣称跨文本音色稳定或全链路 PCM 一致。机制与开销：`docs/demo_voice_concurrency.md`。
 
 1. **感知冻结**：旧引擎 `run_realtime` 单协程串行 receive→VAD→决策，决策 await 期间无法 receive，最坏 judge→shift→response 三连 LLM 冻结；SPEAK 态 interrupt 判定同病。这是论文 motivation 的第一实证（W1 修复 + before/after 测量）。

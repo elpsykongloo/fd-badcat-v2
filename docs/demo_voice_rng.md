@@ -130,6 +130,8 @@ Manifest 包含 `audio: [{id,path,text?}]` 和 `pairs: [{group,reference,candida
 
 后续已扩大到六个目标文本，并定位、修复该组样本中的 Talker 并发数值漂移，详见 [并发声音诊断与 native 修复](demo_voice_concurrency.md)。demo 启动器默认 `FDBC_DEMO_TALKER_NUMERICS=native`，普通部署默认关闭。仍保留 ASR、F0、时长约束；跨文本身份一致性与自然度不能由这组未校准 cosine 自动宣告解决，不据此修改线上决策或引入重训练。
 
+跨文本诊断已补充12个嵌套文本、两种 seed 与固定裁片对照：短音频分数明显受输入条件影响，离线评测按句长分组并补充固定多短句聚合，保留逐句指标；不设未校准的换人阈值、不据此新增线上生成机制。实验与复跑入口见 [跨文本诊断](demo_voice_cross_text.md)。
+
 实现核验：全部推理权重严格加载；本地适配与原 WeSpeaker `W2VBert_Adapter_MFA`/`ASP`（代码版本 `dfa7419`）及 Transformers 标准 backbone forward，在3段自造音频上 FP32 嵌入最大绝对差均为0；评测器穿插45条后的重复提取最大绝对差为0。13项输入/计分/重采样边界测试通过。这不是完整 VoxCeleb benchmark 复现。
 
 收据：`exp/web_demo/voice_rng_v1/speaker/{manifest,receipt,implementation_validation}.json`。

@@ -1,0 +1,263 @@
+{
+  "completed": true,
+  "syntheses": 28,
+  "fixed_crops": 24,
+  "comparisons": 112,
+  "families": 4,
+  "distinct_nested_texts": 12,
+  "seeds": [
+    42,
+    43
+  ],
+  "serial": true,
+  "production_seq4": true,
+  "human_audio": false,
+  "physical_device": false,
+  "formal_benchmark": false,
+  "negative_speakers": 0,
+  "threshold_calibrated": false,
+  "exclusions": [],
+  "asr_exact_normalized": {
+    "passed": 26,
+    "total": 28,
+    "failed_ids": [
+      "f3-long-s42",
+      "f2-medium-s43"
+    ]
+  },
+  "recovery_pcm_equal": {
+    "passed": 4,
+    "total": 4
+  },
+  "embedding_repeat_max_abs": 0.0,
+  "lengths": {
+    "short": {
+      "syntheses": 8,
+      "duration_s_min": 1.15375,
+      "duration_s_max": 1.39375,
+      "same_text_seed_f0_abs_semitones_median": 1.9516552474651252,
+      "same_text_seed_f0_abs_semitones_max": 3.1702627431367185,
+      "f0_caveat": "Simple autocorrelation; octave/voicing errors possible, not an identity metric"
+    },
+    "medium": {
+      "syntheses": 8,
+      "duration_s_min": 6.0675,
+      "duration_s_max": 9.70125,
+      "same_text_seed_f0_abs_semitones_median": 1.4844352242116738,
+      "same_text_seed_f0_abs_semitones_max": 2.9651143435772642,
+      "f0_caveat": "Simple autocorrelation; octave/voicing errors possible, not an identity metric"
+    },
+    "long": {
+      "syntheses": 8,
+      "duration_s_min": 16.88875,
+      "duration_s_max": 20.6825,
+      "same_text_seed_f0_abs_semitones_median": 1.5160190940876808,
+      "same_text_seed_f0_abs_semitones_max": 2.3972341485093307,
+      "f0_caveat": "Simple autocorrelation; octave/voicing errors possible, not an identity metric"
+    }
+  },
+  "speaker_groups": {
+    "seed_short": {
+      "pairs": 4,
+      "unique_audio_ids": 8,
+      "unique_texts": 4,
+      "mean_cosine": 0.7387556083210557,
+      "min_cosine": 0.6562291556445174,
+      "max_cosine": 0.8212379859004318
+    },
+    "cross_text_short_s42": {
+      "pairs": 6,
+      "unique_audio_ids": 4,
+      "unique_texts": 4,
+      "mean_cosine": 0.6397479829652436,
+      "min_cosine": 0.5468306457482608,
+      "max_cosine": 0.7334337496780382
+    },
+    "cross_text_short_s43": {
+      "pairs": 6,
+      "unique_audio_ids": 4,
+      "unique_texts": 4,
+      "mean_cosine": 0.6871152269492246,
+      "min_cosine": 0.6037889656493031,
+      "max_cosine": 0.7667165688302799
+    },
+    "seed_medium": {
+      "pairs": 4,
+      "unique_audio_ids": 8,
+      "unique_texts": 4,
+      "mean_cosine": 0.8677548663898034,
+      "min_cosine": 0.8519718690686742,
+      "max_cosine": 0.8840612823571854
+    },
+    "cross_text_medium_s42": {
+      "pairs": 6,
+      "unique_audio_ids": 4,
+      "unique_texts": 4,
+      "mean_cosine": 0.8387886780340744,
+      "min_cosine": 0.8109045192749379,
+      "max_cosine": 0.8757423517089757
+    },
+    "cross_text_medium_s43": {
+      "pairs": 6,
+      "unique_audio_ids": 4,
+      "unique_texts": 4,
+      "mean_cosine": 0.8630531452161768,
+      "min_cosine": 0.8389488997063497,
+      "max_cosine": 0.8794553962988862
+    },
+    "seed_long": {
+      "pairs": 4,
+      "unique_audio_ids": 8,
+      "unique_texts": 4,
+      "mean_cosine": 0.9219670373107217,
+      "min_cosine": 0.9167015352438646,
+      "max_cosine": 0.9259965771237879
+    },
+    "cross_text_long_s42": {
+      "pairs": 6,
+      "unique_audio_ids": 4,
+      "unique_texts": 4,
+      "mean_cosine": 0.9126797571655749,
+      "min_cosine": 0.8869978544907726,
+      "max_cosine": 0.9258731175361702
+    },
+    "cross_text_long_s43": {
+      "pairs": 6,
+      "unique_audio_ids": 4,
+      "unique_texts": 4,
+      "mean_cosine": 0.893443987438631,
+      "min_cosine": 0.8635409739604212,
+      "max_cosine": 0.9036871011101386
+    },
+    "serial_recovery": {
+      "pairs": 4,
+      "unique_audio_ids": 8,
+      "unique_texts": 4,
+      "mean_cosine": 1.0,
+      "min_cosine": 0.9999999999999998,
+      "max_cosine": 1.0
+    },
+    "nested_short_medium": {
+      "pairs": 8,
+      "unique_audio_ids": 16,
+      "unique_texts": 8,
+      "mean_cosine": 0.7260528749439893,
+      "min_cosine": 0.5241526176946126,
+      "max_cosine": 0.8230005291723645
+    },
+    "nested_short_long": {
+      "pairs": 8,
+      "unique_audio_ids": 16,
+      "unique_texts": 8,
+      "mean_cosine": 0.7074973756738383,
+      "min_cosine": 0.5457377057185346,
+      "max_cosine": 0.8279895020656701
+    },
+    "nested_medium_long": {
+      "pairs": 8,
+      "unique_audio_ids": 16,
+      "unique_texts": 8,
+      "mean_cosine": 0.8929429824595736,
+      "min_cosine": 0.8525954185747886,
+      "max_cosine": 0.9077810122561158
+    },
+    "crop_full_1s": {
+      "pairs": 8,
+      "unique_audio_ids": 12,
+      "unique_texts": 4,
+      "mean_cosine": 0.7376310046352914,
+      "min_cosine": 0.4827593595826355,
+      "max_cosine": 0.8584962426129711
+    },
+    "crop_disjoint_1s": {
+      "pairs": 4,
+      "unique_audio_ids": 8,
+      "unique_texts": 0,
+      "mean_cosine": 0.5363409370998358,
+      "min_cosine": 0.3712696757370519,
+      "max_cosine": 0.6241366105647849
+    },
+    "crop_full_2s": {
+      "pairs": 8,
+      "unique_audio_ids": 12,
+      "unique_texts": 4,
+      "mean_cosine": 0.84849880149039,
+      "min_cosine": 0.7365100692923294,
+      "max_cosine": 0.908926159076802
+    },
+    "crop_disjoint_2s": {
+      "pairs": 4,
+      "unique_audio_ids": 8,
+      "unique_texts": 0,
+      "mean_cosine": 0.7409001392198764,
+      "min_cosine": 0.6676583477852263,
+      "max_cosine": 0.8091788128671837
+    },
+    "crop_full_4s": {
+      "pairs": 8,
+      "unique_audio_ids": 12,
+      "unique_texts": 4,
+      "mean_cosine": 0.9247430112310739,
+      "min_cosine": 0.9030712030385527,
+      "max_cosine": 0.9445000410437728
+    },
+    "crop_disjoint_4s": {
+      "pairs": 4,
+      "unique_audio_ids": 8,
+      "unique_texts": 0,
+      "mean_cosine": 0.8637820593825862,
+      "min_cosine": 0.8412841783264439,
+      "max_cosine": 0.8873874349615652
+    }
+  },
+  "aggregation": {
+    "exploratory_followup": true,
+    "new_syntheses": 0,
+    "evaluated_audio": 14,
+    "comparisons": 41,
+    "repeat_max_abs": 0.0,
+    "groups": {
+      "concat_to_long_s42": {
+        "pairs": 4,
+        "unique_audio_ids": 5,
+        "unique_texts": 5,
+        "mean_cosine": 0.8399767178333893,
+        "min_cosine": 0.815429638628929,
+        "max_cosine": 0.8595103188803588
+      },
+      "single_short_to_long_s42": {
+        "pairs": 16,
+        "unique_audio_ids": 8,
+        "unique_texts": 8,
+        "mean_cosine": 0.678529260551293,
+        "min_cosine": 0.4663143348931824,
+        "max_cosine": 0.7831638842942084
+      },
+      "concat_to_long_s43": {
+        "pairs": 4,
+        "unique_audio_ids": 5,
+        "unique_texts": 5,
+        "mean_cosine": 0.8654763721058694,
+        "min_cosine": 0.8572170222804965,
+        "max_cosine": 0.8829007082575895
+      },
+      "single_short_to_long_s43": {
+        "pairs": 16,
+        "unique_audio_ids": 8,
+        "unique_texts": 8,
+        "mean_cosine": 0.7326996642114207,
+        "min_cosine": 0.6107819726564011,
+        "max_cosine": 0.8087775341116746
+      },
+      "concat_seed": {
+        "pairs": 1,
+        "unique_audio_ids": 2,
+        "unique_texts": 1,
+        "mean_cosine": 0.8945821977774508,
+        "min_cosine": 0.8945821977774508,
+        "max_cosine": 0.8945821977774508
+      }
+    }
+  },
+  "decision": "Keep chelsie/seed42/native; stratify offline scores by duration and supplement short turns with fixed aggregation, retaining per-turn scores. No calibrated identity gate or production generation change."
+}

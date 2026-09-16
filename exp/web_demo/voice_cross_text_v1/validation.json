@@ -1,0 +1,24 @@
+{
+  "related_tests": {
+    "passed": 31,
+    "command": "env -u OMP_NUM_THREADS /root/miniconda3/envs/fd-sds/bin/python -m pytest -q tests/test_demo_voice_rng.py tests/test_demo_speaker_embeddings.py"
+  },
+  "protocol_validated_before_synthesis": {
+    "audio": 52,
+    "pairs": 112,
+    "all_references_known": true,
+    "no_duplicate_pairs": true
+  },
+  "actual_native_startup_log": {
+    "bf16_reduced": false,
+    "bf16_split_k": false
+  },
+  "aggregation_reimplementation": {
+    "pcm_sample_arrays_equal": true,
+    "audio_metadata_equal": true,
+    "all_41_pairs_equal": true,
+    "comparison": "Direct numeric comparison, no integrity hashes"
+  },
+  "production_files_modified": false,
+  "full_browser_or_device_validation": false
+}

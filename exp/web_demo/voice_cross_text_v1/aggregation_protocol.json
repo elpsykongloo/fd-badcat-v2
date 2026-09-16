@@ -1,0 +1,217 @@
+{
+  "design": {
+    "type": "Exploratory follow-up after duration effect observed; not held-out confirmation",
+    "rule": "Concatenate all four independently synthesized short utterances, family order 0,1,2,3; no gaps/trim/repeat/selection",
+    "new_syntheses": 0,
+    "human_audio": false,
+    "threshold_calibrated": false,
+    "limitation": "Concatenation changes content coverage, duration and boundaries together; cannot isolate causes or prove identity stability; longer scoring context may average over real turn drift"
+  },
+  "pairs": [
+    {
+      "group": "concat_to_long_s42",
+      "reference": "f0-long-s42",
+      "candidate": "short-concat-s42"
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f0-long-s42",
+      "candidate": "f0-short-s42"
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f0-long-s42",
+      "candidate": "f1-short-s42"
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f0-long-s42",
+      "candidate": "f2-short-s42"
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f0-long-s42",
+      "candidate": "f3-short-s42"
+    },
+    {
+      "group": "concat_to_long_s42",
+      "reference": "f1-long-s42",
+      "candidate": "short-concat-s42"
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f1-long-s42",
+      "candidate": "f0-short-s42"
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f1-long-s42",
+      "candidate": "f1-short-s42"
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f1-long-s42",
+      "candidate": "f2-short-s42"
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f1-long-s42",
+      "candidate": "f3-short-s42"
+    },
+    {
+      "group": "concat_to_long_s42",
+      "reference": "f2-long-s42",
+      "candidate": "short-concat-s42"
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f2-long-s42",
+      "candidate": "f0-short-s42"
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f2-long-s42",
+      "candidate": "f1-short-s42"
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f2-long-s42",
+      "candidate": "f2-short-s42"
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f2-long-s42",
+      "candidate": "f3-short-s42"
+    },
+    {
+      "group": "concat_to_long_s42",
+      "reference": "f3-long-s42",
+      "candidate": "short-concat-s42"
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f3-long-s42",
+      "candidate": "f0-short-s42"
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f3-long-s42",
+      "candidate": "f1-short-s42"
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f3-long-s42",
+      "candidate": "f2-short-s42"
+    },
+    {
+      "group": "single_short_to_long_s42",
+      "reference": "f3-long-s42",
+      "candidate": "f3-short-s42"
+    },
+    {
+      "group": "concat_to_long_s43",
+      "reference": "f0-long-s42",
+      "candidate": "short-concat-s43"
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f0-long-s42",
+      "candidate": "f0-short-s43"
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f0-long-s42",
+      "candidate": "f1-short-s43"
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f0-long-s42",
+      "candidate": "f2-short-s43"
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f0-long-s42",
+      "candidate": "f3-short-s43"
+    },
+    {
+      "group": "concat_to_long_s43",
+      "reference": "f1-long-s42",
+      "candidate": "short-concat-s43"
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f1-long-s42",
+      "candidate": "f0-short-s43"
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f1-long-s42",
+      "candidate": "f1-short-s43"
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f1-long-s42",
+      "candidate": "f2-short-s43"
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f1-long-s42",
+      "candidate": "f3-short-s43"
+    },
+    {
+      "group": "concat_to_long_s43",
+      "reference": "f2-long-s42",
+      "candidate": "short-concat-s43"
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f2-long-s42",
+      "candidate": "f0-short-s43"
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f2-long-s42",
+      "candidate": "f1-short-s43"
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f2-long-s42",
+      "candidate": "f2-short-s43"
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f2-long-s42",
+      "candidate": "f3-short-s43"
+    },
+    {
+      "group": "concat_to_long_s43",
+      "reference": "f3-long-s42",
+      "candidate": "short-concat-s43"
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f3-long-s42",
+      "candidate": "f0-short-s43"
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f3-long-s42",
+      "candidate": "f1-short-s43"
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f3-long-s42",
+      "candidate": "f2-short-s43"
+    },
+    {
+      "group": "single_short_to_long_s43",
+      "reference": "f3-long-s42",
+      "candidate": "f3-short-s43"
+    },
+    {
+      "group": "concat_seed",
+      "reference": "short-concat-s42",
+      "candidate": "short-concat-s43"
+    }
+  ]
+}
