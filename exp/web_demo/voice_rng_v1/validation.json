@@ -1,0 +1,76 @@
+{
+  "date": "2026-09-16",
+  "scope": "engineering voice/RNG probe; not formal determinism, latency, or voice quality evaluation",
+  "versions": {
+    "torch": "2.11.0",
+    "vllm": "0.22.0",
+    "vllm-omni": "0.22.0"
+  },
+  "deployment": "configs/qwen3_omni_audio_single_gpu.yaml",
+  "physical_listening": false,
+  "human_audio": false,
+  "files_hashed": false,
+  "tests": {
+    "pytest_passed": 132,
+    "pytest_seconds": 2.23,
+    "files": [
+      "test_demo_voice_rng.py",
+      "test_engine.py",
+      "test_tts_verbatim.py",
+      "test_speech_stream.py",
+      "test_actor_candidate.py",
+      "test_chat_demo.py",
+      "test_demo_cases.py",
+      "test_web_demo.py"
+    ],
+    "node_stream_contracts": "passed"
+  },
+  "serial": {
+    "receipt": "serial/receipt.json",
+    "independent_target_texts": 2,
+    "completed_calls": 36,
+    "excluded_calls": 0,
+    "target_calls": 24,
+    "interference_calls": 12,
+    "asr_normalized_match": 36,
+    "legacy_equal_pairs": 0,
+    "speaker_equal_pairs": 0,
+    "controlled_equal_pairs": 6,
+    "pairs_per_arm": 6,
+    "serial_requests": true,
+    "serial_eval_config": false
+  },
+  "isolation": {
+    "receipt": "isolation/receipt.json",
+    "complete_calls": 9,
+    "asr_normalized_match": 9,
+    "cancelled_calls": 1,
+    "expected_400_calls": 3,
+    "concurrent_target_pcm_equal_to_serial": 0,
+    "concurrent_target_comparisons": 4,
+    "seed43_replay_equal": true,
+    "post_cancel_equal": true,
+    "post_invalid_equal": true
+  },
+  "browser": {
+    "pass": true,
+    "real_chromium": true,
+    "virtual_devices": true,
+    "turns": 1,
+    "tts_voice_control": {
+      "speaker": "chelsie",
+      "seed": 42
+    },
+    "sentences": 3,
+    "completed_playbacks": 1,
+    "packets": 244,
+    "underruns": 0,
+    "page_errors": 0
+  },
+  "limits": [
+    "Repeated comparisons share references and are not independent text samples.",
+    "RNG isolation does not establish numerical/streaming batch invariance.",
+    "Residual MTP serializes seeded rows; throughput cost is not measured.",
+    "No subjective listening or cross-text speaker-consistency claim."
+  ]
+}

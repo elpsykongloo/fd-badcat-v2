@@ -181,9 +181,31 @@ def _call_omni_tts(text: str) -> bytes:
 
 
 VERBATIM_TTS_CONTRACT = "verbatim-grammar-v2"
+DEMO_VOICE_CONTRACT = "demo-voice-rng-v1"
 
 
-def verbatim_tts_payload(text: str):
+def demo_voice_config(engine_cfg):
+    """Session-scoped opt-in; never changes legacy/TACT synthesis defaults."""
+    if not engine_cfg.get("demo_voice_control", False):
+        return None
+    if not engine_cfg.get("chat_demo", False):
+        raise ValueError("demo_voice_control requires the chat demo profile")
+    return validate_demo_voice({"speaker": engine_cfg.get("demo_voice_speaker", "chelsie"),
+                                "seed": engine_cfg.get("demo_voice_seed", 42)})
+
+
+def validate_demo_voice(voice):
+    # v1 deliberately pins the existing voice; new identities need a new choice.
+    if not isinstance(voice, dict) or set(voice) != {"speaker", "seed"}:
+        raise ValueError("Demo voice requires exactly speaker and seed")
+    if voice["speaker"] != "chelsie":
+        raise ValueError("demo-voice-rng-v1 requires speaker=chelsie")
+    if type(voice["seed"]) is not int or not 0 <= voice["seed"] < 2**63:
+        raise ValueError("Demo voice seed must be an integer in [0, 2**63)")
+    return dict(voice)
+
+
+def verbatim_tts_payload(text: str, *, voice_control=None):
     """Constrain Thinker to the one literal sentence; never ask it to answer.
 
     Separate from the legacy/evaluation payload. UTF-8 byte count conservatively
@@ -205,6 +227,10 @@ def verbatim_tts_payload(text: str):
     grammar = "root ::= " + json.dumps(text, ensure_ascii=False)
     payload.update(modalities=["text", "audio"],
                    structured_outputs={"grammar": grammar}, max_tokens=size + 8)
+    if voice_control is not None:
+        voice = validate_demo_voice(voice_control)
+        payload.update(voice=voice["speaker"], seed=voice["seed"],
+                       vllm_xargs={"fd_demo_tts_rng": DEMO_VOICE_CONTRACT})
     return payload
 
 
@@ -304,9 +330,13 @@ def llm_qwen3o_stream(messages, *, route=False):
                        int(os.getenv("FDBC_QWEN_TIMEOUT", "300")))
 
 
-def tts_omni_stream(text):
+def tts_omni_stream(text, *, voice_control=None):
     from stream_transport import audio_stream
     if TTS_PROVIDER not in {"omni", "qwen3omni", "qwen3-omni"}:
         raise ValueError("Streaming speech currently requires the Omni TTS provider")
-    return audio_stream(OMNI_TTS_URL, verbatim_tts_payload(text),
-                        int(os.getenv("FDBC_OMNI_TTS_TIMEOUT", "600")), expected_text=text)
+    payload = verbatim_tts_payload(text, voice_control=voice_control)
+    proof = None if voice_control is None else {"contract": DEMO_VOICE_CONTRACT,
+        **validate_demo_voice(voice_control)}
+    return audio_stream(OMNI_TTS_URL, payload,
+                        int(os.getenv("FDBC_OMNI_TTS_TIMEOUT", "600")), expected_text=text,
+                        expected_voice=proof)

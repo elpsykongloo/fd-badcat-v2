@@ -161,6 +161,8 @@ ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -L 127.0.0.1:18080:
 
 启动预热与 `scripts/check_verbatim_tts.py` 同时核对真正合成音频的 ASR 回读；浏览器检查另保存它收到的逐 utterance PCM，供整段多句回读，避免只看页面文本就宣布语音通过。它仍不是每个线上回答的声学证明：专名、数字读法、韵律和设备听感要单独评估；ASR canary 是窄范围护栏，不能当成通用音质分数。
 
+demo 另启用 `engine.demo_voice_control`（`demo-voice-rng-v1`）：显式固定 chelsie、seed42，残差声码使用按请求保存的独立 RNG，混批时逐请求执行残差预测，关闭开关恢复原请求；其他冻结路径不启用。接口确认有效配置后才放行 PCM。小样本串行重复可复现，但并发波形仍有变化，不能宣称跨文本音色已稳定或全链路确定性；机制、代价与受控对照见 [demo_voice_rng.md](demo_voice_rng.md)。
+
 v2 预热先合成普通句，再合成带 CR/LF/TAB 的疑问句。`scripts/check_tts_grammar.py --compile-only --output NEW.json` 在 Omni 环境使用实际 xgrammar 做完整字符串匹配、前缀不完成、额外字符拒绝及配置解析检查；去掉 `--compile-only` 在 backend 环境做真实合成和“正常→异常请求→正常”检查。默认部署下，旧换行 choice、损坏 grammar、非法 regex 实测均400，后续正常合成/模型健康检查全部通过；浏览器长回答期间附和/停止通过。收据在 `exp/web_demo/tts_grammar_v2/`。
 
 声学边界诚实保留：两次极端前置空白加英文问候的回读出现额外音节/词，完整文本证明仍通过、服务未崩溃；整体 `live*.json` 保持失败，`live_complete.json` 单列故障隔离与传输通过。尚未用人工听检区分 Talker 发音与 ASR 误识；本次只验收崩溃修复，不宣称声学逐字零误差。

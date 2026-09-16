@@ -76,6 +76,8 @@
 
 ## 架构事实（读码验证过，可直接引用）
 
+- demo 声音控制：`demo-voice-rng-v1`，`engine.demo_voice_control` 固定 chelsie/seed42，残差声码按请求维护 RNG；小样本串行重复可复现，并发波形仍有变化，不宣称跨文本音色稳定。机制与收据入口：`docs/demo_voice_rng.md`。
+
 1. **感知冻结**：旧引擎 `run_realtime` 单协程串行 receive→VAD→决策，决策 await 期间无法 receive，最坏 judge→shift→response 三连 LLM 冻结；SPEAK 态 interrupt 判定同病。这是论文 motivation 的第一实证（W1 修复 + before/after 测量）。
 2. **漂移主体是墙钟**：VADIterator 事件时间按样本计天然正确；漂的是 END_HOLD/continue 超时/1.5s 长打断等墙钟区间量。修法 = 全部迁到音频钟（`t_audio = seq*256/16000`）。副产品：快于实时的确定性回放（模拟器地基）。
 3. 旧代码竞态：`async_llm` 副作用写 `IN_SPEECH=False`（legacy:178）；`async_tts` 异步置 `STATE=SPEAK`（legacy:198）。新引擎单写者原则消灭之。

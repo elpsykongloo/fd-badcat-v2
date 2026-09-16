@@ -1,0 +1,179 @@
+{
+  "formal_benchmark": false,
+  "human_audio": false,
+  "physical_device": false,
+  "serial_latency": false,
+  "cases": [
+    {
+      "id": "mixed-a",
+      "seed": 42,
+      "controlled": true,
+      "samples": 52650,
+      "audio": "audio/mixed-a.wav",
+      "vs_serial": {
+        "pcm_equal": false,
+        "sample_count_delta": -3285,
+        "compared_samples": 52650,
+        "first_unequal_sample": 12330,
+        "equal_sample_fraction_common_prefix": 0.23591642924976258,
+        "unaligned_rmse_common_prefix": 0.11003446794468745
+      },
+      "text": "你好，我们接着聊这件事情。",
+      "recognized": "你好，我们接着聊这件事情。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "mixed-b",
+      "seed": 42,
+      "controlled": true,
+      "samples": 75135,
+      "audio": "audio/mixed-b.wav",
+      "vs_serial": {
+        "pcm_equal": false,
+        "sample_count_delta": 1920,
+        "compared_samples": 73215,
+        "first_unequal_sample": 3,
+        "equal_sample_fraction_common_prefix": 0.004944342006419449,
+        "unaligned_rmse_common_prefix": 0.11992857366856916
+      },
+      "text": "我可以慢慢解释，你也可以随时打断我。",
+      "recognized": "我可以慢慢解释，你也可以随时打断我。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "mixed-legacy",
+      "seed": 42,
+      "controlled": false,
+      "samples": 105300,
+      "audio": "audio/mixed-legacy.wav",
+      "text": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。",
+      "recognized": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "reordered-a",
+      "seed": 42,
+      "controlled": true,
+      "samples": 59775,
+      "audio": "audio/reordered-a.wav",
+      "vs_serial": {
+        "pcm_equal": false,
+        "sample_count_delta": 3840,
+        "compared_samples": 55935,
+        "first_unequal_sample": 3,
+        "equal_sample_fraction_common_prefix": 0.021524984356842764,
+        "unaligned_rmse_common_prefix": 0.12351797808641218
+      },
+      "text": "你好，我们接着聊这件事情。",
+      "recognized": "你好，我们接着聊这件事情。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "reordered-b",
+      "seed": 42,
+      "controlled": true,
+      "samples": 75135,
+      "audio": "audio/reordered-b.wav",
+      "vs_serial": {
+        "pcm_equal": false,
+        "sample_count_delta": 1920,
+        "compared_samples": 73215,
+        "first_unequal_sample": 3,
+        "equal_sample_fraction_common_prefix": 0.005026292426415352,
+        "unaligned_rmse_common_prefix": 0.11824983076904019
+      },
+      "text": "我可以慢慢解释，你也可以随时打断我。",
+      "recognized": "我可以慢慢解释，你也可以随时打断我。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "seed43",
+      "seed": 43,
+      "controlled": true,
+      "samples": 55935,
+      "audio": "audio/seed43.wav",
+      "vs_serial": {
+        "pcm_equal": false,
+        "sample_count_delta": 0,
+        "compared_samples": 55935,
+        "first_unequal_sample": 1366,
+        "equal_sample_fraction_common_prefix": 0.025404487351390007,
+        "unaligned_rmse_common_prefix": 0.12274917502469687
+      },
+      "text": "你好，我们接着聊这件事情。",
+      "recognized": "你好，我们接着聊这件事情。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "seed43-repeat",
+      "seed": 43,
+      "controlled": true,
+      "samples": 55935,
+      "audio": "audio/seed43-repeat.wav",
+      "text": "你好，我们接着聊这件事情。",
+      "recognized": "你好，我们接着聊这件事情。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "after-cancel",
+      "seed": 42,
+      "controlled": true,
+      "samples": 55935,
+      "audio": "audio/after-cancel.wav",
+      "vs_serial": {
+        "pcm_equal": true,
+        "sample_count_delta": 0,
+        "compared_samples": 55935,
+        "first_unequal_sample": null,
+        "equal_sample_fraction_common_prefix": 1.0,
+        "unaligned_rmse_common_prefix": 0.0
+      },
+      "text": "你好，我们接着聊这件事情。",
+      "recognized": "你好，我们接着聊这件事情。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "after-invalid",
+      "seed": 42,
+      "controlled": true,
+      "samples": 55935,
+      "audio": "audio/after-invalid.wav",
+      "vs_serial": {
+        "pcm_equal": true,
+        "sample_count_delta": 0,
+        "compared_samples": 55935,
+        "first_unequal_sample": null,
+        "equal_sample_fraction_common_prefix": 1.0,
+        "unaligned_rmse_common_prefix": 0.0
+      },
+      "text": "你好，我们接着聊这件事情。",
+      "recognized": "你好，我们接着聊这件事情。",
+      "asr_exact_normalized": true
+    }
+  ],
+  "completed": true,
+  "seed43_repeat": {
+    "pcm_equal": true,
+    "sample_count_delta": 0,
+    "compared_samples": 55935,
+    "first_unequal_sample": null,
+    "equal_sample_fraction_common_prefix": 1.0,
+    "unaligned_rmse_common_prefix": 0.0
+  },
+  "cancelled_after_pcm_bytes": 14250,
+  "invalid_requests": [
+    {
+      "field": "voice",
+      "status": 400
+    },
+    {
+      "field": "seed",
+      "status": 400
+    },
+    {
+      "field": "vllm_xargs",
+      "status": 400
+    }
+  ],
+  "asr_scope": "Post-hoc CPU readback of original smoke artifacts; no resynthesis"
+}

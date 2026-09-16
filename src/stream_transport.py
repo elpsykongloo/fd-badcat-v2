@@ -70,7 +70,7 @@ async def text_stream(url, payload, timeout=60):
                     yield content
 
 
-async def audio_stream(url, payload, timeout=60, *, expected_text=None):
+async def audio_stream(url, payload, timeout=60, *, expected_text=None, expected_voice=None):
     """Decode native PCM; optional fail-closed literal-text contract for TTS.
 
     Quarantine early audio until the complete sentence and its successful text
@@ -78,6 +78,8 @@ async def audio_stream(url, payload, timeout=60, *, expected_text=None):
     EOF. A server ignoring constraints/proof, a mismatch or truncation is an
     error, never a reason to retry unconstrained chat synthesis.
     """
+    if expected_voice is not None and expected_text is None:
+        raise ValueError("Voice proof requires the verbatim text contract")
     count = 0
     spoken_text = ""
     verified = expected_text is None
@@ -98,6 +100,8 @@ async def audio_stream(url, payload, timeout=60, *, expected_text=None):
                     if reason is not None:
                         if reason != "stop" or spoken_text != expected_text:
                             raise RuntimeError("TTS text incomplete or did not terminate normally")
+                        if expected_voice is not None and obj.get("fd_tts_voice") != expected_voice:
+                            raise RuntimeError("TTS server did not acknowledge demo voice/RNG configuration")
                         verified = True
                         for chunk in pending:
                             yield chunk

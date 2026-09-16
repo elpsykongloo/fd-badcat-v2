@@ -421,6 +421,8 @@ class ConversationEngine:
 
 # FastAPI
 def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
+    from module import demo_voice_config
+    voice_control = demo_voice_config(engine_cfg or {})
     from contextlib import asynccontextmanager
     @asynccontextmanager
     async def lifespan(app):
@@ -451,6 +453,8 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
         info = {"protocol": "pcm16.v1", "streaming": bool(
             arch == "actor" and (engine_cfg or {}).get("phase", "a") == "a"
             and (engine_cfg or {}).get("stream_response"))}
+        if info["streaming"] and voice_control is not None:
+            info["tts_voice_control"] = voice_control
         if info["streaming"] and (engine_cfg or {}).get("guarded_turns"):
             from control_labels import ROUTE_PROTOCOL, REPLY_PROTOCOL
             from guarded_turns import input_timing
@@ -546,6 +550,7 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
                     "session_id": exp, "protocol": "pcm16.v1",
                     "observability": "demo-trace-v1",
                     "tts_contract": VERBATIM_TTS_CONTRACT,
+                    "tts_voice_control": demo_voice_config(session_cfg) if session_cfg.get("stream_response") else None,
                     "case_capture": engine.demo_cases is not None,
                     "input_protocol": session_cfg.get("input_protocol"),
                     "guarded_turns": bool(session_cfg.get("guarded_turns")),

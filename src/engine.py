@@ -191,6 +191,8 @@ class ActorEngine(GuardedTurns, CandidateTurns):
             text_stream_fn = text_stream_fn or _module.llm_qwen3o_stream
             tts_stream_fn = tts_stream_fn or _module.tts_omni_stream
         self.text_stream_fn, self.tts_stream_fn = text_stream_fn, tts_stream_fn
+        from module import demo_voice_config
+        self.tts_voice_control = demo_voice_config(self.engine_cfg) if self.STREAMING else None
         self._speech = None
         self._speech_serial = 0
         self._speech_meta = None
@@ -391,6 +393,10 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                           round((time.perf_counter() - started) * 1000, 3)})
             recording = None
             stream_options = {}
+            if self.tts_voice_control is not None:
+                import module as adapters
+                if stream_fn is adapters.tts_omni_stream:
+                    stream_options["voice_control"] = self.tts_voice_control
             if route:
                 import module as adapters
                 if stream_fn is adapters.llm_qwen3o_stream:
@@ -402,7 +408,7 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                     # misdescribe an injected/custom model's request as Omni's.
                     if stream_fn in (adapters.llm_qwen3o_stream, adapters.tts_omni_stream):
                         is_tts = stream_fn is adapters.tts_omni_stream
-                        payload = (adapters.verbatim_tts_payload(arg) if is_tts
+                        payload = (adapters.verbatim_tts_payload(arg, **stream_options) if is_tts
                                    else adapters.qwen_text_payload(arg, route=route))
                         payload = {**payload, "stream": True}
                         role = "tts" if is_tts else next((name for name, prompt in self.prompts.items()

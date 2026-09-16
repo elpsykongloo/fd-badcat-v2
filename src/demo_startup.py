@@ -71,7 +71,8 @@ async def warmup(prompts, engine_cfg=None):
         for expected in ("你好。Hello, how are you?", "你能告诉我你在哪个城市吗？\r\n\t"):
             attempts = []
             for attempt in range(2):
-                chunks = [p async for p in module.tts_omni_stream(expected)]
+                chunks = [p async for p in module.tts_omni_stream(expected,
+                    voice_control=module.demo_voice_config(engine_cfg or {}))]
                 if not chunks or len({p.sample_rate for p in chunks}) != 1:
                     raise RuntimeError("TTS warmup returned invalid PCM")
                 pcm = np.frombuffer(b"".join(p.pcm for p in chunks), dtype="<i2").astype(np.float32) / 32768
@@ -95,6 +96,7 @@ async def warmup(prompts, engine_cfg=None):
         return transcript, checks, total_chunks
     transcript, checks, total_chunks = await asyncio.wait_for(run(), 90)
     result = {"event": "demo_warmup_done", "asr": module.ASR_BACKEND,
+              "tts_voice_control": module.demo_voice_config(engine_cfg or {}),
               "asr_provider": module.ASR_PROVIDER, "transcript": transcript,
               "bilingual_transcript": checks[0]["recognized"], "tts_chunks": total_chunks,
               "tts_contract": module.VERBATIM_TTS_CONTRACT, "tts_readback_checks": checks,

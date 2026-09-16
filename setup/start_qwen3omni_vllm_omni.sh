@@ -18,6 +18,9 @@ eval "$(conda shell.bash hook)"
 conda activate "${QWEN_ENV_NAME:-fdbc-qwen3o-vllm}"
 python "$ROOT_DIR/scripts/patch_prometheus_instrumentator.py"
 python "$ROOT_DIR/scripts/patch_omni_verbatim_tts.py"
+if [[ "${FDBC_DEMO_VOICE_ADAPTER:-0}" == "1" ]]; then
+    python "$ROOT_DIR/scripts/patch_omni_demo_voice.py"
+fi
 
 MODEL_DIR="${QWEN_MODEL_DIR:-$ROOT_DIR/model/Qwen3-Omni-30B-A3B-Instruct}"
 SERVED_MODEL_NAME="${FDBC_QWEN_MODEL:-Qwen3-Omni-30B-A3B-Instruct}"

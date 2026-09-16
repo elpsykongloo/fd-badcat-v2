@@ -112,6 +112,7 @@ def main():
         env = dict(os.environ, QWEN_HOST="127.0.0.1", QWEN_PORT="10003",
                    FDBC_PROXY_HOST="127.0.0.1", FDBC_PROXY_PORT="10004",
                    FDBC_VLLM_URL="http://127.0.0.1:10003/v1/chat/completions",
+                   FDBC_DEMO_VOICE_ADAPTER="1",
                    PYTHONUNBUFFERED="1")
         for key in ("OMP_NUM_THREADS", "MKL_NUM_THREADS"):
             if env.get(key, "") in ("", "0"):

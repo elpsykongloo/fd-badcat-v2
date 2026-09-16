@@ -1,0 +1,1925 @@
+{
+  "contract": "demo-voice-rng-v1",
+  "serial_requests": true,
+  "deployment": "qwen3_omni_audio_single_gpu.yaml seq4; not serial-eval latency",
+  "independent_texts": 2,
+  "human_audio": false,
+  "physical_device": false,
+  "formal_benchmark": false,
+  "listening_evaluation": false,
+  "exclusions": [],
+  "design": "Each arm/text: A,A,B,A,C,A. Repeats are not independent text samples.",
+  "cases": [
+    {
+      "id": "legacy-t0-0",
+      "arm": "legacy",
+      "target": 0,
+      "text": "你好，我们接着聊这件事情。",
+      "is_target": true,
+      "audio": "audio/legacy-t0-0.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "你好，我们接着聊这件事情。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 47,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"你好，我们接着聊这件事情。\""
+        }
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.491631593555212,
+      "samples": 55935,
+      "rate": 24000,
+      "duration_s": 2.330625,
+      "rms_dbfs": -20.500698930254476,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 136,
+      "analysis_frames": 230,
+      "f0_median_hz": 192.0,
+      "recognized": "你好，我们接着聊这件事情。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "legacy-t0-1",
+      "arm": "legacy",
+      "target": 0,
+      "text": "你好，我们接着聊这件事情。",
+      "is_target": true,
+      "audio": "audio/legacy-t0-1.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "你好，我们接着聊这件事情。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 47,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"你好，我们接着聊这件事情。\""
+        }
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.5015920549631119,
+      "samples": 59775,
+      "rate": 24000,
+      "duration_s": 2.490625,
+      "rms_dbfs": -21.934995628970483,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 141,
+      "analysis_frames": 246,
+      "f0_median_hz": 198.34710743801654,
+      "recognized": "你好，我们接着聊这件事情。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "legacy-t0-2",
+      "arm": "legacy",
+      "target": 0,
+      "text": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。",
+      "is_target": false,
+      "audio": "audio/legacy-t0-2.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 71,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。\""
+        }
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.807680182158947,
+      "samples": 109140,
+      "rate": 24000,
+      "duration_s": 4.5475,
+      "rms_dbfs": -20.43785667352921,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 287,
+      "analysis_frames": 451,
+      "f0_median_hz": 258.06451612903226,
+      "recognized": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "legacy-t0-3",
+      "arm": "legacy",
+      "target": 0,
+      "text": "你好，我们接着聊这件事情。",
+      "is_target": true,
+      "audio": "audio/legacy-t0-3.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "你好，我们接着聊这件事情。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 47,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"你好，我们接着聊这件事情。\""
+        }
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.44873134791851044,
+      "samples": 55935,
+      "rate": 24000,
+      "duration_s": 2.330625,
+      "rms_dbfs": -20.628504633049936,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 134,
+      "analysis_frames": 230,
+      "f0_median_hz": 201.68067226890756,
+      "recognized": "你好，我们接着聊这件事情。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "legacy-t0-4",
+      "arm": "legacy",
+      "target": 0,
+      "text": "The blue cup is next to the window.",
+      "is_target": false,
+      "audio": "audio/legacy-t0-4.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "The blue cup is next to the window."
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 43,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"The blue cup is next to the window.\""
+        }
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.47173934802412987,
+      "samples": 55935,
+      "rate": 24000,
+      "duration_s": 2.330625,
+      "rms_dbfs": -19.791010603500524,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 141,
+      "analysis_frames": 230,
+      "f0_median_hz": 210.52631578947367,
+      "recognized": "The blue cup is next to the window.",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "legacy-t0-5",
+      "arm": "legacy",
+      "target": 0,
+      "text": "你好，我们接着聊这件事情。",
+      "is_target": true,
+      "audio": "audio/legacy-t0-5.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "你好，我们接着聊这件事情。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 47,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"你好，我们接着聊这件事情。\""
+        }
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.47882283478975296,
+      "samples": 55935,
+      "rate": 24000,
+      "duration_s": 2.330625,
+      "rms_dbfs": -21.608975068662918,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 118,
+      "analysis_frames": 230,
+      "f0_median_hz": 214.28571428571428,
+      "recognized": "你好，我们接着聊这件事情。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "legacy-t1-0",
+      "arm": "legacy",
+      "target": 1,
+      "text": "我可以慢慢解释，你也可以随时打断我。",
+      "is_target": true,
+      "audio": "audio/legacy-t1-0.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "我可以慢慢解释，你也可以随时打断我。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 62,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"我可以慢慢解释，你也可以随时打断我。\""
+        }
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.6160362884402275,
+      "samples": 77055,
+      "rate": 24000,
+      "duration_s": 3.210625,
+      "rms_dbfs": -21.0059872527191,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 179,
+      "analysis_frames": 318,
+      "f0_median_hz": 258.06451612903226,
+      "recognized": "我可以慢慢解释，你也可以随时打断我。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "legacy-t1-1",
+      "arm": "legacy",
+      "target": 1,
+      "text": "我可以慢慢解释，你也可以随时打断我。",
+      "is_target": true,
+      "audio": "audio/legacy-t1-1.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "我可以慢慢解释，你也可以随时打断我。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 62,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"我可以慢慢解释，你也可以随时打断我。\""
+        }
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.5847158841788769,
+      "samples": 77055,
+      "rate": 24000,
+      "duration_s": 3.210625,
+      "rms_dbfs": -21.224084840082092,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 174,
+      "analysis_frames": 318,
+      "f0_median_hz": 279.06976744186045,
+      "recognized": "我可以慢慢解释，你也可以随时打断我。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "legacy-t1-2",
+      "arm": "legacy",
+      "target": 1,
+      "text": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。",
+      "is_target": false,
+      "audio": "audio/legacy-t1-2.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 71,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。\""
+        }
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.8461261503398418,
+      "samples": 114900,
+      "rate": 24000,
+      "duration_s": 4.7875,
+      "rms_dbfs": -20.17156668720458,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 291,
+      "analysis_frames": 475,
+      "f0_median_hz": 260.8695652173913,
+      "recognized": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "legacy-t1-3",
+      "arm": "legacy",
+      "target": 1,
+      "text": "我可以慢慢解释，你也可以随时打断我。",
+      "is_target": true,
+      "audio": "audio/legacy-t1-3.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "我可以慢慢解释，你也可以随时打断我。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 62,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"我可以慢慢解释，你也可以随时打断我。\""
+        }
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.5714202374219894,
+      "samples": 69375,
+      "rate": 24000,
+      "duration_s": 2.890625,
+      "rms_dbfs": -19.339192801233377,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 172,
+      "analysis_frames": 286,
+      "f0_median_hz": 244.89795918367346,
+      "recognized": "我可以慢慢解释，你也可以随时打断我。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "legacy-t1-4",
+      "arm": "legacy",
+      "target": 1,
+      "text": "The blue cup is next to the window.",
+      "is_target": false,
+      "audio": "audio/legacy-t1-4.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "The blue cup is next to the window."
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 43,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"The blue cup is next to the window.\""
+        }
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.44739222526550293,
+      "samples": 52650,
+      "rate": 24000,
+      "duration_s": 2.19375,
+      "rms_dbfs": -19.710927762901463,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 145,
+      "analysis_frames": 216,
+      "f0_median_hz": 220.1834862385321,
+      "recognized": "The blue cup is next to the window.",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "legacy-t1-5",
+      "arm": "legacy",
+      "target": 1,
+      "text": "我可以慢慢解释，你也可以随时打断我。",
+      "is_target": true,
+      "audio": "audio/legacy-t1-5.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "我可以慢慢解释，你也可以随时打断我。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 62,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"我可以慢慢解释，你也可以随时打断我。\""
+        }
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.5951994135975838,
+      "samples": 78975,
+      "rate": 24000,
+      "duration_s": 3.290625,
+      "rms_dbfs": -24.271899374546816,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 164,
+      "analysis_frames": 326,
+      "f0_median_hz": 244.89795918367346,
+      "recognized": "我可以慢慢解释，你也可以随时打断我。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "speaker-t0-0",
+      "arm": "speaker",
+      "target": 0,
+      "text": "你好，我们接着聊这件事情。",
+      "is_target": true,
+      "audio": "audio/speaker-t0-0.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "你好，我们接着聊这件事情。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 47,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"你好，我们接着聊这件事情。\""
+        },
+        "voice": "chelsie"
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.5585205443203449,
+      "samples": 71295,
+      "rate": 24000,
+      "duration_s": 2.970625,
+      "rms_dbfs": -22.155459274804414,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 156,
+      "analysis_frames": 294,
+      "f0_median_hz": 206.9119286510591,
+      "recognized": "你好，我们接着聊这件事情。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "speaker-t0-1",
+      "arm": "speaker",
+      "target": 0,
+      "text": "你好，我们接着聊这件事情。",
+      "is_target": true,
+      "audio": "audio/speaker-t0-1.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "你好，我们接着聊这件事情。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 47,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"你好，我们接着聊这件事情。\""
+        },
+        "voice": "chelsie"
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.45052842423319817,
+      "samples": 55935,
+      "rate": 24000,
+      "duration_s": 2.330625,
+      "rms_dbfs": -19.651771115862108,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 140,
+      "analysis_frames": 230,
+      "f0_median_hz": 197.5342094567132,
+      "recognized": "你好，我们接着聊这件事情。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "speaker-t0-2",
+      "arm": "speaker",
+      "target": 0,
+      "text": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。",
+      "is_target": false,
+      "audio": "audio/speaker-t0-2.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 71,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。\""
+        },
+        "voice": "chelsie"
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.758015301078558,
+      "samples": 96255,
+      "rate": 24000,
+      "duration_s": 4.010625,
+      "rms_dbfs": -21.870645832590053,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 243,
+      "analysis_frames": 398,
+      "f0_median_hz": 247.42268041237114,
+      "recognized": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "speaker-t0-3",
+      "arm": "speaker",
+      "target": 0,
+      "text": "你好，我们接着聊这件事情。",
+      "is_target": true,
+      "audio": "audio/speaker-t0-3.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "你好，我们接着聊这件事情。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 47,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"你好，我们接着聊这件事情。\""
+        },
+        "voice": "chelsie"
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.6632749512791634,
+      "samples": 59775,
+      "rate": 24000,
+      "duration_s": 2.490625,
+      "rms_dbfs": -23.738833993442306,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 140,
+      "analysis_frames": 246,
+      "f0_median_hz": 229.6703296703297,
+      "recognized": "你好，我们接着聊这件事情。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "speaker-t0-4",
+      "arm": "speaker",
+      "target": 0,
+      "text": "The blue cup is next to the window.",
+      "is_target": false,
+      "audio": "audio/speaker-t0-4.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "The blue cup is next to the window."
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 43,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"The blue cup is next to the window.\""
+        },
+        "voice": "chelsie"
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.4693511612713337,
+      "samples": 50730,
+      "rate": 24000,
+      "duration_s": 2.11375,
+      "rms_dbfs": -19.097321909528887,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 142,
+      "analysis_frames": 208,
+      "f0_median_hz": 235.2941176470588,
+      "recognized": "The blue cup is next to the window.",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "speaker-t0-5",
+      "arm": "speaker",
+      "target": 0,
+      "text": "你好，我们接着聊这件事情。",
+      "is_target": true,
+      "audio": "audio/speaker-t0-5.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "你好，我们接着聊这件事情。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 47,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"你好，我们接着聊这件事情。\""
+        },
+        "voice": "chelsie"
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.48311208561062813,
+      "samples": 61695,
+      "rate": 24000,
+      "duration_s": 2.570625,
+      "rms_dbfs": -21.949695934641657,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 140,
+      "analysis_frames": 254,
+      "f0_median_hz": 235.2941176470588,
+      "recognized": "你好，我们接着聊这件事情。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "speaker-t1-0",
+      "arm": "speaker",
+      "target": 1,
+      "text": "我可以慢慢解释，你也可以随时打断我。",
+      "is_target": true,
+      "audio": "audio/speaker-t1-0.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "我可以慢慢解释，你也可以随时打断我。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 62,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"我可以慢慢解释，你也可以随时打断我。\""
+        },
+        "voice": "chelsie"
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.6724819876253605,
+      "samples": 88575,
+      "rate": 24000,
+      "duration_s": 3.690625,
+      "rms_dbfs": -24.58799579308344,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 203,
+      "analysis_frames": 366,
+      "f0_median_hz": 240.0,
+      "recognized": "我可以慢慢解释，你也可以随时打断我。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "speaker-t1-1",
+      "arm": "speaker",
+      "target": 1,
+      "text": "我可以慢慢解释，你也可以随时打断我。",
+      "is_target": true,
+      "audio": "audio/speaker-t1-1.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "我可以慢慢解释，你也可以随时打断我。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 62,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"我可以慢慢解释，你也可以随时打断我。\""
+        },
+        "voice": "chelsie"
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.6456608511507511,
+      "samples": 82815,
+      "rate": 24000,
+      "duration_s": 3.450625,
+      "rms_dbfs": -19.968938424872814,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 164,
+      "analysis_frames": 342,
+      "f0_median_hz": 223.26064382139148,
+      "recognized": "我可以慢慢解释，你也可以随时打断我。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "speaker-t1-2",
+      "arm": "speaker",
+      "target": 1,
+      "text": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。",
+      "is_target": false,
+      "audio": "audio/speaker-t1-2.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 71,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。\""
+        },
+        "voice": "chelsie"
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.7373865023255348,
+      "samples": 94335,
+      "rate": 24000,
+      "duration_s": 3.930625,
+      "rms_dbfs": -20.40380835743956,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 247,
+      "analysis_frames": 390,
+      "f0_median_hz": 250.0,
+      "recognized": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "speaker-t1-3",
+      "arm": "speaker",
+      "target": 1,
+      "text": "我可以慢慢解释，你也可以随时打断我。",
+      "is_target": true,
+      "audio": "audio/speaker-t1-3.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "我可以慢慢解释，你也可以随时打断我。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 62,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"我可以慢慢解释，你也可以随时打断我。\""
+        },
+        "voice": "chelsie"
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.5550722517073154,
+      "samples": 71295,
+      "rate": 24000,
+      "duration_s": 2.970625,
+      "rms_dbfs": -20.705669866245135,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 161,
+      "analysis_frames": 294,
+      "f0_median_hz": 242.42424242424244,
+      "recognized": "我可以慢慢解释，你也可以随时打断我。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "speaker-t1-4",
+      "arm": "speaker",
+      "target": 1,
+      "text": "The blue cup is next to the window.",
+      "is_target": false,
+      "audio": "audio/speaker-t1-4.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "The blue cup is next to the window."
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 43,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"The blue cup is next to the window.\""
+        },
+        "voice": "chelsie"
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.42640573531389236,
+      "samples": 48810,
+      "rate": 24000,
+      "duration_s": 2.03375,
+      "rms_dbfs": -19.701326797479112,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 130,
+      "analysis_frames": 200,
+      "f0_median_hz": 279.06976744186045,
+      "recognized": "The blue cup is next to the window.",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "speaker-t1-5",
+      "arm": "speaker",
+      "target": 1,
+      "text": "我可以慢慢解释，你也可以随时打断我。",
+      "is_target": true,
+      "audio": "audio/speaker-t1-5.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "我可以慢慢解释，你也可以随时打断我。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 62,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"我可以慢慢解释，你也可以随时打断我。\""
+        },
+        "voice": "chelsie"
+      },
+      "voice_config_acknowledged": null,
+      "wall_s_diagnostic_only": 0.591232918202877,
+      "samples": 73215,
+      "rate": 24000,
+      "duration_s": 3.050625,
+      "rms_dbfs": -23.781669741812124,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 165,
+      "analysis_frames": 302,
+      "f0_median_hz": 233.0097087378641,
+      "recognized": "我可以慢慢解释，你也可以随时打断我。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "controlled-t0-0",
+      "arm": "controlled",
+      "target": 0,
+      "text": "你好，我们接着聊这件事情。",
+      "is_target": true,
+      "audio": "audio/controlled-t0-0.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "你好，我们接着聊这件事情。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 47,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"你好，我们接着聊这件事情。\""
+        },
+        "voice": "chelsie",
+        "vllm_xargs": {
+          "fd_demo_tts_rng": "demo-voice-rng-v1"
+        }
+      },
+      "voice_config_acknowledged": {
+        "contract": "demo-voice-rng-v1",
+        "speaker": "chelsie",
+        "seed": 42
+      },
+      "wall_s_diagnostic_only": 0.808592889457941,
+      "samples": 55935,
+      "rate": 24000,
+      "duration_s": 2.330625,
+      "rms_dbfs": -20.72612644313192,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 142,
+      "analysis_frames": 230,
+      "f0_median_hz": 233.0097087378641,
+      "recognized": "你好，我们接着聊这件事情。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "controlled-t0-1",
+      "arm": "controlled",
+      "target": 0,
+      "text": "你好，我们接着聊这件事情。",
+      "is_target": true,
+      "audio": "audio/controlled-t0-1.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "你好，我们接着聊这件事情。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 47,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"你好，我们接着聊这件事情。\""
+        },
+        "voice": "chelsie",
+        "vllm_xargs": {
+          "fd_demo_tts_rng": "demo-voice-rng-v1"
+        }
+      },
+      "voice_config_acknowledged": {
+        "contract": "demo-voice-rng-v1",
+        "speaker": "chelsie",
+        "seed": 42
+      },
+      "wall_s_diagnostic_only": 0.8358676619827747,
+      "samples": 55935,
+      "rate": 24000,
+      "duration_s": 2.330625,
+      "rms_dbfs": -20.72612644313192,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 142,
+      "analysis_frames": 230,
+      "f0_median_hz": 233.0097087378641,
+      "recognized": "你好，我们接着聊这件事情。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "controlled-t0-2",
+      "arm": "controlled",
+      "target": 0,
+      "text": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。",
+      "is_target": false,
+      "audio": "audio/controlled-t0-2.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 71,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。\""
+        },
+        "voice": "chelsie",
+        "vllm_xargs": {
+          "fd_demo_tts_rng": "demo-voice-rng-v1"
+        }
+      },
+      "voice_config_acknowledged": {
+        "contract": "demo-voice-rng-v1",
+        "speaker": "chelsie",
+        "seed": 42
+      },
+      "wall_s_diagnostic_only": 1.4299438558518887,
+      "samples": 107220,
+      "rate": 24000,
+      "duration_s": 4.4675,
+      "rms_dbfs": -24.25431670280509,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 282,
+      "analysis_frames": 443,
+      "f0_median_hz": 221.20285423037717,
+      "recognized": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "controlled-t0-3",
+      "arm": "controlled",
+      "target": 0,
+      "text": "你好，我们接着聊这件事情。",
+      "is_target": true,
+      "audio": "audio/controlled-t0-3.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "你好，我们接着聊这件事情。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 47,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"你好，我们接着聊这件事情。\""
+        },
+        "voice": "chelsie",
+        "vllm_xargs": {
+          "fd_demo_tts_rng": "demo-voice-rng-v1"
+        }
+      },
+      "voice_config_acknowledged": {
+        "contract": "demo-voice-rng-v1",
+        "speaker": "chelsie",
+        "seed": 42
+      },
+      "wall_s_diagnostic_only": 0.8092875704169273,
+      "samples": 55935,
+      "rate": 24000,
+      "duration_s": 2.330625,
+      "rms_dbfs": -20.72612644313192,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 142,
+      "analysis_frames": 230,
+      "f0_median_hz": 233.0097087378641,
+      "recognized": "你好，我们接着聊这件事情。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "controlled-t0-4",
+      "arm": "controlled",
+      "target": 0,
+      "text": "The blue cup is next to the window.",
+      "is_target": false,
+      "audio": "audio/controlled-t0-4.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "The blue cup is next to the window."
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 43,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"The blue cup is next to the window.\""
+        },
+        "voice": "chelsie",
+        "vllm_xargs": {
+          "fd_demo_tts_rng": "demo-voice-rng-v1"
+        }
+      },
+      "voice_config_acknowledged": {
+        "contract": "demo-voice-rng-v1",
+        "speaker": "chelsie",
+        "seed": 42
+      },
+      "wall_s_diagnostic_only": 0.7459905631840229,
+      "samples": 46890,
+      "rate": 24000,
+      "duration_s": 1.95375,
+      "rms_dbfs": -19.389960879716426,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 124,
+      "analysis_frames": 192,
+      "f0_median_hz": 228.57142857142858,
+      "recognized": "The blue cup is next to the window.",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "controlled-t0-5",
+      "arm": "controlled",
+      "target": 0,
+      "text": "你好，我们接着聊这件事情。",
+      "is_target": true,
+      "audio": "audio/controlled-t0-5.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "你好，我们接着聊这件事情。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 47,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"你好，我们接着聊这件事情。\""
+        },
+        "voice": "chelsie",
+        "vllm_xargs": {
+          "fd_demo_tts_rng": "demo-voice-rng-v1"
+        }
+      },
+      "voice_config_acknowledged": {
+        "contract": "demo-voice-rng-v1",
+        "speaker": "chelsie",
+        "seed": 42
+      },
+      "wall_s_diagnostic_only": 0.809691522270441,
+      "samples": 55935,
+      "rate": 24000,
+      "duration_s": 2.330625,
+      "rms_dbfs": -20.72612644313192,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 142,
+      "analysis_frames": 230,
+      "f0_median_hz": 233.0097087378641,
+      "recognized": "你好，我们接着聊这件事情。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "controlled-t1-0",
+      "arm": "controlled",
+      "target": 1,
+      "text": "我可以慢慢解释，你也可以随时打断我。",
+      "is_target": true,
+      "audio": "audio/controlled-t1-0.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "我可以慢慢解释，你也可以随时打断我。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 62,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"我可以慢慢解释，你也可以随时打断我。\""
+        },
+        "voice": "chelsie",
+        "vllm_xargs": {
+          "fd_demo_tts_rng": "demo-voice-rng-v1"
+        }
+      },
+      "voice_config_acknowledged": {
+        "contract": "demo-voice-rng-v1",
+        "speaker": "chelsie",
+        "seed": 42
+      },
+      "wall_s_diagnostic_only": 1.0273766182363033,
+      "samples": 73215,
+      "rate": 24000,
+      "duration_s": 3.050625,
+      "rms_dbfs": -22.684825804821923,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 153,
+      "analysis_frames": 302,
+      "f0_median_hz": 240.0,
+      "recognized": "我可以慢慢解释，你也可以随时打断我。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "controlled-t1-1",
+      "arm": "controlled",
+      "target": 1,
+      "text": "我可以慢慢解释，你也可以随时打断我。",
+      "is_target": true,
+      "audio": "audio/controlled-t1-1.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "我可以慢慢解释，你也可以随时打断我。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 62,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"我可以慢慢解释，你也可以随时打断我。\""
+        },
+        "voice": "chelsie",
+        "vllm_xargs": {
+          "fd_demo_tts_rng": "demo-voice-rng-v1"
+        }
+      },
+      "voice_config_acknowledged": {
+        "contract": "demo-voice-rng-v1",
+        "speaker": "chelsie",
+        "seed": 42
+      },
+      "wall_s_diagnostic_only": 1.004907850176096,
+      "samples": 73215,
+      "rate": 24000,
+      "duration_s": 3.050625,
+      "rms_dbfs": -22.684825804821923,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 153,
+      "analysis_frames": 302,
+      "f0_median_hz": 240.0,
+      "recognized": "我可以慢慢解释，你也可以随时打断我。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "controlled-t1-2",
+      "arm": "controlled",
+      "target": 1,
+      "text": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。",
+      "is_target": false,
+      "audio": "audio/controlled-t1-2.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 71,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。\""
+        },
+        "voice": "chelsie",
+        "vllm_xargs": {
+          "fd_demo_tts_rng": "demo-voice-rng-v1"
+        }
+      },
+      "voice_config_acknowledged": {
+        "contract": "demo-voice-rng-v1",
+        "speaker": "chelsie",
+        "seed": 42
+      },
+      "wall_s_diagnostic_only": 1.4242874756455421,
+      "samples": 107220,
+      "rate": 24000,
+      "duration_s": 4.4675,
+      "rms_dbfs": -24.25431670280509,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 282,
+      "analysis_frames": 443,
+      "f0_median_hz": 221.20285423037717,
+      "recognized": "窗外的树叶轻轻摇动，小猫正在阳台上晒太阳。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "controlled-t1-3",
+      "arm": "controlled",
+      "target": 1,
+      "text": "我可以慢慢解释，你也可以随时打断我。",
+      "is_target": true,
+      "audio": "audio/controlled-t1-3.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "我可以慢慢解释，你也可以随时打断我。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 62,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"我可以慢慢解释，你也可以随时打断我。\""
+        },
+        "voice": "chelsie",
+        "vllm_xargs": {
+          "fd_demo_tts_rng": "demo-voice-rng-v1"
+        }
+      },
+      "voice_config_acknowledged": {
+        "contract": "demo-voice-rng-v1",
+        "speaker": "chelsie",
+        "seed": 42
+      },
+      "wall_s_diagnostic_only": 1.023103129118681,
+      "samples": 73215,
+      "rate": 24000,
+      "duration_s": 3.050625,
+      "rms_dbfs": -22.684825804821923,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 153,
+      "analysis_frames": 302,
+      "f0_median_hz": 240.0,
+      "recognized": "我可以慢慢解释，你也可以随时打断我。",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "controlled-t1-4",
+      "arm": "controlled",
+      "target": 1,
+      "text": "The blue cup is next to the window.",
+      "is_target": false,
+      "audio": "audio/controlled-t1-4.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "The blue cup is next to the window."
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 43,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"The blue cup is next to the window.\""
+        },
+        "voice": "chelsie",
+        "vllm_xargs": {
+          "fd_demo_tts_rng": "demo-voice-rng-v1"
+        }
+      },
+      "voice_config_acknowledged": {
+        "contract": "demo-voice-rng-v1",
+        "speaker": "chelsie",
+        "seed": 42
+      },
+      "wall_s_diagnostic_only": 0.7251116223633289,
+      "samples": 46890,
+      "rate": 24000,
+      "duration_s": 1.95375,
+      "rms_dbfs": -19.389960879716426,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 124,
+      "analysis_frames": 192,
+      "f0_median_hz": 228.57142857142858,
+      "recognized": "The blue cup is next to the window.",
+      "asr_exact_normalized": true
+    },
+    {
+      "id": "controlled-t1-5",
+      "arm": "controlled",
+      "target": 1,
+      "text": "我可以慢慢解释，你也可以随时打断我。",
+      "is_target": true,
+      "audio": "audio/controlled-t1-5.wav",
+      "request_payload": {
+        "model": "Qwen3-Omni-30B-A3B-Instruct",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a text-to-speech engine. Speak the user's text exactly, without adding or omitting content."
+          },
+          {
+            "role": "user",
+            "content": "我可以慢慢解释，你也可以随时打断我。"
+          }
+        ],
+        "modalities": [
+          "text",
+          "audio"
+        ],
+        "temperature": 0.0,
+        "max_tokens": 62,
+        "seed": 42,
+        "structured_outputs": {
+          "grammar": "root ::= \"我可以慢慢解释，你也可以随时打断我。\""
+        },
+        "voice": "chelsie",
+        "vllm_xargs": {
+          "fd_demo_tts_rng": "demo-voice-rng-v1"
+        }
+      },
+      "voice_config_acknowledged": {
+        "contract": "demo-voice-rng-v1",
+        "speaker": "chelsie",
+        "seed": 42
+      },
+      "wall_s_diagnostic_only": 1.0434927716851234,
+      "samples": 73215,
+      "rate": 24000,
+      "duration_s": 3.050625,
+      "rms_dbfs": -22.684825804821923,
+      "clipped_samples": 0,
+      "f0_method": "windowed-autocorrelation-80-450Hz; diagnostic, octave errors possible",
+      "f0_frames": 153,
+      "analysis_frames": 302,
+      "f0_median_hz": 240.0,
+      "recognized": "我可以慢慢解释，你也可以随时打断我。",
+      "asr_exact_normalized": true
+    }
+  ],
+  "comparisons": [
+    {
+      "arm": "legacy",
+      "target": 0,
+      "reference": "legacy-t0-0",
+      "candidate": "legacy-t0-1",
+      "pcm_equal": false,
+      "sample_count_delta": 3840,
+      "compared_samples": 55935,
+      "first_unequal_sample": 1366,
+      "equal_sample_fraction_common_prefix": 0.025726289443103602,
+      "unaligned_rmse_common_prefix": 0.12369336561010033
+    },
+    {
+      "arm": "legacy",
+      "target": 0,
+      "reference": "legacy-t0-0",
+      "candidate": "legacy-t0-3",
+      "pcm_equal": false,
+      "sample_count_delta": 0,
+      "compared_samples": 55935,
+      "first_unequal_sample": 1366,
+      "equal_sample_fraction_common_prefix": 0.027424689371592027,
+      "unaligned_rmse_common_prefix": 0.12814728875004183
+    },
+    {
+      "arm": "legacy",
+      "target": 0,
+      "reference": "legacy-t0-0",
+      "candidate": "legacy-t0-5",
+      "pcm_equal": false,
+      "sample_count_delta": 0,
+      "compared_samples": 55935,
+      "first_unequal_sample": 1368,
+      "equal_sample_fraction_common_prefix": 0.026745329400196655,
+      "unaligned_rmse_common_prefix": 0.12435216460481048
+    },
+    {
+      "arm": "legacy",
+      "target": 1,
+      "reference": "legacy-t1-0",
+      "candidate": "legacy-t1-1",
+      "pcm_equal": false,
+      "sample_count_delta": 0,
+      "compared_samples": 77055,
+      "first_unequal_sample": 1365,
+      "equal_sample_fraction_common_prefix": 0.0197391473622737,
+      "unaligned_rmse_common_prefix": 0.12347491150654386
+    },
+    {
+      "arm": "legacy",
+      "target": 1,
+      "reference": "legacy-t1-0",
+      "candidate": "legacy-t1-3",
+      "pcm_equal": false,
+      "sample_count_delta": -7680,
+      "compared_samples": 69375,
+      "first_unequal_sample": 1366,
+      "equal_sample_fraction_common_prefix": 0.020482882882882882,
+      "unaligned_rmse_common_prefix": 0.14148323471045948
+    },
+    {
+      "arm": "legacy",
+      "target": 1,
+      "reference": "legacy-t1-0",
+      "candidate": "legacy-t1-5",
+      "pcm_equal": false,
+      "sample_count_delta": 1920,
+      "compared_samples": 77055,
+      "first_unequal_sample": 1366,
+      "equal_sample_fraction_common_prefix": 0.01915514891960288,
+      "unaligned_rmse_common_prefix": 0.10654430877885306
+    },
+    {
+      "arm": "speaker",
+      "target": 0,
+      "reference": "speaker-t0-0",
+      "candidate": "speaker-t0-1",
+      "pcm_equal": false,
+      "sample_count_delta": -15360,
+      "compared_samples": 55935,
+      "first_unequal_sample": 1367,
+      "equal_sample_fraction_common_prefix": 0.02574416733708769,
+      "unaligned_rmse_common_prefix": 0.13024748337399134
+    },
+    {
+      "arm": "speaker",
+      "target": 0,
+      "reference": "speaker-t0-0",
+      "candidate": "speaker-t0-3",
+      "pcm_equal": false,
+      "sample_count_delta": -11520,
+      "compared_samples": 59775,
+      "first_unequal_sample": 0,
+      "equal_sample_fraction_common_prefix": 0.004617314930991217,
+      "unaligned_rmse_common_prefix": 0.10296121004155062
+    },
+    {
+      "arm": "speaker",
+      "target": 0,
+      "reference": "speaker-t0-0",
+      "candidate": "speaker-t0-5",
+      "pcm_equal": false,
+      "sample_count_delta": -9600,
+      "compared_samples": 61695,
+      "first_unequal_sample": 0,
+      "equal_sample_fraction_common_prefix": 0.0034524677850717236,
+      "unaligned_rmse_common_prefix": 0.11548951461298972
+    },
+    {
+      "arm": "speaker",
+      "target": 1,
+      "reference": "speaker-t1-0",
+      "candidate": "speaker-t1-1",
+      "pcm_equal": false,
+      "sample_count_delta": -5760,
+      "compared_samples": 82815,
+      "first_unequal_sample": 0,
+      "equal_sample_fraction_common_prefix": 0.003538006399806798,
+      "unaligned_rmse_common_prefix": 0.1197254482243209
+    },
+    {
+      "arm": "speaker",
+      "target": 1,
+      "reference": "speaker-t1-0",
+      "candidate": "speaker-t1-3",
+      "pcm_equal": false,
+      "sample_count_delta": -17280,
+      "compared_samples": 71295,
+      "first_unequal_sample": 0,
+      "equal_sample_fraction_common_prefix": 0.0026088786029875867,
+      "unaligned_rmse_common_prefix": 0.1089350502450763
+    },
+    {
+      "arm": "speaker",
+      "target": 1,
+      "reference": "speaker-t1-0",
+      "candidate": "speaker-t1-5",
+      "pcm_equal": false,
+      "sample_count_delta": -15360,
+      "compared_samples": 73215,
+      "first_unequal_sample": 0,
+      "equal_sample_fraction_common_prefix": 0.0030867991531789932,
+      "unaligned_rmse_common_prefix": 0.08565055621597957
+    },
+    {
+      "arm": "controlled",
+      "target": 0,
+      "reference": "controlled-t0-0",
+      "candidate": "controlled-t0-1",
+      "pcm_equal": true,
+      "sample_count_delta": 0,
+      "compared_samples": 55935,
+      "first_unequal_sample": null,
+      "equal_sample_fraction_common_prefix": 1.0,
+      "unaligned_rmse_common_prefix": 0.0
+    },
+    {
+      "arm": "controlled",
+      "target": 0,
+      "reference": "controlled-t0-0",
+      "candidate": "controlled-t0-3",
+      "pcm_equal": true,
+      "sample_count_delta": 0,
+      "compared_samples": 55935,
+      "first_unequal_sample": null,
+      "equal_sample_fraction_common_prefix": 1.0,
+      "unaligned_rmse_common_prefix": 0.0
+    },
+    {
+      "arm": "controlled",
+      "target": 0,
+      "reference": "controlled-t0-0",
+      "candidate": "controlled-t0-5",
+      "pcm_equal": true,
+      "sample_count_delta": 0,
+      "compared_samples": 55935,
+      "first_unequal_sample": null,
+      "equal_sample_fraction_common_prefix": 1.0,
+      "unaligned_rmse_common_prefix": 0.0
+    },
+    {
+      "arm": "controlled",
+      "target": 1,
+      "reference": "controlled-t1-0",
+      "candidate": "controlled-t1-1",
+      "pcm_equal": true,
+      "sample_count_delta": 0,
+      "compared_samples": 73215,
+      "first_unequal_sample": null,
+      "equal_sample_fraction_common_prefix": 1.0,
+      "unaligned_rmse_common_prefix": 0.0
+    },
+    {
+      "arm": "controlled",
+      "target": 1,
+      "reference": "controlled-t1-0",
+      "candidate": "controlled-t1-3",
+      "pcm_equal": true,
+      "sample_count_delta": 0,
+      "compared_samples": 73215,
+      "first_unequal_sample": null,
+      "equal_sample_fraction_common_prefix": 1.0,
+      "unaligned_rmse_common_prefix": 0.0
+    },
+    {
+      "arm": "controlled",
+      "target": 1,
+      "reference": "controlled-t1-0",
+      "candidate": "controlled-t1-5",
+      "pcm_equal": true,
+      "sample_count_delta": 0,
+      "compared_samples": 73215,
+      "first_unequal_sample": null,
+      "equal_sample_fraction_common_prefix": 1.0,
+      "unaligned_rmse_common_prefix": 0.0
+    }
+  ],
+  "completed": true
+}

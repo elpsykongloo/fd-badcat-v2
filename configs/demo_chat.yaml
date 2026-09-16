@@ -1,6 +1,10 @@
 # Overlay on src/config.yaml. Only the laptop demo launcher selects this profile.
 engine:
   chat_demo: true
+  # Explicit voice + request-local residual codec RNG (demo only).
+  demo_voice_control: true
+  demo_voice_speaker: chelsie
+  demo_voice_seed: 42
   playback_autoend: true
   control_validation: true
   warmup: true
