@@ -323,6 +323,7 @@ async def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True, help="New directory; never overwrite prior evidence")
     parser.add_argument("--live-url", default=None)
+    parser.add_argument("--chromium", type=Path, help="Use an existing Chromium executable")
     parser.add_argument("--audio", type=Path, help="Your own WAV input, required for --live-url")
     parser.add_argument("--turns", type=int, choices=[1, 2], default=1,
                         help="One or two independent turns; two repeats the input after 20 seconds of silence")
@@ -351,7 +352,8 @@ async def main():
                "formal_benchmark": False, "demo_version": "web-demo-v1",
                "sources": [str(p.relative_to(ROOT)) for p in sorted(STATIC.iterdir()) if p.is_file()]}
     async with async_playwright() as playwright:
-        browser = await playwright.chromium.launch(headless=True, args=launch_args)
+        browser = await playwright.chromium.launch(headless=True, args=launch_args,
+            **({"executable_path": str(args.chromium)} if args.chromium else {}))
         receipt["browser"] = browser.version
         try:
             if args.live_url:

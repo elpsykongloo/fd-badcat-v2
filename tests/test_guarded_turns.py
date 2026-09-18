@@ -2,6 +2,7 @@
 import asyncio
 import json
 import struct
+import sys
 
 import numpy as np
 import pytest
@@ -11,6 +12,17 @@ from engine import ControlMsg, ModelDone, FrameEvent
 from guarded_turns import InputDecision, route_messages
 from input_audio import EchoEvidence, decode_input_packet, INPUT_HEADER
 from control_labels import parse_label
+
+
+@pytest.fixture(autouse=True, params=[0, 2000], ids=['ordered-tts', 'prefetch-tts'])
+def streaming_schedule(request, monkeypatch):
+    original = actor
+    def configured(*args, **kwargs):
+        e, m, sock = original(*args, **kwargs)
+        e.engine_cfg.update(stream_prefetch_ms=request.param, stream_startup_ms=350,
+                            stream_diagnostics=True)
+        return e, m, sock
+    monkeypatch.setattr(sys.modules[__name__], 'actor', configured)
 
 
 def guarded(route="yield_ready", interrupt="switch", blocked=None):

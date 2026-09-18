@@ -455,6 +455,13 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
             and (engine_cfg or {}).get("stream_response"))}
         if info["streaming"] and voice_control is not None:
             info["tts_voice_control"] = voice_control
+        if info["streaming"] and (engine_cfg or {}).get("chat_demo"):
+            info["speech_scheduling"] = {
+                "version": "demo-continuity-v1",
+                "startup_ms": int(engine_cfg.get("stream_startup_ms", 80)),
+                "prefetch_ms": int(engine_cfg.get("stream_prefetch_ms", 0)),
+                "buffer_ms": int(engine_cfg.get("stream_buffer_ms", 600)),
+                "diagnostics": bool(engine_cfg.get("stream_diagnostics", False))}
         if info["streaming"] and (engine_cfg or {}).get("guarded_turns"):
             from control_labels import ROUTE_PROTOCOL, REPLY_PROTOCOL
             from guarded_turns import input_timing

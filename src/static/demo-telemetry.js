@@ -33,6 +33,16 @@ export class DemoTelemetry {
         base_latency_ms: this.context.baseLatency * 1000,
         output_latency_ms: this.context.outputLatency * 1000});
     }
+    if (s.started && !s.telemetryStarted) {
+      s.telemetryStarted = true;
+      this.emit("playback_start", {utterance_id: s.id,
+        audio_context_ms: this.context.currentTime * 1000,
+        scheduled_start_ms: s.playAt * 1000, played_samples: s.played});
+    }
+    if (s.lastUnderrun && s.lastUnderrun.underruns !== s.telemetryUnderruns) {
+      s.telemetryUnderruns = s.lastUnderrun.underruns;
+      this.emit("underrun", {utterance_id: s.id, ...s.lastUnderrun});
+    }
     if (s.eof && s.received === s.played && !s.telemetryEnd) {
       s.telemetryEnd = true;
       this.snapshot("playback_end", s);
@@ -40,6 +50,7 @@ export class DemoTelemetry {
   }
   snapshot(kind, s) {
     this.emit(kind, s ? {utterance_id: s.id, played_samples: s.played,
-      received_samples: s.received, underruns: s.underruns} : {});
+      received_samples: s.received, underruns: s.underruns,
+      underrun_ms: s.underrunMs, max_underrun_ms: s.maxUnderrunMs} : {});
   }
 }

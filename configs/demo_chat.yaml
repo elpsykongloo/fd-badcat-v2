@@ -5,6 +5,10 @@ engine:
   demo_voice_control: true
   demo_voice_speaker: chelsie
   demo_voice_seed: 42
+  # Keep browser credit at 600 ms; read ahead at most one further sentence.
+  stream_startup_ms: 350
+  stream_prefetch_ms: 2000
+  stream_diagnostics: true
   playback_autoend: true
   control_validation: true
   warmup: true

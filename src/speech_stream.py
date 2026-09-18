@@ -2,11 +2,13 @@
 
 Only SpeechEvents cross into the actor. One audio packet can await delivery;
 at most two complete sentences queue for synthesis. Played-sample credit bounds
-client lookahead. Native sample rate avoids stateless per-chunk resampling.
+client lookahead. Optional bounded prefetch decouples synthesis from delivery.
+Native sample rate avoids stateless per-chunk resampling.
 """
 import asyncio
 import struct
 import time
+from collections import deque
 from contextlib import aclosing
 from dataclasses import dataclass, field
 
@@ -15,6 +17,35 @@ from async_utils import cancellable_wait
 
 PCM_HEADER = struct.Struct("<4sIII")  # magic, utterance id, packet sequence, rate
 PROTOCOL = "pcm16.v1"
+MAX_PREFETCH_CHUNK_BYTES = 512 * 1024
+
+
+class AudioAhead:
+    """FIFO with a hard PCM byte budget; at most two sentence markers in flight.
+
+    One decoded source chunk and the sender's current packet are outside this
+    queue and separately bounded. Cancellation belongs to the pipeline tasks.
+    """
+    def __init__(self):
+        self.items = deque()
+        self.bytes = self.peak_bytes = 0
+        self.changed = asyncio.Condition()
+
+    async def put(self, item, size=0, limit=0):
+        async with self.changed:
+            await self.changed.wait_for(lambda: not size or self.bytes + size <= limit)
+            self.items.append((item, size))
+            self.bytes += size
+            self.peak_bytes = max(self.peak_bytes, self.bytes)
+            self.changed.notify_all()
+
+    async def get(self):
+        async with self.changed:
+            await self.changed.wait_for(lambda: bool(self.items))
+            item, size = self.items.popleft()
+            self.bytes -= size
+            self.changed.notify_all()
+            return item
 
 
 @dataclass
@@ -78,9 +109,13 @@ class SocketOutbox:
 class SpeechPipeline:
     def __init__(self, sid, queue, messages, text_fn, tts_fn, *, timeout=15,
                  retry=True, apology="", packet_ms=40, buffer_ms=600, precompute_gate=None,
-                 track_sentences=False):
+                 track_sentences=False, startup_ms=80, prefetch_ms=0, diagnostics=False):
         if not 10 <= packet_ms <= 100 or not 2 * packet_ms <= buffer_ms <= 2000:
             raise ValueError("stream packet/buffer sizes outside safe limits")
+        if not 0 <= startup_ms <= 1000:
+            raise ValueError("stream startup outside safe limits")
+        if prefetch_ms and not 2 * packet_ms <= prefetch_ms <= 5000:
+            raise ValueError("stream prefetch outside safe limits")
         self.sid, self.queue = sid, queue
         self.messages, self.text_fn, self.tts_fn = messages, text_fn, tts_fn
         self.timeout, self.retry, self.apology = timeout, retry, apology
@@ -91,7 +126,18 @@ class SpeechPipeline:
         self.sentences = asyncio.Queue(maxsize=2)
         self.precompute_gate = precompute_gate
         self.track_sentences = track_sentences
+        self.startup_ms, self.prefetch_ms = startup_ms, prefetch_ms
+        self.diagnostics = diagnostics
+        self.ahead = AudioAhead() if prefetch_ms else None
+        self.sentence_slots = asyncio.Semaphore(2)
+        self.send_seq = 0
+        self.origin = time.perf_counter()
         self.task = asyncio.create_task(self.run())
+
+    async def metric(self, phase, **data):
+        if self.diagnostics:
+            await self.emit("timing", phase=phase,
+                            pipeline_ms=round((time.perf_counter() - self.origin) * 1000, 3), **data)
 
     def progress(self, samples):
         # Called only by actor; stale IDs are filtered before this point.
@@ -149,8 +195,34 @@ class SpeechPipeline:
                         timed_out=timed_out)
         await self.sentences.put(None)
 
+    def validate_chunk(self, chunk):
+        if not chunk.pcm or len(chunk.pcm) % 2:
+            raise RuntimeError("Empty or unaligned PCM chunk")
+        if not 8000 <= chunk.sample_rate <= 96000:
+            raise RuntimeError("Invalid sample rate")
+        if self.ahead is not None and len(chunk.pcm) > MAX_PREFETCH_CHUNK_BYTES:
+            raise RuntimeError("TTS chunk exceeds bounded prefetch input")
+        if self.rate is None:
+            self.rate = chunk.sample_rate
+        if self.rate != chunk.sample_rate:
+            raise RuntimeError("Sample rate changed inside utterance")
+
+    async def send_pcm(self, pcm, t0):
+        count = len(pcm) // 2
+        waited = 0.0
+        while self.sent + count - self.played > self.rate * self.buffer_ms / 1000:
+            self.credit.clear()
+            began = time.perf_counter()
+            await cancellable_wait(self.credit.wait(), 5)
+            waited += time.perf_counter() - began
+        self.sent += count
+        wire = PCM_HEADER.pack(b"FDS1", self.sid, self.send_seq, self.rate) + pcm
+        await self.emit("audio", wire=wire, seq=self.send_seq, samples=count,
+                        rate=self.rate, elapsed=time.perf_counter() - t0)
+        self.send_seq += 1
+        return waited
+
     async def synthesize(self):
-        seq = 0
         sentence_index = 0
         t0 = time.perf_counter()
         while True:
@@ -161,8 +233,17 @@ class SpeechPipeline:
                 continue
             if sentence_index and self.precompute_gate is not None:
                 await self.precompute_gate.wait()
+            if self.ahead is not None:
+                await self.sentence_slots.acquire()
             sentence_index += 1
-            await self.emit("sentence", text=sentence, start_sample=self.sent)
+            if self.ahead is not None:
+                await self.ahead.put(("sentence", sentence_index, sentence))
+            else:
+                await self.emit("sentence", text=sentence, start_sample=self.sent)
+            await self.metric("tts_request", sentence_index=sentence_index)
+            request_started = time.perf_counter()
+            credit_wait = enqueue_wait = 0.0
+            sentence_samples = chunk_index = 0
             produced = False
             async with aclosing(self.tts_fn(sentence)) as source:
                 while True:
@@ -170,36 +251,66 @@ class SpeechPipeline:
                         chunk = await cancellable_wait(source.__anext__(), 60)
                     except StopAsyncIteration:
                         break
-                    if not chunk.pcm or len(chunk.pcm) % 2:
-                        raise RuntimeError("Empty or unaligned PCM chunk")
-                    if not 8000 <= chunk.sample_rate <= 96000:
-                        raise RuntimeError("Invalid sample rate")
-                    if self.rate is None:
-                        self.rate = chunk.sample_rate
-                    if self.rate != chunk.sample_rate:
-                        raise RuntimeError("Sample rate changed inside utterance")
+                    self.validate_chunk(chunk)
                     produced = True
+                    chunk_index += 1
+                    sentence_samples += len(chunk.pcm) // 2
+                    await self.metric("tts_chunk", sentence_index=sentence_index,
+                        chunk_index=chunk_index, samples=len(chunk.pcm) // 2, rate=self.rate,
+                        request_ms=round((time.perf_counter() - request_started) * 1000, 3),
+                        **(getattr(chunk, "timing", None) or {}))
                     packet_bytes = int(self.rate * self.packet_ms / 1000) * 2
                     for offset in range(0, len(chunk.pcm), packet_bytes):
                         pcm = chunk.pcm[offset:offset + packet_bytes]
-                        count = len(pcm) // 2
-                        while self.sent + count - self.played > self.rate * self.buffer_ms / 1000:
-                            self.credit.clear()
-                            await cancellable_wait(self.credit.wait(), 5)
-                        self.sent += count
-                        wire = PCM_HEADER.pack(b"FDS1", self.sid, seq, self.rate) + pcm
-                        await self.emit("audio", wire=wire, seq=seq, samples=count,
-                                        rate=self.rate, elapsed=time.perf_counter() - t0)
-                        seq += 1
+                        if self.ahead is None:
+                            credit_wait += await self.send_pcm(pcm, t0)
+                        else:
+                            began = time.perf_counter()
+                            await self.ahead.put(("audio", sentence_index, pcm), len(pcm),
+                                                 int(self.rate * self.prefetch_ms / 1000) * 2)
+                            enqueue_wait += time.perf_counter() - began
             if not produced:
                 raise RuntimeError("Empty TTS sentence stream")
-            if self.track_sentences:
+            await self.metric("tts_complete", sentence_index=sentence_index,
+                consume_ms=round((time.perf_counter() - request_started) * 1000, 3),
+                audio_ms=round(sentence_samples / self.rate * 1000, 3), chunks=chunk_index,
+                credit_wait_ms=round(credit_wait * 1000, 3),
+                prefetch_wait_ms=round(enqueue_wait * 1000, 3))
+            if self.ahead is not None:
+                await self.ahead.put(("sentence_end", sentence_index, sentence))
+            elif self.track_sentences:
                 await self.emit("sentence_end", text=sentence, end_sample=self.sent)
-        await self.emit("audio_end", samples=self.sent, rate=self.rate,
-                        packets=seq, elapsed=time.perf_counter() - t0)
+        if self.ahead is not None:
+            await self.ahead.put(("end", 0, None))
+        else:
+            await self.emit("audio_end", samples=self.sent, rate=self.rate,
+                            packets=self.send_seq, elapsed=time.perf_counter() - t0)
+
+    async def send_ahead(self):
+        credit_wait = 0.0
+        while True:
+            kind, index, data = await self.ahead.get()
+            if kind == "end":
+                await self.emit("audio_end", samples=self.sent, rate=self.rate,
+                    packets=self.send_seq, elapsed=time.perf_counter() - self.origin)
+                return
+            if kind == "sentence":
+                credit_wait = 0.0
+                await self.emit("sentence", text=data, start_sample=self.sent)
+            elif kind == "audio":
+                credit_wait += await self.send_pcm(data, self.origin)
+            elif kind == "sentence_end":
+                if self.track_sentences:
+                    await self.emit("sentence_end", text=data, end_sample=self.sent)
+                await self.metric("sentence_sent", sentence_index=index,
+                    end_sample=self.sent, credit_wait_ms=round(credit_wait * 1000, 3),
+                    prefetch_peak_bytes=self.ahead.peak_bytes)
+                self.sentence_slots.release()
 
     async def run(self):
         children = [asyncio.create_task(self.produce()), asyncio.create_task(self.synthesize())]
+        if self.ahead is not None:
+            children.append(asyncio.create_task(self.send_ahead()))
         try:
             await asyncio.gather(*children)
         except asyncio.CancelledError:
@@ -210,4 +321,7 @@ class SpeechPipeline:
             for child in children:
                 child.cancel()
             await asyncio.gather(*children, return_exceptions=True)
+            if self.ahead is not None:
+                self.ahead.items.clear()
+                self.ahead.bytes = 0
             self.queue.put_nowait(SpeechEvent(self.sid, "finished"))

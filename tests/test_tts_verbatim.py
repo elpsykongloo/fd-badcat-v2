@@ -68,7 +68,8 @@ def audio_event(samples=240):
         "content": base64.b64encode(wav.getvalue()).decode()}}]}
 
 
-async def test_audio_quarantined_until_full_literal_and_successful_text_end(monkeypatch):
+@pytest.mark.parametrize('timing', [False, True])
+async def test_audio_quarantined_until_full_literal_and_successful_text_end(monkeypatch, timing):
     verified = False
     async def records(*args):
         nonlocal verified
@@ -80,10 +81,16 @@ async def test_audio_quarantined_until_full_literal_and_successful_text_end(monk
         yield audio_event()
     monkeypatch.setattr(stream_transport, "sse_json", records)
     chunks = []
-    async for chunk in stream_transport.audio_stream("unused", {}, expected_text="你好吗？"):
+    async for chunk in stream_transport.audio_stream("unused", {}, expected_text="你好吗？", timing=timing):
         assert verified
         chunks.append(chunk)
     assert len(chunks) == 3 and sum(len(c.pcm) for c in chunks) == 1440
+    if timing:
+        for chunk in chunks:
+            assert chunk.timing['released_ms'] >= chunk.timing['text_verified_ms']
+        assert chunks[0].timing['sse_audio_ms'] < chunks[0].timing['text_verified_ms']
+    else:
+        assert all(chunk.timing is None for chunk in chunks)
 
 
 @pytest.mark.parametrize("events", [

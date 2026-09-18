@@ -393,6 +393,10 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                           round((time.perf_counter() - started) * 1000, 3)})
             recording = None
             stream_options = {}
+            if self.CHAT_DEMO and self.engine_cfg.get("stream_diagnostics", False):
+                import module as adapters
+                if stream_fn is adapters.tts_omni_stream:
+                    stream_options["timing"] = True
             if self.tts_voice_control is not None:
                 import module as adapters
                 if stream_fn is adapters.tts_omni_stream:
@@ -408,7 +412,8 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                     # misdescribe an injected/custom model's request as Omni's.
                     if stream_fn in (adapters.llm_qwen3o_stream, adapters.tts_omni_stream):
                         is_tts = stream_fn is adapters.tts_omni_stream
-                        payload = (adapters.verbatim_tts_payload(arg, **stream_options) if is_tts
+                        payload = (adapters.verbatim_tts_payload(arg,
+                                       voice_control=self.tts_voice_control) if is_tts
                                    else adapters.qwen_text_payload(arg, route=route))
                         payload = {**payload, "stream": True}
                         role = "tts" if is_tts else next((name for name, prompt in self.prompts.items()
@@ -1052,18 +1057,31 @@ class ActorEngine(GuardedTurns, CandidateTurns):
             timeout=self.DECISION_TIMEOUT, retry=meta.kind == "response",
             apology=RESPONSE_TIMEOUT_APOLOGY,
             packet_ms=int(self.engine_cfg.get("stream_packet_ms", 40)),
-            buffer_ms=int(self.engine_cfg.get("stream_buffer_ms", 600)))
+            buffer_ms=int(self.engine_cfg.get("stream_buffer_ms", 600)),
+            **self._speech_stream_options())
         self._speech_jobs[self._speech.sid] = self._speech
         self._speech_tasks = [task for task in self._speech_tasks if not task.done()]
         self._speech_tasks.append(self._speech.task)
         self._inflight += 1
         self.q.put_nowait(ControlMsg("speech_start", {
             "utterance_id": self._speech.sid, "turn": meta.turn, "protocol": PROTOCOL,
-            "buffer_ms": self._speech.buffer_ms, "timestamp": self._wall_ts()}))
+            "buffer_ms": self._speech.buffer_ms, "startup_ms": self._speech.startup_ms,
+            "timestamp": self._wall_ts()}))
+
+    def _speech_stream_options(self):
+        if not self.CHAT_DEMO:
+            return {}
+        return {"startup_ms": int(self.engine_cfg.get("stream_startup_ms", 80)),
+                "prefetch_ms": int(self.engine_cfg.get("stream_prefetch_ms", 0)),
+                "diagnostics": bool(self.engine_cfg.get("stream_diagnostics", False))}
 
     async def _on_speech_event(self, ev):
         deferred = False
         try:
+            if ev.kind == "timing":
+                if ev.sid in self._speech_jobs:
+                    self._observe("speech_timing", {"utterance_id": ev.sid, **ev.data})
+                return
             if ev.kind == "finished":
                 if self._speech_jobs.pop(ev.sid, None) is not None:
                     self._inflight = max(0, self._inflight - 1)

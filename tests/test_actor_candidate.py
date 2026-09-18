@@ -107,8 +107,11 @@ async def ended(e):
     await frame(e, .032, {"end": .032}, .2)
 
 
-async def test_private_pipeline_runs_through_first_tts_without_any_public_output_or_history():
+@pytest.mark.parametrize("prefetch", [0, 2000])
+async def test_private_pipeline_runs_through_first_tts_without_any_public_output_or_history(prefetch):
     e, m, sock = actor()
+    e.engine_cfg.update(stream_prefetch_ms=prefetch, stream_startup_ms=350,
+                        stream_diagnostics=True)
     try:
         await ended(e)
         c = e._candidate
@@ -123,6 +126,7 @@ async def test_private_pipeline_runs_through_first_tts_without_any_public_output
         assert c.confirmed and c.published and c.messages == frozen
         assert len(c.audio) == 512 and not c.audio.flags.writeable, "hold silence is excluded"
         assert sock.audio and not e.assistant_history and not e.asr_calls
+        assert next(x['data'] for x in sock.events if x['event']=='speech_start')['startup_ms'] == 350
         await e._process_event(ControlMsg("playback_progress", {
             "utterance_id": c.pipeline.sid, "played_samples": 0, "started": True}))
         assert len(e.asr_calls) == 1 and e.asr_calls[0][2] == c.cid
@@ -138,8 +142,10 @@ async def test_private_pipeline_runs_through_first_tts_without_any_public_output
 
 
 @pytest.mark.parametrize("published", [False, True])
-async def test_resume_cancels_private_or_published_unplayed_pipeline_and_keeps_original_input(published):
+@pytest.mark.parametrize("prefetch", [0, 2000])
+async def test_resume_cancels_private_or_published_unplayed_pipeline_and_keeps_original_input(published, prefetch):
     e, m, sock = actor()
+    e.engine_cfg.update(stream_prefetch_ms=prefetch, stream_diagnostics=True)
     try:
         await ended(e)
         c = e._candidate

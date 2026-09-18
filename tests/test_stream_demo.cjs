@@ -161,3 +161,26 @@ assert.equal(measured.filter(m => m.data.kind === "playback_end").length, 1);
 assert.equal(measured.at(-1).data.played_samples, 960);
 assert.equal(measured.at(-1).data.upload_buffer_bytes, 1024);
 console.log("telemetry: opt-in, same-clock RTT, bounded pings, first/played milestones exactly once PASS");
+
+context.currentTime = 0;
+player.start({utterance_id: 100, buffer_ms: 600, startup_ms: 350});
+player.packet(packet(100, 0));
+assert.equal(sources.at(-1).at, .35);
+player.hold(true); context.currentTime = .1; player.hold(false);
+assert.ok(Math.abs(sources.at(-1).at - .45) < 1e-9);
+context.currentTime = .8;
+player.packet(packet(100, 1));
+assert.ok(Math.abs(sources.at(-1).at - .88) < 1e-9, "recovery stays 80 ms");
+assert.ok(Math.abs(player.speech.underrunMs - 390) < 1e-8);
+assert.equal(player.speech.lastUnderrun.sample_offset, 960);
+assert.equal(player.speech.lastUnderrun.packet_seq, 1);
+telemetry.playback(player.speech); telemetry.playback(player.speech);
+assert.equal(measured.filter(m => m.data.kind === "underrun").length, 1);
+telemetry.snapshot("cancel", player.speech);
+assert.ok(Math.abs(measured.at(-1).data.underrun_ms - 390) < 1e-8);
+player.cancel(); player.packet(packet(100, 2));
+assert.equal(player.speech, null);
+for (const startup_ms of [-1, 1001, Infinity, "350"]) {
+  assert.throws(() => player.start({utterance_id: 101, buffer_ms: 600, startup_ms}), /配置/);
+}
+console.log("continuity: configured startup/hold, unchanged recovery, same-clock gap telemetry, cancellation PASS");

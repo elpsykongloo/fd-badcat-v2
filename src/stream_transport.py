@@ -6,6 +6,7 @@ non-streaming message.audio.data dialect. Decode in memory to native-rate PCM16.
 import base64
 import io
 import json
+import time
 from contextlib import aclosing
 from dataclasses import dataclass
 
@@ -18,6 +19,7 @@ import soundfile as sf
 class PCMChunk:
     pcm: bytes
     sample_rate: int
+    timing: dict | None = None
 
 
 async def sse_json(url, payload, timeout=60):
@@ -70,7 +72,8 @@ async def text_stream(url, payload, timeout=60):
                     yield content
 
 
-async def audio_stream(url, payload, timeout=60, *, expected_text=None, expected_voice=None):
+async def audio_stream(url, payload, timeout=60, *, expected_text=None, expected_voice=None,
+                       timing=False):
     """Decode native PCM; optional fail-closed literal-text contract for TTS.
 
     Quarantine early audio until the complete sentence and its successful text
@@ -84,6 +87,9 @@ async def audio_stream(url, payload, timeout=60, *, expected_text=None, expected
     spoken_text = ""
     verified = expected_text is None
     pending, pending_bytes = [], 0
+    origin = time.perf_counter()
+    verified_ms = None
+    previous_audio_ms = None
     async with aclosing(sse_json(url, payload, timeout)) as records:
         async for obj in records:
             if expected_text is not None and obj.get("modality") == "text":
@@ -103,7 +109,11 @@ async def audio_stream(url, payload, timeout=60, *, expected_text=None, expected
                         if expected_voice is not None and obj.get("fd_tts_voice") != expected_voice:
                             raise RuntimeError("TTS server did not acknowledge demo voice/RNG configuration")
                         verified = True
+                        verified_ms = (time.perf_counter() - origin) * 1000
                         for chunk in pending:
+                            if chunk.timing is not None:
+                                chunk.timing.update(text_verified_ms=verified_ms,
+                                    released_ms=(time.perf_counter() - origin) * 1000)
                             yield chunk
                         pending.clear()
                         pending_bytes = 0
@@ -116,6 +126,8 @@ async def audio_stream(url, payload, timeout=60, *, expected_text=None, expected
                 data = (choice.get("delta") or {}).get("content")
                 if not data:
                     continue
+                received_at = time.perf_counter()
+                received_ms = (received_at - origin) * 1000
                 raw = base64.b64decode(data, validate=True)
                 audio, sr = sf.read(io.BytesIO(raw), dtype="float32", always_2d=True)
                 if sr < 8000 or sr > 96000 or not np.isfinite(audio).all():
@@ -123,7 +135,16 @@ async def audio_stream(url, payload, timeout=60, *, expected_text=None, expected
                 pcm = (np.clip(audio.mean(axis=1), -1, 32767 / 32768) * 32768).round().astype("<i2")
                 if pcm.size:
                     count += 1
-                    chunk = PCMChunk(pcm.tobytes(), sr)
+                    detail = None
+                    if timing:
+                        detail = {"sse_audio_ms": received_ms,
+                            "text_verified_ms": verified_ms,
+                            "released_ms": (time.perf_counter() - origin) * 1000,
+                            "decode_ms": (time.perf_counter() - received_at) * 1000,
+                            "sse_interval_ms": None if previous_audio_ms is None
+                                else received_ms - previous_audio_ms}
+                    previous_audio_ms = received_ms
+                    chunk = PCMChunk(pcm.tobytes(), sr, detail)
                     if verified:
                         yield chunk
                     else:

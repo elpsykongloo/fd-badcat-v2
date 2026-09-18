@@ -79,11 +79,15 @@ class DemoTrace:
             return None
         self.client_tokens -= 1
         event = data.get("kind")
-        if not isinstance(event, str) or event not in {"ping", "rtt", "first_audio", "playback_end", "cancel", "stop"}:
+        if not isinstance(event, str) or event not in {"ping", "rtt", "first_audio", "playback_end",
+                                                      "playback_start", "underrun", "cancel", "stop"}:
             return None
         fields = ("seq", "utterance_id", "client_ms", "rtt_ms", "first_audio_ms",
                   "scheduled_lead_ms", "base_latency_ms", "output_latency_ms",
-                  "played_samples", "received_samples", "underruns", "upload_buffer_bytes")
+                  "played_samples", "received_samples", "underruns", "upload_buffer_bytes",
+                  "gap_ms", "late_ms", "audio_context_ms", "previous_end_ms", "packet_seq",
+                  "sample_offset", "arrival_interval_ms", "scheduled_start_ms",
+                  "underrun_ms", "max_underrun_ms")
         clean = {"kind": event}
         for key in fields:
             value = data.get(key)

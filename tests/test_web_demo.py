@@ -26,6 +26,15 @@ def test_demo_static_and_config_do_not_claim_upstream_health():
                 assert client.get("/demo/" + file).status_code == 200
 
 
+def test_demo_scheduling_is_declared_only_for_explicit_demo():
+    config = {'stream_response': True, 'chat_demo': True, 'stream_startup_ms': 350,
+              'stream_prefetch_ms': 2000, 'stream_diagnostics': True}
+    with TestClient(create_app({}, {}, engine_cfg=config)) as client:
+        assert client.get('/api/demo/info').json()['speech_scheduling'] == {
+            'version':'demo-continuity-v1','startup_ms':350,'prefetch_ms':2000,
+            'buffer_ms':600,'diagnostics':True}
+
+
 def test_browser_handshake_assigns_path_and_waits_for_engine(monkeypatch, tmp_path):
     made = []
     class Engine:

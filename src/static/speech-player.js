@@ -32,10 +32,13 @@ export class SpeechPlayer {
   }
   start(data) {
     this.cancel();
+    const startup = data.startup_ms ?? 80;
     if (!Number.isInteger(data.utterance_id) || !Number.isFinite(data.buffer_ms)
-        || data.buffer_ms <= 0 || data.buffer_ms > 2000) throw Error("无效播放配置");
+        || data.buffer_ms <= 0 || data.buffer_ms > 2000
+        || !Number.isFinite(startup) || startup < 0 || startup > 1000) throw Error("无效播放配置");
     this.speech = {id: data.utterance_id, seq: 0, received: 0, played: 0, next: 0,
-      limit: data.buffer_ms, start: performance.now(), underruns: 0, eof: false};
+      limit: data.buffer_ms, startupMs: startup, start: performance.now(),
+      underruns: 0, underrunMs: 0, maxUnderrunMs: 0, eof: false};
     this.speech.pending = [];
     this.update(this.speech);
   }
@@ -79,8 +82,9 @@ export class SpeechPlayer {
       s.playAt = Infinity;
     } else if (!held && s.held) {
       s.held = false;
-      s.next = this.context.currentTime + .08;
+      s.next = this.context.currentTime + s.startupMs / 1000;
       s.playAt = s.next;
+      s.scheduledLeadMs = s.startupMs;
       for (const chunk of s.pending) this.schedule(s, chunk.buffer, chunk.offset, chunk.count);
       s.pending = [];
     }
@@ -115,13 +119,23 @@ export class SpeechPlayer {
     for (let i = 0; i < count; i++) values[i] = view.getInt16(16 + 2 * i, true) / 32768;
     if (s.firstAudio === undefined) {
       s.firstAudio = Math.round(performance.now() - s.start);
-      s.next = this.context.currentTime + 0.08;
+      s.next = this.context.currentTime + s.startupMs / 1000;
       s.playAt = s.next;
       s.scheduledLeadMs = (s.next - this.context.currentTime) * 1000;
     } else if (!s.held && s.next < this.context.currentTime) {
       s.underruns++;
+      const now = this.context.currentTime, gap = (now - s.next + .08) * 1000;
+      s.underrunMs += gap;
+      s.maxUnderrunMs = Math.max(s.maxUnderrunMs, gap);
+      s.lastUnderrun = {underruns: s.underruns, gap_ms: gap,
+        late_ms: (now - s.next) * 1000, audio_context_ms: now * 1000,
+        previous_end_ms: s.next * 1000, packet_seq: seq,
+        sample_offset: s.received - count,
+        arrival_interval_ms: performance.now() - s.lastArrival};
+      // Recovery remains 80 ms; the larger startup lead is not added to a gap.
       s.next = this.context.currentTime + 0.08;
     }
+    s.lastArrival = performance.now();
     if (s.held) {
       s.pending.push({buffer, offset: s.received - count, count});
       s.playAt = Infinity;

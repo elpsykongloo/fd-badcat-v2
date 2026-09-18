@@ -1,0 +1,790 @@
+{
+  "summary": {
+    "profile": "4:12",
+    "calls": 12,
+    "completed": 12,
+    "asr_strict_match": 10,
+    "warm_n": 6,
+    "warm_first_pcm_median_ms": 254.9183163791895,
+    "warm_rtf_median": 0.3425702397375071,
+    "max_required_lead_ms_all_calls": 14.701291918754578,
+    "warm_chunk_counts": [
+      3,
+      5,
+      6,
+      5,
+      5,
+      6
+    ]
+  },
+  "requests": [
+    {
+      "text_index": 0,
+      "repeat": 0,
+      "text": "你好，我们接着聊。",
+      "chunks": [
+        {
+          "at_ms": 636.1823454499245,
+          "samples": 7125,
+          "rate": 24000,
+          "sse_audio_ms": 633.6150541901588,
+          "text_verified_ms": 118.63795667886734,
+          "released_ms": 635.5619989335537,
+          "decode_ms": 1.9473619759082794,
+          "sse_interval_ms": null
+        },
+        {
+          "at_ms": 933.5187561810017,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 930.835448205471,
+          "text_verified_ms": 118.63795667886734,
+          "released_ms": 932.8910559415817,
+          "decode_ms": 2.056371420621872,
+          "sse_interval_ms": 297.2203940153122
+        },
+        {
+          "at_ms": 1137.9780434072018,
+          "samples": 14805,
+          "rate": 24000,
+          "sse_audio_ms": 1135.9599828720093,
+          "text_verified_ms": 118.63795667886734,
+          "released_ms": 1137.3457498848438,
+          "decode_ms": 1.3872012495994568,
+          "sse_interval_ms": 205.12453466653824
+        }
+      ],
+      "elapsed_ms": 1138.6554464697838,
+      "audio_ms": 1850.625,
+      "rtf": 0.6152815651305823,
+      "status": "completed",
+      "recognized": "你好，我们接着聊。",
+      "asr_match": true,
+      "minimum_continuous_lead_ms": 0.4614107310771942
+    },
+    {
+      "text_index": 0,
+      "repeat": 1,
+      "text": "你好，我们接着聊。",
+      "chunks": [
+        {
+          "at_ms": 229.63015735149384,
+          "samples": 7125,
+          "rate": 24000,
+          "sse_audio_ms": 228.09084504842758,
+          "text_verified_ms": 127.40151211619377,
+          "released_ms": 229.4020727276802,
+          "decode_ms": 1.312408596277237,
+          "sse_interval_ms": null
+        },
+        {
+          "at_ms": 526.641495525837,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 525.0509716570377,
+          "text_verified_ms": 127.40151211619377,
+          "released_ms": 526.4135301113129,
+          "decode_ms": 1.3634636998176575,
+          "sse_interval_ms": 296.96012660861015
+        },
+        {
+          "at_ms": 706.4205408096313,
+          "samples": 14805,
+          "rate": 24000,
+          "sse_audio_ms": 704.8562876880169,
+          "text_verified_ms": 127.40151211619377,
+          "released_ms": 706.1859332025051,
+          "decode_ms": 1.3310424983501434,
+          "sse_interval_ms": 179.80531603097916
+        }
+      ],
+      "elapsed_ms": 707.0649787783623,
+      "audio_ms": 1850.625,
+      "rtf": 0.3820682087285983,
+      "status": "completed",
+      "recognized": "你好，我们接着聊。",
+      "asr_match": true,
+      "minimum_continuous_lead_ms": 0.13633817434310913
+    },
+    {
+      "text_index": 1,
+      "repeat": 0,
+      "text": "窗外的小鸟停在树枝上，正在等待雨停。",
+      "chunks": [
+        {
+          "at_ms": 254.03336808085442,
+          "samples": 7125,
+          "rate": 24000,
+          "sse_audio_ms": 253.42483073472977,
+          "text_verified_ms": 225.37877410650253,
+          "released_ms": 253.92458587884903,
+          "decode_ms": 0.5002133548259735,
+          "sse_interval_ms": null
+        },
+        {
+          "at_ms": 558.7341599166393,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 556.9860227406025,
+          "text_verified_ms": 225.37877410650253,
+          "released_ms": 558.6126856505871,
+          "decode_ms": 1.6280598938465118,
+          "sse_interval_ms": 303.5611920058727
+        },
+        {
+          "at_ms": 830.9382386505604,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 829.16559278965,
+          "text_verified_ms": 225.37877410650253,
+          "released_ms": 830.8142721652985,
+          "decode_ms": 1.6503669321537018,
+          "sse_interval_ms": 272.17957004904747
+        },
+        {
+          "at_ms": 1121.7930130660534,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 1119.8623217642307,
+          "text_verified_ms": 225.37877410650253,
+          "released_ms": 1121.6690987348557,
+          "decode_ms": 1.8084682524204254,
+          "sse_interval_ms": 290.69672897458076
+        },
+        {
+          "at_ms": 1244.6415834128857,
+          "samples": 10965,
+          "rate": 24000,
+          "sse_audio_ms": 1243.3492168784142,
+          "text_verified_ms": 225.37877410650253,
+          "released_ms": 1244.5226311683655,
+          "decode_ms": 1.1748559772968292,
+          "sse_interval_ms": 123.48689511418343
+        }
+      ],
+      "elapsed_ms": 1245.2509999275208,
+      "audio_ms": 3564.375,
+      "rtf": 0.3493602665060553,
+      "status": "completed",
+      "recognized": "窗外的小鸟停在树枝上，正在等待雨停。",
+      "asr_match": true,
+      "minimum_continuous_lead_ms": 7.825791835784912
+    },
+    {
+      "text_index": 1,
+      "repeat": 1,
+      "text": "窗外的小鸟停在树枝上，正在等待雨停。",
+      "chunks": [
+        {
+          "at_ms": 258.31203535199165,
+          "samples": 7125,
+          "rate": 24000,
+          "sse_audio_ms": 257.1078985929489,
+          "text_verified_ms": 222.5269041955471,
+          "released_ms": 258.1530772149563,
+          "decode_ms": 1.0464116930961609,
+          "sse_interval_ms": null
+        },
+        {
+          "at_ms": 564.0273839235306,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 562.2777380049229,
+          "text_verified_ms": 222.5269041955471,
+          "released_ms": 563.870269805193,
+          "decode_ms": 1.5932247042655945,
+          "sse_interval_ms": 305.16983941197395
+        },
+        {
+          "at_ms": 824.1279758512974,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 822.2376517951488,
+          "text_verified_ms": 222.5269041955471,
+          "released_ms": 823.9732459187508,
+          "decode_ms": 1.7362534999847412,
+          "sse_interval_ms": 259.959913790226
+        },
+        {
+          "at_ms": 1094.880599528551,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 1092.9337218403816,
+          "text_verified_ms": 222.5269041955471,
+          "released_ms": 1094.713356345892,
+          "decode_ms": 1.7814412713050842,
+          "sse_interval_ms": 270.6960700452328
+        },
+        {
+          "at_ms": 1225.1295149326324,
+          "samples": 10965,
+          "rate": 24000,
+          "sse_audio_ms": 1224.2326326668262,
+          "text_verified_ms": 222.5269041955471,
+          "released_ms": 1224.9726988375187,
+          "decode_ms": 0.7409714162349701,
+          "sse_interval_ms": 131.29891082644463
+        }
+      ],
+      "elapsed_ms": 1225.5501635372639,
+      "audio_ms": 3564.375,
+      "rtf": 0.34383311619491885,
+      "status": "completed",
+      "recognized": "窗外的小鸟停在树枝上，正在等待雨停。",
+      "asr_match": true,
+      "minimum_continuous_lead_ms": 8.840348571538925
+    },
+    {
+      "text_index": 2,
+      "repeat": 0,
+      "text": "请先把蓝色杯子放在桌上，然后慢慢打开窗户。",
+      "chunks": [
+        {
+          "at_ms": 342.7836671471596,
+          "samples": 7125,
+          "rate": 24000,
+          "sse_audio_ms": 341.25030785799026,
+          "text_verified_ms": 302.18732357025146,
+          "released_ms": 342.5743468105793,
+          "decode_ms": 1.3256482779979706,
+          "sse_interval_ms": null
+        },
+        {
+          "at_ms": 647.5387401878834,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 645.8465158939362,
+          "text_verified_ms": 302.18732357025146,
+          "released_ms": 647.3370119929314,
+          "decode_ms": 1.4908649027347565,
+          "sse_interval_ms": 304.5962080359459
+        },
+        {
+          "at_ms": 912.3092368245125,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 910.3515483438969,
+          "text_verified_ms": 302.18732357025146,
+          "released_ms": 912.0968729257584,
+          "decode_ms": 1.7467290163040161,
+          "sse_interval_ms": 264.5050324499607
+        },
+        {
+          "at_ms": 1183.2599192857742,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 1181.7154623568058,
+          "text_verified_ms": 302.18732357025146,
+          "released_ms": 1183.057725429535,
+          "decode_ms": 1.34296715259552,
+          "sse_interval_ms": 271.36391401290894
+        },
+        {
+          "at_ms": 1489.7843450307846,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 1487.9313968122005,
+          "text_verified_ms": 302.18732357025146,
+          "released_ms": 1489.5721189677715,
+          "decode_ms": 1.642126590013504,
+          "sse_interval_ms": 306.21593445539474
+        },
+        {
+          "at_ms": 1522.520300000906,
+          "samples": 3285,
+          "rate": 24000,
+          "sse_audio_ms": 1521.5903259813786,
+          "text_verified_ms": 302.18732357025146,
+          "released_ms": 1522.3181247711182,
+          "decode_ms": 0.7286928594112396,
+          "sse_interval_ms": 33.65892916917801
+        }
+      ],
+      "elapsed_ms": 1523.1647230684757,
+      "audio_ms": 4181.25,
+      "rtf": 0.3642845376546429,
+      "status": "completed",
+      "recognized": "请先把蓝色杯子放在桌上，然后慢慢打开窗户。",
+      "asr_match": true,
+      "minimum_continuous_lead_ms": 7.880073040723801
+    },
+    {
+      "text_index": 2,
+      "repeat": 1,
+      "text": "请先把蓝色杯子放在桌上，然后慢慢打开窗户。",
+      "chunks": [
+        {
+          "at_ms": 253.970704972744,
+          "samples": 7125,
+          "rate": 24000,
+          "sse_audio_ms": 252.67155095934868,
+          "text_verified_ms": 204.9580216407776,
+          "released_ms": 253.76984104514122,
+          "decode_ms": 1.0998398065567017,
+          "sse_interval_ms": null
+        },
+        {
+          "at_ms": 560.0101500749588,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 558.1703074276447,
+          "text_verified_ms": 204.9580216407776,
+          "released_ms": 559.8015785217285,
+          "decode_ms": 1.6327276825904846,
+          "sse_interval_ms": 305.49875646829605
+        },
+        {
+          "at_ms": 832.4963599443436,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 831.0068883001804,
+          "text_verified_ms": 204.9580216407776,
+          "released_ms": 832.3027566075325,
+          "decode_ms": 1.2963637709617615,
+          "sse_interval_ms": 272.8365808725357
+        },
+        {
+          "at_ms": 1107.0349998772144,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 1105.5913157761097,
+          "text_verified_ms": 204.9580216407776,
+          "released_ms": 1106.8364009261131,
+          "decode_ms": 1.245938241481781,
+          "sse_interval_ms": 274.58442747592926
+        },
+        {
+          "at_ms": 1378.4680515527725,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 1376.7306916415691,
+          "text_verified_ms": 204.9580216407776,
+          "released_ms": 1378.2743848860264,
+          "decode_ms": 1.5444010496139526,
+          "sse_interval_ms": 271.13937586545944
+        },
+        {
+          "at_ms": 1417.8020246326923,
+          "samples": 3285,
+          "rate": 24000,
+          "sse_audio_ms": 1416.7842082679272,
+          "text_verified_ms": 204.9580216407776,
+          "released_ms": 1417.6010824739933,
+          "decode_ms": 0.8184202015399933,
+          "sse_interval_ms": 40.05351662635803
+        }
+      ],
+      "elapsed_ms": 1418.4139743447304,
+      "audio_ms": 4181.25,
+      "rtf": 0.3392320416967965,
+      "status": "completed",
+      "recognized": "请先把蓝色杯子放在桌上，然后慢慢打开窗户。",
+      "asr_match": true,
+      "minimum_continuous_lead_ms": 9.164445102214813
+    },
+    {
+      "text_index": 3,
+      "repeat": 0,
+      "text": "你希望我先解释原理，还是先举一个例子？\n",
+      "chunks": [
+        {
+          "at_ms": 260.5532258749008,
+          "samples": 7125,
+          "rate": 24000,
+          "sse_audio_ms": 259.6174217760563,
+          "text_verified_ms": 242.06529557704926,
+          "released_ms": 260.4626826941967,
+          "decode_ms": 0.8459277451038361,
+          "sse_interval_ms": null
+        },
+        {
+          "at_ms": 572.1295177936554,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 570.3685320913792,
+          "text_verified_ms": 242.06529557704926,
+          "released_ms": 572.031706571579,
+          "decode_ms": 1.6635730862617493,
+          "sse_interval_ms": 310.7511103153229
+        },
+        {
+          "at_ms": 838.5817185044289,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 836.6796858608723,
+          "text_verified_ms": 242.06529557704926,
+          "released_ms": 838.4846858680248,
+          "decode_ms": 1.8063448369503021,
+          "sse_interval_ms": 266.3111537694931
+        },
+        {
+          "at_ms": 1110.4398593306541,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 1108.620747923851,
+          "text_verified_ms": 242.06529557704926,
+          "released_ms": 1110.3381179273129,
+          "decode_ms": 1.719105988740921,
+          "sse_interval_ms": 271.94106206297874
+        },
+        {
+          "at_ms": 1338.0505330860615,
+          "samples": 16725,
+          "rate": 24000,
+          "sse_audio_ms": 1336.9109965860844,
+          "text_verified_ms": 242.06529557704926,
+          "released_ms": 1337.9522562026978,
+          "decode_ms": 1.0422393679618835,
+          "sse_interval_ms": 228.29024866223335
+        }
+      ],
+      "elapsed_ms": 1338.6987261474133,
+      "audio_ms": 3804.375,
+      "rtf": 0.35188400884439974,
+      "status": "completed",
+      "recognized": "你希望我先解释原理，还是先举一个例子。",
+      "asr_match": true,
+      "minimum_continuous_lead_ms": 14.701291918754578
+    },
+    {
+      "text_index": 3,
+      "repeat": 1,
+      "text": "你希望我先解释原理，还是先举一个例子？\n",
+      "chunks": [
+        {
+          "at_ms": 264.00724053382874,
+          "samples": 7125,
+          "rate": 24000,
+          "sse_audio_ms": 262.7311497926712,
+          "text_verified_ms": 244.54639479517937,
+          "released_ms": 263.79238814115524,
+          "decode_ms": 1.062840223312378,
+          "sse_interval_ms": null
+        },
+        {
+          "at_ms": 571.0095204412937,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 569.2116804420948,
+          "text_verified_ms": 244.54639479517937,
+          "released_ms": 570.7999989390373,
+          "decode_ms": 1.588817685842514,
+          "sse_interval_ms": 306.4805306494236
+        },
+        {
+          "at_ms": 839.5819999277592,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 837.6684263348579,
+          "text_verified_ms": 244.54639479517937,
+          "released_ms": 839.3626324832439,
+          "decode_ms": 1.695983111858368,
+          "sse_interval_ms": 268.45674589276314
+        },
+        {
+          "at_ms": 1117.1633154153824,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 1115.574412047863,
+          "text_verified_ms": 244.54639479517937,
+          "released_ms": 1116.953618824482,
+          "decode_ms": 1.379694789648056,
+          "sse_interval_ms": 277.90598571300507
+        },
+        {
+          "at_ms": 1323.6268647015095,
+          "samples": 16725,
+          "rate": 24000,
+          "sse_audio_ms": 1322.411585599184,
+          "text_verified_ms": 244.54639479517937,
+          "released_ms": 1323.4153054654598,
+          "decode_ms": 1.0046809911727905,
+          "sse_interval_ms": 206.83717355132103
+        }
+      ],
+      "elapsed_ms": 1324.0212686359882,
+      "audio_ms": 3804.375,
+      "rtf": 0.3480259618560179,
+      "status": "completed",
+      "recognized": "你希望我先解释原理，还是先举一个例子。",
+      "asr_match": true,
+      "minimum_continuous_lead_ms": 10.127279907464981
+    },
+    {
+      "text_index": 4,
+      "repeat": 0,
+      "text": "The little bird waited beside the window until the rain stopped.",
+      "chunks": [
+        {
+          "at_ms": 256.9676600396633,
+          "samples": 7125,
+          "rate": 24000,
+          "sse_audio_ms": 255.74841350317,
+          "text_verified_ms": 215.65664559602737,
+          "released_ms": 256.7853480577469,
+          "decode_ms": 1.03837251663208,
+          "sse_interval_ms": null
+        },
+        {
+          "at_ms": 561.455961316824,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 559.6877932548523,
+          "text_verified_ms": 215.65664559602737,
+          "released_ms": 561.2794421613216,
+          "decode_ms": 1.592341810464859,
+          "sse_interval_ms": 303.9393797516823
+        },
+        {
+          "at_ms": 833.4753923118114,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 832.005575299263,
+          "text_verified_ms": 215.65664559602737,
+          "released_ms": 833.2977071404457,
+          "decode_ms": 1.292794942855835,
+          "sse_interval_ms": 272.3177820444107
+        },
+        {
+          "at_ms": 1109.8292730748653,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 1109.1586090624332,
+          "text_verified_ms": 215.65664559602737,
+          "released_ms": 1109.6516586840153,
+          "decode_ms": 0.493418425321579,
+          "sse_interval_ms": 277.15303376317024
+        },
+        {
+          "at_ms": 1365.6659610569477,
+          "samples": 20565,
+          "rate": 24000,
+          "sse_audio_ms": 1363.8448230922222,
+          "text_verified_ms": 215.65664559602737,
+          "released_ms": 1365.4871582984924,
+          "decode_ms": 1.6428977251052856,
+          "sse_interval_ms": 254.68621402978897
+        }
+      ],
+      "elapsed_ms": 1365.9725822508335,
+      "audio_ms": 3964.375,
+      "rtf": 0.34456189998444486,
+      "status": "completed",
+      "recognized": "The little bird waited beside the window, until the rain stopped.",
+      "asr_match": true,
+      "minimum_continuous_lead_ms": 7.6133012771606445
+    },
+    {
+      "text_index": 4,
+      "repeat": 1,
+      "text": "The little bird waited beside the window until the rain stopped.",
+      "chunks": [
+        {
+          "at_ms": 255.865927785635,
+          "samples": 7125,
+          "rate": 24000,
+          "sse_audio_ms": 254.51583787798882,
+          "text_verified_ms": 210.26841178536415,
+          "released_ms": 255.7665817439556,
+          "decode_ms": 1.252502202987671,
+          "sse_interval_ms": null
+        },
+        {
+          "at_ms": 563.1981045007706,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 561.53454631567,
+          "text_verified_ms": 210.26841178536415,
+          "released_ms": 563.1141550838947,
+          "decode_ms": 1.580163836479187,
+          "sse_interval_ms": 307.0187084376812
+        },
+        {
+          "at_ms": 838.2379300892353,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 836.4775963127613,
+          "text_verified_ms": 210.26841178536415,
+          "released_ms": 838.1397612392902,
+          "decode_ms": 1.6638115048408508,
+          "sse_interval_ms": 274.9430499970913
+        },
+        {
+          "at_ms": 1107.9162321984768,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 1106.39488697052,
+          "text_verified_ms": 210.26841178536415,
+          "released_ms": 1107.8271940350533,
+          "decode_ms": 1.4329031109809875,
+          "sse_interval_ms": 269.9172906577587
+        },
+        {
+          "at_ms": 1352.6280485093594,
+          "samples": 20565,
+          "rate": 24000,
+          "sse_audio_ms": 1351.3537272810936,
+          "text_verified_ms": 210.26841178536415,
+          "released_ms": 1352.537665516138,
+          "decode_ms": 1.184709370136261,
+          "sse_interval_ms": 244.95884031057358
+        }
+      ],
+      "elapsed_ms": 1353.0703783035278,
+      "audio_ms": 3964.375,
+      "rtf": 0.3413073632800953,
+      "status": "completed",
+      "recognized": "The little bird waited beside the window, until the rain stopped.",
+      "asr_match": true,
+      "minimum_continuous_lead_ms": 10.457176715135574
+    },
+    {
+      "text_index": 5,
+      "repeat": 0,
+      "text": "今天我们学习一个词，hello，它表示你好。",
+      "chunks": [
+        {
+          "at_ms": 249.82044845819473,
+          "samples": 7125,
+          "rate": 24000,
+          "sse_audio_ms": 248.58007952570915,
+          "text_verified_ms": 196.6949701309204,
+          "released_ms": 249.65408071875572,
+          "decode_ms": 1.0756216943264008,
+          "sse_interval_ms": null
+        },
+        {
+          "at_ms": 554.4643774628639,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 553.0144311487675,
+          "text_verified_ms": 196.6949701309204,
+          "released_ms": 554.3013848364353,
+          "decode_ms": 1.2878142297267914,
+          "sse_interval_ms": 304.4343516230583
+        },
+        {
+          "at_ms": 826.341338455677,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 824.3894353508949,
+          "text_verified_ms": 196.6949701309204,
+          "released_ms": 826.1666893959045,
+          "decode_ms": 1.7789341509342194,
+          "sse_interval_ms": 271.37500420212746
+        },
+        {
+          "at_ms": 1099.1756990551949,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 1097.5321121513844,
+          "text_verified_ms": 196.6949701309204,
+          "released_ms": 1099.0049205720425,
+          "decode_ms": 1.4739520847797394,
+          "sse_interval_ms": 273.1426768004894
+        },
+        {
+          "at_ms": 1372.978426516056,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 1371.0591197013855,
+          "text_verified_ms": 196.6949701309204,
+          "released_ms": 1372.8033676743507,
+          "decode_ms": 1.745905727148056,
+          "sse_interval_ms": 273.52700755000114
+        },
+        {
+          "at_ms": 1484.2544682323933,
+          "samples": 7125,
+          "rate": 24000,
+          "sse_audio_ms": 1483.0417223274708,
+          "text_verified_ms": 196.6949701309204,
+          "released_ms": 1484.0876795351505,
+          "decode_ms": 1.0475404560565948,
+          "sse_interval_ms": 111.98260262608528
+        }
+      ],
+      "elapsed_ms": 1484.6900925040245,
+      "audio_ms": 4341.25,
+      "rtf": 0.34199599021112,
+      "status": "completed",
+      "recognized": "今天我们学习一个词，hello,他表示你好。",
+      "asr_match": false,
+      "minimum_continuous_lead_ms": 7.7689290046691895
+    },
+    {
+      "text_index": 5,
+      "repeat": 1,
+      "text": "今天我们学习一个词，hello，它表示你好。",
+      "chunks": [
+        {
+          "at_ms": 242.88459867238998,
+          "samples": 7125,
+          "rate": 24000,
+          "sse_audio_ms": 241.67883768677711,
+          "text_verified_ms": 194.27305087447166,
+          "released_ms": 242.7876554429531,
+          "decode_ms": 1.1104419827461243,
+          "sse_interval_ms": null
+        },
+        {
+          "at_ms": 545.4089157283306,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 543.5725636780262,
+          "text_verified_ms": 194.27305087447166,
+          "released_ms": 545.3077517449856,
+          "decode_ms": 1.7368346452713013,
+          "sse_interval_ms": 301.8937259912491
+        },
+        {
+          "at_ms": 814.1882680356503,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 812.3401366174221,
+          "text_verified_ms": 194.27305087447166,
+          "released_ms": 814.0837699174881,
+          "decode_ms": 1.745179295539856,
+          "sse_interval_ms": 268.7675729393959
+        },
+        {
+          "at_ms": 1089.3621891736984,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 1087.4797105789185,
+          "text_verified_ms": 194.27305087447166,
+          "released_ms": 1089.2561599612236,
+          "decode_ms": 1.7779991030693054,
+          "sse_interval_ms": 275.13957396149635
+        },
+        {
+          "at_ms": 1355.8907024562359,
+          "samples": 22485,
+          "rate": 24000,
+          "sse_audio_ms": 1354.1393652558327,
+          "text_verified_ms": 194.27305087447166,
+          "released_ms": 1355.7923138141632,
+          "decode_ms": 1.6544796526432037,
+          "sse_interval_ms": 266.6596546769142
+        },
+        {
+          "at_ms": 1444.704882800579,
+          "samples": 7125,
+          "rate": 24000,
+          "sse_audio_ms": 1443.5403048992157,
+          "text_verified_ms": 194.27305087447166,
+          "released_ms": 1444.6084052324295,
+          "decode_ms": 1.0696426033973694,
+          "sse_interval_ms": 89.40093964338303
+        }
+      ],
+      "elapsed_ms": 1445.3098475933075,
+      "audio_ms": 4341.25,
+      "rtf": 0.33292481372722316,
+      "status": "completed",
+      "recognized": "今天我们学习一个词，hello,他表示你好。",
+      "asr_match": false,
+      "minimum_continuous_lead_ms": 5.649317055940628
+    }
+  ]
+}

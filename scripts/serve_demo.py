@@ -115,6 +115,7 @@ def main():
                    FDBC_DEMO_VOICE_ADAPTER="1",
                    PYTHONUNBUFFERED="1")
         env.setdefault("FDBC_DEMO_TALKER_NUMERICS", "native")
+        env.setdefault("FDBC_DEMO_CODEC_CHUNKS", "4:12")
         for key in ("OMP_NUM_THREADS", "MKL_NUM_THREADS"):
             if env.get(key, "") in ("", "0"):
                 env[key] = "8"

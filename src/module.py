@@ -330,7 +330,7 @@ def llm_qwen3o_stream(messages, *, route=False):
                        int(os.getenv("FDBC_QWEN_TIMEOUT", "300")))
 
 
-def tts_omni_stream(text, *, voice_control=None):
+def tts_omni_stream(text, *, voice_control=None, timing=False):
     from stream_transport import audio_stream
     if TTS_PROVIDER not in {"omni", "qwen3omni", "qwen3-omni"}:
         raise ValueError("Streaming speech currently requires the Omni TTS provider")
@@ -339,4 +339,4 @@ def tts_omni_stream(text, *, voice_control=None):
         **validate_demo_voice(voice_control)}
     return audio_stream(OMNI_TTS_URL, payload,
                         int(os.getenv("FDBC_OMNI_TTS_TIMEOUT", "600")), expected_text=text,
-                        expected_voice=proof)
+                        expected_voice=proof, timing=timing)

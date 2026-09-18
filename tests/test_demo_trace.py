@@ -98,3 +98,14 @@ async def test_socket_records_first_send_and_slow_queue_without_pcm_payload(tmp_
     records = [r for r in rows if r["event"].startswith("socket_")]
     assert len(records) == 1
     assert records[0]["data"] == {"queue_ms": 50, "send_ms": 20, "utterance_id": 7, "packet_seq": 0}
+
+
+async def test_underrun_telemetry_keeps_numeric_timeline_only(tmp_path):
+    trace = DemoTrace(tmp_path / 'events.jsonl')
+    clean = trace.client({'kind': 'underrun', 'utterance_id': 9,
+        'gap_ms': 200, 'late_ms': 120, 'sample_offset': 7125, 'packet_seq': 8,
+        'audio_context_ms': 1000, 'previous_end_ms': 880, 'prompt': 'private'})
+    assert clean['gap_ms'] == 200 and clean['sample_offset'] == 7125
+    assert 'prompt' not in clean
+    await trace.close()
+    assert 'private' not in trace.path.read_text()

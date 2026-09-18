@@ -69,7 +69,7 @@ ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -L 127.0.0.1:18080:
 5. “结束”关闭 WebSocket、停止全部排程音频、释放麦克风；再次开始会分配新的服务器会话，清空上一段页面记录。已有记录也可以在断开后手动清空。
 6. “全屏展示”隐藏浏览器外框；“连接与运行详情”显示当前会话、缓冲、计时口径和排错帮助。
 
-每次回复的首文本/首音频时间从浏览器收到 `speech_start` 计时，不含此前的停顿/轮次判定，也不是麦克风到扬声器的端到端延迟。未确认播放缓冲按播放完成回执统计，起播余量仍为 80 ms、服务端信用上限仍为 600 ms。录音电平是真实输入；球体动画仅用于状态提示，不是音频分析仪。
+每次回复的首文本/首音频时间从浏览器收到 `speech_start` 计时，不含此前的停顿/轮次判定，也不是麦克风到扬声器的端到端延迟。未确认播放缓冲按播放完成回执统计，demo 起播余量为350 ms、客户端信用上限为600 ms；旧协议缺省起播80 ms。服务端另有2000 ms有界预取，机制、分块设置和代价见 [demo_speech_continuity.md](demo_speech_continuity.md)。录音电平是真实输入；球体动画仅用于状态提示，不是音频分析仪。
 
 ## 4. 排错与关停
 
@@ -111,6 +111,8 @@ ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -L 127.0.0.1:18080:
 | `socket_first_audio_sent` / `socket_slow_send` | 首二进制包及总排队/发送超过 50ms 的发送；完成只表示服务器 socket 发送返回，不表示笔记本已收到 |
 | `client_rtt` | 浏览器每 5 秒一次应用层 ping/pong，同一浏览器时钟差；包含网络、SSH、服务排队和浏览器调度，不是纯网络 RTT，不可除以 2 冒充单向延迟 |
 | `client_first_audio` / `client_playback_end` / `client_cancel` / `client_stop` | 浏览器首包、播放完成、取消/结束；包含样本数、断流次数、上传 bufferedAmount。第一包的 `scheduled_lead_ms` 为 WebAudio 起播调度余量，设备 latency 为浏览器估计，均非物理扬声器听检 |
+| `speech_timing` | demo可选：逐句请求、PCM块消费和SSE解析时刻、文本证明、解码耗时、预取/播放信用等待。消费耗时可能包含回压，不当作纯模型RTF；事件经actor记录，未公开候选也只作服务器诊断 |
+| `client_playback_start` / `client_underrun` | AudioContext开播时间轴；每次断流的样本偏移、包序号、到包间隔、缺音及80ms恢复余量。结束/取消快照另有总缺口和最大缺口，详细事件仍受遥测速率上限约束 |
 | `input_health` | 每秒一次 reader→actor 排队时长、音频钟和队列深度，帮助辨别服务内部积压 |
 
 服务器 `server_ms` 与浏览器 `client_ms` 不同源，**不能直接相减**。旧的首文本/首音频到达指标仍从浏览器收到 `speech_start` 起算；完整三阶段用服务端指标另列。投机启用后三阶段显示的是确认/发布链的剩余串行等待，判定或生成阶段接近0不代表模型没有耗时；已重叠的工作查 candidate/input_dispatch 轨。读完/生成完的文本不是用户实际听到的前缀。观测本身不改变判据；§9 新策略改变旧1.5/2.5秒阈值的用途，基础配置不变。

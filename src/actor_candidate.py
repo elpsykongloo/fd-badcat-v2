@@ -236,7 +236,7 @@ class CandidateTurns:
             apology=RESPONSE_TIMEOUT_APOLOGY,
             packet_ms=int(self.engine_cfg.get("stream_packet_ms", 40)),
             buffer_ms=int(self.engine_cfg.get("stream_buffer_ms", 600)), precompute_gate=gate,
-            track_sentences=self.GUARDED_TURNS)
+            track_sentences=self.GUARDED_TURNS, **self._speech_stream_options())
         self._speech_jobs[c.pipeline.sid] = c.pipeline
         self._speech_tasks = [t for t in self._speech_tasks if not t.done()]
         self._speech_tasks.append(c.pipeline.task)
@@ -274,6 +274,7 @@ class CandidateTurns:
             self._guard_outputs[c.pipeline.sid] = {"turn": c.turn, "sentences": []}
         await self.send_control("speech_start", {"utterance_id": c.pipeline.sid,
             "turn": c.turn, "protocol": PROTOCOL, "buffer_ms": c.pipeline.buffer_ms,
+            "startup_ms": c.pipeline.startup_ms,
             "candidate_id": c.cid, "timestamp": self._wall_ts()})
         c.pipeline.precompute_gate.set()
         staged, c.stash = c.stash, []

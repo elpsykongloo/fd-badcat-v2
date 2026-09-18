@@ -24,9 +24,11 @@ env -u OMP_NUM_THREADS /root/miniconda3/envs/fd-sds/bin/python src/backend.py --
 
 分句保留原文，不在中文句号处等待空格；保护小数、常见缩写、引号，长句优先在空白/逗号处软切。它是启发式边界检测，不是语言学句法模型。新分句器独立于 Phase-B 的 `split_sentences()`。
 
-TTS 请求逐句有序执行。文本生产和 TTS 消费是独立任务，最多排队两句；文本总长设防御性上限 16,384 字符，超限报错而不静默截断。保留一个上游音频块在内存，切为默认 40 ms 的网络包；不在首音频路径写 WAV、读 WAV、落盘重采样。输入 ASR 归档仍沿用旧路径。
+TTS 请求逐句有序执行。文本生产和 TTS 消费是独立任务，最多排队两句；文本总长设防御性上限 16,384 字符，超限报错而不静默截断。上游 PCM 切为默认 40 ms 的网络包；不在首音频路径写 WAV、读 WAV、落盘重采样。输入 ASR 归档仍沿用旧路径。
 
-客户端默认预留 80 ms 起播余量。`stream_buffer_ms: 600` 限制**已发送但未确认播放**的样本，而不是仅限制 WebSocket 队列长度。浏览器按 AudioContext 播放完成回报信用；服务端在信用不足时停止发送。此上限不包括模型内部缓冲、一个上游 WAV 块或操作系统音频输出延迟。5 秒无有效播放进展/发送阻塞会取消或断开；后台挂起的页面不应继续无限合成。
+独立 demo 配置启用 `demo-continuity-v1`：`stream_prefetch_ms: 2000` 将 TTS 消费与播放发送拆开，最多同时保留当前发送句和下一合成句，仍只有一个 TTS 请求在执行。PCM 队列按字节限制为指定时长，另有最多一个 512 KiB 上游块和一个发送包；未确认候选不能提前合成第二句。发送时才发布句子样本边界，预取内容不提前进入已播参考。取消同时撤销生产、合成和发送任务，关闭 HTTP 并清空预取。基础路径默认预取为0。机制与实测见 [demo_speech_continuity.md](demo_speech_continuity.md)。
+
+客户端缺少配置时预留 80 ms 起播余量；demo 通过 `speech_start.startup_ms` 配置350 ms，hold 后首次排程同样使用该值，断流后的恢复余量仍为80 ms。`stream_buffer_ms: 600` 限制**已发送但未确认播放**的样本，而不是仅限制 WebSocket 队列长度。浏览器按 AudioContext 播放完成回报信用；服务端在信用不足时停止发送。此上限不包括服务端预取、模型内部缓冲、一个上游 WAV 块或操作系统音频输出延迟。5 秒无有效播放进展/发送阻塞会取消或断开；后台挂起的页面不应继续无限合成。
 
 判定为短打断、长打断、回复替换或会话重置时，取消文本/TTS HTTP 流、丢弃待合成句子和旧音频包；浏览器按 utterance ID 停掉已经排程的旧音频。普通 `continue` 不取消，也不引入新的 VAD 即停策略。代理使用异步 HTTP 和 SSE 透传，上游取消会关闭实际连接；GPU 已在执行的单个 kernel 不保证瞬时抢占。
 
@@ -52,7 +54,7 @@ TTS 请求逐句有序执行。文本生产和 TTS 消费是独立任务，最�
 
 服务器下发：
 
-- `speech_start`：`utterance_id`、`protocol`、`buffer_ms`。
+- `speech_start`：`utterance_id`、`protocol`、`buffer_ms`，可选 `startup_ms`（0–1000，缺省80）。
 - `speech_text_delta` / `speech_text_done` / `speech_sentence`：携带原文增量/全文/合成句子；现有 `llm_done` 全文日志保留且只写一次历史。
 - `speech_first_audio`：首包交给发送队列的时间，不是扬声器出声时间。
 - 二进制：16 字节小端头 `<4sIII>`，依次为 `FDS1`、utterance ID、从 0 递增的包序号、采样率；后面为 mono little-endian PCM16。**不是 WAV**，不能交给旧客户端解码。

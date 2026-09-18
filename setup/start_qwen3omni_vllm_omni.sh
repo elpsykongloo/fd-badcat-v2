@@ -48,6 +48,16 @@ fi
 if [[ "${FDBC_DEMO_VOICE_ADAPTER:-0}" == "1" ]]; then
     python "$ROOT_DIR/scripts/patch_omni_demo_voice.py" "${VOICE_PATCH_ARGS[@]}"
 fi
+DEMO_CHUNKS="${FDBC_DEMO_CODEC_CHUNKS:-off}"
+if [[ "$DEMO_CHUNKS" != "off" ]]; then
+    if [[ "${FDBC_DEMO_VOICE_ADAPTER:-0}" != "1" ]]; then
+        echo "FDBC_DEMO_CODEC_CHUNKS requires FDBC_DEMO_VOICE_ADAPTER=1" >&2
+        exit 1
+    fi
+    DEMO_STREAM_CONFIG=$(mktemp "${TMPDIR:-/tmp}/fd-demo-stream-XXXXXX.yaml")
+    python "$ROOT_DIR/scripts/demo_stream_config.py" "$DEPLOY_CONFIG" "$DEMO_STREAM_CONFIG" "$DEMO_CHUNKS"
+    DEPLOY_CONFIG="$DEMO_STREAM_CONFIG"
+fi
 
 ARGS=(
     vllm serve "$MODEL_DIR"
