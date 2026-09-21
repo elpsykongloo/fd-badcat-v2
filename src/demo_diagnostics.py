@@ -272,7 +272,9 @@ def build_turns(rows, cases):
         # Lifecycle/health-only sessions therefore must not become fake turns.
         turn_prefixes = ("vad_", "input_", "candidate_", "model_", "speech_",
                          "asr_", "history_", "turn_", "llm_", "shift_")
-        if not any(isinstance(event, str) and event.startswith(turn_prefixes)
+        session_input_events = {"input_settings", "input_health", "input_evidence"}
+        if not any(isinstance(event, str) and event not in session_input_events
+                   and event.startswith(turn_prefixes)
                    for event, _ in data_rows):
             continue
         case_ids = sorted({d.get("case_id") for _, d in data_rows if d.get("case_id")})

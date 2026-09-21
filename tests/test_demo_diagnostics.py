@@ -37,6 +37,9 @@ def test_manifest_is_allowlisted_and_contains_protocol_versions(tmp_path):
 
 def test_lifecycle_only_session_does_not_create_fake_turns():
     rows = [
+        {"event":"input_settings","generation":0,"turn":0,"data":{"sampleRate":48000}},
+        {"event":"input_health","generation":0,"turn":0,"data":{"reader_to_actor_ms":1}},
+        {"event":"input_evidence","generation":0,"turn":0,"data":{"echo_only":False}},
         {"event":"disconnect","generation":0,"turn":0,"data":{}},
         {"event":"session_final","generation":1,"turn":0,"data":{"state":"LISTEN"}},
     ]
