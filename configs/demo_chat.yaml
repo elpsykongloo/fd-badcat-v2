@@ -25,6 +25,22 @@ engine:
   case_capture_dir: exp/demo_cases
   case_capture_max_bytes: 536870912
   case_capture_max_cases: 2000
+  # Partition bytes so high-volume TTS cannot crowd out rare control failures.
+  case_capture_kind_weights:
+    tts: 0.45
+    input_route: 0.28
+    response: 0.15
+    shift: 0.06
+    input_reply: 0.04
+    shift_s: 0.02
+  # Sampling is implemented as a policy knob; keep all calls until a reviewed
+  # baseline exists. Errors/cancellations are never sampled out.
+  case_capture_success_sample_rate: 1.0
+  diagnostics_review: true
+  diagnostics_retention_days: 30
+  # Server permits capture, but every browser session must opt in explicitly.
+  diagnostic_audio_capture_allowed: true
+  diagnostic_audio_capture_seconds: 180
 asr:
   backend: sensevoice
   provider: cpu

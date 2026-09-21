@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HumDial · 本机诊断</title>
+  <link rel="stylesheet" href="./diagnostics.css">
+  <script type="module" src="./diagnostics.js"></script>
+</head>
+<body>
+  <header><a href="./">← 返回 Demo</a><div><h1>逐轮诊断与标注</h1><p>会话 → 轮次 → 模型调用 → 播放结果</p></div><label><input id="anomalies" type="checkbox"> 只看异常</label></header>
+  <main>
+    <aside><div class="aside-head"><strong>会话</strong><button id="refresh" type="button">刷新</button></div><div id="sessions" class="sessions"></div></aside>
+    <section class="content">
+      <div id="empty"><h2>选择一段会话</h2><p>异常由机械不变量自动生成；人工 review 用来判断语义、听感和真实问题类型。</p></div>
+      <div id="detail" hidden>
+        <div class="summary"><div><span>会话</span><strong id="session-id"></strong></div><div><span>状态</span><strong id="session-status"></strong></div><div><span>调用</span><strong id="case-count"></strong></div><div><span>人工复核</span><strong id="review-count"></strong></div><div><span>多轨</span><strong id="capture-status"></strong></div></div>
+        <details><summary>本次有效配置与协议</summary><pre id="manifest"></pre></details>
+        <section><h2>自动审计</h2><div id="findings"></div></section>
+        <section><h2>轮次</h2><div id="turns"></div></section>
+      </div>
+    </section>
+  </main>
+  <template id="turn-template">
+    <article class="turn"><button class="turn-head" type="button"><span class="turn-name"></span><span class="turn-meta"></span></button><div class="turn-body" hidden><section><h3>路由</h3><div class="route-list"></div></section><section><h3>最终动作</h3><div class="outcome-list"></div></section><section><h3>历史写入／撤回</h3><div class="history-list"></div></section><section><h3>请求与播放时序</h3><div class="span-list"></div></section><section><h3>真实模型调用</h3><div class="case-list"></div></section><form><fieldset><legend>问题标签</legend><div class="labels"></div></fieldset><label>复核人<input name="reviewer" maxlength="80" required></label><label>依据与备注<textarea name="note" maxlength="4000" required></textarea></label><button type="submit">保存新修订</button><span class="save-state" role="status"></span></form><div class="review-list"></div></div></article>
+  </template>
+</body>
+</html>

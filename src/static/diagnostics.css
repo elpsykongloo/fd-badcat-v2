@@ -1,0 +1,39 @@
+:root { color-scheme: light; --ink:#203d36; --muted:#66766e; --line:#dfe6de; --paper:#f6f7f2; --accent:#e5efd3; --warn:#8a5b22; --bad:#963f36; }
+* { box-sizing:border-box; }
+body { margin:0; color:var(--ink); background:var(--paper); font:14px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif; }
+button,input,textarea { font:inherit; }
+button { cursor:pointer; }
+header { min-height:86px; padding:18px 28px; display:flex; gap:24px; align-items:center; border-bottom:1px solid var(--line); background:#fffefb; }
+header a { color:var(--muted); text-decoration:none; }
+header div { flex:1; }
+h1,h2,p { margin:0; }
+h1 { font-size:22px; font-weight:600; }
+header p { color:var(--muted); font-size:12px; }
+main { display:grid; grid-template-columns:310px minmax(0,1fr); min-height:calc(100vh - 86px); }
+aside { border-right:1px solid var(--line); background:#fffefb; padding:18px; }
+.aside-head { display:flex; justify-content:space-between; margin-bottom:12px; }
+.sessions { display:grid; gap:8px; }
+.session { width:100%; text-align:left; border:1px solid var(--line); border-radius:9px; padding:11px; background:white; color:var(--ink); }
+.session:hover,.session.selected { border-color:#7b9675; background:#f4f8ec; }
+.session small { display:block; color:var(--muted); }
+.badge { display:inline-block; padding:1px 6px; border-radius:10px; background:var(--accent); font-size:10px; margin-left:6px; }
+.badge.warning { background:#f8e8c9; color:var(--warn); }.badge.error { background:#f5d9d5; color:var(--bad); }
+.content { padding:24px; min-width:0; }.content>div { max-width:1100px; margin:auto; }
+#empty { padding:80px 20px; text-align:center; color:var(--muted); }
+.summary { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin-bottom:16px; }
+.summary>div { padding:14px; border:1px solid var(--line); border-radius:10px; background:white; min-width:0; }
+.summary span,.summary strong { display:block; }.summary span { font-size:10px; color:var(--muted); }.summary strong { overflow-wrap:anywhere; }
+section { margin-bottom:26px; } section h2 { font-size:15px; margin-bottom:10px; }
+details { margin-bottom:24px; } details summary { cursor:pointer; color:var(--muted); } pre { max-height:360px; overflow:auto; padding:10px; border:1px solid var(--line); border-radius:7px; background:white; font-size:11px; white-space:pre-wrap; overflow-wrap:anywhere; }
+.finding { padding:8px 10px; border-left:3px solid #a6b5a0; background:white; margin-bottom:5px; font-size:12px; }
+.finding.error { border-color:var(--bad); }.finding.warning { border-color:#c28a3f; }
+.turn { background:white; border:1px solid var(--line); border-radius:10px; margin-bottom:9px; overflow:hidden; }
+.turn-head { width:100%; border:0; padding:13px 15px; background:white; display:flex; justify-content:space-between; color:var(--ink); }
+.turn-meta { color:var(--muted); font-size:11px; }.turn-body { padding:0 15px 16px; border-top:1px solid #edf0eb; }
+.turn-body section { margin:12px 0; }.turn-body h3 { margin:0 0 5px; color:var(--muted); font-size:11px; font-weight:600; }.route-list,.outcome-list,.history-list,.span-list,.case-list,.review-list { margin-top:5px; }.row { padding:7px 9px; background:#f5f7f1; border-radius:6px; margin-bottom:5px; white-space:pre-wrap; overflow-wrap:anywhere; font:11px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace; }
+.case { border:1px solid var(--line); border-radius:7px; padding:10px; margin-bottom:7px; }.case p { white-space:pre-wrap; overflow-wrap:anywhere; }.case audio { width:100%; margin-top:7px; }
+form { margin-top:16px; border-top:1px solid var(--line); padding-top:13px; display:grid; gap:10px; }
+fieldset { border:0; padding:0; margin:0; }.labels { display:flex; flex-wrap:wrap; gap:6px 12px; }.labels label { font-size:11px; }
+form>label { display:grid; gap:4px; color:var(--muted); font-size:11px; } input,textarea { border:1px solid #ccd7ca; border-radius:6px; padding:7px; background:white; } textarea { min-height:72px; resize:vertical; }
+form button,#refresh { justify-self:start; border:1px solid #315d4f; border-radius:6px; background:#315d4f; color:white; padding:6px 12px; }.save-state { color:var(--muted); font-size:11px; }
+@media(max-width:760px){main{grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid var(--line)}.summary{grid-template-columns:1fr 1fr}.content{padding:16px}header{padding:14px;gap:12px}}

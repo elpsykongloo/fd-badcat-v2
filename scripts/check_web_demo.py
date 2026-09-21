@@ -62,10 +62,12 @@ class Fixture:
         await ws.prepare(request)
         self.ws = ws
         config = await ws.receive_json()
-        assert config["data"] == {"client": "humdial-web", "audio_protocol": "pcm16.v1"}
+        assert config["data"] == {"client": "humdial-web", "audio_protocol": "pcm16.v1",
+                                  "diagnostic_capture": False}
         self.sessions += 1
         await self.event("demo_ready", protocol="pcm16.v1", session_id=f"synthetic-ui-{self.sessions}",
-                         observability="demo-trace-v1")
+                         observability="demo-trace-v2", diagnostics="demo-diagnostics-v1",
+                         diagnostic_capture=False)
         count = 0
         async for msg in ws:
             if msg.type == WSMsgType.BINARY:

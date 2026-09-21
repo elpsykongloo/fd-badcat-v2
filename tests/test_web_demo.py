@@ -51,7 +51,7 @@ def test_browser_handshake_assigns_path_and_waits_for_engine(monkeypatch, tmp_pa
                           "exp": "../../escape", "lang": "../../escape"}})
             ready = ws.receive_json()
             assert ready["event"] == "demo_ready"
-            assert ready["data"]["observability"] == "demo-trace-v1"
+            assert ready["data"]["observability"] == "demo-trace-v2"
             assert ready["data"]["session_id"].startswith("web-demo-")
             assert made[0].output_dir == Path("exp") / ready["data"]["session_id"] / "realtimeout_live"
             assert made[0].kwargs["engine_cfg"]["stream_response"] is True

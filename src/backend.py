@@ -1,6 +1,7 @@
 import json, asyncio, time, torch, soundfile as sf, numpy as np, base64, tempfile, io, os
 from pathlib import Path
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Request
+from fastapi.responses import FileResponse
 from silero_vad import load_silero_vad, VADIterator
 from module import asr, llm_qwen3o, tts, VERBATIM_TTS_CONTRACT
 from messages import build_audio_content, scrub_audio_blocks
@@ -420,9 +421,10 @@ class ConversationEngine:
             print("end")
 
 # FastAPI
-def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
+def create_app(prompts, delay, llm_cfg=None, engine_cfg=None, asr_cfg=None) -> FastAPI:
     from module import demo_voice_config
     voice_control = demo_voice_config(engine_cfg or {})
+    case_root = (engine_cfg or {}).get("case_capture_dir", "exp/demo_cases")
     from contextlib import asynccontextmanager
     @asynccontextmanager
     async def lifespan(app):
@@ -430,12 +432,22 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
             from demo_startup import warmup
             await warmup(prompts, engine_cfg)
         app.state.demo_cases = None
+        from demo_diagnostics import DiagnosticStore
+        app.state.diagnostic_store = DiagnosticStore("exp", case_root)
+        retention = (engine_cfg or {}).get("diagnostics_retention_days")
+        # Delete complete session asset graphs before the case writer scans and
+        # accounts existing files.  This avoids concurrent prune/scan mutation.
+        if retention:
+            await asyncio.to_thread(app.state.diagnostic_store.prune, retention)
         if (engine_cfg or {}).get("case_capture"):
             from demo_cases import CaseArchive
             app.state.demo_cases = CaseArchive(
-                (engine_cfg or {}).get("case_capture_dir", "exp/demo_cases"),
+                case_root,
                 max_bytes=int((engine_cfg or {}).get("case_capture_max_bytes", 536870912)),
-                max_cases=int((engine_cfg or {}).get("case_capture_max_cases", 2000)))
+                max_cases=int((engine_cfg or {}).get("case_capture_max_cases", 2000)),
+                kind_weights=(engine_cfg or {}).get("case_capture_kind_weights"),
+                success_sample_rate=float((engine_cfg or {}).get("case_capture_success_sample_rate", 1)),
+                retention_days=(engine_cfg or {}).get("diagnostics_retention_days"))
         try:
             yield
         finally:
@@ -474,7 +486,58 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
         archive = getattr(app.state, "demo_cases", None)
         if archive is not None:
             info["case_capture"] = archive.stats()
+        if ((engine_cfg or {}).get("diagnostics_review")
+                or (engine_cfg or {}).get("diagnostic_audio_capture_allowed")):
+            info["diagnostics"] = {
+                "version": "demo-diagnostics-v1",
+                "review": bool((engine_cfg or {}).get("diagnostics_review", False)),
+                "review_url": "/demo/diagnostics.html" if (engine_cfg or {}).get("diagnostics_review") else None,
+                "audio_capture_allowed": bool((engine_cfg or {}).get("diagnostic_audio_capture_allowed", False)),
+                "audio_capture_default": False,
+            }
         return info
+
+    def diagnostic_store():
+        if not (engine_cfg or {}).get("diagnostics_review", False):
+            raise HTTPException(status_code=404)
+        return app.state.diagnostic_store
+
+    @app.get("/api/demo/diagnostics/sessions")
+    async def diagnostic_sessions(anomalies_only: bool = False):
+        return {"sessions": await asyncio.to_thread(
+            diagnostic_store().list_sessions, anomalies_only=anomalies_only)}
+
+    @app.get("/api/demo/diagnostics/sessions/{session_id}")
+    async def diagnostic_session(session_id: str):
+        try:
+            return await asyncio.to_thread(diagnostic_store().session_detail, session_id)
+        except (ValueError, FileNotFoundError):
+            raise HTTPException(status_code=404)
+
+    @app.post("/api/demo/diagnostics/sessions/{session_id}/turns/{turn_id}/reviews")
+    async def diagnostic_review(session_id: str, turn_id: str, request: Request):
+        try:
+            body = await request.json()
+            return await asyncio.to_thread(diagnostic_store().add_review, session_id, turn_id,
+                labels=body.get("labels"), note=body.get("note"), reviewer=body.get("reviewer"))
+        except (ValueError, KeyError, json.JSONDecodeError) as exc:
+            raise HTTPException(status_code=400, detail=str(exc))
+
+    @app.get("/api/demo/diagnostics/cases/{case_id}/audio/{name}")
+    async def diagnostic_audio(case_id: str, name: str):
+        try:
+            path = diagnostic_store().case_audio(case_id, name)
+        except (ValueError, FileNotFoundError):
+            raise HTTPException(status_code=404)
+        return FileResponse(path, media_type="audio/wav", filename=name)
+
+    @app.delete("/api/demo/diagnostics/sessions/{session_id}")
+    async def diagnostic_delete(session_id: str):
+        try:
+            await asyncio.to_thread(diagnostic_store().delete_session, session_id)
+        except (ValueError, FileNotFoundError):
+            raise HTTPException(status_code=404)
+        return {"deleted": session_id}
 
     @app.websocket("/realtime")
     async def realtime_ws(websocket: WebSocket):
@@ -485,6 +548,7 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
         exp = data.get("exp", {})
         lang = data.get("lang", {})
         web_demo = data.get("client") == "humdial-web"
+        capture_requested = data.get("diagnostic_capture") is True
         if (data.get("input_protocol") not in (None, "pcm16.ref.v1") or (
                 data.get("input_protocol") == "pcm16.ref.v1" and (
                     arch != "actor" or (engine_cfg or {}).get("phase", "a") != "a"
@@ -507,6 +571,11 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
                 await websocket.close(code=1008)
                 return
             exp, lang = "web-demo-" + uuid4().hex, "live"
+            if capture_requested and not (engine_cfg or {}).get("diagnostic_audio_capture_allowed", False):
+                await websocket.send_json({"event": "error", "data": {
+                    "message": "Diagnostic audio capture is not enabled by the server"}})
+                await websocket.close(code=1008)
+                return
         if data.get("audio_protocol") == "pcm16.v1" and (
                 arch != "actor" or (engine_cfg or {}).get("phase", "a") != "a"
                 or not (engine_cfg or {}).get("stream_response")):
@@ -545,20 +614,36 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
         engine.output_dir = Path("exp") / exp / f"realtimeout_{lang}"
         engine.output_dir.mkdir(parents=True, exist_ok=True)
         if web_demo:
+            engine.demo_capture = None
             from demo_trace import DemoTrace
-            engine.demo_trace = DemoTrace(engine.output_dir / "events.jsonl")
+            from demo_diagnostics import AudioRingCapture, build_manifest
+            diagnostics_dir = engine.output_dir / "diagnostics"
+            capture_seconds = int((engine_cfg or {}).get("diagnostic_audio_capture_seconds", 180))
+            manifest = build_manifest(session_id=exp,
+                repository_root=Path(__file__).resolve().parents[1],
+                profile="chat-demo-v1" if (engine_cfg or {}).get("chat_demo") else "humdial",
+                engine_cfg=session_cfg, delay=delay, llm_cfg=llm_cfg or {},
+                asr_cfg=asr_cfg or {}, capture_enabled=capture_requested,
+                capture_seconds=capture_seconds)
+            engine.demo_trace = DemoTrace(engine.output_dir / "events.jsonl",
+                diagnostics_dir=diagnostics_dir, manifest=manifest)
             engine.demo_cases = getattr(app.state, "demo_cases", None)
             engine.demo_session_id = exp
+            if capture_requested:
+                engine.demo_capture = AudioRingCapture(
+                    diagnostics_dir / "capture", max_seconds=capture_seconds)
             # The browser waits before opening the input pipe. VAD construction
             # may take time on the first connection; do not accumulate mic frames.
         try:
             if web_demo:
                 await websocket.send_json({"event": "demo_ready", "data": {
                     "session_id": exp, "protocol": "pcm16.v1",
-                    "observability": "demo-trace-v1",
+                    "observability": "demo-trace-v2",
                     "tts_contract": VERBATIM_TTS_CONTRACT,
                     "tts_voice_control": demo_voice_config(session_cfg) if session_cfg.get("stream_response") else None,
                     "case_capture": engine.demo_cases is not None,
+                    "diagnostics": "demo-diagnostics-v1",
+                    "diagnostic_capture": engine.demo_capture is not None,
                     "input_protocol": session_cfg.get("input_protocol"),
                     "guarded_turns": bool(session_cfg.get("guarded_turns")),
                     "speculative_response": bool(session_cfg.get("speculative_response")),
@@ -567,7 +652,29 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None) -> FastAPI:
             await engine.run_realtime(websocket)
         finally:
             if web_demo:
-                await engine.demo_trace.close()
+                async def close_diagnostics():
+                    if getattr(engine, "demo_capture", None) is not None:
+                        capture_meta = await asyncio.to_thread(engine.demo_capture.close)
+                        engine.demo_trace.manifest["capture"].update(capture_meta)
+                    if engine.demo_cases is not None:
+                        await engine.demo_cases.flush()
+                    await engine.demo_trace.close()
+                    try:
+                        from demo_diagnostics import finalize_session
+                        await asyncio.to_thread(finalize_session, diagnostics_dir,
+                            engine.output_dir / "events.jsonl", case_root)
+                    except Exception as exc:
+                        print(f"[DEMO DIAGNOSTICS] finalize failed: "
+                              f"{type(exc).__name__}: {exc}", flush=True)
+                cleanup = asyncio.create_task(close_diagnostics())
+                try:
+                    await asyncio.shield(cleanup)
+                except asyncio.CancelledError:
+                    # A disconnect may cancel the websocket handler while its
+                    # durable audit is closing.  Complete bounded cleanup, then
+                    # preserve cancellation for the server.
+                    await cleanup
+                    raise
         if (engine_cfg or {}).get("phase") == "b" and hasattr(engine, "trace"):
             trace_file = engine.output_dir / "trace_full.jsonl"
             with trace_file.open("w", encoding="utf-8") as f:
@@ -620,7 +727,7 @@ def main():
     host = args.host if args.host is not None else server_cfg.get("host", {})
     port = args.port if args.port is not None else server_cfg.get("port", {})
 
-    app = create_app(prompts_cfg, delay_cfg, llm_cfg, engine_cfg)
+    app = create_app(prompts_cfg, delay_cfg, llm_cfg, engine_cfg, cfg.get("asr", {}))
     uvicorn.run(app, host=host, port=port)
 
 

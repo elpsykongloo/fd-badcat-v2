@@ -35,6 +35,7 @@ function controls() {
   $("stop").disabled = !busy;
   $("mute").disabled = !active?.ready;
   $("microphone").disabled = busy;
+  $("diagnostic-capture").disabled = busy || $("diagnostic-capture").dataset.allowed === "false";
   $("clear").disabled = busy || messages.size === 0;
   $("connection").dataset.connected = String(!!active?.ready);
   $("connection-label").textContent = active?.ready ? "实时连接已建立" : busy ? "连接中…" : "尚未连接";
@@ -145,7 +146,7 @@ function control(s, msg) {
   if (msg.event === "demo_ready") {
     if (d.protocol !== "pcm16.v1") throw Error("服务器音频协议不兼容，请更新后端。");
     $("session-id").textContent = d.session_id;
-    s.telemetry.enabled = d.observability === "demo-trace-v1";
+    s.telemetry.enabled = ["demo-trace-v1", "demo-trace-v2"].includes(d.observability);
     $("profile-note").textContent = d.profile === "chat-demo-v1"
       ? "聊天展示配置：双语 ASR、正常上下文、无 15 字限制、自动收尾；"
         + (d.speculative_response ? "已启用完整投机，确认前不播；" : "投机关闭；")
@@ -153,8 +154,9 @@ function control(s, msg) {
         + (d.guarded_turns ? "输入准入、回声参考与停止/回答分离已启用；" : "")
         + (["verbatim-choice-v1", "verbatim-grammar-v2"].includes(d.tts_contract) ? "TTS 原文约束与校验已启用。" : "")
       : "HumDial 配置：保留比赛短答提示词和轮次策略。";
-    $("trace-status").textContent = s.telemetry.enabled ? "逐轮记录已启用 · demo-trace-v1" : "旧后端：逐轮记录未启用";
+    $("trace-status").textContent = s.telemetry.enabled ? `逐轮记录已启用 · ${d.observability}` : "旧后端：逐轮记录未启用";
     if (d.case_capture) $("trace-status").textContent += " · 调用音频、上下文及结果将归档为本机候选案例（容量有限，不自动认作标准答案）";
+    if (d.diagnostic_capture) $("trace-status").textContent += " · 本轮多轨诊断录音已明确开启";
     s.accept?.();
     return;
   }
@@ -315,6 +317,9 @@ async function connect() {
     } finally { clearTimeout(timeout); }
     alive(s);
     if (!info.streaming) throw Error("服务器未启用流式 ActorEngine。请用 bash setup/start_demo.sh 启动，或给 backend 加 --streaming。");
+    const captureAllowed = !!info.diagnostics?.audio_capture_allowed;
+    $("diagnostic-capture").dataset.allowed = String(captureAllowed);
+    if (!captureAllowed) $("diagnostic-capture").checked = false;
     s.referenceInput = !!info.guarded_turns && info.input_protocol === "pcm16.ref.v1";
     s.media = await navigator.mediaDevices.getUserMedia({audio: {
       channelCount: 1, echoCancellation: true, noiseSuppression: true, autoGainControl: true,
@@ -339,6 +344,7 @@ async function connect() {
       s.accept = () => { clearTimeout(s.openTimer); s.reject = null; s.accept = null; resolve(); };
       s.openTimer = setTimeout(() => reject(Error("服务握手超时。请检查 SSH 转发与服务器日志后重试。")), 30000);
       s.ws.onopen = () => send(s, "config", {client: "humdial-web", audio_protocol: "pcm16.v1",
+        diagnostic_capture: captureAllowed && $("diagnostic-capture").checked,
         ...(s.referenceInput ? {input_protocol: "pcm16.ref.v1"} : {})});
       s.ws.onmessage = event => {
         if (active !== s) return;

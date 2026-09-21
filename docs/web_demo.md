@@ -94,17 +94,17 @@ ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -L 127.0.0.1:18080:
 
 如要让外界直接通过网址访问，需要另行部署同源 HTTPS/WSS 反向代理、身份验证/访问额度、WebSocket Origin 防护、会话并发治理、日志告知与保留策略；不要直接开放裸 backend 或推理端口。新 `humdial-web` 客户端已校验同源 Origin 并使用服务器分配的归档路径，但旧评测 WebSocket 协议为兼容仍然存在，**这些局部保护不能当作公网安全边界**。请勿共享 SSH 私钥或把服务器 IP 的 HTTP 链接直接发给观众。
 
-## 6. 逐轮延迟观测（demo-trace-v1）
+## 6. 统一会话诊断（demo-trace-v2 / demo-diagnostics-v1）
 
 后端更新后需重启；笔记本 Ctrl+F5 刷新后重新开始。展开详情应看到“逐轮记录已启用”。旧后端握手不宣布版本时，新页面不会发送遥测，显示记录未启用。
 
-每个浏览器会话写入 `exp/web-demo-<会话ID>/realtimeout_live/events.jsonl`。专用线程逐行落盘，4096 条有界队列，记录故障只报后端警告、不阻断收音；正常断线末行 `trace_closed.dropped` 应为 0。进程硬杀可能损失未排空队列；磁盘错误查看 backend.log 的 `Demo trace unavailable`，不要把缺记录当作零延迟。日志含回复、ASR 和脱敏后的模型消息快照，仍属敏感会话数据；不记录音频包内容或任意客户端字段。输入 WAV 归档规则不变，未设置自动删除。
+每个浏览器会话写入 `exp/web-demo-<会话ID>/realtimeout_live/events.jsonl`，并在 `diagnostics/` 生成 allowlist manifest、轮次索引、请求 span、自动 invariant summary 和追加式人工 review。专用线程逐行落盘，4096 条有界队列，记录故障只报后端警告、不阻断收音；正常断线末行 `trace_closed.dropped` 应为 0。进程硬杀可能损失未排空队列；磁盘错误查看 backend.log 的 `Demo trace unavailable`，不要把缺记录当作零延迟。普通会话不保存原始浏览器音轨；三轨录音需页面逐会话明确勾选。完整结构、保留/删除和重放口径见 `docs/demo_diagnostics.md`。
 
 | 记录 | 解释 |
 | --- | --- |
 | `vad_done` / `vad_640_done` / `speech_start` / `speech_first_audio` | 服务器三个阶段的边界；`server_ms` 是同一会话单调钟，`t_audio` 仍是驱动业务判据的音频钟 |
 | `demo_latency` | ①停顿窗、②轮次判定/继续等待、③文本/分句/TTS/排队，以及 VAD 结束到首音频入发送链路的总和；按 generation/epoch 与 utterance ID 关联，缺锚或续说失配显示 null，不借前轮锚凑数 |
-| `llm_dispatch` / `llm_done` / `llm_stale_dropped` / `capacity_acquired` | 请求类别、结果/过期、进程闸门等待；可查 continue / shift / interrupt 分支。容量时间包含在上述阶段内，不再次累加 |
+| `model_call_dispatch` / `model_call_first_output` / `model_call_done` / `capacity_acquired` | 统一 `call_id` 下的请求类别、闸门等待、首输出、结果/过期/错误和上游 request ID；容量时间包含在阶段内，不再次累加 |
 | `candidate_created` / `candidate_dispatch` / `candidate_control_done` / `candidate_speech_started` | 私有预计算轨，仅服务器审计，不向浏览器展示未确认判断/文本；含候选 ID、段尾样本数、请求类别及阶段 |
 | `candidate_confirmed` / `candidate_cancelled` / `candidate_result_discarded` | 确认时已准备音频量、预计算墙钟；作废原因、阶段、已准备样本及候选存活时间；存活时间不等于 GPU 计算费用 |
 | `speech_playback_started` | 浏览器 WebAudio 开播回执被服务器接受；此后按播放期规则处理输入（guarded 或原基线），不是物理扬声器测量 |
@@ -237,44 +237,40 @@ v2 预热先合成普通句，再合成带 CR/LF/TAB 的疑问句。`scripts/che
 
 此机制不提供声纹识别、通用 AEC 或零误判保证；未对真实笔记本房间/扬声器/麦克风完成声学验收。强相关门可能漏掉非线性/长延迟回声，语义路由仍可能错分。请分别用耳机与外放验证，不能将少量 canary/数字回声的通过率当成真实误打断率；本次不跑 RB 全量或产生正式成绩。
 
-## 10. 自动调用案例库（demo-case-v1）
+## 10. 统一诊断资产与模型调用案例（demo-case-v2）
 
-聊天 demo 默认开启 `engine.case_capture`，只挂在 `humdial-web` 会话；原 HumDial/legacy/RB/TACT 配置不改。每次真正取得请求槽、调用线上流式模型时，自动保存请求里的音频、完整提示词/消息、采样参数与输出；历史等上下文只在该次请求实际包含时保存，新路由请求没有助手参考文字。包括路由、其格式修复请求、shift、回答和逐句 TTS，以及失败、取消的私有候选。不把被取消的回答当作已播放内容。纯声学门已拒绝、没有实际模型调用的片段不进入这个库，仍可在逐轮 trace 中查拒绝原因。
+聊天 demo 默认开启 `engine.case_capture`，只挂在 `humdial-web` 会话；原 HumDial/legacy/RB/TACT 配置不改。每次真正取得请求槽、调用线上流式模型时，保存冻结请求、处理后输入、采样参数和输出。路由、格式修复、shift、回答、逐句 TTS、失败和取消候选都使用唯一 `call_id`，并通过 `parent_id`、`case_id` 和 `utterance_id` 接回同一轮状态机。纯声学门拒绝且没有调用模型的片段只出现在 trace。
 
-默认私有目录：`exp/demo_cases/captures/<case_id>/`，每例含 `case.json`、原请求 WAV `input-00.wav` 等、收到合格 TTS PCM 时的 `output.wav`。请求音频是**证据处理后实际送模型的输入**，不是原始双通道麦克风/扬声器参考录制；输出是**播放前的模型输出**，不是用户实际听到的前缀。原音频块三种格式可无损重建；采样参数和消息也按当次冻结，不偷偷换成当前 prompt。`context` 含会话、轮次、调用时 generation/epoch，四态请求额外带固定 input ID/revision/closed/输入 generation。每次模型调用 ID 通过 `model_case_started/model_case_queued` 接回原会话 `events.jsonl`；queued 只表示已排队，最终成功以可见 `case.json` 为准，是否真正接纳/过期/播放需结合该 trace。
+默认私有案例目录为 `exp/demo_cases/captures/<case_id>/`。会话侧 `diagnostics/manifest.json` 保存经过 allowlist 的有效配置和协议版本；`turns.jsonl` 汇总最终路由、候选命运、公开/播放/历史结果；`spans.jsonl` 分开容量等待、模型首输出、TTS、socket 和播放 ACK；`summary.json` 执行机械不变量检查。正常断线前先 flush 案例，再关闭 trace 和生成派生索引，避免把 queued 误当 durable。完整数据契约见 `docs/demo_diagnostics.md`。
 
-后台线程写入，队列8例、单请求估计上限4MiB、单输出前缀上限2MiB（截断显式标记）；自动采集默认最多2000例或512MiB，先到即停止新增，**不自动删除旧案例**。文件600/目录700，默认目录 gitignored，不提供 Web 下载接口，不自动提交或对外上传。失败/满额不会改变会话判据；`GET /api/demo/info` 的 `case_capture` 显示 saved/dropped/queued/error/容量，重启按已占空间继续计数。计数 saved/dropped 为本次进程值；自动容量统计不包含操作员显式运行生成的 `replays/`。硬关机可能丢失在飞/排队项，未完成目录以 `.partial` 隐藏并保留，不冒充完整案例。需要更换自定义目录时也须自行排除 Git 跟踪；关闭 `case_capture` 只关闭此新增案例库，不会删除过去文件，也不关闭原有会话归档。
+案例后台线程仍使用8例有界队列、单请求估计上限4MiB、单输出前缀上限2MiB。总上限为2000例/512MiB，并按 TTS、input_route、response、shift、input_reply、shift_s 分区，某一高流量类型满额不会关闭其他类型。错误和取消始终保留；普通 completed 调用支持抽样，当前在建立已审基线前保持1.0。会话和孤立案例默认保留30天，启动时自动清理；CLI/API 可按 session 同时删除 trace、manifest、turn/span、capture、review、replay report 和关联 case。文件600/目录700，均为 gitignored 私有数据。
 
-以下命令在服务器仓库内执行（`conda activate fd-sds` 后的 `python`）：
+本机逐轮审查页面为 `/demo/diagnostics.html`。页面先展示 invariant 异常会话，再以 turn 为单位组合路由、调用、输入/输出音频、播放和历史结果；review 支持多轴标签并追加 revision，不覆盖旧判断。自动存档的 `expected` 仍为 null，模型输出和 invariant finding 都不会自动成为 gold。
 
-真实用户片段由人听检后标注。自造、内容已知的测试音频可以显式使用 `label --source synthetic_fixture`，与人工听检来源分开记录；它仍不能从模型输出自动产生标签。
+两种 replay 必须分开理解：
 
-`outcome.elapsed_ms` 从实际调用到流消费结束，可能包含播放信用导致的背压，不能当作纯模型推理耗时。
+- `scripts/demo_cases.py replay` 复跑单个冻结模型请求，适合控制解析或单句 TTS；
+- `scripts/demo_diagnostics.py replay SESSION_ID --speed 1` 使用明确 opt-in 保存的 mic/reference/clean 对齐帧、控制/VAD 边界和真实模型输出，重新驱动当前 ActorEngine，不访问模型。截断的环形录音不冒充完整会话重放；高倍速报告明确不可比较延迟。
+
+常用命令：
 
 ```bash
-# 不调用模型：按时间自动列出最新路由案例，附结果、轮次、会话、状态。
+python scripts/demo_diagnostics.py list --anomalies
+python scripts/demo_diagnostics.py show SESSION_ID
+python scripts/demo_diagnostics.py audit SESSION_ID
+python scripts/demo_diagnostics.py review SESSION_ID TURN_ID \
+  --label route --label latency --reviewer NAME --note '人工核验说明'
+python scripts/demo_diagnostics.py replay SESSION_ID --speed 1
+python scripts/demo_diagnostics.py prune --days 30
+python scripts/demo_diagnostics.py delete SESSION_ID
+
+# 旧单调用人工标签/重放入口继续保留
 python scripts/demo_cases.py list --kind input_route --latest 20
-python scripts/demo_cases.py list --session web-demo-会话编号 --latest 50
-python scripts/demo_cases.py list --status cancelled
-python scripts/demo_cases.py list --kind tts
-
-# 人工听 input-00.wav，并结合 case.json 上下文定标签。
-# 将 CASE_ID 替换为上一条列出的 id；note 必填，不允许覆盖已有标注。
-python scripts/demo_cases.py label CASE_ID --expected keep --note '听检为含糊残片，没有清楚请求'
-
-# 显式调用本机模型：单例诊断或所有已人工标注的控制案例。
-python scripts/demo_cases.py replay --case CASE_ID
+python scripts/demo_cases.py label CASE_ID --expected keep --note '人工听检说明'
 python scripts/demo_cases.py replay --reviewed
-
-# 只替换控制调用的 system prompt；保留原音频/上下文/参数作对照。
-python scripts/demo_cases.py replay --reviewed --current-prompt
 ```
 
-自动存档的 `expected` 永远为 null。`label` 写独立 `review.json`，只有人工标注过的 judge/interrupt/shift/input_route 进入 `--reviewed` 回归集；**模型曾输出 keep 不等于 keep 正确**。误判案例也可标正确答案留下来，重放不通过就返回非零。回归集为空报错，异常/超时报错，无标注单例只作诊断、不宣称通过。每次串行重放创建新的私有 `replays/<run_id>/` 报告，不改原案例/标注；TTS 单例复用线上逐字文本证明并检查音频非空，但不自动宣称发音正确，随机 PCM 不作逐字节 golden。一般回答也不以旧模型回答作为事实性标准。
-
-这是**单次调用回归**，不是整段会话/物理回声/停止回执时序重放。格式修复的两次尝试各自成例，单例重放不会自动执行整个“失败→修复→回退”状态机；引擎取消、四态动作、EOF、历史与播放仍由已有状态机测试覆盖。真实环境噪声、韵律和扬声器听检仍需人工确认。服务模型权重或适配器版本改变也可能改变结果；保存请求不能保证跨模型确定性。自动归档只减少找证据的工作，不替代人工定义正确行为。
-
-`input_reply` 文本复核案例也可单独人工标注和重放。`--current-prompt` 对音频路由案例会同时重建当前协议消息、删除旧参考文字；对文本复核保留原冻结证据。默认回放仍使用原请求和相应版本解析器，不能用新 JSON 规则误判旧标签归档。
+页面上的多轨录音默认不勾选。明确开启后，只保存最后180秒的16kHz麦克风、播放参考和服务端处理后轨道，以及共享帧序号/样本钟和浏览器 AEC/降噪/AGC 设置。它用于定位短停止在采集、参考消除、VAD 或模型层的丢失，不改变在线判据，也不承担主观音色评价。
 
 ### 转写优先版本的配对验收
 

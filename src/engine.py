@@ -45,6 +45,7 @@ import asyncio
 import heapq
 import json
 import time
+from uuid import uuid4
 from contextlib import aclosing, suppress
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -117,6 +118,8 @@ class ModelDone:
     control_audit: dict = None
     answer_id: int = 0
     history_written: bool = False
+    call_id: str = None
+    parent_id: str = None
 
 
 @dataclass
@@ -266,6 +269,7 @@ class ActorEngine(GuardedTurns, CandidateTurns):
         self.demo_trace = None  # attached only by the browser-demo handshake
         self.demo_cases = None
         self.demo_session_id = None
+        self.demo_capture = None
         self.frame_lags = []              # perf-lag reader->engine per frame (freeze metric)
         self.max_queue_depth = 0
         self._inflight = 0                # realtime worker tasks not yet reported back
@@ -311,8 +315,17 @@ class ActorEngine(GuardedTurns, CandidateTurns):
         if self.demo_trace is not None:
             return self.demo_trace.observe(event, data or {}, generation=self.session_gen,
                                            epoch=self.seg_epoch, turn=self.TURN_IDX,
+                                           turn_id=self._turn_id(),
                                            state=self.STATE, t_audio=self.t_audio,
                                            queue_depth=self.q.qsize())
+
+    def _turn_id(self, turn=None, generation=None):
+        return f"g{self.session_gen if generation is None else generation}-t{self.TURN_IDX if turn is None else turn}"
+
+    def _diagnostic_id(self, kind):
+        # Calls can originate in response/TTS worker tasks.  UUID allocation keeps
+        # diagnostic identity independent of ActorEngine's single-writer state.
+        return f"{kind}-{uuid4().hex[:16]}"
 
     def _wall_ts(self):
         if self.start_wall is None:
@@ -366,16 +379,38 @@ class ActorEngine(GuardedTurns, CandidateTurns):
     def _request_class(kind):
         return CONTROL if kind in CONTROL_REQUEST_KINDS else NORMAL
 
-    async def _capacity_thread_call(self, kind, fn, *args):
+    async def _capacity_thread_call(self, kind, fn, *args, call_id=None, parent_id=None):
+        call_id = call_id or self._diagnostic_id("call")
         started = time.perf_counter()
-        async with self.request_capacity.slot(self._request_class(kind)):
-            self._observe("capacity_acquired", {"kind": kind, "wait_ms":
-                          round((time.perf_counter() - started) * 1000, 3)})
-            return await asyncio.to_thread(fn, *args)
+        self._observe("model_call_dispatch", {"kind": kind, "call_id": call_id,
+            "parent_id": parent_id, "transport": "thread"})
+        status, error = "cancelled", None
+        try:
+            async with self.request_capacity.slot(self._request_class(kind)):
+                self._observe("capacity_acquired", {"kind": kind, "call_id": call_id,
+                    "parent_id": parent_id, "wait_ms":
+                    round((time.perf_counter() - started) * 1000, 3),
+                    "capacity": self.request_capacity.snapshot()})
+                result = await asyncio.to_thread(fn, *args)
+                self._observe("model_call_first_output", {"kind": kind,
+                    "call_id": call_id, "parent_id": parent_id,
+                    "elapsed_ms": round((time.perf_counter() - started) * 1000, 3)})
+                status = "completed"
+                return result
+        except Exception as exc:
+            status, error = "error", type(exc).__name__
+            raise
+        finally:
+            self._observe("model_call_done", {"kind": kind, "call_id": call_id,
+                "parent_id": parent_id, "status": status, "error_type": error,
+                "elapsed_ms": round((time.perf_counter() - started) * 1000, 3)})
 
-    def _start_capacity_thread_call(self, kind, fn, *args):
+    def _start_capacity_thread_call(self, kind, fn, *args, parent_id=None):
         """Keep the slot owned by the real worker even if its caller times out."""
-        task = asyncio.create_task(self._capacity_thread_call(kind, fn, *args))
+        call_id = self._diagnostic_id("call")
+        task = asyncio.create_task(self._capacity_thread_call(
+            kind, fn, *args, call_id=call_id, parent_id=parent_id))
+        task.diagnostic_call_id = call_id
         self._capacity_tasks.add(task)
 
         def _finished(done):
@@ -386,69 +421,95 @@ class ActorEngine(GuardedTurns, CandidateTurns):
         task.add_done_callback(_finished)
         return task
 
-    async def _capacity_stream(self, kind, stream_fn, arg, *, case_context=None, route=False):
+    async def _capacity_stream(self, kind, stream_fn, arg, *, case_context=None, route=False,
+                               call_id=None, parent_id=None):
+        call_id = call_id or self._diagnostic_id("call")
         started = time.perf_counter()
-        async with self.request_capacity.slot(self._request_class(kind)):
-            self._observe("capacity_acquired", {"kind": kind, "wait_ms":
-                          round((time.perf_counter() - started) * 1000, 3)})
-            recording = None
-            stream_options = {}
-            if self.CHAT_DEMO and self.engine_cfg.get("stream_diagnostics", False):
-                import module as adapters
-                if stream_fn is adapters.tts_omni_stream:
-                    stream_options["timing"] = True
-            if self.tts_voice_control is not None:
-                import module as adapters
-                if stream_fn is adapters.tts_omni_stream:
-                    stream_options["voice_control"] = self.tts_voice_control
-            if route:
-                import module as adapters
-                if stream_fn is adapters.llm_qwen3o_stream:
-                    stream_options["route"] = True
-            if self.demo_cases is not None:
-                try:
+        self._observe("model_call_dispatch", {"kind": kind, "call_id": call_id,
+            "parent_id": parent_id, "transport": "stream"})
+        status, error = "cancelled", None
+        first_output = True
+        try:
+            async with self.request_capacity.slot(self._request_class(kind)):
+                self._observe("capacity_acquired", {"kind": kind, "call_id": call_id,
+                    "parent_id": parent_id, "wait_ms":
+                    round((time.perf_counter() - started) * 1000, 3),
+                    "capacity": self.request_capacity.snapshot()})
+                recording = None
+                stream_options = {}
+                if self.CHAT_DEMO and self.engine_cfg.get("stream_diagnostics", False):
                     import module as adapters
-                    # Only these adapters have the saved payload contract. Never
-                    # misdescribe an injected/custom model's request as Omni's.
-                    if stream_fn in (adapters.llm_qwen3o_stream, adapters.tts_omni_stream):
-                        is_tts = stream_fn is adapters.tts_omni_stream
-                        payload = (adapters.verbatim_tts_payload(arg,
-                                       voice_control=self.tts_voice_control) if is_tts
-                                   else adapters.qwen_text_payload(arg, route=route))
-                        payload = {**payload, "stream": True}
-                        role = "tts" if is_tts else next((name for name, prompt in self.prompts.items()
-                            if arg and arg[0].get("content") == prompt), kind.removeprefix("spec_"))
-                        context = {"session_id": self.demo_session_id, "generation": self.session_gen,
-                            "epoch": self.seg_epoch, "turn": self.TURN_IDX, "capacity_kind": kind,
-                            "state_at_call": self.STATE, **(case_context or {})}
-                        recording = self.demo_cases.begin(role, payload, context, arg if is_tts else None)
-                        if recording:
-                            self._observe("model_case_started", {"case_id": recording.case["case_id"],
-                                                                  "kind": role, **context})
-                except Exception as exc:
-                    self._observe("model_case_error", {"error_type": type(exc).__name__})
-            status, error = "cancelled", None
-            try:
-                async with aclosing(stream_fn(arg, **stream_options)) as source:
-                    async for item in source:
-                        if recording:
-                            try:
-                                recording.feed(item)
-                            except Exception:
-                                recording.truncated = True
-                        yield item
-                status = "completed"
-            except Exception as exc:
-                status, error = "error", type(exc).__name__
-                raise
-            finally:
-                if recording:
+                    if stream_fn is adapters.tts_omni_stream:
+                        stream_options["timing"] = True
+                if self.tts_voice_control is not None:
+                    import module as adapters
+                    if stream_fn is adapters.tts_omni_stream:
+                        stream_options["voice_control"] = self.tts_voice_control
+                if route:
+                    import module as adapters
+                    if stream_fn is adapters.llm_qwen3o_stream:
+                        stream_options["route"] = True
+                if self.demo_cases is not None:
                     try:
-                        queued = recording.finish(status, error)
-                        self._observe("model_case_queued", {"case_id": recording.case["case_id"],
-                            "status": status, "queued": queued})
+                        import module as adapters
+                        # Only these adapters have the saved payload contract. Never
+                        # misdescribe an injected/custom model's request as Omni's.
+                        if stream_fn in (adapters.llm_qwen3o_stream, adapters.tts_omni_stream):
+                            is_tts = stream_fn is adapters.tts_omni_stream
+                            payload = (adapters.verbatim_tts_payload(arg,
+                                           voice_control=self.tts_voice_control) if is_tts
+                                       else adapters.qwen_text_payload(arg, route=route))
+                            payload = {**payload, "stream": True}
+                            role = "tts" if is_tts else next((name for name, prompt in self.prompts.items()
+                                if arg and arg[0].get("content") == prompt), kind.removeprefix("spec_"))
+                            context = {"session_id": self.demo_session_id, "generation": self.session_gen,
+                                "epoch": self.seg_epoch, "turn": self.TURN_IDX, "capacity_kind": kind,
+                                "turn_id": self._turn_id(), "state_at_call": self.STATE,
+                                "call_id": call_id, "parent_id": parent_id, **(case_context or {})}
+                            recording = self.demo_cases.begin(role, payload, context, arg if is_tts else None)
+                            if recording:
+                                self._observe("model_case_started", {"case_id": recording.case["case_id"],
+                                                                      "kind": role, **context})
                     except Exception as exc:
                         self._observe("model_case_error", {"error_type": type(exc).__name__})
+                try:
+                    async with aclosing(stream_fn(arg, **stream_options)) as source:
+                        async for item in source:
+                            if first_output:
+                                first_output = False
+                                transport = getattr(item, "timing", None) or {}
+                                self._observe("model_call_first_output", {"kind": kind,
+                                    "call_id": call_id, "parent_id": parent_id,
+                                    "elapsed_ms": round((time.perf_counter() - started) * 1000, 3),
+                                    **{key: transport.get(key) for key in (
+                                        "request_id", "sse_event", "sse_received_ms")
+                                       if transport.get(key) is not None}})
+                            if recording:
+                                try:
+                                    recording.feed(item)
+                                except Exception:
+                                    recording.truncated = True
+                            yield item
+                    status = "completed"
+                except Exception as exc:
+                    status, error = "error", type(exc).__name__
+                    raise
+                finally:
+                    if recording:
+                        try:
+                            queued = recording.finish(status, error)
+                            self._observe("model_case_queued", {"case_id": recording.case["case_id"],
+                                "status": status, "queued": queued})
+                        except Exception as exc:
+                            self._observe("model_case_error", {"error_type": type(exc).__name__})
+        except Exception as exc:
+            if status == "cancelled":
+                status, error = "error", type(exc).__name__
+            raise
+        finally:
+            self._observe("model_call_done", {"kind": kind, "call_id": call_id,
+                "parent_id": parent_id, "status": status, "error_type": error,
+                "elapsed_ms": round((time.perf_counter() - started) * 1000, 3)})
 
     def _response_text_stream(self, messages):
         return self._capacity_stream("response", self.text_stream_fn, messages)
@@ -466,14 +527,17 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                 np.concatenate(self.BUFFER) if self.BUFFER else np.zeros(0, dtype=np.float32))
             self._begin_candidate(audio, confirmed=True, stage=kind)
             return
-        self._observe("llm_dispatch", {"kind": kind, "turn": turn})
+        operation_id = self._diagnostic_id("operation")
+        self._observe("llm_dispatch", {"kind": kind, "turn": turn,
+                                       "parent_id": operation_id})
         messages = self.build_messages(system_prompt, user_audio, add_to_history, shift_history)
         snapshot = scrub_audio_blocks(messages)
         gen, epoch = self.session_gen, self.seg_epoch
         if self.STREAMING and kind in ("response", "shift_re"):
             self._dispatch_speech(messages, ModelDone(
                 kind=kind, gen=gen, epoch=epoch, turn=turn,
-                add_to_history=add_to_history, prompt_snapshot=snapshot))
+                add_to_history=add_to_history, prompt_snapshot=snapshot,
+                parent_id=operation_id))
             return
         if user_audio is not None and kind in ("judge", "shift", "interrupt"):
             # snapshot consumed by the handler when the (fresh) result arrives
@@ -485,7 +549,8 @@ class ActorEngine(GuardedTurns, CandidateTurns):
             infer = 0.0 if self.replay_mode == "oracle" else float(res.get("infer", 0.0))
             done = ModelDone(kind=kind, gen=gen, epoch=epoch, turn=turn,
                              text=str(res.get("text", "")), infer=infer,
-                             add_to_history=add_to_history, prompt_snapshot=snapshot)
+                             add_to_history=add_to_history, prompt_snapshot=snapshot,
+                             parent_id=operation_id)
             self._schedule(self.t_audio + infer, done)
             return
 
@@ -494,20 +559,26 @@ class ActorEngine(GuardedTurns, CandidateTurns):
             timed_out = False
             text = ""
             error = ""
+            call_ids = []
             if self.CONTROL_VALIDATION and kind in LABELS:
                 async def call(request):
-                    worker = self._start_capacity_thread_call(kind, self.control_llm_fn, request)
+                    worker = self._start_capacity_thread_call(
+                        kind, self.control_llm_fn, request, parent_id=operation_id)
+                    call_ids.append(worker.diagnostic_call_id)
                     return await asyncio.shield(worker)
                 text, audit = await decide_control(call, messages, kind, self.DECISION_TIMEOUT)
                 self.q.put_nowait(ModelDone(
                     kind=kind, gen=gen, epoch=epoch, turn=turn, text=text,
                     infer=round(time.perf_counter() - t0, 3),
-                    prompt_snapshot=snapshot, timed_out=audit["timed_out"], control_audit=audit))
+                    prompt_snapshot=snapshot, timed_out=audit["timed_out"], control_audit=audit,
+                    call_id=call_ids[-1] if call_ids else None, parent_id=operation_id))
                 return
             retries = 1 if kind == "response" else 0
             while True:
                 try:
-                    call = self._start_capacity_thread_call(kind, self.llm_fn, messages)
+                    call = self._start_capacity_thread_call(
+                        kind, self.llm_fn, messages, parent_id=operation_id)
+                    call_ids.append(call.diagnostic_call_id)
                     text = await asyncio.wait_for(
                         asyncio.shield(call), self.DECISION_TIMEOUT)
                     break
@@ -528,12 +599,14 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                                         text=str(text), infer=infer,
                                         add_to_history=add_to_history,
                                         prompt_snapshot=snapshot, timed_out=timed_out,
-                                        error=error))
+                                        error=error, call_id=call_ids[-1] if call_ids else None,
+                                        parent_id=operation_id))
         self._inflight += 1
         asyncio.create_task(_run())
 
     def dispatch_asr(self, user_audio, turn, answer_id=0):
         gen, epoch = self.session_gen, self.seg_epoch
+        operation_id = self._diagnostic_id("asr")
         out_path = None
         if self.output_dir is not None:
             suffix = f"_answer{answer_id}" if answer_id else ""
@@ -544,13 +617,18 @@ class ActorEngine(GuardedTurns, CandidateTurns):
             infer = 0.0 if self.replay_mode == "oracle" else float(res.get("infer", 0.0))
             self._schedule(self.t_audio + infer,
                            ModelDone(kind="asr", gen=gen, epoch=epoch, turn=turn,
-                                     text=str(res.get("text", "")), infer=infer))
+                                     text=str(res.get("text", "")), infer=infer,
+                                     parent_id=operation_id))
             return
 
         async def _run():
             t0 = time.perf_counter()
+            call_id = self._diagnostic_id("call")
+            self._observe("model_call_dispatch", {"kind": "asr", "call_id": call_id,
+                "parent_id": operation_id, "transport": "thread"})
             text = ""
             error = ""
+            error_type = None
             def _work():
                 import soundfile as sf
                 if out_path is not None:
@@ -563,17 +641,27 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                     return self.asr_fn(tmp.name)
             try:
                 text = await asyncio.to_thread(_work)
+                self._observe("model_call_first_output", {"kind": "asr", "call_id": call_id,
+                    "parent_id": operation_id,
+                    "elapsed_ms": round((time.perf_counter() - t0) * 1000, 3)})
             except Exception as exc:  # ASR must never kill the session
                 error = str(exc)
+                error_type = type(exc).__name__
                 print(f"[ASR ERROR] {exc}")
             infer = round(time.perf_counter() - t0, 3)
+            self._observe("model_call_done", {"kind": "asr", "call_id": call_id,
+                "parent_id": operation_id, "status": "error" if error else "completed",
+                "error_type": error_type,
+                "elapsed_ms": round(infer * 1000, 3)})
             self.q.put_nowait(ModelDone(kind="asr", gen=gen, epoch=epoch, turn=turn,
-                                        text=str(text), infer=infer, error=error, answer_id=answer_id))
+                                        text=str(text), infer=infer, error=error, answer_id=answer_id,
+                                        call_id=call_id, parent_id=operation_id))
         self._inflight += 1
         asyncio.create_task(_run())
 
     def dispatch_tts(self, text, turn):
         gen, epoch = self.session_gen, self.seg_epoch
+        operation_id = self._diagnostic_id("tts")
         tts_path = None
         if self.output_dir is not None:
             tts_path = Path(self.output_dir) / f"turn{turn}_tts.wav"
@@ -584,12 +672,14 @@ class ActorEngine(GuardedTurns, CandidateTurns):
             self._schedule(self.t_audio + infer,
                            ModelDone(kind="tts", gen=gen, epoch=epoch, turn=turn, text=text,
                                      infer=infer, wav_path=str(res.get("wav_path", "")),
-                                     dur_audio=float(res.get("dur_audio", 0.0))))
+                                     dur_audio=float(res.get("dur_audio", 0.0)),
+                                     parent_id=operation_id))
             return
 
         async def _run():
             t0 = time.perf_counter()
             error = ""
+            call = None
             path, dur, raw = "", 0.0, b""
             def _work():
                 import soundfile as sf
@@ -598,7 +688,7 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                 with open(p, "rb") as f:
                     return p, len(data) / sr, f.read()
             try:
-                call = self._start_capacity_thread_call("tts", _work)
+                call = self._start_capacity_thread_call("tts", _work, parent_id=operation_id)
                 path, dur, raw = await asyncio.shield(call)
             except Exception as exc:
                 error = str(exc)
@@ -606,7 +696,9 @@ class ActorEngine(GuardedTurns, CandidateTurns):
             infer = round(time.perf_counter() - t0, 3)
             self.q.put_nowait(ModelDone(kind="tts", gen=gen, epoch=epoch, turn=turn, text=text,
                                         infer=infer, wav_path=str(path), dur_audio=dur,
-                                        audio_bytes=raw, error=error))
+                                        audio_bytes=raw, error=error,
+                                        call_id=getattr(call, "diagnostic_call_id", None),
+                                        parent_id=operation_id))
         self._inflight += 1
         asyncio.create_task(_run())
 
@@ -660,6 +752,10 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                 await self.send_control(ev.kind, ev.data)
             elif ev.kind == "playback_progress" and self._speech is not None:
                 data = ev.data
+                safe_progress = {k: data.get(k) for k in (
+                    "utterance_id", "played_samples", "ended", "started", "underruns")
+                    if type(data.get(k)) in (int, bool)}
+                self._observe("playback_progress", safe_progress)
                 if (data.get("utterance_id") == self._speech.sid
                         and self._speech.progress(data.get("played_samples"))):
                     if self.GUARDED_TURNS:
@@ -686,13 +782,19 @@ class ActorEngine(GuardedTurns, CandidateTurns):
 
     async def _on_frame(self, ev: FrameEvent):
         self.t_audio = ev.t_audio
+        if self.demo_capture is not None:
+            self.demo_capture.raw(ev.seq, ev.t_audio, ev.pcm, ev.reference)
         if self.demo_trace is not None:
             self.demo_trace.input_health(ev.t_wall, t_audio=self.t_audio, queue_depth=self.q.qsize())
         if self.GUARDED_TURNS:
             clean = self._guard_detect(ev)
+            if self.demo_capture is not None:
+                self.demo_capture.clean(ev.seq, clean)
             event = self.detect_vad_frame(clean)
             await self._guard_frame(FrameEvent(ev.seq, ev.t_audio, ev.t_wall, clean, ev.reference), event)
             return
+        if self.demo_capture is not None:
+            self.demo_capture.clean(ev.seq, ev.pcm)
         event = self.detect_vad_frame(ev.pcm)
         if event and "start" in event:
             # new speech falsifies any in-flight judge/shift/interrupt evidence
@@ -904,6 +1006,8 @@ class ActorEngine(GuardedTurns, CandidateTurns):
             "turn": ev.turn,
             "state": self.STATE,
             "kind": ev.kind,
+            "call_id": ev.call_id,
+            "parent_id": ev.parent_id,
         })
         if ev.timed_out:
             await self.send_control("llm_timeout", {
@@ -920,7 +1024,8 @@ class ActorEngine(GuardedTurns, CandidateTurns):
             await self.send_control("llm_stale_dropped", {
                 "timestamp": self._wall_ts(), "kind": ev.kind, "turn": ev.turn,
                 "epoch": ev.epoch, "current_epoch": self.seg_epoch,
-                "content": ev.text, "infer_time": ev.infer})
+                "content": ev.text, "infer_time": ev.infer,
+                "call_id": ev.call_id, "parent_id": ev.parent_id})
             self._pending_audio.pop((ev.kind, ev.epoch), None)
             self._pending_frames.pop((ev.kind, ev.epoch), None)
             return
@@ -1000,6 +1105,9 @@ class ActorEngine(GuardedTurns, CandidateTurns):
             self.assistant_history.append(str(ev.text))
             if self.CHAT_DEMO:
                 self._assistants_by_turn[ev.turn] = str(ev.text)
+            self._observe("history_write", {"role": "assistant", "turn": ev.turn,
+                "text": str(ev.text), "source": "response", "call_id": ev.call_id,
+                "parent_id": ev.parent_id})
         await self._trace_llm_done(ev)
         self.dispatch_tts(ev.text, ev.turn)
 
@@ -1010,6 +1118,9 @@ class ActorEngine(GuardedTurns, CandidateTurns):
         self.user_history.append(str(ev.text))
         if self.CHAT_DEMO:
             self._users_by_turn[ev.turn] = str(ev.text)
+        self._observe("history_write", {"role": "user", "turn": ev.turn,
+            "text": str(ev.text), "source": "asr", "call_id": ev.call_id,
+            "parent_id": ev.parent_id})
         # deviation (documented): legacy cleared BUFFER here from a worker task,
         # which could clobber a fresh segment; the buffer is snapshot-consumed at
         # dispatch time instead, so no clear is needed.
@@ -1043,17 +1154,28 @@ class ActorEngine(GuardedTurns, CandidateTurns):
         if self._speech_jobs.pop(old.sid, None) is not None:
             self._inflight = max(0, self._inflight - 1)
         self.q.put_nowait(ControlMsg("speech_cancelled", {
-            "utterance_id": old.sid, "reason": reason, "timestamp": self._wall_ts()}))
+            "utterance_id": old.sid, "reason": reason,
+            "parent_id": self._speech_meta.parent_id if self._speech_meta else None,
+            "timestamp": self._wall_ts()}))
 
     def _dispatch_speech(self, messages, meta):
         self._cancel_speech("superseded")
         self._speech_serial += 1
+        speech_id = self._speech_serial
+        meta.parent_id = meta.parent_id or f"utterance-{speech_id}"
+        parent_id = meta.parent_id
+        text_fn = lambda value: self._capacity_stream(
+            "response", self.text_stream_fn, value,
+            case_context={"utterance_id": speech_id}, parent_id=parent_id)
+        tts_fn = lambda value: self._capacity_stream(
+            "tts", self.tts_stream_fn, value,
+            case_context={"utterance_id": speech_id}, parent_id=parent_id)
         self._speech_meta = meta
         self._speech_audio_done = False
         self._speech_played_reported = False
         self._speech = SpeechPipeline(
             self._speech_serial, self.q, messages,
-            self._response_text_stream, self._response_tts_stream,
+            text_fn, tts_fn,
             timeout=self.DECISION_TIMEOUT, retry=meta.kind == "response",
             apology=RESPONSE_TIMEOUT_APOLOGY,
             packet_ms=int(self.engine_cfg.get("stream_packet_ms", 40)),
@@ -1066,7 +1188,7 @@ class ActorEngine(GuardedTurns, CandidateTurns):
         self.q.put_nowait(ControlMsg("speech_start", {
             "utterance_id": self._speech.sid, "turn": meta.turn, "protocol": PROTOCOL,
             "buffer_ms": self._speech.buffer_ms, "startup_ms": self._speech.startup_ms,
-            "timestamp": self._wall_ts()}))
+            "parent_id": parent_id, "timestamp": self._wall_ts()}))
 
     def _speech_stream_options(self):
         if not self.CHAT_DEMO:
@@ -1255,6 +1377,13 @@ class ActorEngine(GuardedTurns, CandidateTurns):
             if self._trace_fh:
                 self._trace_fh.close()
                 self._trace_fh = None
+            capacity = self.request_capacity.snapshot()
+            self._observe("session_final", {"state": self.STATE,
+                "pending_tasks": sum(not task.done() for task in (
+                    self._speech_tasks + self._candidate_tasks + self._guard_tasks))
+                    + sum(not task.done() for task in self._capacity_tasks),
+                "active_capacity": capacity["active_total"], "capacity": capacity,
+                "queued_events": self.q.qsize()})
             print("end (actor engine)")
 
     # ------------------------------------------------------------------

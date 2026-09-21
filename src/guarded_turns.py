@@ -72,6 +72,8 @@ class InputDecision:
     closed: bool
     route: str = "keep"
     audit: dict = field(default_factory=dict)
+    call_ids: list = field(default_factory=list)
+    parent_id: str = None
 
 
 class GuardedTurns:
@@ -206,6 +208,7 @@ class GuardedTurns:
     def _guard_dispatch(self, span, *, closed):
         span.checked_until = self.t_audio
         gen, revision = self.session_gen, span.revision
+        operation_id = self._diagnostic_id("input")
         audio = np.concatenate(span.frames[:span.end_index] if closed else span.frames)
         if not audio.size or float(np.max(np.abs(audio))) < 1e-5 or (
                 span.echo_frames >= 3 and span.echo_frames / max(span.frame_count, 1) >= .5):
@@ -226,6 +229,7 @@ class GuardedTurns:
                                   playing=playing, reference=span.reference_text)
         self._observe("input_dispatch", {"input_id": span.sid, "revision": revision,
             "closed": closed, "playing": playing, "audio_samples": len(audio),
+            "parent_id": operation_id,
             "reference_kind": span.reference_kind, "reference_utterance_id": span.reference_sid,
             "reference_chars": len(span.reference_text), "reference_played_samples": span.reference_played,
             "reply_context_chars": len(span.reply_context), "reply_played_samples": span.reply_played_samples})
@@ -241,17 +245,22 @@ class GuardedTurns:
 
         async def call(msgs, stage):
             parts = []
+            call_id = self._diagnostic_id("call")
+            call_ids.append(call_id)
             request_kind = "interrupt" if playing else "spec_judge"
             async with aclosing(self._capacity_stream(request_kind, self.text_stream_fn, msgs, route=True,
                     case_context={"input_id": span.sid, "revision": revision, "closed": closed,
                                   "input_generation": gen, "playing": playing,
                                   **reference_context, "decision_stage": stage,
-                                  "reference_sent_to_model": stage == "input_reply"})) as source:
+                                  "reference_sent_to_model": stage == "input_reply"},
+                                  call_id=call_id, parent_id=operation_id)) as source:
                 async for part in source:
                     parts.append(part)
                     if sum(map(len, parts)) > (128 if stage == "input_reply" else ROUTE_MAX_OUTPUT):
                         raise ValueError("Oversized input decision")
             return "".join(parts)
+
+        call_ids = []
 
         async def run():
             # One typed decision owns admission, stopping and readiness. The
@@ -262,14 +271,16 @@ class GuardedTurns:
                 playing=playing, closed=closed, reply_prompt=self.prompts.get("input_reply"),
                 reply_context=reply_context)
             return InputDecision(gen, span.sid, revision, closed, route,
-                                 {"route": audit, "playing": playing})
+                                 {"route": audit, "playing": playing},
+                                 list(call_ids), operation_id)
 
         task = asyncio.create_task(run())
         span.task = task
         self._guard_tasks = [t for t in self._guard_tasks if not t.done()] + [task]
         self._inflight += 1
         def done(task):
-            result = InputDecision(gen, span.sid, revision, closed, audit={"cancelled": True})
+            result = InputDecision(gen, span.sid, revision, closed,
+                                   audit={"cancelled": True}, parent_id=operation_id)
             if not task.cancelled():
                 try:
                     result = task.result()
@@ -301,7 +312,8 @@ class GuardedTurns:
             self._observe("input_decision_stale", {"input_id": ev.sid, "revision": ev.revision})
             return
         self._observe("input_decision", {"input_id": ev.sid, "revision": ev.revision,
-            "route": ev.route, "audit": ev.audit})
+            "route": ev.route, "audit": ev.audit, "call_ids": ev.call_ids,
+            "parent_id": ev.parent_id})
         if ev.route == "keep":
             if ev.closed:
                 if span.admitted:
@@ -372,7 +384,8 @@ class GuardedTurns:
         self.t_end_anchor = span.end
         # Route READY supplies input/readiness admission; retain the existing
         # third-party shift gate, frozen snapshots and private first-sentence TTS.
-        self._begin_candidate(audio, stage="shift" if self.TURN_IDX else "response")
+        self._begin_candidate(audio, stage="shift" if self.TURN_IDX else "response",
+                              parent_id=ev.parent_id)
 
     async def _guard_finish_turn(self, turn, reason):
         if turn is None or turn != self.TURN_IDX:
@@ -414,8 +427,12 @@ class GuardedTurns:
             # assistant message are liable to be copied into later answers.
             if prefix:
                 self._assistants_by_turn[record["turn"]] = prefix
+                self._observe("history_write", {"role": "assistant", "turn": record["turn"],
+                    "text": prefix, "source": "played_prefix", "utterance_id": sid})
             else:
                 self._assistants_by_turn.pop(record["turn"], None)
+                self._observe("history_remove", {"role": "assistant", "turn": record["turn"],
+                    "source": "no_confirmed_playback", "utterance_id": sid})
         elif completed:
             record["completed"] = True
 
@@ -430,6 +447,10 @@ class GuardedTurns:
             safe = {k: v for k, v in data.items() if k in {"echoCancellation", "noiseSuppression", "autoGainControl", "sampleRate", "channelCount"}
                     and type(v) in (int, bool) and 0 <= v <= 192000}
             self._observe("input_settings", safe)
+            if self.demo_trace is not None:
+                self.demo_trace.update_manifest("browser_audio", safe)
+            if self.demo_capture is not None:
+                self.demo_capture.input_settings(safe)
 
     def _guard_reset(self):
         for task in self._guard_tasks:

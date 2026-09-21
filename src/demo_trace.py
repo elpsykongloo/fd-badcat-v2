@@ -12,15 +12,24 @@ import threading
 import time
 from datetime import datetime, timezone
 
+from demo_diagnostics import private_json
+
 
 class DemoTrace:
-    def __init__(self, path, *, clock=time.perf_counter, capacity=4096):
+    def __init__(self, path, *, clock=time.perf_counter, capacity=4096,
+                 diagnostics_dir=None, manifest=None):
         self.path, self.clock = path, clock
+        self.diagnostics_dir = diagnostics_dir
         self.origin = clock()
         self.queue = queue.Queue(maxsize=capacity)
         self.closed = threading.Event()
         self.dropped = 0
         self.error = None
+        self._seq = 0
+        self._lock = threading.Lock()
+        self.manifest = dict(manifest or {})
+        if diagnostics_dir is not None and manifest is not None:
+            private_json(diagnostics_dir / "manifest.json", self.manifest)
         self.anchor = None
         self.replies = {}
         self.client_tokens = 20.0
@@ -28,18 +37,28 @@ class DemoTrace:
         self.last_health = -math.inf
         self.thread = threading.Thread(target=self._write, daemon=True, name="demo-trace")
         self.thread.start()
-        self.record("session_start", {"version": "demo-trace-v1", "utc":
+        self.record("session_start", {"version": "demo-trace-v2", "utc":
                     datetime.now(timezone.utc).isoformat()})
 
     def record(self, event, data=None, **context):
         if self.closed.is_set():
             return
-        rec = {"event": event, "server_ms": round((self.clock() - self.origin) * 1000, 3),
+        with self._lock:
+            self._seq += 1
+            seq = self._seq
+        rec = {"event": event, "seq": seq,
+               "server_ms": round((self.clock() - self.origin) * 1000, 3),
                "data": dict(data or {}), **context}
         try:
             self.queue.put_nowait(rec)
         except queue.Full:
             self.dropped += 1
+
+    def update_manifest(self, section, value):
+        """Stage allowlisted metadata; close persists it outside the engine loop."""
+        if self.diagnostics_dir is None or not self.manifest:
+            return
+        self.manifest[section] = value
 
     def observe(self, event, data, **context):
         self.record(event, data, **context)
@@ -139,3 +158,6 @@ class DemoTrace:
         await asyncio.to_thread(self.thread.join, 2)
         if self.thread.is_alive():
             print(f"Demo trace writer still draining: {self.path}", flush=True)
+        if self.diagnostics_dir is not None and self.manifest:
+            await asyncio.to_thread(private_json,
+                                    self.diagnostics_dir / "manifest.json", self.manifest)

@@ -122,8 +122,33 @@ async def test_quota_preserves_previous_case_and_does_not_silently_delete(tmp_pa
         call.finish("completed")
     await second.close()
     assert second.saved == 0 and second.dropped == 1
-    assert second.error == "quota_exceeded"
+    assert second.error is None, "one saturated tier must not disable later rare/error capture"
+    assert second.stats()["dropped_by_reason"] == {"total_quota": 1}
     assert (path / "case.json").read_bytes() == original
+
+
+async def test_kind_quota_and_sampling_preserve_rare_cancelled_evidence(tmp_path):
+    tiered = CaseArchive(tmp_path / "tiered", max_bytes=100_000,
+                         kind_weights={"input_route": .001, "response": .999})
+    crowded = tiered.begin("input_route", request(), {})
+    assert crowded.finish("completed")
+    rare = tiered.begin("response", request(), {})
+    assert rare.finish("cancelled")
+    await tiered.close()
+    assert tiered.saved == 1
+    assert tiered.stats()["dropped_by_reason"]["kind_quota:input_route"] == 1
+    kept = load_case(next((tmp_path / "tiered/captures").iterdir()))
+    assert kept["kind"] == "response" and kept["outcome"]["status"] == "cancelled"
+
+    sampled = CaseArchive(tmp_path / "sampled", success_sample_rate=.5,
+                          random_fn=lambda: 1.0)
+    ordinary = sampled.begin("response", request(), {})
+    assert ordinary.finish("completed") is False
+    failure = sampled.begin("response", request(), {})
+    assert failure.finish("error", "SyntheticError") is True
+    await sampled.close()
+    assert sampled.saved == 1
+    assert sampled.stats()["dropped_by_reason"] == {"success_sampling": 1}
 
 
 def test_queue_overflow_is_nonblocking_and_counted():

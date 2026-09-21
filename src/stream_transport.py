@@ -22,10 +22,19 @@ class PCMChunk:
     timing: dict | None = None
 
 
+class TextDelta(str):
+    """A string delta carrying optional transport timing without changing callers."""
+    def __new__(cls, value, timing=None):
+        obj = super().__new__(cls, value)
+        obj.timing = timing or {}
+        return obj
+
+
 async def sse_json(url, payload, timeout=60):
     """Parse fragmented SSE; cancellation closes HTTP; incomplete EOF fails."""
     limits = aiohttp.ClientTimeout(total=None, sock_connect=10, sock_read=timeout)
     async with aiohttp.ClientSession(trust_env=False, timeout=limits) as client:
+        origin = time.perf_counter()
         async with client.post(url, json={**payload, "stream": True}) as response:
             response.raise_for_status()
             if "text/event-stream" not in response.headers.get("Content-Type", ""):
@@ -33,6 +42,9 @@ async def sse_json(url, payload, timeout=60):
             pending = bytearray()
             fields = []
             event_bytes = 0
+            event_index = 0
+            request_id = (response.headers.get("x-request-id") or
+                          response.headers.get("x-vllm-request-id"))
             async for chunk in response.content.iter_any():
                 pending.extend(chunk)
                 if len(pending) > 16 * 1024 * 1024:
@@ -55,6 +67,10 @@ async def sse_json(url, payload, timeout=60):
                         obj = json.loads(data)
                         if obj.get("error"):
                             raise RuntimeError(f"Upstream stream error: {obj['error']}")
+                        event_index += 1
+                        obj["_transport"] = {"request_id": request_id or obj.get("id"),
+                            "sse_event": event_index,
+                            "sse_received_ms": (time.perf_counter() - origin) * 1000}
                         yield obj
             raise RuntimeError("Truncated SSE: missing [DONE]")
 
@@ -69,7 +85,7 @@ async def text_stream(url, payload, timeout=60):
                 if content:
                     if not isinstance(content, str):
                         raise RuntimeError("Unexpected text delta")
-                    yield content
+                    yield TextDelta(content, obj.get("_transport"))
 
 
 async def audio_stream(url, payload, timeout=60, *, expected_text=None, expected_voice=None,
@@ -143,6 +159,8 @@ async def audio_stream(url, payload, timeout=60, *, expected_text=None, expected
                             "decode_ms": (time.perf_counter() - received_at) * 1000,
                             "sse_interval_ms": None if previous_audio_ms is None
                                 else received_ms - previous_audio_ms}
+                        detail.update({k: v for k, v in (obj.get("_transport") or {}).items()
+                                       if k in {"request_id", "sse_event"}})
                     previous_audio_ms = received_ms
                     chunk = PCMChunk(pcm.tobytes(), sr, detail)
                     if verified:

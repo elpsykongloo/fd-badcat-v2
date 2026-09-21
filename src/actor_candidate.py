@@ -25,6 +25,8 @@ class CandidateResult:
     infer: float = 0.0
     cancelled: bool = False
     accounted: bool = True
+    call_ids: list = field(default_factory=list)
+    parent_id: str = None
 
 
 @dataclass
@@ -50,6 +52,7 @@ class Candidate:
     error: object = None
     restarts: int = 0
     created: float = field(default_factory=time.perf_counter)
+    parent_id: str = None
 
 
 class CandidateTurns:
@@ -73,7 +76,7 @@ class CandidateTurns:
         return (self._candidate is c and c.gen == self.session_gen
                 and c.epoch == self.seg_epoch and c.turn == self.TURN_IDX)
 
-    def _begin_candidate(self, audio, *, confirmed=False, stage="judge"):
+    def _begin_candidate(self, audio, *, confirmed=False, stage="judge", parent_id=None):
         self._invalidate_candidate("replaced")
         self._candidate_serial += 1
         audio = np.array(audio, dtype=np.float32, copy=True)
@@ -91,9 +94,11 @@ class CandidateTurns:
         c = Candidate(self._candidate_serial, self.session_gen, self.seg_epoch,
                       self.TURN_IDX, audio, messages, self.BUFFER,
                       self.t_end_anchor if self.t_end_anchor is not None else self.t_audio,
-                      confirmed=confirmed, stage=stage)
+                      confirmed=confirmed, stage=stage,
+                      parent_id=parent_id or self._diagnostic_id("candidate"))
         self._candidate = c
         self._candidate_log("candidate_created", candidate_id=c.cid, turn=c.turn,
+                            parent_id=c.parent_id,
                             speculative=self.SPECULATIVE_RESPONSE and not confirmed,
                             audio_samples=len(audio), snapshot="vad-end" if not confirmed else "confirmed-input")
         if confirmed or self.SPECULATIVE_RESPONSE:
@@ -114,7 +119,11 @@ class CandidateTurns:
 
         async def call(request):
             chunks, size = [], 0
-            async with aclosing(self._capacity_stream(request_kind, self.text_stream_fn, request)) as source:
+            call_id = self._diagnostic_id("call")
+            call_ids.append(call_id)
+            async with aclosing(self._capacity_stream(request_kind, self.text_stream_fn, request,
+                    case_context={"candidate_id": c.cid}, call_id=call_id,
+                    parent_id=c.parent_id)) as source:
                 async for part in source:
                     chunks.append(part)
                     size += len(part)
@@ -122,10 +131,13 @@ class CandidateTurns:
                         raise ValueError("Oversized binary control response")
             return "".join(chunks)
 
+        call_ids = []
+
         async def run():
             started = time.perf_counter()
             label, audit = await decide_control(call, messages, kind, self.DECISION_TIMEOUT)
-            return CandidateResult(c.cid, kind, label, audit, time.perf_counter() - started)
+            return CandidateResult(c.cid, kind, label, audit, time.perf_counter() - started,
+                                   call_ids=list(call_ids), parent_id=c.parent_id)
 
         task = asyncio.create_task(run())
         c.tasks.append(task)
@@ -135,14 +147,15 @@ class CandidateTurns:
 
         def done(task):
             if task.cancelled():
-                result = CandidateResult(c.cid, kind, cancelled=True)
+                result = CandidateResult(c.cid, kind, cancelled=True, parent_id=c.parent_id)
             else:
                 try:
                     result = task.result()
                 except Exception as exc:
                     result = CandidateResult(c.cid, kind,
                         "no" if kind == "shift" else "continue",
-                        {"kind": kind, "fallback": True, "errors": [type(exc).__name__]})
+                        {"kind": kind, "fallback": True, "errors": [type(exc).__name__]},
+                        call_ids=list(call_ids), parent_id=c.parent_id)
             # This callback also runs if cancellation happened before run().
             self.q.put_nowait(result)
         task.add_done_callback(done)
@@ -156,7 +169,8 @@ class CandidateTurns:
                                     "candidate_id": c.cid, "timestamp": self._wall_ts()})
             await self._trace_llm_done(ModelDone(ev.kind, c.gen, c.epoch, c.turn,
                 text=ev.text, infer=round(ev.infer, 3), timed_out=ev.audit.get("timed_out", False),
-                prompt_snapshot=scrub_audio_blocks(c.messages[ev.kind])))
+                prompt_snapshot=scrub_audio_blocks(c.messages[ev.kind]),
+                call_id=ev.call_ids[-1] if ev.call_ids else None, parent_id=ev.parent_id))
 
     async def _on_candidate_result(self, ev):
         if ev.accounted:
@@ -228,10 +242,15 @@ class CandidateTurns:
         self._speech_serial += 1
         c.meta = ModelDone(c.stage, c.gen, c.epoch, c.turn,
             add_to_history=c.stage == "response", answer_id=c.cid,
-            prompt_snapshot=scrub_audio_blocks(c.messages[c.stage]))
+            prompt_snapshot=scrub_audio_blocks(c.messages[c.stage]), parent_id=c.parent_id)
         gate = asyncio.Event()
+        speech_id = self._speech_serial
+        text_fn = lambda value: self._capacity_stream("response", self.text_stream_fn, value,
+            case_context={"candidate_id": c.cid, "utterance_id": speech_id}, parent_id=c.parent_id)
+        tts_fn = lambda value: self._capacity_stream("tts", self.tts_stream_fn, value,
+            case_context={"candidate_id": c.cid, "utterance_id": speech_id}, parent_id=c.parent_id)
         c.pipeline = SpeechPipeline(self._speech_serial, self.q, c.messages[c.stage],
-            self._response_text_stream, self._response_tts_stream,
+            text_fn, tts_fn,
             timeout=self.DECISION_TIMEOUT, retry=c.stage == "response" and c.restarts == 0,
             apology=RESPONSE_TIMEOUT_APOLOGY,
             packet_ms=int(self.engine_cfg.get("stream_packet_ms", 40)),
@@ -275,7 +294,7 @@ class CandidateTurns:
         await self.send_control("speech_start", {"utterance_id": c.pipeline.sid,
             "turn": c.turn, "protocol": PROTOCOL, "buffer_ms": c.pipeline.buffer_ms,
             "startup_ms": c.pipeline.startup_ms,
-            "candidate_id": c.cid, "timestamp": self._wall_ts()})
+            "candidate_id": c.cid, "parent_id": c.parent_id, "timestamp": self._wall_ts()})
         c.pipeline.precompute_gate.set()
         staged, c.stash = c.stash, []
         for ev in staged:
@@ -297,6 +316,7 @@ class CandidateTurns:
             task.cancel()
         self._candidate_log("candidate_cancelled", candidate_id=c.cid, reason=reason,
             stage=c.stage, published=c.published,
+            parent_id=c.parent_id,
             prepared_audio_samples=c.pipeline.sent if c.pipeline else 0,
             wasted_ms=round((time.perf_counter() - c.created) * 1000, 1))
         if c.published and self._speech is c.pipeline:
@@ -345,6 +365,9 @@ class CandidateTurns:
                     for sid, record in self._guard_outputs.items():
                         if record["turn"] == meta.turn and record.get("cancelled"):
                             self._guard_history_progress(sid, record.get("played", 0))
+            self._observe("history_write", {"role": "assistant", "turn": meta.turn,
+                "text": meta.text, "source": "speech_playback", "answer_id": meta.answer_id,
+                "parent_id": meta.parent_id})
             meta.history_written = True
 
     async def _listen_candidate_frame(self, ev, event):
