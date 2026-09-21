@@ -44,6 +44,7 @@ Replay modes:
 import asyncio
 import heapq
 import json
+import re
 import time
 from uuid import uuid4
 from contextlib import aclosing, suppress
@@ -75,6 +76,42 @@ TIMEOUT_FALLBACK = {
 RESPONSE_TIMEOUT_APOLOGY = "抱歉，我刚才没有听清，请再说一遍。"
 CONTROL_REQUEST_KINDS = frozenset({"judge", "interrupt"})
 HISTORY_MESSAGE_OVERHEAD = 16
+
+# A narrow demo guard for replies that end after promising future content. It
+# does not infer the user's intent from text or replace the audio-grounded
+# response call; it only decides whether a normally completed draft needs one
+# continuation call with the same history and audio.
+_RESPONSE_PROMISE_RE = re.compile(
+    r"(?:这就|马上|现在就|接下来(?:就)?|我来|我会|让我来|我给你|给你)"
+    r".{0,10}(?:开始|开讲|讲|说|解释|回答|继续|介绍)|"
+    r"(?:i(?:'ll|\s+will)|let\s+me|about\s+to)"
+    r".{0,24}(?:start|begin|tell|explain|answer|continue)",
+    re.IGNORECASE,
+)
+
+
+def response_needs_completion(text, max_chars=64):
+    """Recognize a short promise-only draft, never the user's audio/content."""
+    value = " ".join(str(text).strip().split())
+    match = _RESPONSE_PROMISE_RE.search(value)
+    if not value or len(value) > max_chars or match is None:
+        return False
+    sentences = [part.strip(" ,，;；") for part in re.split(r"[。.!！?？]+", value)
+                 if part.strip(" ,，;；")]
+    fillers = re.compile(r"^(?:好|好的|好啊|行|可以|当然|当然可以|没问题|别急|sure|okay|ok)$",
+                         re.IGNORECASE)
+    if any(not fillers.fullmatch(part) and not _RESPONSE_PROMISE_RE.search(part)
+           for part in sentences):
+        return False
+    post = value[match.end():]
+    if re.search(r"[,，;；]", post):
+        after = re.split(r"[,，;；]", post, maxsplit=1)[1].strip(" \t\r\n。.!！?？")
+        if after:
+            return False
+    # A colon followed by content is a common compact answer form. A terminal
+    # colon still means the promised body is missing.
+    tail = re.split(r"[:：]", value, maxsplit=1)
+    return len(tail) == 1 or not tail[1].strip(" \t\r\n。.!！?？")
 
 
 def conservative_history_tokens(text):
@@ -169,6 +206,10 @@ class ActorEngine(GuardedTurns, CandidateTurns):
         self.JUDGE_PROMPT = self.prompts.get("judge", "")
         self.INTERRUPT_PROMPT = self.prompts.get("interrupt", "")
         self.RESPONSE_PROMPT = self.prompts.get("response", "")
+        self.RESPONSE_COMPLETION_PROMPT = self.prompts.get("response_completion", "")
+        self.RESPONSE_COMPLETION_REPAIR = bool(
+            self.CHAT_DEMO and self.engine_cfg.get("response_completion_repair", False)
+            and self.RESPONSE_COMPLETION_PROMPT)
         self.SHIFT_PROMPT = self.prompts.get("shift", "")
         self.SHIFT_RE_PROMPT = self.prompts.get("shift_s", "")
         self.AUDIO_BLOCK = self.llm_cfg.get("audio_block", "audio_url")
@@ -511,8 +552,47 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                 "parent_id": parent_id, "status": status, "error_type": error,
                 "elapsed_ms": round((time.perf_counter() - started) * 1000, 3)})
 
-    def _response_text_stream(self, messages):
-        return self._capacity_stream("response", self.text_stream_fn, messages)
+    async def _response_text_stream(self, messages, *, case_context=None, parent_id=None):
+        """Stream one answer and append one continuation for a promise-only EOS."""
+        pieces = []
+        is_demo_response = bool(self.RESPONSE_COMPLETION_REPAIR and messages
+                                and messages[0].get("content") == self.RESPONSE_PROMPT)
+        draft_context = ({**(case_context or {}), "response_completion_stage": "draft"}
+                         if is_demo_response else case_context)
+        async with aclosing(self._capacity_stream(
+                "response", self.text_stream_fn, messages,
+                case_context=draft_context, parent_id=parent_id)) as source:
+            async for part in source:
+                pieces.append(part)
+                yield part
+        draft = "".join(pieces)
+        if not is_demo_response or not response_needs_completion(draft):
+            return
+
+        event_context = {"parent_id": parent_id, **(case_context or {})}
+        self._observe("response_completion_repair", {
+            **event_context, "stage": "dispatch", "draft_chars": len(draft)})
+        repair_messages = [*messages,
+            {"role": "assistant", "content": draft},
+            {"role": "user", "content": self.RESPONSE_COMPLETION_PROMPT}]
+        repair_context = {**(case_context or {}), "response_completion_stage": "repair"}
+        yielded = False
+        try:
+            async with aclosing(self._capacity_stream(
+                    "response", self.text_stream_fn, repair_messages,
+                    case_context=repair_context, parent_id=parent_id)) as source:
+                async for part in source:
+                    if not yielded and draft and not draft[-1].isspace():
+                        yield " "
+                    yielded = True
+                    yield part
+            self._observe("response_completion_repair", {
+                **event_context, "stage": "completed", "produced_output": yielded})
+        except Exception as exc:
+            # The already streamed draft remains a valid, if weak, response.
+            # A repair outage must not turn it into a speech pipeline failure.
+            self._observe("response_completion_repair", {
+                **event_context, "stage": "failed", "error_type": type(exc).__name__})
 
     def _response_tts_stream(self, text):
         return self._capacity_stream("tts", self.tts_stream_fn, text)
@@ -1164,9 +1244,8 @@ class ActorEngine(GuardedTurns, CandidateTurns):
         speech_id = self._speech_serial
         meta.parent_id = meta.parent_id or f"utterance-{speech_id}"
         parent_id = meta.parent_id
-        text_fn = lambda value: self._capacity_stream(
-            "response", self.text_stream_fn, value,
-            case_context={"utterance_id": speech_id}, parent_id=parent_id)
+        text_fn = lambda value: self._response_text_stream(
+            value, case_context={"utterance_id": speech_id}, parent_id=parent_id)
         tts_fn = lambda value: self._capacity_stream(
             "tts", self.tts_stream_fn, value,
             case_context={"utterance_id": speech_id}, parent_id=parent_id)

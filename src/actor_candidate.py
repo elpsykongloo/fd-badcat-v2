@@ -245,8 +245,9 @@ class CandidateTurns:
             prompt_snapshot=scrub_audio_blocks(c.messages[c.stage]), parent_id=c.parent_id)
         gate = asyncio.Event()
         speech_id = self._speech_serial
-        text_fn = lambda value: self._capacity_stream("response", self.text_stream_fn, value,
-            case_context={"candidate_id": c.cid, "utterance_id": speech_id}, parent_id=c.parent_id)
+        text_fn = lambda value: self._response_text_stream(value,
+            case_context={"candidate_id": c.cid, "utterance_id": speech_id},
+            parent_id=c.parent_id)
         tts_fn = lambda value: self._capacity_stream("tts", self.tts_stream_fn, value,
             case_context={"candidate_id": c.cid, "utterance_id": speech_id}, parent_id=c.parent_id)
         c.pipeline = SpeechPipeline(self._speech_serial, self.q, c.messages[c.stage],

@@ -80,8 +80,8 @@ async def replay(args, selected):
         try:
             payload = restore_request(path, case)
             if replacement:
-                if case["kind"] not in LABELS or case["kind"] not in replacement:
-                    raise ValueError("--current-prompt is only for named control calls")
+                if case["kind"] not in replacement:
+                    raise ValueError("--current-prompt is unavailable for this call kind")
                 payload["messages"][0]["content"] = replacement[case["kind"]]
                 if case["kind"] == "input_route":
                     from guarded_turns import route_messages
@@ -173,7 +173,7 @@ def main():
     selection.add_argument("--reviewed", action="store_true")
     running.add_argument("--url", default="http://127.0.0.1:10004/v1/chat/completions")
     running.add_argument("--current-prompt", action="store_true",
-                         help="Use current control prompt; input_route also uses current route penalties")
+                         help="Use the current prompt for this call kind; routes also use current penalties")
     running.add_argument("--timeout", type=float, default=30)
     args = parser.parse_args()
     args.root = args.root.resolve()

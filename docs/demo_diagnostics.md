@@ -81,6 +81,8 @@ exp/demo_cases/captures/<case_id>/
 
 `demo-trace-v2` 为事件加入连续 `seq`。`turns.jsonl` 从 trace 和案例库派生，每轮汇总输入、路由、候选命运、回答/utterance、历史写入、播放样本、错误、`call_id` 和 `case_id`。派生文件可重建，原始事实仍以 trace/case 为准。
 
+`response-completion-v1` 的 dispatch/completed/failed 也进入逐轮 outcome。原回答调用和最多一次续写调用共享 parent/utterance，case context 分别标为 `response_completion_stage=draft|repair`；续写失败另进入 warning 队列。记录不含词表命中位置或用户转写。
+
 ### 3.3 请求级 span
 
 `demo-span-v1` 有两类主 span：
@@ -119,7 +121,7 @@ exp/demo_cases/captures/<case_id>/
 
 ### 5.1 单模型调用重放
 
-`scripts/demo_cases.py replay` 继续复跑一个冻结模型请求，可选择原 prompt 或当前 prompt。它适合验证解析器、模型输出或单句 TTS，不复现会话状态机。
+`scripts/demo_cases.py replay` 继续复跑一个冻结模型请求，可选择原 prompt 或该调用类型的当前 prompt；response 案例也可直接做提示词改前改后对照。它适合验证解析器、模型输出或单句 TTS，不会自动触发引擎层的回答完成性续写，也不复现会话状态机。
 
 ### 5.2 Actor 会话 injected replay
 

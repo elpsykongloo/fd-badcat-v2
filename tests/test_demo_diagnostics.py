@@ -18,6 +18,7 @@ def manifest(tmp_path, session="web-demo-a1"):
     return build_manifest(session_id=session, repository_root=tmp_path,
         profile="chat-demo-v1",
         engine_cfg={"guarded_turns": True, "input_preroll_ms": 320,
+                    "response_completion_repair": True,
                     "secret_option": "must-not-leak"},
         delay={"end_hold_frame": .64, "after_continue_time": 2.5},
         llm_cfg={"model": "local", "api_key": "must-not-leak"},
@@ -29,6 +30,7 @@ def test_manifest_is_allowlisted_and_contains_protocol_versions(tmp_path):
     text = json.dumps(value)
     assert value["protocols"]["trace"] == "demo-trace-v2"
     assert value["effective"]["engine"]["input_preroll_ms"] == 320
+    assert value["effective"]["engine"]["response_completion_repair"] is True
     assert value["effective"]["input_timing"] == {
         "vad_threshold": .5, "vad_silence_ms": 100, "preroll_ms": 320}
     assert value["effective"]["time"]["long_interrupt_s"] == 1.5
@@ -44,6 +46,18 @@ def test_lifecycle_only_session_does_not_create_fake_turns():
         {"event":"session_final","generation":1,"turn":0,"data":{"state":"LISTEN"}},
     ]
     assert build_turns(rows, {}) == []
+
+
+def test_response_completion_repair_is_visible_in_turn_summary():
+    rows = [
+        {"event":"response_completion_repair", "seq":1, "server_ms":1,
+         "generation":0, "turn":2, "data":{"stage":"dispatch", "draft_chars":9}},
+        {"event":"response_completion_repair", "seq":2, "server_ms":2,
+         "generation":0, "turn":2, "data":{"stage":"completed", "produced_output":True}},
+    ]
+    turns = build_turns(rows, {})
+    assert turns[0]["turn_id"] == "g0-t2"
+    assert [item["stage"] for item in turns[0]["outcomes"]] == ["dispatch", "completed"]
 
 
 def test_opt_in_audio_ring_is_bounded_aligned_and_private(tmp_path):

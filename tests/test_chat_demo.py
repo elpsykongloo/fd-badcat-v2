@@ -9,7 +9,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from control_labels import parse_label, decide_control
-from engine import ActorEngine, ControlMsg, ModelDone, FrameEvent
+from engine import ActorEngine, ControlMsg, ModelDone, FrameEvent, response_needs_completion
 from test_engine import ScriptedVAD
 
 
@@ -17,6 +17,75 @@ def actor(**config):
     return ActorEngine(engine_cfg={"chat_demo": True, "playback_autoend": True,
                        "control_validation": True, **config}, vad_iterator=ScriptedVAD({}),
                        llm_fn=lambda m: "", asr_fn=lambda p: "", tts_fn=lambda t,p: p)
+
+
+@pytest.mark.parametrize("text", [
+    "好，我给你讲一个。", "别急，我这就开始。", "Sure, I'll tell you one.",
+])
+def test_short_promise_only_response_needs_completion(text):
+    assert response_needs_completion(text)
+
+
+@pytest.mark.parametrize("text", [
+    "我来回答：北京。", "好，我给你讲一个。深夜，门突然响了。",
+    "我来解释一下，电源线可能松了。", "答案是四。",
+])
+def test_response_with_payload_does_not_need_completion(text):
+    assert not response_needs_completion(text)
+
+
+async def test_demo_response_completion_appends_once_with_original_audio_history():
+    calls = []
+
+    async def text_stream(messages):
+        calls.append(messages)
+        yield "别急，我这就开始。" if len(calls) == 1 else "深夜，门外响起了脚步声。"
+
+    async def tts_stream(_):
+        if False:
+            yield
+
+    prompts = {"response": "R", "response_completion": "续写实际内容。"}
+    e = ActorEngine(prompts=prompts,
+        engine_cfg={"chat_demo": True, "stream_response": True,
+                    "response_completion_repair": True},
+        vad_iterator=ScriptedVAD({}), llm_fn=lambda _: "", asr_fn=lambda _: "",
+        tts_fn=lambda *_: None, text_stream_fn=text_stream, tts_stream_fn=tts_stream)
+    audio = {"type": "audio_url", "audio_url": {"url": "data:audio/wav;base64,fixture"}}
+    messages = [{"role": "system", "content": "R"},
+                {"role": "user", "content": [audio]}]
+    output = "".join([part async for part in e._response_text_stream(messages)])
+    assert output == "别急，我这就开始。 深夜，门外响起了脚步声。"
+    assert len(calls) == 2 and calls[0] is messages
+    assert calls[1][:-2] == messages
+    assert calls[1][-2:] == [
+        {"role": "assistant", "content": "别急，我这就开始。"},
+        {"role": "user", "content": "续写实际内容。"},
+    ]
+
+
+async def test_completion_repair_failure_keeps_the_streamed_draft():
+    calls = 0
+
+    async def text_stream(_):
+        nonlocal calls
+        calls += 1
+        if calls == 2:
+            raise RuntimeError("repair unavailable")
+        yield "好，我给你讲一个。"
+
+    async def tts_stream(_):
+        if False:
+            yield
+
+    e = ActorEngine(prompts={"response": "R", "response_completion": "continue"},
+        engine_cfg={"chat_demo": True, "stream_response": True,
+                    "response_completion_repair": True},
+        vad_iterator=ScriptedVAD({}), llm_fn=lambda _: "", asr_fn=lambda _: "",
+        tts_fn=lambda *_: None, text_stream_fn=text_stream, tts_stream_fn=tts_stream)
+    messages = [{"role": "system", "content": "R"}]
+    assert "".join([part async for part in e._response_text_stream(messages)]) == "好，我给你讲一个。"
+    assert calls == 2
 
 
 @pytest.mark.parametrize("kind,good,bad", [("judge", "'SWITCH'.", "do not switch"),

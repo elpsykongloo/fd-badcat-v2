@@ -196,6 +196,35 @@ async def test_replay_reconstructs_saved_payload_and_fails_wrong_gold(tmp_path, 
         await cli.replay(args, [])
 
 
+async def test_response_replay_can_replace_only_the_prompt(tmp_path, monkeypatch):
+    from types import SimpleNamespace
+    import stream_transport
+    import yaml
+    writer = CaseArchive(tmp_path)
+    payload = request()
+    payload["messages"][0]["content"] = "saved response prompt"
+    call = writer.begin("response", payload, {"session_id": "synthetic", "turn": 4})
+    call.feed("saved response")
+    call.finish("completed")
+    await writer.close()
+    path = tmp_path / "captures" / call.case["case_id"]
+    got = []
+
+    async def fake(url, request_payload, timeout):
+        got.append(request_payload)
+        yield "current response"
+
+    monkeypatch.setattr(stream_transport, "text_stream", fake)
+    args = SimpleNamespace(root=tmp_path, current_prompt=True, timeout=1, url="unused")
+    assert await cli.replay(args, [(path, load_case(path))]) == 0
+    current = yaml.safe_load((Path(__file__).resolve().parents[1]
+                              / "configs/demo_chat.yaml").read_text())["prompts"]["response"]
+    assert got[0]["messages"][0]["content"] == current
+    assert got[0]["messages"][1:] == payload["messages"][1:]
+    assert {key: got[0][key] for key in ("seed", "model")} == {
+        key: payload[key] for key in ("seed", "model")}
+
+
 async def test_replay_rejects_escape_and_remote_audio(tmp_path):
     _, path = await saved(tmp_path)
     case = load_case(path)

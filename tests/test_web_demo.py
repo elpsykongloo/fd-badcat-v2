@@ -35,6 +35,16 @@ def test_demo_scheduling_is_declared_only_for_explicit_demo():
             'buffer_ms':600,'diagnostics':True}
 
 
+def test_demo_declares_bounded_audio_grounded_response_completion():
+    config = {"stream_response": True, "chat_demo": True,
+              "response_completion_repair": True}
+    prompts = {"response_completion": "continue the answer"}
+    with TestClient(create_app(prompts, {}, engine_cfg=config)) as client:
+        assert client.get("/api/demo/info").json()["response_completion"] == {
+            "version": "response-completion-v1", "max_repairs": 1,
+            "audio_grounded": True}
+
+
 def test_browser_handshake_assigns_path_and_waits_for_engine(monkeypatch, tmp_path):
     made = []
     class Engine:

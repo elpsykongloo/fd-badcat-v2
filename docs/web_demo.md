@@ -143,7 +143,8 @@ ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -L 127.0.0.1:18080:
 - **轮次收尾**：流式音频收到实际播放回执后只结算一次，递增轮次并回到 LISTEN；保留正在收取的插话音频。旧 interrupt 结果不能跨轮生效，已结束的插话片段改走新一轮 judge。迟到 ASR 通过轮次 ID 与回复配对，不再靠两个列表的到达顺序。流式生成失败也会清理并回到监听。非流式兼容路径只能用音频钟估计播放结束，不能声称是浏览器回执。
 - **启动预热**：独立于用户会话，无用户历史或预热回复广播；总预算 90 秒。使用仓内自造样例，不读取用户录音。预热失败会退出启动流程。
 - **双语 ASR**：选择已在仓内的 SenseVoice int8 / CPU / 2 线程，不占 Omni GPU。YAML 的 `asr` 段现在实际应用到延迟初始化的识别器；显式 `FDBC_ASR_BACKEND`、`FDBC_ASR_PROVIDER`、`FDBC_ASR_NUM_THREADS` 环境变量优先。切换后需重启 backend，已加载的模型不会在会话中热换。ASR 用于页面转写与后续文字历史，当前语音判定和回答仍由 Omni 直接听音频。
-- **聊天提示词**：不再强制 15 字、不无条件附和；支持追问、纠正和中英切换，正常换话题不判 shift。仅明确对第三方说话才判 shift；这不是声纹识别。仍无工具和实时查询能力。
+- **聊天提示词**：不再强制 15 字、不无条件附和；支持追问、纠正和中英切换，正常换话题不判 shift。仅明确对第三方说话才判 shift；这不是声纹识别。仍无工具和实时查询能力。回答策略要求当轮交付故事、解释、步骤等实际内容；仅在缺少必需信息时澄清，故事默认按虚构内容处理，避免把生成细节声称为真实事件。
+- **回答完成性保护**：`response-completion-v1` 只在 demo 配置启用。若 audio-grounded 回答正常 EOS，却只留下很短的“马上开始／我来讲”等未来承诺，原草稿仍立即进入流式 TTS，同时以相同历史和原音频追加一次有界续写；不读取 ASR 转写、不循环修复，也不作用于 shift_s、基础 HumDial、legacy 或 TACT/RB。续写失败保留原草稿并记录 warning，不把已开始播放的回复改成整条失败。诊断事件 `response_completion_repair` 记录 dispatch/completed/failed，第二次真实模型调用单独保存并以同一 parent ID 关联。
 - **打断提示词**：demo 不再覆盖 `interrupt`，直接继承 `src/config.yaml` 的原始 HumDial 全文（含 8 条示例），不附加或改写规则。原版在已定位的两个含糊录音片段上返回 `continue`，已撤回的精简版返回 `switch`；这只是个案对照，不是整体误打断率。原版作为关闭 §9 新机制时的基线保留；新机制使用独立 `input_route`，不暗改原提示词。
 - **二分类容错**：judge/interrupt 仅接受 `continue|switch`，shift 仅接受 `no|yes`，拒绝空串、含糊解释及子串碰撞。首次无效或请求异常时最多修复一次，与首次请求共享 `llm.decision_timeout_s` 总预算；超时不继续重试。仍失败时 judge/interrupt 回退 `continue`，shift 回退 `no`。judge 的回退继续走已有等待超时机制，避免空输出立刻抢话；shift 不会再静默卡住。`control_validation` 记录原始标签、尝试次数、修复/回退/超时；不套用 TACT 工具 JSON 解析器。
 - **完整投机与开播前撤销**：`speculative_response: true`、`cancellable_response: true` 仅在新流式协议下生效；前者必须伴随整链撤销保障，不能单独禁掉安全撤销。展示配置默认开启，基础 HumDial 配置默认关闭。机制和限制见上节。

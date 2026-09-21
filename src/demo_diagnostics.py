@@ -97,6 +97,7 @@ def build_manifest(*, session_id, repository_root, profile, engine_cfg, delay,
     engine_keys = (
         "chat_demo", "stream_response", "stream_packet_ms", "stream_buffer_ms",
         "stream_startup_ms", "stream_prefetch_ms", "stream_diagnostics",
+        "response_completion_repair",
         "playback_autoend", "control_validation", "speculative_response",
         "cancellable_response", "guarded_turns", "input_decision_timeout_s",
         "input_preroll_ms", "max_input_seconds", "request_total_limit",
@@ -271,7 +272,7 @@ def build_turns(rows, cases):
         # Every observed event carries the engine's current turn as context.
         # Lifecycle/health-only sessions therefore must not become fake turns.
         turn_prefixes = ("vad_", "input_", "candidate_", "model_", "speech_",
-                         "asr_", "history_", "turn_", "llm_", "shift_")
+                         "asr_", "history_", "turn_", "llm_", "shift_", "response_")
         session_input_events = {"input_settings", "input_health", "input_evidence"}
         if not any(isinstance(event, str) and event not in session_input_events
                    and event.startswith(turn_prefixes)
@@ -304,7 +305,8 @@ def build_turns(rows, cases):
         for event, data in data_rows:
             if event in {"input_admitted", "input_rejected", "input_waiting", "input_ignored",
                          "candidate_confirmed", "candidate_cancelled", "turn_finished",
-                         "llm_stale_dropped", "speech_error", "engine_error"}:
+                         "llm_stale_dropped", "speech_error", "engine_error",
+                         "response_completion_repair"}:
                 outcomes.append({"event": event, **{k: v for k, v in data.items()
                     if k not in {"content", "prompt", "text"}}})
         history = [{k: data.get(k) for k in (
@@ -504,6 +506,9 @@ def audit_session(rows, turns, cases, manifest, spans=None):
             add(event, "error", "Runtime diagnostic error", error_type=data.get("error_type") or data.get("type"))
         elif event in {"client_underrun", "socket_slow_send", "llm_timeout"}:
             add(event, "warning", "Runtime health anomaly", utterance_id=data.get("utterance_id"))
+        elif event == "response_completion_repair" and data.get("stage") == "failed":
+            add("response_completion_repair_failed", "warning",
+                "Promise-only response continuation failed", error_type=data.get("error_type"))
         elif event == "control_validation":
             if data.get("fallback") or data.get("timed_out") or data.get("repaired"):
                 add("control_repair_or_fallback", "warning", "Control output required repair/fallback",

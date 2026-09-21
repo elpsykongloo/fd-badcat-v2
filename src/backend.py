@@ -474,6 +474,10 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None, asr_cfg=None) -> F
                 "prefetch_ms": int(engine_cfg.get("stream_prefetch_ms", 0)),
                 "buffer_ms": int(engine_cfg.get("stream_buffer_ms", 600)),
                 "diagnostics": bool(engine_cfg.get("stream_diagnostics", False))}
+            if (engine_cfg or {}).get("response_completion_repair") and prompts.get("response_completion"):
+                info["response_completion"] = {"version": "response-completion-v1",
+                                               "max_repairs": 1,
+                                               "audio_grounded": True}
         if info["streaming"] and (engine_cfg or {}).get("guarded_turns"):
             from control_labels import ROUTE_PROTOCOL, REPLY_PROTOCOL
             from guarded_turns import input_timing
