@@ -408,7 +408,14 @@ class GuardedTurns:
         record["played"] = max(record.get("played", 0), samples)
         if record.get("cancelled"):
             prefix = "".join(text for end, text in record["sentences"] if end <= record["played"])
-            self._assistants_by_turn[record["turn"]] = prefix + "（此回答已被打断，其余内容未确认播完。）"
+            # Model-facing history is a transcript, so it must contain only
+            # words that the user actually heard.  Keep interruption metadata
+            # in this record/trace; natural-language annotations in an
+            # assistant message are liable to be copied into later answers.
+            if prefix:
+                self._assistants_by_turn[record["turn"]] = prefix
+            else:
+                self._assistants_by_turn.pop(record["turn"], None)
         elif completed:
             record["completed"] = True
 

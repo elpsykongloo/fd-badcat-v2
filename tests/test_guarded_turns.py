@@ -246,11 +246,29 @@ async def test_cancel_ack_updates_only_confirmed_sentence_prefix_and_ignores_inv
         e._guard_outputs[sid]["sentences"] = [(100, "第一句。"), (100000, "没播完的句子。")]
         e._guard_mark_cancelled()
         await e._guard_control("playback_stopped", {"utterance_id": sid, "played_samples": 100})
-        assert e._assistants_by_turn[0].startswith("第一句。")
+        assert e._assistants_by_turn[0] == "第一句。"
         assert "没播完的句子" not in e._assistants_by_turn[0]
+        e._users_by_turn[0] = "继续。"
+        messages = e.build_messages("system", None, True, False)
+        assert [x["content"] for x in messages if x["role"] == "assistant"] == ["第一句。"]
         old = e._assistants_by_turn[0]
         await e._guard_control("playback_stopped", {"utterance_id": sid, "played_samples": 100000})
         assert e._assistants_by_turn[0] == old
+    finally:
+        await cleanup(e)
+
+
+async def test_cancel_before_a_complete_sentence_removes_unheard_answer_from_history():
+    e, m, _ = guarded()
+    try:
+        await playing(e)
+        sid = e._speech.sid
+        e._guard_outputs[sid]["sentences"] = [(1000, "尚未播完。")]
+        e._guard_mark_cancelled()
+        await e._guard_control("playback_stopped", {"utterance_id": sid, "played_samples": 100})
+        assert 0 not in e._assistants_by_turn
+        assert not any(x["role"] == "assistant"
+                       for x in e.build_messages("system", None, True, False))
     finally:
         await cleanup(e)
 
