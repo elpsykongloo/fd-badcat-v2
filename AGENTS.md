@@ -77,6 +77,7 @@
 ## 架构事实（读码验证过，可直接引用）
 
 - 流式输出：PCM16 协议 + SSE 文本→分句→逐句 TTS；demo 启用 `demo-continuity-v1`：350ms 起播、2000ms 有界预取、最多下一句预合成，客户端信用仍600ms；启动默认 codec 分块 `4:12`，基础/冻结配置不变。分块与断流诊断、受控验收及首响代价见 `docs/demo_speech_continuity.md`；旧客户端/legacy 仍可走原路径。
+- demo 回答完成性：`response-completion-v1`。提示词要求当轮交付实际内容；极短未来承诺正常结束时，在同一流式回复内用相同历史和原音频最多续写一次，不把 ASR 转写用于回答决策。仅 demo 启用，事件与第二次真实调用进入统一诊断线；机制和边界见 `docs/web_demo.md` §7。
 - demo 声音控制：`demo-voice-rng-v1`，`engine.demo_voice_control` 固定 chelsie/seed42，残差声码按请求维护 RNG；小样本串行重复可复现，并发波形仍有变化，不宣称跨文本音色稳定。机制与收据入口：`docs/demo_voice_rng.md`。
 - demo 离线音色对比：`demo-speaker-embedding-v1`，作者 w2v-BERT2.0 + LoRA/Layer Adapter/MFA 最终 LMFT 权重，自动提取256维嵌入并计算 cosine；无人工评分依赖，不接线上决策，分数未校准为身份阈值。入口：`docs/demo_voice_rng.md`；跨文本评测按句长分组并补充固定短句聚合，保留逐句指标，见 `docs/demo_voice_cross_text.md`。
 - demo 启动默认 `FDBC_DEMO_TALKER_NUMERICS=native`：仅 Talker 采用 cuBLASLt 并关闭 BF16 低精度归约/split-K，保留动态批处理；通用启动默认 off，完整 invariant 模式仅作较慢对照。受控样本并发声码一致，仍不宣称跨文本音色稳定或全链路 PCM 一致。机制与开销：`docs/demo_voice_concurrency.md`。
