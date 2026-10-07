@@ -23,7 +23,7 @@
 7. 不把一次烟测、单个真实案例、模拟链路或模型边界试验写成“根因已证实 / 零退化 / 普遍修复 / 正式准确率”。结论必须和证据口径匹配。
 8. 多代理适合并行写代码/检查；**正式实验结论必须回到受控运行和原始产物逐项核验**。延迟、确定性、single-fire test 窗口按协议串行。
 
-## 3. 当前 Demo / Actor 状态（2026-10-07）
+## 3. 当前 Demo / Actor 状态（2026-10-08）
 
 运行时细节会过期：不要相信历史 PID；操作前先检查 `tmux humdial-demo`、监听端口和当前配置。demo 默认本机回环 `:10003` Omni ← `:18000` backend/demo；文本/路由/TTS共用10003，不再依赖10004。显式 `--inference-mode proxy` 保留10004兼容路径，页面仍供18000 SSH转发。
 
@@ -61,7 +61,7 @@
   - Omni/vLLM：`/root/autodl-tmp/conda-envs/fdbc-qwen3o-vllm`
   - Index/Qwen TTS 相关环境以当前脚本/部署为准。
 - 无 GPU 小容器可能只有 1 核/2GB，直接起 torch 可能 OOM；优先轻量脚本/预抽取路径。GPU 日常见 RTX PRO 6000 Blackwell 96GB，但**启动前必须实查资源**。
-- 默认生产 Omni 配置：`configs/qwen3_omni_audio_single_gpu.yaml`，三阶段 `max_num_seqs=4`、stage0 `max_model_len=4096`、FCFS。历史延迟可比测量使用 `qwen3_omni_audio_serial_eval.yaml`，不要拿 seq4 烟测直接减历史 seq1 延迟。
+- 通用/冻结生产 Omni 配置仍为 `configs/qwen3_omni_audio_single_gpu.yaml`，三阶段 `max_num_seqs=4`、stage0 `max_model_len=4096`、FCFS。Casecade-Demo 的 PRO 6000 使用 `setup/start_demo_pro6000.sh`：有界 KV/声码预热与独立 BF16 MoE 参数，四槽/上下文/引擎时序保持；声码图候选未采用。验收、测量边界与回退见 `docs/demo_pro6000_p0.md`。历史延迟可比测量使用 `qwen3_omni_audio_serial_eval.yaml`，不要拿 seq4 烟测直接减历史 seq1 延迟。
 - backend 请求容量默认 total=4、normal=3，为 judge/interrupt 留槽；普通 response/shift/TTS 走 normal。
 - 本地服务调用必须规避系统代理：使用 `trust_env=False` / `NO_PROXY`。shell 不要导出空值或 0 的 `OMP_NUM_THREADS`；必要时 `env -u OMP_NUM_THREADS`。
 - DeepSeek key 在 `configs/eval.env`（gitignored，600 权限）。当前 judge 模型：`deepseek-v4-flash`。正式 FDB semantic judge 使用 `scripts/fdb_pass_judge_strict.py`；运行前清理 `all_proxy/ALL_PROXY/http_proxy/https_proxy/HTTP_PROXY/HTTPS_PROXY`，不要回退到官方 200-token 的静默失败路径。
