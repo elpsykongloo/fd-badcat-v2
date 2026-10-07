@@ -225,7 +225,7 @@ class CandidateTurns:
         elif c.stage == "continue":
             self._candidate_continue(c)
         elif c.pipeline is not None:
-            if c.error is not None and c.error.get("code") == "response_incomplete":
+            if c.error is not None and (c.error.get("code") == "response_incomplete" or c.error.get("terminal")):
                 # Exhausting a bounded completion must not reset its budget via
                 # a fresh private pipeline. Publish only the terminal notice;
                 # the failed, unplayed draft remains private.
@@ -254,7 +254,7 @@ class CandidateTurns:
         text_fn = lambda value: self._response_text_stream(value,
             case_context={"candidate_id": c.cid, "utterance_id": speech_id},
             parent_id=c.parent_id)
-        tts_fn = lambda value: self._capacity_stream("tts", self.tts_stream_fn, value,
+        tts_fn = lambda value: self._response_tts_stream(value,
             case_context={"candidate_id": c.cid, "utterance_id": speech_id}, parent_id=c.parent_id)
         c.pipeline = SpeechPipeline(self._speech_serial, self.q, c.messages[c.stage],
             text_fn, tts_fn,

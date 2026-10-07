@@ -74,7 +74,7 @@ async def test_real_engine_wrapper_preserves_output_error_cancel_and_capacity(tm
     e, _, _ = actor()
     e.demo_cases = CaseArchive(tmp_path)
     e.demo_session_id = "synthetic"
-    async def fake(messages):
+    async def fake(messages, **options):
         yield "keep"
         if mode == "error":
             raise RuntimeError("never archive exception text or secrets")
@@ -105,7 +105,7 @@ async def test_disk_failure_does_not_change_stream_results(tmp_path, monkeypatch
     e, _, _ = actor()
     e.demo_cases = CaseArchive(root)
     await asyncio.to_thread(e.demo_cases.thread.join, 1)
-    async def fake(messages):
+    async def fake(messages, **options):
         yield "keep"
     monkeypatch.setattr(module, "llm_qwen3o_stream", fake)
     assert [p async for p in e._capacity_stream("judge", fake, request()["messages"])] == ["keep"]

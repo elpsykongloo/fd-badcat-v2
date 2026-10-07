@@ -21,10 +21,11 @@ bash setup/start_demo.sh
 启动器按顺序启动：
 
 - Omni 音频模型：服务器 `127.0.0.1:10003`，沿用生产 seq=4 / context=4096 / FCFS 配置。
-- 流式代理：服务器 `127.0.0.1:10004`。
 - ActorEngine 与页面：服务器 `127.0.0.1:18000`，显式启用 `--streaming --demo-chat`。
 
-启动器不会停止或接管已有进程，端口占用会明确报错。如果 **10003 的 Omni 和 10004 的新版代理已经启动**、只是缺少 backend：
+默认推理入口已统一为10003，路由、回答和TTS共同直连；10004不再是必经环节。需要兼容代理时显式加 `--inference-mode proxy`，启动器才启动10004。机制、传输恢复与排错见 [demo_reliability.md](demo_reliability.md)。
+
+启动器不会停止或接管已有进程，端口占用会明确报错。如果 **10003 的 Omni 已经启动**、只是缺少 backend：
 
 ```bash
 bash setup/start_demo.sh --backend-only
@@ -32,7 +33,7 @@ bash setup/start_demo.sh --backend-only
 
 若已有 backend 正在 18000 运行，请直接复用它，或选择另一页面端口，例如 `--backend-only --port 18001`；笔记本 SSH 命令右侧的目标端口也要改成 18001。`--backend-only` 仅检查既有服务，不会改变它们原来的监听地址或模型配置。
 
-如环境路径不同，设置 `FDBC_DEMO_PYTHON` 指向安装了 backend 依赖的 Python；Omni 的 conda 环境沿用现有启动脚本。启动器强制推理端口为本机 10003/10004，不支持任意远程推理拓扑。
+如环境路径不同，设置 `FDBC_DEMO_PYTHON` 指向安装了 backend 依赖的 Python；Omni 的 conda 环境沿用现有启动脚本。启动器强制推理端口为本机10003（兼容代理模式10004），不支持任意远程推理拓扑。复用既有代理需 `--backend-only --inference-mode proxy`。
 
 ## 2. 在笔记本建立 SSH 转发
 
@@ -79,12 +80,12 @@ ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -L 127.0.0.1:18080:
 | 麦克风按钮报权限错误 | 使用 localhost/HTTPS；地址栏麦克风权限；系统隐私设置；设备是否被占用 |
 | 显示未启用流式 ActorEngine | 后端必须是新版，并显式 `--streaming`；不要把 10003/10004 当成页面端口 |
 | 电平不动 | 选择正确输入设备；检查硬件静音；断开后可重新选择麦克风 |
-| 电平有变化但不回应 | 查看本次 `backend.log`、`proxy.log`、`omni.log`；不要仅凭“连接成功”判断模型健康 |
+| 电平有变化但不回应 | 查看本次 `backend.log`、`omni.log`；代理模式另查 `proxy.log`。从会话诊断关联路由与失败请求，不仅凭“连接成功”判断模型健康 |
 | 听不到声音 | 确认系统输出设备和音量；网站未被静音；页面在前台；可结束后重连 |
 | 背景/锁屏后停止 | 浏览器可能挂起 AudioContext；回到前台重新开始，不累计旧音频补播 |
 | `Address already in use` / 端口占用 | 不要杀不明进程；已有推理服务用 `--backend-only`，已有 backend 复用或换端口 |
 
-服务器日志：`exp/web_demo/<启动时间>-<pid>/{omni,proxy,backend}.log`。浏览器新会话的输入音频/转写归档沿用引擎路径：`exp/web-demo-<随机ID>/realtimeout_live/`。ID 由服务器生成；页面清空记录不会删除这些服务器文件。
+服务器日志：`exp/web_demo/<启动时间>-<pid>/{omni,backend}.log`、`topology.json`；仅代理模式另有 `proxy.log`。浏览器新会话的输入音频/转写归档沿用引擎路径：`exp/web-demo-<随机ID>/realtimeout_live/`。ID 由服务器生成；页面清空记录不会删除这些服务器文件。
 
 在服务器启动终端按 `Ctrl+C`，启动器会关闭**本次创建的**服务并释放资源；`--backend-only` 不会停止既有 Omni/代理。`tmux` 分离是 `Ctrl+B` 后按 `D`；重新进入是 `tmux attach -t humdial-demo`。笔记本 SSH 转发窗口按 `Ctrl+C` 只关闭隧道，不会停止服务器模型。
 
@@ -156,6 +157,8 @@ ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -L 127.0.0.1:18080:
 原实现把每个分句作为新的 user 消息交给 Omni，只用 system 提示“逐字读”，实际会重新回答问题。例如“你那边怎么样？”被读成“我这边一切都好……”；“你能告诉我你在哪个城市吗？”变成 14 秒的模型自我介绍。它不是分句乱序或投机误打断，而是音频内容背离页面文字。先前短输入/播放契约检查不能证明合成忠实性。
 
 流式 Actor 现在用 `module.verbatim_tts_payload()`：通过 `structured_outputs.grammar` 的单个 EBNF 字符串字面量约束 Thinker，再由同一个 Omni 的 Talker 合成；不更换模型、不增加第二套 GPU 服务。原文通过 JSON 字符串编码安全转义，换行、回车、制表符和引号保持原样，不是正则拼接，也不通过删空白放宽原文匹配。
+
+demo现在先用 `spoken-text-v1` 把模型Markdown转成页面/TTS/参考/历史共用的口语文字；这里的“逐字原文”指规范化后的每句，原始模型delta及续写前缀仍保留。规范化在分句之前，避免编号或格式碎片单独送入Talker。详见 [可靠性机制](demo_reliability.md)。
 
 旧 `verbatim-choice-v1` 于2026-09-08暴露真实崩溃：上游 choice→EBNF 转换未转义换行，auto 校验回退 guidance，但已初始化的推理核心仍使用 xgrammar，未转换的 CHOICE 导致 EngineDeadError。v2 不经过这条转换；默认生产配置的 stage0 显式固定 `structured_outputs_config.backend: xgrammar`，不允许请求级自动回退造成校验/执行后端不一致。其他阶段的 Talker/codec 采样及原 serial-eval 配置不改。自定义部署配置也必须固定一致的约束后端，不能套用默认部署的故障隔离结论。
 

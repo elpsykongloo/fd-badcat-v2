@@ -83,6 +83,8 @@ exp/demo_cases/captures/<case_id>/
 
 `response-completion-v2` 的 dispatch/call_finished/completed/failed/cancelled 进入逐轮 outcome。原回答、最多3次长度续写和最多1次短承诺修复共享 parent/utterance；case context 标为 `response_completion_stage=draft|continuation|repair`，保存实际请求预算、前缀续写参数及 outcome 的 `finish_reason`，请求 span 同样保留结束原因。续写失败进入异常队列；终止原因和原请求一起参与重放。机制见 `docs/demo_response_completion.md`。
 
+`model-transport-v1` 另保存安全端点、HTTP阶段/状态、异常类型/errno、上下游request ID、SSE/DONE及已产PCM状态；`tts_operation_id`连接同句最多两次独立call，`tts_recovery`记录retry/recovered/failed，终止语音错误另存发送/播放/预取快照。请求span和case outcome保留传输状态；无PCM的失败也可无模型重放。`spoken-text-v1`记录原始/规范文字长度及逐句低能量异常；`pending-user-audio-v1`记录路由的前文/新增音频样本数。详细字段、故障排查和证据边界见 [demo_reliability.md](demo_reliability.md)。
+
 ### 3.3 请求级 span
 
 `demo-span-v1` 有两类主 span：

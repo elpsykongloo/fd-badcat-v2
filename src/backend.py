@@ -468,6 +468,14 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None, asr_cfg=None) -> F
         if info["streaming"] and voice_control is not None:
             info["tts_voice_control"] = voice_control
         if info["streaming"] and (engine_cfg or {}).get("chat_demo"):
+            import module as adapters
+            from transport_diagnostics import safe_endpoint
+            info["inference"] = {"mode": os.environ.get("FDBC_DEMO_INFERENCE_MODE", "custom"),
+                "text_endpoint": safe_endpoint(adapters.QWEN_URL),
+                "tts_endpoint": safe_endpoint(adapters.OMNI_TTS_URL)}
+            info["speech_text"] = "spoken-text-v1" if engine_cfg.get("spoken_text_normalization") else "literal"
+            info["tts_recovery"] = {"version": "tts-recovery-v1",
+                "max_retries": int(engine_cfg.get("tts_transport_retries", 0)), "before_pcm_only": True}
             info["speech_scheduling"] = {
                 "version": "demo-continuity-v1",
                 "startup_ms": int(engine_cfg.get("stream_startup_ms", 80)),
@@ -493,6 +501,10 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None, asr_cfg=None) -> F
                         reply_context="completed_sentences_at_input_onset",
                         input_timing=input_timing(engine_cfg),
                         route_penalties={"presence": 0.0, "frequency": 0.0})
+            if engine_cfg.get("input_continuation_context"):
+                info["input_continuation"] = {"version": "pending-user-audio-v1",
+                    "audio_grounded": True, "max_gap_s": float(engine_cfg.get("input_context_max_gap_s", 20)),
+                    "max_input_seconds": float(engine_cfg.get("max_input_seconds", 20))}
         archive = getattr(app.state, "demo_cases", None)
         if archive is not None:
             info["case_capture"] = archive.stats()

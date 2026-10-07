@@ -20,6 +20,35 @@ PROTOCOL = "pcm16.v1"
 MAX_PREFETCH_CHUNK_BYTES = 512 * 1024
 
 
+class AudioHealth:
+    """Content-free 100 ms RMS diagnostics; NEVER trim or gate speech."""
+    def __init__(self):
+        self.tail = b""
+        self.windows = self.quiet = self.run = self.longest = 0
+
+    def feed(self, pcm, rate):
+        import numpy as np
+        data = self.tail + pcm
+        size = max(1, rate // 10)
+        count = len(data) // (size * 2)
+        self.tail = data[count * size * 2:]
+        if not count:
+            return
+        frames = np.frombuffer(data[:count * size * 2], dtype="<i2").astype(np.float32).reshape(count, size)
+        low = np.mean(frames * frames, axis=1) < (.003 * 32768) ** 2
+        for value in low:
+            self.windows += 1
+            self.quiet += int(value)
+            self.run = self.run + 1 if value else 0
+            self.longest = max(self.longest, self.run)
+
+    def summary(self):
+        return {"rms_window_ms": 100, "rms_threshold": .003,
+                "low_energy_ms": self.quiet * 100,
+                "longest_low_energy_ms": self.longest * 100,
+                "analyzed_ms": self.windows * 100}
+
+
 class AudioAhead:
     """FIFO with a hard PCM byte budget; at most two sentence markers in flight.
 
@@ -109,7 +138,8 @@ class SocketOutbox:
 class SpeechPipeline:
     def __init__(self, sid, queue, messages, text_fn, tts_fn, *, timeout=15,
                  retry=True, apology="", packet_ms=40, buffer_ms=600, precompute_gate=None,
-                 track_sentences=False, startup_ms=80, prefetch_ms=0, diagnostics=False):
+                 track_sentences=False, startup_ms=80, prefetch_ms=0, diagnostics=False,
+                 spoken_text=False):
         if not 10 <= packet_ms <= 100 or not 2 * packet_ms <= buffer_ms <= 2000:
             raise ValueError("stream packet/buffer sizes outside safe limits")
         if not 0 <= startup_ms <= 1000:
@@ -128,6 +158,7 @@ class SpeechPipeline:
         self.track_sentences = track_sentences
         self.startup_ms, self.prefetch_ms = startup_ms, prefetch_ms
         self.diagnostics = diagnostics
+        self.spoken_text = spoken_text
         self.ahead = AudioAhead() if prefetch_ms else None
         self.sentence_slots = asyncio.Semaphore(2)
         self.send_seq = 0
@@ -157,9 +188,21 @@ class SpeechPipeline:
 
     async def produce(self):
         splitter = StreamingSentenceBuffer()
+        normalizer = None
+        if self.spoken_text:
+            from spoken_text import SpokenTextBuffer
+            normalizer = SpokenTextBuffer()
         chunks = []
+        raw_chars = 0
         t0 = time.perf_counter()
         timed_out = False
+        async def publish(delta):
+            if not delta:
+                return
+            chunks.append(delta)
+            await self.emit("text_delta", text=delta)
+            for sentence in splitter.feed(delta):
+                await self.sentences.put(sentence)
         for attempt in range(2 if self.retry else 1):
             try:
                 async with aclosing(self.text_fn(self.messages)) as source:
@@ -168,24 +211,23 @@ class SpeechPipeline:
                             delta = await cancellable_wait(source.__anext__(), self.timeout)
                         except StopAsyncIteration:
                             break
-                        chunks.append(delta)
-                        if sum(map(len, chunks)) > 16384:
+                        raw_chars += len(delta)
+                        if raw_chars > 16384:
                             raise RuntimeError("Response exceeds streaming text limit")
-                        await self.emit("text_delta", text=delta)
-                        for sentence in splitter.feed(delta):
-                            await self.sentences.put(sentence)
+                        await publish(normalizer.feed(str(delta)) if normalizer else delta)
                 break
             except asyncio.TimeoutError:
                 # Never replay a partially exposed response: that would duplicate speech.
-                if chunks:
+                if raw_chars:
                     raise
                 if self.retry and attempt == 0:
                     continue
                 timed_out = True
-                chunks = [self.apology]
-                await self.emit("text_delta", text=self.apology)
-                for sentence in splitter.feed(self.apology):
-                    await self.sentences.put(sentence)
+                await publish(self.apology)
+        if normalizer:
+            await publish(normalizer.flush())
+            await self.metric("spoken_text", protocol="spoken-text-v1", raw_chars=raw_chars,
+                              spoken_chars=normalizer.spoken_chars)
         for sentence in splitter.flush():
             await self.sentences.put(sentence)
         text = "".join(chunks)
@@ -240,10 +282,11 @@ class SpeechPipeline:
                 await self.ahead.put(("sentence", sentence_index, sentence))
             else:
                 await self.emit("sentence", text=sentence, start_sample=self.sent)
-            await self.metric("tts_request", sentence_index=sentence_index)
+            await self.metric("tts_request", sentence_index=sentence_index, sentence_chars=len(sentence))
             request_started = time.perf_counter()
             credit_wait = enqueue_wait = 0.0
             sentence_samples = chunk_index = 0
+            health = AudioHealth() if self.diagnostics else None
             produced = False
             async with aclosing(self.tts_fn(sentence)) as source:
                 while True:
@@ -255,6 +298,8 @@ class SpeechPipeline:
                     produced = True
                     chunk_index += 1
                     sentence_samples += len(chunk.pcm) // 2
+                    if health is not None:
+                        health.feed(chunk.pcm, self.rate)
                     await self.metric("tts_chunk", sentence_index=sentence_index,
                         chunk_index=chunk_index, samples=len(chunk.pcm) // 2, rate=self.rate,
                         request_ms=round((time.perf_counter() - request_started) * 1000, 3),
@@ -275,7 +320,11 @@ class SpeechPipeline:
                 consume_ms=round((time.perf_counter() - request_started) * 1000, 3),
                 audio_ms=round(sentence_samples / self.rate * 1000, 3), chunks=chunk_index,
                 credit_wait_ms=round(credit_wait * 1000, 3),
-                prefetch_wait_ms=round(enqueue_wait * 1000, 3))
+                prefetch_wait_ms=round(enqueue_wait * 1000, 3),
+                sentence_chars=len(sentence), **(health.summary() if health else {}))
+            if health is not None and health.longest >= 50:
+                await self.metric("tts_audio_warning", sentence_index=sentence_index,
+                    reason="long_low_energy_run", **health.summary())
             if self.ahead is not None:
                 await self.ahead.put(("sentence_end", sentence_index, sentence))
             elif self.track_sentences:
@@ -317,6 +366,13 @@ class SpeechPipeline:
             raise
         except Exception as exc:
             await self.emit("error", error=f"{type(exc).__name__}: {exc}",
+                            terminal=bool(getattr(exc, "terminal", False)),
+                            pipeline_state={"sent_samples": self.sent, "played_samples": self.played,
+                                "rate": self.rate, "packets": self.send_seq,
+                                "queued_sentences": self.sentences.qsize(),
+                                "prefetch_bytes": self.ahead.bytes if self.ahead else 0},
+                            **({"tts_operation_id": exc.operation_id, "attempts": exc.attempts}
+                               if hasattr(exc, "operation_id") else {}),
                             **({"code": exc.code} if getattr(exc, "code", None) else {}))
         finally:
             for child in children:

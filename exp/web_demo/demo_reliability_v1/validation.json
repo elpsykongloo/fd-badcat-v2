@@ -1,0 +1,454 @@
+{
+  "version": "demo-reliability-v1",
+  "date": "2026-10-07",
+  "base_revision": "886a4e5",
+  "scope": {
+    "serial_sessions": true,
+    "physical_audio": false,
+    "independent_holdout": false,
+    "backend": "production seq4/native/4:12",
+    "historical_latency_comparable": false,
+    "private_corpus_text_or_audio_in_receipt": false
+  },
+  "offline": {
+    "pytest": 401,
+    "node_contracts_passed": true
+  },
+  "historical_31_before": {
+    "n": 31,
+    "completed": 20,
+    "unfinished_at_90s": 7,
+    "tts_502": 1,
+    "no_playback": 3
+  },
+  "first_full_31": {
+    "implementation_stage": "transport + spoken text + pending/unplayed context; before the playing-context extension",
+    "observation_tail_s": 90,
+    "n": 31,
+    "completed_any": 30,
+    "unfinished_at_cutoff": 1,
+    "no_playback": 0,
+    "speech_error_cases": 0,
+    "route_fallbacks": 0,
+    "engine_errors": 0,
+    "browser_errors": 0,
+    "tts_completed_sentences": 199,
+    "max_low_energy_ms": 1800,
+    "cleanup_clear": true,
+    "early_playback_cases": 1,
+    "min_source_alignment_correlation": 0.852874
+  },
+  "final_followup": {
+    "implementation_stage": "includes onset-frozen playing user context in two separate audio blocks",
+    "original_indices": [
+      3,
+      9
+    ],
+    "observation_tail_s": 180,
+    "independent_new_samples": 0,
+    "n": 2,
+    "completed_any": 2,
+    "unfinished_at_cutoff": 0,
+    "no_playback": 0,
+    "speech_error_cases": 0,
+    "route_fallbacks": 0,
+    "engine_errors": 0,
+    "browser_errors": 0,
+    "tts_completed_sentences": 22,
+    "max_low_energy_ms": 700,
+    "cleanup_clear": true,
+    "long_response_replay_caveat": "Regenerated reply, not a direct observation of the previously censored tail.",
+    "playing_continuation": {
+      "playback_starts": 2,
+      "completed": 1,
+      "topic_recovered_on_manual_in_memory_review": true
+    }
+  },
+  "spoken_probes": [
+    {
+      "index": 0,
+      "raw": "**时态**：时态表示动作发生的时间。",
+      "canonical": "时态：时态表示动作发生的时间。",
+      "sentences": [
+        {
+          "text": "时态：时态表示动作发生的时间。",
+          "audio_ms": 3644.375,
+          "wall_ms": 1276.563823223114,
+          "rms_window_ms": 100,
+          "rms_threshold": 0.003,
+          "low_energy_ms": 600,
+          "longest_low_energy_ms": 600,
+          "analyzed_ms": 3600
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "raw": "时态：时态表示动作发生的时间。",
+      "canonical": "时态：时态表示动作发生的时间。",
+      "sentences": [
+        {
+          "text": "时态：时态表示动作发生的时间。",
+          "audio_ms": 3644.375,
+          "wall_ms": 1239.5825162529945,
+          "rms_window_ms": 100,
+          "rms_threshold": 0.003,
+          "low_energy_ms": 600,
+          "longest_low_energy_ms": 600,
+          "analyzed_ms": 3600
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "raw": "## Tips\n1. **Clarity**: Use short sentences.\n2. **Practice**: Read them aloud.",
+      "canonical": "Tips\nClarity: Use short sentences.\nPractice: Read them aloud.",
+      "sentences": [
+        {
+          "text": "Tips\n",
+          "audio_ms": 593.75,
+          "wall_ms": 332.3088400065899,
+          "rms_window_ms": 100,
+          "rms_threshold": 0.003,
+          "low_energy_ms": 0,
+          "longest_low_energy_ms": 0,
+          "analyzed_ms": 500
+        },
+        {
+          "text": "Clarity: Use short sentences.",
+          "audio_ms": 2627.5,
+          "wall_ms": 932.9790510237217,
+          "rms_window_ms": 100,
+          "rms_threshold": 0.003,
+          "low_energy_ms": 300,
+          "longest_low_energy_ms": 300,
+          "analyzed_ms": 2600
+        },
+        {
+          "text": "Practice: Read them aloud.",
+          "audio_ms": 2010.625,
+          "wall_ms": 748.3167089521885,
+          "rms_window_ms": 100,
+          "rms_threshold": 0.003,
+          "low_energy_ms": 500,
+          "longest_low_energy_ms": 500,
+          "analyzed_ms": 2000
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "raw": "要点如下。\n1. **语序**：语序影响句子的意思。\n2. **练习**：先想清楚要表达什么，再慢慢说出来。",
+      "canonical": "要点如下。\n语序：语序影响句子的意思。\n练习：先想清楚要表达什么，再慢慢说出来。",
+      "sentences": [
+        {
+          "text": "要点如下。",
+          "audio_ms": 1153.75,
+          "wall_ms": 494.3923391401768,
+          "rms_window_ms": 100,
+          "rms_threshold": 0.003,
+          "low_energy_ms": 0,
+          "longest_low_energy_ms": 0,
+          "analyzed_ms": 1100
+        },
+        {
+          "text": "语序：语序影响句子的意思。",
+          "audio_ms": 2787.5,
+          "wall_ms": 994.1836558282375,
+          "rms_window_ms": 100,
+          "rms_threshold": 0.003,
+          "low_energy_ms": 500,
+          "longest_low_energy_ms": 500,
+          "analyzed_ms": 2700
+        },
+        {
+          "text": "练习：先想清楚要表达什么，再慢慢说出来。",
+          "audio_ms": 4261.25,
+          "wall_ms": 1440.6825937330723,
+          "rms_window_ms": 100,
+          "rms_threshold": 0.003,
+          "low_energy_ms": 300,
+          "longest_low_energy_ms": 100,
+          "analyzed_ms": 4200
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "raw": "The story ends here. 🌫️💡\nGood night.",
+      "canonical": "The story ends here.\nGood night.",
+      "sentences": [
+        {
+          "text": "The story ends here.",
+          "audio_ms": 1153.75,
+          "wall_ms": 495.475172996521,
+          "rms_window_ms": 100,
+          "rms_threshold": 0.003,
+          "low_energy_ms": 0,
+          "longest_low_energy_ms": 0,
+          "analyzed_ms": 1100
+        },
+        {
+          "text": "Good night.",
+          "audio_ms": 833.75,
+          "wall_ms": 400.03881976008415,
+          "rms_window_ms": 100,
+          "rms_threshold": 0.003,
+          "low_energy_ms": 100,
+          "longest_low_energy_ms": 100,
+          "analyzed_ms": 800
+        }
+      ]
+    }
+  ],
+  "context_probes": [
+    {
+      "name": "unfinished_en",
+      "expected": "yield_ready",
+      "actual": "yield_ready",
+      "passed": true
+    },
+    {
+      "name": "unplayed_zh",
+      "expected": "yield_ready",
+      "actual": "yield_ready",
+      "passed": true
+    },
+    {
+      "name": "defer_ambiguous",
+      "expected": [
+        "stop_only",
+        "yield_wait"
+      ],
+      "actual": "yield_wait",
+      "passed": true
+    },
+    {
+      "name": "latest_stop",
+      "expected": "stop_only",
+      "actual": "stop_only",
+      "passed": true
+    },
+    {
+      "name": "latest_wait",
+      "expected": "yield_wait",
+      "actual": "yield_wait",
+      "passed": true
+    },
+    {
+      "name": "playing_fragment",
+      "expected": "yield_ready",
+      "actual": "yield_ready",
+      "passed": true
+    },
+    {
+      "name": "playing_backchannel",
+      "expected": "keep",
+      "actual": "keep",
+      "passed": true
+    },
+    {
+      "name": "playing_new_question",
+      "expected": "yield_ready",
+      "actual": "yield_ready",
+      "passed": true
+    },
+    {
+      "name": "playing_stop",
+      "expected": "stop_only",
+      "actual": "stop_only",
+      "passed": true
+    }
+  ],
+  "browser_faults": [
+    {
+      "scenario": "normal",
+      "passed": true,
+      "trace_closed_without_drops": true,
+      "tts_http_attempts": 3,
+      "end_hold_s": 0.64,
+      "recovery": [],
+      "failed_calls": []
+    },
+    {
+      "scenario": "recover",
+      "passed": true,
+      "trace_closed_without_drops": true,
+      "tts_http_attempts": 4,
+      "end_hold_s": 0.64,
+      "recovery": [
+        {
+          "stage": "retry",
+          "attempts": 1,
+          "output_samples": 0
+        },
+        {
+          "stage": "recovered",
+          "attempts": 2,
+          "output_samples": 108030
+        }
+      ],
+      "failed_calls": [
+        {
+          "error_type": "ClientResponseError",
+          "output_samples": 0,
+          "phase": "headers",
+          "http_status": 502
+        }
+      ]
+    },
+    {
+      "scenario": "fail",
+      "passed": true,
+      "trace_closed_without_drops": true,
+      "tts_http_attempts": 3,
+      "end_hold_s": 0.64,
+      "recovery": [
+        {
+          "stage": "retry",
+          "attempts": 1,
+          "output_samples": 0
+        },
+        {
+          "stage": "failed",
+          "attempts": 2,
+          "output_samples": 0
+        }
+      ],
+      "failed_calls": [
+        {
+          "error_type": "ClientResponseError",
+          "output_samples": 0,
+          "phase": "headers",
+          "http_status": 502
+        },
+        {
+          "error_type": "ClientResponseError",
+          "output_samples": 0,
+          "phase": "headers",
+          "http_status": 502
+        }
+      ]
+    },
+    {
+      "scenario": "partial",
+      "passed": true,
+      "trace_closed_without_drops": true,
+      "tts_http_attempts": 2,
+      "end_hold_s": 0.64,
+      "recovery": [
+        {
+          "stage": "failed",
+          "attempts": 1,
+          "output_samples": 7125
+        }
+      ],
+      "failed_calls": [
+        {
+          "error_type": "TruncatedStreamError",
+          "output_samples": 7125,
+          "phase": "stream",
+          "http_status": 200
+        }
+      ]
+    },
+    {
+      "scenario": "fail_private",
+      "passed": true,
+      "trace_closed_without_drops": true,
+      "tts_http_attempts": 2,
+      "end_hold_s": 3,
+      "recovery": [
+        {
+          "stage": "retry",
+          "attempts": 1,
+          "output_samples": 0
+        },
+        {
+          "stage": "failed",
+          "attempts": 2,
+          "output_samples": 0
+        }
+      ],
+      "failed_calls": [
+        {
+          "error_type": "ClientResponseError",
+          "output_samples": 0,
+          "phase": "headers",
+          "http_status": 502
+        },
+        {
+          "error_type": "ClientResponseError",
+          "output_samples": 0,
+          "phase": "headers",
+          "http_status": 502
+        }
+      ]
+    }
+  ],
+  "retained_failed_attempts": [
+    {
+      "stage": "first fault suite",
+      "note": "Its partial fault cut before text verification; no decoded PCM. Not post-output proof."
+    },
+    {
+      "stage": "single-block playing context candidate",
+      "note": "5 browser cases passed; 6/8 strict context labels. Old speech contaminated new transcript/backchannel. Replaced with two separate audio blocks before deployment."
+    },
+    {
+      "stage": "ambiguous defer probe",
+      "note": "Original expected stop_only, recognized temporary wait and returned yield_wait. Both withhold speech; final matrix explicitly accepts both and adds a separate unambiguous stop-only probe."
+    }
+  ],
+  "remaining_boundaries": [
+    "Previously rejected/incorrectly transcribed initial audio is not automatically re-admitted.",
+    "No universal source-attribution, semantic accuracy or physical listening claim.",
+    "Natural long answers may exceed the 90-second observation window.",
+    "Historical proxy 502 subtype was not recorded; stale-connection hypothesis remains unproven."
+  ],
+  "deployment": {
+    "status": "ready",
+    "launcher_log_directory": "exp/web_demo/20261007T140621Z-28035",
+    "topology": {
+      "mode": "direct",
+      "text_endpoint": "http://127.0.0.1:10003/v1/chat/completions",
+      "tts_endpoint": "http://127.0.0.1:10003/v1/chat/completions"
+    },
+    "ports": [
+      10003,
+      18000
+    ],
+    "proxy_port_listening": false,
+    "warmup_passed": true,
+    "warmup_elapsed_s": 4.515,
+    "browser_stop_and_resume_passed": true,
+    "completed_utterances": [
+      {
+        "utterance_id": 3,
+        "timestamp": 20.447,
+        "played_samples": 50175,
+        "underruns": 0
+      }
+    ],
+    "trace_dropped": 0,
+    "engine_errors": 0,
+    "speech_errors": 0,
+    "model_transport_calls": 19,
+    "all_http_request_ids_correlated": true,
+    "sse_request_ids_recorded": true,
+    "continuation_context_sources": [
+      "recent_replied_user_audio",
+      "recent_replied_user_audio",
+      "recent_replied_user_audio",
+      "accepted_unanswered_user_audio",
+      "accepted_unanswered_user_audio",
+      "accepted_unanswered_user_audio"
+    ],
+    "effective_flags": {
+      "spoken_text_normalization": true,
+      "input_continuation_context": true,
+      "tts_transport_retries": 1
+    },
+    "summary_counts": null
+  }
+}

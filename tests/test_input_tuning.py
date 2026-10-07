@@ -60,7 +60,9 @@ async def test_route_wire_and_archive_use_same_zero_penalties_without_changing_c
     monkeypatch.setenv("FDBC_QWEN_PRESENCE_PENALTY", "1.2")
     monkeypatch.setenv("FDBC_QWEN_FREQUENCY_PENALTY", "0.8")
     requests=[]
-    async def stream(url, payload, timeout):
+    async def stream(url, payload, timeout, **options):
+        assert options["transport_context"]["request_id"].startswith("call-")
+        assert options["report_finish"] is False
         requests.append(payload)
         yield '{"transcript":"停","label":"stop_only"}'
     monkeypatch.setattr(stream_transport, "text_stream", stream)

@@ -71,6 +71,11 @@ ARGS=(
     --tensor-parallel-size "$TP_SIZE"
     --scheduling-policy "$SCHEDULING_POLICY"
 )
+if [[ "${FDBC_DEMO_VOICE_ADAPTER:-0}" == "1" ]]; then
+    # Correlate the same call through backend, optional proxy and Omni. This
+    # affects HTTP metadata only; sampling/grammar/sequence limits stay frozen.
+    ARGS+=(--enable-request-id-headers)
+fi
 
 if [[ -n "$MAX_MODEL_LEN" ]]; then
     ARGS+=(--max-model-len "$MAX_MODEL_LEN")

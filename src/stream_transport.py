@@ -7,12 +7,14 @@ import base64
 import io
 import json
 import time
+from uuid import uuid4
 from contextlib import aclosing
 from dataclasses import dataclass
 
 import aiohttp
 import numpy as np
 import soundfile as sf
+from transport_diagnostics import failure_details, safe_endpoint, safe_request_id, VERSION, TruncatedStreamError
 
 
 @dataclass(frozen=True)
@@ -31,57 +33,84 @@ class TextDelta(str):
         return obj
 
 
-async def sse_json(url, payload, timeout=60):
+async def sse_json(url, payload, timeout=60, *, transport_context=None):
     """Parse fragmented SSE; cancellation closes HTTP; incomplete EOF fails."""
     limits = aiohttp.ClientTimeout(total=None, sock_connect=10, sock_read=timeout)
-    async with aiohttp.ClientSession(trust_env=False, timeout=limits) as client:
-        origin = time.perf_counter()
-        async with client.post(url, json={**payload, "stream": True}) as response:
-            response.raise_for_status()
-            if "text/event-stream" not in response.headers.get("Content-Type", ""):
-                raise RuntimeError("Upstream did not return SSE for stream=true")
-            pending = bytearray()
-            fields = []
-            event_bytes = 0
-            event_index = 0
-            request_id = (response.headers.get("x-request-id") or
-                          response.headers.get("x-vllm-request-id"))
-            async for chunk in response.content.iter_any():
-                pending.extend(chunk)
-                if len(pending) > 16 * 1024 * 1024:
-                    raise RuntimeError("Oversized SSE record")
-                while b"\n" in pending:
-                    line, _, rest = pending.partition(b"\n")
-                    pending = bytearray(rest)
-                    line = line.rstrip(b"\r")
-                    if line.startswith(b"data:"):
-                        event_bytes += len(line)
-                        if event_bytes > 16 * 1024 * 1024:
-                            raise RuntimeError("Oversized SSE event")
-                        fields.append(line[5:].lstrip(b" "))
-                    elif not line and fields:
-                        data = b"\n".join(fields).decode("utf-8")
-                        fields.clear()
-                        event_bytes = 0
-                        if data == "[DONE]":
-                            return
-                        obj = json.loads(data)
-                        if obj.get("error"):
-                            raise RuntimeError(f"Upstream stream error: {obj['error']}")
-                        event_index += 1
-                        obj["_transport"] = {"request_id": request_id or obj.get("id"),
-                            "sse_event": event_index,
-                            "sse_received_ms": (time.perf_counter() - origin) * 1000}
-                        yield obj
-            raise RuntimeError("Truncated SSE: missing [DONE]")
+    state = transport_context if transport_context is not None else {}
+    state.update(version=VERSION, endpoint=safe_endpoint(url), phase="connect",
+                 request_id=safe_request_id(state.get("request_id")) or "http-" + uuid4().hex,
+                 received_bytes=0, sse_events=0, done_received=False,
+                 connect_timeout_s=10, read_timeout_s=timeout, fresh_connection=True)
+    origin = time.perf_counter()
+    try:
+        # A request owns its connection. No stale pooled socket or cross-request
+        # cancellation can poison the next sentence; local proxy env is ignored.
+        async with aiohttp.ClientSession(trust_env=False, timeout=limits) as client:
+            async with client.post(url, json={**payload, "stream": True},
+                                   headers={"X-Request-Id": state["request_id"]}) as response:
+                state.update(phase="headers", http_status=response.status,
+                    upstream_request_id=safe_request_id(response.headers.get("x-request-id") or
+                                                       response.headers.get("x-vllm-request-id")),
+                    headers_ms=round((time.perf_counter() - origin) * 1000, 3))
+                response.raise_for_status()
+                if "text/event-stream" not in response.headers.get("Content-Type", ""):
+                    raise RuntimeError("Upstream did not return SSE for stream=true")
+                state["phase"] = "stream"
+                pending = bytearray()
+                fields = []
+                event_bytes = 0
+                async for chunk in response.content.iter_any():
+                    state["received_bytes"] += len(chunk)
+                    pending.extend(chunk)
+                    if len(pending) > 16 * 1024 * 1024:
+                        raise RuntimeError("Oversized SSE record")
+                    while b"\n" in pending:
+                        line, _, rest = pending.partition(b"\n")
+                        pending = bytearray(rest)
+                        line = line.rstrip(b"\r")
+                        if line.startswith(b"data:"):
+                            event_bytes += len(line)
+                            if event_bytes > 16 * 1024 * 1024:
+                                raise RuntimeError("Oversized SSE event")
+                            fields.append(line[5:].lstrip(b" "))
+                        elif not line and fields:
+                            data = b"\n".join(fields).decode("utf-8")
+                            fields.clear()
+                            event_bytes = 0
+                            if data == "[DONE]":
+                                state.update(done_received=True, phase="done")
+                                return
+                            obj = json.loads(data)
+                            if obj.get("error"):
+                                upstream_error = obj["error"]
+                                if isinstance(upstream_error, dict):
+                                    state["sse_error"] = {k: v for k, v in upstream_error.items()
+                                        if k in {"code", "type"} and (type(v) is int or safe_request_id(v))}
+                                raise RuntimeError("Upstream reported an SSE error")
+                            state["sse_events"] += 1
+                            state["sse_request_id"] = state.get("sse_request_id") or safe_request_id(obj.get("id"))
+                            state["upstream_request_id"] = (state.get("upstream_request_id") or
+                                                            state["sse_request_id"])
+                            obj["_transport"] = {"request_id": state.get("sse_request_id") or state.get("upstream_request_id") or state["request_id"],
+                                "client_request_id": state["request_id"], "sse_event": state["sse_events"],
+                                "sse_received_ms": (time.perf_counter() - origin) * 1000}
+                            yield obj
+                raise TruncatedStreamError("Truncated SSE: missing [DONE]")
+    except Exception as exc:
+        state["elapsed_ms"] = round((time.perf_counter() - origin) * 1000, 3)
+        exc.transport_failure = failure_details(exc, state)
+        raise
+    finally:
+        state["elapsed_ms"] = round((time.perf_counter() - origin) * 1000, 3)
 
 
-async def text_stream(url, payload, timeout=60, *, report_finish=False):
+async def text_stream(url, payload, timeout=60, *, report_finish=False, transport_context=None):
     # Opt-in for demo responses. Legacy/control consumers keep their original
     # string-only contract. Publish the terminal marker only after [DONE], so a
     # broken connection after a finish record cannot masquerade as completion.
     finish_reason = None
-    async with aclosing(sse_json(url, payload, timeout)) as records:
+    options = {"transport_context": transport_context} if transport_context is not None else {}
+    async with aclosing(sse_json(url, payload, timeout, **options)) as records:
         async for obj in records:
             if obj.get("modality", "text") != "text":
                 continue
@@ -109,7 +138,7 @@ async def text_stream(url, payload, timeout=60, *, report_finish=False):
 
 
 async def audio_stream(url, payload, timeout=60, *, expected_text=None, expected_voice=None,
-                       timing=False):
+                       timing=False, transport_context=None):
     """Decode native PCM; optional fail-closed literal-text contract for TTS.
 
     Quarantine early audio until the complete sentence and its successful text
@@ -126,7 +155,8 @@ async def audio_stream(url, payload, timeout=60, *, expected_text=None, expected
     origin = time.perf_counter()
     verified_ms = None
     previous_audio_ms = None
-    async with aclosing(sse_json(url, payload, timeout)) as records:
+    options = {"transport_context": transport_context} if transport_context is not None else {}
+    async with aclosing(sse_json(url, payload, timeout, **options)) as records:
         async for obj in records:
             if expected_text is not None and obj.get("modality") == "text":
                 for choice in obj.get("choices", []):

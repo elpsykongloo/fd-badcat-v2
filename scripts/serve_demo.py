@@ -3,7 +3,8 @@
 
 No daemon, no global pkill, no inference-config changes or listener takeover.
 The backend explicitly selects the isolated chat-demo profile.
-Use --backend-only explicitly when the two inference services already exist.
+Use --backend-only to reuse Omni. Demo defaults to one inference endpoint;
+--inference-mode proxy explicitly opts into the compatibility forwarder.
 """
 import argparse
 from datetime import datetime, timezone
@@ -82,7 +83,9 @@ def stop_owned(children):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--backend-only", action="store_true", help="Reuse existing local Omni :10003 and proxy :10004")
+    parser.add_argument("--backend-only", action="store_true", help="Reuse existing local inference service(s)")
+    parser.add_argument("--inference-mode", choices=("direct", "proxy"), default="direct",
+                        help="direct: one Omni endpoint :10003 (default); proxy: compatibility :10004")
     parser.add_argument("--port", type=int, default=18000, help="Demo/backend loopback port (default: 18000)")
     parser.add_argument("--startup-timeout", type=int, default=900, help="Model startup timeout, seconds")
     args = parser.parse_args()
@@ -98,16 +101,18 @@ def main():
     try:
         require_free(args.port)
         if args.backend_only:
-            # Non-mutating checks. The proxy OpenAPI check doesn't invoke a model.
+            # Non-mutating checks, never start/stop the reused service(s).
             if not get_json("http://127.0.0.1:10003/v1/models").get("data"):
                 raise RuntimeError("Omni 尚未就绪。")
-            get_json("http://127.0.0.1:10004/openapi.json")
+            if args.inference_mode == "proxy":
+                get_json("http://127.0.0.1:10004/openapi.json")
         else:
             require_free(10003)
-            require_free(10004)
+            if args.inference_mode == "proxy":
+                require_free(10004)
         stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
         logdir = ROOT / "exp" / "web_demo" / (stamp + f"-{os.getpid()}")
-        logdir.mkdir(parents=True, exist_ok=False)
+        logdir.mkdir(mode=0o700, parents=True, exist_ok=False)
         print(f"启动 HumDial 笔记本演示。日志：{logdir}", flush=True)
         env = dict(os.environ, QWEN_HOST="127.0.0.1", QWEN_PORT="10003",
                    FDBC_PROXY_HOST="127.0.0.1", FDBC_PROXY_PORT="10004",
@@ -116,6 +121,18 @@ def main():
                    PYTHONUNBUFFERED="1")
         env.setdefault("FDBC_DEMO_TALKER_NUMERICS", "native")
         env.setdefault("FDBC_DEMO_CODEC_CHUNKS", "4:12")
+        endpoint = f"http://127.0.0.1:{10003 if args.inference_mode == 'direct' else 10004}/v1/chat/completions"
+        # Explicit selection applies to text, routing and TTS together, even if
+        # the shell inherited a stale separate TTS URL from a previous launch.
+        env.update(FDBC_QWEN_URL=endpoint, FDBC_OMNI_TTS_URL=endpoint,
+                   FDBC_DEMO_INFERENCE_MODE=args.inference_mode)
+        topology = {"version": "demo-transport-v1", "mode": args.inference_mode,
+            "text_endpoint": endpoint, "tts_endpoint": endpoint, "backend_only": args.backend_only,
+            "proxy_started": not args.backend_only and args.inference_mode == "proxy"}
+        with (logdir / "topology.json").open("w", encoding="utf-8") as handle:
+            os.chmod(handle.name, 0o600)
+            json.dump(topology, handle, ensure_ascii=False, indent=2)
+        print(f"推理入口：{args.inference_mode} → {endpoint}（文本/路由/TTS 共用）", flush=True)
         for key in ("OMP_NUM_THREADS", "MKL_NUM_THREADS"):
             if env.get(key, "") in ("", "0"):
                 env[key] = "8"
@@ -124,6 +141,7 @@ def main():
         def start(name, command, url, timeout, check=None):
             logfile = logdir / (name + ".log")
             handle = logfile.open("w", encoding="utf-8")
+            os.chmod(logfile, 0o600)
             try:
                 process = subprocess.Popen(command, cwd=ROOT, env=env, stdout=handle,
                                            stderr=subprocess.STDOUT, start_new_session=True)
@@ -137,8 +155,9 @@ def main():
         if not args.backend_only:
             start("omni", ["bash", "setup/start_qwen3omni_audio.sh"],
                   "http://127.0.0.1:10003/v1/models", args.startup_timeout, lambda d: bool(d.get("data")))
-            start("proxy", ["bash", "setup/start_qwen3_proxy.sh"],
-                  "http://127.0.0.1:10004/openapi.json", 60)
+            if args.inference_mode == "proxy":
+                start("proxy", ["bash", "setup/start_qwen3_proxy.sh"],
+                      "http://127.0.0.1:10004/openapi.json", 60)
         start("backend", [sys.executable, "src/backend.py", "--streaming", "--demo-chat", "--host", "127.0.0.1", "--port", str(args.port)],
               f"http://127.0.0.1:{args.port}/api/demo/info", 120, lambda d: d.get("streaming") is True)
         print(f"\nDEMO READY → http://localhost:{args.port}/demo/\n"

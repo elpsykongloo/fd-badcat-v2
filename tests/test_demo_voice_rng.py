@@ -50,6 +50,7 @@ async def test_actor_uses_and_records_the_same_voice_payload(monkeypatch, enable
     from test_chat_demo import actor
     observed, recorded = [], []
     async def tts(text, **options):
+        options.pop("transport_context", None)
         observed.append(module.verbatim_tts_payload(text, **options))
         yield stream_transport.PCMChunk(b"\0\0", 24000)
     monkeypatch.setattr(module, "tts_omni_stream", tts)

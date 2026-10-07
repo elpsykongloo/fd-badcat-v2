@@ -35,6 +35,23 @@ def test_demo_scheduling_is_declared_only_for_explicit_demo():
             'buffer_ms':600,'diagnostics':True}
 
 
+def test_demo_reliability_capabilities_and_safe_endpoints(monkeypatch):
+    import module
+    monkeypatch.setenv("FDBC_DEMO_INFERENCE_MODE", "direct")
+    monkeypatch.setattr(module, "QWEN_URL", "http://user:secret@127.0.0.1:10003/v1/chat/completions?key=secret")
+    monkeypatch.setattr(module, "OMNI_TTS_URL", "http://127.0.0.1:10003/v1/chat/completions")
+    cfg = {"stream_response": True, "chat_demo": True, "guarded_turns": True,
+           "spoken_text_normalization": True, "tts_transport_retries": 1,
+           "input_continuation_context": True}
+    with TestClient(create_app({}, {}, engine_cfg=cfg)) as client:
+        info = client.get("/api/demo/info").json()
+        assert info["inference"] == {"mode": "direct", "text_endpoint": module.OMNI_TTS_URL,
+                                     "tts_endpoint": module.OMNI_TTS_URL}
+        assert info["speech_text"] == "spoken-text-v1"
+        assert info["tts_recovery"]["before_pcm_only"] and info["tts_recovery"]["max_retries"] == 1
+        assert info["input_continuation"]["audio_grounded"] is True
+
+
 def test_demo_declares_bounded_audio_grounded_response_completion():
     config = {"stream_response": True, "chat_demo": True,
               "response_completion_repair": True}
@@ -185,6 +202,42 @@ def test_launcher_refuses_occupied_port_without_touching_owner():
         with pytest.raises(RuntimeError, match="不会停止或接管"):
             launcher.require_free(existing.getsockname()[1])
         assert existing.fileno() >= 0
+
+
+@pytest.mark.parametrize("mode,backend_only", [("direct", False), ("direct", True), ("proxy", False), ("proxy", True)])
+def test_launcher_routes_all_models_to_selected_endpoint(monkeypatch, tmp_path, mode, backend_only):
+    import json
+    launcher = load_launcher()
+    monkeypatch.setattr(launcher, "ROOT", tmp_path)
+    argv = ["serve_demo.py", "--inference-mode", mode] + (["--backend-only"] if backend_only else [])
+    monkeypatch.setattr(launcher.sys, "argv", argv)
+    monkeypatch.setenv("FDBC_QWEN_URL", "http://stale-shell/text")
+    monkeypatch.setenv("FDBC_OMNI_TTS_URL", "http://stale-shell/audio")
+    free, started, checked = [], [], []
+    monkeypatch.setattr(launcher, "require_free", free.append)
+    monkeypatch.setattr(launcher, "get_json", lambda url: checked.append(url) or {"data": ["model"]})
+    monkeypatch.setattr(launcher, "wait_ready", lambda *args, **kwargs: None)
+    monkeypatch.setattr(launcher.signal, "signal", lambda *args: None)
+    class Process:
+        pid = 999999
+        returncode = 1
+        def poll(self):
+            return 1  # Leave the supervisor immediately, without a sleep.
+    def popen(command, **kwargs):
+        started.append((command, kwargs["env"]))
+        return Process()
+    monkeypatch.setattr(launcher.subprocess, "Popen", popen)
+    monkeypatch.setattr(launcher, "stop_owned", lambda children: [handle.close() for _, _, handle in children])
+    assert launcher.main() == 1
+    assert len(started) == (1 if backend_only else 2 if mode == "direct" else 3)
+    endpoint = f"http://127.0.0.1:{10003 if mode == 'direct' else 10004}/v1/chat/completions"
+    for _, env in started:
+        assert env["FDBC_QWEN_URL"] == env["FDBC_OMNI_TTS_URL"] == endpoint
+    if mode == "direct":
+        assert 10004 not in free and not any(":10004" in url for url in checked)
+    topology = next((tmp_path / "exp/web_demo").glob("*/topology.json"))
+    assert json.loads(topology.read_text())["mode"] == mode
+    assert topology.stat().st_mode & 0o777 == 0o600
 
 
 def test_launcher_shutdown_only_signals_its_owned_process_groups(monkeypatch):

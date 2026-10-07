@@ -19,6 +19,7 @@ import numpy as np
 from demo_diagnostics import load_jsonl
 from input_audio import INPUT_HEADER
 from stream_transport import PCMChunk, TextDelta
+from transport_diagnostics import RecordedTransportError
 
 
 SIGNATURE_EVENTS = frozenset({
@@ -127,10 +128,17 @@ class RecordedStreams:
     async def audio(self, text, **_):
         case = await self._take("tts")
         path = case["_path"] / "output.wav"
-        pcm, rate = _read_pcm16(path)
-        chunk = max(1, int(rate * .12))
-        for start in range(0, len(pcm), chunk):
-            yield PCMChunk(pcm[start:start + chunk].tobytes(), rate)
+        outcome = case.get("outcome") or {}
+        if outcome.get("audio"):
+            pcm, rate = _read_pcm16(path)
+            chunk = max(1, int(rate * .12))
+            for start in range(0, len(pcm), chunk):
+                yield PCMChunk(pcm[start:start + chunk].tobytes(), rate)
+        if outcome.get("status") == "error":
+            evidence = outcome.get("transport") or {}
+            raise RecordedTransportError(evidence, evidence.get("retryable_transport", False))
+        if not outcome.get("audio"):
+            raise RuntimeError("Recorded TTS call has no audio")
 
     def asr(self, _path):
         return self.asr_outputs.popleft() if self.asr_outputs else ""

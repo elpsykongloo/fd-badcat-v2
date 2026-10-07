@@ -333,14 +333,15 @@ def llm_qwen3o_strict(messages: list, *, route=False):
 
 
 def llm_qwen3o_stream(messages, *, route=False, max_tokens=None,
-                     continue_final_message=False, report_finish=False):
+                     continue_final_message=False, report_finish=False, transport_context=None):
     from stream_transport import text_stream
     return text_stream(QWEN_URL, qwen_text_payload(messages, route=route,
                        max_tokens=max_tokens, continue_final_message=continue_final_message),
-                       int(os.getenv("FDBC_QWEN_TIMEOUT", "300")), report_finish=report_finish)
+                       int(os.getenv("FDBC_QWEN_TIMEOUT", "300")), report_finish=report_finish,
+                       transport_context=transport_context)
 
 
-def tts_omni_stream(text, *, voice_control=None, timing=False):
+def tts_omni_stream(text, *, voice_control=None, timing=False, transport_context=None):
     from stream_transport import audio_stream
     if TTS_PROVIDER not in {"omni", "qwen3omni", "qwen3-omni"}:
         raise ValueError("Streaming speech currently requires the Omni TTS provider")
@@ -349,4 +350,4 @@ def tts_omni_stream(text, *, voice_control=None, timing=False):
         **validate_demo_voice(voice_control)}
     return audio_stream(OMNI_TTS_URL, payload,
                         int(os.getenv("FDBC_OMNI_TTS_TIMEOUT", "600")), expected_text=text,
-                        expected_voice=proof, timing=timing)
+                        expected_voice=proof, timing=timing, transport_context=transport_context)

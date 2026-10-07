@@ -9,6 +9,10 @@ engine:
   stream_startup_ms: 350
   stream_prefetch_ms: 2000
   stream_diagnostics: true
+  # Shared canonical text for UI, TTS literals, references and played history.
+  spoken_text_normalization: true
+  # One fresh-connection retry only before ANY PCM of the current sentence.
+  tts_transport_retries: 1
   # One audio-grounded continuation if the response ends at a short promise.
   response_completion_repair: true
   # Track EOS vs length; resume the exact assistant prefix in the same reply.
@@ -22,6 +26,9 @@ engine:
   cancellable_response: true
   guarded_turns: true
   input_decision_timeout_s: 2
+  # Preserve accepted unfinished USER audio in continuation readiness routing.
+  input_continuation_context: true
+  input_context_max_gap_s: 20
   # Retain actual pre-trigger audio; does not wait another 160ms to dispatch.
   # VAD threshold/end silence stay at 0.5/100ms after paired tuning.
   input_preroll_ms: 320

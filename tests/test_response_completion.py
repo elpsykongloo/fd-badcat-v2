@@ -92,6 +92,7 @@ async def test_native_prefix_continues_multiple_times_without_extra_space_or_dup
     assert len(calls) == 3 and calls[0][0] is MESSAGES
     assert calls[1][0] == [*MESSAGES, {"role": "assistant", "content": "从前小猫发现了一颗"}]
     assert calls[2][0][-1]["content"] == "从前小猫发现了一颗星星。它把星星送回"
+    assert calls[1][1].pop("transport_context")["request_id"].startswith("call-")
     assert calls[1][1] == {"report_finish": True, "max_tokens": 512, "continue_final_message": True}
     assert e.request_capacity.snapshot()["active_total"] == 0
 

@@ -97,6 +97,8 @@ def build_manifest(*, session_id, repository_root, profile, engine_cfg, delay,
     engine_keys = (
         "chat_demo", "stream_response", "stream_packet_ms", "stream_buffer_ms",
         "stream_startup_ms", "stream_prefetch_ms", "stream_diagnostics",
+        "spoken_text_normalization", "tts_transport_retries", "input_continuation_context",
+        "input_context_max_gap_s",
         "response_completion_repair",
         "response_length_repair", "response_max_tokens", "response_max_continuations",
         "playback_autoend", "control_validation", "speculative_response",
@@ -111,6 +113,8 @@ def build_manifest(*, session_id, repository_root, profile, engine_cfg, delay,
     )
     llm_keys = ("model", "decision_timeout_s", "audio_block")
     asr_keys = ("backend", "provider", "num_threads")
+    import module as adapters
+    from transport_diagnostics import safe_endpoint
     return {
         "version": MANIFEST_VERSION,
         "diagnostics_version": DIAGNOSTICS_VERSION,
@@ -124,6 +128,9 @@ def build_manifest(*, session_id, repository_root, profile, engine_cfg, delay,
             "route": "transcript-first-v1", "reply": "played-reply-v1",
             "speech_reference": "speech-reference-v1",
             "tts": "verbatim-grammar-v2", "continuity": "demo-continuity-v1",
+            "transport": "model-transport-v1",
+            "speech_text": "spoken-text-v1" if engine_cfg.get("spoken_text_normalization") else "literal",
+            "input_continuation": "pending-user-audio-v1" if engine_cfg.get("input_continuation_context") else None,
         },
         "effective": {
             "engine": {k: engine_cfg[k] for k in engine_keys if k in engine_cfg},
@@ -134,6 +141,9 @@ def build_manifest(*, session_id, repository_root, profile, engine_cfg, delay,
             "llm": {k: llm_cfg[k] for k in llm_keys if k in llm_cfg},
             "asr": {k: asr_cfg[k] for k in asr_keys if k in asr_cfg},
             "runtime": {
+                "transport_version": "model-transport-v1",
+                "text_endpoint": safe_endpoint(adapters.QWEN_URL),
+                "tts_endpoint": safe_endpoint(adapters.OMNI_TTS_URL),
                 "talker_numerics": os.environ.get("FDBC_DEMO_TALKER_NUMERICS", "off")[:32],
                 "codec_chunks": os.environ.get("FDBC_DEMO_CODEC_CHUNKS", "default")[:32],
             },
@@ -307,7 +317,7 @@ def build_turns(rows, cases):
             if event in {"input_admitted", "input_rejected", "input_waiting", "input_ignored",
                          "candidate_confirmed", "candidate_cancelled", "turn_finished",
                          "llm_stale_dropped", "speech_error", "engine_error",
-                         "response_completion_repair"}:
+                         "response_completion_repair", "tts_recovery"}:
                 outcomes.append({"event": event, **{k: v for k, v in data.items()
                     if k not in {"content", "prompt", "text"}}})
         history = [{k: data.get(k) for k in (
@@ -345,6 +355,7 @@ def build_spans(rows):
             if event == "model_call_dispatch":
                 span["milestones"]["dispatch"] = at
                 span["transport"] = data.get("transport")
+                span.update({k: data[k] for k in ("tts_operation_id", "tts_attempt", "utterance_id", "candidate_id") if k in data})
             elif event == "capacity_acquired":
                 span["milestones"]["capacity_acquired"] = at
                 span["capacity_wait_ms"] = data.get("wait_ms")
@@ -359,6 +370,8 @@ def build_spans(rows):
                 span["elapsed_ms"] = data.get("elapsed_ms")
                 span["status"] = data.get("status")
                 span["error_type"] = data.get("error_type")
+                if data.get("transport_state"):
+                    span["transport_state"] = data["transport_state"]
                 if data.get("finish_reason") is not None:
                     span["finish_reason"] = data["finish_reason"]
             elif event == "model_case_started":
@@ -509,6 +522,9 @@ def audit_session(rows, turns, cases, manifest, spans=None):
             add(event, "error", "Runtime diagnostic error", error_type=data.get("error_type") or data.get("type"))
         elif event in {"client_underrun", "socket_slow_send", "llm_timeout"}:
             add(event, "warning", "Runtime health anomaly", utterance_id=data.get("utterance_id"))
+        elif event == "speech_timing" and data.get("phase") == "tts_audio_warning":
+            add("tts_audio_warning", "warning", "Long low-energy generated audio; not a listening gold label",
+                utterance_id=data.get("utterance_id"), sentence_index=data.get("sentence_index"))
         elif event == "response_completion_repair" and data.get("stage") == "failed":
             add("response_completion_repair_failed", "warning",
                 "Promise-only response continuation failed", error_type=data.get("error_type"))

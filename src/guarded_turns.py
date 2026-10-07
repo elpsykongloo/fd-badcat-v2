@@ -26,11 +26,43 @@ def input_timing(config=None):
     return {"vad_threshold": 0.5, "vad_silence_ms": 100, "preroll_ms": preroll}
 
 
-def route_messages(prompt, content, *, playing=False, reference=""):
+CONTINUATION_PROTOCOL = "pending-user-audio-v1"
+
+
+def route_messages(prompt, content, *, playing=False, reference="", continuation=None,
+                   context_content=None):
     # Keep the keyword for existing callers, but never send assistant text: the
     # transcriber can copy it into fictitious microphone speech. Acoustic
     # reference filtering and playback-aligned diagnostic snapshots are intact.
-    context = "情境资料：" + json.dumps({"assistant_playing": bool(playing)}, ensure_ascii=False)
+    metadata = {"assistant_playing": bool(playing)}
+    if continuation:
+        metadata["pending_user_audio"] = continuation
+        replied_context = continuation.get("source") == "recent_replied_user_audio"
+        transcript_rule = ("transcript只逐字转写起点之后的新增语音，不得复制前半段旧语音；"
+                           if replied_context else "transcript逐字转写整个音频。")
+        prompt += ("\n本次音频包含两部分：先是此前已接纳、尚未回答完的用户表达，再是本次新增语音。"
+                   "情境资料给出新增语音的起点。请听完整段音频，把真正的续说与前文一起理解，"
+                   "不能仅因新增部分单独看不像完整句就丢弃。" + transcript_rule +
+                   "label判断用户最新意图：新增部分明确停止则stop_only，要求继续等则yield_wait；"
+                   "新增部分完成此前表达或提出独立完整新请求才可yield_ready。"
+                   "如果新增部分只是噪声、回声、无关碎音或明显向第三方讲话，仍为keep；"
+                   "不能只凭先前已保存的语音再次授权回答。不要使用助手的未播内容。")
+        if replied_context:
+            prompt += ("\n前半段用户语音的回答已经开始；它仅用来理解后半段的续说、补充或纠正，"
+                       "不是一个需要再次回应的旧请求。只按后半段最新意图决定动作；"
+                       "若后半段只是在附和、赞同或鼓励，必须keep。不要让前半段的完整请求覆盖后半段。")
+    context = "情境资料：" + json.dumps(metadata, ensure_ascii=False)
+    if context_content is not None:
+        # Distinct audio blocks are a real boundary. A timestamp inside one
+        # concatenated waveform did NOT stop Omni from copying old speech into
+        # the new transcript and treating a backchannel as a repeated request.
+        prompt += ("\n有两个独立音频块：第一块是已接纳的此前用户语音，仅作上下文；"
+                   "第二块是当前新增麦克风语音。只转写第二块到transcript；"
+                   "听两块来理解续说，但label只按第二块最新意图判断。"
+                   "第一块已有的完整请求不能让第二块的附和变成新请求。")
+        return [{"role": "system", "content": prompt}, {"role": "user", "content": [
+            {"type": "text", "text": context + "\n第一块：此前用户语音，仅作上下文。"}, context_content,
+            {"type": "text", "text": "第二块：新增用户语音，请只转写这一块并判断最新意图。"}, content]}]
     context += "\n接下来的音频块是本次待判断的麦克风采样，请分类。"
     return [{"role": "system", "content": prompt},
             {"role": "user", "content": [{"type": "text", "text": context}, content]}]
@@ -62,6 +94,9 @@ class InputSpan:
     preroll_samples: int = 0
     reply_context: str = ""
     reply_played_samples: int = 0
+    # Immutable user audio frozen at input onset; route context only, not a
+    # second copy in ASR/response history or an assistant-text reference.
+    replied_user_audio: object = None
 
 
 @dataclass
@@ -86,6 +121,11 @@ class GuardedTurns:
         self.input_timing = input_timing(self.engine_cfg if self.GUARDED_TURNS else {})
         self._guard_preroll = deque(maxlen=self.input_timing["preroll_ms"] // 16)
         self._guard_wait_audio = []
+        self._guard_wait_end = None
+        self.CONTINUATION_CONTEXT = bool(self.GUARDED_TURNS and self.engine_cfg.get("input_continuation_context", False))
+        self._guard_context_gap = float(self.engine_cfg.get("input_context_max_gap_s", 20))
+        if not 1 <= self._guard_context_gap <= 30:
+            raise ValueError("input_context_max_gap_s must be in [1, 30]")
         self._guard_wait_reason = None
         self._guard_outputs = {}
         self._guard_echo = EchoEvidence()
@@ -140,6 +180,22 @@ class GuardedTurns:
         if c is not None and c.published and self._speech is c.pipeline and not self._speech_started:
             await self.send_control("speech_hold", {"utterance_id": c.pipeline.sid, "held": held})
 
+    def _guard_pending_audio(self, span):
+        """Read-only snapshot of audio that admission would merge into a reply.
+
+        Before admission a held, unplayed candidate still owns its input. After
+        admission that exact prefix is in wait_audio instead: never attach both.
+        Playback-start races discard this candidate context on re-evaluation.
+        """
+        if not self.CONTINUATION_CONTEXT:
+            return []
+        prefix = []
+        held = span.held_candidate
+        if (not span.admitted and held is not None and held is self._candidate
+                and (self._speech is None or not self._speech_started)):
+            prefix = [held.audio, np.zeros(1600, dtype=np.float32)]
+        return prefix + self._guard_wait_audio
+
     async def _guard_frame(self, ev, event):
         frame, t = ev.pcm, ev.t_audio
         span = self._guard_input
@@ -153,6 +209,15 @@ class GuardedTurns:
                 span.provisional_keep = False
                 span.frames.append(frame.copy())
             else:
+                if (self.CONTINUATION_CONTEXT and self._guard_wait_audio
+                        and self._guard_wait_end is not None
+                        and t - self._guard_wait_end > self._guard_context_gap):
+                    self._observe("input_context_expired", {"protocol": CONTINUATION_PROTOCOL,
+                        "gap_s": round(t - self._guard_wait_end, 3),
+                        "context_samples": sum(map(len, self._guard_wait_audio))})
+                    self._guard_wait_audio = []
+                    self._guard_wait_end = None
+                    self._guard_wait_reason = None
                 self._input_serial += 1
                 held = self._candidate
                 mode = "playing" if self._speech is not None and self._speech_started else (
@@ -169,6 +234,14 @@ class GuardedTurns:
                         span.reply_played_samples = self._speech.played
                         span.reply_context = completed_context(record.get("sentences", []),
                                                                span.reply_played_samples)
+                    c = self._speech_candidate
+                    if (self.CONTINUATION_CONTEXT and c is not None
+                            and 0 <= t - c.anchor <= self._guard_context_gap):
+                        span.replied_user_audio = c.audio
+                elif mode == "preplay" and self.CONTINUATION_CONTEXT:
+                    # If playback wins an in-flight admission race, the same
+                    # onset-frozen USER input is still available to re-route.
+                    span.replied_user_audio = held.audio
                 self._guard_input = span
                 await self._guard_hold(held, True)
             self.IN_SPEECH = True
@@ -180,7 +253,12 @@ class GuardedTurns:
         if span is not None and not span.decided:
             span.frame_count += 1
             span.echo_frames += bool(self._guard_evidence.get("echo_only"))
-            if sum(map(len, span.frames)) > self._guard_max_samples:
+            context_size = sum(map(len, self._guard_pending_audio(span)))
+            if context_size + sum(map(len, span.frames)) > self._guard_max_samples:
+                if self.CONTINUATION_CONTEXT:
+                    self._guard_wait_audio = []
+                    self._guard_wait_end = None
+                    self._guard_wait_reason = "input_limit"
                 await self._guard_reject(span, "input_limit")
                 await self.send_control("input_notice", {"message": "这段语音过长，请分段说。"})
             elif event and "end" in event:
@@ -210,11 +288,37 @@ class GuardedTurns:
         gen, revision = self.session_gen, span.revision
         operation_id = self._diagnostic_id("input")
         audio = np.concatenate(span.frames[:span.end_index] if closed else span.frames)
+        current_samples = len(audio)
         if not audio.size or float(np.max(np.abs(audio))) < 1e-5 or (
                 span.echo_frames >= 3 and span.echo_frames / max(span.frame_count, 1) >= .5):
             self.q.put_nowait(InputDecision(gen, span.sid, revision, closed,
                 audit={"acoustic_reject": True}))
             return
+        # Acoustic admission is checked on the NEW frames above. Old accepted
+        # speech must never make current silence/echo look like a new request.
+        context_audio = self._guard_pending_audio(span)
+        context_source = "accepted_unanswered_user_audio" if context_audio else None
+        # During playback, a fragment such as "of the refugee crisis" must not
+        # lose the recent question it completes. This is route-only context:
+        # normal response history and new-user ASR retain their existing inputs.
+        # Optional played context cannot consume the new input's audio budget.
+        previous = span.replied_user_audio
+        if (not context_audio and previous is not None
+                and len(previous) + 1600 + current_samples <= self._guard_max_samples):
+            context_audio = [previous, np.zeros(1600, dtype=np.float32)]
+            context_source = "recent_replied_user_audio"
+        context_samples = sum(map(len, context_audio))
+        continuation = None
+        context_content = None
+        if context_samples:
+            continuation = {"protocol": CONTINUATION_PROTOCOL,
+                "current_start_ms": round(context_samples / 16, 3),
+                "source": context_source}
+            if context_source == "recent_replied_user_audio":
+                continuation.update(route_only=True, transcript_scope="new_audio_only", audio_layout="two_blocks")
+                context_content = build_audio_content(np.concatenate(context_audio), 16000, self.AUDIO_BLOCK)
+            else:
+                audio = np.concatenate([*context_audio, audio])
         content = build_audio_content(audio, 16000, self.AUDIO_BLOCK)
         playing = not span.admitted and (span.mode == "playing" or (
             self._speech is not None and self._speech_started))
@@ -226,9 +330,13 @@ class GuardedTurns:
             if span.reference_kind != "playback_sentence_window":
                 self._guard_capture_reference(span)
         messages = route_messages(self.prompts["input_route"], content,
-                                  playing=playing, reference=span.reference_text)
+                                  playing=playing, reference=span.reference_text,
+                                  continuation=continuation, context_content=context_content)
         self._observe("input_dispatch", {"input_id": span.sid, "revision": revision,
-            "closed": closed, "playing": playing, "audio_samples": len(audio),
+            "closed": closed, "playing": playing, "audio_samples": current_samples + context_samples,
+            "current_audio_samples": current_samples, "context_audio_samples": context_samples,
+            "context_source": context_source,
+            "continuation_protocol": CONTINUATION_PROTOCOL if continuation else None,
             "parent_id": operation_id,
             "reference_kind": span.reference_kind, "reference_utterance_id": span.reference_sid,
             "reference_chars": len(span.reference_text), "reference_played_samples": span.reference_played,
@@ -242,6 +350,9 @@ class GuardedTurns:
         reply_context = span.reply_context
         reference_context.update(reply_protocol=REPLY_PROTOCOL,
             reply_context_chars=len(reply_context), reply_played_samples=span.reply_played_samples)
+        reference_context.update(continuation_protocol=CONTINUATION_PROTOCOL if continuation else None,
+            context_audio_samples=context_samples, current_audio_samples=current_samples,
+            context_source=context_source)
 
         async def call(msgs, stage):
             parts = []
@@ -320,8 +431,10 @@ class GuardedTurns:
                     kept = span.frames[:span.end_index]
                     if sum(map(len, self._guard_wait_audio + kept)) + 1600 <= self._guard_max_samples:
                         self._guard_wait_audio += [np.concatenate(kept), np.zeros(1600, dtype=np.float32)]
+                        self._guard_wait_end = span.end
                     else:
                         self._guard_wait_audio = []
+                        self._guard_wait_end = None
                     self._guard_wait_reason = "uncertain_after_yield"
                 await self._guard_reject(span, "insufficient_evidence")
             else:
@@ -361,12 +474,14 @@ class GuardedTurns:
         self.IN_SPEECH = False
         if ev.route == "stop_only":
             self._guard_wait_audio = []
+            self._guard_wait_end = None
             self._guard_wait_reason = "stop_only"
             span.frames.clear()
             await self.send_control("input_waiting", {"reason": "stop_only", "input_id": span.sid})
             return
         audio_parts = self._guard_wait_audio + span.frames[:span.end_index]
         self._guard_wait_audio = []
+        self._guard_wait_end = None
         if sum(map(len, audio_parts)) > self._guard_max_samples:
             self._guard_wait_reason = "input_limit"
             span.frames.clear()
@@ -376,6 +491,7 @@ class GuardedTurns:
         span.frames.clear()
         if ev.route == "yield_wait":
             self._guard_wait_audio = [audio, np.zeros(1600, dtype=np.float32)]
+            self._guard_wait_end = span.end
             self._guard_wait_reason = "awaiting_user"
             await self.send_control("input_waiting", {"reason": "awaiting_user", "input_id": span.sid})
             return
@@ -458,6 +574,7 @@ class GuardedTurns:
         self._guard_input = None
         self._guard_preroll.clear()
         self._guard_wait_audio = []
+        self._guard_wait_end = None
         self._guard_wait_reason = None
         self._guard_outputs.clear()
         self._guard_echo = EchoEvidence()

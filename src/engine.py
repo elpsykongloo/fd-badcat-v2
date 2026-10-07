@@ -58,6 +58,7 @@ from silero_vad import load_silero_vad, VADIterator
 from messages import build_audio_content, scrub_audio_blocks
 from request_capacity import CONTROL, NORMAL, process_request_capacity
 from speech_stream import PROTOCOL, SpeechEvent, SpeechPipeline, SocketOutbox
+from transport_diagnostics import failure_details, retryable_transport_error, SpeechSynthesisError
 from control_labels import LABELS, FALLBACK, parse_label, decide_control
 from actor_candidate import CandidateTurns, CandidateResult
 from guarded_turns import GuardedTurns, InputDecision
@@ -212,6 +213,9 @@ class ActorEngine(GuardedTurns, CandidateTurns):
             self.CHAT_DEMO and self.engine_cfg.get("response_completion_repair", False)
             and self.RESPONSE_COMPLETION_PROMPT)
         self.response_length = response_length_config(self.engine_cfg)
+        self.TTS_TRANSPORT_RETRIES = self.engine_cfg.get("tts_transport_retries", 0) if self.CHAT_DEMO else 0
+        if type(self.TTS_TRANSPORT_RETRIES) is not int or self.TTS_TRANSPORT_RETRIES not in (0, 1):
+            raise ValueError("demo tts_transport_retries must be 0 or 1")
         self.SHIFT_PROMPT = self.prompts.get("shift", "")
         self.SHIFT_RE_PROMPT = self.prompts.get("shift_s", "")
         self.AUDIO_BLOCK = self.llm_cfg.get("audio_block", "audio_url")
@@ -347,9 +351,9 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                        and event_type in {"speech_start", "speech_text_delta", "speech_text_done",
                                           "speech_sentence", "speech_first_audio", "speech_audio_end",
                                           "speech_error"} else None)
-                # A terminal incomplete notice must survive the cancellation it
-                # immediately causes. The browser still checks the utterance ID.
-                if event_type == "speech_error" and payload["data"].get("code") == "response_incomplete":
+                # All terminal errors must survive the cancellation they cause,
+                # including TTS/HTTP failures. The browser still fences by ID.
+                if event_type == "speech_error":
                     sid = None
                 self._outbox.put(json.dumps(payload), sid=sid)
             else:
@@ -472,10 +476,15 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                                call_id=None, parent_id=None, response_options=None):
         call_id = call_id or self._diagnostic_id("call")
         started = time.perf_counter()
+        links = {k: v for k, v in (case_context or {}).items()
+                 if k in {"tts_operation_id", "tts_attempt", "utterance_id", "candidate_id"}}
         self._observe("model_call_dispatch", {"kind": kind, "call_id": call_id,
-            "parent_id": parent_id, "transport": "stream"})
+            "parent_id": parent_id, "transport": "stream", **links})
         status, error, finish_reason = "cancelled", None, None
         first_output = True
+        transport_state = {"request_id": call_id}
+        failure = None
+        output_chunks = output_samples = 0
         try:
             async with self.request_capacity.slot(self._request_class(kind)):
                 self._observe("capacity_acquired", {"kind": kind, "call_id": call_id,
@@ -484,6 +493,9 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                     "capacity": self.request_capacity.snapshot()})
                 recording = None
                 stream_options = {}
+                import module as adapters
+                if stream_fn in (adapters.llm_qwen3o_stream, adapters.tts_omni_stream):
+                    stream_options["transport_context"] = transport_state
                 if response_options:
                     import module as adapters
                     if stream_fn is adapters.llm_qwen3o_stream:
@@ -528,6 +540,9 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                 try:
                     async with aclosing(stream_fn(arg, **stream_options)) as source:
                         async for item in source:
+                            output_chunks += 1
+                            if hasattr(item, "pcm"):
+                                output_samples += len(item.pcm) // 2
                             terminal = getattr(item, "finish_reason", None)
                             if terminal is not None:
                                 finish_reason = terminal
@@ -549,11 +564,15 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                     status = "completed"
                 except Exception as exc:
                     status, error = "error", type(exc).__name__
+                    failure = failure_details(exc, {**transport_state,
+                        **(getattr(exc, "transport_failure", None) or {}),
+                        "output_chunks": output_chunks, "output_samples": output_samples,
+                        "retryable_transport": retryable_transport_error(exc)})
                     raise
                 finally:
                     if recording:
                         try:
-                            queued = recording.finish(status, error)
+                            queued = recording.finish(status, error, transport=failure or transport_state)
                             self._observe("model_case_queued", {"case_id": recording.case["case_id"],
                                 "status": status, "queued": queued})
                         except Exception as exc:
@@ -565,7 +584,10 @@ class ActorEngine(GuardedTurns, CandidateTurns):
         finally:
             self._observe("model_call_done", {"kind": kind, "call_id": call_id,
                 "parent_id": parent_id, "status": status, "error_type": error,
+                **links,
                 **({"finish_reason": finish_reason} if finish_reason is not None else {}),
+                "transport_state": failure or transport_state,
+                "output_chunks": output_chunks, "output_samples": output_samples,
                 "elapsed_ms": round((time.perf_counter() - started) * 1000, 3)})
 
     async def _response_text_stream(self, messages, *, case_context=None, parent_id=None):
@@ -709,8 +731,41 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                 raise
             raise ResponseIncompleteError("upstream_error") from exc
 
-    def _response_tts_stream(self, text):
-        return self._capacity_stream("tts", self.tts_stream_fn, text)
+    async def _response_tts_stream(self, text, *, case_context=None, parent_id=None):
+        """Retry one unexposed sentence, never replay exposed PCM or a reply.
+
+        Every attempt has its own capacity slot/call/case and fresh HTTP
+        connection. Counters are worker-local; cancellation propagates through
+        the source and backoff without retrying or reviving an old utterance.
+        """
+        operation_id = self._diagnostic_id("tts")
+        context = {**(case_context or {}), "tts_operation_id": operation_id}
+        samples = 0
+        for attempt in range(self.TTS_TRANSPORT_RETRIES + 1):
+            try:
+                async with aclosing(self._capacity_stream("tts", self.tts_stream_fn, text,
+                        case_context={**context, "tts_attempt": attempt + 1}, parent_id=parent_id)) as source:
+                    async for item in source:
+                        samples += len(item.pcm) // 2
+                        yield item
+                if attempt:
+                    self._observe("tts_recovery", {**context, "parent_id": parent_id,
+                        "stage": "recovered", "attempts": attempt + 1, "output_samples": samples})
+                return
+            except asyncio.CancelledError:
+                raise
+            except Exception as exc:
+                retry = bool(attempt < self.TTS_TRANSPORT_RETRIES and samples == 0
+                             and retryable_transport_error(exc))
+                self._observe("tts_recovery", {**context, "parent_id": parent_id,
+                    "stage": "retry" if retry else "failed", "attempts": attempt + 1,
+                    "output_samples": samples, "error_type": type(exc).__name__,
+                    "transport_state": getattr(exc, "transport_failure", None)})
+                if not retry:
+                    if self.TTS_TRANSPORT_RETRIES:
+                        raise SpeechSynthesisError(operation_id, attempt + 1, samples, exc) from exc
+                    raise
+                await asyncio.sleep(.15)
 
     # ------------------------------------------------------------------
     # dispatch: fork a decision and return to the event loop immediately
@@ -1361,8 +1416,8 @@ class ActorEngine(GuardedTurns, CandidateTurns):
         parent_id = meta.parent_id
         text_fn = lambda value: self._response_text_stream(
             value, case_context={"utterance_id": speech_id}, parent_id=parent_id)
-        tts_fn = lambda value: self._capacity_stream(
-            "tts", self.tts_stream_fn, value,
+        tts_fn = lambda value: self._response_tts_stream(
+            value,
             case_context={"utterance_id": speech_id}, parent_id=parent_id)
         self._speech_meta = meta
         self._speech_audio_done = False
@@ -1389,6 +1444,7 @@ class ActorEngine(GuardedTurns, CandidateTurns):
             return {}
         return {"startup_ms": int(self.engine_cfg.get("stream_startup_ms", 80)),
                 "prefetch_ms": int(self.engine_cfg.get("stream_prefetch_ms", 0)),
+                "spoken_text": bool(self.engine_cfg.get("spoken_text_normalization", False)),
                 "diagnostics": bool(self.engine_cfg.get("stream_diagnostics", False))}
 
     async def _on_speech_event(self, ev):

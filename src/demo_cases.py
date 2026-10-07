@@ -144,7 +144,7 @@ class CaseCall:
                 self.truncated = True
         self.output_bytes += size
 
-    def finish(self, status, error=None):
+    def finish(self, status, error=None, *, transport=None):
         self.case["outcome"] = {"status": status, "error_type": error,
             "elapsed_ms": round((time.perf_counter() - self.start) * 1000, 3),
             "text": "".join(self.text), "output_truncated": self.truncated,
@@ -153,6 +153,8 @@ class CaseCall:
             "audio": "output.wav" if self.pcm else None}
         if self.finish_reason is not None:
             self.case["outcome"]["finish_reason"] = self.finish_reason
+        if transport:
+            self.case["outcome"]["transport"] = copy.deepcopy(transport)
         return self.archive.submit(self.case, self.pcm)
 
 

@@ -220,13 +220,15 @@ function control(s, msg) {
     activity(s, p && (!p.eof || p.played < p.received) ? "speaking" : "listening");
   } else if (msg.event === "input_notice") {
     $("status").textContent = d.message || "请继续说。";
-  } else if (msg.event === "speech_error" && d.code === "response_incomplete") {
+  } else if (msg.event === "speech_error") {
     // This terminal notice also covers a failed private candidate whose start
     // and text were correctly discarded before any playback could begin.
     if (!s.player.speech || d.utterance_id >= s.player.speech.id) {
       s.incompleteSpeechId = d.utterance_id;
       if (d.utterance_id === s.player.speech?.id) tagSpeech(s, "回答未完成", true);
-      notice("这次回答没能完整生成。请重新说一下你的请求。");
+      notice(d.code === "tts_unavailable"
+        ? "这次语音合成失败，回答未播完。你可以重新提出请求；故障状态已记录。"
+        : "这次回答没能完整生成。请重新说一下你的请求。");
     }
   } else if (s.player.speech && d.utterance_id === s.player.speech.id) {
     if (msg.event === "speech_hold") { s.player.hold(d.held === true); return; }
@@ -236,9 +238,6 @@ function control(s, msg) {
       record(key, "assistant", (messages.get(key)?.text || "") + String(d.text || ""));
     } else if (msg.event === "speech_audio_end") {
       s.player.finish(d);
-    } else if (msg.event === "speech_error") {
-      tagSpeech(s, "生成失败", true);
-      notice("本次回复生成失败。可以继续说话；如持续失败，请检查服务器日志。");
     }
   }
 }

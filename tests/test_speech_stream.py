@@ -256,6 +256,7 @@ async def test_proxy_streams_before_eof_and_closes_upstream_on_cancel(monkeypatc
         return response
     class Request:
         app = proxy.app
+        headers = {}
         async def json(self):
             return {"stream": True}
     async with server(handler) as url:
@@ -279,6 +280,7 @@ async def test_proxy_preserves_nonstream_payload_and_http_failure(monkeypatch):
         return web.json_response({"echo": payload}, status=429)
     class Request:
         app = proxy.app
+        headers = {}
         async def json(self):
             return {"messages": [{"role": "user", "content": "unchanged"}]}
     async with server(handler) as url:
