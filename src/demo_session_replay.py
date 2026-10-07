@@ -18,7 +18,7 @@ import numpy as np
 
 from demo_diagnostics import load_jsonl
 from input_audio import INPUT_HEADER
-from stream_transport import PCMChunk
+from stream_transport import PCMChunk, TextDelta
 
 
 SIGNATURE_EVENTS = frozenset({
@@ -118,6 +118,11 @@ class RecordedStreams:
         text = str((case.get("outcome") or {}).get("text", ""))
         if text:
             yield text
+        reason = (case.get("outcome") or {}).get("finish_reason")
+        if reason is not None:
+            yield TextDelta("", finish_reason=reason)
+        if (case.get("outcome") or {}).get("status") == "error":
+            raise RuntimeError("Recorded response call failed")
 
     async def audio(self, text, **_):
         case = await self._take("tts")

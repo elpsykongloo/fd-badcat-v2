@@ -202,7 +202,7 @@ function control(s, msg) {
     const resumed = ["user_resumed_before_playback", "accepted_user_input"].includes(d.reason);
     if (interrupted) s.interrupts++;
     const failed = d.reason === "stream_error";
-    tagSpeech(s, failed ? "生成失败，可能未播完" : resumed ? "续说，旧回答已撤销"
+    tagSpeech(s, failed ? (s.incompleteSpeechId === d.utterance_id ? "回答未完成" : "生成失败，可能未播完") : resumed ? "续说，旧回答已撤销"
       : interrupted ? "已打断，可能未播完" : "已停止，可能未播完", true);
     s.underruns += s.player.speech.underruns;
     s.player.cancel();
@@ -220,6 +220,14 @@ function control(s, msg) {
     activity(s, p && (!p.eof || p.played < p.received) ? "speaking" : "listening");
   } else if (msg.event === "input_notice") {
     $("status").textContent = d.message || "请继续说。";
+  } else if (msg.event === "speech_error" && d.code === "response_incomplete") {
+    // This terminal notice also covers a failed private candidate whose start
+    // and text were correctly discarded before any playback could begin.
+    if (!s.player.speech || d.utterance_id >= s.player.speech.id) {
+      s.incompleteSpeechId = d.utterance_id;
+      if (d.utterance_id === s.player.speech?.id) tagSpeech(s, "回答未完成", true);
+      notice("这次回答没能完整生成。请重新说一下你的请求。");
+    }
   } else if (s.player.speech && d.utterance_id === s.player.speech.id) {
     if (msg.event === "speech_hold") { s.player.hold(d.held === true); return; }
     if (msg.event === "speech_text_delta") {

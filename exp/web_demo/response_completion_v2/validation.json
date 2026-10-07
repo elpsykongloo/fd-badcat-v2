@@ -1,0 +1,97 @@
+{
+  "version": "response-completion-v2",
+  "date": "2026-10-07",
+  "scope": "Demo ordinary responses only. Self-authored synthetic audio, local real Omni and Chromium; no physical devices, human ratings, official benchmark or integrity-hash checks.",
+  "configuration": {
+    "response_length_repair": true,
+    "response_max_tokens": 512,
+    "response_max_continuations": 3,
+    "max_promise_repairs": 1,
+    "history_token_budget": 3000,
+    "length_continuation": "native assistant prefix; continue_final_message=true, add_generation_prompt=false",
+    "failure_behavior": "response_incomplete; cancel playback; visible notice; no successful text completion",
+    "frozen_configs_and_legacy_unchanged": true
+  },
+  "automated_regression": {
+    "pytest_passed": 259,
+    "pytest_seconds": 3.08,
+    "node_playback_microphone_guard_telemetry_continuity": "PASS",
+    "coverage": [
+      "stop/length terminal records, final content and empty usage records",
+      "missing/conflicting/unsupported finish reason and truncated SSE rejection",
+      "multiple native prefix continuations through one sentence/PCM pipeline",
+      "budget exhaustion, no progress, empty output, partial continuation failure",
+      "promise repair followed by length continuation and repeated promise rejection",
+      "cancel closes in-flight source and releases capacity without retry",
+      "oldest complete history pair eviction with original audio/prefix preservation",
+      "exact saved request budgets/prefix flags and finish reasons; recorded replay",
+      "terminal notice survives cancellation fence; private failure cannot reset budget or leak draft",
+      "demo API declaration and non-demo/shift/legacy contract isolation"
+    ]
+  },
+  "live_model": {
+    "passed": true,
+    "receipt": "live_01/receipt.json",
+    "serial": true,
+    "service_capacity": "production seq4/native; no overlapping validation workload",
+    "distinct_self_authored_audio_inputs": 2,
+    "languages": ["zh", "en"],
+    "conditions": 6,
+    "actual_response_requests": 9,
+    "fixture_tts_requests": 2,
+    "rows": [
+      {"language": "zh", "condition": "forced_length", "max_tokens": 64, "max_continuations": 6, "finish_reasons": ["length", "length", "stop"], "failure": null},
+      {"language": "zh", "condition": "production", "max_tokens": 512, "max_continuations": 3, "finish_reasons": ["stop"], "failure": null},
+      {"language": "zh", "condition": "exhausted", "max_tokens": 64, "max_continuations": 0, "finish_reasons": ["length"], "failure": "continuation_limit"},
+      {"language": "en", "condition": "forced_length", "max_tokens": 64, "max_continuations": 6, "finish_reasons": ["length", "stop"], "failure": null},
+      {"language": "en", "condition": "production", "max_tokens": 512, "max_continuations": 3, "finish_reasons": ["stop"], "failure": null},
+      {"language": "en", "condition": "exhausted", "max_tokens": 64, "max_continuations": 0, "finish_reasons": ["length"], "failure": "continuation_limit"}
+    ],
+    "exclusions": [],
+    "limits": "Three conditions reuse each audio input; not six independent audio samples. EOS and coherent observed endings do not establish general semantic task completion."
+  },
+  "browser_final": {
+    "passed": true,
+    "receipt": "browser_02/receipt.json",
+    "serial_sessions": 2,
+    "input": "Reuses live_01 self-authored Chinese audio",
+    "completed": {"max_tokens": 64, "max_continuations": 6, "finish_reasons": ["length", "length", "stop"], "speech_starts": 1, "played_complete": 1, "playback_underruns": 0, "page_errors": 0},
+    "exhausted": {"max_tokens": 64, "max_continuations": 0, "finish_reasons": ["length"], "speech_errors_received": 1, "error_code": "response_incomplete", "text_done": 0, "played_complete": 0, "visible_notice_and_tag_verified": true, "page_errors": 0},
+    "trace_closed_without_drop": true,
+    "scope": "Real browser, VAD, Actor, model, TTS and ACK; isolated loopback backend with forced small budget. DOM checks validate Chinese notice; container screenshots lack Chinese font rendering."
+  },
+  "preserved_failure": {
+    "receipt": "browser_01/receipt.json",
+    "completed_case_passed": true,
+    "exhausted_case_passed": false,
+    "finding": "Actor logged response_incomplete but the outbox discarded its tagged speech_error immediately after cancelling the stream; browser never received the notice.",
+    "repair": "Terminal incomplete notice survives output cancellation; browser checks utterance ID. Private incomplete candidates publish only the terminal notice and do not restart their budget.",
+    "excluded_from_final_pass_denominator": true
+  },
+  "deployed_integration": {
+    "passed": true,
+    "receipt": "continuity_01/receipt.json",
+    "startup_log": "exp/web_demo/20261007T112902Z-6898/backend.log",
+    "warmup_seconds": 4.914,
+    "warmup_tts_readbacks": 2,
+    "strict_text_finish_warmup": true,
+    "api_protocol": "response-completion-v2",
+    "scenario": "Long response -> explicit spoken stop -> STOP_ONLY silence for 3 seconds -> new instruction -> complete reply",
+    "speech_starts_including_input_resumption": 3,
+    "cancellations_including_input_resumption": 2,
+    "new_reply_completed": 1,
+    "cancelled_and_completed_playback_underruns": 0,
+    "page_errors": 0,
+    "engine_speech_case_errors": 0,
+    "trace_dropped": 0,
+    "listeners": ["127.0.0.1:10003", "127.0.0.1:10004", "127.0.0.1:18000"],
+    "service_left_running": true
+  },
+  "privacy": "Only code and this aggregate receipt are committed. Generated audio, detailed call archives, browser receipts/screenshots and session traces remain local. Existing user AGENTS restructuring and blueprint edits are preserved outside this commit.",
+  "limits": [
+    "Completion remains bounded by continuation count and context; failure is explicit, not silent success.",
+    "Length continuation uses native prefill and may produce a different suffix than an uninterrupted larger-budget request.",
+    "stop proves model/transport termination, not fulfillment of every semantic request.",
+    "These small controlled samples do not establish real-room robustness, physical acoustic quality or general zero regression."
+  ]
+}

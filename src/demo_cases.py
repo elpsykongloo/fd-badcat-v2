@@ -122,8 +122,11 @@ class CaseCall:
         self.text, self.pcm, self.rate = [], bytearray(), None
         self.output_bytes = 0
         self.truncated = False
+        self.finish_reason = None
 
     def feed(self, item):
+        if getattr(item, "finish_reason", None) is not None:
+            self.finish_reason = item.finish_reason
         if isinstance(item, str):
             size = len(item.encode("utf-8"))
             if self.output_bytes + size <= MAX_OUTPUT and not self.truncated:
@@ -148,6 +151,8 @@ class CaseCall:
             "observed_output_bytes": self.output_bytes,
             "sample_rate": self.rate, "saved_samples": len(self.pcm) // 2,
             "audio": "output.wav" if self.pcm else None}
+        if self.finish_reason is not None:
+            self.case["outcome"]["finish_reason"] = self.finish_reason
         return self.archive.submit(self.case, self.pcm)
 
 

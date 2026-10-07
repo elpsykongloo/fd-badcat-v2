@@ -24,9 +24,10 @@ class PCMChunk:
 
 class TextDelta(str):
     """A string delta carrying optional transport timing without changing callers."""
-    def __new__(cls, value, timing=None):
+    def __new__(cls, value, timing=None, *, finish_reason=None):
         obj = super().__new__(cls, value)
         obj.timing = timing or {}
+        obj.finish_reason = finish_reason
         return obj
 
 
@@ -75,17 +76,36 @@ async def sse_json(url, payload, timeout=60):
             raise RuntimeError("Truncated SSE: missing [DONE]")
 
 
-async def text_stream(url, payload, timeout=60):
+async def text_stream(url, payload, timeout=60, *, report_finish=False):
+    # Opt-in for demo responses. Legacy/control consumers keep their original
+    # string-only contract. Publish the terminal marker only after [DONE], so a
+    # broken connection after a finish record cannot masquerade as completion.
+    finish_reason = None
     async with aclosing(sse_json(url, payload, timeout)) as records:
         async for obj in records:
             if obj.get("modality", "text") != "text":
                 continue
             for choice in obj.get("choices", []):
+                if report_finish and choice.get("index", 0) != 0:
+                    raise RuntimeError("Unexpected response text choice")
                 content = (choice.get("delta") or {}).get("content")
                 if content:
+                    if report_finish and finish_reason is not None:
+                        raise RuntimeError("Response text after finish reason")
                     if not isinstance(content, str):
                         raise RuntimeError("Unexpected text delta")
                     yield TextDelta(content, obj.get("_transport"))
+                reason = choice.get("finish_reason")
+                if report_finish and reason is not None:
+                    if reason not in {"stop", "length"}:
+                        raise RuntimeError("Unsupported response finish reason")
+                    if finish_reason is not None and reason != finish_reason:
+                        raise RuntimeError("Conflicting response finish reasons")
+                    finish_reason = reason
+    if report_finish:
+        if finish_reason is None:
+            raise RuntimeError("Response stream missing finish reason")
+        yield TextDelta("", finish_reason=finish_reason)
 
 
 async def audio_stream(url, payload, timeout=60, *, expected_text=None, expected_voice=None,

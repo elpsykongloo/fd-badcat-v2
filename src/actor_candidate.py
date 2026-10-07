@@ -225,7 +225,13 @@ class CandidateTurns:
         elif c.stage == "continue":
             self._candidate_continue(c)
         elif c.pipeline is not None:
-            if c.error is not None:
+            if c.error is not None and c.error.get("code") == "response_incomplete":
+                # Exhausting a bounded completion must not reset its budget via
+                # a fresh private pipeline. Publish only the terminal notice;
+                # the failed, unplayed draft remains private.
+                c.stash = [SpeechEvent(c.pipeline.sid, "error", dict(c.error))]
+                await self._publish_candidate(c)
+            elif c.error is not None:
                 # Failed, still-private text/audio must not leak on confirmation.
                 # One fresh pipeline may retry the same frozen selected response.
                 c.restarts += 1

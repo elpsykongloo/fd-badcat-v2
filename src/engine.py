@@ -62,6 +62,7 @@ from control_labels import LABELS, FALLBACK, parse_label, decide_control
 from actor_candidate import CandidateTurns, CandidateResult
 from guarded_turns import GuardedTurns, InputDecision
 from input_audio import decode_input_packet
+from response_completion import ResponseIncompleteError, continuation_messages, response_length_config
 
 SAMPLE_RATE = 16000
 WINDOW_SIZE = 256
@@ -210,6 +211,7 @@ class ActorEngine(GuardedTurns, CandidateTurns):
         self.RESPONSE_COMPLETION_REPAIR = bool(
             self.CHAT_DEMO and self.engine_cfg.get("response_completion_repair", False)
             and self.RESPONSE_COMPLETION_PROMPT)
+        self.response_length = response_length_config(self.engine_cfg)
         self.SHIFT_PROMPT = self.prompts.get("shift", "")
         self.SHIFT_RE_PROMPT = self.prompts.get("shift_s", "")
         self.AUDIO_BLOCK = self.llm_cfg.get("audio_block", "audio_url")
@@ -345,6 +347,10 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                        and event_type in {"speech_start", "speech_text_delta", "speech_text_done",
                                           "speech_sentence", "speech_first_audio", "speech_audio_end",
                                           "speech_error"} else None)
+                # A terminal incomplete notice must survive the cancellation it
+                # immediately causes. The browser still checks the utterance ID.
+                if event_type == "speech_error" and payload["data"].get("code") == "response_incomplete":
+                    sid = None
                 self._outbox.put(json.dumps(payload), sid=sid)
             else:
                 await self.websocket.send_text(json.dumps(payload))
@@ -463,12 +469,12 @@ class ActorEngine(GuardedTurns, CandidateTurns):
         return task
 
     async def _capacity_stream(self, kind, stream_fn, arg, *, case_context=None, route=False,
-                               call_id=None, parent_id=None):
+                               call_id=None, parent_id=None, response_options=None):
         call_id = call_id or self._diagnostic_id("call")
         started = time.perf_counter()
         self._observe("model_call_dispatch", {"kind": kind, "call_id": call_id,
             "parent_id": parent_id, "transport": "stream"})
-        status, error = "cancelled", None
+        status, error, finish_reason = "cancelled", None, None
         first_output = True
         try:
             async with self.request_capacity.slot(self._request_class(kind)):
@@ -478,6 +484,10 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                     "capacity": self.request_capacity.snapshot()})
                 recording = None
                 stream_options = {}
+                if response_options:
+                    import module as adapters
+                    if stream_fn is adapters.llm_qwen3o_stream:
+                        stream_options.update(response_options)
                 if self.CHAT_DEMO and self.engine_cfg.get("stream_diagnostics", False):
                     import module as adapters
                     if stream_fn is adapters.tts_omni_stream:
@@ -499,7 +509,9 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                             is_tts = stream_fn is adapters.tts_omni_stream
                             payload = (adapters.verbatim_tts_payload(arg,
                                            voice_control=self.tts_voice_control) if is_tts
-                                       else adapters.qwen_text_payload(arg, route=route))
+                                       else adapters.qwen_text_payload(arg, route=route,
+                                           **{k: v for k, v in (response_options or {}).items()
+                                              if k in {"max_tokens", "continue_final_message"}}))
                             payload = {**payload, "stream": True}
                             role = "tts" if is_tts else next((name for name, prompt in self.prompts.items()
                                 if arg and arg[0].get("content") == prompt), kind.removeprefix("spec_"))
@@ -516,7 +528,10 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                 try:
                     async with aclosing(stream_fn(arg, **stream_options)) as source:
                         async for item in source:
-                            if first_output:
+                            terminal = getattr(item, "finish_reason", None)
+                            if terminal is not None:
+                                finish_reason = terminal
+                            if first_output and terminal is None:
                                 first_output = False
                                 transport = getattr(item, "timing", None) or {}
                                 self._observe("model_call_first_output", {"kind": kind,
@@ -550,10 +565,17 @@ class ActorEngine(GuardedTurns, CandidateTurns):
         finally:
             self._observe("model_call_done", {"kind": kind, "call_id": call_id,
                 "parent_id": parent_id, "status": status, "error_type": error,
+                **({"finish_reason": finish_reason} if finish_reason is not None else {}),
                 "elapsed_ms": round((time.perf_counter() - started) * 1000, 3)})
 
     async def _response_text_stream(self, messages, *, case_context=None, parent_id=None):
         """Stream one answer and append one continuation for a promise-only EOS."""
+        if self.response_length and messages and messages[0].get("content") == self.RESPONSE_PROMPT:
+            async with aclosing(self._complete_response_stream(messages,
+                    case_context=case_context, parent_id=parent_id)) as source:
+                async for part in source:
+                    yield part
+            return
         pieces = []
         is_demo_response = bool(self.RESPONSE_COMPLETION_REPAIR and messages
                                 and messages[0].get("content") == self.RESPONSE_PROMPT)
@@ -593,6 +615,99 @@ class ActorEngine(GuardedTurns, CandidateTurns):
             # A repair outage must not turn it into a speech pipeline failure.
             self._observe("response_completion_repair", {
                 **event_context, "stage": "failed", "error_type": type(exc).__name__})
+
+    async def _complete_response_stream(self, messages, *, case_context=None, parent_id=None):
+        """Append native assistant-prefix continuations in one cancellable stream.
+
+        All counters/text are task-local. Observation uses the diagnostic writer;
+        generated text reaches history only through existing speech events.
+        """
+        options = {"report_finish": True, "max_tokens": self.response_length["max_tokens"]}
+        request = messages
+        pieces = []
+        continuations = 0
+        promise_repaired = False
+        repair_offset = 0
+        stage, trigger = "draft", None
+        event_context = {"parent_id": parent_id, **(case_context or {})}
+        try:
+            while True:
+                reason = None
+                produced = False
+                context = {**(case_context or {}), "response_completion_stage": stage,
+                           "response_continuation": continuations,
+                           "response_completion_protocol": "response-completion-v2"}
+                async with aclosing(self._capacity_stream("response", self.text_stream_fn, request,
+                        case_context=context, parent_id=parent_id, response_options=options)) as source:
+                    async for part in source:
+                        terminal = getattr(part, "finish_reason", None)
+                        if terminal is not None:
+                            if part or reason is not None or terminal not in {"stop", "length"}:
+                                raise ResponseIncompleteError("invalid_finish_marker")
+                            reason = terminal
+                            continue
+                        if reason is not None:
+                            raise ResponseIncompleteError("text_after_finish")
+                        if part:
+                            if stage == "repair" and not produced and pieces and not pieces[-1][-1].isspace():
+                                pieces.append(" ")
+                                yield " "
+                            produced = True
+                            pieces.append(str(part))
+                            yield part
+                if reason is None:
+                    raise ResponseIncompleteError("missing_finish_reason")
+                text = "".join(pieces)
+                self._observe("response_completion_repair", {**event_context,
+                    "stage": "call_finished", "call_stage": stage,
+                    "continuation": continuations, "finish_reason": reason,
+                    "produced_output": produced})
+                if reason == "length":
+                    if not produced:
+                        raise ResponseIncompleteError("continuation_no_progress")
+                    if continuations >= self.response_length["max_continuations"]:
+                        raise ResponseIncompleteError("continuation_limit")
+                    request, removed = continuation_messages(messages, text, self.HISTORY_TOKEN_BUDGET)
+                    continuations += 1
+                    options = {**options, "continue_final_message": True}
+                    stage, trigger = "continuation", "length"
+                    self._observe("response_completion_repair", {**event_context,
+                        "stage": "dispatch", "trigger": trigger, "continuation": continuations,
+                        "prefix_chars": len(text), "removed_history_pairs": removed})
+                    continue
+                if not text.strip():
+                    raise ResponseIncompleteError("empty_response")
+                if promise_repaired and (not text[repair_offset:].strip()
+                                         or response_needs_completion(text[repair_offset:])):
+                    raise ResponseIncompleteError("promise_not_completed")
+                if self.RESPONSE_COMPLETION_REPAIR and response_needs_completion(text):
+                    if promise_repaired:
+                        raise ResponseIncompleteError("promise_not_completed")
+                    promise_repaired = True
+                    repair_offset = len(text)
+                    request = [*messages, {"role": "assistant", "content": text},
+                               {"role": "user", "content": self.RESPONSE_COMPLETION_PROMPT}]
+                    options = {k: v for k, v in options.items() if k != "continue_final_message"}
+                    stage, trigger = "repair", "promise"
+                    self._observe("response_completion_repair", {**event_context,
+                        "stage": "dispatch", "trigger": trigger, "draft_chars": len(text)})
+                    continue
+                self._observe("response_completion_repair", {**event_context,
+                    "stage": "completed", "finish_reason": "stop",
+                    "continuations": continuations, "promise_repaired": promise_repaired})
+                return
+        except asyncio.CancelledError:
+            self._observe("response_completion_repair", {**event_context,
+                "stage": "cancelled", "continuations": continuations})
+            raise
+        except Exception as exc:
+            self._observe("response_completion_repair", {**event_context,
+                "stage": "failed", "trigger": trigger,
+                "reason": getattr(exc, "reason", "upstream_error"),
+                "error_type": type(exc).__name__, "continuations": continuations})
+            if isinstance(exc, ResponseIncompleteError):
+                raise
+            raise ResponseIncompleteError("upstream_error") from exc
 
     def _response_tts_stream(self, text):
         return self._capacity_stream("tts", self.tts_stream_fn, text)

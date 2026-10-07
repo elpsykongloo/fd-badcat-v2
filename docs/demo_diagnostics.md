@@ -81,7 +81,7 @@ exp/demo_cases/captures/<case_id>/
 
 `demo-trace-v2` 为事件加入连续 `seq`。`turns.jsonl` 从 trace 和案例库派生，每轮汇总输入、路由、候选命运、回答/utterance、历史写入、播放样本、错误、`call_id` 和 `case_id`。派生文件可重建，原始事实仍以 trace/case 为准。
 
-`response-completion-v1` 的 dispatch/completed/failed 也进入逐轮 outcome。原回答调用和最多一次续写调用共享 parent/utterance，case context 分别标为 `response_completion_stage=draft|repair`；续写失败另进入 warning 队列。记录不含词表命中位置或用户转写。
+`response-completion-v2` 的 dispatch/call_finished/completed/failed/cancelled 进入逐轮 outcome。原回答、最多3次长度续写和最多1次短承诺修复共享 parent/utterance；case context 标为 `response_completion_stage=draft|continuation|repair`，保存实际请求预算、前缀续写参数及 outcome 的 `finish_reason`，请求 span 同样保留结束原因。续写失败进入异常队列；终止原因和原请求一起参与重放。机制见 `docs/demo_response_completion.md`。
 
 ### 3.3 请求级 span
 

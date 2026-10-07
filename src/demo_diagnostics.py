@@ -98,6 +98,7 @@ def build_manifest(*, session_id, repository_root, profile, engine_cfg, delay,
         "chat_demo", "stream_response", "stream_packet_ms", "stream_buffer_ms",
         "stream_startup_ms", "stream_prefetch_ms", "stream_diagnostics",
         "response_completion_repair",
+        "response_length_repair", "response_max_tokens", "response_max_continuations",
         "playback_autoend", "control_validation", "speculative_response",
         "cancellable_response", "guarded_turns", "input_decision_timeout_s",
         "input_preroll_ms", "max_input_seconds", "request_total_limit",
@@ -358,6 +359,8 @@ def build_spans(rows):
                 span["elapsed_ms"] = data.get("elapsed_ms")
                 span["status"] = data.get("status")
                 span["error_type"] = data.get("error_type")
+                if data.get("finish_reason") is not None:
+                    span["finish_reason"] = data["finish_reason"]
             elif event == "model_case_started":
                 span.setdefault("case_ids", []).append(data.get("case_id"))
         sid = data.get("utterance_id")
@@ -635,6 +638,7 @@ class DiagnosticStore:
             case_view[case_id] = {"case_id": case_id, "kind": case.get("kind"),
                 "context": case.get("context"), "status": outcome.get("status"),
                 "elapsed_ms": outcome.get("elapsed_ms"), "text": outcome.get("text"),
+                "finish_reason": outcome.get("finish_reason"),
                 "tts_expected_text": case.get("tts_expected_text"),
                 "audio": [p.name for p in Path(item["path"]).glob("*.wav")]}
         reviews = []

@@ -287,7 +287,7 @@ def asr(path):
     return text
 
 
-def qwen_text_payload(messages: list, *, route=False):
+def qwen_text_payload(messages: list, *, route=False, max_tokens=None, continue_final_message=False):
     payload = {
         "model": QWEN_MODEL,
         "temperature": float(os.getenv("FDBC_QWEN_TEMPERATURE", "0")),
@@ -304,6 +304,14 @@ def qwen_text_payload(messages: list, *, route=False):
         # Transcription/control is not creative generation. Keep this override
         # explicit so response, legacy binary controls and TACT stay unchanged.
         payload.update(presence_penalty=0.0, frequency_penalty=0.0)
+    if max_tokens is not None:
+        if type(max_tokens) is not int or max_tokens < 1:
+            raise ValueError("max_tokens must be a positive integer")
+        payload["max_tokens"] = max_tokens
+    if continue_final_message:
+        if not messages or messages[-1].get("role") != "assistant" or not messages[-1].get("content"):
+            raise ValueError("Response continuation needs a nonempty assistant prefix")
+        payload.update(continue_final_message=True, add_generation_prompt=False)
     return payload
 
 
@@ -324,10 +332,12 @@ def llm_qwen3o_strict(messages: list, *, route=False):
     return response.json()["choices"][0]["message"]["content"]
 
 
-def llm_qwen3o_stream(messages, *, route=False):
+def llm_qwen3o_stream(messages, *, route=False, max_tokens=None,
+                     continue_final_message=False, report_finish=False):
     from stream_transport import text_stream
-    return text_stream(QWEN_URL, qwen_text_payload(messages, route=route),
-                       int(os.getenv("FDBC_QWEN_TIMEOUT", "300")))
+    return text_stream(QWEN_URL, qwen_text_payload(messages, route=route,
+                       max_tokens=max_tokens, continue_final_message=continue_final_message),
+                       int(os.getenv("FDBC_QWEN_TIMEOUT", "300")), report_finish=report_finish)
 
 
 def tts_omni_stream(text, *, voice_control=None, timing=False):

@@ -125,7 +125,11 @@ async def replay(args, selected):
             else:
                 async def text_call():
                     parts = []
-                    async for part in text_stream(args.url, payload, args.timeout):
+                    options = ({"report_finish": True} if case.get("context", {}).get(
+                        "response_completion_protocol") == "response-completion-v2" else {})
+                    async for part in text_stream(args.url, payload, args.timeout, **options):
+                        if getattr(part, "finish_reason", None) is not None:
+                            row["finish_reason"] = part.finish_reason
                         parts.append(part)
                         if sum(map(len, parts)) > 32768:
                             raise ValueError("Oversized replay response")

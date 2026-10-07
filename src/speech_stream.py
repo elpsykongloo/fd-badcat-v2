@@ -316,7 +316,8 @@ class SpeechPipeline:
         except asyncio.CancelledError:
             raise
         except Exception as exc:
-            await self.emit("error", error=f"{type(exc).__name__}: {exc}")
+            await self.emit("error", error=f"{type(exc).__name__}: {exc}",
+                            **({"code": exc.code} if getattr(exc, "code", None) else {}))
         finally:
             for child in children:
                 child.cancel()

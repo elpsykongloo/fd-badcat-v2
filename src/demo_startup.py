@@ -60,11 +60,17 @@ async def warmup(prompts, engine_cfg=None):
                 if parse_label("input_reply", checked) != expected:
                     raise RuntimeError("Played reply warmup failed its semantic control")
         # Exercise the same SSE text and native PCM decoder as the real demo.
+        from response_completion import response_length_config
+        completion = response_length_config(engine_cfg or {})
+        options = ({"report_finish": True, "max_tokens": completion["max_tokens"]}
+                   if completion else {})
         pieces = [p async for p in module.llm_qwen3o_stream([
             {"role": "system", "content": prompts["response"]},
-            {"role": "user", "content": "用中文和英文各打一个简短招呼。"}])]
+            {"role": "user", "content": "用中文和英文各打一个简短招呼。"}], **options)]
         if not "".join(pieces).strip():
             raise RuntimeError("Text SSE warmup returned no text")
+        if completion and getattr(pieces[-1], "finish_reason", None) != "stop":
+            raise RuntimeError("Text SSE warmup did not prove normal completion")
         checks, total_chunks = [], 0
         # First initialize the grammar backend, then exercise the newline/CR/tab
         # path that used to switch backends and kill an already healthy core.

@@ -11,6 +11,10 @@ engine:
   stream_diagnostics: true
   # One audio-grounded continuation if the response ends at a short promise.
   response_completion_repair: true
+  # Track EOS vs length; resume the exact assistant prefix in the same reply.
+  response_length_repair: true
+  response_max_tokens: 512
+  response_max_continuations: 3
   playback_autoend: true
   control_validation: true
   warmup: true

@@ -45,6 +45,16 @@ def test_demo_declares_bounded_audio_grounded_response_completion():
             "audio_grounded": True}
 
 
+def test_demo_declares_length_completion_budget():
+    config = {"stream_response": True, "chat_demo": True, "response_length_repair": True,
+              "response_completion_repair": True, "response_max_tokens": 512,
+              "response_max_continuations": 3}
+    with TestClient(create_app({"response_completion": "continue"}, {}, engine_cfg=config)) as client:
+        assert client.get("/api/demo/info").json()["response_completion"] == {
+            "version": "response-completion-v2", "max_tokens": 512,
+            "max_continuations": 3, "max_promise_repairs": 1, "audio_grounded": True}
+
+
 def test_browser_handshake_assigns_path_and_waits_for_engine(monkeypatch, tmp_path):
     made = []
     class Engine:
