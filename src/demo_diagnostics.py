@@ -97,6 +97,8 @@ def build_manifest(*, session_id, repository_root, profile, engine_cfg, delay,
     engine_keys = (
         "chat_demo", "stream_response", "stream_packet_ms", "stream_buffer_ms",
         "stream_startup_ms", "stream_prefetch_ms", "stream_diagnostics",
+        "stream_text_read_ahead", "stream_pcm_read_ahead", "stream_first_clause_chars",
+        "input_control_reserve", "input_route_token_budget", "input_route_parallel_shift",
         "spoken_text_normalization", "tts_transport_retries", "input_continuation_context",
         "input_context_max_gap_s",
         "response_completion_repair",
@@ -273,6 +275,10 @@ def _case_index(cases_root, session_id):
 
 def build_turns(rows, cases):
     grouped = defaultdict(list)
+    dispatched = {(r.get("generation"), (r.get("data") or {}).get("parent_id")):
+                  r.get("data") or {} for r in rows
+                  if r.get("event") == "input_dispatch"
+                  and (r.get("data") or {}).get("parent_id") is not None}
     for row in rows:
         key = _event_turn(row)
         if key is not None:
@@ -293,7 +299,10 @@ def build_turns(rows, cases):
         call_ids = sorted({d.get("call_id") for _, d in data_rows if d.get("call_id")})
         input_ids = sorted({d.get("input_id") for _, d in data_rows if type(d.get("input_id")) is int})
         routes = [{"input_id": d.get("input_id"), "revision": d.get("revision"),
-                   "route": d.get("route"), "audit": d.get("audit")}
+                   "route": d.get("route"), "audit": d.get("audit"),
+                   "parent_id": d.get("parent_id"),
+                   "closed": d.get("closed", dispatched.get(
+                       (generation, d.get("parent_id")), {}).get("closed"))}
                   for event, d in data_rows if event == "input_decision"]
         utterances = {}
         for event, data in data_rows:
@@ -499,11 +508,14 @@ def audit_session(rows, turns, cases, manifest, spans=None):
             route = data.get("route")
             response_block = route if route in {"stop_only", "yield_wait"} else (
                 None if route == "yield_ready" else response_block)
-            if (data.get("input_id"), data.get("revision")) in stale_inputs:
-                add("stale_input_mutated_state", "error", "A stale input revision later produced a decision",
+            input_key = (data.get("input_generation", row.get("generation")),
+                         data.get("input_id"), data.get("revision"), data.get("parent_id"))
+            if input_key in stale_inputs:
+                add("stale_input_mutated_state", "error", "A stale input operation later produced a decision",
                     input_id=data.get("input_id"), revision=data.get("revision"))
         elif event == "input_decision_stale":
-            stale_inputs.add((data.get("input_id"), data.get("revision")))
+            stale_inputs.add((data.get("input_generation", row.get("generation")),
+                              data.get("input_id"), data.get("revision"), data.get("parent_id")))
         elif event == "speech_timing" and data.get("phase") == "tts_chunk" \
                 and data.get("text_verified_ms") is not None:
             tts_proof_at.setdefault(data.get("utterance_id"), index)
@@ -558,12 +570,16 @@ def audit_session(rows, turns, cases, manifest, spans=None):
     for turn in turns:
         seen = defaultdict(set)
         for route in turn["routes"]:
-            key = (route.get("input_id"), route.get("revision"))
+            # Growing audio may be classified repeatedly before VAD closes it.
+            # A new operation also takes a fresh playback/context snapshot.
+            if route.get("closed") is False:
+                continue
+            key = (route.get("input_id"), route.get("revision"), route.get("parent_id"))
             seen[key].add(route.get("route"))
         for key, values in seen.items():
             if len(values) > 1:
-                add("multiple_final_routes", "error", "One input revision has conflicting routes",
-                    turn_id=turn["turn_id"], input_id=key[0], revision=key[1])
+                add("multiple_final_routes", "error", "One closed input operation has conflicting routes",
+                    turn_id=turn["turn_id"], input_id=key[0], revision=key[1], parent_id=key[2])
 
     if final is None:
         add("session_final_missing", "warning", "Session cleanup snapshot is absent")

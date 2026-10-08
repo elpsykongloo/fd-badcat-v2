@@ -442,9 +442,11 @@ class GuardedTurns:
         span = self._guard_input
         if (ev.gen != self.session_gen or span is None or span.sid != ev.sid
                 or span.revision != ev.revision or span.decided or ev.audit.get("cancelled")):
-            self._observe("input_decision_stale", {"input_id": ev.sid, "revision": ev.revision})
+            self._observe("input_decision_stale", {"input_id": ev.sid, "revision": ev.revision,
+                "parent_id": ev.parent_id, "closed": ev.closed, "input_generation": ev.gen})
             return
         self._observe("input_decision", {"input_id": ev.sid, "revision": ev.revision,
+            "closed": ev.closed, "input_generation": ev.gen,
             "route": ev.route, "audit": ev.audit, "call_ids": ev.call_ids,
             "parent_id": ev.parent_id})
         if ev.route == "keep":

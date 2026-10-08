@@ -10,7 +10,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from demo_diagnostics import (AudioRingCapture, DiagnosticStore, build_manifest,
-    build_spans, build_turns, finalize_session, private_json, private_jsonl)
+    audit_session, build_spans, build_turns, finalize_session, private_json, private_jsonl)
 from demo_session_replay import replay_session, signature
 
 
@@ -18,6 +18,9 @@ def manifest(tmp_path, session="web-demo-a1"):
     return build_manifest(session_id=session, repository_root=tmp_path,
         profile="chat-demo-v1",
         engine_cfg={"guarded_turns": True, "input_preroll_ms": 320,
+                    "stream_text_read_ahead": True, "stream_pcm_read_ahead": True,
+                    "stream_first_clause_chars": 8, "input_control_reserve": True,
+                    "input_route_token_budget": True, "input_route_parallel_shift": True,
                     "response_completion_repair": True,
                     "secret_option": "must-not-leak"},
         delay={"end_hold_frame": .64, "after_continue_time": 2.5},
@@ -31,6 +34,10 @@ def test_manifest_is_allowlisted_and_contains_protocol_versions(tmp_path):
     assert value["protocols"]["trace"] == "demo-trace-v2"
     assert value["effective"]["engine"]["input_preroll_ms"] == 320
     assert value["effective"]["engine"]["response_completion_repair"] is True
+    for flag in ("stream_text_read_ahead", "stream_pcm_read_ahead", "input_control_reserve",
+                 "input_route_token_budget", "input_route_parallel_shift"):
+        assert value["effective"]["engine"][flag] is True
+    assert value["effective"]["engine"]["stream_first_clause_chars"] == 8
     assert value["effective"]["input_timing"] == {
         "vad_threshold": .5, "vad_silence_ms": 100, "preroll_ms": 320}
     assert value["effective"]["time"]["long_interrupt_s"] == 1.5
@@ -46,6 +53,53 @@ def test_lifecycle_only_session_does_not_create_fake_turns():
         {"event":"session_final","generation":1,"turn":0,"data":{"state":"LISTEN"}},
     ]
     assert build_turns(rows, {}) == []
+
+
+def diagnostic_codes(events):
+    rows = [{"event": event, "seq": index, "server_ms": index,
+             "generation": generation, "turn": 0, "data": data}
+            for index, (event, generation, data) in enumerate(events, 1)]
+    rows.append({"event": "trace_closed", "dropped": 0})
+    return {item["code"] for item in audit_session(
+        rows, build_turns(rows, {}), {}, {})["anomalies"]}
+
+
+@pytest.mark.parametrize("closed,parents,conflict", [
+    (False, ("p1", "p1"), False),
+    (False, ("p1", "p2"), False),
+    (True, ("p1", "p2"), False),
+    (True, ("p1", "p1"), True),
+])
+def test_route_audit_scopes_closed_decisions_to_operation(closed, parents, conflict):
+    events = [("input_decision", 0, {"input_id": 1, "revision": 0,
+               "closed": closed, "parent_id": parent, "route": route})
+              for parent, route in zip(parents, ("yield_wait", "yield_ready"))]
+    assert ("multiple_final_routes" in diagnostic_codes(events)) is conflict
+
+
+def test_legacy_open_input_is_recovered_from_dispatch_even_across_turn_context():
+    rows = [
+        {"event": "input_dispatch", "generation": 0, "turn": 0,
+         "data": {"parent_id": "p1", "closed": False}},
+        {"event": "input_decision", "generation": 0, "turn": 1,
+         "data": {"input_id": 1, "revision": 0, "parent_id": "p1", "route": "yield_wait"}},
+    ]
+    assert build_turns(rows, {})[-1]["routes"][0]["closed"] is False
+
+
+@pytest.mark.parametrize("decision_parent,decision_generation,stale", [
+    ("p1", 0, True), ("p2", 0, False), ("p1", 1, False),
+])
+def test_stale_input_audit_requires_same_operation_and_generation(
+        decision_parent, decision_generation, stale):
+    events = [
+        ("input_decision_stale", 1, {"input_id": 1, "revision": 0,
+                                   "parent_id": "p1", "input_generation": 0}),
+        ("input_decision", decision_generation, {"input_id": 1, "revision": 0,
+          "parent_id": decision_parent, "input_generation": decision_generation,
+          "closed": True, "route": "yield_ready"}),
+    ]
+    assert ("stale_input_mutated_state" in diagnostic_codes(events)) is stale
 
 
 def test_response_completion_repair_is_visible_in_turn_summary():
