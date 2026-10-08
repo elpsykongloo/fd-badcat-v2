@@ -1,0 +1,396 @@
+{
+  "version": "played-reply-v2",
+  "date": "2026-10-08",
+  "base_commit": "8523b22",
+  "scope": "Development-set regression on the P1 diagnosis audio and self-authored text, T=0, including same-source noise/seed variants. Several combined-intent, FOLLOWUP and browser intent/late expressions are identical or near-identical to examples in the new prompts, and one input_route example paraphrases a HumDial dev clip that is also evaluated, so this is not held-out validation. Real Chromium virtual microphone on isolated backends; no physical acoustics; not population accuracy.",
+  "production_defaults_unchanged": {
+    "preroll_ms": 320,
+    "hold_ms": 640,
+    "vad_threshold": 0.5,
+    "decision_timeout_s": 2
+  },
+  "reply_min_heard_s": 0.5,
+  "pytest": {
+    "passed": 672,
+    "skipped": 1
+  },
+  "route_all": {
+    "n": 3525,
+    "by_category": {
+      "answer": {
+        "n": 270,
+        "baseline_pass": 180,
+        "candidate_pass": 270
+      },
+      "backchannel": {
+        "n": 435,
+        "baseline_pass": 434,
+        "candidate_pass": 434
+      },
+      "correction": {
+        "n": 330,
+        "baseline_pass": 328,
+        "candidate_pass": 328
+      },
+      "followup": {
+        "n": 240,
+        "baseline_pass": 238,
+        "candidate_pass": 240
+      },
+      "fragment": {
+        "n": 90,
+        "baseline_pass": 90,
+        "candidate_pass": 90
+      },
+      "greeting": {
+        "n": 90,
+        "baseline_pass": 90,
+        "candidate_pass": 90
+      },
+      "short_question": {
+        "n": 600,
+        "baseline_pass": 548,
+        "candidate_pass": 593
+      },
+      "short_request": {
+        "n": 390,
+        "baseline_pass": 350,
+        "candidate_pass": 388
+      },
+      "short_request_contract": {
+        "n": 45,
+        "baseline_pass": 7,
+        "candidate_pass": 39
+      },
+      "stop": {
+        "n": 540,
+        "baseline_pass": 504,
+        "candidate_pass": 507
+      },
+      "third_party": {
+        "n": 90,
+        "baseline_pass": 2,
+        "candidate_pass": 0
+      },
+      "third_party_contract": {
+        "n": 240,
+        "baseline_pass": 73,
+        "candidate_pass": 53
+      },
+      "wait": {
+        "n": 165,
+        "baseline_pass": 165,
+        "candidate_pass": 165
+      }
+    },
+    "changed": [
+      {
+        "category": "answer",
+        "baseline": "stop_only",
+        "candidate": "yield_ready",
+        "kind": "rescued",
+        "n": 89
+      },
+      {
+        "category": "short_request",
+        "baseline": "yield_wait",
+        "candidate": "yield_ready",
+        "kind": "rescued",
+        "n": 37
+      },
+      {
+        "category": "short_request_contract",
+        "baseline": "keep",
+        "candidate": "yield_ready",
+        "kind": "rescued",
+        "n": 32
+      },
+      {
+        "category": "short_question",
+        "baseline": "keep",
+        "candidate": "yield_ready",
+        "kind": "rescued",
+        "n": 31
+      },
+      {
+        "category": "third_party_contract",
+        "baseline": "keep",
+        "candidate": "yield_ready",
+        "kind": "regressed",
+        "n": 20
+      },
+      {
+        "category": "short_question",
+        "baseline": "yield_wait",
+        "candidate": "yield_ready",
+        "kind": "rescued",
+        "n": 14
+      },
+      {
+        "category": "stop",
+        "baseline": "keep",
+        "candidate": "yield_ready",
+        "kind": "neutral",
+        "n": 5
+      },
+      {
+        "category": "stop",
+        "baseline": "keep",
+        "candidate": "stop_only",
+        "kind": "rescued",
+        "n": 3
+      },
+      {
+        "category": "followup",
+        "baseline": "yield_wait",
+        "candidate": "yield_ready",
+        "kind": "rescued",
+        "n": 2
+      },
+      {
+        "category": "third_party",
+        "baseline": "keep",
+        "candidate": "yield_ready",
+        "kind": "regressed",
+        "n": 2
+      },
+      {
+        "category": "stop",
+        "baseline": "yield_ready",
+        "candidate": "keep",
+        "kind": "neutral",
+        "n": 1
+      },
+      {
+        "category": "short_request",
+        "baseline": "keep",
+        "candidate": "yield_ready",
+        "kind": "rescued",
+        "n": 1
+      },
+      {
+        "category": "correction",
+        "baseline": "stop_only",
+        "candidate": "keep",
+        "kind": "neutral",
+        "n": 1
+      },
+      {
+        "category": "answer",
+        "baseline": "keep",
+        "candidate": "yield_ready",
+        "kind": "rescued",
+        "n": 1
+      }
+    ],
+    "note": "Baseline is the recorded P1 run of the v1 prompts. Two full candidate runs with unchanged input_route prompt differed by 1-3 rows per category because concurrent batching is not bit-exact; these are the final-code run."
+  },
+  "context_playing": {
+    "n": 844,
+    "by_category": {
+      "backchannel": {
+        "n": 116,
+        "pass": 116
+      },
+      "correction": {
+        "n": 88,
+        "pass": 88
+      },
+      "followup": {
+        "n": 64,
+        "pass": 64
+      },
+      "fragment": {
+        "n": 24,
+        "pass": 24
+      },
+      "short_question": {
+        "n": 160,
+        "pass": 158
+      },
+      "short_request": {
+        "n": 116,
+        "pass": 116
+      },
+      "stop": {
+        "n": 144,
+        "pass": 125
+      },
+      "third_party_contract": {
+        "n": 64,
+        "pass": 17
+      },
+      "third_party_explicit_addressee": {
+        "n": 24,
+        "pass": 0
+      },
+      "wait": {
+        "n": 44,
+        "pass": 44
+      }
+    },
+    "note": "Same clips with one played story sentence as review context. stop includes 12 HumDial 'Hold on' clips whose raw scene label is stop but semantic intent is wait."
+  },
+  "intent_pairs": {
+    "n": 384,
+    "baseline_pass": 302,
+    "candidate_pass": 382
+  },
+  "browser_review_paths": {
+    "closed_playing_inputs_by_context": [
+      {
+        "context": "sentence_window",
+        "base": "yield_ready",
+        "review": null,
+        "final": "yield_ready",
+        "n": 11
+      },
+      {
+        "context": "sentence_window",
+        "base": "keep",
+        "review": "keep",
+        "final": "keep",
+        "n": 4
+      },
+      {
+        "context": "completed_sentences",
+        "base": "keep",
+        "review": "keep",
+        "final": "keep",
+        "n": 4
+      },
+      {
+        "context": "sentence_window",
+        "base": "stop_only",
+        "review": "keep",
+        "final": "stop_only",
+        "n": 3
+      },
+      {
+        "context": "completed_sentences",
+        "base": "yield_ready",
+        "review": null,
+        "final": "yield_ready",
+        "n": 2
+      },
+      {
+        "context": "completed_sentences",
+        "base": "stop_only",
+        "review": "yield_ready",
+        "final": "yield_ready",
+        "n": 2
+      },
+      {
+        "context": "completed_sentences",
+        "base": "yield_wait",
+        "review": null,
+        "final": "yield_wait",
+        "n": 2
+      },
+      {
+        "context": "sentence_window",
+        "base": "keep",
+        "review": "yield_ready",
+        "final": "yield_ready",
+        "n": 1
+      },
+      {
+        "context": "completed_sentences",
+        "base": "stop_only",
+        "review": "keep",
+        "final": "stop_only",
+        "n": 1
+      },
+      {
+        "context": "sentence_window",
+        "base": "yield_wait",
+        "review": null,
+        "final": "yield_wait",
+        "n": 1
+      }
+    ],
+    "passed_via_review_promotion": [
+      "late_permission_no_en",
+      "late_permission_no_zh",
+      "playing_why_en101"
+    ],
+    "interim_stop_decisions": 6
+  },
+  "browser": {
+    "n": 40,
+    "pass": 35,
+    "harness_errors": 0,
+    "config": "default 320 ms pre-roll / 640 ms hold, one trial each, two isolated backends in parallel",
+    "failed": {
+      "playing_why_en42": "English 'Why?' fixture transcribed as 喂; review keep",
+      "playing_why_en202": "English 'Why?' fixture transcribed as 喂; review keep",
+      "late_why_en42": "English 'Why?' fixture transcribed as 喂; review keep",
+      "late_why_en202": "English 'Why?' fixture transcribed as 喂; review keep",
+      "playing_who_then_wait": "prepared answer never played and was cancelled; harness counts speech_start"
+    }
+  },
+  "text_controls": {
+    "CASES": {
+      "pass": 24,
+      "n": 24,
+      "failed": []
+    },
+    "CONFIRM": {
+      "pass": 24,
+      "n": 24,
+      "failed": []
+    },
+    "HOLDOUT": {
+      "pass": 16,
+      "n": 16,
+      "failed": []
+    },
+    "FOLLOWUP": {
+      "pass": 25,
+      "n": 25,
+      "failed": []
+    },
+    "CONFIRM_v1_prompt": {
+      "pass": 24,
+      "n": 24,
+      "failed": []
+    },
+    "note": "Run with no other load. Earlier runs concurrent with offline/browser load or Omni cold start produced 2 s TimeoutErrors only."
+  },
+  "review_latency_ms_idle": {
+    "n": 89,
+    "median": 71.0,
+    "p90": 77.3,
+    "max": 136.2
+  },
+  "continuation_offline": {
+    "cases": 7,
+    "old_prompt_pass": 4,
+    "new_prompt_pass": 4,
+    "rejected_candidate_pass": 6,
+    "note": "Accepted 'wait' audio merged with a following complete request; the canary pair 'wait, I have not finished' + 'please speak Mandarin' stays yield_wait under the old and the committed prompt. A candidate continuation rule fixed it (rejected_candidate_pass) but made English unfinished clauses get answered, so it was not adopted."
+  },
+  "route_canaries": {
+    "pass": true,
+    "cases": 6
+  },
+  "live": {
+    "live_reply": {
+      "pass": false,
+      "answer_accepted": true,
+      "accepted_by": "audio_route",
+      "new_answer_playback_started": true,
+      "harness_error": "Page.wait_for_function: Timeout 45000ms exceeded."
+    },
+    "live_reply_early": {
+      "pass": true,
+      "accepted_by": "audio_route",
+      "reply_context_kind": null,
+      "accepted_before_question_completed": true
+    },
+    "live_interactions": {
+      "pass": false,
+      "note": "wait_continue_stop: merged wait + continuation still routed yield_wait"
+    }
+  }
+}

@@ -53,7 +53,7 @@ async def check(url, output, fixtures, early=False):
     from playwright.async_api import async_playwright
     from check_guarded_interactions import INIT, feed, started, cancelled
     output.mkdir(parents=True, exist_ok=False)
-    report = {"protocol": "played-reply-v1", "pass": False, "physical_audio": False}
+    report = {"protocol": "played-reply-v2", "pass": False, "physical_audio": False}
     async with async_playwright() as playwright:
         browser = await playwright.chromium.launch(headless=True,
             args=["--no-proxy-server", "--autoplay-policy=no-user-gesture-required"])
@@ -95,26 +95,63 @@ async def check(url, output, fixtures, early=False):
             setup = await page.evaluate("__probe")
             starts = [x for x in setup["events"] if x["event"] == "speech_start"]
             sid = starts[-1]["data"]["utterance_id"]
-            initial_starts = len(starts)
+            # Count utterances that actually reached playback: the setup fixture's own
+            # pause can re-admit and cancel the first answer before any playback ACK.
+            initial_starts = len({x["data"]["utterance_id"] for x in setup["acks"]
+                                  if x["event"] == "playback_progress" and x["data"].get("started")})
             initial_cancels = len([x for x in setup["events"] if x["event"] == "speech_cancelled"])
             report.update(setup_speech_starts=initial_starts, setup_cancellations=initial_cancels)
             if early:
+                # played-reply-v2: with no fully played sentence yet, the review uses the
+                # sentence window frozen at onset. Whether the early answer is accepted
+                # depends on whether that window already contains the choice question,
+                # so assert consistency between review label, action and context kind.
+                setup_inputs = {r["data"]["input_id"] for r in trace(session) if r["event"] == "input_dispatch"}
+                mark = await page.evaluate("__probe.events.length")
                 await feed(page, fixtures / "answer.wav")
-                await page.wait_for_function("__probe.events.some(x=>x.event==='input_ignored')", timeout=10000)
+                await page.wait_for_function(
+                    "n => __probe.events.slice(n).some(x=>x.event==='input_ignored'||x.event==='speech_cancelled')",
+                    arg=mark, timeout=10000)
                 await page.wait_for_timeout(3200)
                 snapshot = await page.evaluate("__probe")
                 await page.click("#stop")
                 await page.wait_for_function("!document.getElementById('start').disabled")
                 rows = trace(session)
-                decisions = [r for r in rows if r["event"] == "input_decision" and r["data"].get("audit",{}).get("playing")]
-                assert decisions and all(r["data"]["route"] == "keep" and
-                    "reply_review" not in r["data"]["audit"]["route"] for r in decisions)
-                assert not any(x["event"] in {"speech_cancelled", "speech_error"} for x in snapshot["events"])
-                assert any(x["event"] == "playback_progress" and x["data"]["utterance_id"] == sid
-                           and x["data"]["played_samples"] > 24000 for x in snapshot["acks"])
+                answer_inputs = {r["data"]["input_id"] for r in rows if r["event"] == "input_dispatch"} - setup_inputs
+                assert answer_inputs, "the answer produced no new input"
+                decisions = [r for r in rows if r["event"] == "input_decision" and r["data"]["input_id"] in answer_inputs
+                             and r["data"].get("audit", {}).get("playing")
+                             and not r["data"].get("audit", {}).get("route", {}).get("interim_stop")]
+                assert decisions, "no playing-state decision for the answer"
+                first = min(answer_inputs)
+                finals = [r for r in decisions if r["data"]["input_id"] == first and r["data"].get("closed")]
+                last = (finals or decisions)[-1]["data"]
+                interim_stop = any(r["data"]["input_id"] == first and r["data"].get("audit", {}).get("route", {}).get("interim_stop")
+                                   for r in rows if r["event"] == "input_decision")
+                review = last["audit"]["route"].get("reply_review") or {}
+                accepted = last["route"] == "yield_ready"
+                base = last["audit"]["route"].get("base_label")
+                assert accepted == (base == "yield_ready" or review.get("label") == "yield_ready"), \
+                    "acceptance must come from the audio route or the review"
+                dispatches = [r["data"] for r in rows if r["event"] == "input_dispatch"
+                              and r["data"]["input_id"] == last["input_id"] and r["data"].get("playing")]
+                assert dispatches, "no playing-state dispatch for the answer"
+                kind = dispatches[-1].get("reply_context_kind")
+                assert ("reply_review" in last["audit"]["route"]) <= (kind is not None), "review ran without context"
+                new_events = snapshot["events"][mark:]
+                old_cancelled = any(x["event"] == "speech_cancelled" and x["data"].get("utterance_id") == sid
+                                    for x in new_events)
+                assert old_cancelled == (accepted or interim_stop), "old playback must stop exactly when accepted or stopped"
+                if not (accepted or interim_stop):
+                    assert any(x["event"] == "playback_progress" and x["data"]["utterance_id"] == sid
+                               and x["data"]["played_samples"] > 24000 for x in snapshot["acks"]), "old playback did not continue"
+                assert not any(x["event"] == "speech_error" for x in snapshot["events"])
                 assert not errors and not any(r["event"] == "engine_error" for r in rows)
                 report.update({"pass": True, "early": True, "decisions": decisions,
-                               "old_playback_continued": True, "page_errors": errors})
+                               "accepted_before_question_completed": accepted,
+                               "accepted_by": "review" if review.get("label") == "yield_ready" else ("audio_route" if accepted else None),
+                               "reply_context_kind": kind,
+                               "old_playback_continued": not accepted, "page_errors": errors})
                 return
             # Validate a real generated choice request, then wait for its full
             # PCM endpoint ACK. This text check schedules a test; production has
@@ -138,6 +175,7 @@ async def check(url, output, fixtures, early=False):
                                          arg={"sid": sid, "end": end}, timeout=15000)
             assert not await page.evaluate("__probe.events.some(x=>x.event==='turn_finished')"), "Old answer already ended"
             report["question_end_sample"] = end
+            setup_inputs = {r["data"]["input_id"] for r in trace(session) if r["event"] == "input_dispatch"}
             await feed(page, fixtures / "answer.wav")
             await cancelled(page, initial_cancels + 1)
             await started(page, initial_starts + 1)
@@ -149,9 +187,14 @@ async def check(url, output, fixtures, early=False):
             await page.wait_for_function("!document.getElementById('start').disabled")
             rows = trace(session)
             decisions = [r for r in rows if r["event"] == "input_decision"]
-            promoted = [r for r in decisions if r["data"].get("audit",{}).get("route",{}).get("reply_review",{}).get("label") == "yield_ready"]
-            assert len(promoted) == 1 and promoted[0]["data"]["route"] == "yield_ready"
-            assert len([x for x in snapshot["events"] if x["event"] == "speech_start"]) == initial_starts + 1
+            accepted = [r for r in decisions if r["data"]["route"] == "yield_ready"
+                        and r["data"]["input_id"] not in setup_inputs
+                        and r["data"].get("audit", {}).get("playing")]
+            assert len(accepted) == 1, "exactly one playing-state decision must accept the short answer"
+            review = accepted[0]["data"].get("audit", {}).get("route", {}).get("reply_review") or {}
+            report["accepted_by"] = "review" if review.get("label") == "yield_ready" else "audio_route"
+            assert len({x["data"]["utterance_id"] for x in snapshot["acks"]
+                        if x["event"] == "playback_progress" and x["data"].get("started")}) == initial_starts + 1
             assert len([x for x in snapshot["events"] if x["event"] == "speech_cancelled"]) == initial_cancels + 1
             assert not errors and not any(r["event"] == "engine_error" for r in rows)
             assert not any(x["event"] == "speech_error" for x in snapshot["events"])

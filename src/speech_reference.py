@@ -38,6 +38,24 @@ class SpeechReference:
             if type(start) is int and start >= 0:
                 self.sentences.append((start, data["text"][-REFERENCE_CHARS:]))
 
+    def heard_window(self, *, played, sent, min_heard):
+        """Units already audible at `played`, for reply review before any unit ends.
+
+        A unit counts only once playback has passed its start; the newest one must
+        also have been heard for at least `min_heard` samples, else it is dropped.
+        Units starting at or after `played` were never heard and never count.
+        """
+        eligible = [(start, text) for start, text in self.sentences
+                    if start < played and start < sent]
+        if eligible and played - eligible[-1][0] < min_heard:
+            eligible = eligible[:-1]
+        tail = []
+        for _, text in reversed(eligible[-3:]):
+            if len(text) + sum(map(len, tail)) > REFERENCE_CHARS:
+                break
+            tail.append(text)
+        return "".join(reversed(tail))
+
     def snapshot(self, *, started, played, sent):
         if not started:
             return self.generated_tail, "generated_unplayed"

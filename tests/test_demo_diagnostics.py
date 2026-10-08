@@ -77,6 +77,18 @@ def test_route_audit_scopes_closed_decisions_to_operation(closed, parents, confl
     assert ("multiple_final_routes" in diagnostic_codes(events)) is conflict
 
 
+def test_interim_stop_then_final_ready_is_one_final_route():
+    events = [
+        ("input_decision", 0, {"input_id": 1, "revision": 0, "closed": False, "parent_id": "p1",
+                               "input_generation": 0, "route": "stop_only",
+                               "audit": {"route": {"interim_stop": True}}}),
+        ("input_decision", 0, {"input_id": 1, "revision": 0, "closed": True, "parent_id": "p1",
+                               "input_generation": 0, "route": "yield_ready"}),
+    ]
+    codes = diagnostic_codes(events)
+    assert "multiple_final_routes" not in codes and "stale_input_mutated_state" not in codes
+
+
 def test_legacy_open_input_is_recovered_from_dispatch_even_across_turn_context():
     rows = [
         {"event": "input_dispatch", "generation": 0, "turn": 0,

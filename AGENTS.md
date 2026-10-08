@@ -33,7 +33,7 @@
 
 - demo-only 输入准入：`guarded-turns-v1`，四态 `keep / stop_only / yield_wait / yield_ready`；旧 HumDial `interrupt` 基线仍保留用于关闭新路径时的对照。
 - 音频路由：`transcript-first-v1`。一次 Omni 请求严格输出有序 `transcript,label` JSON；格式异常最多一次修复，失败保守回 `keep`。转写不替代聊天 ASR/history。
-- 音频路由携带 playing 状态、用户音频及有界续说上下文标记，**不发送助手参考原文**。`played-reply-v1`：仅闭合播放期有效非空 keep，在同一2秒总预算内用同一模型纯文本复核，固定新增语音转写+输入起点已ACK播完的最多3句，仅可 keep→ready；空快照不后补、失败保持keep。配置入口 `prompts.input_reply`，机制与验收见 `docs/web_demo.md` §9、`exp/web_demo/played_reply_validation.json`。
+- 音频路由携带 playing 状态、用户音频及有界续说上下文标记，**不发送助手参考原文**。`played-reply-v2`（2026-10-08）：闭合播放期有效非空转写且初判为 keep 或 stop_only 时，在同一2秒总预算内用同一模型纯文本复核（yield_wait 不复核）；上下文为输入起点已ACK播完的最多3句，没有时用已开始播放且最新一句已播放≥0.5秒的句子；初判 stop_only 先立即停播，复核只决定是否还要回答；复核只能升为 ready，keep 或失败保持音频初判；空快照不后补。复核问“结合已听内容是否需要现在回应”（回答或拒绝助手提问/追问/纠正→ready；附和/只停/第三方→keep）。`input_route` 同时加入“最后完整意图优先”。配置入口 `prompts.input_reply`，机制、开发集验收与未解决项见 `docs/web_demo.md` §9、`exp/web_demo/played_reply_v2_validation.json`。
 - 续说上下文：`pending-user-audio-v1`。等待/未开播候选的已接纳前文进入路由；播放期近期用户音频在输入起点冻结，以同一次请求的独立前文/新增两个音频块区分，转写仅含新增块，不重复进入本轮ASR/回答。共用20秒音频预算/音频钟间隔界限；不复活已被keep拒绝的语音。机制、验收和模型边界见 `docs/demo_reliability.md`。
 - 长回答参考：`speech-reference-v1`。只维护已公开且 ID 匹配的生成尾部/句子 PCM 起点；输入起点冻结当前和前两句已播放参考，避免用未来未播文本污染决策。取消回答的模型历史只保留 ACK 覆盖的完整句前缀；打断状态只存内部记录/trace，不注入 assistant 文本。
 - 统一诊断线：`demo-diagnostics-v1` + `demo-trace-v2` + `demo-case-v2`，按 session/turn/call/parent/utterance 关联真实调用、请求 span、自动 invariant、逐轮修订式 review 和无模型 Actor replay；原始 mic/reference/clean 三轨仅逐会话明确 opt-in。私有目录、操作与边界见 `docs/demo_diagnostics.md`，观测不自动当 gold。
@@ -50,7 +50,7 @@
 
 - 很短的“停/停下”等仍有模型转写/前截断/上下文交互型漏接证据；320ms pre-roll 是受控最小改动，**不能宣称短停根因已证实、召回普遍提高或零退化**。
 - 不要加“停止词白名单”、第二 ASR、全局放松 VAD、ASR 非空即强停等未经新证据批准的机制。
-- 问号门候选E未采用；短答使用上述语义复核。用户抢在问句播完前的含糊回答仍可能keep，这是接受的保守边界，不加词级对齐；复核不是通用声源识别或所有反问/引用均无误的保证。
+- 问号门候选E未采用；短答/追问使用上述语义复核。输入起点还没有已播完整句时，抢在问句播完前的短答可能被按已听到的半句接纳作答，这是 v2 有意取舍；已有完整句时半句不进入上下文，与 v1 相同。不加词级对齐；复核不是通用声源识别或所有反问/引用均无误的保证。v2 增加了第三方语音误接，极短停止词转写错误与续说合并后仍等待未解决。
 
 ### 3.3 已落实工程与运行状态
 

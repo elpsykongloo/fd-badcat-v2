@@ -272,7 +272,7 @@ async def test_reply_text_capture_and_replay_preserves_frozen_evidence(tmp_path,
         "presence_penalty": .4, "frequency_penalty": .4,
         "messages": reply_messages("saved reply prompt", "都可以", "你想听什么故事？")}
     call = writer.begin("input_reply", payload, {"input_id": 7, "revision": 2,
-        "reply_protocol": "played-reply-v1", "reply_played_samples": 1234})
+        "reply_protocol": "played-reply-v2", "reply_played_samples": 1234})
     call.feed("yield_ready"); call.finish("completed")
     await writer.close()
     path = tmp_path / "captures" / call.case["case_id"]

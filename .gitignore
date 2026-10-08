@@ -18,6 +18,9 @@ exp/*/test/smoke.wav
 exp/humdial-*/
 # Real conversation recordings, prompts, reviews and replays: local only.
 exp/demo_cases/
+# Private validation receipts with session IDs and transcripts; aggregates are committed separately.
+exp/web_demo/p1_input_diagnosis_*/
+exp/web_demo/p1_fix_validation_*/
 # Raw synthetic completion probes and per-call/browser evidence stay local.
 exp/web_demo/response_completion_v2/live_*/
 exp/web_demo/response_completion_v2/browser_*/

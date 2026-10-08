@@ -73,6 +73,35 @@ CONFIRM = [
     ("en_unrelated_praise", "Which city do you live in?", "You're doing great.", "keep"),
 ]
 
+# played-reply-v2 controls: follow-up questions and mixed intents against played context.
+FOLLOWUP = [
+    ("zh_why", "小狐狸阿火在森林里发现小鸟摔伤了翅膀。", "为什么", "yield_ready"),
+    ("en_why", "Little fox Ahuo found a bird with a broken wing in the forest.", "Why?", "yield_ready"),
+    ("zh_then", "热会让气体膨胀。", "然后呢", "yield_ready"),
+    ("en_mean", "Little fox Ahuo found a bird with a broken wing in the forest.", "What do you mean", "yield_ready"),
+    ("zh_wait_repeat", "露营时，建议带上帐篷、睡袋和头灯。", "稍等一下，能把刚才说的露营装备再说一遍吗", "yield_ready"),
+    ("en_wait_repeat", "Little fox Ahuo found a bird with a broken wing in the forest.", "Wait, could you repeat that", "yield_ready"),
+    ("zh_wait_who", "小狐狸阿火在森林里发现小鸟摔伤了翅膀。", "等一下，你是谁", "yield_ready"),
+    ("zh_refusal", "我是否可以接着讲故事呢？", "不可以", "yield_ready"),
+    ("en_refusal", "May I continue the story?", "No", "yield_ready"),
+    ("zh_correction", "小狐狸阿火在森林里发现小鸟摔伤了翅膀。", "不对，是小兔子", "yield_ready"),
+    ("zh_backchannel", "小狐狸阿火在森林里发现小鸟摔伤了翅膀。", "嗯嗯", "keep"),
+    ("en_backchannel", "Little fox Ahuo found a bird with a broken wing in the forest.", "Uh-huh", "keep"),
+    ("zh_wait_unfinished", "小狐狸阿火在森林里发现小鸟摔伤了翅膀。", "等一下，我还没说完", "keep"),
+    ("zh_stop", "小狐狸阿火在森林里发现小鸟摔伤了翅膀。", "别说了", "keep"),
+    ("en_stop", "Little fox Ahuo found a bird with a broken wing in the forest.", "Stop talking", "keep"),
+    ("zh_echo", "小狐狸阿火在森林里发现小鸟摔伤了翅膀。", "小鸟摔伤了翅膀", "keep"),
+    ("zh_third_party", "小狐狸阿火在森林里发现小鸟摔伤了翅膀。", "妈妈，我的书包在哪", "keep"),
+    ("en_third_party", "Little fox Ahuo found a bird with a broken wing in the forest.", "Dad, where is my bag", "keep"),
+    ("zh_emotion", "小狐狸阿火在森林里发现小鸟摔伤了翅膀。", "哇，好可怜", "keep"),
+    ("zh_self_answer_agree", "你想听童话还是科幻？我先讲童话吧。从前有座山。", "好", "keep"),
+    ("en_rhetorical", "Why do we love stories? Because they move us.", "Yeah", "keep"),
+    ("zh_attention_stop", "小狐狸阿火在森林里发现小鸟摔伤了翅膀。", "喂，别说了", "keep"),
+    ("en_attention_stop", "Little fox Ahuo found a bird with a broken wing in the forest.", "Hey, stop talking", "keep"),
+    ("zh_partial_backchannel", "小狐狸阿火在森林里，", "嗯嗯", "keep"),
+    ("zh_partial_why", "小狐狸阿火在森林里，", "为什么", "yield_ready"),
+]
+
 HOLDOUT = [
     ("zh_rhetorical", "经历了这么多努力，谁会不高兴呢？", "当然", "keep"),
     ("zh_permission", "需要我把刚才的步骤再说一遍吗", "当然", "yield_ready"),
@@ -98,10 +127,11 @@ async def main():
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--confirm", action="store_true")
     p.add_argument("--holdout", action="store_true")
+    p.add_argument("--followup", action="store_true", help="played-reply-v2 follow-up/mixed-intent controls")
     args = p.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
     prompt = yaml.safe_load((ROOT / "configs/demo_chat.yaml").read_text())["prompts"]["input_reply"]
-    cases = HOLDOUT if args.holdout else CONFIRM if args.confirm else CASES
+    cases = FOLLOWUP if args.followup else HOLDOUT if args.holdout else CONFIRM if args.confirm else CASES
     plan = {"protocol": REPLY_PROTOCOL, "prompt": prompt, "cases": cases,
             "scope": "self-authored text-only semantic controls; no audio or physical playback"}
     (args.output / "plan.json").write_text(json.dumps(plan, ensure_ascii=False, indent=2))

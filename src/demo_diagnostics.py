@@ -24,6 +24,8 @@ import wave
 
 import numpy as np
 
+from control_labels import REPLY_PROTOCOL
+
 
 DIAGNOSTICS_VERSION = "demo-diagnostics-v1"
 MANIFEST_VERSION = "demo-session-v1"
@@ -127,7 +129,7 @@ def build_manifest(*, session_id, repository_root, profile, engine_cfg, delay,
         "protocols": {
             "trace": "demo-trace-v2", "case": "demo-case-v2",
             "audio": "pcm16.v1", "input": engine_cfg.get("input_protocol"),
-            "route": "transcript-first-v1", "reply": "played-reply-v1",
+            "route": "transcript-first-v1", "reply": REPLY_PROTOCOL,
             "speech_reference": "speech-reference-v1",
             "tts": "verbatim-grammar-v2", "continuity": "demo-continuity-v1",
             "transport": "model-transport-v1",

@@ -27,6 +27,9 @@ def input_timing(config=None):
 
 
 CONTINUATION_PROTOCOL = "pending-user-audio-v1"
+# Before any unit has fully played, reply review may use the units already heard;
+# the newest one must have played at least this long to count as heard.
+REPLY_MIN_HEARD_S = 0.5
 
 
 def route_messages(prompt, content, *, playing=False, reference="", continuation=None,
@@ -94,6 +97,7 @@ class InputSpan:
     preroll_samples: int = 0
     reply_context: str = ""
     reply_played_samples: int = 0
+    reply_context_kind: str = None
     # Immutable user audio frozen at input onset; route context only, not a
     # second copy in ASR/response history or an assistant-text reference.
     replied_user_audio: object = None
@@ -248,6 +252,18 @@ class GuardedTurns:
                         span.reply_played_samples = self._speech.played
                         span.reply_context = completed_context(record.get("reply_sentences", record.get("sentences", [])),
                                                                span.reply_played_samples)
+                        if span.reply_context:
+                            span.reply_context_kind = "completed_sentences"
+                        elif record.get("reference") is not None:
+                            # Nothing has fully played yet: use only units the user has
+                            # already heard, frozen at this onset (never a unit that
+                            # has not started, nor one heard for under REPLY_MIN_HEARD_S).
+                            rate = getattr(self._speech, "rate", None) or 24000
+                            span.reply_context = record["reference"].heard_window(
+                                played=span.reply_played_samples, sent=self._speech.sent,
+                                min_heard=int(rate * REPLY_MIN_HEARD_S))
+                            if span.reply_context:
+                                span.reply_context_kind = "sentence_window"
                     c = self._speech_candidate
                     if (self.CONTINUATION_CONTEXT and c is not None
                             and 0 <= t - c.anchor <= self._guard_context_gap):
@@ -355,7 +371,8 @@ class GuardedTurns:
             "parent_id": operation_id,
             "reference_kind": span.reference_kind, "reference_utterance_id": span.reference_sid,
             "reference_chars": len(span.reference_text), "reference_played_samples": span.reference_played,
-            "reply_context_chars": len(span.reply_context), "reply_played_samples": span.reply_played_samples})
+            "reply_context_chars": len(span.reply_context), "reply_played_samples": span.reply_played_samples,
+            "reply_context_kind": span.reply_context_kind})
         reference_context = {"reference_kind": span.reference_kind,
             "reference_utterance_id": span.reference_sid,
             "reference_played_samples": span.reference_played,
@@ -364,7 +381,8 @@ class GuardedTurns:
             "route_penalties": {"presence": 0.0, "frequency": 0.0}}
         reply_context = span.reply_context
         reference_context.update(reply_protocol=REPLY_PROTOCOL,
-            reply_context_chars=len(reply_context), reply_played_samples=span.reply_played_samples)
+            reply_context_chars=len(reply_context), reply_played_samples=span.reply_played_samples,
+            reply_context_kind=span.reply_context_kind)
         reference_context.update(continuation_protocol=CONTINUATION_PROTOCOL if continuation else None,
             context_audio_samples=context_samples, current_audio_samples=current_samples,
             context_source=context_source)
@@ -399,10 +417,19 @@ class GuardedTurns:
             # One typed decision owns admission, stopping and readiness. The
             # original HumDial binary classifier remains the flag-off baseline,
             # not a second veto: an AND gate compounds its false negatives.
+            def stop_first(label):
+                # A STOP must not wait for the reply review. Cancel playback now via
+                # an interim (unclosed) decision; the final decision then either keeps
+                # the stop or, if the review asks for a reply, answers from this input.
+                if label == "stop_only":
+                    self.q.put_nowait(InputDecision(gen, span.sid, revision, False, "stop_only",
+                        {"route": {"interim_stop": True, "base_label": label}, "playing": playing},
+                        list(call_ids), operation_id))
+
             route, audit = await decide_input_route(call, messages,
                 min(self.DECISION_TIMEOUT, float(self.engine_cfg.get("input_decision_timeout_s", 2))),
                 playing=playing, closed=closed, reply_prompt=self.prompts.get("input_reply"),
-                reply_context=reply_context)
+                reply_context=reply_context, on_review=stop_first)
             return InputDecision(gen, span.sid, revision, closed, route,
                                  {"route": audit, "playing": playing},
                                  list(call_ids), operation_id)

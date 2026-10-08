@@ -181,7 +181,8 @@ def inspect_session(engine, item, prefix, source, texts, error, stop_reason):
         'final_vad_relative_s':round(final_vad-clip_start,3),'audible':audible,
         'early_playback':any(r['before_final_vad'] for r in audible),
         'playback_starts':len(starts),'completed_playbacks':len(events('speech_played')),
-        'input_labels':[r['data']['route'] for r in accepted],
+        'input_labels':[r['data']['route'] for r in accepted
+                        if not r['data'].get('audit',{}).get('route',{}).get('interim_stop')],
         'cancelled_candidates':len(candidate_cancels),
         'speech_cancellations':[r['data'].get('reason') for r in events('speech_cancelled')],
         'route_fallbacks':sum(bool(r['data'].get('audit',{}).get('route',{}).get('fallback')) for r in accepted),

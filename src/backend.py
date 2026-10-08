@@ -498,7 +498,7 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None, asr_cfg=None) -> F
             info.update(input_protocol="pcm16.ref.v1", guarded_turns=True,
                         route_protocol=ROUTE_PROTOCOL, route_reference_text=False,
                         reply_protocol=REPLY_PROTOCOL if prompts.get("input_reply") else None,
-                        reply_context="completed_sentences_at_input_onset",
+                        reply_context="completed_or_heard_sentences_at_input_onset",
                         input_timing=input_timing(engine_cfg),
                         route_penalties={"presence": 0.0, "frequency": 0.0})
             if engine_cfg.get("input_continuation_context"):

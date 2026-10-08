@@ -10,7 +10,7 @@ LABELS = {"judge": ("continue", "switch"), "interrupt": ("continue", "switch"),
 FALLBACK = {"judge": "continue", "interrupt": "continue", "shift": "no", "input_route": "keep"}
 ROUTE_PROTOCOL = "transcript-first-v1"
 ROUTE_MAX_OUTPUT = 4096
-REPLY_PROTOCOL = "played-reply-v1"
+REPLY_PROTOCOL = "played-reply-v2"
 
 
 def input_route_token_budget(audio_samples):
@@ -28,22 +28,29 @@ def reply_messages(prompt, transcript, context):
 
 
 async def decide_input_route(call, messages, timeout, *, playing=False, closed=True,
-                             reply_prompt=None, reply_context=""):
+                             reply_prompt=None, reply_context="", on_review=None):
     """Audio decision + optional text-only reply check share ONE deadline.
 
-    call(messages, stage) includes queue acquisition. The review is one attempt,
-    only promotes a valid nonempty KEEP, and never authorizes STOP/WAIT.
+    call(messages, stage) includes queue acquisition. The review is one attempt
+    on a valid nonempty KEEP or STOP_ONLY decision; it can only promote to READY
+    and never authorizes STOP/WAIT. WAIT is never reviewed: the user is still
+    talking, so an unfinished fragment must not be answered. The audio stage
+    decides stopping and waiting without assistant text; the played context
+    decides whether the heard words call for a reply. on_review(label) runs just
+    before the review so a STOP can take effect without waiting for it.
     """
     deadline = time.perf_counter() + timeout
     label, audit = await decide_control(lambda msgs: call(msgs, "input_route"),
                                         messages, "input_route", timeout)
     audit["base_label"] = label
-    if not (reply_prompt and playing and closed and reply_context and label == "keep"
+    if not (reply_prompt and playing and closed and reply_context and label in ("keep", "stop_only")
             and not audit["fallback"] and audit.get("transcript", "").strip()):
         return label, audit
     review = {"protocol": REPLY_PROTOCOL, "attempts": 0, "fallback": False,
               "timed_out": False, "label": "keep"}
     audit["reply_review"] = review
+    if on_review is not None:
+        on_review(label)
     remaining = deadline - time.perf_counter()
     if remaining <= 0:
         review.update(timed_out=True, fallback=True)
@@ -59,7 +66,10 @@ async def decide_input_route(call, messages, timeout, *, playing=False, closed=T
         if checked is None:
             review["fallback"] = True
         else:
-            label = review["label"] = checked
+            review["label"] = checked
+            # A review KEEP leaves the audio decision (keep/stop) untouched.
+            if checked == "yield_ready":
+                label = checked
     except asyncio.TimeoutError:
         review.update(timed_out=True, fallback=True)
     except Exception as exc:

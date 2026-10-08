@@ -398,7 +398,11 @@ async def test_early_tts_clause_is_not_a_completed_request_for_reply_review():
     try:
         await playing(e)
         sid = e._speech.sid
-        e._guard_outputs[sid] = {'turn': e._speech_meta.turn, 'sentences': []}
+        # Keep the published reference: only the completed-sentence view is reset.
+        record = e._guard_outputs[sid]
+        record['sentences'] = []
+        record.pop('reply_sentences', None)
+        record.pop('reply_pending', None)
         e._guard_sentence_end(sid, {'end_sample': 100, 'text': '你想听这个故事，', 'reply_complete': False})
         record = e._guard_outputs[sid]
         assert completed_context(record['reply_sentences'], 100) == ''
@@ -406,7 +410,8 @@ async def test_early_tts_clause_is_not_a_completed_request_for_reply_review():
         models.labels['input_route'] = 'keep'
         await new_input(e)
         await pump(e, lambda: e._guard_input.decided)
-        assert e._guard_input.reply_context == ''
+        # 100 samples of the first clause is below REPLY_MIN_HEARD_S: no heard window either.
+        assert e._guard_input.reply_context == '' and e._guard_input.reply_context_kind is None
         e._guard_sentence_end(sid, {'end_sample': 200, 'text': '还是换一个？', 'reply_complete': True})
         assert completed_context(record['reply_sentences'], 199) == ''
         assert completed_context(record['reply_sentences'], 200) == '你想听这个故事，还是换一个？'
