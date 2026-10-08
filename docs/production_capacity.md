@@ -1,5 +1,7 @@
 # 单用户生产容量配置
 
+当前单用户延迟候选与证据筛选见 [四项问题的状态](demo_latency_optimization.md)。实验已按用户要求停止；候选尚未完成正式部署与真实接入验收，归档不修改此处既有运行默认值。
+
 当前默认音频服务面向 RTX PRO 6000 Blackwell 96GB 的单用户连续语音交互：三阶段均为 `max_num_seqs=4`，stage 0 的 `max_model_len=4096`，服务调度显式固定为 `fcfs`。这不是新的模型优先级方案；紧急通路由应用侧准入控制保证。
 
 ## 请求准入
@@ -15,7 +17,7 @@
 
 模型调用超过 ActorEngine 的决策超时时，底层同步 HTTP 工作可能尚未结束。实现会让该工作继续持有容量票，直到真实线程退出，避免“表面超时、实际仍占 GPU，却提前放票”造成隐性超卖。取消中的 SSE 流则会关闭上游连接并在退出时放票。
 
-这是 backend **进程内**的全局限制，不约束绕过 backend 直接访问 `:10003`/`:10004` 的外部脚本。当前只承诺单用户；多租户公平、每用户配额和跨进程协调仍不在本轮范围。
+这是 backend **进程内**的全局限制，不约束绕过 backend 直接访问 `:10003`/`:10004` 的外部脚本。当前验收对象是一个用户在同一会话中产生的重叠调用、控制请求与取消后的资源释放。
 
 ## 历史预算
 
@@ -33,7 +35,7 @@ ActorEngine 默认 `history_token_budget: 3000`。组装 prompt 时从最新轮�
 bash setup/start_qwen3omni_audio.sh
 ```
 
-旧的 `max_num_seqs=1 / stage0=8192` 串行测量口径已逐字节另存为 `configs/qwen3_omni_audio_serial_eval.yaml`：
+旧的 `max_num_seqs=1 / stage0=8192` 串行测量口径已另存为 `configs/qwen3_omni_audio_serial_eval.yaml`：
 
 ```bash
 QWEN_DEPLOY_CONFIG=configs/qwen3_omni_audio_serial_eval.yaml \
@@ -52,4 +54,4 @@ QWEN_DEPLOY_CONFIG=configs/qwen3_omni_audio_serial_eval.yaml \
 - 全仓 Python 测试 187/187 通过；其中新增容量/历史契约 7 项。4 条 pytest warning 是既有测试返回 bool 的警告。
 - 服务已正常停止，`:10003/:10004/:18000` 与 GPU 占用均为 0。vLLM-Omni 停服时报告各 2 个 semaphore/shared-memory `resource_tracker` 清理警告；没有遗留进程或端口。
 
-这些是单机烟测，不是正式 P50/P95，也不证明高并发、多用户公平或物理扬声器体验。完整结构化数据见 `exp/streaming_demo/capacity_seq4_receipt.json`。
+这些是单机烟测，不是正式 P50/P95，也不证明单用户完整状态交错或物理扬声器体验。完整结构化数据见 `exp/streaming_demo/capacity_seq4_receipt.json`。

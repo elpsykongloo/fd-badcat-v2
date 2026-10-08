@@ -1,5 +1,7 @@
 # HumDial 浏览器演示：服务器运行，笔记本展示
 
+当前单用户延迟候选与证据筛选见 [四项问题的状态](demo_latency_optimization.md)。实验已按用户要求停止；候选尚未完成正式部署与真实接入验收，归档不修改此处既有运行默认值。
+
 页面入口是 `src/static/index.html`，由 backend 的 `/demo/` 提供。纯 HTML/CSS/JavaScript，没有前端构建步骤、CDN、账号密钥或笔记本端 Python 依赖。
 
 模型仍运行在 GPU 服务器；笔记本浏览器负责录音、播放与页面展示。使用 HumDial ActorEngine，展示启动器默认选择独立 `chat-demo-v1` 配置：自然中英聊天、双语 ASR、播放后轮次收尾与启动预热，并启用完整候选投机和开播前续说撤销。原 HumDial 评测配置及默认关闭的行为开关保留。
