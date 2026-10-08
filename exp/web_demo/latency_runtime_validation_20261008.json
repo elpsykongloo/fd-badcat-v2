@@ -1,0 +1,123 @@
+{
+  "version": "demo-latency-runtime-acceptance-v1",
+  "date": "2026-10-08",
+  "status": "passed_with_protocol_repair_warnings",
+  "scope": "Load committed engineering and validate its runtime contracts; no further model or product optimization",
+  "engineering_commit": "3215635",
+  "diagnostic_fix_loaded_commit": "51fc5cb",
+  "deployment": {
+    "launcher": "setup/start_demo_pro6000.sh",
+    "normal_startup_and_warmup": "passed",
+    "demo_info_http_status": 200,
+    "new_session_manifest_confirms_loaded_revision": true,
+    "effective_engine": {
+      "stream_text_read_ahead": true,
+      "stream_pcm_read_ahead": true,
+      "stream_first_clause_chars": 8,
+      "input_control_reserve": true,
+      "input_route_token_budget": true,
+      "input_route_parallel_shift": true,
+      "stream_startup_ms": 350,
+      "stream_prefetch_ms": 2000,
+      "stream_buffer_ms": 600
+    }
+  },
+  "cpu_regression": {
+    "passed": 209,
+    "failed": 0,
+    "skipped": 0,
+    "suites": [
+      "test_demo_diagnostics.py",
+      "test_guarded_turns.py",
+      "test_latency_optimization.py",
+      "test_demo_trace.py",
+      "test_response_completion.py",
+      "test_speech_stream.py"
+    ],
+    "note": "Overlaps the earlier 413-test receipt; do not add their counts"
+  },
+  "browser_runtime": {
+    "path": "Windows Chromium -> SSH forwarding -> deployed Demo -> real Omni",
+    "digital_audio_injection": true,
+    "real_web_audio_playback": true,
+    "physical_microphone_or_speaker_test": false,
+    "plans": 8,
+    "attempts": 10,
+    "passed": 10,
+    "failed": 0,
+    "sessions": 12,
+    "completed_replies": 11,
+    "completed_playback_received_equals_played": true,
+    "completed_playback_underruns": 0,
+    "causal_vad_anchors_present_for_completed_replies": true,
+    "cases": [
+      "normal_zh", "short_zh", "short_en", "normal_en", "second_turn",
+      "voice_stop", "release_preplay", "disconnect_playing",
+      "final_normal_en", "final_second_turn"
+    ],
+    "page_errors": 0,
+    "stop_only_cancels_without_new_reply": true,
+    "old_audio_packets_received_after_cancel": 0,
+    "all_sessions_final_listen": true,
+    "all_sessions_final_pending_tasks": 0,
+    "all_sessions_final_active_capacity": 0,
+    "all_traces_closed": true,
+    "trace_dropped": 0,
+    "model_calls_dispatched": 93,
+    "model_calls_terminal": 93,
+    "model_calls_completed": 86,
+    "model_calls_cancelled": 7,
+    "model_calls_error": 0,
+    "diagnostic_errors_after_correct_operation_audit": 0,
+    "shift_protocol_repairs": 2,
+    "control_fallbacks": 0,
+    "control_timeouts": 0,
+    "private_response_preparation_overlapped_shift": true,
+    "public_speech_started_after_shift_result": true
+  },
+  "internal_source_liveness": {
+    "scope": "One engineering process, three overlapping response/TTS jobs using production Actor adapters and capacity; playback ACK paced by PCM duration",
+    "physical_audio": false,
+    "browser_test": false,
+    "valid_attempts": 1,
+    "passed": true,
+    "jobs": 3,
+    "tts_units_per_job": [8, 8, 8],
+    "text_and_audio_completed_for_all_jobs": true,
+    "sent_equals_played_for_all_jobs": true,
+    "model_calls_dispatched": 27,
+    "model_calls_terminal": 27,
+    "peak_total": 3,
+    "peak_normal": 3,
+    "final_active_total": 0,
+    "final_waiting_total": 0,
+    "excluded_attempts": 1,
+    "exclusion_reason": "Collector checked audio_done instead of production audio_end; original receipt retained privately; corrected collector was rerun"
+  },
+  "diagnostic_repair": {
+    "problem": "Open-input provisional routes and different input operations were conflated into final-route conflicts",
+    "changes": [
+      "Record closed, parent_id and input_generation for input decision observations",
+      "Recover legacy closed state from matching dispatch operation",
+      "Scope final-route conflicts to closed operations and stale-decision audits to operation and generation",
+      "Allowlist the six engineering configuration fields in runtime manifests"
+    ],
+    "original_misclassified_summaries_retained_privately": true,
+    "protocol_repair_warnings_preserved": true,
+    "routing_policy_changed": false
+  },
+  "final_resource_snapshot": {
+    "gpu_utilization_percent": 0,
+    "gpu_memory_used_mib": 78453,
+    "gpu_memory_free_mib": 18797,
+    "omni_requests_running": 0,
+    "omni_requests_waiting": 0,
+    "other_group_backend_preserved": true
+  },
+  "limitations": [
+    "Limited authored input cases and runtime interleavings; not a universal success rate or comparative latency benchmark",
+    "Digital playback does not certify physical acoustic quality",
+    "Three existing product/model issues remain open; no follow-up optimization was performed"
+  ],
+  "publication": "Aggregate only; private session IDs, transcripts, audio and raw traces are excluded"
+}
