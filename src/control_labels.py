@@ -13,6 +13,13 @@ ROUTE_MAX_OUTPUT = 4096
 REPLY_PROTOCOL = "played-reply-v1"
 
 
+def input_route_token_budget(audio_samples):
+    """Bound protocol tails while allowing normal speech plus JSON overhead."""
+    if type(audio_samples) is not int or audio_samples < 0:
+        raise ValueError("Audio sample count must be a nonnegative integer")
+    return min(256, max(64, 48 + (audio_samples + 999) // 1000))
+
+
 def reply_messages(prompt, transcript, context):
     # Data stays out of the instruction role. No audio and no generated future
     # text: this call cannot rewrite the independently obtained transcription.

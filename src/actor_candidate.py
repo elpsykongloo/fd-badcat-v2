@@ -53,6 +53,7 @@ class Candidate:
     restarts: int = 0
     created: float = field(default_factory=time.perf_counter)
     parent_id: str = None
+    shift_pending: bool = False
 
 
 class CandidateTurns:
@@ -111,6 +112,12 @@ class CandidateTurns:
             self.q.put_nowait(CandidateResult(c.cid, c.stage, accounted=False))
             return
         kind, messages = c.stage, c.messages[c.stage]
+        if (kind == "shift" and self.CHAT_DEMO
+                and self.engine_cfg.get("input_route_parallel_shift", False)):
+            # Prepare only from the frozen candidate snapshot. Both hold and
+            # this independent control must settle before anything is public.
+            c.shift_pending = True
+            self.q.put_nowait(CandidateResult(c.cid, "response_prepare", accounted=False))
         # Even speculative judges use NORMAL. Only a non-speculative, confirmed
         # judge may take the control reserve. No synchronous detached HTTP here.
         request_kind = kind if c.confirmed else "spec_" + kind
@@ -180,6 +187,11 @@ class CandidateTurns:
             self._candidate_log("candidate_result_discarded", candidate_id=ev.cid,
                                 kind=ev.kind, cancelled=ev.cancelled)
             return
+        if ev.kind == "response_prepare":
+            if c.shift_pending and c.pipeline is None:
+                c.stage = "response"
+                await self._start_candidate_speech(c)
+            return
         if ev.kind in ("judge", "shift"):
             c.controls.append(ev)
             self._candidate_log("candidate_control_done", candidate_id=c.cid,
@@ -198,7 +210,17 @@ class CandidateTurns:
                 self._launch_candidate(c)
                 return
         elif ev.kind == "shift":
+            was_pending = c.shift_pending
+            c.shift_pending = False
             c.stage = "shift_re" if ev.text == "yes" else "response"
+            if was_pending and c.pipeline is not None:
+                if ev.text == "yes":
+                    self._discard_candidate_pipeline(c)
+                    c.error = None
+                else:
+                    if c.confirmed:
+                        await self._settle_candidate_speech(c)
+                    return
         await self._start_candidate_speech(c)
 
     def _candidate_continue(self, c):
@@ -224,22 +246,26 @@ class CandidateTurns:
             self._launch_candidate(c)
         elif c.stage == "continue":
             self._candidate_continue(c)
-        elif c.pipeline is not None:
-            if c.error is not None and (c.error.get("code") == "response_incomplete" or c.error.get("terminal")):
-                # Exhausting a bounded completion must not reset its budget via
-                # a fresh private pipeline. Publish only the terminal notice;
-                # the failed, unplayed draft remains private.
-                c.stash = [SpeechEvent(c.pipeline.sid, "error", dict(c.error))]
-                await self._publish_candidate(c)
-            elif c.error is not None:
-                # Failed, still-private text/audio must not leak on confirmation.
-                # One fresh pipeline may retry the same frozen selected response.
-                c.restarts += 1
-                self._discard_candidate_pipeline(c)
-                c.error = None
-                await self._start_candidate_speech(c)
-            else:
-                await self._publish_candidate(c)
+        elif c.pipeline is not None and not c.shift_pending:
+            await self._settle_candidate_speech(c)
+
+    async def _settle_candidate_speech(self, c):
+        if c.error is not None and (c.error.get("code") == "response_incomplete" or c.error.get("terminal")
+                                    or c.restarts >= 1):
+            # Exhausting a bounded completion must not reset its budget via
+            # a fresh private pipeline. Publish only the terminal notice;
+            # the failed, unplayed draft remains private.
+            c.stash = [SpeechEvent(c.pipeline.sid, "error", dict(c.error))]
+            await self._publish_candidate(c)
+        elif c.error is not None:
+            # Failed, still-private text/audio must not leak on confirmation.
+            # One fresh pipeline may retry the same frozen selected response.
+            c.restarts += 1
+            self._discard_candidate_pipeline(c)
+            c.error = None
+            await self._start_candidate_speech(c)
+        else:
+            await self._publish_candidate(c)
 
     async def _start_candidate_speech(self, c):
         from engine import ModelDone, RESPONSE_TIMEOUT_APOLOGY
@@ -283,7 +309,7 @@ class CandidateTurns:
             c.stash.append(SpeechEvent(ev.sid, ev.kind, dict(ev.data)))
 
     async def _publish_candidate(self, c):
-        if not self._candidate_current(c) or not c.confirmed or c.published:
+        if not self._candidate_current(c) or not c.confirmed or c.published or c.shift_pending:
             return
         if self.GUARDED_TURNS and not self._guard_can_publish(c):
             return

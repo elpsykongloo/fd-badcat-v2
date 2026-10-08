@@ -161,6 +161,20 @@ class GuardedTurns:
             record["reference"] = SpeechReference()
         record["reference"].observe(ev.kind, ev.data)
 
+    def _guard_sentence_end(self, sid, data):
+        record = self._guard_outputs.setdefault(sid, {
+            "turn": self._speech_meta.turn, "sentences": []})
+        end, text = data["end_sample"], data["text"]
+        if not data.get("reply_complete", True):
+            if "reply_sentences" not in record:
+                record["reply_sentences"] = list(record["sentences"])
+            record["reply_pending"] = record.get("reply_pending", "") + text
+        elif "reply_sentences" in record:
+            record["reply_sentences"].append((end, record.pop("reply_pending", "") + text))
+        # Actual completed TTS units still delimit played history; generated
+        # future text never enters either history or the completed reply view.
+        record["sentences"].append((end, text))
+
     def _guard_capture_reference(self, span):
         speech = self._speech
         if speech is None:
@@ -232,7 +246,7 @@ class GuardedTurns:
                     record = self._guard_outputs.get(self._speech.sid, {})
                     if not record.get("cancelled") and not record.get("completed"):
                         span.reply_played_samples = self._speech.played
-                        span.reply_context = completed_context(record.get("sentences", []),
+                        span.reply_context = completed_context(record.get("reply_sentences", record.get("sentences", [])),
                                                                span.reply_played_samples)
                     c = self._speech_candidate
                     if (self.CONTINUATION_CONTEXT and c is not None
@@ -280,6 +294,7 @@ class GuardedTurns:
         if c is not None and not c.confirmed and self._guard_can_publish(c) and t - c.anchor >= self.END_HOLD:
             self._judged_seg_end = t
             await self.send_control("vad_640_done", {"turn": self.TURN_IDX, "state": self.STATE,
+                "candidate_id": c.cid, "parent_id": c.parent_id,
                 "timestamp": self._wall_ts()})
             await self._confirm_candidate()
 
@@ -359,7 +374,14 @@ class GuardedTurns:
             call_id = self._diagnostic_id("call")
             call_ids.append(call_id)
             request_kind = "interrupt" if playing else "spec_judge"
+            if self.CHAT_DEMO and self.engine_cfg.get("input_control_reserve", False):
+                request_kind = "input_reply" if stage == "input_reply" else "input_route"
+            response_options = None
+            if self.CHAT_DEMO and self.engine_cfg.get("input_route_token_budget", False) and stage != "input_reply":
+                from control_labels import input_route_token_budget
+                response_options = {"max_tokens": input_route_token_budget(current_samples + context_samples)}
             async with aclosing(self._capacity_stream(request_kind, self.text_stream_fn, msgs, route=True,
+                    response_options=response_options,
                     case_context={"input_id": span.sid, "revision": revision, "closed": closed,
                                   "input_generation": gen, "playing": playing,
                                   **reference_context, "decision_stage": stage,
@@ -498,8 +520,7 @@ class GuardedTurns:
         self._guard_wait_reason = None
         self.BUFFER = [audio]
         self.t_end_anchor = span.end
-        # Route READY supplies input/readiness admission; retain the existing
-        # third-party shift gate, frozen snapshots and private first-sentence TTS.
+        # Route readiness does not replace the independent audio shift gate.
         self._begin_candidate(audio, stage="shift" if self.TURN_IDX else "response",
                               parent_id=ev.parent_id)
 

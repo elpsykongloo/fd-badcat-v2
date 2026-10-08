@@ -18,6 +18,97 @@ from async_utils import cancellable_wait
 PCM_HEADER = struct.Struct("<4sIII")  # magic, utterance id, packet sequence, rate
 PROTOCOL = "pcm16.v1"
 MAX_PREFETCH_CHUNK_BYTES = 512 * 1024
+MAX_RESPONSE_CHARS = 16384
+MAX_READ_AHEAD_PCM_BYTES = 8 * 1024 * 1024
+MAX_READ_AHEAD_PCM_CHUNKS = 4096
+
+
+async def _read_ahead(source, timeout, measure, max_size, max_items, error_message, name,
+                     on_complete=None):
+    """A whole-source budget prevents downstream credit from holding its lease.
+
+    No queue put can block the model reader. The source closes before terminal
+    delivery; errors follow received items. Consumer cancellation joins it.
+    """
+    pending = asyncio.Queue(maxsize=max_items + 1)
+    closing = False
+
+    async def read():
+        size = count = 0
+        error = None
+        try:
+            async with aclosing(source):
+                while True:
+                    try:
+                        item = await cancellable_wait(source.__anext__(), timeout)
+                    except StopAsyncIteration:
+                        break
+                    cost = measure(item)
+                    size += cost
+                    count += 1
+                    if size > max_size or count > max_items:
+                        raise RuntimeError(error_message)
+                    if not cost:
+                        continue
+                    pending.put_nowait((item, None))
+        except asyncio.CancelledError as exc:
+            if closing:
+                raise
+            # Only consumer cancellation is a normal pipeline cancellation.
+            # A self-cancelled source must surface as an explicit failure after
+            # buffered items, rather than silently finishing the public stream.
+            error = RuntimeError("Speech source cancelled unexpectedly")
+            error.__cause__ = exc
+        except Exception as exc:
+            error = exc
+        if on_complete is not None:
+            on_complete(time.perf_counter())
+        # The source (and its capacity permit) is closed before terminal delivery.
+        pending.put_nowait((None, error))
+
+    reader = asyncio.create_task(read(), name=name)
+    try:
+        while True:
+            delta, error = await pending.get()
+            if delta is None:
+                if error is not None:
+                    raise error
+                return
+            yield delta
+    finally:
+        closing = True
+        reader.cancel()
+        await asyncio.gather(reader, return_exceptions=True)
+
+
+def drain_text(source, timeout, *, on_complete=None):
+    def measure(delta):
+        if not isinstance(delta, str):
+            raise TypeError("Response stream must contain text")
+        return len(delta)
+    return _read_ahead(source, timeout, measure, MAX_RESPONSE_CHARS, MAX_RESPONSE_CHARS,
+                       "Response exceeds streaming text limit", "speech-text-reader", on_complete)
+
+
+def drain_pcm(source, timeout, *, max_bytes=MAX_READ_AHEAD_PCM_BYTES,
+              max_chunks=MAX_READ_AHEAD_PCM_CHUNKS):
+    if type(max_bytes) is not int or max_bytes < 1 or type(max_chunks) is not int or max_chunks < 1:
+        raise ValueError("Invalid PCM read-ahead budget")
+    rate = None
+    def measure(chunk):
+        nonlocal rate
+        if not isinstance(chunk.pcm, bytes) or not chunk.pcm or len(chunk.pcm) % 2:
+            raise RuntimeError("Empty or unaligned PCM chunk")
+        if len(chunk.pcm) > MAX_PREFETCH_CHUNK_BYTES:
+            raise RuntimeError("TTS chunk exceeds bounded read-ahead input")
+        if type(chunk.sample_rate) is not int or not 8000 <= chunk.sample_rate <= 96000:
+            raise RuntimeError("Invalid sample rate")
+        if rate is not None and rate != chunk.sample_rate:
+            raise RuntimeError("Sample rate changed inside utterance")
+        rate = chunk.sample_rate
+        return len(chunk.pcm)
+    return _read_ahead(source, timeout, measure, max_bytes, max_chunks,
+                       "TTS source exceeds bounded read-ahead budget", "speech-pcm-reader")
 
 
 class AudioHealth:
@@ -139,13 +230,16 @@ class SpeechPipeline:
     def __init__(self, sid, queue, messages, text_fn, tts_fn, *, timeout=15,
                  retry=True, apology="", packet_ms=40, buffer_ms=600, precompute_gate=None,
                  track_sentences=False, startup_ms=80, prefetch_ms=0, diagnostics=False,
-                 spoken_text=False):
+                 spoken_text=False, text_read_ahead=False, first_clause_chars=0,
+                 pcm_read_ahead=False):
         if not 10 <= packet_ms <= 100 or not 2 * packet_ms <= buffer_ms <= 2000:
             raise ValueError("stream packet/buffer sizes outside safe limits")
         if not 0 <= startup_ms <= 1000:
             raise ValueError("stream startup outside safe limits")
         if prefetch_ms and not 2 * packet_ms <= prefetch_ms <= 5000:
             raise ValueError("stream prefetch outside safe limits")
+        if type(first_clause_chars) is not int or not 0 <= first_clause_chars <= 160:
+            raise ValueError("First clause threshold outside safe limits")
         self.sid, self.queue = sid, queue
         self.messages, self.text_fn, self.tts_fn = messages, text_fn, tts_fn
         self.timeout, self.retry, self.apology = timeout, retry, apology
@@ -159,6 +253,10 @@ class SpeechPipeline:
         self.startup_ms, self.prefetch_ms = startup_ms, prefetch_ms
         self.diagnostics = diagnostics
         self.spoken_text = spoken_text
+        self.text_read_ahead = text_read_ahead
+        self.first_clause_chars = first_clause_chars
+        self.pcm_read_ahead = pcm_read_ahead
+        self.text_source_finished_at = None
         self.ahead = AudioAhead() if prefetch_ms else None
         self.sentence_slots = asyncio.Semaphore(2)
         self.send_seq = 0
@@ -187,7 +285,7 @@ class SpeechPipeline:
         await ack
 
     async def produce(self):
-        splitter = StreamingSentenceBuffer()
+        splitter = StreamingSentenceBuffer(first_clause_chars=self.first_clause_chars)
         normalizer = None
         if self.spoken_text:
             from spoken_text import SpokenTextBuffer
@@ -196,6 +294,8 @@ class SpeechPipeline:
         raw_chars = 0
         t0 = time.perf_counter()
         timed_out = False
+        def source_finished(at):
+            self.text_source_finished_at = at
         async def publish(delta):
             if not delta:
                 return
@@ -205,14 +305,17 @@ class SpeechPipeline:
                 await self.sentences.put(sentence)
         for attempt in range(2 if self.retry else 1):
             try:
-                async with aclosing(self.text_fn(self.messages)) as source:
+                source = self.text_fn(self.messages)
+                if self.text_read_ahead:
+                    source = drain_text(source, self.timeout, on_complete=source_finished)
+                async with aclosing(source) as source:
                     while True:
                         try:
                             delta = await cancellable_wait(source.__anext__(), self.timeout)
                         except StopAsyncIteration:
                             break
                         raw_chars += len(delta)
-                        if raw_chars > 16384:
+                        if raw_chars > MAX_RESPONSE_CHARS:
                             raise RuntimeError("Response exceeds streaming text limit")
                         await publish(normalizer.feed(str(delta)) if normalizer else delta)
                 break
@@ -233,8 +336,12 @@ class SpeechPipeline:
         text = "".join(chunks)
         if not text.strip():
             raise RuntimeError("Empty response stream")
-        await self.emit("text_done", text=text, infer=round(time.perf_counter() - t0, 3),
-                        timed_out=timed_out)
+        delivered_at = time.perf_counter()
+        infer_end = self.text_source_finished_at or delivered_at
+        await self.emit("text_done", text=text, infer=round(infer_end - t0, 3),
+                        timed_out=timed_out,
+                        **({"delivery_ms": round((delivered_at - t0) * 1000, 3)}
+                           if self.text_read_ahead else {}))
         await self.sentences.put(None)
 
     def validate_chunk(self, chunk):
@@ -288,7 +395,10 @@ class SpeechPipeline:
             sentence_samples = chunk_index = 0
             health = AudioHealth() if self.diagnostics else None
             produced = False
-            async with aclosing(self.tts_fn(sentence)) as source:
+            source = self.tts_fn(sentence)
+            if self.pcm_read_ahead:
+                source = drain_pcm(source, 60)
+            async with aclosing(source) as source:
                 while True:
                     try:
                         chunk = await cancellable_wait(source.__anext__(), 60)
@@ -328,7 +438,8 @@ class SpeechPipeline:
             if self.ahead is not None:
                 await self.ahead.put(("sentence_end", sentence_index, sentence))
             elif self.track_sentences:
-                await self.emit("sentence_end", text=sentence, end_sample=self.sent)
+                await self.emit("sentence_end", text=sentence, end_sample=self.sent,
+                                **self.reply_boundary(sentence_index, sentence))
         if self.ahead is not None:
             await self.ahead.put(("end", 0, None))
         else:
@@ -350,11 +461,19 @@ class SpeechPipeline:
                 credit_wait += await self.send_pcm(data, self.origin)
             elif kind == "sentence_end":
                 if self.track_sentences:
-                    await self.emit("sentence_end", text=data, end_sample=self.sent)
+                    await self.emit("sentence_end", text=data, end_sample=self.sent,
+                                    **self.reply_boundary(index, data))
                 await self.metric("sentence_sent", sentence_index=index,
                     end_sample=self.sent, credit_wait_ms=round(credit_wait * 1000, 3),
                     prefetch_peak_bytes=self.ahead.peak_bytes)
                 self.sentence_slots.release()
+
+    def reply_boundary(self, index, text):
+        # Earlier first-clause playback must not make an unfinished sentence
+        # eligible as a completed request in played-reply review.
+        if self.first_clause_chars:
+            return {"reply_complete": not (index == 1 and text.rstrip().endswith((',', '，')))}
+        return {}
 
     async def run(self):
         children = [asyncio.create_task(self.produce()), asyncio.create_task(self.synthesize())]

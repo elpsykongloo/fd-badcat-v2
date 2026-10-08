@@ -1,0 +1,51 @@
+{
+  "suites": [
+    "tests/test_latency_optimization.py",
+    "tests/test_speech_stream.py",
+    "tests/test_speech_continuity.py",
+    "tests/test_actor_candidate.py",
+    "tests/test_guarded_turns.py",
+    "tests/test_demo_trace.py",
+    "tests/test_engine.py",
+    "tests/test_production_capacity.py",
+    "tests/test_route_transcript.py",
+    "tests/test_input_reply.py",
+    "tests/test_continuation_context.py",
+    "tests/test_speech_reference.py",
+    "tests/test_tts_verbatim.py",
+    "tests/test_response_completion.py",
+    "tests/test_transport_recovery.py",
+    "tests/test_input_tuning.py",
+    "tests/test_chat_demo.py",
+    "tests/test_web_demo.py"
+  ],
+  "totals": {
+    "tests": 413,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "exit_code": 0,
+  "gpu_model_calls": false,
+  "runtime_restart": false,
+  "version": "single-user-latency-engineering-v1",
+  "scope": "one-user internal call concurrency, causal timing and guarded delivery",
+  "demo_config": {
+    "stream_text_read_ahead": true,
+    "stream_pcm_read_ahead": true,
+    "input_control_reserve": true,
+    "input_route_token_budget": true,
+    "input_route_parallel_shift": true,
+    "stream_first_clause_chars": 8,
+    "stream_startup_ms": 350,
+    "stream_prefetch_ms": 2000
+  },
+  "latest_profile_latency_measured": false,
+  "physical_device_acceptance": false,
+  "windows_path_acceptance": false,
+  "rejected_experiment_branches_removed": true,
+  "limitations": [
+    "CPU contract tests are not real model accuracy or product latency acceptance",
+    "Historical combined-profile timings are not measurements of this commit"
+  ]
+}

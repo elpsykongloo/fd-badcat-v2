@@ -76,7 +76,7 @@ TIMEOUT_FALLBACK = {
     "shift": "no",           # treat as same-topic (normal answer path)
 }
 RESPONSE_TIMEOUT_APOLOGY = "抱歉，我刚才没有听清，请再说一遍。"
-CONTROL_REQUEST_KINDS = frozenset({"judge", "interrupt"})
+CONTROL_REQUEST_KINDS = frozenset({"judge", "interrupt", "input_route", "input_reply"})
 HISTORY_MESSAGE_OVERHEAD = 16
 
 # A narrow demo guard for replies that end after promising future content. It
@@ -1445,6 +1445,9 @@ class ActorEngine(GuardedTurns, CandidateTurns):
         return {"startup_ms": int(self.engine_cfg.get("stream_startup_ms", 80)),
                 "prefetch_ms": int(self.engine_cfg.get("stream_prefetch_ms", 0)),
                 "spoken_text": bool(self.engine_cfg.get("spoken_text_normalization", False)),
+                "text_read_ahead": bool(self.engine_cfg.get("stream_text_read_ahead", False)),
+                "pcm_read_ahead": bool(self.engine_cfg.get("stream_pcm_read_ahead", False)),
+                "first_clause_chars": self.engine_cfg.get("stream_first_clause_chars", 0),
                 "diagnostics": bool(self.engine_cfg.get("stream_diagnostics", False))}
 
     async def _on_speech_event(self, ev):
@@ -1463,6 +1466,10 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                     and ev.sid == c.pipeline.sid and not c.published):
                 if self._candidate_current(c):
                     self._stage_candidate_speech(c, ev)
+                    if ev.kind == "audio" and c.confirmed:
+                        await self._publish_candidate(c)
+                    elif ev.kind == "error" and c.confirmed and not c.shift_pending:
+                        await self._settle_candidate_speech(c)
                 return
             if self._speech is None or ev.sid != self._speech.sid:
                 return
@@ -1506,9 +1513,7 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                 if self.PLAYBACK_AUTOEND:
                     await self._finish_turn(failed_turn, "speech_error")
             elif ev.kind == "sentence_end" and self.GUARDED_TURNS:
-                record = self._guard_outputs.setdefault(ev.sid, {
-                    "turn": self._speech_meta.turn, "sentences": []})
-                record["sentences"].append((data["end_sample"], data["text"]))
+                self._guard_sentence_end(ev.sid, data)
                 self._observe("speech_sentence_end", data)
             else:
                 if ev.kind == "audio_end":

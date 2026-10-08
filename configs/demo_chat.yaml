@@ -9,6 +9,11 @@ engine:
   stream_startup_ms: 350
   stream_prefetch_ms: 2000
   stream_diagnostics: true
+  # Release model leases when bounded source reads finish, independently of playback.
+  stream_text_read_ahead: true
+  stream_pcm_read_ahead: true
+  # Only the first TTS unit may end at a protected natural clause boundary.
+  stream_first_clause_chars: 8
   # Shared canonical text for UI, TTS literals, references and played history.
   spoken_text_normalization: true
   # One fresh-connection retry only before ANY PCM of the current sentence.
@@ -26,6 +31,12 @@ engine:
   cancellable_response: true
   guarded_turns: true
   input_decision_timeout_s: 2
+  # Input decisions use reserved control capacity even before first playback.
+  input_control_reserve: true
+  # Bound route output without changing its audio-grounded decision protocol.
+  input_route_token_budget: true
+  # Prepare privately during independent shift; publish only after all gates pass.
+  input_route_parallel_shift: true
   # Preserve accepted unfinished USER audio in continuation readiness routing.
   input_continuation_context: true
   input_context_max_gap_s: 20

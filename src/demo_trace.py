@@ -31,6 +31,9 @@ class DemoTrace:
         if diagnostics_dir is not None and manifest is not None:
             private_json(diagnostics_dir / "manifest.json", self.manifest)
         self.anchor = None
+        self.inputs = {}
+        self.operations = {}
+        self.candidates = {}
         self.replies = {}
         self.client_tokens = 20.0
         self.last_client = clock()
@@ -64,21 +67,58 @@ class DemoTrace:
         self.record(event, data, **context)
         now = (self.clock() - self.origin) * 1000
         key = (context.get("generation"), context.get("epoch"))
+        generation = context.get("generation")
+        def remember(mapping, identity, value):
+            if len(mapping) >= 128 and identity not in mapping:
+                mapping.pop(next(iter(mapping)))
+            mapping[identity] = value
+        def causal_anchor():
+            identity = None
+            if data.get("input_id") is not None:
+                identity = (generation, data["input_id"])
+            elif data.get("candidate_id") is not None:
+                identity = self.candidates.get((generation, data["candidate_id"]))
+            elif data.get("parent_id") is not None:
+                identity = self.operations.get((generation, data["parent_id"]))
+            if identity is not None:
+                return self.inputs.get(identity, {})
+            # Epoch matching remains the legacy diagnostic contract. Explicit
+            # causal IDs must never inherit another input's latest anchor.
+            if any(data.get(name) is not None for name in ("input_id", "candidate_id", "parent_id")):
+                return {}
+            return self.anchor if self.anchor and self.anchor["key"] == key else {}
+        if (event == "input_dispatch" and data.get("parent_id") is not None
+                and data.get("input_id") is not None):
+            remember(self.operations, (generation, data.get("parent_id")),
+                     (generation, data.get("input_id")))
+        elif event == "candidate_created" and data.get("candidate_id") is not None:
+            identity = self.operations.get((generation, data.get("parent_id")))
+            if identity is not None:
+                remember(self.candidates, (generation, data.get("candidate_id")), identity)
         if event == "vad_done":
             self.anchor = {"key": key, "vad_ms": now, "hold_ms": None}
-        elif event == "vad_640_done" and self.anchor and self.anchor["key"] == key:
-            self.anchor["hold_ms"] = now
+            if data.get("input_id") is not None:
+                self.anchor["input_id"] = data["input_id"]
+                remember(self.inputs, (generation, data["input_id"]), self.anchor)
+        elif event == "vad_640_done":
+            anchor = causal_anchor()
+            if anchor:
+                anchor["hold_ms"] = now
         elif event == "speech_start":
-            anchor = self.anchor if self.anchor and self.anchor["key"] == key else {}
+            anchor = causal_anchor()
             # Bounded even if every reply is cancelled before receiving audio.
             if len(self.replies) >= 64:
                 self.replies.pop(next(iter(self.replies)))
-            self.replies[data["utterance_id"]] = {**anchor, "start_ms": now}
+            self.replies[data["utterance_id"]] = {**anchor, "start_ms": now,
+                                                   "generation": generation}
         elif event == "speech_cancelled":
-            self.replies.pop(data.get("utterance_id"), None)
+            timing = self.replies.get(data.get("utterance_id"))
+            if timing and timing["generation"] == generation:
+                self.replies.pop(data["utterance_id"], None)
         elif event == "speech_first_audio":
-            timing = self.replies.pop(data.get("utterance_id"), None)
-            if timing:
+            timing = self.replies.get(data.get("utterance_id"))
+            if timing and timing["generation"] == generation:
+                self.replies.pop(data["utterance_id"], None)
                 vad, hold, start = timing.get("vad_ms"), timing.get("hold_ms"), timing["start_ms"]
                 def diff(end, begin):
                     return round(end - begin, 1) if end is not None and begin is not None else None
