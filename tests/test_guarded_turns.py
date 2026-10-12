@@ -377,3 +377,140 @@ def test_route_metadata_cannot_absorb_following_microphone_block():
         assert fields == {"assistant_playing": True}
         assert "麦克风采样" in delim
         assert messages[1]["content"][1] is content
+
+
+async def test_accepted_followup_during_playback_answers_without_audio_shift_veto():
+    e, m, _ = guarded()
+    try:
+        await playing(e)
+        m.labels["shift"] = "yes"
+        await new_input(e)
+        await pump(e, lambda: e._candidate is not None and e._candidate.pipeline is not None)
+        assert e.TURN_IDX == 1 and e._candidate.stage == "response"
+        await frame(e, 1.704)
+        await pump(e, lambda: e._speech is not None and e._speech_meta.turn == 1)
+        assert m.responses == 2
+        assert not any(kind in ("shift", "shift_s") for kind, _ in m.calls)
+    finally:
+        await cleanup(e)
+
+
+def released(seconds=2.0):
+    e, m, sock = guarded()
+    e.engine_cfg["input_wait_release_s"] = seconds
+    e._init_guarded()
+    return e, m, sock
+
+
+async def test_stalled_wait_is_answered_after_user_silence():
+    e, m, _ = released()
+    try:
+        await playing(e)
+        m.labels["input_route"] = "yield_wait"
+        await new_input(e)
+        await pump(e, lambda: e._guard_input.decided)
+        held = np.concatenate(e._guard_wait_audio[:-1]).copy()
+        for t in (1.5, 2.0, 2.9):
+            await frame(e, t)
+        assert e._candidate is None and e._guard_wait_reason == "awaiting_user"
+        await frame(e, 3.1)
+        assert e._candidate is not None and e._candidate.stage == "response"
+        np.testing.assert_array_equal(e._candidate.audio, held)
+        assert not e._guard_wait_audio and e._guard_wait_end is None and e._guard_wait_reason is None
+        await pump(e, lambda: e._candidate is not None and e._candidate.pipeline is not None)
+        await frame(e, 3.2)
+        await pump(e, lambda: e._speech is not None and e._speech_meta.turn == 1)
+        assert m.responses == 2
+    finally:
+        await cleanup(e)
+
+
+async def test_continuation_before_release_still_merges_into_one_answer():
+    e, m, _ = released()
+    try:
+        await playing(e)
+        m.labels["input_route"] = "yield_wait"
+        await new_input(e)
+        await pump(e, lambda: e._guard_input.decided)
+        waiting = sum(map(len, e._guard_wait_audio))
+        m.labels["input_route"] = "yield_ready"
+        await new_input(e, 2.5)
+        await pump(e, lambda: e._candidate is not None and e._candidate.pipeline is not None)
+        assert len(e._candidate.audio) > waiting
+        for t in (3.2, 5, 8):
+            await frame(e, t)
+        await pump(e, lambda: e._speech is not None and e._speech_meta.turn == 1)
+        assert m.responses == 2
+    finally:
+        await cleanup(e)
+
+
+@pytest.mark.parametrize("route", ["stop_only", "keep"])
+async def test_release_never_answers_stop_or_rejected_audio(route):
+    e, m, _ = released()
+    try:
+        await playing(e)
+        m.labels["input_route"] = route
+        await new_input(e)
+        await pump(e, lambda: e._guard_input.decided)
+        for t in (3, 6, 12):
+            await frame(e, t)
+        assert m.responses == 1
+    finally:
+        await cleanup(e)
+
+
+def test_release_setting_is_bounded():
+    e, _, _ = guarded()
+    e.engine_cfg["input_wait_release_s"] = 30
+    with pytest.raises(ValueError):
+        e._init_guarded()
+
+
+def route_context(messages):
+    head = messages[1]["content"][0]["text"]
+    return json.loads(head.split("情境资料：", 1)[1].split("\n", 1)[0])
+
+
+def test_route_conversation_is_opt_in_and_never_carries_unheard_text():
+    e, _, _ = guarded()
+    span = type("Span", (), {"reply_context": "小狐狸发现了小鸟。"})()
+    e._users_by_turn, e._assistants_by_turn = {0: "讲个故事"}, {}
+    assert e._guard_conversation(span, True) is None
+    e.engine_cfg["input_route_conversation"] = True
+    playing = e._guard_conversation(span, True)
+    assert playing == {"previous_user_request": "讲个故事", "assistant_speech_heard": "小狐狸发现了小鸟。"}
+    # Idle: only a turn with both sides in ACK-based history; never a reply still being generated.
+    e._users_by_turn[1] = "然后呢"
+    assert e._guard_conversation(span, False) == {"previous_user_request": "然后呢", "assistant_speech_heard": ""}
+    e._assistants_by_turn[0] = "小狐狸发现了小鸟。"
+    assert e._guard_conversation(span, False)["assistant_speech_heard"] == "小狐狸发现了小鸟。"
+    e._users_by_turn, e._assistants_by_turn = {}, {}
+    span.reply_context = ""
+    assert e._guard_conversation(span, True) is None
+
+
+def test_route_request_carries_conversation_only_when_enabled():
+    msgs = route_messages("p", {"type": "audio_url"}, playing=True)
+    assert "conversation" not in route_context(msgs)
+    conv = {"previous_user_request": "讲个故事", "assistant_speech_heard": "从前有座山。"}
+    msgs = route_messages("p", {"type": "audio_url"}, playing=True, conversation=conv)
+    assert route_context(msgs)["conversation"] == conv and route_context(msgs)["assistant_playing"] is True
+
+
+async def test_live_route_dispatch_sends_heard_conversation():
+    e, m, _ = guarded()
+    e.engine_cfg["input_route_conversation"] = True
+    e._init_guarded()
+    try:
+        await playing(e)
+        e._users_by_turn[0] = "讲个故事"
+        await new_input(e)
+        await pump(e, lambda: e._guard_input.decided)
+        sent = [msgs for kind, msgs in m.calls if kind.startswith("input_route")]
+        assert sent, m.calls
+        meta = route_context(sent[-1])
+        assert meta["conversation"]["previous_user_request"] == "讲个故事"
+        assert meta["conversation"]["assistant_speech_heard"] == e._guard_input.reply_context
+    finally:
+        await cleanup(e)

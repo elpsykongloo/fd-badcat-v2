@@ -515,7 +515,7 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None, asr_cfg=None) -> F
                 "review": bool((engine_cfg or {}).get("diagnostics_review", False)),
                 "review_url": "/demo/diagnostics.html" if (engine_cfg or {}).get("diagnostics_review") else None,
                 "audio_capture_allowed": bool((engine_cfg or {}).get("diagnostic_audio_capture_allowed", False)),
-                "audio_capture_default": False,
+                "audio_capture_default": bool((engine_cfg or {}).get("diagnostic_audio_capture_default", False)),
             }
         return info
 
@@ -570,7 +570,8 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None, asr_cfg=None) -> F
         exp = data.get("exp", {})
         lang = data.get("lang", {})
         web_demo = data.get("client") == "humdial-web"
-        capture_requested = data.get("diagnostic_capture") is True
+        capture_requested = (data.get("diagnostic_capture") is True
+                             or bool((engine_cfg or {}).get("diagnostic_audio_capture_default", False)))
         if (data.get("input_protocol") not in (None, "pcm16.ref.v1") or (
                 data.get("input_protocol") == "pcm16.ref.v1" and (
                     arch != "actor" or (engine_cfg or {}).get("phase", "a") != "a"

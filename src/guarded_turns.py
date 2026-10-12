@@ -33,11 +33,15 @@ REPLY_MIN_HEARD_S = 0.5
 
 
 def route_messages(prompt, content, *, playing=False, reference="", continuation=None,
-                   context_content=None):
-    # Keep the keyword for existing callers, but never send assistant text: the
+                   context_content=None, conversation=None):
+    # Keep the keyword for existing callers, but never send the speech reference: the
     # transcriber can copy it into fictitious microphone speech. Acoustic
     # reference filtering and playback-aligned diagnostic snapshots are intact.
+    # `conversation` is labelled addressee context only (latest answered request and
+    # assistant speech the listener already heard); the prompt forbids transcribing it.
     metadata = {"assistant_playing": bool(playing)}
+    if conversation:
+        metadata["conversation"] = conversation
     if continuation:
         metadata["pending_user_audio"] = continuation
         replied_context = continuation.get("source") == "recent_replied_user_audio"
@@ -131,6 +135,12 @@ class GuardedTurns:
         if not 1 <= self._guard_context_gap <= 30:
             raise ValueError("input_context_max_gap_s must be in [1, 30]")
         self._guard_wait_reason = None
+        # After yield_wait, answer the held input once the user has been silent this long
+        # (seconds of audio clock); 0 keeps the old wait-indefinitely behaviour.
+        self._guard_wait_release = float(self.engine_cfg.get("input_wait_release_s", 0) or 0)
+        if self._guard_wait_release and not 0.5 <= self._guard_wait_release <= 10:
+            raise ValueError("input_wait_release_s must be 0 or in [0.5, 10]")
+        self._guard_wait_parent = None
         self._guard_outputs = {}
         self._guard_echo = EchoEvidence()
         self._guard_evidence = {}
@@ -217,6 +227,11 @@ class GuardedTurns:
     async def _guard_frame(self, ev, event):
         frame, t = ev.pcm, ev.t_audio
         span = self._guard_input
+        if (self._guard_wait_release and self._guard_wait_reason == "awaiting_user"
+                and self._guard_wait_audio and self._guard_wait_end is not None
+                and not (event and "start" in event) and (span is None or span.decided)
+                and self._candidate is None and t - self._guard_wait_end >= self._guard_wait_release):
+            await self._guard_release_wait(t)
         if event and "start" in event:
             if span is not None and not span.decided:
                 span.revision += 1
@@ -314,6 +329,24 @@ class GuardedTurns:
                 "timestamp": self._wall_ts()})
             await self._confirm_candidate()
 
+    def _guard_conversation(self, span, playing):
+        """Addressee context for input_route: the latest answered user request and only
+        assistant speech the listener has heard. While playing that is the onset-frozen
+        played window; otherwise the ACK-based history, which never holds unplayed text."""
+        if not self.engine_cfg.get("input_route_conversation", False):
+            return None
+        users = getattr(self, "_users_by_turn", {})
+        assistants = getattr(self, "_assistants_by_turn", {})
+        previous = users[max(users)] if users else ""
+        if playing:
+            heard = span.reply_context
+        else:
+            answered = sorted(users.keys() & assistants.keys())
+            heard = assistants[answered[-1]] if answered else ""
+        if not previous and not heard:
+            return None
+        return {"previous_user_request": previous[-300:], "assistant_speech_heard": heard[-400:]}
+
     def _guard_dispatch(self, span, *, closed):
         span.checked_until = self.t_audio
         gen, revision = self.session_gen, span.revision
@@ -360,9 +393,11 @@ class GuardedTurns:
             # playing input retains its onset snapshot across END/repair/EOF.
             if span.reference_kind != "playback_sentence_window":
                 self._guard_capture_reference(span)
+        conversation = self._guard_conversation(span, playing)
         messages = route_messages(self.prompts["input_route"], content,
                                   playing=playing, reference=span.reference_text,
-                                  continuation=continuation, context_content=context_content)
+                                  continuation=continuation, context_content=context_content,
+                                  conversation=conversation)
         self._observe("input_dispatch", {"input_id": span.sid, "revision": revision,
             "closed": closed, "playing": playing, "audio_samples": current_samples + context_samples,
             "current_audio_samples": current_samples, "context_audio_samples": context_samples,
@@ -378,7 +413,8 @@ class GuardedTurns:
             "reference_played_samples": span.reference_played,
             "route_protocol": ROUTE_PROTOCOL, "reference_sent_to_model": False,
             "input_timing": self.input_timing, "preroll_samples": span.preroll_samples,
-            "route_penalties": {"presence": 0.0, "frequency": 0.0}}
+            "route_penalties": {"presence": 0.0, "frequency": 0.0},
+            "conversation_chars": sum(map(len, (conversation or {}).values()))}
         reply_context = span.reply_context
         reference_context.update(reply_protocol=REPLY_PROTOCOL,
             reply_context_chars=len(reply_context), reply_played_samples=span.reply_played_samples,
@@ -544,14 +580,30 @@ class GuardedTurns:
             self._guard_wait_audio = [audio, np.zeros(1600, dtype=np.float32)]
             self._guard_wait_end = span.end
             self._guard_wait_reason = "awaiting_user"
+            self._guard_wait_parent = ev.parent_id
             await self.send_control("input_waiting", {"reason": "awaiting_user", "input_id": span.sid})
             return
         self._guard_wait_reason = None
         self.BUFFER = [audio]
         self.t_end_anchor = span.end
-        # Route readiness does not replace the independent audio shift gate.
-        self._begin_candidate(audio, stage="shift" if self.TURN_IDX else "response",
-                              parent_id=ev.parent_id)
+        # input_route already judged the addressee (speech to a third party is keep). The
+        # audio-only shift gate never caught a real third party in captured sessions, vetoed
+        # accepted follow-ups, and its reply omits the user audio, so it is not run here.
+        self._begin_candidate(audio, stage="response", parent_id=ev.parent_id)
+
+    async def _guard_release_wait(self, t):
+        """The user went quiet after an input that looked unfinished. Answer what was
+        heard (the reply prompt allows one short clarification) rather than stay silent."""
+        audio = np.concatenate(self._guard_wait_audio[:-1] or self._guard_wait_audio)
+        silence = t - self._guard_wait_end
+        self.t_end_anchor = self._guard_wait_end
+        parent = self._guard_wait_parent
+        self._guard_wait_audio, self._guard_wait_end = [], None
+        self._guard_wait_reason = self._guard_wait_parent = None
+        self.BUFFER = [audio]
+        self._observe("input_wait_released", {"silence_s": round(silence, 3),
+            "audio_samples": len(audio), "parent_id": parent})
+        self._begin_candidate(audio, stage="response", parent_id=parent)
 
     async def _guard_finish_turn(self, turn, reason):
         if turn is None or turn != self.TURN_IDX:

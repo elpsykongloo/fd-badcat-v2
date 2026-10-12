@@ -114,6 +114,7 @@ def build_manifest(*, session_id, repository_root, profile, engine_cfg, delay,
         "case_capture_kind_weights", "case_capture_success_sample_rate",
         "diagnostics_review", "diagnostics_retention_days",
         "diagnostic_audio_capture_allowed", "diagnostic_audio_capture_seconds",
+        "diagnostic_audio_capture_default", "input_wait_release_s", "input_route_conversation",
     )
     llm_keys = ("model", "decision_timeout_s", "audio_block")
     asr_keys = ("backend", "provider", "num_threads")
