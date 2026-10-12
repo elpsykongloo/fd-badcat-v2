@@ -28,6 +28,9 @@ stages:
     max_tokens: 256
     seed: 42
 - stage_id: 1
+  # Inner Transformer graph only; sampling uses the original request RNG.
+  env:
+    FDBC_DEMO_RESIDUAL_OPT: graph
   max_num_batched_tokens: 8192
   max_model_len: 8192
   max_num_seqs: 4
