@@ -327,3 +327,23 @@ async def test_client_hold_and_rtt_telemetry_reach_the_trace_with_actor_context(
         assert decision["data"]["route_ms"] is not None and decision["data"]["decision_after_end_ms"] == 0
     finally:
         await cleanup(e)
+
+
+def test_low_max_and_not_chinese_tier_are_configurable_and_default_unchanged():
+    base = hold_config({}, .64)
+    assert base["low_max_s"] == hold_tiers.LOW_MAX_S and base["not_chinese_tier"] == "keep"
+    kw = dict(label="yield_ready", playing=False, first_turn=False)
+    assert classify("今天几号？", duration_s=1.9, **kw) == ("default", "not_short")
+    assert classify("今天几号？", duration_s=1.9, low_max_s=2.2, **kw) == ("low", "short_question")
+    assert classify("今天几号？", duration_s=2.2, low_max_s=2.2, **kw) == ("default", "not_short")
+    assert classify("What time is it?", duration_s=1.0, **kw) == ("keep", "not_chinese")
+    assert classify("What time is it?", duration_s=1.0, not_chinese_tier="default", **kw) == ("default", "not_chinese")
+    cfg = hold_config({"hold_low_max_s": 2.2, "hold_not_chinese_tier": "default"}, .64)
+    assert cfg["low_max_s"] == 2.2 and cfg["not_chinese_tier"] == "default"
+
+
+@pytest.mark.parametrize("cfg", [{"hold_low_max_s": 0.2}, {"hold_low_max_s": 5}, {"hold_low_max_s": "2"},
+                                 {"hold_not_chinese_tier": "low"}, {"hold_not_chinese_tier": True}])
+def test_low_max_and_not_chinese_tier_reject_invalid(cfg):
+    with pytest.raises(ValueError):
+        hold_config(cfg, .64)

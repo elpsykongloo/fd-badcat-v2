@@ -10,9 +10,11 @@ legacy `end_hold_frame`, so nothing changes):
 
 - keep (never lowered): the transcript ends with a function word / connective,
   the whole input is >= 4 s, the candidate comes from a playback-time input,
-  the text is not mainly Chinese, or (optional) the session RTT median is below
+  the text is not mainly Chinese (`hold_not_chinese_tier`, default keep; "default"
+  treats English like any other not-low input), or (optional) the session RTT median is below
   `hold_min_rtt_ms` (client pre-playback hold cannot add budget there).
-- low: route `yield_ready` AND whole input < 1.5 s AND (a question OR the first
+- low: route `yield_ready` AND whole input < `hold_low_max_s` (default 1.5 s; the
+  duration includes ~0.5 s of preroll/VAD tail) AND (a question OR the first
   turn of the session) AND mainly Chinese AND not starting with an opener phrase.
 - default: everything else.
 
@@ -125,7 +127,8 @@ def opener(text):
     return ""
 
 
-def classify(text, *, duration_s, label, playing, first_turn, rtt_ms=None, min_rtt_ms=0):
+def classify(text, *, duration_s, label, playing, first_turn, rtt_ms=None, min_rtt_ms=0,
+             low_max_s=None, not_chinese_tier="keep"):
     """Rule tier and reason for one admitted input; timing is applied by `resolve`.
 
     text: full transcript of everything merged into the reply; duration_s: the
@@ -138,7 +141,7 @@ def classify(text, *, duration_s, label, playing, first_turn, rtt_ms=None, min_r
     if duration_s >= KEEP_MIN_S:
         return "keep", "long_input"
     if lang == "en":
-        return "keep", "not_chinese"
+        return not_chinese_tier, "not_chinese"
     word = tail_word(text)
     if word:
         return "keep", "tail_word:" + word
@@ -150,7 +153,7 @@ def classify(text, *, duration_s, label, playing, first_turn, rtt_ms=None, min_r
         return "default", "not_ready"
     if not text.strip() or lang != "zh":
         return "default", "no_transcript"
-    if duration_s >= LOW_MAX_S:
+    if duration_s >= (LOW_MAX_S if low_max_s is None else low_max_s):
         return "default", "not_short"
     question = is_question(text)
     if not (question or first_turn):
@@ -191,6 +194,13 @@ def hold_config(engine_cfg, end_hold):
     min_rtt = cfg.get("hold_min_rtt_ms", 0)
     if type(min_rtt) not in (int, float) or not math.isfinite(min_rtt) or not 0 <= min_rtt <= 1000:
         raise ValueError("hold_min_rtt_ms must be in [0, 1000] (0 disables)")
+    low_max = cfg.get("hold_low_max_s", LOW_MAX_S)
+    if type(low_max) not in (int, float) or not math.isfinite(low_max) or not .5 <= low_max <= KEEP_MIN_S:
+        raise ValueError("hold_low_max_s must be seconds in [0.5, 4]")
+    not_chinese = cfg.get("hold_not_chinese_tier", "keep")
+    if not_chinese not in ("keep", "default"):
+        raise ValueError("hold_not_chinese_tier must be keep or default")
     # Shadow wins: rules are evaluated and recorded but never change the hold.
     return {**tiers, "rules": rules, "shadow": shadow, "min_rtt_ms": min_rtt,
+            "low_max_s": float(low_max), "not_chinese_tier": not_chinese,
             "evaluate": rules or shadow, "apply": rules and not shadow}

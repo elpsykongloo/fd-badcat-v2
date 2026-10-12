@@ -118,6 +118,7 @@ def build_manifest(*, session_id, repository_root, profile, engine_cfg, delay,
         "input_route_prefill", "input_route_compact_prompt", "input_route_early_close",
         "input_vad_silence_ms", "input_vad_silence_ms_playing",
         "end_hold_tiers", "hold_tier_rules", "hold_tier_shadow", "hold_min_rtt_ms",
+        "hold_low_max_s", "hold_not_chinese_tier",
     )
     llm_keys = ("model", "decision_timeout_s", "audio_block")
     asr_keys = ("backend", "provider", "num_threads")

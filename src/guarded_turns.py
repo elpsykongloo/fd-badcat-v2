@@ -310,7 +310,8 @@ class GuardedTurns:
         assistants = getattr(self, "_assistants_by_turn", {})
         tier, reason = hold_tiers.classify(c.hold_text, duration_s=len(c.audio) / 16000,
             label=label, playing=playing, first_turn=not (users or assistants),
-            rtt_ms=self._guard_rtt_median(), min_rtt_ms=cfg["min_rtt_ms"])
+            rtt_ms=self._guard_rtt_median(), min_rtt_ms=cfg["min_rtt_ms"],
+            low_max_s=cfg["low_max_s"], not_chinese_tier=cfg["not_chinese_tier"])
         tier, reason, hold_s = hold_tiers.resolve(cfg, tier, reason,
                                                   elapsed_s=self.t_audio - c.anchor)
         c.hold_rule = {"tier": tier, "reason": reason, "hold_s": hold_s}
