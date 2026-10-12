@@ -4,8 +4,10 @@
 Browser-protocol client (``client: humdial-web``, ``pcm16.ref.v1`` FDM1 mic/ref
 packets, same-origin header), a Python mirror of ``src/static/speech-player.js``
 (playAt = first packet + startup_ms, ``speech_hold`` pause/resume, playback
-ACKs and demo telemetry) and an optional mirror of the planned client-side
-"pause before playback" (HOLD_PLAN §2.3, default off).  The backend under test
+ACKs and demo telemetry) and a line-for-line mirror of the client pre-playback
+local hold (client-hold-v1, ``OnsetDetector``/``LocalHold`` in speech-player.js;
+mode, params and resume lead come from ``/api/demo/info`` ``client_hold`` exactly
+as demo.js reads them, ``--local-pause`` forces mode "on").  The backend under test
 is launched in isolation (backend-only, reusing the Omni on :10003) from any
 code tree (``--backend-root``) with per-profile config overrides.
 
@@ -364,6 +366,65 @@ class Link:
                 return
 
 
+# ---- client-hold-v1 mirror: keep line-for-line with src/static/speech-player.js
+LOCAL_HOLD_DEFAULTS = dict(
+    floorInitDb=-60, floorMinDb=-80, floorMaxDb=-35,
+    fallRate=0.2, riseRate=0.02, riseVoicedRate=0.0005,
+    marginDb=12, absMinDb=-50, onsetFrames=2, sustainFrames=125,
+    refGateDb=-60, refHangFrames=10, echoTailMs=150,
+    timerMinMs=300, timerRttFactor=2, timerPadMs=200, fallbackRttMs=150,
+)
+
+
+def _to_db(value):
+    return 20 * math.log10(max(value, 1e-9))
+
+
+def _from_db(value):
+    return math.pow(10, value / 20)
+
+
+def _finite(value):
+    return type(value) in (int, float) and math.isfinite(value)
+
+
+class OnsetDetector:
+    """Python twin of speech-player.js OnsetDetector (same arithmetic, same order)."""
+
+    def __init__(self, params=None):
+        self.p = dict(LOCAL_HOLD_DEFAULTS)
+        for key in LOCAL_HOLD_DEFAULTS:
+            if _finite((params or {}).get(key)):
+                self.p[key] = (params or {})[key]
+        self.floor_db = self.p["floorInitDb"]
+        self.run = 0
+        self.since_ref = math.inf
+
+    def frame(self, mic_rms, ref_rms=0.0, output_recent=False):
+        p, db, ref_db = self.p, _to_db(mic_rms), _to_db(ref_rms)
+        self.since_ref = 0 if ref_db > p["refGateDb"] else self.since_ref + 1
+        echo = bool(output_recent) or self.since_ref <= p["refHangFrames"]
+        threshold_db, floor_db = max(self.floor_db + p["marginDb"], p["absMinDb"]), self.floor_db
+        above = db > threshold_db
+        if not echo:
+            rate = (p["fallRate"] if db < self.floor_db
+                    else p["riseVoicedRate"] if above and self.run < p["sustainFrames"] else p["riseRate"])
+            self.floor_db = min(p["floorMaxDb"], max(p["floorMinDb"], self.floor_db + (db - self.floor_db) * rate))
+        self.run = self.run + 1 if above and not echo else 0
+        return {"onset": self.run >= p["onsetFrames"], "echo": echo, "db": db, "ref_db": ref_db,
+                "floor_db": floor_db, "threshold_db": threshold_db}
+
+
+def client_hold_mode(value):
+    """LocalHold constructor: true/"on" -> on, "shadow" -> shadow, else off."""
+    return "on" if value is True or value == "on" else "shadow" if value == "shadow" else "off"
+
+
+def resume_lead(value):
+    """SpeechPlayer.setResumeLead: finite in [0, 1000] ms, else None (= startup)."""
+    return value if _finite(value) and 0 <= value <= 1000 else None
+
+
 class Speech:
     def __init__(self, uid, startup_ms, buffer_ms, at):
         self.id, self.startup_ms, self.limit = uid, startup_ms, buffer_ms
@@ -373,8 +434,7 @@ class Speech:
         self.eof = False
         self.started = False
         self.held = False
-        self.local_held = False
-        self.local_timer = None
+        self.local_hold = None  # client-hold-v1: {at, timer_at, timer_ms, done, shadow}
         self.pending = []
         self.nodes = []
         self.play_at = None
@@ -404,6 +464,13 @@ class Browser:
         self.ready = asyncio.Event()
         self.errors = []
         self.utt = {}  # uid -> client-side record
+        # client-hold-v1 exactly as demo.js wires it from /api/demo/info.client_hold.
+        hold_info = getattr(args, "client_hold", None) or {}
+        self.local_mode = "on" if args.local_pause else client_hold_mode(hold_info.get("local_hold"))
+        self.detector = OnsetDetector(hold_info.get("params") or {})
+        self.resume_lead_ms = (resume_lead(args.release_lead_ms) if args.release_lead_ms is not None
+                               else resume_lead(hold_info.get("resume_lead_ms")))
+        self.last_rtt_ms = None  # demo.js: latest telemetry RTT (s.rttMs)
 
     # ---- clocks / logging
     def T(self, t=None):
@@ -516,7 +583,7 @@ class Browser:
             s.play_at = math.inf
         elif not held and s.held:
             s.held = False
-            lead = s.startup_ms if self.a.release_lead_ms is None else min(s.startup_ms, self.a.release_lead_ms)
+            lead = min(s.startup_ms, s.startup_ms if self.resume_lead_ms is None else self.resume_lead_ms)
             s.next = now() + lead / 1000
             s.play_at = s.next
             r.setdefault("release_play_at", []).append(round(s.play_at - self.t0[0], 4))
@@ -585,32 +652,84 @@ class Browser:
                     self.progress(s)
         if s.nodes and any(t >= n["start"] for n in s.nodes):
             self.last_output_end = t
-        if s.local_timer is not None and t >= s.local_timer:
-            s.local_timer = None
-            if s.local_held:
-                s.local_held = False
-                self.rec(s.id).setdefault("local_release_at", []).append(self.T(t))
-                self.hold(False, "local_timer")
+        hold = s.local_hold
+        if hold is not None and not hold["done"] and hold.get("timer_at") is not None and t >= hold["timer_at"]:
+            self.local_expire(s, hold)
 
-    # ---- local pause mirror (HOLD_PLAN §2.3), evaluated per outgoing mic frame
-    def local_pause(self, mic, ref, state):
-        if not self.a.local_pause:
+    # ---- client-hold-v1 mirror (speech-player.js LocalHold), one call per uploaded mic frame
+    def recent_output(self, window_s):
+        """SpeechPlayer.recentOutput: started output still playing, or ended < window ago."""
+        t = now()
+        until = self.last_output_end
+        s = self.speech
+        if s is not None and any(n["start"] <= t for n in s.nodes):
+            until = max(until, t)
+        return t < until + window_s
+
+    def local_report(self, s, action, **data):
+        self.emit("client_hold", utterance_id=s.id, action=action, **data)
+
+    def local_pause(self, mic_rms, ref_rms=0.0):
+        if self.local_mode == "off":  # demo.js does not even run the detector
+            return None
+        p = self.detector.p
+        latency = max(0.0, self.a.output_latency_ms / 1000)
+        r = self.detector.frame(mic_rms, ref_rms, self.recent_output(latency + p["echoTailMs"] / 1000))
+        if not r["onset"]:
+            return r
+        s = self.speech
+        if s is None or not s.received or s.held or s.local_hold is not None:
+            return r
+        self.poll_start()
+        if s.started:
+            return r
+        rtt = self.last_rtt_ms
+        rtt_ms = rtt if _finite(rtt) and rtt >= 0 else p["fallbackRttMs"]
+        timer_ms = max(p["timerMinMs"], p["timerRttFactor"] * rtt_ms + p["timerPadMs"])
+        energy = dict(frame_rms=mic_rms, ref_rms=ref_rms, noise_floor_rms=_from_db(r["floor_db"]),
+                      threshold_rms=_from_db(r["threshold_db"]), timer_ms=timer_ms, rtt_ms=rtt_ms,
+                      output_latency_ms=latency * 1000)
+        t = now()
+        if self.local_mode == "shadow":
+            s.local_hold = {"at": t, "done": True, "shadow": True}
+            self.rec(s.id).setdefault("local_shadow_at", []).append(self.T(t))
+            self.local_report(s, "shadow", **energy)
+            return r
+        self.hold(True, "local_onset")
+        if not s.held:
+            return r
+        s.local_hold = {"at": t, "timer_ms": timer_ms, "timer_at": t + timer_ms / 1000, "done": False}
+        self.rec(s.id).setdefault("local_hold_at", []).append(self.T(t))
+        self.local_report(s, "hold", **energy)
+        return r
+
+    def local_expire(self, s, hold):
+        if hold["done"]:
             return
-        rms = float(np.sqrt(np.mean(mic.astype(np.float64) ** 2)))
-        ref_rms = float(np.sqrt(np.mean(ref.astype(np.float64) ** 2)))
-        state["run"] = state["run"] + 1 if rms >= self.a.lp_rms else 0
-        if state["run"] < self.a.lp_frames or ref_rms >= self.a.lp_ref_rms:
+        hold["done"] = True
+        if self.speech is not s or not s.held:
             return
         t = now()
-        if t - self.last_output_end < (self.a.output_latency_ms + 150) / 1000:
-            return
+        self.rec(s.id).setdefault("local_release_at", []).append(self.T(t))
+        self.hold(False, "local_timer")
+        self.local_report(s, "timeout", hold_ms=(t - hold["at"]) * 1000, timer_ms=hold["timer_ms"])
+
+    def local_server(self, held):
+        """LocalHold.server: a server speech_hold clears the timer; the server's value wins."""
         s = self.speech
-        if s is None or not s.received or s.started or s.held:
-            return
-        s.local_held = True
-        s.local_timer = t + max(.3, 2 * self.rtt_s() + .2)
-        self.rec(s.id).setdefault("local_hold_at", []).append(self.T(t))
-        self.hold(True, "local_onset")
+        hold = s.local_hold if s is not None else None
+        if hold is not None and not hold["done"]:
+            hold["done"] = True
+            self.local_report(s, "release", hold_ms=(now() - hold["at"]) * 1000, timer_ms=hold["timer_ms"],
+                              server_held=1 if held else 0)
+        self.hold(held, "server")
+
+    def local_cancel(self):
+        """LocalHold.cancel: before the player's utterance is replaced or cancelled."""
+        s = self.speech
+        hold = s.local_hold if s is not None else None
+        if hold is not None and not hold["done"]:
+            hold["done"] = True
 
     # ---- control messages
     def control(self, msg):
@@ -632,11 +751,13 @@ class Browser:
                 ms = (t - self.ping_pending[1]) * 1000
                 self.ping_pending = None
                 self.rtts.append(ms)
+                self.last_rtt_ms = ms
                 self.emit("rtt", seq=d.get("seq"), rtt_ms=ms)
             return
         if ev in ("vad_start", "vad_done", "speech_start", "input_waiting", "speech_cancelled"):
             self.last_activity = t
         if ev == "speech_start":
+            self.local_cancel()
             self.start(d)
             return
         s = self.speech
@@ -644,6 +765,7 @@ class Browser:
             self.emit("cancel", utterance_id=s.id, played_samples=s.played, received_samples=s.received,
                       underruns=s.underruns, underrun_ms=s.underrun_ms, max_underrun_ms=s.max_underrun_ms)
             self.rec(s.id)["server_cancel_reason"] = d.get("reason")
+            self.local_cancel()
             self.cancel(d.get("reason") or "cancelled")
             self.last_activity = t
             return
@@ -652,10 +774,7 @@ class Browser:
             return
         if s is not None and d.get("utterance_id") == s.id:
             if ev == "speech_hold":
-                if s.local_timer is not None or s.local_held:
-                    s.local_timer = None
-                    s.local_held = False
-                self.hold(d.get("held") is True, "server")
+                self.local_server(d.get("held") is True)
             elif ev == "speech_text_delta":
                 s.text_at = s.text_at or t
                 self.rec(s.id).setdefault("text_at", self.T(t))
@@ -679,7 +798,8 @@ async def run_trial(a, url, origin, plan, out_dir, meta):
     out_dir.mkdir(parents=True, exist_ok=True)
     log, t0 = [], [now()]
     receipt = dict(meta, started_utc=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), items=[],
-                   net_delay_ms=a.net_delay_ms, local_pause=a.local_pause, release_lead_ms=a.release_lead_ms)
+                   net_delay_ms=a.net_delay_ms, local_pause=a.local_pause, release_lead_ms=a.release_lead_ms,
+                   client_hold=getattr(a, "client_hold", None))
     connect_kw = dict(origin=origin, max_size=2 ** 22, ping_interval=None, compression=None)
     try:
         ws = await websockets.connect(url, proxy=None, **connect_kw)
@@ -689,7 +809,7 @@ async def run_trial(a, url, origin, plan, out_dir, meta):
     br = Browser(link, a, log, t0)
     tasks = []
     stop_mic = asyncio.Event()
-    mic = {"queue": [], "sent": 0, "late": [], "lp": {"run": 0}}
+    mic = {"queue": [], "sent": 0, "late": []}
 
     async def receiver():
         inbox = asyncio.Queue()
@@ -742,10 +862,12 @@ async def run_trial(a, url, origin, plan, out_dir, meta):
             if need:
                 parts.append(np.zeros(need, np.float32))
             x = np.concatenate(parts) if len(parts) > 1 else parts[0]
-            ref = np.zeros(FRAME, np.float32)
             br.poll_start()
-            br.local_pause(x, ref, mic["lp"])
             pcm = np.clip(np.round(x * 32768), -32768, 32767).astype("<i2")
+            if br.local_mode != "off":
+                # demo.js: RMS of the int16 mic channel /32768 (the reference channel is silent here).
+                mic_rms = float(np.sqrt(np.mean((pcm.astype(np.float64) / 32768) ** 2)))
+                br.local_pause(mic_rms, 0.0)
             inter = np.empty(FRAME * 2, "<i2")
             inter[0::2], inter[1::2] = pcm, 0
             link.send_bytes(INPUT_HEADER.pack(b"FDM1", k, FRAME, SR) + inter.tobytes())
@@ -968,6 +1090,14 @@ def cmd_run(a):
         proc, log, info = launch_backend(a, cfg_path, out)
         meta["timings"]["backend_start_s"] = round(now() - t, 1)
         meta["backend_info"] = info
+    else:
+        import urllib.request
+        opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+        info = json.loads(opener.open(f"http://127.0.0.1:{a.port}/api/demo/info", timeout=5).read())
+    # The simulated player takes local-hold mode/params and resume lead from the backend
+    # exactly like demo.js; absent (older backend) keeps the previous behavior.
+    a.client_hold = info.get("client_hold") or {}
+    meta["client_hold"] = a.client_hold
     url, origin = f"ws://127.0.0.1:{a.port}/realtime", f"http://127.0.0.1:{a.port}"
     try:
         if "synthetic" in a.suites:
@@ -1321,12 +1451,10 @@ def main():
     r.add_argument("--episodes", default="", help="episodes.json produced by `episodes`")
     r.add_argument("--out", required=True)
     r.add_argument("--net-delay-ms", type=float, default=0.0, help="artificial one-way delay, both directions")
-    r.add_argument("--local-pause", action="store_true", help="mirror of the planned client pre-play local pause")
-    r.add_argument("--lp-rms", type=float, default=.02, help="local pause: mic 256-sample frame RMS onset threshold")
-    r.add_argument("--lp-frames", type=int, default=2, help="local pause: consecutive onset frames")
-    r.add_argument("--lp-ref-rms", type=float, default=.01, help="local pause: reference RMS echo gate")
+    r.add_argument("--local-pause", action="store_true",
+                   help="force the client-hold-v1 local hold on (default: info.client_hold.local_hold, as demo.js)")
     r.add_argument("--release-lead-ms", type=float, default=None,
-                   help="restart lead after a hold release (default: startup_ms, as speech-player.js today)")
+                   help="restart lead after a hold release (default: info.client_hold.resume_lead_ms, as demo.js)")
     r.add_argument("--output-latency-ms", type=float, default=27.0)
     r.add_argument("--lead-s", type=float, default=1.0)
     r.add_argument("--idle-s", type=float, default=1.0)
