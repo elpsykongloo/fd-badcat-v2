@@ -233,10 +233,16 @@ def release_units(splitter, text, *, flush=False):
     unit boundary (SpokenTextBuffer emits whole units from its own splitter), so
     the outer splitter's one-character lookahead only delays the finished unit
     until the NEXT unit starts. flush=True releases it now; the unit list is
-    unchanged (checked by replaying archived responses), only released earlier.
+    unchanged, only released earlier.
+
+    Exception: a chunk ending in a newline is not flushed. The outer splitter
+    attaches closers/terminal punctuation that START the next line to the
+    pending newline unit (`...\n` + `”...` -> `...\n”`); flushing would split
+    them off. The sentence before the newline is still released at once (its
+    `。` boundary sees the newline as lookahead); only the bare newline waits.
     """
     units = splitter.feed(text)
-    return units + splitter.flush() if flush else units
+    return units + splitter.flush() if flush and not text.endswith("\n") else units
 
 
 class SpeechPipeline:

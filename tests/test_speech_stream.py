@@ -187,6 +187,32 @@ def test_release_units_flush_only_changes_release_time():
         assert released[True] == released[False], width
 
 
+
+def test_release_units_keeps_line_initial_closers_with_the_newline_unit():
+    """A line that starts with a closer/terminal mark: flushing at the newline
+    would make `”。` its own TTS unit; the baseline keeps it with the newline."""
+    from speech_stream import release_units
+    from spoken_text import SpokenTextBuffer
+    texts = ["他说：“你好\n”然后走了。", "第一项\n）补充说明。", "标题\n。正文。", "好的。\n接下来说第二点。"]
+    for text in texts:
+        for width in (1, 2, 5):
+            released = {}
+            for flush in (False, True):
+                normalizer, splitter, units = SpokenTextBuffer(), StreamingSentenceBuffer(first_clause_chars=8), []
+                for start in range(0, len(text), width):
+                    chunk = normalizer.feed(text[start:start + width])
+                    if chunk:
+                        units += release_units(splitter, chunk, flush=flush)
+                tail = normalizer.flush()
+                if tail:
+                    units += release_units(splitter, tail, flush=flush)
+                units += splitter.flush()
+                released[flush] = units
+            assert released[True] == released[False], (text, width, released)
+    # The sentence before a newline is still released without waiting for the next line.
+    splitter = StreamingSentenceBuffer(first_clause_chars=8)
+    assert release_units(splitter, "好的。\n", flush=True) == ["好的。"]
+
 async def test_backpressure_bounded_and_cancel_closes_both_generators():
     text_closed, tts_closed = asyncio.Event(), asyncio.Event()
     async def text_fn(messages):
