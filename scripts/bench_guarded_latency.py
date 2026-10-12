@@ -11,6 +11,27 @@ as demo.js reads them, ``--local-pause`` forces mode "on").  The backend under t
 is launched in isolation (backend-only, reusing the Omni on :10003) from any
 code tree (``--backend-root``) with per-profile config overrides.
 
+``--net-delay-ms`` delays every client->server message (mic packets, playback
+ACKs, telemetry) and every server->client message by the same one-way amount.
+
+``--reply-stop-s X`` bounds the wall time of long replies.  Once an item's audio
+is fully injected, a reply that has PLAYED X s (samples on the simulated playback
+clock) is ended by the client.  The browser has no in-session "stop this reply":
+demo.js's stop button ends the whole session (telemetry ``stop`` snapshot, then
+the socket closes; ``playback_stopped`` is fenced and never sent), and the guarded
+backend only accepts ``playback_stopped`` for an utterance IT cancelled, so a
+client-only stop would leave the server in the playing state (the next input then
+takes the barge-in path).  Two modes, neither touching the server:
+
+  drain  (default) the listener stops listening: every not-yet-played sample,
+         and every later packet, is acknowledged as played on arrival.  The
+         server sees the ordinary natural end (``speech_played`` ->
+         ``turn_finished``); its history holds the whole reply, exactly what the
+         client acknowledged; the remaining time is TTS-bound, not real time.
+  close  exactly the stop button: ``stop`` telemetry, socket closed, and the
+         remaining items continue in a fresh session (``trials/<t>/parts/pNN``).
+         History and the first-turn hold-tier feature restart after each stop.
+
 Subcommands
   episodes  cut listening-period user episodes from recorded real sessions (CPU only)
   fixtures  synthesize self-authored pause/continuation inputs via :10003 TTS (GPU)
@@ -445,6 +466,8 @@ class Speech:
         self.max_underrun_ms = 0.0
         self.tel_first = self.tel_started = self.tel_end = False
         self.text_at = None
+        self.scheduled_lead_ms = None  # SpeechPlayer s.scheduledLeadMs
+        self.drain = False  # --reply-stop-s drain: every sample is acknowledged on arrival
 
 
 class Browser:
@@ -471,6 +494,11 @@ class Browser:
         self.resume_lead_ms = (resume_lead(args.release_lead_ms) if args.release_lead_ms is not None
                                else resume_lead(hold_info.get("resume_lead_ms")))
         self.last_rtt_ms = None  # demo.js: latest telemetry RTT (s.rttMs)
+        # --reply-stop-s: armed by the trial only after the current item is fully injected.
+        self.reply_stop_s = getattr(args, "reply_stop_s", None)
+        self.reply_stop_mode = getattr(args, "reply_stop_mode", "drain") or "drain"
+        self.stop_armed = False
+        self.closed_by_stop = False  # close mode: demo.js stop() ran; nothing more is sent or handled
 
     # ---- clocks / logging
     def T(self, t=None):
@@ -479,10 +507,15 @@ class Browser:
     def rec(self, uid):
         return self.utt.setdefault(uid, {"utterance_id": uid, "holds": []})
 
+    def send(self, event, data):
+        """demo.js send(s, ...): fenced once stop() has run (active !== s)."""
+        if not self.closed_by_stop:
+            self.link.send_json(event, data)
+
     def emit(self, kind, **data):
         if self.telemetry:
-            self.link.send_json("demo_telemetry", {"kind": kind, "client_ms": now() * 1000,
-                                                   "upload_buffer_bytes": 0, **data})
+            self.send("demo_telemetry", {"kind": kind, "client_ms": now() * 1000,
+                                         "upload_buffer_bytes": 0, **data})
 
     def tick_ping(self):
         t = now()
@@ -516,7 +549,7 @@ class Browser:
         r.setdefault("cancelled_at", self.T(t))
         r.setdefault("cancel_reason", reason)
         r["played_samples_at_cancel"] = played
-        self.link.send_json("playback_stopped", {"utterance_id": s.id, "played_samples": played})
+        self.send("playback_stopped", {"utterance_id": s.id, "played_samples": played})
 
     def start(self, d):
         self.cancel("replaced")
@@ -533,7 +566,7 @@ class Browser:
         t = now()
         was = s.started
         s.started = s.started or s.played > 0 or (s.received > 0 and s.play_at is not None and t >= s.play_at)
-        self.link.send_json("playback_progress", {"utterance_id": s.id, "played_samples": s.played,
+        self.send("playback_progress", {"utterance_id": s.id, "played_samples": s.played,
                                                   "started": bool(s.started),
                                                   "ended": bool(s.eof and s.played == s.received),
                                                   "underruns": s.underruns})
@@ -545,7 +578,7 @@ class Browser:
         if s.first_audio is not None and not s.tel_first:
             s.tel_first = True
             self.emit("first_audio", utterance_id=s.id, first_audio_ms=s.first_audio,
-                      scheduled_lead_ms=s.startup_ms, base_latency_ms=5.333, output_latency_ms=self.a.output_latency_ms)
+                      scheduled_lead_ms=s.scheduled_lead_ms, base_latency_ms=5.333, output_latency_ms=self.a.output_latency_ms)
         if s.started and not s.tel_started:
             s.tel_started = True
             self.emit("playback_start", utterance_id=s.id, audio_context_ms=t * 1000,
@@ -586,7 +619,9 @@ class Browser:
             lead = min(s.startup_ms, s.startup_ms if self.resume_lead_ms is None else self.resume_lead_ms)
             s.next = now() + lead / 1000
             s.play_at = s.next
+            s.scheduled_lead_ms = lead
             r.setdefault("release_play_at", []).append(round(s.play_at - self.t0[0], 4))
+            r.setdefault("release_lead_ms", []).append(lead)
             pend, s.pending = s.pending, []
             for n in pend:
                 self.schedule(s, n["offset"], n["count"])
@@ -618,10 +653,15 @@ class Browser:
         t = now()
         self.last_activity = t
         r = self.rec(s.id)
+        if s.drain:  # --reply-stop-s drain: no longer listening, acknowledge on arrival
+            s.played = s.received
+            self.progress(s)
+            return
         if s.first_audio is None:
             s.first_audio = round((t - s.start_at) * 1000)
             s.next = t + s.startup_ms / 1000
             s.play_at = s.next
+            s.scheduled_lead_ms = s.startup_ms
             r.update(first_packet_at=self.T(t), initial_play_at=round(s.play_at - self.t0[0], 4))
         elif not s.held and s.next < t:
             s.underruns += 1
@@ -655,6 +695,37 @@ class Browser:
         hold = s.local_hold
         if hold is not None and not hold["done"] and hold.get("timer_at") is not None and t >= hold["timer_at"]:
             self.local_expire(s, hold)
+        self.reply_stop_check()
+
+    # ---- --reply-stop-s (bench device; see the module docstring)
+    def reply_stop_check(self):
+        s, x = self.speech, self.reply_stop_s
+        if not x or not self.stop_armed or self.closed_by_stop or s is None or not s.started or s.drain:
+            return
+        if s.eof and s.played == s.received:
+            return
+        t = now()
+        played = self._partial_played(s, t)  # audio clock: samples actually rendered so far
+        if played < x * s.rate:
+            return
+        r = self.rec(s.id)
+        r.update(reply_stop_at=self.T(t), reply_stop_mode=self.reply_stop_mode,
+                 reply_stop_played_samples=played, reply_stop_received_samples=s.received,
+                 reply_stop_eof=s.eof)
+        if self.reply_stop_mode == "close":
+            # demo.js stop(): telemetry.snapshot("stop", speech), then active = null fences every
+            # later send (player.cancel()'s playback_stopped included) and the socket closes.
+            self.emit("stop", utterance_id=s.id, played_samples=s.played, received_samples=s.received,
+                      underruns=s.underruns, underrun_ms=s.underrun_ms, max_underrun_ms=s.max_underrun_ms)
+            self.closed_by_stop = True
+            self.last_activity = t
+            return
+        s.drain = True
+        s.played = s.received
+        s.nodes = []
+        self.last_output_end = t
+        self.last_activity = t
+        self.progress(s)
 
     # ---- client-hold-v1 mirror (speech-player.js LocalHold), one call per uploaded mic frame
     def recent_output(self, window_s):
@@ -712,7 +783,8 @@ class Browser:
         t = now()
         self.rec(s.id).setdefault("local_release_at", []).append(self.T(t))
         self.hold(False, "local_timer")
-        self.local_report(s, "timeout", hold_ms=(t - hold["at"]) * 1000, timer_ms=hold["timer_ms"])
+        self.local_report(s, "timeout", hold_ms=(t - hold["at"]) * 1000, timer_ms=hold["timer_ms"],
+                          scheduled_lead_ms=s.scheduled_lead_ms)
 
     def local_server(self, held):
         """LocalHold.server: a server speech_hold clears the timer; the server's value wins."""
@@ -799,7 +871,8 @@ async def run_trial(a, url, origin, plan, out_dir, meta):
     log, t0 = [], [now()]
     receipt = dict(meta, started_utc=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), items=[],
                    net_delay_ms=a.net_delay_ms, local_pause=a.local_pause, release_lead_ms=a.release_lead_ms,
-                   client_hold=getattr(a, "client_hold", None))
+                   client_hold=getattr(a, "client_hold", None), reply_stop_s=getattr(a, "reply_stop_s", None),
+                   reply_stop_mode=getattr(a, "reply_stop_mode", "drain"))
     connect_kw = dict(origin=origin, max_size=2 ** 22, ping_interval=None, compression=None)
     try:
         ws = await websockets.connect(url, proxy=None, **connect_kw)
@@ -822,6 +895,8 @@ async def run_trial(a, url, origin, plan, out_dir, meta):
                 w = due - now()
                 if w > 0:
                     await asyncio.sleep(w)
+                if br.closed_by_stop:  # demo.js onmessage: active !== s
+                    continue
                 try:
                     if isinstance(m, (bytes, bytearray)):
                         br.packet(bytes(m))
@@ -842,7 +917,7 @@ async def run_trial(a, url, origin, plan, out_dir, meta):
         start = now() + .05
         t0[0] = start
         k = 0
-        while not stop_mic.is_set():
+        while not stop_mic.is_set() and not br.closed_by_stop:
             target = start + (k + 1) * FRAME_S
             w = target - now()
             if w > 0:
@@ -862,6 +937,8 @@ async def run_trial(a, url, origin, plan, out_dir, meta):
             if need:
                 parts.append(np.zeros(need, np.float32))
             x = np.concatenate(parts) if len(parts) > 1 else parts[0]
+            if br.closed_by_stop:  # capture onmessage after stop(): nothing is sent
+                break
             br.poll_start()
             pcm = np.clip(np.round(x * 32768), -32768, 32767).astype("<i2")
             if br.local_mode != "off":
@@ -889,6 +966,8 @@ async def run_trial(a, url, origin, plan, out_dir, meta):
         cap = now() + a.reply_cap_s
         while now() < cap:
             await asyncio.sleep(.05)
+            if br.closed_by_stop:
+                return "stopped_close"
             if br.busy():
                 continue
             idle = now() - max(br.last_activity, t_input_end)
@@ -910,7 +989,9 @@ async def run_trial(a, url, origin, plan, out_dir, meta):
         tasks.append(asyncio.create_task(mic_loop()))
         tasks.append(asyncio.create_task(ticker()))
         await asyncio.sleep(a.lead_s)
+        receipt["consumed"] = 0
         for item in plan:
+            br.stop_armed = False
             # Align injection to the next packet boundary (audio clock = samples / 16 kHz).
             start_sample = mic["sent"] + queued()
             if start_sample % FRAME:
@@ -924,9 +1005,13 @@ async def run_trial(a, url, origin, plan, out_dir, meta):
             while queued():
                 await asyncio.sleep(.02)
             await asyncio.sleep(FRAME_S * 2)
+            br.stop_armed = True  # --reply-stop-s only acts once the item is fully injected
             info["wait_result"] = await wait_reply(now())
             info["wait_done_T"] = br.T()
+            receipt["consumed"] += 1
             print(f"  {meta['name']} {item['label']} -> {info['wait_result']}", flush=True)
+            if br.closed_by_stop:
+                break
             if link.closed:
                 br.errors.append("socket closed")
                 break
@@ -934,7 +1019,7 @@ async def run_trial(a, url, origin, plan, out_dir, meta):
     except Exception as exc:
         br.errors.append(f"{type(exc).__name__}: {exc}")
     finally:
-        if br.telemetry:
+        if br.telemetry and not br.closed_by_stop:
             s = br.speech
             br.emit("stop", **({"utterance_id": s.id, "played_samples": s.played} if s else {}))
         stop_mic.set()
@@ -951,6 +1036,7 @@ async def run_trial(a, url, origin, plan, out_dir, meta):
                 t.cancel()
     late = np.array(mic["late"] or [0.0]) * 1000
     receipt.update(client_log=log, utterances=list(br.utt.values()), errors=br.errors, rtt_ms=br.rtts,
+                   stopped_close=br.closed_by_stop,
                    mic_late_ms={"n": len(mic["late"]), "p99": round(float(np.percentile(late, 99)), 2),
                                 "max": round(float(late.max()), 2)},
                    samples_sent=mic["sent"], finished_utc=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
@@ -967,6 +1053,32 @@ async def run_trial(a, url, origin, plan, out_dir, meta):
             shutil.copyfile(src, out_dir / "events.jsonl")
             receipt["trace_closed"] = any(r.get("event") == "trace_closed" for r in jrows(out_dir / "events.jsonl"))
     jdump(out_dir / "receipt.json", receipt)
+    return receipt
+
+
+def run_plan(a, url, origin, plan, tdir, meta):
+    """One trial.  In --reply-stop-mode close a stop ends the session (demo.js stop button)
+    and the remaining items continue in a fresh session: trials/<t>/parts/pNN, then
+    trials/<t>/receipt.json is written last as the resume marker."""
+    if not getattr(a, "reply_stop_s", None) or getattr(a, "reply_stop_mode", "drain") != "close":
+        return asyncio.run(run_trial(a, url, origin, plan, tdir, meta))
+    shutil.rmtree(tdir / "parts", ignore_errors=True)
+    i, parts, errors = 0, [], []
+    while i < len(plan):
+        name = f"p{len(parts):02d}"
+        rec = asyncio.run(run_trial(a, url, origin, plan[i:], tdir / "parts" / name,
+                                    dict(meta, name=f"{meta['name']}_{name}", part=name, item_offset=i)))
+        parts.append(name)
+        errors += rec.get("errors") or []
+        n = rec.get("consumed") or 0
+        if n <= 0 or (rec.get("errors") and not rec.get("stopped_close")):
+            break
+        i += n
+        if i < len(plan):
+            time.sleep(a.between_s)
+    receipt = dict(meta, parts=parts, items_done=i, reply_stop_s=a.reply_stop_s, reply_stop_mode="close",
+                   errors=errors, finished_utc=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
+    jdump(tdir / "receipt.json", receipt)
     return receipt
 
 
@@ -1021,6 +1133,8 @@ def backend_env():
 def port_free(port):
     import socket
     with socket.socket() as s:
+        # Same as uvicorn: TIME_WAIT sockets left by the previous backend must not count as busy.
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         try:
             s.bind(("127.0.0.1", port))
             return True
@@ -1078,6 +1192,7 @@ def cmd_run(a):
             "overrides": overrides, "end_hold_frame": cfg["time"]["end_hold_frame"],
             "stream_startup_ms": cfg["engine"].get("stream_startup_ms"), "net_delay_ms": a.net_delay_ms,
             "local_pause": a.local_pause, "release_lead_ms": a.release_lead_ms, "port": a.port,
+            "reply_stop_s": a.reply_stop_s, "reply_stop_mode": a.reply_stop_mode,
             "suites": a.suites, "repeats": a.repeats, "argv": sys.argv, "timings": {}}
     meta_path = out / "run_meta.json"
     if meta_path.exists():
@@ -1117,9 +1232,9 @@ def cmd_run(a):
                         plan.append({"label": f"{name}#{i}", "kind": "synthetic", "path": str(p),
                                      "audio": x, "segments": speech_segments(x)})
                     print(f"[{a.profile}] syn {name} r{rep}", flush=True)
-                    asyncio.run(run_trial(a, url, origin, plan, tdir,
-                                          {"name": f"syn_{name}_r{rep}", "suite": "synthetic", "scenario": name,
-                                           "group": group, "repeat": rep}))
+                    run_plan(a, url, origin, plan, tdir,
+                             {"name": f"syn_{name}_r{rep}", "suite": "synthetic", "scenario": name,
+                              "group": group, "repeat": rep})
                     time.sleep(a.between_s)
             meta["timings"]["synthetic_s"] = round(meta["timings"].get("synthetic_s", 0) + now() - t, 1)
         if "real" in a.suites:
@@ -1134,9 +1249,9 @@ def cmd_run(a):
                 plan = [{"label": ep["name"], "kind": "real", "path": ep["path"], "audio": read16k(ep["path"]),
                          "segments": ep["segments"], "orig_start": ep["orig_start"]} for ep in sess["episodes"]]
                 print(f"[{a.profile}] real {sess['sid']} episodes={len(plan)}", flush=True)
-                asyncio.run(run_trial(a, url, origin, plan, tdir,
-                                      {"name": f"real_{sess['sid']}", "suite": "real", "scenario": sess["sid"],
-                                       "group": "real", "repeat": 0}))
+                run_plan(a, url, origin, plan, tdir,
+                         {"name": f"real_{sess['sid']}", "suite": "real", "scenario": sess["sid"],
+                          "group": "real", "repeat": 0})
                 time.sleep(a.between_s)
             meta["timings"]["real_s"] = round(meta["timings"].get("real_s", 0) + now() - t, 1)
     finally:
@@ -1272,6 +1387,7 @@ def analyze_trial(tdir):
             ps = u.get("play_start_at")
             row["played"] = ps is not None
             row["text_shown"] = u.get("text_at") is not None
+            row["reply_stopped"] = u.get("reply_stop_at") is not None
             row["flash"] = bool(row.get("published") and u.get("text_at") is not None and ps is None)
             if row.get("stop_T") is not None:
                 if u.get("first_packet_at") is not None:
@@ -1338,6 +1454,7 @@ def summarize(rows):
         s["played_despite_resume"] = sum(1 for r in played if r.get("played_despite_resume"))
         s["played_despite_resume_1400"] = sum(1 for r in played if r.get("played_despite_resume_1400"))
         s["flash"] = f"{sum(1 for r in pub if r.get('flash'))}/{len(pub)}"
+        s["reply_stopped"] = sum(1 for r in played if r.get("reply_stopped"))
         s["routes"] = {}
         for r in lis:
             s["routes"][str(r.get("route"))] = s["routes"].get(str(r.get("route")), 0) + 1
@@ -1348,9 +1465,13 @@ def summarize(rows):
 def analyze_dir(out):
     out = Path(out)
     all_rows, problems = [], []
+    tdirs = []
     for tdir in sorted((out / "trials").glob("*")):
-        if not (tdir / "receipt.json").exists():
-            continue
+        if (tdir / "parts").is_dir():  # --reply-stop-mode close: one session per part
+            tdirs += [p for p in sorted((tdir / "parts").glob("p*")) if (p / "receipt.json").exists()]
+        elif (tdir / "receipt.json").exists():
+            tdirs.append(tdir)
+    for tdir in tdirs:
         try:
             rec, rows = analyze_trial(tdir)
         except Exception as exc:
@@ -1455,6 +1576,10 @@ def main():
                    help="force the client-hold-v1 local hold on (default: info.client_hold.local_hold, as demo.js)")
     r.add_argument("--release-lead-ms", type=float, default=None,
                    help="restart lead after a hold release (default: info.client_hold.resume_lead_ms, as demo.js)")
+    r.add_argument("--reply-stop-s", type=float, default=None,
+                   help="end a reply after it PLAYED this many seconds, once the item is injected (see docstring)")
+    r.add_argument("--reply-stop-mode", choices=["drain", "close"], default="drain",
+                   help="drain: acknowledge the rest as played (natural server end); close: demo.js stop button")
     r.add_argument("--output-latency-ms", type=float, default=27.0)
     r.add_argument("--lead-s", type=float, default=1.0)
     r.add_argument("--idle-s", type=float, default=1.0)
