@@ -473,7 +473,9 @@ class ActorEngine(GuardedTurns, CandidateTurns):
         return task
 
     async def _capacity_stream(self, kind, stream_fn, arg, *, case_context=None, route=False,
-                               call_id=None, parent_id=None, response_options=None):
+                               call_id=None, parent_id=None, response_options=None, stream_state=None):
+        # stream_state["early_closed"]: the consumer stopped reading on purpose after a
+        # final decision (input_route label close); report that instead of "cancelled".
         call_id = call_id or self._diagnostic_id("call")
         started = time.perf_counter()
         links = {k: v for k, v in (case_context or {}).items()
@@ -570,6 +572,8 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                         "retryable_transport": retryable_transport_error(exc)})
                     raise
                 finally:
+                    if status == "cancelled" and stream_state and stream_state.get("early_closed"):
+                        status = "early_closed"
                     if recording:
                         try:
                             queued = recording.finish(status, error, transport=failure or transport_state)

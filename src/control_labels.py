@@ -9,8 +9,105 @@ LABELS = {"judge": ("continue", "switch"), "interrupt": ("continue", "switch"),
           "input_reply": ("keep", "yield_ready")}
 FALLBACK = {"judge": "continue", "interrupt": "continue", "shift": "no", "input_route": "keep"}
 ROUTE_PROTOCOL = "transcript-first-v1"
+ROUTE_PROTOCOL_V2 = "transcript-first-v2"
+# v2: the assistant turn is prefilled with this exact prefix (continue_final_message),
+# so the model only generates `<transcript>","label":"<label>"}`.
+ROUTE_PREFIX = '{"transcript":"'
 ROUTE_MAX_OUTPUT = 4096
 REPLY_PROTOCOL = "played-reply-v2"
+_V1_FENCE = "```json\n"
+
+
+def route_protocol(prefill=False):
+    return ROUTE_PROTOCOL_V2 if prefill else ROUTE_PROTOCOL
+
+
+def route_prefill_message():
+    return {"role": "assistant", "content": ROUTE_PREFIX}
+
+
+def with_route_prefill(messages, prefill=True):
+    """The prefix is always the LAST message (also after a repair user message)."""
+    return list(messages) + [route_prefill_message()] if prefill else messages
+
+
+class RouteScanner:
+    """Incremental lexer that finds the closing quote of the label value.
+
+    Tracks only string boundaries (`\\"`, `\\\\` and `\\uXXXX` are skipped as
+    escapes; hex digits can never close a string) and brace depth, character
+    by character, so any delta split is equivalent to one delta. It never
+    decides anything itself: the caller must run the full parse_route on
+    `candidate()`; a structurally different output fails that parse.
+    """
+
+    def __init__(self, prefilled=False):
+        self.prefilled = bool(prefilled)
+        self._text = []
+        self._size = 0
+        self._depth = 0
+        self._in_string = False
+        self._escape = False
+        self._strings = 0
+        self.closed_at = None  # offset in GENERATED text just after the label's closing quote
+        if self.prefilled:
+            self._scan(ROUTE_PREFIX, 0)
+
+    def _scan(self, chunk, offset):
+        for i, ch in enumerate(chunk):
+            if self._in_string:
+                if self._escape:
+                    self._escape = False
+                elif ch == "\\":
+                    self._escape = True
+                elif ch == '"':
+                    self._in_string = False
+                    if self._depth == 1:
+                        self._strings += 1
+                        # transcript key, transcript value, label key, label value
+                        if self._strings == 4:
+                            return offset + i + 1
+            elif ch == '"':
+                self._in_string = True
+            elif ch in "{[":
+                self._depth += 1
+            elif ch in "}]":
+                self._depth -= 1
+        return None
+
+    def feed(self, delta):
+        """Return True exactly once: when the label value's closing quote arrives."""
+        if self.closed_at is not None or not delta:
+            if delta:
+                self._text.append(delta)
+                self._size += len(delta)
+            return False
+        offset = self._size
+        self._text.append(delta)
+        self._size += len(delta)
+        closed = self._scan(delta, offset)
+        if closed is None:
+            return False
+        self.closed_at = closed
+        return True
+
+    def text(self):
+        return "".join(self._text)
+
+    def head(self):
+        return self.text()[:self.closed_at] if self.closed_at is not None else None
+
+    def trailing(self):
+        return self.text()[self.closed_at:] if self.closed_at is not None else ""
+
+    def candidate(self):
+        """Generated text up to the label close, completed as parse_route expects."""
+        head = self.head()
+        if head is None:
+            return None
+        if not self.prefilled and head.lstrip().startswith(_V1_FENCE):
+            return head + "\n}\n```"
+        return head + "}"
 
 
 def input_route_token_budget(audio_samples):
@@ -28,7 +125,8 @@ def reply_messages(prompt, transcript, context):
 
 
 async def decide_input_route(call, messages, timeout, *, playing=False, closed=True,
-                             reply_prompt=None, reply_context="", on_review=None):
+                             reply_prompt=None, reply_context="", on_review=None,
+                             route_prefill=False):
     """Audio decision + optional text-only reply check share ONE deadline.
 
     call(messages, stage) includes queue acquisition. The review is one attempt
@@ -41,7 +139,8 @@ async def decide_input_route(call, messages, timeout, *, playing=False, closed=T
     """
     deadline = time.perf_counter() + timeout
     label, audit = await decide_control(lambda msgs: call(msgs, "input_route"),
-                                        messages, "input_route", timeout)
+                                        messages, "input_route", timeout,
+                                        route_prefill=route_prefill)
     audit["base_label"] = label
     if not (reply_prompt and playing and closed and reply_context and label in ("keep", "stop_only")
             and not audit["fallback"] and audit.get("transcript", "").strip()):
@@ -78,17 +177,22 @@ async def decide_input_route(call, messages, timeout, *, playing=False, closed=T
     return label, audit
 
 
-def parse_route(raw):
+def parse_route(raw, prefilled=False):
     """No label extraction, duplicate keys, reversed order or empty evidence.
 
     Fences are harmless formatting. The transcript is diagnostic evidence, not
     a second independent vote or a replacement for the user's audio/history.
+    prefilled=True (transcript-first-v2): `raw` is the continuation after the
+    prefilled ROUTE_PREFIX; the prefix is joined back and every check is the same.
     """
     if not isinstance(raw, str) or len(raw) > ROUTE_MAX_OUTPUT:
         return None
-    body = raw.strip()
-    if body.startswith("```json\n") and body.endswith("\n```"):
-        body = body[8:-4].strip()
+    if prefilled:
+        body = (ROUTE_PREFIX + raw).strip()
+    else:
+        body = raw.strip()
+        if body.startswith(_V1_FENCE) and body.endswith("\n```"):
+            body = body[8:-4].strip()
     try:
         pairs = json.loads(body, object_pairs_hook=lambda pairs: pairs)
         if (not isinstance(pairs, list) or len(pairs) != 2
@@ -106,11 +210,11 @@ def parse_route(raw):
         return None
 
 
-def parse_label(kind, raw, *, legacy_route=False):
+def parse_label(kind, raw, *, legacy_route=False, prefilled=False):
     if kind == "input_reply":
         return raw.strip() if isinstance(raw, str) and raw.strip() in LABELS[kind] else None
     if kind == "input_route" and not legacy_route:
-        result = parse_route(raw)
+        result = parse_route(raw, prefilled=prefilled)
         return result["label"] if result is not None else None
     if not isinstance(raw, str):
         return None
@@ -120,11 +224,14 @@ def parse_label(kind, raw, *, legacy_route=False):
     return text if text in LABELS[kind] else None
 
 
-async def decide_control(call, messages, kind, timeout):
+async def decide_control(call, messages, kind, timeout, *, route_prefill=False):
+    """route_prefill (input_route only): `messages` is the UNprefilled request; the
+    v2 prefix is appended as the last message of the first AND the repair request."""
     deadline = time.perf_counter() + timeout
     audit = {"kind": kind, "attempts": 0, "raw": [], "errors": [],
              "repaired": False, "fallback": False, "timed_out": False}
-    request = messages
+    prefilled = bool(route_prefill and kind == "input_route")
+    request = with_route_prefill(messages, prefilled)
     for attempt in range(2):
         remaining = deadline - time.perf_counter()
         if remaining <= 0:
@@ -140,20 +247,21 @@ async def decide_control(call, messages, kind, timeout):
             raw = ""
             audit["errors"].append(type(exc).__name__)
         audit["raw"].append(str(raw)[:512])
-        label = parse_label(kind, raw)
+        label = parse_label(kind, raw, prefilled=prefilled)
         if label is not None:
             audit["repaired"] = attempt == 1
             if kind == "input_route":
-                audit.update(protocol=ROUTE_PROTOCOL, transcript=parse_route(raw)["transcript"])
+                audit.update(protocol=route_protocol(prefilled),
+                             transcript=parse_route(raw, prefilled=prefilled)["transcript"])
             return label, audit
         if kind == "input_route":
             # Do not echo a malformed/hallucinated transcript back as evidence.
-            request = messages + [{"role": "user", "content":
+            request = with_route_prefill(messages + [{"role": "user", "content":
                 'The previous result was invalid. Transcribe the original audio and classify it '
                 'under the original rules. Return exactly one JSON object, with the string field '
                 '"transcript" FIRST and "label" SECOND. label must be keep, stop_only, '
                 'yield_wait or yield_ready. With no clear speech use an empty transcript and keep. '
-                'No additional fields or explanation.'}]
+                'No additional fields or explanation.'}], prefilled)
             continue
         request = messages + ([{"role": "assistant", "content": raw[:512]}]
                               if isinstance(raw, str) and raw.strip() else []) + [

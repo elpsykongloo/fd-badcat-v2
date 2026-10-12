@@ -22,10 +22,13 @@ async def warmup(prompts, engine_cfg=None):
     from silero_vad import load_silero_vad, VADIterator
     import module
     from messages import build_audio_content
-    from control_labels import parse_label, ROUTE_PROTOCOL, REPLY_PROTOCOL, reply_messages
-    from guarded_turns import input_timing, route_messages
+    from control_labels import parse_label, route_protocol, with_route_prefill, REPLY_PROTOCOL, reply_messages
+    from guarded_turns import input_timing, route_messages, route_options, route_prompt
 
     timing = input_timing(engine_cfg if (engine_cfg or {}).get("guarded_turns") else {})
+    # Warm the exact production route format (compact prompt / v2 prefill) when enabled.
+    route_cfg = engine_cfg if (engine_cfg or {}).get("guarded_turns") else {}
+    route_prefill = route_options(route_cfg)["prefill"]
 
     started = time.perf_counter()
     fixture = Path(__file__).resolve().parents[1] / "exp/streaming_demo/synthetic_question.wav"
@@ -49,8 +52,9 @@ async def warmup(prompts, engine_cfg=None):
             raise RuntimeError("Control model warmup returned an invalid label")
         if prompts.get("input_route"):
             routed = await asyncio.to_thread(module.llm_qwen3o_strict,
-                route_messages(prompts["input_route"], content), route=True)
-            if parse_label("input_route", routed) != "yield_ready":
+                with_route_prefill(route_messages(route_prompt(prompts, route_cfg), content), route_prefill),
+                route=True, continue_final_message=route_prefill)
+            if parse_label("input_route", routed, prefilled=route_prefill) != "yield_ready":
                 raise RuntimeError("Input route warmup rejected the clear self-authored question")
         if prompts.get("input_reply"):
             for context, expected in (("请告诉我，你想听童话还是科幻故事。", "yield_ready"),
@@ -106,7 +110,7 @@ async def warmup(prompts, engine_cfg=None):
               "asr_provider": module.ASR_PROVIDER, "transcript": transcript,
               "bilingual_transcript": checks[0]["recognized"], "tts_chunks": total_chunks,
               "tts_contract": module.VERBATIM_TTS_CONTRACT, "tts_readback_checks": checks,
-              "route_protocol": ROUTE_PROTOCOL if prompts.get("input_route") else None,
+              "route_protocol": route_protocol(route_prefill) if prompts.get("input_route") else None,
               "reply_protocol": REPLY_PROTOCOL if prompts.get("input_reply") else None,
               "input_timing": timing,
               "elapsed_s": round(time.perf_counter() - started, 3)}

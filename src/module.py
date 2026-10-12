@@ -323,10 +323,13 @@ def llm_qwen3o(messages: list):
         return ""
 
 
-def llm_qwen3o_strict(messages: list, *, route=False):
+def llm_qwen3o_strict(messages: list, *, route=False, continue_final_message=False):
+    # continue_final_message: transcript-first-v2 warmup continues the prefilled
+    # assistant prefix; the returned content is only the generated continuation.
     response = _http().post(
         QWEN_URL, headers={"Content-Type": "application/json"},
-        data=json.dumps(qwen_text_payload(messages, route=route)),
+        data=json.dumps(qwen_text_payload(messages, route=route,
+                                          continue_final_message=continue_final_message)),
         timeout=int(os.getenv("FDBC_QWEN_TIMEOUT", "300")))
     response.raise_for_status()
     return response.json()["choices"][0]["message"]["content"]

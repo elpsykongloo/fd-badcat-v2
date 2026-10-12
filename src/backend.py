@@ -504,10 +504,12 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None, asr_cfg=None) -> F
                                                "max_repairs": 1,
                                                "audio_grounded": True}
         if info["streaming"] and (engine_cfg or {}).get("guarded_turns"):
-            from control_labels import ROUTE_PROTOCOL, REPLY_PROTOCOL
-            from guarded_turns import input_timing
+            from control_labels import route_protocol, REPLY_PROTOCOL
+            from guarded_turns import input_timing, route_options
+            route = route_options(engine_cfg)
             info.update(input_protocol="pcm16.ref.v1", guarded_turns=True,
-                        route_protocol=ROUTE_PROTOCOL, route_reference_text=False,
+                        route_protocol=route_protocol(route["prefill"]), route_reference_text=False,
+                        route_compact_prompt=route["compact_prompt"], route_early_close=route["early_close"],
                         reply_protocol=REPLY_PROTOCOL if prompts.get("input_reply") else None,
                         reply_context="completed_or_heard_sentences_at_input_onset",
                         input_timing=input_timing(engine_cfg),

@@ -115,6 +115,7 @@ def build_manifest(*, session_id, repository_root, profile, engine_cfg, delay,
         "diagnostics_review", "diagnostics_retention_days",
         "diagnostic_audio_capture_allowed", "diagnostic_audio_capture_seconds",
         "diagnostic_audio_capture_default", "input_wait_release_s", "input_route_conversation",
+        "input_route_prefill", "input_route_compact_prompt", "input_route_early_close",
     )
     llm_keys = ("model", "decision_timeout_s", "audio_block")
     asr_keys = ("backend", "provider", "num_threads")
@@ -130,7 +131,8 @@ def build_manifest(*, session_id, repository_root, profile, engine_cfg, delay,
         "protocols": {
             "trace": "demo-trace-v2", "case": "demo-case-v2",
             "audio": "pcm16.v1", "input": engine_cfg.get("input_protocol"),
-            "route": "transcript-first-v1", "reply": REPLY_PROTOCOL,
+            "route": ("transcript-first-v2" if engine_cfg.get("input_route_prefill") is True
+                      else "transcript-first-v1"), "reply": REPLY_PROTOCOL,
             "speech_reference": "speech-reference-v1",
             "tts": "verbatim-grammar-v2", "continuity": "demo-continuity-v1",
             "transport": "model-transport-v1",

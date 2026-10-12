@@ -5,13 +5,15 @@ session, input id and revision; the actor remains the only state writer.
 """
 import asyncio
 import json
+import time
 from collections import deque
 from contextlib import aclosing
 from dataclasses import dataclass, field
 
 import numpy as np
 
-from control_labels import decide_input_route, ROUTE_PROTOCOL, ROUTE_MAX_OUTPUT, REPLY_PROTOCOL
+from control_labels import (decide_input_route, route_protocol, parse_route, RouteScanner,
+                            ROUTE_MAX_OUTPUT, REPLY_PROTOCOL)
 from input_audio import EchoEvidence, INPUT_PROTOCOL
 from messages import build_audio_content
 from speech_reference import SpeechReference, completed_context
@@ -27,6 +29,32 @@ def input_timing(config=None):
 
 
 CONTINUATION_PROTOCOL = "pending-user-audio-v1"
+# The only prompt line input_route_compact_prompt replaces (output format, not semantics).
+ROUTE_FORMAT_LINE = "只输出一个JSON对象，必须先输出transcript字段，再输出label字段，不要其他字段或解释。"
+
+
+def route_options(engine_cfg=None):
+    """transcript-first-v2 switches; prefill and compact prompt default off, early close on."""
+    cfg = engine_cfg or {}
+    options = {"prefill": cfg.get("input_route_prefill", False),
+               "compact_prompt": cfg.get("input_route_compact_prompt", False),
+               "early_close": cfg.get("input_route_early_close", True)}
+    for key, value in options.items():
+        if type(value) is not bool:
+            raise ValueError(f"input_route_{key} must be a boolean")
+    return options
+
+
+def route_prompt(prompts, engine_cfg=None):
+    """The input_route system prompt, optionally with the compact one-line format rule."""
+    prompt = prompts["input_route"]
+    if not route_options(engine_cfg)["compact_prompt"]:
+        return prompt
+    compact = (prompts.get("input_route_compact_format") or "").strip()
+    if not compact or "\n" in compact or prompt.count(ROUTE_FORMAT_LINE) != 1:
+        raise ValueError("input_route_compact_prompt needs prompts.input_route_compact_format "
+                         "(one line) and exactly one original format line in input_route")
+    return prompt.replace(ROUTE_FORMAT_LINE, compact)
 # Before any unit has fully played, reply review may use the units already heard;
 # the newest one must have played at least this long to count as heard.
 REPLY_MIN_HEARD_S = 0.5
@@ -150,6 +178,9 @@ class GuardedTurns:
             raise ValueError("max_input_seconds must be in [1, 30]")
         if self.GUARDED_TURNS and not self.prompts.get("input_route"):
             raise ValueError("guarded_turns requires an independent input_route prompt")
+        self.ROUTE_OPTIONS = route_options(self.engine_cfg if self.GUARDED_TURNS else {})
+        if self.GUARDED_TURNS:
+            route_prompt(self.prompts, self.engine_cfg)  # fail at startup, not on first input
 
     def _guard_detect(self, ev):
         pcm = ev.pcm
@@ -348,6 +379,7 @@ class GuardedTurns:
         return {"previous_user_request": previous[-300:], "assistant_speech_heard": heard[-400:]}
 
     def _guard_dispatch(self, span, *, closed):
+        dispatched = time.perf_counter()
         span.checked_until = self.t_audio
         gen, revision = self.session_gen, span.revision
         operation_id = self._diagnostic_id("input")
@@ -394,7 +426,9 @@ class GuardedTurns:
             if span.reference_kind != "playback_sentence_window":
                 self._guard_capture_reference(span)
         conversation = self._guard_conversation(span, playing)
-        messages = route_messages(self.prompts["input_route"], content,
+        options = self.ROUTE_OPTIONS
+        prefill = options["prefill"]
+        messages = route_messages(route_prompt(self.prompts, self.engine_cfg), content,
                                   playing=playing, reference=span.reference_text,
                                   continuation=continuation, context_content=context_content,
                                   conversation=conversation)
@@ -411,7 +445,7 @@ class GuardedTurns:
         reference_context = {"reference_kind": span.reference_kind,
             "reference_utterance_id": span.reference_sid,
             "reference_played_samples": span.reference_played,
-            "route_protocol": ROUTE_PROTOCOL, "reference_sent_to_model": False,
+            "route_protocol": route_protocol(prefill), "reference_sent_to_model": False,
             "input_timing": self.input_timing, "preroll_samples": span.preroll_samples,
             "route_penalties": {"presence": 0.0, "frequency": 0.0},
             "conversation_chars": sum(map(len, (conversation or {}).values()))}
@@ -430,12 +464,25 @@ class GuardedTurns:
             request_kind = "interrupt" if playing else "spec_judge"
             if self.CHAT_DEMO and self.engine_cfg.get("input_control_reserve", False):
                 request_kind = "input_reply" if stage == "input_reply" else "input_route"
-            response_options = None
-            if self.CHAT_DEMO and self.engine_cfg.get("input_route_token_budget", False) and stage != "input_reply":
+            is_route = stage != "input_reply"
+            response_options = {}
+            if self.CHAT_DEMO and self.engine_cfg.get("input_route_token_budget", False) and is_route:
                 from control_labels import input_route_token_budget
-                response_options = {"max_tokens": input_route_token_budget(current_samples + context_samples)}
+                response_options["max_tokens"] = input_route_token_budget(current_samples + context_samples)
+            if prefill and is_route:
+                # decide_control appended the v2 prefix as the last (assistant) message.
+                response_options["continue_final_message"] = True
+            # Label-close scan on every route call (its timing is recorded even with
+            # early close off). Only a full parse_route of the completed head decides.
+            scanner = RouteScanner(prefilled=prefill) if is_route else None
+            stats = {"stage": stage, "call_id": call_id, "output_chars": 0,
+                     "label_closed_ms": None, "early_closed": False} if is_route else None
+            stream_state = {}
+            result = None
+            if stats is not None:
+                route_calls.append(stats)
             async with aclosing(self._capacity_stream(request_kind, self.text_stream_fn, msgs, route=True,
-                    response_options=response_options,
+                    response_options=response_options or None, stream_state=stream_state,
                     case_context={"input_id": span.sid, "revision": revision, "closed": closed,
                                   "input_generation": gen, "playing": playing,
                                   **reference_context, "decision_stage": stage,
@@ -443,11 +490,25 @@ class GuardedTurns:
                                   call_id=call_id, parent_id=operation_id)) as source:
                 async for part in source:
                     parts.append(part)
-                    if sum(map(len, parts)) > (128 if stage == "input_reply" else ROUTE_MAX_OUTPUT):
+                    if stats is not None:
+                        stats["output_chars"] += len(part)
+                    if sum(map(len, parts)) > (ROUTE_MAX_OUTPUT if is_route else 128):
                         raise ValueError("Oversized input decision")
-            return "".join(parts)
+                    if scanner is not None and scanner.feed(part):
+                        stats["label_closed_ms"] = round((time.perf_counter() - dispatched) * 1000, 3)
+                        if options["early_close"]:
+                            candidate = scanner.candidate()
+                            if parse_route(candidate, prefilled=prefill) is not None:
+                                # Final decision; closing the stream cancels the server request.
+                                # Output after the label is audit-only.
+                                stats.update(early_closed=True, trailing=scanner.trailing()[:128])
+                                stream_state["early_closed"] = True
+                                result = candidate
+                                break
+            return "".join(parts) if result is None else result
 
         call_ids = []
+        route_calls = []
 
         async def run():
             # One typed decision owns admission, stopping and readiness. The
@@ -465,7 +526,13 @@ class GuardedTurns:
             route, audit = await decide_input_route(call, messages,
                 min(self.DECISION_TIMEOUT, float(self.engine_cfg.get("input_decision_timeout_s", 2))),
                 playing=playing, closed=closed, reply_prompt=self.prompts.get("input_reply"),
-                reply_context=reply_context, on_review=stop_first)
+                reply_context=reply_context, on_review=stop_first, route_prefill=prefill)
+            if route_calls:
+                last = route_calls[-1]
+                audit.update(output_chars=last["output_chars"], label_closed_ms=last["label_closed_ms"],
+                             early_closed=last["early_closed"], streams=[dict(c) for c in route_calls])
+                if "trailing" in last:
+                    audit["trailing"] = last["trailing"]
             return InputDecision(gen, span.sid, revision, closed, route,
                                  {"route": audit, "playing": playing},
                                  list(call_ids), operation_id)
@@ -508,10 +575,14 @@ class GuardedTurns:
             self._observe("input_decision_stale", {"input_id": ev.sid, "revision": ev.revision,
                 "parent_id": ev.parent_id, "closed": ev.closed, "input_generation": ev.gen})
             return
+        route_audit = ev.audit.get("route") or {}
         self._observe("input_decision", {"input_id": ev.sid, "revision": ev.revision,
             "closed": ev.closed, "input_generation": ev.gen,
             "route": ev.route, "audit": ev.audit, "call_ids": ev.call_ids,
-            "parent_id": ev.parent_id})
+            "parent_id": ev.parent_id,
+            "route_output_chars": route_audit.get("output_chars"),
+            "route_label_closed_ms": route_audit.get("label_closed_ms"),
+            "early_closed": bool(route_audit.get("early_closed"))})
         if ev.route == "keep":
             if ev.closed:
                 if span.admitted:
