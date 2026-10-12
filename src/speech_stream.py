@@ -226,6 +226,19 @@ class SocketOutbox:
                 delivered.cancel()
 
 
+def release_units(splitter, text, *, flush=False):
+    """TTS units released for one published text chunk (FX-1a).
+
+    With spoken-text normalization on, every normalized chunk already ends on a
+    unit boundary (SpokenTextBuffer emits whole units from its own splitter), so
+    the outer splitter's one-character lookahead only delays the finished unit
+    until the NEXT unit starts. flush=True releases it now; the unit list is
+    unchanged (checked by replaying archived responses), only released earlier.
+    """
+    units = splitter.feed(text)
+    return units + splitter.flush() if flush else units
+
+
 class SpeechPipeline:
     def __init__(self, sid, queue, messages, text_fn, tts_fn, *, timeout=15,
                  retry=True, apology="", packet_ms=40, buffer_ms=600, precompute_gate=None,
@@ -301,7 +314,7 @@ class SpeechPipeline:
                 return
             chunks.append(delta)
             await self.emit("text_delta", text=delta)
-            for sentence in splitter.feed(delta):
+            for sentence in release_units(splitter, delta, flush=normalizer is not None):
                 await self.sentences.put(sentence)
         for attempt in range(2 if self.retry else 1):
             try:

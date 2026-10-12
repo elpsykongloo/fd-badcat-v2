@@ -142,6 +142,51 @@ async def test_first_audio_precedes_text_and_tts_eof_order_lossless_history_inpu
         i for i,e in enumerate(events) if e.kind == "text_done")
 
 
+@pytest.mark.parametrize("first_clause_chars", [0, 8])
+async def test_normalized_first_sentence_reaches_tts_before_second_sentence_completes(first_clause_chars):
+    """FX-1a: with spoken-text normalization the outer splitter must not wait for the
+    next unit. The second sentence only completes after the first one is in TTS;
+    the old double lookahead deadlocks here."""
+    first_in_tts = asyncio.Event()
+    sentences = []
+    async def text_fn(messages):
+        yield "第一句话已经说完了。"
+        yield "第二"
+        await first_in_tts.wait()
+        yield "句也说完了。"
+    async def tts_fn(sentence):
+        sentences.append(sentence)
+        first_in_tts.set()
+        yield PCMChunk(b"\0\0" * 960, 24000)
+    queue, events = asyncio.Queue(), []
+    p = SpeechPipeline(3, queue, [], text_fn, tts_fn, spoken_text=True,
+                       first_clause_chars=first_clause_chars)
+    await asyncio.wait_for(collect(p, queue, events), 2)
+    await p.task
+    assert sentences == ["第一句话已经说完了。", "第二句也说完了。"]
+    assert next(e.data["text"] for e in events if e.kind == "text_done") == "第一句话已经说完了。第二句也说完了。"
+
+
+def test_release_units_flush_only_changes_release_time():
+    from speech_stream import release_units
+    from spoken_text import SpokenTextBuffer
+    text = "你好，我是语音助手。**今天**天气不错！Next, we go.\n1. 第一项；\n- 第二项。"
+    for width in (1, 2, 3, 7):
+        released = {}
+        for flush in (False, True):
+            normalizer, splitter, units = SpokenTextBuffer(), StreamingSentenceBuffer(first_clause_chars=8), []
+            for start in range(0, len(text), width):
+                chunk = normalizer.feed(text[start:start + width])
+                if chunk:
+                    units += release_units(splitter, chunk, flush=flush)
+            tail = normalizer.flush()
+            if tail:
+                units += release_units(splitter, tail, flush=flush)
+            units += splitter.flush()
+            released[flush] = units
+        assert released[True] == released[False], width
+
+
 async def test_backpressure_bounded_and_cancel_closes_both_generators():
     text_closed, tts_closed = asyncio.Event(), asyncio.Event()
     async def text_fn(messages):
