@@ -4,6 +4,12 @@
 Reuse the runner's existing per-request generator lifetime and seeded-row
 isolation. Only opted-in Omni MTP calls bypass CUDA graph replay. Never reseed
 the process-global RNG. No sampling-distribution changes for residual codes.
+
+Supported layouts: vLLM-Omni 0.22 and 0.30. 0.30 renamed the runner's explicit
+Talker seed key (qwen3_tts_request_seed -> tts_local_seed) and moved generator
+creation into _row_generator; the opt-in seed, eager bypass, generator plumbing
+from Qwen3-Omni talker_mtp into the code predictor and diagnostics are still
+missing upstream, so the same hooks are installed at the 0.30 anchors.
 """
 import ast
 import argparse
@@ -17,6 +23,61 @@ def replace_once(source, old, new):
     if source.count(old) != 1:
         raise RuntimeError(f"Unknown vLLM-Omni source layout at {old[:100]!r}")
     return source.replace(old, new, 1)
+
+
+RUNNER_BYPASS = (
+    '        if not isinstance(self.talker_mtp, current_omni_platform.get_graph_wrapper_cls()):\n',
+    f'''        {MARKER}
+        from vllm_omni.fd_demo_voice import request_seed
+        demo_seeded = any(request_seed(self, rid) is not None for rid in decode_req_ids)
+        if demo_seeded or not isinstance(self.talker_mtp, current_omni_platform.get_graph_wrapper_cls()):
+''')
+# Per layout: (seed and log replacements, required lifetime/isolation anchors).
+RUNNER_LAYOUTS = {
+    "0.22": ((
+        ('            seed = extra_args.get("qwen3_tts_request_seed") if isinstance(extra_args, dict) else None\n',
+         '''            seed = request_seed(self, req_id)
+            if seed is None:
+                seed = extra_args.get("qwen3_tts_request_seed") if isinstance(extra_args, dict) else None
+'''),
+        ('                    generators[first_req_id] = generator\n',
+         '''                    generators[first_req_id] = generator
+                    if request_seed(self, first_req_id) is not None:
+                        logger.info("fd_demo_tts_rng request=%s seed=%d residual_batch=1 eager=true",
+                                    first_req_id, seed)
+'''),
+    ), ('self._talker_mtp_generators.pop(req_id, None)',
+        'self._talker_mtp_forward([req_id], inputs_embeds, row_offsets)',
+        'talker_kwargs["generator"] = generator')),
+    "0.30": ((
+        ('''            seed = None
+            if isinstance(extra_args, dict):
+                seed = extra_args.get("tts_local_seed")
+''',
+         '''            seed = request_seed(self, req_id)
+            if seed is None and isinstance(extra_args, dict):
+                seed = extra_args.get("tts_local_seed")
+'''),
+        ('                cache[req_id] = generator\n',
+         '''                cache[req_id] = generator
+                if request_seed(self, req_id) is not None:
+                    logger.info("fd_demo_tts_rng request=%s seed=%d residual_batch=1 eager=true",
+                                req_id, seed)
+'''),
+    ), ('self._talker_mtp_generators.pop(req_id, None)',
+        'self._talker_mtp_forward([req_id], inputs_embeds, row_offsets)',
+        'talker_kwargs["generator"] = row_generators[0]',
+        # Seeded rows stay batch-one unless the model opts into per-row generators.
+        'and not getattr(self.model, "talker_mtp_accepts_per_row_generators", False)')),
+}
+
+
+def runner_layout(source):
+    found = [name for name, (edits, _) in RUNNER_LAYOUTS.items()
+             if all(source.count(old) == 1 for old, _ in edits)]
+    if len(found) != 1:
+        raise RuntimeError(f"Unknown vLLM-Omni gpu_model_runner layout (matches: {found})")
+    return found[0]
 
 
 def patch_sources(sources):
@@ -46,34 +107,20 @@ def patch_sources(sources):
 
     f = "worker/gpu_model_runner.py"
     s = sources[f]
-    s = replace_once(s,
-        '        if not isinstance(self.talker_mtp, current_omni_platform.get_graph_wrapper_cls()):\n',
-        f'''        {MARKER}
-        from vllm_omni.fd_demo_voice import request_seed
-        demo_seeded = any(request_seed(self, rid) is not None for rid in decode_req_ids)
-        if demo_seeded or not isinstance(self.talker_mtp, current_omni_platform.get_graph_wrapper_cls()):
-''')
-    s = replace_once(s,
-        '            seed = extra_args.get("qwen3_tts_request_seed") if isinstance(extra_args, dict) else None\n',
-        '''            seed = request_seed(self, req_id)
-            if seed is None:
-                seed = extra_args.get("qwen3_tts_request_seed") if isinstance(extra_args, dict) else None
-''')
-    s = replace_once(s, '                    generators[first_req_id] = generator\n',
-        '''                    generators[first_req_id] = generator
-                    if request_seed(self, first_req_id) is not None:
-                        logger.info("fd_demo_tts_rng request=%s seed=%d residual_batch=1 eager=true",
-                                    first_req_id, seed)
-''')
+    layout = runner_layout(s)
+    edits, invariants = RUNNER_LAYOUTS[layout]
+    s = replace_once(s, *RUNNER_BYPASS)
+    for old, new in edits:
+        s = replace_once(s, old, new)
     # These are necessary lifetime/isolation invariants, not optional optimizations.
-    for anchor in ('self._talker_mtp_generators.pop(req_id, None)',
-                   'self._talker_mtp_forward([req_id], inputs_embeds, row_offsets)',
-                   'talker_kwargs["generator"] = generator'):
+    for anchor in invariants:
         if anchor not in s:
             raise RuntimeError(f"Missing upstream RNG lifetime/isolation support: {anchor}")
     result[f] = s
 
     f = "model_executor/models/qwen3_omni/qwen3_omni.py"
+    if layout != "0.22" and "talker_mtp_accepts_per_row_generators" in sources[f]:
+        raise RuntimeError("Qwen3-Omni opted into batched per-row generators; demo rows must stay batch-one")
     result[f] = replace_once(sources[f],
         '            input_ids, inputs_embeds, last_talker_hidden=last_talker_hidden\n',
         f'''            {MARKER}

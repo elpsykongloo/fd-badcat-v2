@@ -3,7 +3,9 @@
 set -euo pipefail
 DEMO_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 export PATH="/root/miniconda3/bin:$PATH"
-export QWEN_DEPLOY_CONFIG="${QWEN_DEPLOY_CONFIG:-$DEMO_ROOT/configs/qwen3_omni_audio_pro6000.yaml}"
+# vLLM-Omni 0.30 + FP8 Thinker (2026-10-12). Rollback: QWEN_ENV_NAME=fdbc-qwen3o-vllm QWEN_DEPLOY_CONFIG=configs/qwen3_omni_audio_pro6000.yaml
+export QWEN_ENV_NAME="${QWEN_ENV_NAME:-fdbc-omni030}"
+export QWEN_DEPLOY_CONFIG="${QWEN_DEPLOY_CONFIG:-$DEMO_ROOT/configs/qwen3_omni_audio_pro6000_fp8_v030.yaml}"
 if [[ "${FDBC_DEMO_MOE_TUNING:-1}" == "1" ]]; then
     export VLLM_TUNED_CONFIG_FOLDER="${VLLM_TUNED_CONFIG_FOLDER:-$DEMO_ROOT/configs/moe_pro6000_bf16}"
     for width in 768 384; do
