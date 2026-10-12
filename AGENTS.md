@@ -42,7 +42,7 @@
 - 传输：`model-transport-v1`保存端点、上下游ID、HTTP/SSE阶段、异常类型、输出/播放状态及恢复轨迹；demo每句仅在零PCM且暂态故障时最多重试一次，已出PCM不重播，持续失败明确提示未完成。兼容代理不跨请求复用连接；历史502的具体异常未保存，不能倒推连接竞争已证实。操作与脱敏收据见 `docs/demo_reliability.md`。
 - TTS：`verbatim-grammar-v2`。原文用 JSON 安全转义的单个 EBNF 字面量约束；LF/CR/TAB 保留，其他 C0/DEL 在 HTTP 前拒绝；生产 stage0 固定 xgrammar，不允许失败后退回自由聊天生成。
 - demo 声音控制：`demo-voice-rng-v1`，`engine.demo_voice_control` 固定 chelsie/seed42，残差声码按请求维护 RNG；小样本串行重复可复现，并发波形仍有变化，不宣称跨文本音色稳定。机制与收据入口：`docs/demo_voice_rng.md`。
-- demo 残差预测：`demo-residual-inner-graphs-v1` 在 PRO 6000 stage1 默认启用完整长度的确定性 Transformer 内部图；外层 seeded/MTP 与请求级采样 RNG 仍保持原路径，关闭 flag 可回退。基线对比、声音检查、测量边界与回退见 `docs/demo_residual_graphs.md`。
+- demo 残差预测：PRO 6000 stage1 默认启用完整长度 Transformer 内部图和确定性概率计算图；外层 seeded/MTP 与请求级随机采样仍保持原路径，关闭对应 flag 可回退。GEMM 调优与合并投影因改变部分 seed 对应声音未采用；机制与证据见 `docs/demo_residual_graphs.md`、`docs/demo_residual_probability_graphs.md`。
 - demo 离线音色对比：`demo-speaker-embedding-v1`，作者 w2v-BERT2.0 + LoRA/Layer Adapter/MFA 最终 LMFT 权重，自动提取256维嵌入并计算 cosine；无人工评分依赖，不接线上决策，分数未校准为身份阈值。入口：`docs/demo_voice_rng.md`；跨文本评测按句长分组并补充固定短句聚合，保留逐句指标，见 `docs/demo_voice_cross_text.md`。
 - demo 启动默认 `FDBC_DEMO_TALKER_NUMERICS=native`：仅 Talker 采用 cuBLASLt 并关闭 BF16 低精度归约/split-K，保留动态批处理；通用启动默认 off，完整 invariant 模式仅作较慢对照。受控样本并发声码一致，仍不宣称跨文本音色稳定或全链路 PCM 一致。机制与开销：`docs/demo_voice_concurrency.md`。
 - 当前输入调参：`engine.input_preroll_ms=320`；VAD threshold `.5`、结束静音 `100ms`、`640ms` 确认及既有超时不变；`input_route` 和条件复核 `input_reply` 的 presence/frequency penalty 为0，聊天/shift/binary/TACT 的采样保持原值。取真实 deque 前缀，不补零伪造实录。

@@ -54,3 +54,5 @@ CUDA Graph 减少提交开销，图内矩阵运算仍全部执行。已有 trace
 - 部署前通过 Python 语法、重复安装和未知源码拒绝检查，以及启动脚本 `bash -n` 和 YAML 检查。启动后完成实际 TTS、HTTPS 和实时协议验收。
 
 原始自造音频、配置备份、实验日志及明细保存在服务器私有 `exp/web_demo/talker_optimization_20261012/`。本地同名分析目录保留 `summary.json`、`microbench.json`、`speaker_quality.json`、两组 `results.json` 和部署验收结果。公开仓库仅保存代码与本报告的自造实验聚合数据，不包含朋友会话、录音、入口凭据或私有诊断原始输出。
+
+后续已叠加确定性概率计算图；矩阵变体的速度与声音检查、采用方案及回退见 `docs/demo_residual_probability_graphs.md`。

@@ -48,6 +48,7 @@ fi
 if [[ "${FDBC_DEMO_VOICE_ADAPTER:-0}" == "1" ]]; then
     python "$ROOT_DIR/scripts/patch_omni_demo_voice.py" "${VOICE_PATCH_ARGS[@]}"
     python "$ROOT_DIR/scripts/patch_omni_demo_residual.py"
+    python "$ROOT_DIR/scripts/patch_omni_demo_probability.py"
 fi
 DEMO_CHUNKS="${FDBC_DEMO_CODEC_CHUNKS:-off}"
 if [[ "$DEMO_CHUNKS" != "off" ]]; then
