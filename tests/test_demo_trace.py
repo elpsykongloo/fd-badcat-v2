@@ -109,3 +109,24 @@ async def test_underrun_telemetry_keeps_numeric_timeline_only(tmp_path):
     assert 'prompt' not in clean
     await trace.close()
     assert 'private' not in trace.path.read_text()
+
+
+async def test_client_hold_telemetry_is_numeric_plus_closed_action(tmp_path):
+    trace = DemoTrace(tmp_path / 'events.jsonl', clock=lambda: 100)
+    clean = trace.client({'kind': 'client_hold', 'action': 'hold', 'utterance_id': 4,
+        'client_ms': 1234.5, 'frame_rms': .05, 'ref_rms': 0, 'noise_floor_rms': .001,
+        'threshold_rms': .004, 'timer_ms': 400, 'rtt_ms': 100, 'note': 'private'})
+    assert clean == {'kind': 'client_hold', 'action': 'hold', 'utterance_id': 4,
+        'client_ms': 1234.5, 'frame_rms': .05, 'ref_rms': 0, 'noise_floor_rms': .001,
+        'threshold_rms': .004, 'timer_ms': 400, 'rtt_ms': 100}
+    for action in ('release', 'timeout', 'shadow'):
+        assert trace.client({'kind': 'client_hold', 'action': action, 'hold_ms': 1,
+                             'server_held': 1})['action'] == action
+    assert trace.client({'kind': 'client_hold', 'action': 'evil'}) is None
+    assert trace.client({'kind': 'client_hold'}) is None
+    assert trace.client({'kind': 'client_hold', 'action': ['hold']}) is None
+    await trace.close()
+    rows = [json.loads(line) for line in trace.path.read_text().splitlines()]
+    holds = [r for r in rows if r['event'] == 'client_hold']
+    assert [r['data']['action'] for r in holds] == ['hold', 'release', 'timeout', 'shadow']
+    assert 'private' not in trace.path.read_text() and 'evil' not in trace.path.read_text()

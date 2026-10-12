@@ -1,4 +1,4 @@
-import {SpeechPlayer} from "./speech-player.js";
+import {SpeechPlayer, LocalHold} from "./speech-player.js";
 import {DemoTelemetry} from "./demo-telemetry.js";
 
 const $ = id => document.getElementById(id);
@@ -194,6 +194,7 @@ function control(s, msg) {
     userRecord(d.turn);
     s.replyTurns.set(d.turn, "assistant-" + d.utterance_id);
     record("assistant-" + d.utterance_id, "assistant", "");
+    s.localHold.cancel();
     s.player.start(d);
     activity(s, "thinking");
   } else if (msg.event === "speech_cancelled" && d.utterance_id === s.player.speech?.id) {
@@ -205,6 +206,7 @@ function control(s, msg) {
     tagSpeech(s, failed ? (s.incompleteSpeechId === d.utterance_id ? "回答未完成" : "生成失败，可能未播完") : resumed ? "续说，旧回答已撤销"
       : interrupted ? "已打断，可能未播完" : "已停止，可能未播完", true);
     s.underruns += s.player.speech.underruns;
+    s.localHold.cancel();
     s.player.cancel();
     $("buffer").textContent = "0 ms";
     $("interrupts").textContent = s.underruns + " / " + s.interrupts;
@@ -231,7 +233,7 @@ function control(s, msg) {
         : "这次回答没能完整生成。请重新说一下你的请求。");
     }
   } else if (s.player.speech && d.utterance_id === s.player.speech.id) {
-    if (msg.event === "speech_hold") { s.player.hold(d.held === true); return; }
+    if (msg.event === "speech_hold") { s.localHold.server(d.held === true); return; }
     if (msg.event === "speech_text_delta") {
       s.player.text();
       const key = "assistant-" + d.utterance_id;
@@ -346,7 +348,13 @@ async function connect() {
     if (s.referenceInput) s.render.connect(s.capture, 0, 1);
     s.player = new SpeechPlayer(s.context, (event, data) => send(s, event, data), state => playback(s, state), s.render);
     s.telemetry = new DemoTelemetry((event, data) => send(s, event, data), s.context,
-      () => s.ws?.bufferedAmount || 0, ms => { $("socket-rtt").textContent = Math.round(ms) + " ms"; });
+      () => s.ws?.bufferedAmount || 0, ms => { s.rttMs = ms; $("socket-rtt").textContent = Math.round(ms) + " ms"; });
+    // client-hold-v1: absent on older backends, which keeps the previous behavior.
+    const clientHold = info.client_hold || {};
+    s.player.setResumeLead(clientHold.resume_lead_ms);
+    s.localHold = new LocalHold(s.player, {mode: clientHold.local_hold, params: clientHold.params,
+      emit: (kind, data) => s.telemetry.emit(kind, data), rtt: () => s.rttMs,
+      outputLatency: () => s.context.outputLatency || s.context.baseLatency || 0});
     s.ws = new WebSocket(socketURL);
     s.ws.binaryType = "arraybuffer";
     await new Promise((resolve, reject) => {
@@ -409,6 +417,15 @@ async function connect() {
       if (s.ws.bufferedAmount > 128 * 1024) {
         void stop(s, "上传网络拥塞，已停止对话以避免继续积压音频。请检查网络后重连。", true);
         return;
+      }
+      if (s.localHold.mode !== "off" && !s.muted) {
+        // Every 256-sample frame, microphone channel only (see client-hold-v1).
+        let mic = 0, ref = 0;
+        if (view) for (let i = 0; i < 256; i++) {
+          const m = view.getInt16(16 + i * 4, true) / 32768, r = view.getInt16(18 + i * 4, true) / 32768;
+          mic += m * m; ref += r * r;
+        } else for (const value of new Float32Array(event.data)) mic += value * value;
+        s.localHold.frame(Math.sqrt(mic / 256), Math.sqrt(ref / 256));
       }
       if (performance.now() - lastLevel > 80) {
         const frame = view ? Float32Array.from({length: 256}, (_, i) => view.getInt16(16 + i * 4, true) / 32768)

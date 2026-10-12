@@ -482,6 +482,17 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None, asr_cfg=None) -> F
                 "prefetch_ms": int(engine_cfg.get("stream_prefetch_ms", 0)),
                 "buffer_ms": int(engine_cfg.get("stream_buffer_ms", 600)),
                 "diagnostics": bool(engine_cfg.get("stream_diagnostics", False))}
+            # client-hold-v1 (speech-player.js). Defaults keep the previous
+            # behavior: re-wait the full startup after a hold, no local hold.
+            local_hold = engine_cfg.get("client_local_hold", False)
+            info["client_hold"] = {
+                "version": "client-hold-v1",
+                "resume_lead_ms": int(engine_cfg.get(
+                    "stream_resume_lead_ms", engine_cfg.get("stream_startup_ms", 80))),
+                "local_hold": "shadow" if local_hold == "shadow" else "on" if local_hold is True else "off",
+                "params": {key: value for key, value in
+                           (engine_cfg.get("client_local_hold_params") or {}).items()
+                           if isinstance(key, str) and type(value) in (int, float)}}
             from response_completion import response_length_config
             completion = response_length_config(engine_cfg)
             if completion:

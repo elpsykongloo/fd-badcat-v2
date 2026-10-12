@@ -139,22 +139,32 @@ class DemoTrace:
         self.client_tokens -= 1
         event = data.get("kind")
         if not isinstance(event, str) or event not in {"ping", "rtt", "first_audio", "playback_end",
-                                                      "playback_start", "underrun", "cancel", "stop"}:
+                                                      "playback_start", "underrun", "cancel", "stop",
+                                                      "client_hold"}:
             return None
         fields = ("seq", "utterance_id", "client_ms", "rtt_ms", "first_audio_ms",
                   "scheduled_lead_ms", "base_latency_ms", "output_latency_ms",
                   "played_samples", "received_samples", "underruns", "upload_buffer_bytes",
                   "gap_ms", "late_ms", "audio_context_ms", "previous_end_ms", "packet_seq",
                   "sample_offset", "arrival_interval_ms", "scheduled_start_ms",
-                  "underrun_ms", "max_underrun_ms")
+                  "underrun_ms", "max_underrun_ms",
+                  # client_hold (client-hold-v1): linear RMS of the triggering frame.
+                  "frame_rms", "ref_rms", "noise_floor_rms", "threshold_rms",
+                  "timer_ms", "hold_ms", "server_held")
         clean = {"kind": event}
+        if event == "client_hold":
+            # The only string accepted from the client: a closed enumeration.
+            action = data.get("action")
+            if not isinstance(action, str) or action not in {"hold", "release", "timeout", "shadow"}:
+                return None
+            clean["action"] = action
         for key in fields:
             value = data.get(key)
             if type(value) in (int, float) and 0 <= value <= 1e12 and math.isfinite(value):
                 clean[key] = value
         if event == "ping" and (type(clean.get("seq")) is not int):
             return None
-        self.record("client_" + event, clean)
+        self.record(event if event.startswith("client_") else "client_" + event, clean)
         return clean
 
     def sent(self, payload, queued, started, finished):
