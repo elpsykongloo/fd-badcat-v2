@@ -54,6 +54,15 @@ class Candidate:
     created: float = field(default_factory=time.perf_counter)
     parent_id: str = None
     shift_pending: bool = False
+    # Per-candidate END hold (guarded path; hold-tier-v1). The guarded release check
+    # uses hold_s; the legacy listen path keeps END_HOLD.
+    hold_s: float = 0.64
+    hold_tier: str = "default"
+    hold_reason: str = "initial"
+    hold_rule: dict = None            # evaluated rule tier (also in shadow mode)
+    hold_text: str = ""               # full merged transcript the tier was judged on
+    hold_transcript_ms: float = None  # route transcript arrival minus anchor (audio ms)
+    first_audio_ms: float = None      # G: candidate creation -> first TTS PCM (wall ms)
 
 
 class CandidateTurns:
@@ -97,6 +106,8 @@ class CandidateTurns:
                       self.t_end_anchor if self.t_end_anchor is not None else self.t_audio,
                       confirmed=confirmed, stage=stage,
                       parent_id=parent_id or self._diagnostic_id("candidate"))
+        hold = getattr(self, "HOLD_TIERS", None)
+        c.hold_s = hold["default"] if self.GUARDED_TURNS and hold else self.END_HOLD
         self._candidate = c
         self._candidate_log("candidate_created", candidate_id=c.cid, turn=c.turn,
                             parent_id=c.parent_id,
@@ -298,7 +309,19 @@ class CandidateTurns:
         if c.confirmed:
             await self._publish_candidate(c)
 
+    def _candidate_first_audio(self, c):
+        """G for counterfactual hold analysis: first TTS PCM after candidate creation."""
+        if c is None or c.first_audio_ms is not None or not self.GUARDED_TURNS:
+            return
+        c.first_audio_ms = round((time.perf_counter() - c.created) * 1000, 3)
+        self._observe("candidate_first_audio", {"candidate_id": c.cid, "parent_id": c.parent_id,
+            "first_audio_ms": c.first_audio_ms, "published": c.published,
+            "after_anchor_ms": round((self.t_audio - c.anchor) * 1000, 1),
+            "hold_s": c.hold_s, "hold_tier": c.hold_tier})
+
     def _stage_candidate_speech(self, c, ev):
+        if ev.kind == "audio":
+            self._candidate_first_audio(c)
         if ev.kind == "error":
             c.error = ev.data
         # Coalesce token events: memory is bounded by the pipeline's text limit,

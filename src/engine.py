@@ -994,6 +994,8 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                 await self._guard_control(ev.kind, ev.data)
             elif ev.kind == "demo_telemetry" and self.demo_trace is not None:
                 clean = self.demo_trace.client(ev.data)
+                if self.GUARDED_TURNS:
+                    self._guard_client_telemetry(clean)
                 if clean and clean["kind"] == "ping":
                     await self.send_control("demo_pong", {"seq": clean["seq"]})
             elif ev.kind == "session_end":
@@ -1044,6 +1046,7 @@ class ActorEngine(GuardedTurns, CandidateTurns):
             clean = self._guard_detect(ev)
             if self.demo_capture is not None:
                 self.demo_capture.clean(ev.seq, clean)
+            self._guard_vad_tune()
             event = self.detect_vad_frame(clean)
             await self._guard_frame(FrameEvent(ev.seq, ev.t_audio, ev.t_wall, clean, ev.reference), event)
             return
@@ -1491,6 +1494,8 @@ class ActorEngine(GuardedTurns, CandidateTurns):
                 await self.send_control("speech_text_done", data)
             elif ev.kind == "audio":
                 if data["seq"] == 0:
+                    if self.CANDIDATE_TURNS:
+                        self._candidate_first_audio(self._speech_candidate)
                     # Preserve speech that began while text/first audio was in flight.
                     if self.CANDIDATE_TURNS and self._speech_candidate is not None:
                         # Original question stays with the candidate for a possible

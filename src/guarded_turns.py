@@ -5,6 +5,8 @@ session, input id and revision; the actor remains the only state writer.
 """
 import asyncio
 import json
+import math
+import statistics
 import time
 from collections import deque
 from contextlib import aclosing
@@ -12,6 +14,7 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
+import hold_tiers
 from control_labels import (decide_input_route, route_protocol, parse_route, RouteScanner,
                             ROUTE_MAX_OUTPUT, REPLY_PROTOCOL)
 from input_audio import EchoEvidence, INPUT_PROTOCOL
@@ -19,13 +22,51 @@ from messages import build_audio_content
 from speech_reference import SpeechReference, completed_context
 
 
+VAD_WINDOW_MS = 32  # Silero 16 kHz window: 512 samples per VADIterator call
+
+
+def _vad_silence(config, key):
+    """Silero END needs (1 + ceil(ms/32)) low windows; only window multiples are distinct.
+    Absent keys keep the evaluated legacy 100 ms (4 windows, 160 ms effective)."""
+    if key not in config:
+        return 100
+    value = config[key]
+    if type(value) is not int or not (value == 100 or (
+            32 <= value <= 480 and value % VAD_WINDOW_MS == 0)):
+        raise ValueError(f"{key} must be a multiple of 32 in [32, 480] (or the legacy 100)")
+    return value
+
+
+def vad_end_windows(silence_ms):
+    """Low windows counted after the first low window before Silero reports END."""
+    return math.ceil(silence_ms / VAD_WINDOW_MS)
+
+
+def vad_effective_end_ms(silence_ms):
+    """Trailing silence from the first low window to END: (1 + windows) x 32 ms."""
+    return VAD_WINDOW_MS * (1 + vad_end_windows(silence_ms))
+
+
 def input_timing(config=None):
-    """Only pre-roll is tuned; keep the evaluated Silero threshold/end window."""
+    """Pre-roll and (guarded only) per-state VAD end silence; threshold stays 0.5.
+
+    `vad_silence_ms` applies while listening and before playback starts,
+    `vad_silence_ms_playing` while the reply is audibly playing (see
+    GuardedTurns._guard_vad_state). Callers pass {} when not guarded, so the
+    HumDial/legacy baseline always gets 100 ms.
+    """
     config = config or {}
     preroll = config.get("input_preroll_ms", 160)
     if type(preroll) is not int or not 0 <= preroll <= 960 or preroll % 16:
         raise ValueError("input_preroll_ms must be a multiple of 16 in [0, 960]")
-    return {"vad_threshold": 0.5, "vad_silence_ms": 100, "preroll_ms": preroll}
+    silence = _vad_silence(config, "input_vad_silence_ms")
+    playing = _vad_silence(config, "input_vad_silence_ms_playing")
+    return {"vad_threshold": 0.5, "vad_silence_ms": silence, "preroll_ms": preroll,
+            "vad_end_windows": vad_end_windows(silence),
+            "vad_effective_end_ms": vad_effective_end_ms(silence),
+            "vad_silence_ms_playing": playing,
+            "vad_end_windows_playing": vad_end_windows(playing),
+            "vad_effective_end_ms_playing": vad_effective_end_ms(playing)}
 
 
 CONTINUATION_PROTOCOL = "pending-user-audio-v1"
@@ -133,6 +174,9 @@ class InputSpan:
     # Immutable user audio frozen at input onset; route context only, not a
     # second copy in ASR/response history or an assistant-text reference.
     replied_user_audio: object = None
+    # Route context of the latest dispatch: "accepted_unanswered_user_audio" means
+    # the route transcript already covers every merged prefix (hold-tier features).
+    context_source: str = None
 
 
 @dataclass
@@ -145,6 +189,7 @@ class InputDecision:
     audit: dict = field(default_factory=dict)
     call_ids: list = field(default_factory=list)
     parent_id: str = None
+    elapsed_ms: float = None  # wall time from dispatch to decision (R), diagnostics only
 
 
 class GuardedTurns:
@@ -156,6 +201,16 @@ class GuardedTurns:
         self._guard_input = None
         self.input_timing = input_timing(self.engine_cfg if self.GUARDED_TURNS else {})
         self._guard_preroll = deque(maxlen=self.input_timing["preroll_ms"] // 16)
+        self._guard_vad_ms = self.input_timing["vad_silence_ms"]
+        self._guard_vad_mode = "listening"
+        self._guard_last_end = None
+        # Per-candidate END hold (hold-tier-v1). Without end_hold_tiers every tier is
+        # END_HOLD; without hold_tier_rules every candidate keeps the default tier.
+        self.HOLD_TIERS = hold_tiers.hold_config(self.engine_cfg if self.GUARDED_TURNS else {},
+                                                 self.END_HOLD)
+        # Transcripts of the audio held in _guard_wait_audio, in the same order.
+        self._guard_wait_text = ""
+        self._client_rtts = deque(maxlen=32)
         self._guard_wait_audio = []
         self._guard_wait_end = None
         self.CONTINUATION_CONTEXT = bool(self.GUARDED_TURNS and self.engine_cfg.get("input_continuation_context", False))
@@ -181,6 +236,84 @@ class GuardedTurns:
         self.ROUTE_OPTIONS = route_options(self.engine_cfg if self.GUARDED_TURNS else {})
         if self.GUARDED_TURNS:
             route_prompt(self.prompts, self.engine_cfg)  # fail at startup, not on first input
+
+    def _guard_vad_state(self):
+        """Which VAD end silence applies to the next frame (actor state, not span mode).
+
+        - "playing": a published reply whose playback start the client acknowledged
+          (`_speech is not None and _speech_started`; `_candidate_playback_started`
+          sets it on playback_progress started/played>0) until the reply finishes
+          (`_guard_finish_turn`) or is cancelled (`_cancel_speech` clears `_speech`).
+        - "preplay" (before playback): nothing audible yet, but a reply exists: a
+          private or held candidate (`_candidate is not None`, from route decision to
+          playback start) or a published reply still inside the client startup window
+          (`_speech is not None and not _speech_started`).
+        - "listening": neither.
+        Listening and preplay use input_vad_silence_ms; playing uses
+        input_vad_silence_ms_playing (browser AEC can carve holes in user speech).
+        """
+        if self._speech is not None and self._speech_started:
+            return "playing"
+        if self._candidate is not None or self._speech is not None:
+            return "preplay"
+        return "listening"
+
+    def _guard_vad_tune(self):
+        """Set the Silero end silence for this frame. utils_vad reads
+        min_silence_samples on every call, so a change applies to this frame; it is
+        only written when it differs (the 100/100 default never touches it)."""
+        mode = self._guard_vad_state()
+        timing = self.input_timing
+        ms = timing["vad_silence_ms_playing" if mode == "playing" else "vad_silence_ms"]
+        self._guard_vad_ms, self._guard_vad_mode = ms, mode
+        iterator = self.vad_iterator
+        samples = 16000 * ms / 1000
+        if hasattr(iterator, "min_silence_samples") and iterator.min_silence_samples != samples:
+            iterator.min_silence_samples = samples
+
+    def _guard_rtt_median(self):
+        return statistics.median(self._client_rtts) if self._client_rtts else None
+
+    def _guard_client_telemetry(self, clean):
+        """Actor-side context for client telemetry (diagnostics only, never a decision input)."""
+        if not clean:
+            return
+        kind = clean.get("kind")
+        if kind == "rtt" and type(clean.get("rtt_ms")) in (int, float):
+            self._client_rtts.append(float(clean["rtt_ms"]))
+        elif kind == "client_hold":
+            c, speech = self._candidate, self._speech
+            self._observe("client_hold_actor", {"action": clean.get("action"),
+                "utterance_id": clean.get("utterance_id"),
+                "speech_utterance_id": speech.sid if speech is not None else None,
+                "speech_started": bool(self._speech_started) if speech is not None else None,
+                "candidate_id": c.cid if c is not None else None,
+                "candidate_published": c.published if c is not None else None,
+                "after_anchor_ms": round((self.t_audio - c.anchor) * 1000, 1) if c is not None else None,
+                "hold_s": c.hold_s if c is not None else None,
+                "hold_tier": c.hold_tier if c is not None else None,
+                "vad_state": self._guard_vad_state()})
+
+    def _guard_assign_hold(self, c, *, text, label, playing, transcript_at=None):
+        """Classify one new candidate's END hold (it starts at default; see hold_tiers)."""
+        cfg = self.HOLD_TIERS
+        c.hold_text = text or ""
+        c.hold_transcript_ms = (round((transcript_at - c.anchor) * 1000, 1)
+                                if transcript_at is not None else None)
+        if not cfg["evaluate"]:
+            return
+        users = getattr(self, "_users_by_turn", {})
+        assistants = getattr(self, "_assistants_by_turn", {})
+        tier, reason = hold_tiers.classify(c.hold_text, duration_s=len(c.audio) / 16000,
+            label=label, playing=playing, first_turn=not (users or assistants),
+            rtt_ms=self._guard_rtt_median(), min_rtt_ms=cfg["min_rtt_ms"])
+        tier, reason, hold_s = hold_tiers.resolve(cfg, tier, reason,
+                                                  elapsed_s=self.t_audio - c.anchor)
+        c.hold_rule = {"tier": tier, "reason": reason, "hold_s": hold_s}
+        if cfg["apply"]:
+            c.hold_s, c.hold_tier, c.hold_reason = hold_s, tier, reason
+        else:
+            c.hold_reason = "shadow"
 
     def _guard_detect(self, ev):
         pcm = ev.pcm
@@ -280,6 +413,7 @@ class GuardedTurns:
                         "gap_s": round(t - self._guard_wait_end, 3),
                         "context_samples": sum(map(len, self._guard_wait_audio))})
                     self._guard_wait_audio = []
+                    self._guard_wait_text = ""
                     self._guard_wait_end = None
                     self._guard_wait_reason = None
                 self._input_serial += 1
@@ -321,8 +455,18 @@ class GuardedTurns:
                 self._guard_input = span
                 await self._guard_hold(held, True)
             self.IN_SPEECH = True
+            held = self._candidate
             await self.send_control("vad_start", {"turn": self.TURN_IDX, "state": self.STATE,
-                "input_id": span.sid, "timestamp": self._wall_ts()})
+                "input_id": span.sid, "timestamp": self._wall_ts(),
+                # g: onset minus the previous VAD END (audio clock), for counterfactual holds.
+                "prev_end_gap_ms": (round((t - self._guard_last_end) * 1000, 1)
+                                    if self._guard_last_end is not None else None),
+                "vad_state": self._guard_vad_mode,
+                "held_candidate_id": held.cid if held is not None else None,
+                "held_candidate_published": held.published if held is not None else None,
+                "held_after_anchor_ms": (round((t - held.anchor) * 1000, 1)
+                                         if held is not None else None),
+                "held_hold_s": held.hold_s if held is not None else None})
         elif span is not None and not span.decided:
             span.frames.append(frame.copy())
         self._guard_preroll.append(frame.copy())
@@ -333,6 +477,7 @@ class GuardedTurns:
             if context_size + sum(map(len, span.frames)) > self._guard_max_samples:
                 if self.CONTINUATION_CONTEXT:
                     self._guard_wait_audio = []
+                    self._guard_wait_text = ""
                     self._guard_wait_end = None
                     self._guard_wait_reason = "input_limit"
                 await self._guard_reject(span, "input_limit")
@@ -343,8 +488,11 @@ class GuardedTurns:
                 span.revision += 1
                 if span.task is not None:
                     span.task.cancel()
+                self._guard_last_end = t
                 await self.send_control("vad_done", {"turn": self.TURN_IDX, "state": self.STATE,
-                    "input_id": span.sid, "timestamp": self._wall_ts()})
+                    "input_id": span.sid, "timestamp": self._wall_ts(),
+                    "vad_state": self._guard_vad_mode, "vad_silence_ms": self._guard_vad_ms,
+                    "vad_effective_end_ms": vad_effective_end_ms(self._guard_vad_ms)})
                 self._guard_dispatch(span, closed=True)
             elif span.voice and (span.task is None or span.task.done()):
                 # Early preplay verification prevents a noise blip from destroying
@@ -353,11 +501,19 @@ class GuardedTurns:
                 if t - max(span.start, span.checked_until) >= interval:
                     self._guard_dispatch(span, closed=False)
         c = self._candidate
-        if c is not None and not c.confirmed and self._guard_can_publish(c) and t - c.anchor >= self.END_HOLD:
+        if c is not None and not c.confirmed and self._guard_can_publish(c) and t - c.anchor >= c.hold_s:
             self._judged_seg_end = t
-            await self.send_control("vad_640_done", {"turn": self.TURN_IDX, "state": self.STATE,
+            data = {"turn": self.TURN_IDX, "state": self.STATE,
                 "candidate_id": c.cid, "parent_id": c.parent_id,
-                "timestamp": self._wall_ts()})
+                "timestamp": self._wall_ts(),
+                "hold_s": c.hold_s, "hold_tier": c.hold_tier, "hold_reason": c.hold_reason,
+                "hold_elapsed_ms": round((t - c.anchor) * 1000, 1),
+                "transcript_after_anchor_ms": c.hold_transcript_ms,
+                "first_audio_ms": c.first_audio_ms}
+            if c.hold_rule is not None:
+                data.update(hold_rule_tier=c.hold_rule["tier"], hold_rule_reason=c.hold_rule["reason"],
+                            hold_rule_s=c.hold_rule["hold_s"])
+            await self.send_control("vad_640_done", data)
             await self._confirm_candidate()
 
     def _guard_conversation(self, span, playing):
@@ -394,6 +550,7 @@ class GuardedTurns:
         # speech must never make current silence/echo look like a new request.
         context_audio = self._guard_pending_audio(span)
         context_source = "accepted_unanswered_user_audio" if context_audio else None
+        span.context_source = context_source
         # During playback, a fragment such as "of the refugee crisis" must not
         # lose the recent question it completes. This is route-only context:
         # normal response history and new-user ASR retain their existing inputs.
@@ -403,6 +560,7 @@ class GuardedTurns:
                 and len(previous) + 1600 + current_samples <= self._guard_max_samples):
             context_audio = [previous, np.zeros(1600, dtype=np.float32)]
             context_source = "recent_replied_user_audio"
+            span.context_source = context_source
         context_samples = sum(map(len, context_audio))
         continuation = None
         context_content = None
@@ -535,7 +693,8 @@ class GuardedTurns:
                     audit["trailing"] = last["trailing"]
             return InputDecision(gen, span.sid, revision, closed, route,
                                  {"route": audit, "playing": playing},
-                                 list(call_ids), operation_id)
+                                 list(call_ids), operation_id,
+                                 elapsed_ms=round((time.perf_counter() - dispatched) * 1000, 3))
 
         task = asyncio.create_task(run())
         span.task = task
@@ -582,16 +741,22 @@ class GuardedTurns:
             "parent_id": ev.parent_id,
             "route_output_chars": route_audit.get("output_chars"),
             "route_label_closed_ms": route_audit.get("label_closed_ms"),
-            "early_closed": bool(route_audit.get("early_closed"))})
+            "early_closed": bool(route_audit.get("early_closed")),
+            # R (dispatch -> decision, wall) and decision arrival after VAD END (audio clock).
+            "route_ms": ev.elapsed_ms,
+            "decision_after_end_ms": (round((self.t_audio - span.end) * 1000, 1)
+                                      if ev.closed and span.end is not None else None)})
         if ev.route == "keep":
             if ev.closed:
                 if span.admitted:
                     kept = span.frames[:span.end_index]
                     if sum(map(len, self._guard_wait_audio + kept)) + 1600 <= self._guard_max_samples:
                         self._guard_wait_audio += [np.concatenate(kept), np.zeros(1600, dtype=np.float32)]
+                        self._guard_wait_text = self._guard_merged_text(span, route_audit)
                         self._guard_wait_end = span.end
                     else:
                         self._guard_wait_audio = []
+                        self._guard_wait_text = ""
                         self._guard_wait_end = None
                     self._guard_wait_reason = "uncertain_after_yield"
                 await self._guard_reject(span, "insufficient_evidence")
@@ -614,6 +779,7 @@ class GuardedTurns:
             prefix = []
             if old_candidate is not None and (self._speech is None or not self._speech_started) and ev.route != "stop_only":
                 prefix = [old_candidate.audio, np.zeros(1600, dtype=np.float32)]
+                self._guard_wait_text = old_candidate.hold_text + self._guard_wait_text
             self._invalidate_candidate("accepted_user_input")
             if self._speech is not None:
                 self._guard_mark_cancelled()
@@ -632,13 +798,16 @@ class GuardedTurns:
         self.IN_SPEECH = False
         if ev.route == "stop_only":
             self._guard_wait_audio = []
+            self._guard_wait_text = ""
             self._guard_wait_end = None
             self._guard_wait_reason = "stop_only"
             span.frames.clear()
             await self.send_control("input_waiting", {"reason": "stop_only", "input_id": span.sid})
             return
         audio_parts = self._guard_wait_audio + span.frames[:span.end_index]
+        merged_text = self._guard_merged_text(span, route_audit)
         self._guard_wait_audio = []
+        self._guard_wait_text = ""
         self._guard_wait_end = None
         if sum(map(len, audio_parts)) > self._guard_max_samples:
             self._guard_wait_reason = "input_limit"
@@ -649,6 +818,7 @@ class GuardedTurns:
         span.frames.clear()
         if ev.route == "yield_wait":
             self._guard_wait_audio = [audio, np.zeros(1600, dtype=np.float32)]
+            self._guard_wait_text = merged_text
             self._guard_wait_end = span.end
             self._guard_wait_reason = "awaiting_user"
             self._guard_wait_parent = ev.parent_id
@@ -660,7 +830,22 @@ class GuardedTurns:
         # input_route already judged the addressee (speech to a third party is keep). The
         # audio-only shift gate never caught a real third party in captured sessions, vetoed
         # accepted follow-ups, and its reply omits the user audio, so it is not run here.
-        self._begin_candidate(audio, stage="response", parent_id=ev.parent_id)
+        c = self._begin_candidate(audio, stage="response", parent_id=ev.parent_id)
+        # The route transcript arrived with this decision (now). Hold features use the
+        # merged full text and the whole merged audio, never the newest segment alone.
+        self._guard_assign_hold(c, text=merged_text, label=ev.route,
+                                playing=span.mode == "playing" or bool(ev.audit.get("playing")),
+                                transcript_at=self.t_audio)
+
+    def _guard_merged_text(self, span, route_audit):
+        """Full transcript of the audio merged with this span.
+
+        With accepted-unanswered context the route heard (and transcribed) every
+        merged prefix; otherwise prepend the stored transcripts of the held audio."""
+        transcript = str(route_audit.get("transcript") or "")
+        if span.context_source == "accepted_unanswered_user_audio":
+            return transcript
+        return self._guard_wait_text + transcript
 
     async def _guard_release_wait(self, t):
         """The user went quiet after an input that looked unfinished. Answer what was
@@ -669,12 +854,15 @@ class GuardedTurns:
         silence = t - self._guard_wait_end
         self.t_end_anchor = self._guard_wait_end
         parent = self._guard_wait_parent
+        text = self._guard_wait_text
         self._guard_wait_audio, self._guard_wait_end = [], None
+        self._guard_wait_text = ""
         self._guard_wait_reason = self._guard_wait_parent = None
         self.BUFFER = [audio]
         self._observe("input_wait_released", {"silence_s": round(silence, 3),
             "audio_samples": len(audio), "parent_id": parent})
-        self._begin_candidate(audio, stage="response", parent_id=parent)
+        c = self._begin_candidate(audio, stage="response", parent_id=parent)
+        self._guard_assign_hold(c, text=text, label="wait_release", playing=False)
 
     async def _guard_finish_turn(self, turn, reason):
         if turn is None or turn != self.TURN_IDX:
@@ -747,8 +935,10 @@ class GuardedTurns:
         self._guard_input = None
         self._guard_preroll.clear()
         self._guard_wait_audio = []
+        self._guard_wait_text = ""
         self._guard_wait_end = None
         self._guard_wait_reason = None
+        self._guard_last_end = None
         self._guard_outputs.clear()
         self._guard_echo = EchoEvidence()
         self._guard_evidence = {}

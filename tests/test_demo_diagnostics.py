@@ -39,7 +39,9 @@ def test_manifest_is_allowlisted_and_contains_protocol_versions(tmp_path):
         assert value["effective"]["engine"][flag] is True
     assert value["effective"]["engine"]["stream_first_clause_chars"] == 8
     assert value["effective"]["input_timing"] == {
-        "vad_threshold": .5, "vad_silence_ms": 100, "preroll_ms": 320}
+        "vad_threshold": .5, "vad_silence_ms": 100, "preroll_ms": 320,
+        "vad_end_windows": 4, "vad_effective_end_ms": 160, "vad_silence_ms_playing": 100,
+        "vad_end_windows_playing": 4, "vad_effective_end_ms_playing": 160}
     assert value["effective"]["time"]["long_interrupt_s"] == 1.5
     assert "must-not-leak" not in text and "api_key" not in text and "password" not in text
 

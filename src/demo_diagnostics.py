@@ -116,11 +116,16 @@ def build_manifest(*, session_id, repository_root, profile, engine_cfg, delay,
         "diagnostic_audio_capture_allowed", "diagnostic_audio_capture_seconds",
         "diagnostic_audio_capture_default", "input_wait_release_s", "input_route_conversation",
         "input_route_prefill", "input_route_compact_prompt", "input_route_early_close",
+        "input_vad_silence_ms", "input_vad_silence_ms_playing",
+        "end_hold_tiers", "hold_tier_rules", "hold_tier_shadow", "hold_min_rtt_ms",
     )
     llm_keys = ("model", "decision_timeout_s", "audio_block")
     asr_keys = ("backend", "provider", "num_threads")
     import module as adapters
     from transport_diagnostics import safe_endpoint
+    from guarded_turns import input_timing
+    # Same derivation as the engine: tuned VAD/pre-roll only on the guarded path.
+    timing = input_timing(engine_cfg if engine_cfg.get("guarded_turns") else {})
     return {
         "version": MANIFEST_VERSION,
         "diagnostics_version": DIAGNOSTICS_VERSION,
@@ -143,8 +148,7 @@ def build_manifest(*, session_id, repository_root, profile, engine_cfg, delay,
             "engine": {k: engine_cfg[k] for k in engine_keys if k in engine_cfg},
             "time": {**{k: delay[k] for k in ("end_hold_frame", "after_continue_time") if k in delay},
                      "long_interrupt_s": 1.5},
-            "input_timing": {"vad_threshold": 0.5, "vad_silence_ms": 100,
-                             "preroll_ms": int(engine_cfg.get("input_preroll_ms", 160))},
+            "input_timing": timing,
             "llm": {k: llm_cfg[k] for k in llm_keys if k in llm_cfg},
             "asr": {k: asr_cfg[k] for k in asr_keys if k in asr_cfg},
             "runtime": {
