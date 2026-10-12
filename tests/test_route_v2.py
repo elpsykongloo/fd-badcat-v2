@@ -171,7 +171,7 @@ def test_route_protocol_names():
 # ---------- config / compact prompt ----------
 
 def test_route_options_defaults_and_validation():
-    assert route_options({}) == {"prefill": False, "compact_prompt": False, "early_close": True}
+    assert route_options({}) == {"prefill": False, "compact_prompt": False, "early_close": False}
     with pytest.raises(ValueError):
         route_options({"input_route_prefill": "yes"})
 
@@ -181,7 +181,7 @@ def test_compact_prompt_changes_only_the_format_line():
     prompts = yaml.safe_load((ROOT / "configs/demo_chat.yaml").read_text(encoding="utf-8"))["prompts"]
     engine = yaml.safe_load((ROOT / "configs/demo_chat.yaml").read_text(encoding="utf-8"))["engine"]
     assert engine["input_route_prefill"] is False and engine["input_route_compact_prompt"] is False
-    assert engine["input_route_early_close"] is True
+    assert engine["input_route_early_close"] is False
     original = route_prompt(prompts, {})
     assert original == prompts["input_route"]
     compact = route_prompt(prompts, {"input_route_compact_prompt": True})
@@ -335,3 +335,19 @@ def test_replay_cli_on_synthetic_archive(tmp_path, capsys):
     assert report["early_v1_equal"] == report["early_v2_equal"] == 2
     assert report["completed_unparsed"] == 1 and report["mismatches"] == 0
     assert report["input_route_status"] == {"completed": 3, "cancelled": 1}
+
+
+def test_early_close_head_parse_can_accept_what_the_full_parse_rejects():
+    """Why early close is opt-in: it cannot see output after the label."""
+    from control_labels import RouteScanner
+    for raw, prefilled in [
+            ('{"transcript":"你好","label":"yield_ready","note":"x"}', False),
+            ('{"transcript":"你好","label":"yield_ready"}\n解释：用户在提问。', False),
+            ('```json\n{"transcript":"你好","label":"yield_ready"}', False),   # unclosed fence
+            ('{"transcript":"你好","label":"yield_ready"', False),             # truncated
+            ('你好","label":"yield_ready","x":1}', True)]:
+        assert parse_route(raw, prefilled=prefilled) is None
+        scanner = RouteScanner(prefilled=prefilled)
+        for ch in raw:
+            scanner.feed(ch)
+        assert parse_route(scanner.candidate(), prefilled=prefilled)["label"] == "yield_ready"

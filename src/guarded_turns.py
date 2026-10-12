@@ -75,11 +75,15 @@ ROUTE_FORMAT_LINE = "只输出一个JSON对象，必须先输出transcript字段
 
 
 def route_options(engine_cfg=None):
-    """transcript-first-v2 switches; prefill and compact prompt default off, early close on."""
+    """transcript-first-v2 switches (prefill, compact prompt, early close); all default off."""
     cfg = engine_cfg or {}
+    # All three default OFF (baseline-identical). Early close is NOT decision-identical
+    # to the full parse: it cannot see output after the label, so e.g.
+    # `..."label":"keep","x":1}` or `...}` + trailing text (rejected -> repair by the
+    # full parse) is accepted by the head parse. Enable it explicitly.
     options = {"prefill": cfg.get("input_route_prefill", False),
                "compact_prompt": cfg.get("input_route_compact_prompt", False),
-               "early_close": cfg.get("input_route_early_close", True)}
+               "early_close": cfg.get("input_route_early_close", False)}
     for key, value in options.items():
         if type(value) is not bool:
             raise ValueError(f"input_route_{key} must be a boolean")

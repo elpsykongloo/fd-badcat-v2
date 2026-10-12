@@ -48,7 +48,7 @@ def decision(events):
 
 async def test_v2_prefill_early_close_cancels_stream_after_label():
     e, m, _ = guarded()
-    configure(e, input_route_prefill=True)
+    configure(e, input_route_prefill=True, input_route_early_close=True)
     pieces = ['你', '是谁","la', 'bel":"yield_', 'ready"', '}', '\nIGNORED']
     events, requests, consumed = instrument(e, [pieces])
     try:
@@ -75,7 +75,7 @@ async def test_v2_prefill_early_close_cancels_stream_after_label():
 
 async def test_v1_early_close_matches_full_parse_and_records_trailing():
     e, m, _ = guarded()
-    configure(e)  # defaults: v1, early close on
+    configure(e, input_route_early_close=True)  # v1 (default) with early close
     raw = '```json\n{\n  "transcript": "停",\n  "label": "stop_only"\n}\n```'
     cut = raw.index('"stop_only"') + len('"stop_only"')
     pieces = [raw[:cut - 3], raw[cut - 3:cut + 2], raw[cut + 2:]]
@@ -93,6 +93,27 @@ async def test_v1_early_close_matches_full_parse_and_records_trailing():
     finally:
         await cleanup(e)
 
+
+async def test_default_config_reads_route_to_eos_like_the_baseline():
+    """No new key set: no prefill, no early close, raw is the full model output."""
+    e, m, _ = guarded()
+    configure(e)
+    raw = '{"transcript":"你是谁","label":"yield_ready"}'
+    pieces = [raw[:20], raw[20:-1], raw[-1:], "\n"]
+    events, requests, consumed = instrument(e, [pieces])
+    try:
+        await ended(e)
+        await pump(e, lambda: e._guard_input is not None and e._guard_input.decided)
+        assert requests[0][-1]["role"] == "user"
+        row = decision(events)
+        audit = row["audit"]["route"]
+        assert row["route"] == "yield_ready" and row["early_closed"] is False
+        assert audit["protocol"] == "transcript-first-v1" and audit["raw"] == [raw + "\n"]
+        assert consumed == [len(pieces)]
+        done = [d for ev, d in events if ev == "model_call_done" and d["kind"] == "input_route"]
+        assert [d["status"] for d in done] == ["completed"]
+    finally:
+        await cleanup(e)
 
 async def test_early_close_off_reads_to_eos_but_still_times_label():
     e, m, _ = guarded()
@@ -135,7 +156,7 @@ async def test_trailing_junk_is_audit_only_with_early_close_but_invalid_without(
 
 async def test_invalid_head_does_not_close_and_repairs():
     e, m, _ = guarded()
-    configure(e, input_route_prefill=True)
+    configure(e, input_route_prefill=True, input_route_early_close=True)
     pieces_by_call = [['","label":"stop_only"}'], ['","label":"keep"}']]  # empty transcript + action is invalid
     events, requests, consumed = instrument(e, pieces_by_call)
     try:

@@ -40,9 +40,11 @@ engine:
   input_route_prefill: false
   # Swap only the output-format line of prompts.input_route for input_route_compact_format.
   input_route_compact_prompt: false
-  # Final decision as soon as the label value closes and the full parse_route passes;
+  # Final decision as soon as the label value closes and the head parse_route passes;
   # the stream (and server request) is closed, later output is audit-only. Works in v1 too.
-  input_route_early_close: true
+  # Off by default: it accepts outputs whose tail the full parse rejects (extra field or
+  # text after the object), so it is a behavior change gated with the v2 rollout (batch 2).
+  input_route_early_close: false
   # Prepare privately during independent shift; publish only after all gates pass.
   input_route_parallel_shift: true
   # input_route also sees the latest answered request and heard assistant speech to judge the addressee.
