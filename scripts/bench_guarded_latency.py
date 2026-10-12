@@ -908,8 +908,11 @@ def port_free(port):
 
 def launch_backend(a, cfg_path, out):
     import urllib.request
-    if not port_free(a.port):
-        raise SystemExit(f"port {a.port} busy")
+    free_by = now() + 60  # a backend stopped just before may still hold the port briefly
+    while not port_free(a.port):
+        if now() > free_by:
+            raise SystemExit(f"port {a.port} busy")
+        time.sleep(1)
     log = (out / "backend.log").open("a")
     proc = subprocess.Popen([PY, "src/backend.py", "--config", str(cfg_path), "--streaming",
                              "--host", "127.0.0.1", "--port", str(a.port)], cwd=a.backend_root,
