@@ -41,6 +41,25 @@ def _sequence(seed=7, n=3000):
     return rows
 
 
+def test_local_hold_defaults_match_speech_player_js(tmp_path):
+    """LOCAL_HOLD_DEFAULTS must be identical in both files (and keep the calibrated thresholds)."""
+    node = _node()
+    if node is None:
+        pytest.skip("node not available")
+    script = tmp_path / "defaults.cjs"
+    script.write_text("""
+const fs = require("node:fs"), vm = require("node:vm");
+const scope = vm.createContext({performance: {now: () => 0}, Float32Array, DataView});
+vm.runInContext(fs.readFileSync(process.argv[2], "utf8").replace(/^export /gm, ""), scope);
+process.stdout.write(JSON.stringify(vm.runInContext("LOCAL_HOLD_DEFAULTS", scope)));
+""", encoding="utf-8")
+    js = json.loads(subprocess.run([node, str(script), str(ROOT / "src/static/speech-player.js")],
+                                   capture_output=True, text=True, check=True).stdout)
+    assert js == dict(bench.LOCAL_HOLD_DEFAULTS)
+    # calibrated on the lat5 real episodes (exp/lat5/localhold/): 12 / -50 mis-held 15/91 replies
+    assert (js["marginDb"], js["absMinDb"], js["onsetFrames"]) == (15, -45, 2)
+
+
 @pytest.mark.parametrize("params", [{}, {"marginDb": 9, "onsetFrames": 3, "absMinDb": -55, "refHangFrames": 4}])
 def test_python_onset_detector_matches_speech_player_js(tmp_path, params):
     node = _node()

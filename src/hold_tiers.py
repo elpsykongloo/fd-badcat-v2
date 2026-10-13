@@ -67,6 +67,8 @@ QUESTION_FINALS = ("吗", "呢", "嘛", "吧")
 OPENERS = (
     "我想问一下", "我问一下", "问一下", "我想问", "我跟你说", "跟你说", "我想", "请问", "就是",
     "那么", "那个", "然后", "还有", "我觉得", "你知道", "对了", "话说", "我说", "嗯", "呃",
+    # thinking-aloud requests: the user asks for time, a fast reply would talk over them
+    "帮我想想", "让我想想", "我想想",
 )
 _PUNCT_END = "。.！!？?，,、；;：:…~～ \t\r\n\"'”’）)】》"
 _CJK = re.compile(r"[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]")

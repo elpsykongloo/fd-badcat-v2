@@ -310,7 +310,7 @@ function holdRig({mode = "on", resumeLead = 80, rtt = 100, latency = 0.02, param
 }
 {
   const d = new OnsetDetector({marginDb: 6, onsetFrames: 1, bogus: 1, absMinDb: "x"});
-  assert.equal(d.p.marginDb, 6); assert.equal(d.p.absMinDb, -50); assert.equal(d.p.bogus, undefined);
+  assert.equal(d.p.marginDb, 6); assert.equal(d.p.absMinDb, -45); assert.equal(d.p.bogus, undefined);
   for (let i = 0; i < 124; i++) d.frame(.01);     // a step in steady noise looks like voice first
   assert.ok(d.floorDb < -58, String(d.floorDb));
   for (let i = 0; i < 300; i++) d.frame(.01);     // after sustainFrames the floor learns it

@@ -34,6 +34,11 @@ def row(text, *, s=1.0, label="yield_ready", playing=False, first=False, rtt=Non
     ("我想问一下几点了", {}, ("default", "opener:我想问一下")),
     ("就是你是谁", {"first": True}, ("default", "opener:就是")),
     ("那么现在呢？", {}, ("default", "opener:那么")),
+    # thinking-aloud requests never take low either (longest opener wins: 我想想 over 我想)
+    ("帮我想想", {"first": True}, ("default", "opener:帮我想想")),
+    ("让我想想吧", {}, ("default", "opener:让我想想")),
+    ("我想想", {"first": True}, ("default", "opener:我想想")),
+    ("帮我想想这是什么", {}, ("default", "opener:帮我想想")),
     # keep: dangling function word / connective (whole words only)
     ("我想去北京然后", {}, ("keep", "tail_word:然后")),
     ("因为。", {"first": True}, ("keep", "tail_word:因为")),

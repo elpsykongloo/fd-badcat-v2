@@ -391,7 +391,7 @@ class Link:
 LOCAL_HOLD_DEFAULTS = dict(
     floorInitDb=-60, floorMinDb=-80, floorMaxDb=-35,
     fallRate=0.2, riseRate=0.02, riseVoicedRate=0.0005,
-    marginDb=12, absMinDb=-50, onsetFrames=2, sustainFrames=125,
+    marginDb=15, absMinDb=-45, onsetFrames=2, sustainFrames=125,
     refGateDb=-60, refHangFrames=10, echoTailMs=150,
     timerMinMs=300, timerRttFactor=2, timerPadMs=200, fallbackRttMs=150,
 )

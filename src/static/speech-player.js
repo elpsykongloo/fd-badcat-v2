@@ -197,11 +197,19 @@ export class SpeechPlayer {
  *   utterance clears the timer and the server's held value wins. Started speech
  *   is never paused (SpeechPlayer.hold invariant). "shadow" mode evaluates the
  *   same rule and only reports what it would have done.
+ * Defaults. marginDb 15 / absMinDb -45 / onsetFrames 2 were calibrated offline on
+ *   the lat5 real episodes (exp/lat5/localhold/eval_localhold.py, replaying the
+ *   bench feed through the Python twin): with 12 / -50 the real recordings
+ *   (noise floor -45..-50 dB, floor still unlearned after an item's leading
+ *   digital silence) mis-held 15/91 replies on -49..-34 dB non-speech sounds;
+ *   15 / -45 leaves 4/91, keeps every continuation the live run caught, and
+ *   costs continuation detection lag P50/P90 30/71 ms (was 30/42). Sounds under
+ *   -45 dBFS never count as an onset; speech after AGC sits around -25 dBFS.
  */
 export const LOCAL_HOLD_DEFAULTS = Object.freeze({
   floorInitDb: -60, floorMinDb: -80, floorMaxDb: -35,
   fallRate: 0.2, riseRate: 0.02, riseVoicedRate: 0.0005,
-  marginDb: 12, absMinDb: -50, onsetFrames: 2, sustainFrames: 125,
+  marginDb: 15, absMinDb: -45, onsetFrames: 2, sustainFrames: 125,
   refGateDb: -60, refHangFrames: 10, echoTailMs: 150,
   timerMinMs: 300, timerRttFactor: 2, timerPadMs: 200, fallbackRttMs: 150,
 });
