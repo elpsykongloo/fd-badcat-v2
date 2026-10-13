@@ -297,8 +297,12 @@ def test_engineering_options_are_demo_only():
     from engine import ActorEngine
     from test_engine import ScriptedVAD
     root = Path(__file__).resolve().parents[1]
-    cfg = yaml.safe_load((root / 'configs/demo_chat.yaml').read_text())
-    assert cfg['engine']['stream_startup_ms'] == 350
+    cfg = yaml.safe_load((root / 'configs/demo_chat.yaml').read_text(encoding='utf-8'))
+    # first-response-v1: the 300 ms startup lead is only valid together with the
+    # browser's pre-playback local hold and the 80 ms resume lead.
+    assert cfg['engine']['stream_startup_ms'] == 300
+    assert cfg['engine']['client_local_hold'] is True
+    assert cfg['engine']['stream_resume_lead_ms'] == 80
     e = ActorEngine(engine_cfg={'chat_demo':False, 'stream_text_read_ahead':True},
         vad_iterator=ScriptedVAD({}), llm_fn=lambda _:"", asr_fn=lambda _:"", tts_fn=lambda *_:None)
     assert e._speech_stream_options() == {}

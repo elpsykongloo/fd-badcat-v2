@@ -5,8 +5,19 @@ engine:
   demo_voice_control: true
   demo_voice_speaker: chelsie
   demo_voice_seed: 42
+  # first-response-v1 (2026-10-13, FP8 Thinker; live R+G P50 about 500 ms).
+  # Startup lead 300 ms (was 350) ONLY because the browser pauses its own schedule
+  # when it detects a user onset before first audio (client_local_hold below);
+  # without that local pause keep 350. Rollback: 350 + client_local_hold false.
+  stream_startup_ms: 300
+  # After a hold the buffered audio is already in the browser: re-wait 80 ms
+  # (client_hold.resume_lead_ms), not the whole startup lead, before resuming.
+  stream_resume_lead_ms: 80
+  # client-hold-v1: the browser holds an unstarted utterance on a local onset and
+  # releases it on a timer (max(300 ms, 2*RTT+200 ms)) or the server's speech_hold.
+  # Prerequisite for stream_startup_ms: 300 ("shadow" only reports, false = off).
+  client_local_hold: true
   # Keep browser credit at 600 ms; read ahead at most one further sentence.
-  stream_startup_ms: 350
   stream_prefetch_ms: 2000
   stream_diagnostics: true
   # Release model leases when bounded source reads finish, independently of playback.
@@ -37,6 +48,7 @@ engine:
   input_route_token_budget: true
   # transcript-first-v2: prefill the assistant turn with {"transcript":" (continue_final_message).
   # Off until the paired replay gate decides; route_protocol reports v2 when on.
+  # Stays off in first-response-v1 (2026-10-13): not part of the shipped configuration.
   input_route_prefill: false
   # Swap only the output-format line of prompts.input_route for input_route_compact_format.
   input_route_compact_prompt: false
@@ -44,6 +56,7 @@ engine:
   # the stream (and server request) is closed, later output is audit-only. Works in v1 too.
   # Off by default: it accepts outputs whose tail the full parse rejects (extra field or
   # text after the object), so it is a behavior change gated with the v2 rollout (batch 2).
+  # Stays off in first-response-v1 (2026-10-13): not part of the shipped configuration.
   input_route_early_close: false
   # Prepare privately during independent shift; publish only after all gates pass.
   input_route_parallel_shift: true
@@ -55,8 +68,34 @@ engine:
   # After yield_wait, answer the held input once the user is silent this long.
   input_wait_release_s: 2.0
   # Retain actual pre-trigger audio; does not wait another 160ms to dispatch.
-  # VAD threshold/end silence stay at 0.5/100ms after paired tuning.
+  # VAD threshold stays 0.5. End silence is keyed per actor state since 2026-10-13
+  # (listening / pre-playback vs audible playback) but BOTH stay at the evaluated
+  # 100 ms (4 windows, 160 ms effective): the first-response gain comes from the
+  # hold tiers below, not from a looser VAD. Integers, multiples of 32 or 100.
   input_preroll_ms: 320
+  input_vad_silence_ms: 100
+  input_vad_silence_ms_playing: 100
+  # hold-tier-v1: per-candidate END hold instead of one 640 ms for every input.
+  # Live A/B on the laptop path (FP8): first audio -211 ms on short questions and
+  # -188 ms on real first sentences, with no more talk-overs than the 640/350
+  # baseline. keep stays equal to time.end_hold_frame (0.64, src/config.yaml),
+  # which remains the hold of the non-guarded paths. Seconds in [0.1, 2],
+  # low <= default <= keep. Rollback: delete end_hold_tiers (all tiers = 0.64).
+  end_hold_tiers:
+    low: 0.40
+    default: 0.48
+    keep: 0.64
+  # Rules change the hold (shadow would only record what they would have done).
+  hold_tier_rules: true
+  hold_tier_shadow: false
+  # Session median RTT under 50 ms never leaves the keep tier: the browser's
+  # pre-playback local hold cannot buy any reaction budget there.
+  hold_min_rtt_ms: 50
+  # Low tier allowed up to 2.2 s of whole admitted input (about 0.5 s of that is
+  # preroll + VAD tail); the 1.5 s default lost most real short questions.
+  hold_low_max_s: 2.2
+  # Non-Chinese input takes the default tier (keep would give English 640 ms).
+  hold_not_chinese_tier: default
   max_input_seconds: 20
   # Private, bounded actual-call cases; observation is NOT a human gold label.
   case_capture: true

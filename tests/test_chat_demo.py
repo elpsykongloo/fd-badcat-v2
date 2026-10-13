@@ -180,6 +180,21 @@ def test_demo_profile_is_separate_and_asr_configuration_reaches_factory(monkeypa
     assert "15" not in demo["prompts"]["response"]
     assert demo["prompts"]["interrupt"] == frozen["prompts"]["interrupt"]
     assert frozen["time"] == demo["time"]
+    # first-response-v1 lives in the demo engine section only: the frozen profile has
+    # no tier / startup keys, end_hold_frame is untouched and equals the keep tier,
+    # and the per-state VAD end silence keys exist but keep the evaluated 100 ms.
+    for key in ("end_hold_tiers", "hold_tier_rules", "stream_startup_ms", "client_local_hold",
+                "input_vad_silence_ms", "input_vad_silence_ms_playing"):
+        assert key not in frozen["engine"]
+    assert frozen["time"]["end_hold_frame"] == 0.64
+    assert demo["engine"]["end_hold_tiers"] == {"low": 0.40, "default": 0.48,
+                                                "keep": frozen["time"]["end_hold_frame"]}
+    assert demo["engine"]["hold_tier_rules"] is True and demo["engine"]["hold_tier_shadow"] is False
+    assert demo["engine"]["hold_min_rtt_ms"] == 50 and demo["engine"]["hold_low_max_s"] == 2.2
+    assert demo["engine"]["hold_not_chinese_tier"] == "default"
+    assert demo["engine"]["input_vad_silence_ms"] == demo["engine"]["input_vad_silence_ms_playing"] == 100
+    assert demo["engine"]["stream_startup_ms"] == 300 and demo["engine"]["client_local_hold"] is True
+    assert demo["engine"]["input_route_prefill"] is False and demo["engine"]["input_route_early_close"] is False
     for key in ("FDBC_ASR_BACKEND", "FDBC_ASR_PROVIDER", "FDBC_ASR_NUM_THREADS"):
         monkeypatch.delenv(key, raising=False)
     for name in ("ASR_BACKEND", "ASR_PROVIDER", "ASR_NUM_THREADS", "_ASR_MODEL"):

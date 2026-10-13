@@ -27,12 +27,18 @@ def test_demo_static_and_config_do_not_claim_upstream_health():
 
 
 def test_demo_scheduling_is_declared_only_for_explicit_demo():
-    config = {'stream_response': True, 'chat_demo': True, 'stream_startup_ms': 350,
-              'stream_prefetch_ms': 2000, 'stream_diagnostics': True}
+    # Mirrors the shipped first-response-v1 values (300 ms startup, 80 ms resume lead,
+    # local hold on); the keys pass through /api/demo/info unchanged.
+    config = {'stream_response': True, 'chat_demo': True, 'stream_startup_ms': 300,
+              'stream_prefetch_ms': 2000, 'stream_diagnostics': True,
+              'stream_resume_lead_ms': 80, 'client_local_hold': True}
     with TestClient(create_app({}, {}, engine_cfg=config)) as client:
-        assert client.get('/api/demo/info').json()['speech_scheduling'] == {
-            'version':'demo-continuity-v1','startup_ms':350,'prefetch_ms':2000,
+        info = client.get('/api/demo/info').json()
+        assert info['speech_scheduling'] == {
+            'version':'demo-continuity-v1','startup_ms':300,'prefetch_ms':2000,
             'buffer_ms':600,'diagnostics':True}
+        assert info['client_hold'] == {'version': 'client-hold-v1', 'resume_lead_ms': 80,
+                                       'local_hold': 'on', 'params': {}}
 
 
 def test_demo_reliability_capabilities_and_safe_endpoints(monkeypatch):

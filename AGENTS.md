@@ -14,7 +14,7 @@
 
 ## 2. 永久工程纪律
 
-1. **行为保持优先**：已有 judge/interrupt/shift 语义、0.64s hold、2.5s continue timeout、1.5s 长打断等基线行为，除非任务明确要求改变，否则不得偷偷改；行为实验必须放在显式 flag/独立配置后。
+1. **行为保持优先**：已有 judge/interrupt/shift 语义、0.64s hold、2.5s continue timeout、1.5s 长打断等基线行为，除非任务明确要求改变，否则不得偷偷改；行为实验必须放在显式 flag/独立配置后（展示配置的 hold 分档 0.40/0.48/0.64s 就在 `end_hold_tiers` 后面，基线 `end_hold_frame` 仍是 0.64）。
 2. **单写者原则**：引擎状态只由引擎协程写；其他 task 通过 `asyncio.Queue`/事件传递结果，不直接改状态。
 3. **音频钟是区间时钟**：VAD/hold/window 等语义时间使用音频钟；墙钟只用于推理耗时、网络耗时和 trace。
 4. **决策保持 audio-grounded**：Qwen3-Omni 直接听音频；ASR 默认只用于 history/审计，不应悄悄成为关键决策授权信号。
@@ -38,24 +38,24 @@
 - 长回答参考：`speech-reference-v1`。只维护已公开且 ID 匹配的生成尾部/句子 PCM 起点；输入起点冻结当前和前两句已播放参考，避免用未来未播文本污染决策。取消回答的模型历史只保留 ACK 覆盖的完整句前缀；打断状态只存内部记录/trace，不注入 assistant 文本。
 - 统一诊断线：`demo-diagnostics-v1` + `demo-trace-v2` + `demo-case-v2`，按 session/turn/call/parent/utterance 关联真实调用、请求 span、自动 invariant、逐轮修订式 review 和无模型 Actor replay；原始 mic/reference/clean 三轨仅逐会话明确 opt-in。私有目录、操作与边界见 `docs/demo_diagnostics.md`，观测不自动当 gold。
 - demo 回答完成性：`response-completion-v2`。仅 demo 普通回答严格区分 stop/length，单次512 tokens、长度截断最多原生前缀续写3次，短承诺最多另修复一次；失败/预算耗尽明确标为未完成。原音频保留，续写可淘汰最旧完整历史轮对，调用与结束原因进入统一诊断；机制、回退和验收见 `docs/demo_response_completion.md`。
-- 流式输出：PCM16 协议 + SSE 文本→`spoken-text-v1`口语格式规范化→分句→逐句TTS；页面/参考/已播历史共享规范文字，原模型delta/续写前缀保留。Markdown/正文emoji在分句前清理，不盲剪PCM；异常长低能量段仅诊断。`demo-continuity-v1`仍为350ms起播、2000ms有界预取、最多下一句、客户端信用600ms、codec `4:12`；基础/冻结配置不变。见 `docs/demo_speech_continuity.md`、`docs/demo_reliability.md`。
+- 流式输出：PCM16 协议 + SSE 文本→`spoken-text-v1`口语格式规范化→分句→逐句TTS；页面/参考/已播历史共享规范文字，原模型delta/续写前缀保留。Markdown/正文emoji在分句前清理，不盲剪PCM；异常长低能量段仅诊断。`demo-continuity-v1`起播300ms（2026-10-13起，前提是浏览器开播前本地暂停`client_local_hold`，hold释放后重起播80ms；此前350）、2000ms有界预取、最多下一句、客户端信用600ms、codec `4:12`；基础/冻结配置不变。见 `docs/demo_speech_continuity.md`、`docs/demo_reliability.md`。
 - 传输：`model-transport-v1`保存端点、上下游ID、HTTP/SSE阶段、异常类型、输出/播放状态及恢复轨迹；demo每句仅在零PCM且暂态故障时最多重试一次，已出PCM不重播，持续失败明确提示未完成。兼容代理不跨请求复用连接；历史502的具体异常未保存，不能倒推连接竞争已证实。操作与脱敏收据见 `docs/demo_reliability.md`。
 - TTS：`verbatim-grammar-v2`。原文用 JSON 安全转义的单个 EBNF 字面量约束；LF/CR/TAB 保留，其他 C0/DEL 在 HTTP 前拒绝；生产 stage0 固定 xgrammar，不允许失败后退回自由聊天生成。
 - demo 声音控制：`demo-voice-rng-v1`，`engine.demo_voice_control` 固定 chelsie/seed42，残差声码按请求维护 RNG；小样本串行重复可复现，并发波形仍有变化，不宣称跨文本音色稳定。机制与收据入口：`docs/demo_voice_rng.md`。
 - demo 残差预测：PRO 6000 stage1 默认启用完整长度 Transformer 内部图和确定性概率计算图；外层 seeded/MTP 与请求级随机采样仍保持原路径，关闭对应 flag 可回退。GEMM 调优与合并投影因改变部分 seed 对应声音未采用；机制与证据见 `docs/demo_residual_graphs.md`、`docs/demo_residual_probability_graphs.md`。
 - demo 离线音色对比：`demo-speaker-embedding-v1`，作者 w2v-BERT2.0 + LoRA/Layer Adapter/MFA 最终 LMFT 权重，自动提取256维嵌入并计算 cosine；无人工评分依赖，不接线上决策，分数未校准为身份阈值。入口：`docs/demo_voice_rng.md`；跨文本评测按句长分组并补充固定短句聚合，保留逐句指标，见 `docs/demo_voice_cross_text.md`。
 - demo 启动默认 `FDBC_DEMO_TALKER_NUMERICS=native`：仅 Talker 采用 cuBLASLt 并关闭 BF16 低精度归约/split-K，保留动态批处理；通用启动默认 off，完整 invariant 模式仅作较慢对照。受控样本并发声码一致，仍不宣称跨文本音色稳定或全链路 PCM 一致。机制与开销：`docs/demo_voice_concurrency.md`。
-- 当前输入调参：`engine.input_preroll_ms=320`；VAD threshold `.5`、结束静音 `100ms`、`640ms` 确认及既有超时不变；`input_route` 和条件复核 `input_reply` 的 presence/frequency penalty 为0，聊天/shift/binary/TACT 的采样保持原值。取真实 deque 前缀，不补零伪造实录。
+- 当前输入调参：`engine.input_preroll_ms=320`；VAD threshold `.5` 不变；结束静音已加按状态键 `input_vad_silence_ms`/`input_vad_silence_ms_playing` 但保持 `100ms`；`640ms` 确认在展示配置按 `end_hold_tiers` 分档 0.40/0.48/0.64s（`end_hold_frame` 仍 0.64，非 guarded 路径不变）；既有超时不变；`input_route` 和条件复核 `input_reply` 的 presence/frequency penalty 为0，聊天/shift/binary/TACT 的采样保持原值。取真实 deque 前缀，不补零伪造实录。
 
 ### 3.2 当前不能宣称的事
 
 - 很短的“停/停下”等仍有模型转写/前截断/上下文交互型漏接证据；320ms pre-roll 是受控最小改动，**不能宣称短停根因已证实、召回普遍提高或零退化**。
-- 不要加“停止词白名单”、第二 ASR、全局放松 VAD、ASR 非空即强停等未经新证据批准的机制。
+- 不要加“停止词白名单”、第二 ASR、全局放松 VAD、ASR 非空即强停等未经新证据批准的机制。按状态的 VAD 结束静音键已经存在但保持 100 ms，不算放松；首响收益来自 hold 分档与客户端本地暂停。
 - 问号门候选E未采用；短答/追问使用上述语义复核。输入起点还没有已播完整句时，抢在问句播完前的短答可能被按已听到的半句接纳作答，这是 v2 有意取舍；已有完整句时半句不进入上下文，与 v1 相同。不加词级对齐；复核不是通用声源识别或所有反问/引用均无误的保证。v2 增加了第三方语音误接，极短停止词转写错误与续说合并后仍等待未解决。
 
 ### 3.3 已落实工程与运行状态
 
-独立 Demo 配置启用有界文本/PCM 源读取、首播前控制预留、路由输出预算、独立 shift 与私有回答并行、首个自然分句；保持 350ms 起播及原确认/信用/声音证明契约。通用/冻结调用不启用这些选项。正式服务已正常加载并通过 Windows→SSH→真实 Demo 的数字音频验收及三个内部任务重叠的真实模型检查。诊断按已闭合输入的操作 ID 和输入代际审计，开放输入的暂态分类变化不当作最终冲突；新工程配置进入有效运行清单。物理设备听检未进行，有限验收不代表所有意图、时序或声音质量问题已解决。机制与收据见 `docs/demo_latency_optimization.md`。
+独立 Demo 配置启用有界文本/PCM 源读取、首播前控制预留、路由输出预算、独立 shift 与私有回答并行、首个自然分句；起播 300ms（2026-10-13 起，与客户端开播前本地暂停配套）及原信用/声音证明契约，确认按 hold 分档。通用/冻结调用不启用这些选项。正式服务已正常加载并通过 Windows→SSH→真实 Demo 的数字音频验收及三个内部任务重叠的真实模型检查。诊断按已闭合输入的操作 ID 和输入代际审计，开放输入的暂态分类变化不当作最终冲突；新工程配置进入有效运行清单。物理设备听检未进行，有限验收不代表所有意图、时序或声音质量问题已解决。机制与收据见 `docs/demo_latency_optimization.md`；本轮首响调优（hold 分档、本地暂停、起播 300、重起播 80、FX-1a）与逐项回退见 `docs/web_demo.md` §12。
 
 ## 4. 环境与服务
 

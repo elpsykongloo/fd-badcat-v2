@@ -72,7 +72,7 @@ ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -L 127.0.0.1:18080:
 5. “结束”关闭 WebSocket、停止全部排程音频、释放麦克风；再次开始会分配新的服务器会话，清空上一段页面记录。已有记录也可以在断开后手动清空。
 6. “全屏展示”隐藏浏览器外框；“连接与运行详情”显示当前会话、缓冲、计时口径和排错帮助。
 
-每次回复的首文本/首音频时间从浏览器收到 `speech_start` 计时，不含此前的停顿/轮次判定，也不是麦克风到扬声器的端到端延迟。未确认播放缓冲按播放完成回执统计，demo 起播余量为350 ms、客户端信用上限为600 ms；旧协议缺省起播80 ms。服务端另有2000 ms有界预取，机制、分块设置和代价见 [demo_speech_continuity.md](demo_speech_continuity.md)。录音电平是真实输入；球体动画仅用于状态提示，不是音频分析仪。
+每次回复的首文本/首音频时间从浏览器收到 `speech_start` 计时，不含此前的停顿/轮次判定，也不是麦克风到扬声器的端到端延迟。未确认播放缓冲按播放完成回执统计，demo 起播余量为300 ms（2026-10-13 起，与浏览器开播前本地暂停配套，见 §12；此前 350）、开播前 hold 释放后的重起播 80 ms、客户端信用上限为600 ms；旧协议缺省起播80 ms。服务端另有2000 ms有界预取，机制、分块设置和代价见 [demo_speech_continuity.md](demo_speech_continuity.md)。录音电平是真实输入；球体动画仅用于状态提示，不是音频分析仪。
 
 ## 4. 排错与关停
 
@@ -124,7 +124,7 @@ ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -L 127.0.0.1:18080:
 
 旧 Actor 异步收音不等于提前推理。新版只在流式 Actor 的显式开关下启用 `src/actor_candidate.py`：借用 TACT 的“候选→确认/作废”思想，不搬入事务工具判据，也不修改 TACT 冻结实现。
 
-1. VAD END 当场复制只读音频、一次编码，并冻结 judge/shift/response 的消息及历史。停顿窗口内运行 judge→必要的 shift→所选回答流→首句 TTS；这些步骤相互仍有依赖，但整条链可以与 640ms hold 重叠。
+1. VAD END 当场复制只读音频、一次编码，并冻结 judge/shift/response 的消息及历史。停顿窗口内运行 judge→必要的 shift→所选回答流→首句 TTS；这些步骤相互仍有依赖，但整条链可以与 END hold 重叠（基线 640 ms；展示配置按候选分档 0.40/0.48/0.64 s，见 §12）。
 2. 确认前不发送回复文本/音频、不展示候选、不写用户或助手历史。只预合成第一句，最多积压两句待合成文本，PCM 信用上限 600ms；确认后放开后续句。不是提前生成无限长音频。
 3. 原 hold 满足且候选仍对应当前 generation/epoch/turn 时确认；直接释放已经准备好的首音频，不重新生成命中的回答。judge=`continue` 仍走原 2.5 秒继续等待，不绕过它抢答；shift=`yes` 只生成原 shift_re 分支，不泄漏普通回答或将旁路话语写进用户历史。
 4. 新 VAD START 在开播回执之前到达，撤销 judge/shift/文本/TTS 的整条真实 SSE 请求与队列，保留原问题、间隙和续说音频，下一个 END 重新冻结。旧候选不升级轮次，不触发旧 ASR，不污染历史。重置/断线同样撤销；candidate ID、epoch 与 utterance ID 拦截迟到结果、已排队旧文本和旧音频。
@@ -202,7 +202,7 @@ v2 预热先合成普通句，再合成带 CR/LF/TAB 的疑问句。`scripts/che
 
 音频路由协议为 `transcript-first-v1`：单次 Omni 请求先输出转写，再输出小写四态标签，例如 `{"transcript":"停","label":"stop_only"}`。只接受依次为 transcript/label 的两个字符串字段，拒绝重复键、额外字段、逆序、截断、空转写配动作及非四态标签；完整结果校验前不执行动作。音频阶段正常一次请求，异常最多修复一次；修复不回喂上次无效转写。2026-09-16 增加下述条件性纯文本复核（2026-10-08 升级为 `played-reply-v2`），与音频阶段共用原 2 秒总预算（含两阶段容量等待），失败保持音频初判。音频转写不替代聊天 ASR/历史；现在它还作为条件复核的固定输入，并非独立声学证据或声源证明。不新增 ASR、模型或投票；停止/等待/回答分权、投机和取消栅栏不变。原 HumDial interrupt 提示词与关 guarded_turns 的基线保持不动。
 
-未停播时失败保持播放；已让出话轮后失败保持安静，不恢复旧音频或用道歉重新开口。长 VAD 达 1.5 秒只触发语义检查，不自动停播；确认用户争取话轮后可先停，仍在说话时即使路由输出 ready 也不能回答。闭合输入 ready 才进入原 shift/固定快照/私有回答与首句 TTS，640ms hold 满足才公开。不存在最短音长硬拒绝，短“停”仍可生效。明确停止和等待不受旧 2.5 秒强答影响。
+未停播时失败保持播放；已让出话轮后失败保持安静，不恢复旧音频或用道歉重新开口。长 VAD 达 1.5 秒只触发语义检查，不自动停播；确认用户争取话轮后可先停，仍在说话时即使路由输出 ready 也不能回答。闭合输入 ready 才进入原 shift/固定快照/私有回答与首句 TTS，END hold 满足才公开（基线 640 ms；展示配置按 hold-tier-v1 分档 0.40/0.48/0.64 s，见 §12）。不存在最短音长硬拒绝，短“停”仍可生效。明确停止和等待不受旧 2.5 秒强答影响。
 
 ### 已接通的配套机制
 
@@ -292,7 +292,7 @@ python scripts/demo_cases.py replay --reviewed
 
 ## 11. 短输入边界与路由解码（2026-09-08，未新增停止判据）
 
-本节记录的2026-09-08调参只做两处调整：`engine.input_preroll_ms: 320` 保留 VAD 触发前的真实音频（原为160ms）；四态 `input_route` 的 presence/frequency penalty 均为0。VAD阈值仍为0.5、结束静音仍为100ms，640ms确认/1.5s长输入检查/2.5s旧基线参数、四态prompt和停止/回答分权均不变。取已缓存的历史音频不增加一个160ms等待窗，但输入更长会增加少量编码/推理成本，并可能影响模型读出；不是行为等价或无成本保证。2026-09-16新增的同模型文本复核也使用零惩罚，另见§9。
+本节记录的2026-09-08调参只做两处调整：`engine.input_preroll_ms: 320` 保留 VAD 触发前的真实音频（原为160ms）；四态 `input_route` 的 presence/frequency penalty 均为0。VAD阈值仍为0.5、结束静音仍为100ms，640ms确认/1.5s长输入检查/2.5s旧基线参数、四态prompt和停止/回答分权均不变（2026-10-13 起：结束静音拆成按状态键 `input_vad_silence_ms`/`input_vad_silence_ms_playing`，两者仍是 100 ms；640 ms 确认在展示配置按 hold-tier-v1 分档，见 §12）。取已缓存的历史音频不增加一个160ms等待窗，但输入更长会增加少量编码/推理成本，并可能影响模型读出；不是行为等价或无成本保证。2026-09-16新增的同模型文本复核也使用零惩罚，另见§9。
 
 采集仍使用既有有界deque，不增加第二套VAD/ASR/关键词停止通道。只有协商后的guarded Actor读取新前置保留值，legacy/RB/TACT保持原路径；配置允许0–960ms、16ms整数倍。缺省160ms，改回160并重启即可单独回退这项。新案例记录实际`preroll_samples`与`input_timing`，刚连接时实际已收到的前缀可能不足320ms；不补零伪称拥有真实前缀。它仍是模型输入归档，不是完整麦克风会话录音，旧档案丢失的前段不能补回。
 
@@ -318,6 +318,21 @@ python scripts/demo_cases.py replay --reviewed
 验收不能只报总体正确率：单独看“明确停止的漏检率”“非停止片段的误停率”“短否定/含停的新问题/附和/回声各类损失”“语音结束→停止ACK的延迟”和“新增请求/CPU争用/超时”。对原版和四态均正确的保留集，候选方案的新增误停或其他动作变化必须逐例解释；调阈值用开发集，最终使用未调参保留集和真实耳机/外放录音，不把同一失败样本反复调到过当成泛化。数量不足就只报告计数与不确定性，零次误停不等于真实误停率为零。
 
 **不存在一般性的“增加停止召回且绝不伤及其他输入”保证**：只要让原keep的样本获得停止权，就改变了判定边界。可保证的是工程隔离、输入身份、取消幂等、绝不偷偷派生新回答；效果上的无回退需要有代表性的成对数据支持。若将来另行引入复杂分支，应先影子运行、固定保留集过门、获得用户授权并保留回退，不能顺手改prompt或加关键词强停。
+
+## 12. 首响调优（first-response-v1，2026-10-13）
+
+本轮只改独立 demo 配置 `configs/demo_chat.yaml` 的 `engine` 段，基线 `src/config.yaml`（`end_hold_frame: 0.64`）、冻结/legacy 路径和 prompt 均不动。实机口径：FP8 Thinker 下路由＋首句生成（R+G）P50 约 500 ms；分档 hold 使短问首音频提前约 211 ms、真人首句提前约 188 ms，抢话次数不多于 640/350 基线。四项机制相互独立，每项都可单独回退。
+
+| 机制 | 键（`engine`） | 现值 | 做什么 | 回退 |
+|---|---|---|---|---|
+| hold 分档（hold-tier-v1） | `end_hold_tiers`、`hold_tier_rules`、`hold_tier_shadow`、`hold_min_rtt_ms`、`hold_low_max_s`、`hold_not_chinese_tier` | `{low: 0.40, default: 0.48, keep: 0.64}`、`true`、`false`、`50`、`2.2`、`default` | 每个候选的 END hold 按合并后的完整转写与整段音长分档：路由 `yield_ready`＋整段 < 2.2 s＋（问句或首轮）＋主要是中文＋不以开场语起头→low；句尾功能词/连词、整段 ≥ 4 s、播放期输入、会话 RTT 中位 < 50 ms→keep（不下调）；其余 default；非中文取 default。候选从 default 起步，升 keep 随时生效，降 low 只在转写于 low hold 到期前到达时生效（晚到退回 default，绝不即时放行）。`keep` 与 `end_hold_frame` 相等，也是非 guarded 路径的值 | 删掉 `end_hold_tiers`（三档都回到 0.64）或 `hold_tier_rules: false`；要先观察再改，置 `hold_tier_shadow: true` |
+| 客户端开播前本地暂停（client-hold-v1） | `client_local_hold` | `true` | 浏览器在收到 PCM 但尚未起播期间，用本地能量起始检测（自适应噪底＋15 dB 边际、绝对下限 −45 dBFS、连续 2 帧、回声参考门控）发现用户又开口时，先在本地 hold 自己的排程，等 `max(300 ms, 2×RTT+200 ms)` 的定时器或服务端 `speech_hold` 再决定；每句最多本地 hold 一次，已开播的音频绝不暂停。`"shadow"` 只上报不动作 | `client_local_hold: false`；注意同时把 `stream_startup_ms` 改回 350 |
+| 起播 300 ms | `stream_startup_ms` | `300`（此前 350） | 首次排程的起播余量。能降到 300 的前提是上一行的本地暂停兜住“开播瞬间用户又开口”的窗口；没有本地暂停时 300 的抢话风险没有验证过 | `stream_startup_ms: 350` |
+| 80 ms 重起播 | `stream_resume_lead_ms` | `80` | hold 释放后被暂停的音频已经在浏览器本地，只需 80 ms 的重起播余量，不再重等整段 `stream_startup_ms`；经 `/api/demo/info` 的 `client_hold.resume_lead_ms` 下发 | 删掉该键（回到等于 `stream_startup_ms`） |
+| 按状态的 VAD 结束静音 | `input_vad_silence_ms`、`input_vad_silence_ms_playing` | `100`、`100` | 监听/开播前与播放期可以分别设置（32 的整数倍或 100），但本轮两者都保持评估过的 100 ms（4 个窗口，有效 160 ms）；加键只是把口径显式化，不是放松 VAD | 删掉两个键（缺省同样是 100） |
+| FX-1a（代码，无开关） | — | — | `spoken_text_normalization` 开启时，规范化后的每个文本块发布后立即释放外层分句器里已完整的 TTS 单元，不再等下一个单元到达才放出首句；块尾是换行时不释放，避免把下一行开头的闭合标点拆成单独单元。338 个归档回复 × 多种切块重放，单元列表 0 差异 | 无开关；回退需回滚 `src/speech_stream.py` 的对应提交 |
+
+`input_route_prefill` 与 `input_route_early_close` 继续为 `false`，不属于本轮上线内容。所有键都进入 `/api/demo/info`、诊断清单（`input_timing`、`hold_tiers`）和每个 `vad_640_done` 事件（`hold_s`/`hold_tier`/`hold_reason`），线上可以直接核对生效值。从实施树切换线上与回退的脚本见 `exp/lat5/deploy/switch_live.sh`、`rollback_live.sh`。
 
 ## 开发核验
 

@@ -28,7 +28,7 @@ TTS 请求逐句有序执行。文本生产和 TTS 消费是独立任务，最�
 
 独立 demo 配置启用 `demo-continuity-v1`：`stream_prefetch_ms: 2000` 将 TTS 消费与播放发送拆开，最多同时保留当前发送句和下一合成句，仍只有一个 TTS 请求在执行。PCM 队列按字节限制为指定时长，另有最多一个 512 KiB 上游块和一个发送包；未确认候选不能提前合成第二句。发送时才发布句子样本边界，预取内容不提前进入已播参考。取消同时撤销生产、合成和发送任务，关闭 HTTP 并清空预取。基础路径默认预取为0。机制与实测见 [demo_speech_continuity.md](demo_speech_continuity.md)。
 
-客户端缺少配置时预留 80 ms 起播余量；demo 通过 `speech_start.startup_ms` 配置350 ms，hold 后首次排程同样使用该值，断流后的恢复余量仍为80 ms。`stream_buffer_ms: 600` 限制**已发送但未确认播放**的样本，而不是仅限制 WebSocket 队列长度。浏览器按 AudioContext 播放完成回报信用；服务端在信用不足时停止发送。此上限不包括服务端预取、模型内部缓冲、一个上游 WAV 块或操作系统音频输出延迟。5 秒无有效播放进展/发送阻塞会取消或断开；后台挂起的页面不应继续无限合成。
+客户端缺少配置时预留 80 ms 起播余量；demo 通过 `speech_start.startup_ms` 配置300 ms（2026-10-13 起，前提是浏览器开播前本地暂停 `client_local_hold`，此前为 350），开播前 hold 释放后的重起播按 `/api/demo/info` 的 `client_hold.resume_lead_ms`（80 ms）重排，断流后的恢复余量仍为80 ms。`stream_buffer_ms: 600` 限制**已发送但未确认播放**的样本，而不是仅限制 WebSocket 队列长度。浏览器按 AudioContext 播放完成回报信用；服务端在信用不足时停止发送。此上限不包括服务端预取、模型内部缓冲、一个上游 WAV 块或操作系统音频输出延迟。5 秒无有效播放进展/发送阻塞会取消或断开；后台挂起的页面不应继续无限合成。
 
 判定为短打断、长打断、回复替换或会话重置时，取消文本/TTS HTTP 流、丢弃待合成句子和旧音频包；浏览器按 utterance ID 停掉已经排程的旧音频。普通 `continue` 不取消，也不引入新的 VAD 即停策略。代理使用异步 HTTP 和 SSE 透传，上游取消会关闭实际连接；GPU 已在执行的单个 kernel 不保证瞬时抢占。
 
@@ -87,6 +87,6 @@ env -u OMP_NUM_THREADS /root/miniconda3/envs/fd-sds/bin/python scripts/smoke_str
 
 探针串行交替全 WAV / PCM 流式请求；检查包序、采样率、尾计数与 600 ms 信用上限，保存可复查的合成 WAV 和 JSON。使用自造或本人有权使用的输入，不自动选择 HumDial/FDB/RB 测试集。
 
-`post_hold_first_audio_ms` 从客户端收到 `vad_640_done` 到收到首音频包，包含 judge/response/TTS 和传输，但**不包含已经过去的 0.64 秒 hold**，也不是物理扬声器延迟。该 WS 探针的播放器是实时节拍模拟；浏览器逻辑另有 Node 契约测试，以及 `scripts/check_web_demo.py` 的真实 Chromium/WebAudio/AudioWorklet 检查（含虚拟麦克风接真实 Omni 的单输入烟测）。仍未做笔记本真实麦克风/声卡听检。短输入小样本收据只能证明链路与方向，不代替正式串行专机 P50/P95、长回复流畅度和打断恢复测量。流式 `llm_done.infer_time` 包含本地句子队列回压，不能直接当模型纯推理时长。新版页面详情区的计时起点则是 `speech_start`，不要和本段探针口径混用。
+`post_hold_first_audio_ms` 从客户端收到 `vad_640_done` 到收到首音频包，包含 judge/response/TTS 和传输，但**不包含已经过去的 END hold**（基线 0.64 秒；展示配置按 hold-tier-v1 分档 0.40/0.48/0.64 秒，见 [web_demo.md](web_demo.md) §12），也不是物理扬声器延迟。该 WS 探针的播放器是实时节拍模拟；浏览器逻辑另有 Node 契约测试，以及 `scripts/check_web_demo.py` 的真实 Chromium/WebAudio/AudioWorklet 检查（含虚拟麦克风接真实 Omni 的单输入烟测）。仍未做笔记本真实麦克风/声卡听检。短输入小样本收据只能证明链路与方向，不代替正式串行专机 P50/P95、长回复流畅度和打断恢复测量。流式 `llm_done.infer_time` 包含本地句子队列回压，不能直接当模型纯推理时长。新版页面详情区的计时起点则是 `speech_start`，不要和本段探针口径混用。
 
 实跑事实、验收数量和后续状态以 `AGENTS.md` 的流式增量条目为准。

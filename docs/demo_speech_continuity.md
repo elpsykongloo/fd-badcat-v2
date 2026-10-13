@@ -2,7 +2,7 @@
 
 当前单用户延迟候选与证据筛选见 [四项问题的状态](demo_latency_optimization.md)。实验已按用户要求停止；候选尚未完成正式部署与真实接入验收，归档不修改此处既有运行默认值。
 
-本机制解决 TTS 整句生成速度足够、但音频块到达不均匀造成的播放中断。仅独立 demo 配置启用；输入准入、音频钟、640 ms hold、逐字 TTS、固定声音和控制请求预留容量沿用原契约。
+本机制解决 TTS 整句生成速度足够、但音频块到达不均匀造成的播放中断。仅独立 demo 配置启用；输入准入、音频钟、END hold（基线 640 ms；展示配置自 2026-10-13 起按 hold-tier-v1 分档 0.40/0.48/0.64 s，见 [web_demo.md](web_demo.md) §12）、逐字 TTS、固定声音和控制请求预留容量沿用原契约。
 
 ## 管线与边界
 
@@ -14,7 +14,7 @@
 
 `configs/demo_chat.yaml` 设置：
 
-- `stream_startup_ms: 350`：通过 `speech_start.startup_ms` 下发，首次排程与开播前 hold 释放后使用同一值。字段缺省为80 ms，范围0–1000 ms；断流恢复仍为80 ms，避免将已发生的停顿再增加350 ms。
+- `stream_startup_ms: 300`（2026-10-13 起；2026-09-18 至此前为 350）：通过 `speech_start.startup_ms` 下发，首次排程使用该值。降到 300 的前提是浏览器在开播前本地暂停（`client_local_hold: true`，见 [web_demo.md](web_demo.md) §12）；没有这一层时应保持 350。开播前 hold 释放后的重起播不再重等整段起播余量，改用 `stream_resume_lead_ms: 80`（经 `/api/demo/info` 的 `client_hold.resume_lead_ms` 下发），因为被暂停的音频已经在浏览器本地。字段缺省为80 ms，范围0–1000 ms；断流恢复仍为80 ms，避免将已发生的停顿再增加起播余量。
 - `stream_prefetch_ms: 2000`：将模型消费与发送解耦；PCM队列按实际采样率限制字节数。另有一个不超过512 KiB的已解码源块和一个发送包。发送端仍独立限制600 ms未确认播放样本。
 - `stream_diagnostics: true`：通过引擎事件队列记录分块与回压；不会从模型任务直接修改引擎状态。
 
@@ -64,7 +64,7 @@ python scripts/check_demo_continuity_live.py --output ANOTHER_PRIVATE_DIR \
 
 ## 验收结果
 
-2026-09-18完成，采用 **4:12 + 350 ms起播 + 2000 ms预取**，已通过正常启动链部署到原demo端口。实际部署YAML与基础配置的结构比较只出现两个分块字段及既有Talker native环境设置；三阶段 `max_num_seqs=4`、stage0 xgrammar、声音/seed及控制槽不变。可归仓的自造夹逐块数据与聚合收据在 [speech_continuity_v1](../exp/web_demo/speech_continuity_v1/validation.json)。原真实会话和其重放留在私有目录。
+2026-09-18完成，采用 **4:12 + 350 ms起播 + 2000 ms预取**，已通过正常启动链部署到原demo端口（2026-10-13 起起播改为 300 ms，与客户端本地暂停配套；本节其余数字是 2026-09-18 的收据，不按新值重算）。实际部署YAML与基础配置的结构比较只出现两个分块字段及既有Talker native环境设置；三阶段 `max_num_seqs=4`、stage0 xgrammar、声音/seed及控制槽不变。可归仓的自造夹逐块数据与聚合收据在 [speech_continuity_v1](../exp/web_demo/speech_continuity_v1/validation.json)。原真实会话和其重放留在私有目录。
 
 ### 分块选择
 
