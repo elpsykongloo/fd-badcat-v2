@@ -331,8 +331,10 @@ async function connect() {
     if (!captureAllowed) $("diagnostic-capture").checked = false;
     else if (info.diagnostics?.audio_capture_default) $("diagnostic-capture").checked = true;
     s.referenceInput = !!info.guarded_turns && info.input_protocol === "pcm16.ref.v1";
+    const agc = new URLSearchParams(location.search).get("agc");
     s.media = await navigator.mediaDevices.getUserMedia({audio: {
-      channelCount: 1, noiseSuppression: true, autoGainControl: true,
+      channelCount: 1, noiseSuppression: true,
+      autoGainControl: agc === "0" ? false : agc === "1" ? true : info.browser_auto_gain_control !== false,
       // Browser AEC carves user speech during playback; default off, ?aec=1 re-enables it.
       echoCancellation: new URLSearchParams(location.search).get("aec") === "1",
       ...(selectedDevice ? {deviceId: {exact: selectedDevice}} : {}),

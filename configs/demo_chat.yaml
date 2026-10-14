@@ -1,5 +1,8 @@
 # Overlay on src/config.yaml. Only the laptop demo launcher selects this profile.
 engine:
+  input_reply_partial_heard_s: 0
+  input_reply_partial_heard_history: false
+  browser_auto_gain_control: true
   chat_demo: true
   # Explicit voice + request-local residual codec RNG (demo only).
   demo_voice_control: true
@@ -67,6 +70,11 @@ engine:
   input_context_max_gap_s: 20
   # After yield_wait, answer the held input once the user is silent this long.
   input_wait_release_s: 2.0
+  # Opt-in (default false): once playback was cut and the kept input carried nothing
+  # usable, ask the user to repeat after the same silence, at most input_recover_max
+  # times in a row (reset by a played answer). Fixed sentence, no model call.
+  input_wait_uncertain_recover: false
+  input_recover_max: 1
   # Retain actual pre-trigger audio; does not wait another 160ms to dispatch.
   # VAD threshold stays 0.5. End silence is keyed per actor state since 2026-10-13
   # (listening / pre-playback vs audible playback) but BOTH stay at the evaluated
@@ -96,6 +104,9 @@ engine:
   hold_low_max_s: 2.2
   # Non-Chinese input takes the default tier (keep would give English 640 ms).
   hold_not_chinese_tier: default
+  # Playback-only effective end window against browser-AEC holes (absent/0 = off):
+  # speech resuming within it stays one input; decisions wait for it, calls do not.
+  input_vad_end_ms_playing: 0
   max_input_seconds: 20
   # Private, bounded actual-call cases; observation is NOT a human gold label.
   case_capture: true

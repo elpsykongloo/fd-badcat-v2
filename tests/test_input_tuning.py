@@ -127,6 +127,35 @@ async def test_default_vad_silence_never_writes_the_iterator():
         await cleanup(e)
 
 
+@pytest.mark.parametrize("value", [100, 199, 1001, -1, True, 400., "400", None])
+def test_playing_end_window_rejects_invalid_values(value):
+    with pytest.raises(ValueError): input_timing({"input_vad_end_ms_playing": value})
+
+
+def test_playing_end_window_off_keeps_frozen_timing_and_on_only_adds_playing_key():
+    frozen = input_timing({"input_preroll_ms": 320})
+    assert input_timing({"input_preroll_ms": 320}) == frozen
+    assert input_timing({"input_preroll_ms": 320, "input_vad_end_ms_playing": 0}) == frozen
+    assert input_timing({"input_preroll_ms": 320, "input_vad_end_ms_playing": 400}) == {
+        **frozen, "vad_decision_end_ms_playing": 400}
+
+
+@pytest.mark.parametrize("enabled", [True, False])
+def test_playing_end_window_never_reaches_silero_or_listening(monkeypatch, enabled):
+    import engine
+    seen = []
+    monkeypatch.setattr(engine, "VADIterator", lambda model, **kw: seen.append(kw))
+    m = Models()
+    e = engine.ActorEngine(prompts={"input_route": "route"},
+        engine_cfg={"stream_response": True, "speculative_response": True,
+            "guarded_turns": enabled, "input_preroll_ms": 320, "input_vad_end_ms_playing": 400},
+        vad_model=object(), llm_fn=lambda _: "continue", asr_fn=lambda _: "",
+        tts_fn=lambda _: None, text_stream_fn=m.text, tts_stream_fn=m.tts)
+    assert seen == [{"sampling_rate": 16000, "threshold": .5, "min_silence_duration_ms": 100}]
+    assert e._guard_end_hold == pytest.approx(.3 if enabled else 0)
+    assert ("vad_decision_end_ms_playing" in e.input_timing) is enabled
+
+
 async def test_preroll_retains_actual_pretrigger_samples_and_resets_without_waiting():
     e, _, _ = guarded()
     e.engine_cfg["input_preroll_ms"] = 320

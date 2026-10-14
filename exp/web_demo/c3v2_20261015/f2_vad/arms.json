@@ -1,0 +1,62 @@
+{
+  "W0_pool": {
+    "engine": {},
+    "latency": "pool",
+    "note": "baseline: key absent (production today); route/reply latency drawn from the frozen production pool"
+  },
+  "W200_pool": {
+    "engine": {
+      "input_vad_end_ms_playing": 200
+    },
+    "latency": "pool"
+  },
+  "W300_pool": {
+    "engine": {
+      "input_vad_end_ms_playing": 300
+    },
+    "latency": "pool"
+  },
+  "W400_pool": {
+    "engine": {
+      "input_vad_end_ms_playing": 400
+    },
+    "latency": "pool",
+    "note": "primary arm"
+  },
+  "W500_pool": {
+    "engine": {
+      "input_vad_end_ms_playing": 500
+    },
+    "latency": "pool",
+    "note": "alternate arm (implementer's recommendation)"
+  },
+  "W0_idle": {
+    "engine": {},
+    "latency": "fixed:260,80",
+    "note": "baseline, idle Omni (recent real-session p50 route 258 ms)"
+  },
+  "W200_idle": {
+    "engine": {
+      "input_vad_end_ms_playing": 200
+    },
+    "latency": "fixed:260,80"
+  },
+  "W300_idle": {
+    "engine": {
+      "input_vad_end_ms_playing": 300
+    },
+    "latency": "fixed:260,80"
+  },
+  "W400_idle": {
+    "engine": {
+      "input_vad_end_ms_playing": 400
+    },
+    "latency": "fixed:260,80"
+  },
+  "W500_idle": {
+    "engine": {
+      "input_vad_end_ms_playing": 500
+    },
+    "latency": "fixed:260,80"
+  }
+}

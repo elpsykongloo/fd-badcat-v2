@@ -107,7 +107,7 @@ def build_manifest(*, session_id, repository_root, profile, engine_cfg, delay,
         "response_length_repair", "response_max_tokens", "response_max_continuations",
         "playback_autoend", "control_validation", "speculative_response",
         "cancellable_response", "guarded_turns", "input_decision_timeout_s",
-        "input_preroll_ms", "max_input_seconds", "request_total_limit",
+        "input_preroll_ms", "input_vad_end_ms_playing", "max_input_seconds", "request_total_limit",
         "normal_request_limit", "demo_voice_control", "demo_voice_speaker",
         "demo_voice_seed", "input_protocol", "case_capture",
         "case_capture_max_bytes", "case_capture_max_cases",
@@ -119,6 +119,9 @@ def build_manifest(*, session_id, repository_root, profile, engine_cfg, delay,
         "input_vad_silence_ms", "input_vad_silence_ms_playing",
         "end_hold_tiers", "hold_tier_rules", "hold_tier_shadow", "hold_min_rtt_ms",
         "hold_low_max_s", "hold_not_chinese_tier",
+        "input_wait_uncertain_recover", "input_recover_max",
+        "input_reply_partial_heard_s", "input_reply_partial_heard_history",
+        "input_vad_end_ms_playing", "browser_auto_gain_control",
     )
     llm_keys = ("model", "decision_timeout_s", "audio_block")
     asr_keys = ("backend", "provider", "num_threads")

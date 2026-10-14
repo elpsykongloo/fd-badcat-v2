@@ -1691,11 +1691,18 @@ class ActorEngine(GuardedTurns, CandidateTurns):
         try:
             while time.perf_counter() < deadline:
                 if prod.done() and self.q.empty() and self._inflight == 0:
-                    if self._scheduled:
+                    held = self._guard_held_until()
+                    if self._scheduled and (held is None or self._scheduled[0][0] <= held):
                         # injected/oracle tail: advance the audio clock to the next due
                         due = self._scheduled[0][0]
                         self.t_audio = max(self.t_audio, due)
                         await self._drain_due(self.t_audio)
+                        continue
+                    if held is not None:
+                        # No frame will close the playback end window holding these
+                        # decisions: advance the audio clock to its close instead.
+                        self.t_audio = max(self.t_audio, held)
+                        await self._guard_close_end_window(self._guard_input)
                         continue
                     break
                 try:

@@ -19,7 +19,7 @@ from control_labels import (decide_input_route, route_protocol, parse_route, Rou
                             ROUTE_MAX_OUTPUT, REPLY_PROTOCOL)
 from input_audio import EchoEvidence, INPUT_PROTOCOL
 from messages import build_audio_content
-from speech_reference import SpeechReference, completed_context
+from speech_reference import REFERENCE_CHARS, SpeechReference, completed_context
 
 
 VAD_WINDOW_MS = 32  # Silero 16 kHz window: 512 samples per VADIterator call
@@ -59,6 +59,12 @@ def input_timing(config=None):
     preroll = config.get("input_preroll_ms", 160)
     if type(preroll) is not int or not 0 <= preroll <= 960 or preroll % 16:
         raise ValueError("input_preroll_ms must be a multiple of 16 in [0, 960]")
+    legacy = config.get("input_vad_end_ms_playing", 0)
+    if type(legacy) is not int or not (legacy == 0 or 200 <= legacy <= 1000):
+        raise ValueError("input_vad_end_ms_playing must be 0 or an integer in [200, 1000]")
+    if legacy and any(config.get(k, 100) != 100 for k in
+                      ("input_vad_silence_ms", "input_vad_silence_ms_playing")):
+        raise ValueError("legacy f2 and Silero silence tuning cannot both be enabled")
     silence = _vad_silence(config, "input_vad_silence_ms")
     playing = _vad_silence(config, "input_vad_silence_ms_playing")
     return {"vad_threshold": 0.5, "vad_silence_ms": silence, "preroll_ms": preroll,
@@ -66,7 +72,8 @@ def input_timing(config=None):
             "vad_effective_end_ms": vad_effective_end_ms(silence),
             "vad_silence_ms_playing": playing,
             "vad_end_windows_playing": vad_end_windows(playing),
-            "vad_effective_end_ms_playing": vad_effective_end_ms(playing)}
+            "vad_effective_end_ms_playing": vad_effective_end_ms(playing),
+            **({"vad_decision_end_ms_playing": legacy} if legacy else {})}
 
 
 CONTINUATION_PROTOCOL = "pending-user-audio-v1"
@@ -103,6 +110,42 @@ def route_prompt(prompts, engine_cfg=None):
 # Before any unit has fully played, reply review may use the units already heard;
 # the newest one must have played at least this long to count as heard.
 REPLY_MIN_HEARD_S = 0.5
+
+# Every reason the guarded path can wait on, and what ends that wait besides the
+# next user input. Only _guard_set_wait/_guard_clear_wait write the reason.
+#   none    - deliberately silent until the user speaks again (rationale below)
+#   release - after input_wait_release_s of user silence, answer the held input
+#   recover - after the same silence, ask once for a repeat (opt-in, see below)
+WAIT_POLICIES = {
+    # The admitted input is still open; its own closing decision always follows.
+    "user_speaking": "none",
+    # The user asked the assistant to stop; speaking again would defy that.
+    "stop_only": "none",
+    # The user was already told (input_notice) to split an over-long input.
+    "input_limit": "none",
+    # yield_wait: the user paused mid-utterance; answer what was heard.
+    "awaiting_user": "release",
+    # Playback was cut, then the input was kept. Recovery only applies when nothing
+    # usable was heard; heard content (backchannel, third party) stays silent.
+    "uncertain_after_yield": "recover",
+}
+# Fixed repeat request; spoken verbatim, never sent to a model or user history.
+RECOVER_TEXT = {"zh": "抱歉，我刚才没听清，请再说一遍。",
+                "en": "Sorry, I didn't catch that. Could you say it again?"}
+
+
+def _unheard_cause(audit):
+    """Why a kept decision carried nothing usable, or None when content was heard."""
+    route = audit.get("route") or {}
+    if audit.get("acoustic_reject"):
+        return "acoustic_reject"
+    if audit.get("error"):
+        return "error"
+    if route.get("fallback"):
+        return "timeout" if route.get("timed_out") else "fallback"
+    if not str(route.get("transcript") or "").strip():
+        return "empty_transcript"
+    return None
 
 
 def route_messages(prompt, content, *, playing=False, reference="", continuation=None,
@@ -166,6 +209,8 @@ class InputSpan:
     echo_frames: int = 0
     frame_count: int = 0
     provisional_keep: bool = False
+    # Any unclosed STOP after admission; sticky, so recovery never follows a STOP.
+    stop_requested: bool = False
     reference_text: str = ""
     reference_sid: int = None
     reference_kind: str = "unavailable"
@@ -175,12 +220,24 @@ class InputSpan:
     reply_context: str = ""
     reply_played_samples: int = 0
     reply_context_kind: str = None
+    # Opt-in reply-review view: reply_context plus the heard clauses of the unit still
+    # playing at onset. Empty when off or no partial; addressee context never uses it.
+    reply_review_context: str = ""
+    reply_partial_chars: int = 0
+    reply_history_prefix: str = ""
     # Immutable user audio frozen at input onset; route context only, not a
     # second copy in ASR/response history or an assistant-text reference.
     replied_user_audio: object = None
     # Route context of the latest dispatch: "accepted_unanswered_user_audio" means
     # the route transcript already covers every merged prefix (hold-tier features).
     context_source: str = None
+    # A Silero end heard during playback cannot take effect before hold_until:
+    # its decisions wait in `deferred`, and speech resuming inside the window
+    # (e.g. a browser-AEC hole) reopens this same input instead.
+    hold_until: float = None
+    deferred: list = field(default_factory=list)
+    end_silence_ms: int = None
+    vad_merges: int = 0
 
 
 @dataclass
@@ -215,6 +272,9 @@ class GuardedTurns:
         # Transcripts of the audio held in _guard_wait_audio, in the same order.
         self._guard_wait_text = ""
         self._client_rtts = deque(maxlen=32)
+        # Legacy f2 delays decisions; do not also lengthen Silero itself.
+        legacy_ms = self.engine_cfg.get("input_vad_end_ms_playing", 0) if self.GUARDED_TURNS else 0
+        self._guard_end_hold = (legacy_ms - 100) / 1000 if legacy_ms else 0.
         self._guard_wait_audio = []
         self._guard_wait_end = None
         self.CONTINUATION_CONTEXT = bool(self.GUARDED_TURNS and self.engine_cfg.get("input_continuation_context", False))
@@ -227,6 +287,25 @@ class GuardedTurns:
         self._guard_wait_release = float(self.engine_cfg.get("input_wait_release_s", 0) or 0)
         if self._guard_wait_release and not 0.5 <= self._guard_wait_release <= 10:
             raise ValueError("input_wait_release_s must be 0 or in [0.5, 10]")
+        # Opt-in: after a cut playback whose kept input carried nothing usable, ask for
+        # a repeat once the user has been silent input_wait_release_s.
+        self._guard_recover = bool(self.engine_cfg.get("input_wait_uncertain_recover", False))
+        self._guard_recover_max = self.engine_cfg.get("input_recover_max", 1)
+        if type(self._guard_recover_max) is not int or not 0 <= self._guard_recover_max <= 3:
+            raise ValueError("input_recover_max must be an integer in [0, 3]")
+        if self._guard_recover and not self._guard_wait_release:
+            raise ValueError("input_wait_uncertain_recover requires input_wait_release_s")
+        self._guard_recover_cause = self._guard_recover_since = None
+        self._guard_recover_streak = 0
+        self._guard_last_transcript = ""
+        # Reply review may also see the heard part of the unit still playing at onset
+        # once it has played this long (seconds); 0 keeps completed sentences only.
+        self._guard_partial_heard = float(self.engine_cfg.get("input_reply_partial_heard_s", 0) or 0)
+        if self._guard_partial_heard and not 0.25 <= self._guard_partial_heard <= 2:
+            raise ValueError("input_reply_partial_heard_s must be 0 or in [0.25, 2]")
+        self._guard_partial_history = self.engine_cfg.get("input_reply_partial_heard_history", False)
+        if type(self._guard_partial_history) is not bool:
+            raise ValueError("input_reply_partial_heard_history must be a boolean")
         self._guard_wait_parent = None
         self._guard_outputs = {}
         self._guard_echo = EchoEvidence()
@@ -335,18 +414,23 @@ class GuardedTurns:
         span = self._guard_input
         return span is None or span.decided or span.admitted or span.provisional_keep
 
+    def _guard_record(self, sid):
+        meta = self._speech_meta
+        record = self._guard_outputs.setdefault(sid, {"turn": meta.turn, "sentences": []})
+        if meta.kind == "recover":
+            record["no_history"] = True
+        return record
+
     def _guard_reference_event(self, ev):
         # Called AFTER the engine's private-candidate and stale-utterance gates.
         # Do not update ModelDone.text: that would commit partial history on ACK.
-        record = self._guard_outputs.setdefault(ev.sid, {
-            "turn": self._speech_meta.turn, "sentences": []})
+        record = self._guard_record(ev.sid)
         if "reference" not in record:
             record["reference"] = SpeechReference()
         record["reference"].observe(ev.kind, ev.data)
 
     def _guard_sentence_end(self, sid, data):
-        record = self._guard_outputs.setdefault(sid, {
-            "turn": self._speech_meta.turn, "sentences": []})
+        record = self._guard_record(sid)
         end, text = data["end_sample"], data["text"]
         if not data.get("reply_complete", True):
             if "reply_sentences" not in record:
@@ -389,6 +473,7 @@ class GuardedTurns:
         prefix = []
         held = span.held_candidate
         if (not span.admitted and held is not None and held is self._candidate
+                and held.stage != "recover"
                 and (self._speech is None or not self._speech_started)):
             prefix = [held.audio, np.zeros(1600, dtype=np.float32)]
         return prefix + self._guard_wait_audio
@@ -396,13 +481,29 @@ class GuardedTurns:
     async def _guard_frame(self, ev, event):
         frame, t = ev.pcm, ev.t_audio
         span = self._guard_input
-        if (self._guard_wait_release and self._guard_wait_reason == "awaiting_user"
+        policy = WAIT_POLICIES.get(self._guard_wait_reason)
+        if (policy == "release" and self._guard_wait_release
                 and self._guard_wait_audio and self._guard_wait_end is not None
                 and not (event and "start" in event) and (span is None or span.decided)
                 and self._candidate is None and t - self._guard_wait_end >= self._guard_wait_release):
             await self._guard_release_wait(t)
+        elif policy == "recover" and self._guard_recover_since is not None:
+            if self._candidate is not None or self._speech is not None:
+                # Another answer owns the floor now; never ask after it.
+                self._guard_recover_cause = self._guard_recover_since = None
+            elif (not (event and "start" in event) and (span is None or span.decided)
+                    and t - self._guard_recover_since >= self._guard_wait_release):
+                await self._guard_recover_wait(t)
         if event and "start" in event:
             if span is not None and not span.decided:
+                if span.hold_until is not None:
+                    # A start on the frame that ends the window still wins.
+                    if span.deferred or t <= span.hold_until + 1e-6:
+                        span.vad_merges += 1
+                        self._observe("input_vad_end_merged", {"input_id": span.sid,
+                            "revision": span.revision, "gap_s": round(t - span.end, 3),
+                            "discarded_routes": [d.route for d in span.deferred]})
+                    span.hold_until, span.deferred = None, []
                 span.revision += 1
                 if span.task is not None:
                     span.task.cancel()
@@ -420,7 +521,7 @@ class GuardedTurns:
                     self._guard_wait_audio = []
                     self._guard_wait_text = ""
                     self._guard_wait_end = None
-                    self._guard_wait_reason = None
+                    self._guard_clear_wait()
                 self._input_serial += 1
                 held = self._candidate
                 mode = "playing" if self._speech is not None and self._speech_started else (
@@ -437,23 +538,39 @@ class GuardedTurns:
                         span.reply_played_samples = self._speech.played
                         span.reply_context = completed_context(record.get("reply_sentences", record.get("sentences", [])),
                                                                span.reply_played_samples)
+                        rate = getattr(self._speech, "rate", None) or 24000
                         if span.reply_context:
                             span.reply_context_kind = "completed_sentences"
+                            if self._guard_partial_heard and record.get("reference") is not None:
+                                # A follow-up such as "why?" may target the sentence still
+                                # playing: append only its clauses already played at this
+                                # onset, after (never displacing) the completed sentences.
+                                partial = record["reference"].heard_prefix(
+                                    played=span.reply_played_samples, sent=self._speech.sent,
+                                    ends=[end for end, _ in record.get("sentences", [])],
+                                    min_heard=int(rate * self._guard_partial_heard), rate=rate,
+                                    limit=REFERENCE_CHARS - len(span.reply_context))
+                                if partial:
+                                    span.reply_history_prefix = "".join(
+                                        text for end, text in record.get("sentences", [])
+                                        if end <= span.reply_played_samples) + partial
+                                    span.reply_partial_chars = len(partial)
+                                    span.reply_review_context = span.reply_context + partial
+                                    span.reply_context_kind = "completed_and_playing_prefix"
                         elif record.get("reference") is not None:
                             # Nothing has fully played yet: use only units the user has
                             # already heard, frozen at this onset (never a unit that
                             # has not started, nor one heard for under REPLY_MIN_HEARD_S).
-                            rate = getattr(self._speech, "rate", None) or 24000
                             span.reply_context = record["reference"].heard_window(
                                 played=span.reply_played_samples, sent=self._speech.sent,
                                 min_heard=int(rate * REPLY_MIN_HEARD_S))
                             if span.reply_context:
                                 span.reply_context_kind = "sentence_window"
                     c = self._speech_candidate
-                    if (self.CONTINUATION_CONTEXT and c is not None
+                    if (self.CONTINUATION_CONTEXT and c is not None and c.stage != "recover"
                             and 0 <= t - c.anchor <= self._guard_context_gap):
                         span.replied_user_audio = c.audio
-                elif mode == "preplay" and self.CONTINUATION_CONTEXT:
+                elif mode == "preplay" and self.CONTINUATION_CONTEXT and held.stage != "recover":
                     # If playback wins an in-flight admission race, the same
                     # onset-frozen USER input is still available to re-route.
                     span.replied_user_audio = held.audio
@@ -479,12 +596,14 @@ class GuardedTurns:
             span.frame_count += 1
             span.echo_frames += bool(self._guard_evidence.get("echo_only"))
             context_size = sum(map(len, self._guard_pending_audio(span)))
-            if context_size + sum(map(len, span.frames)) > self._guard_max_samples:
+            # Silence after a held playback end joins the input only if speech resumes.
+            frames = span.frames[:span.end_index] if span.hold_until is not None else span.frames
+            if context_size + sum(map(len, frames)) > self._guard_max_samples:
                 if self.CONTINUATION_CONTEXT:
                     self._guard_wait_audio = []
                     self._guard_wait_text = ""
                     self._guard_wait_end = None
-                    self._guard_wait_reason = "input_limit"
+                    self._guard_set_wait("input_limit")
                 await self._guard_reject(span, "input_limit")
                 await self.send_control("input_notice", {"message": "这段语音过长，请分段说。"})
             elif event and "end" in event:
@@ -494,11 +613,21 @@ class GuardedTurns:
                 if span.task is not None:
                     span.task.cancel()
                 self._guard_last_end = t
+                if self._guard_end_hold:
+                    # Chosen once, here: only audible assistant audio (browser AEC
+                    # can carve holes into speech) lengthens the effective end.
+                    playing = self._speech is not None and self._speech_started
+                    span.hold_until = t + self._guard_end_hold if playing else None
+                    span.end_silence_ms = (self.engine_cfg["input_vad_end_ms_playing"]
+                                           if playing else self.input_timing["vad_silence_ms"])
                 await self.send_control("vad_done", {"turn": self.TURN_IDX, "state": self.STATE,
                     "input_id": span.sid, "timestamp": self._wall_ts(),
                     "vad_state": self._guard_vad_mode, "vad_silence_ms": self._guard_vad_ms,
                     "vad_effective_end_ms": vad_effective_end_ms(self._guard_vad_ms)})
                 self._guard_dispatch(span, closed=True)
+            elif span.hold_until is not None and t >= span.hold_until - 1e-6:
+                # The window passed without resumed speech: apply what was decided.
+                await self._guard_close_end_window(span)
             elif span.voice and (span.task is None or span.task.done()):
                 # Early preplay verification prevents a noise blip from destroying
                 # a valid candidate. Long input triggers a decision, never a stop.
@@ -520,6 +649,18 @@ class GuardedTurns:
                             hold_rule_s=c.hold_rule["hold_s"])
             await self.send_control("vad_640_done", data)
             await self._confirm_candidate()
+
+    async def _guard_close_end_window(self, span):
+        deferred, span.hold_until, span.deferred = span.deferred, None, []
+        for decision in deferred:
+            await self._on_input_decision(decision)
+
+    def _guard_held_until(self):
+        """Audio time at which held decisions take effect; None when none wait."""
+        span = self._guard_input
+        if span is None or span.decided or not span.deferred:
+            return None
+        return span.hold_until
 
     def _guard_conversation(self, span, playing):
         """Addressee context for input_route: the latest answered user request and only
@@ -591,6 +732,7 @@ class GuardedTurns:
         conversation = self._guard_conversation(span, playing)
         options = self.ROUTE_OPTIONS
         prefill = options["prefill"]
+        reply_context = span.reply_review_context or span.reply_context
         messages = route_messages(route_prompt(self.prompts, self.engine_cfg), content,
                                   playing=playing, reference=span.reference_text,
                                   continuation=continuation, context_content=context_content,
@@ -603,8 +745,11 @@ class GuardedTurns:
             "parent_id": operation_id,
             "reference_kind": span.reference_kind, "reference_utterance_id": span.reference_sid,
             "reference_chars": len(span.reference_text), "reference_played_samples": span.reference_played,
-            "reply_context_chars": len(span.reply_context), "reply_played_samples": span.reply_played_samples,
-            "reply_context_kind": span.reply_context_kind})
+            "reply_context_chars": len(reply_context), "reply_played_samples": span.reply_played_samples,
+            "reply_context_kind": span.reply_context_kind,
+            **({"vad_end_silence_ms": span.end_silence_ms if closed else None,
+                "vad_end_merges": span.vad_merges} if self._guard_end_hold else {}),
+            **({"reply_partial_chars": span.reply_partial_chars} if self._guard_partial_heard else {})})
         reference_context = {"reference_kind": span.reference_kind,
             "reference_utterance_id": span.reference_sid,
             "reference_played_samples": span.reference_played,
@@ -612,10 +757,11 @@ class GuardedTurns:
             "input_timing": self.input_timing, "preroll_samples": span.preroll_samples,
             "route_penalties": {"presence": 0.0, "frequency": 0.0},
             "conversation_chars": sum(map(len, (conversation or {}).values()))}
-        reply_context = span.reply_context
         reference_context.update(reply_protocol=REPLY_PROTOCOL,
             reply_context_chars=len(reply_context), reply_played_samples=span.reply_played_samples,
             reply_context_kind=span.reply_context_kind)
+        if self._guard_partial_heard:
+            reference_context["reply_partial_chars"] = span.reply_partial_chars
         reference_context.update(continuation_protocol=CONTINUATION_PROTOCOL if continuation else None,
             context_audio_samples=context_samples, current_audio_samples=current_samples,
             context_source=context_source)
@@ -696,6 +842,10 @@ class GuardedTurns:
                              early_closed=last["early_closed"], streams=[dict(c) for c in route_calls])
                 if "trailing" in last:
                     audit["trailing"] = last["trailing"]
+            if self._guard_partial_heard and "reply_review" in audit:
+                # Count reviews (and replies) that saw a partial unit the answer's
+                # history never holds: history keeps only completed sentences.
+                audit["reply_review"]["partial_chars"] = span.reply_partial_chars
             return InputDecision(gen, span.sid, revision, closed, route,
                                  {"route": audit, "playing": playing},
                                  list(call_ids), operation_id,
@@ -717,9 +867,21 @@ class GuardedTurns:
             self.q.put_nowait(result)
         task.add_done_callback(done)
 
-    async def _guard_reject(self, span, reason):
+    async def _guard_reject(self, span, reason, audit=None):
         span.decided, span.route = True, "keep"
         self.IN_SPEECH = False
+        if self._guard_recover_since is not None:
+            skipped = ("input_limit" if reason == "input_limit" else
+                       "heard_content" if audit is not None and _unheard_cause(audit) is None else None)
+            if skipped:
+                # The user was heard (or already told to split the input): never follow
+                # that with a repeat request.
+                self._observe("input_cut_recovery_skipped", {"reason": skipped,
+                    "cause": self._guard_recover_cause, "streak": self._guard_recover_streak})
+                self._guard_recover_cause = self._guard_recover_since = None
+            else:
+                # Nothing usable again: the rejection only paused it; recount from its end.
+                self._guard_recover_since = span.end if span.end is not None else self.t_audio
         if span.task is not None and not span.task.done():
             span.task.cancel()
         self._observe("input_rejected", {"input_id": span.sid, "reason": reason})
@@ -739,6 +901,14 @@ class GuardedTurns:
             self._observe("input_decision_stale", {"input_id": ev.sid, "revision": ev.revision,
                 "parent_id": ev.parent_id, "closed": ev.closed, "input_generation": ev.gen})
             return
+        if span.hold_until is not None and self.t_audio < span.hold_until - 1e-6:
+            # Accounted above; it is applied (or dropped by resumed speech) later.
+            ev.audit.pop("accounted", None)
+            ev.audit["deferred_from"] = round(self.t_audio, 3)
+            span.deferred.append(ev)
+            self._observe("input_decision_deferred", {"input_id": ev.sid, "revision": ev.revision,
+                "closed": ev.closed, "route": ev.route, "until": round(span.hold_until, 3)})
+            return
         route_audit = ev.audit.get("route") or {}
         self._observe("input_decision", {"input_id": ev.sid, "revision": ev.revision,
             "closed": ev.closed, "input_generation": ev.gen,
@@ -751,6 +921,12 @@ class GuardedTurns:
             "route_ms": ev.elapsed_ms,
             "decision_after_end_ms": (round((self.t_audio - span.end) * 1000, 1)
                                       if ev.closed and span.end is not None else None)})
+        transcript = (ev.audit.get("route") or {}).get("transcript")
+        if (isinstance(transcript, str) and transcript.strip()
+                and (span.admitted or ev.route != "keep")):
+            # Only speech addressed to the assistant picks the recovery language;
+            # echoes and third-party speech are kept and never admitted.
+            self._guard_last_transcript = transcript
         if ev.route == "keep":
             if ev.closed:
                 if span.admitted:
@@ -763,8 +939,10 @@ class GuardedTurns:
                         self._guard_wait_audio = []
                         self._guard_wait_text = ""
                         self._guard_wait_end = None
-                    self._guard_wait_reason = "uncertain_after_yield"
-                await self._guard_reject(span, "insufficient_evidence")
+                    self._guard_set_wait("uncertain_after_yield")
+                    if self._guard_recover:
+                        self._guard_arm_recovery(ev.audit, span.end)
+                await self._guard_reject(span, "insufficient_evidence", ev.audit)
             else:
                 span.provisional_keep = True
                 await self._guard_hold(span.held_candidate, False)
@@ -782,7 +960,8 @@ class GuardedTurns:
             span.admitted = True
             old_candidate = self._candidate
             prefix = []
-            if old_candidate is not None and (self._speech is None or not self._speech_started) and ev.route != "stop_only":
+            if (old_candidate is not None and old_candidate.stage != "recover"
+                    and (self._speech is None or not self._speech_started) and ev.route != "stop_only"):
                 prefix = [old_candidate.audio, np.zeros(1600, dtype=np.float32)]
                 self._guard_wait_text = old_candidate.hold_text + self._guard_wait_text
             self._invalidate_candidate("accepted_user_input")
@@ -797,7 +976,8 @@ class GuardedTurns:
             self._guard_wait_audio = prefix + self._guard_wait_audio
             self._observe("input_admitted", {"input_id": span.sid, "route": ev.route})
         if not ev.closed:
-            self._guard_wait_reason = "user_speaking"
+            span.stop_requested |= ev.route == "stop_only"
+            self._guard_set_wait("user_speaking")
             return
         span.decided, span.route = True, ev.route
         self.IN_SPEECH = False
@@ -805,7 +985,7 @@ class GuardedTurns:
             self._guard_wait_audio = []
             self._guard_wait_text = ""
             self._guard_wait_end = None
-            self._guard_wait_reason = "stop_only"
+            self._guard_set_wait("stop_only")
             span.frames.clear()
             await self.send_control("input_waiting", {"reason": "stop_only", "input_id": span.sid})
             return
@@ -815,7 +995,7 @@ class GuardedTurns:
         self._guard_wait_text = ""
         self._guard_wait_end = None
         if sum(map(len, audio_parts)) > self._guard_max_samples:
-            self._guard_wait_reason = "input_limit"
+            self._guard_set_wait("input_limit")
             span.frames.clear()
             await self.send_control("input_notice", {"message": "这段语音过长，请分段说。"})
             return
@@ -825,11 +1005,12 @@ class GuardedTurns:
             self._guard_wait_audio = [audio, np.zeros(1600, dtype=np.float32)]
             self._guard_wait_text = merged_text
             self._guard_wait_end = span.end
-            self._guard_wait_reason = "awaiting_user"
+            self._guard_set_wait("awaiting_user")
             self._guard_wait_parent = ev.parent_id
             await self.send_control("input_waiting", {"reason": "awaiting_user", "input_id": span.sid})
             return
-        self._guard_wait_reason = None
+        self._guard_clear_wait()
+        self._guard_commit_partial_history(span)
         self.BUFFER = [audio]
         self.t_end_anchor = span.end
         # input_route already judged the addressee (speech to a third party is keep). The
@@ -841,6 +1022,25 @@ class GuardedTurns:
         self._guard_assign_hold(c, text=merged_text, label=ev.route,
                                 playing=span.mode == "playing" or bool(ev.audit.get("playing")),
                                 transcript_at=self.t_audio)
+
+    def _guard_commit_partial_history(self, span):
+        """Answer from the same onset-frozen heard clauses that review used.
+
+        Store the full completed prefix, rather than the bounded last-three-sentence
+        review window. Pin it in the cancelled record so late STOP ACKs cannot
+        replace it with an unplayed full sentence or remove the partial again.
+        """
+        if not (self._guard_partial_history and self._guard_partial_heard
+                and span.reply_partial_chars and span.reply_history_prefix):
+            return
+        record = self._guard_outputs.get(span.reference_sid)
+        if not record or record.get("no_history"):
+            return
+        record["partial_history_prefix"] = span.reply_history_prefix
+        self._assistants_by_turn[record["turn"]] = span.reply_history_prefix
+        self._observe("history_write", {"role": "assistant", "turn": record["turn"],
+            "text": span.reply_history_prefix, "source": "reply_partial_heard",
+            "utterance_id": span.reference_sid, "played_samples": span.reply_played_samples})
 
     def _guard_merged_text(self, span, route_audit):
         """Full transcript of the audio merged with this span.
@@ -862,12 +1062,63 @@ class GuardedTurns:
         text = self._guard_wait_text
         self._guard_wait_audio, self._guard_wait_end = [], None
         self._guard_wait_text = ""
-        self._guard_wait_reason = self._guard_wait_parent = None
+        self._guard_clear_wait()
+        self._guard_wait_parent = None
         self.BUFFER = [audio]
         self._observe("input_wait_released", {"silence_s": round(silence, 3),
             "audio_samples": len(audio), "parent_id": parent})
         c = self._begin_candidate(audio, stage="response", parent_id=parent)
         self._guard_assign_hold(c, text=text, label="wait_release", playing=False)
+
+    def _guard_set_wait(self, reason):
+        """The only writer of the wait reason. Any transition cancels a pending recovery;
+        the caller arms a new one explicitly."""
+        if reason not in WAIT_POLICIES:
+            raise ValueError(f"wait reason {reason!r} has no policy")
+        self._guard_wait_reason = reason
+        self._guard_recover_cause = self._guard_recover_since = None
+
+    def _guard_clear_wait(self):
+        self._guard_wait_reason = None
+        self._guard_recover_cause = self._guard_recover_since = None
+
+    def _guard_arm_recovery(self, audit, end):
+        """Arm recovery only when the kept input carried nothing usable. Heard content
+        (a backchannel or speech to someone else) and an explicit STOP stay silent."""
+        cause = _unheard_cause(audit)
+        span = self._guard_input
+        skipped = ("heard_content" if cause is None else
+                   "stop_requested" if span is not None and span.stop_requested else
+                   "streak_limit" if self._guard_recover_streak >= self._guard_recover_max else None)
+        if skipped:
+            self._observe("input_cut_recovery_skipped", {"reason": skipped, "cause": cause,
+                "streak": self._guard_recover_streak})
+            return
+        self._guard_recover_cause, self._guard_recover_since = cause, end
+
+    async def _guard_recover_wait(self, t):
+        """Playback was cut but nothing usable was heard, and the user stayed quiet.
+        Ask once for a repeat with a fixed sentence: no model call, no user history.
+        The unusable audio is dropped so the repeat is answered on its own. The streak
+        counts only once the request is audible (see _candidate_playback_started)."""
+        cause, since = self._guard_recover_cause, self._guard_recover_since
+        self._guard_wait_audio, self._guard_wait_end = [], None
+        self._guard_wait_text = ""
+        self._guard_clear_wait()
+        self.t_end_anchor = since
+        self._observe("input_cut_recovery", {"reason": cause, "streak": self._guard_recover_streak + 1,
+            "silence_s": round(t - since, 3)})
+        self._begin_candidate(np.zeros(0, dtype=np.float32), stage="recover",
+                              text=RECOVER_TEXT[self._guard_recover_language()])
+
+    def _guard_recover_language(self):
+        users = getattr(self, "_users_by_turn", {})
+        for text in (self._guard_last_transcript, users[max(users)] if users else ""):
+            if any(0x3040 <= ord(ch) <= 0x9fff for ch in text):
+                return "zh"
+            if any(ch.isascii() and ch.isalpha() for ch in text):
+                return "en"
+        return "zh"
 
     async def _guard_finish_turn(self, turn, reason):
         if turn is None or turn != self.TURN_IDX:
@@ -892,7 +1143,7 @@ class GuardedTurns:
         if self._speech is None:
             return
         sid = self._speech.sid
-        record = self._guard_outputs.setdefault(sid, {"turn": self._speech_meta.turn, "sentences": []})
+        record = self._guard_record(sid)
         record.update(cancelled=True, sent=self._speech.sent, played=self._speech.played)
         self._guard_history_progress(sid, self._speech.played)
 
@@ -902,7 +1153,11 @@ class GuardedTurns:
             return
         record["played"] = max(record.get("played", 0), samples)
         if record.get("cancelled"):
-            prefix = "".join(text for end, text in record["sentences"] if end <= record["played"])
+            if record.get("no_history"):
+                # Fixed-text speech (a repeat request) is not part of the conversation.
+                return
+            prefix = record.get("partial_history_prefix", "".join(
+                text for end, text in record["sentences"] if end <= record["played"]))
             # Model-facing history is a transcript, so it must contain only
             # words that the user actually heard.  Keep interruption metadata
             # in this record/trace; natural-language annotations in an
@@ -942,7 +1197,9 @@ class GuardedTurns:
         self._guard_wait_audio = []
         self._guard_wait_text = ""
         self._guard_wait_end = None
-        self._guard_wait_reason = None
+        self._guard_clear_wait()
+        self._guard_recover_streak = 0
+        self._guard_last_transcript = ""
         self._guard_last_end = None
         self._guard_outputs.clear()
         self._guard_echo = EchoEvidence()

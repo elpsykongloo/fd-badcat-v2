@@ -18,7 +18,7 @@ def test_demo_static_and_config_do_not_claim_upstream_health():
                           ({"arch": "legacy", "stream_response": True}, False),
                           ({"phase": "b", "stream_response": True}, False)]:
         with TestClient(create_app({}, {}, engine_cfg=cfg)) as client:
-            assert client.get("/api/demo/info").json() == {"protocol": "pcm16.v1", "streaming": expected}
+            assert client.get("/api/demo/info").json() == {"protocol": "pcm16.v1", "streaming": expected, "browser_auto_gain_control": True}
             page = client.get("/demo/")
             assert page.status_code == 200
             assert "自然接话" in page.text
@@ -158,6 +158,22 @@ def test_guard_requires_negotiated_reference_protocol(protocol, guard, monkeypat
             ws.send_json({"data": {"client": "humdial-web", "audio_protocol": "pcm16.v1", "input_protocol": protocol}})
             assert ws.receive_json()["data"]["guarded_turns"] is guard
     assert made[0].kwargs["engine_cfg"]["guarded_turns"] is guard
+
+
+@pytest.mark.parametrize("partial", [None, 0, 0.5])
+def test_info_names_the_reply_review_context(partial, monkeypatch, tmp_path):
+    monkeypatch.chdir(tmp_path)
+    cfg = {"stream_response": True, "guarded_turns": True}
+    if partial is not None:
+        cfg["input_reply_partial_heard_s"] = partial
+    with TestClient(create_app({}, {}, engine_cfg=cfg)) as client:
+        info = client.get("/api/demo/info").json()
+    if partial:
+        assert info["reply_context"] == "completed_sentences_and_heard_clauses_at_input_onset"
+        assert info["reply_partial_heard_s"] == partial
+    else:
+        assert info["reply_context"] == "completed_or_heard_sentences_at_input_onset"
+        assert "reply_partial_heard_s" not in info
 
 
 def test_unknown_input_protocol_is_not_decoded_as_legacy_float(monkeypatch, tmp_path):

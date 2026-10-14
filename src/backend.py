@@ -465,6 +465,7 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None, asr_cfg=None) -> F
         info = {"protocol": "pcm16.v1", "streaming": bool(
             arch == "actor" and (engine_cfg or {}).get("phase", "a") == "a"
             and (engine_cfg or {}).get("stream_response"))}
+        info["browser_auto_gain_control"] = (engine_cfg or {}).get("browser_auto_gain_control", True)
         if info["streaming"] and voice_control is not None:
             info["tts_voice_control"] = voice_control
         if info["streaming"] and (engine_cfg or {}).get("chat_demo"):
@@ -514,6 +515,11 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None, asr_cfg=None) -> F
                         reply_context="completed_or_heard_sentences_at_input_onset",
                         input_timing=input_timing(engine_cfg),
                         route_penalties={"presence": 0.0, "frequency": 0.0})
+            if float(engine_cfg.get("input_reply_partial_heard_s", 0) or 0):
+                # Review then also sees the heard clauses of the unit still playing.
+                info.update(reply_context="completed_sentences_and_heard_clauses_at_input_onset",
+                            reply_partial_heard_s=float(engine_cfg["input_reply_partial_heard_s"]))
+            info["reply_partial_heard_history"] = bool(engine_cfg.get("input_reply_partial_heard_history", False))
             if engine_cfg.get("input_continuation_context"):
                 info["input_continuation"] = {"version": "pending-user-audio-v1",
                     "audio_grounded": True, "max_gap_s": float(engine_cfg.get("input_context_max_gap_s", 20)),

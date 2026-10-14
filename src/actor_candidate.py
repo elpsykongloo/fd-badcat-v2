@@ -63,6 +63,12 @@ class Candidate:
     hold_text: str = ""               # full merged transcript the tier was judged on
     hold_transcript_ms: float = None  # route transcript arrival minus anchor (audio ms)
     first_audio_ms: float = None      # G: candidate creation -> first TTS PCM (wall ms)
+    # Verbatim speech for a fixed-text stage ("recover"); no model call.
+    fixed_text: str = None
+
+
+async def _fixed_text(text):
+    yield text
 
 
 class CandidateTurns:
@@ -86,26 +92,28 @@ class CandidateTurns:
         return (self._candidate is c and c.gen == self.session_gen
                 and c.epoch == self.seg_epoch and c.turn == self.TURN_IDX)
 
-    def _begin_candidate(self, audio, *, confirmed=False, stage="judge", parent_id=None):
+    def _begin_candidate(self, audio, *, confirmed=False, stage="judge", parent_id=None, text=None):
         self._invalidate_candidate("replaced")
         self._candidate_serial += 1
         audio = np.array(audio, dtype=np.float32, copy=True)
         audio.setflags(write=False)
-        # Encode once; all messages and history are captured synchronously, so
-        # late ASR cannot change the candidate between judge, shift and response.
-        content = build_audio_content(audio, 16000, self.AUDIO_BLOCK)
-        prompts = {"judge": (self.JUDGE_PROMPT, False, False),
-                   "shift": (self.SHIFT_PROMPT, False, True),
-                   "response": (self.RESPONSE_PROMPT, True, False),
-                   "shift_re": (self.SHIFT_RE_PROMPT, False, True)}
-        messages = {kind: self.build_messages(prompt, None if kind == "shift_re" else audio,
-                    history, shift_history, audio_content=content)
-                    for kind, (prompt, history, shift_history) in prompts.items()}
+        messages = {}
+        if text is None:
+            # Encode once; all messages and history are captured synchronously, so
+            # late ASR cannot change the candidate between judge, shift and response.
+            content = build_audio_content(audio, 16000, self.AUDIO_BLOCK)
+            prompts = {"judge": (self.JUDGE_PROMPT, False, False),
+                       "shift": (self.SHIFT_PROMPT, False, True),
+                       "response": (self.RESPONSE_PROMPT, True, False),
+                       "shift_re": (self.SHIFT_RE_PROMPT, False, True)}
+            messages = {kind: self.build_messages(prompt, None if kind == "shift_re" else audio,
+                        history, shift_history, audio_content=content)
+                        for kind, (prompt, history, shift_history) in prompts.items()}
         c = Candidate(self._candidate_serial, self.session_gen, self.seg_epoch,
                       self.TURN_IDX, audio, messages, self.BUFFER,
                       self.t_end_anchor if self.t_end_anchor is not None else self.t_audio,
                       confirmed=confirmed, stage=stage,
-                      parent_id=parent_id or self._diagnostic_id("candidate"))
+                      parent_id=parent_id or self._diagnostic_id("candidate"), fixed_text=text)
         hold = getattr(self, "HOLD_TIERS", None)
         c.hold_s = hold["default"] if self.GUARDED_TURNS and hold else self.END_HOLD
         self._candidate = c
@@ -119,7 +127,7 @@ class CandidateTurns:
 
     def _launch_candidate(self, c):
         c.launched = True
-        if c.stage in ("response", "shift_re"):
+        if c.stage in ("response", "shift_re", "recover"):
             self.q.put_nowait(CandidateResult(c.cid, c.stage, accounted=False))
             return
         kind, messages = c.stage, c.messages[c.stage]
@@ -283,17 +291,20 @@ class CandidateTurns:
         if not self._candidate_current(c):
             return
         self._speech_serial += 1
+        messages = [] if c.fixed_text is not None else c.messages[c.stage]
         c.meta = ModelDone(c.stage, c.gen, c.epoch, c.turn,
             add_to_history=c.stage == "response", answer_id=c.cid,
-            prompt_snapshot=scrub_audio_blocks(c.messages[c.stage]), parent_id=c.parent_id)
+            prompt_snapshot=scrub_audio_blocks(messages), parent_id=c.parent_id)
         gate = asyncio.Event()
         speech_id = self._speech_serial
         text_fn = lambda value: self._response_text_stream(value,
             case_context={"candidate_id": c.cid, "utterance_id": speech_id},
             parent_id=c.parent_id)
+        if c.fixed_text is not None:
+            text_fn = lambda value: _fixed_text(c.fixed_text)
         tts_fn = lambda value: self._response_tts_stream(value,
             case_context={"candidate_id": c.cid, "utterance_id": speech_id}, parent_id=c.parent_id)
-        c.pipeline = SpeechPipeline(self._speech_serial, self.q, c.messages[c.stage],
+        c.pipeline = SpeechPipeline(self._speech_serial, self.q, messages,
             text_fn, tts_fn,
             timeout=self.DECISION_TIMEOUT, retry=c.stage == "response" and c.restarts == 0,
             apology=RESPONSE_TIMEOUT_APOLOGY,
@@ -406,6 +417,12 @@ class CandidateTurns:
         c.resume_frames.clear()
         if c.meta.add_to_history:
             self.dispatch_asr(c.audio, c.turn, answer_id=c.cid)
+            if self.GUARDED_TURNS:
+                # A real answer is playing: the user is being heard again.
+                self._guard_recover_streak = 0
+        elif c.stage == "recover":
+            # Only a repeat request that actually became audible counts toward the limit.
+            self._guard_recover_streak += 1
         self._commit_speech_history(c.meta)
         await self.send_control("speech_playback_started", {
             "utterance_id": c.pipeline.sid, "turn": c.turn, "candidate_id": c.cid})

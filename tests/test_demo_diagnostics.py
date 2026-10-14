@@ -46,6 +46,19 @@ def test_manifest_is_allowlisted_and_contains_protocol_versions(tmp_path):
     assert "must-not-leak" not in text and "api_key" not in text and "password" not in text
 
 
+def test_manifest_records_playing_end_window_only_when_enabled(tmp_path):
+    value = build_manifest(session_id="web-demo-a2", repository_root=tmp_path,
+        profile="chat-demo-v1", engine_cfg={"guarded_turns": True, "input_vad_end_ms_playing": 400},
+        delay={}, llm_cfg={}, asr_cfg={})
+    assert value["effective"]["engine"]["input_vad_end_ms_playing"] == 400
+    assert value["effective"]["input_timing"] == {
+        "vad_threshold": .5, "vad_silence_ms": 100, "preroll_ms": 160,
+        "vad_silence_ms_playing": 100, "vad_end_windows": 4, "vad_effective_end_ms": 160,
+        "vad_end_windows_playing": 4, "vad_effective_end_ms_playing": 160,
+        "vad_decision_end_ms_playing": 400}
+    assert "input_vad_end_ms_playing" not in manifest(tmp_path)["effective"]["engine"]
+
+
 def test_lifecycle_only_session_does_not_create_fake_turns():
     rows = [
         {"event":"input_settings","generation":0,"turn":0,"data":{"sampleRate":48000}},

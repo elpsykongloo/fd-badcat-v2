@@ -1,0 +1,37 @@
+{
+  "title": "f3_heard 补充登记：完整句是向用户的提问、播放中句子是“宣布下一步”或“自我解释”时的副作用",
+  "registered_before_inference": true,
+  "registered_after": "主预先登记（prereg.json sha256 99ce350f…）与主清单（6bc0b9b8…）之后；二者不改动，主判定 OVERALL 不受本补充影响",
+  "why": "修复者与审查者指出：冻结的 D1 没有“提问＋宣布下一步”和“提问＋解释”两类。此时 off 只看到提问，on050 还可能看到宣布或解释的已听子句，input_reply prompt 的最后一条规则会把同意类判为 keep，可能造成 yield_ready→keep 的反向翻转。",
+  "manifest": "supplement/manifest.jsonl（build_supplement.py 生成，推理前冻结为只读，sha256 记入 supplement/manifest.lock.json）",
+  "families": {
+    "sup_question_then_announce": "完整句以向用户的二选一提问结尾，播放中句子先宣布助手自己的选择或下一步。用户话语：agree（好/Okay）→keep；same（选了助手已宣布的那项）→keep；either（都可以）→keep；other（选另一项，等于纠正助手正在做的事）→yield_ready",
+    "sup_question_then_explain": "完整句是教学式提问（你知道……吗？），播放中句子开始自行解释。用户话语：dunno（不知道）→keep；guess（猜一个答案）→keep；why（就解释追问）→yield_ready；repeat（要求再说一遍）→yield_ready"
+  },
+  "label_method": "作者按 input_reply 的 Situation A/B 与最后一条规则标注，单一标注者，推理前冻结。注意：这些标签以“用户已听到宣布/解释的子句”为前提；在 Q1 位置 on050 通常看不到该子句，off 永远看不到。",
+  "positions": "Q1＝第一子句刚听完再加 1 字；Q2＝按生产 heard_prefix（on050，run_f3 时间轴）第一次返回第一子句的已听字数；Q3＝只差最后 2 字（END 已知）。Q2 与 Q1 相同或不早于 Q3 时省略。",
+  "arms": ["off", "on050", "cf_trueprefix", "cf_fullsent"],
+  "arms_note": "on100 不跑：修复后 on100 与 on050 在所有非 P0 位置的处理完全相同（dry 处理率逐位置一致），本补充集没有 P0 位置。",
+  "repeats": 3,
+  "runner": "run_f3.py --manifest supplement/manifest.jsonl --results results_sup（与主实验同一 runner、同一生产路径、同一 2 s 预算），并发 2",
+  "analysis": "analyze_sup.py（推理前写好，sha256 记入锁文件）：条目得分＝3 次中 yield_ready 的比例；对 off 配对；按 scenario 聚类 bootstrap（B=10000，seed 20261010，95%）。",
+  "metrics": {
+    "SUP_HARM": "期望 yield_ready 的条目（announce/other、explain/why、explain/repeat）：on050 − off 的 yield_ready 率差；各类别多数标签 yield_ready→keep 的净翻转数",
+    "SUP_KEEP": "期望 keep 的条目（agree/same/either/dunno/guess）：on050 − off 的 yield_ready 率差（负值＝更少误放行），只报告",
+    "SUP_ACC": "各臂各类别多数标签与 expected 一致的比例，只报告",
+    "SUP_BY_POSITION": "以上两项按 Q1/Q2/Q3 拆分，只报告",
+    "SUP_TREATMENT": "on050 中 partial_chars>0 的比例，按位置拆分"
+  },
+  "criteria": {
+    "SUP_HARM": {"max_point_decrease": 0.03, "max_net_yield_to_keep_flips_per_category": 1,
+                 "text": "期望 yield_ready 条目上 on050 的 yield_ready 率下降不超过 3 个百分点（点估计 ≥ −0.03），且任一类别多数标签 yield_ready→keep 的净翻转 ≤ 1 条"},
+    "SUP_VERDICT": "SUP_HARM 通过即补充集通过；补充集的结论单独报告，不改变主 OVERALL 的判定，只作为是否开启的附加证据"
+  },
+  "e2e_check": {
+    "type": "只描述、不作门槛",
+    "items": "主实验全量后，D1 answer_in_partial 中 on050 多数标签为 yield_ready 的条目（同时标出 off 的多数标签与 on050 是否带部分句）",
+    "answer_path": "用 run_f3 的生产 harness 在 on050 下复现该条目并让复核放行（复核桩返回 yield_ready，因为已知 on050 放行），截取引擎实际发出的 response 请求（生产 build_messages：response prompt、历史＝打断后写入的已播完整句、当前用户音频），把其中合成帧换成 Omni TTS（chelsie, seed 42）合成的用户话语音频（16 kHz），再用 module.llm_qwen3o_stream(max_tokens=512) 生成一次回答，并发 ≤2",
+    "contrast": "同一条目另生成一次“历史里补上已听部分句”的反事实回答，只用于对照",
+    "judgement": "人工（本代理）逐条核对回答是否接得上用户正在回答的那个问题：接得上／接不上／部分；报告接不上的比例与样例"
+  }
+}

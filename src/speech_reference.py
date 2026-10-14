@@ -6,6 +6,13 @@ of physical audibility. Only the actor feeds published, current-utterance events
 from collections import deque
 
 REFERENCE_CHARS = 512
+# Seconds per non-space character used to bound a unit whose END is not sent yet:
+# ASCII letters, then everything else (CJK, digits, symbols, punctuation pauses).
+# On 178 captured demo TTS units the bound is at least 1.1x the synthesized length.
+UNIT_MAX_S_PER_CHAR = (0.1, 0.3)
+# A heard partial ends at a clause mark; ASCII marks only before a space or the end.
+CLAUSE_MARKS = "，。？！；：…"
+ASCII_CLAUSE_MARKS = ",.?!;:"
 
 
 def completed_context(sentences, played):
@@ -21,6 +28,21 @@ def completed_context(sentences, played):
             break
         tail.append(text)
     return "".join(reversed(tail))
+
+
+def unit_seconds_bound(text):
+    """Upper bound on the synthesized length of `text`, for a unit without an END."""
+    return sum(UNIT_MAX_S_PER_CHAR[not (ch.isascii() and ch.isalpha())]
+               for ch in text if not ch.isspace())
+
+
+def clause_prefix(text, count):
+    """Longest prefix of text[:count] that ends at a clause mark, else ""."""
+    for i in range(min(count, len(text)), 0, -1):
+        ch = text[i - 1]
+        if ch in CLAUSE_MARKS or (ch in ASCII_CLAUSE_MARKS and (i == len(text) or text[i].isspace())):
+            return text[:i]
+    return ""
 
 
 class SpeechReference:
@@ -55,6 +77,33 @@ class SpeechReference:
                 break
             tail.append(text)
         return "".join(reversed(tail))
+
+    def heard_prefix(self, *, played, sent, ends, min_heard, rate, limit=REFERENCE_CHARS):
+        """Heard clauses of the unit still playing at `played`, else "".
+
+        Same unit as heard_window's newest one (started, heard for `min_heard`).
+        Its characters count in proportion to the samples already played: over its
+        END when sent, otherwise over a duration bound from its text and never
+        `sent` alone, which runs ahead of playback; without an END the whole unit
+        never counts. At most `limit` characters, cut back to the last clause mark
+        so a half-heard phrase never reads as a different question. A unit ended
+        by `played` is completed context, not a partial; a tail-cut unit is skipped.
+        """
+        eligible = [(start, text) for start, text in self.sentences
+                    if start < played and start < sent]
+        if not eligible:
+            return ""
+        start, text = eligible[-1]
+        heard = played - start
+        if heard < max(min_heard, 1) or len(text) >= REFERENCE_CHARS:
+            return ""
+        end = min((end for end in ends if end > start), default=None)
+        if end is not None and end <= played:
+            return ""
+        if end is None:
+            end = start + max(sent - start, round(rate * unit_seconds_bound(text)))
+        count = min(len(text) * heard // (end - start), len(text) - 1, limit)
+        return clause_prefix(text, count)
 
     def snapshot(self, *, started, played, sent):
         if not started:

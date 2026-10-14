@@ -1,0 +1,180 @@
+{
+  "title": "f2_vad 预先登记：只在播放期加长有效的 VAD 结束静音（engine.input_vad_end_ms_playing）",
+  "registered_before_inference": true,
+  "registered_at": "2026-10-10，全量推理之前；冒烟只用于验证脚本，不参与判定",
+  "code_under_test": "服务器工作树 /root/autodl-tmp/fd-badcat-c3-f2_vad（HEAD 56a4dbd = cheap3-base，加未提交的 f2_vad 补丁；run_meta 记录 worktree_diff_sha256）",
+  "arms": {
+    "W400_pool": {
+      "role": "primary",
+      "ci_level": 0.95
+    },
+    "W500_pool": {
+      "role": "alternate",
+      "ci_level": 0.975
+    },
+    "W500_idle": {
+      "role": "sibling",
+      "ci_level": 0.975
+    },
+    "W200_pool": {
+      "role": "ablation"
+    },
+    "W300_pool": {
+      "role": "ablation"
+    },
+    "W200_idle": {
+      "role": "ablation"
+    },
+    "W300_idle": {
+      "role": "ablation"
+    },
+    "W400_idle": {
+      "role": "sibling"
+    }
+  },
+  "baseline_rule": "每个臂都和同一延迟模型下的 W0 配对（W400_pool 对 W0_pool，W400_idle 对 W0_idle），同一单元的麦克风流逐样本相同，相同 payload 共用同一次 Omni 结果（公共随机数）",
+  "repeats": 3,
+  "unit_of_analysis": "单元 = 条目 × 洞长 × 重复；条目-洞长得分 = 两臂都有效的重复上的均值；聚类 bootstrap 按 root 重抽样（同一源语句的不同洞长、TTS 变体、停顿长度一起移动）",
+  "bootstrap": {
+    "B": 10000,
+    "seed": 20261010,
+    "ci": "W400_pool 用 95%；W500_pool 作为第二个候选臂用 97.5%（两次检验的 Bonferroni 校正）"
+  },
+  "metric_definitions": {
+    "clean_success": "H/P 单句条目：最终闭合 route == 标签 且 行为正确 且 没有在用户说完前生效的非 keep 决定。行为正确：keep=不停播且不出回复；stop_only=停播且不出回复；yield_wait=停播且（不回复或只由 input_wait_release 释放后回复）；yield_ready=由决定触发的回复，且回复所用音频覆盖已标注说话区间 ≥ 85%",
+    "route_correct": "最终闭合 route（用户这句话范围内最后一个 closed 的 input_decision）== 标签",
+    "fragmented": "一句话（已标注说话区间内）产生 ≥ 2 个不同 input_id，即被切成多段",
+    "premature_action": "在已标注说话结束之前生效了一个 closed 且非 keep 的决定，或在 keep 条目上提前生效了 interim stop_only（用户没说完就做了动作）；stop_only 条目上提前生效的 stop_only 是期望行为，不算",
+    "frag_or_premature": "fragmented 或 premature_action",
+    "stale": "这句话的 input_id 上的 input_decision_stale 次数（stale revision）",
+    "behavior_ok(Q)": "两段真实停顿拼接条目：是否停播、是否回复与标签一致；要求回复时回复音频覆盖第二段 ≥ 85%",
+    "stop_latency": "stop_only 条目：第一次 speech_cancelled 的音频时刻 − 标注说话结束（只在两臂都停播的单元上配对）",
+    "response_latency": "yield_ready 条目：由决定触发的第一次回复开始时刻 − 标注说话结束（两臂都有时配对）",
+    "decision_latency": "最终闭合决定生效时刻 − 标注说话结束",
+    "timeout_or_fallback": "该单元内任一 route/reply 调用在生产 2 s 决策预算内超时，或 route 解析回退",
+    "L.identity": "听取期（无播放）条目：各臂 input_decision 序列（事件、时刻、route、closed、转写）与 W0 完全相同的单元比例",
+    "calls_route": "每单元发出的 input_route 调用数（含作废的），衡量 Omni 负载"
+  },
+  "criteria": {
+    "PRIMARY": {
+      "kind": "gain",
+      "result": "H_hole.clean_success",
+      "min_point_gain": 0.03,
+      "ci_lower_gt": 0.0,
+      "text": "挖洞集（洞长 0.3/0.4/0.5 s）clean_success：臂 − W0 的点估计 ≥ +3 个百分点，聚类 bootstrap CI 下界 > 0，且 3 次重复各自的差都 > 0"
+    },
+    "A1_FRAGMENT": {
+      "kind": "decrease",
+      "result": "H_hole.frag_or_premature",
+      "min_point_drop": 0.03,
+      "text": "挖洞集“切成多段或没说完就做决定”的比例下降 ≥ 3 个百分点，CI 上界 < 0"
+    },
+    "A2_STALE": {
+      "kind": "decrease",
+      "result": "H_hole.stale",
+      "min_point_drop": 0.0,
+      "text": "挖洞集每单元 stale revision 次数下降，CI 上界 < 0"
+    },
+    "B1_ROUTE": {
+      "kind": "noninferior",
+      "result": "H_hole.route_correct",
+      "max_point_drop": 0.01,
+      "text": "挖洞集最终 route 正确率不下降：点估计下降 ≤ 1 个百分点且 CI 上界 ≥ 0（统计上检测不到退化）；CI 下界 > 0 另行报告为“提升”"
+    },
+    "S1_STOP_LAT_POOL": {
+      "kind": "latency",
+      "result": "HP_all.stop_latency",
+      "max_mean_increase_s": 0.15,
+      "max_p90_increase_s": 0.3,
+      "text": "停止词从说完到停播的延迟（生产延迟池）：平均增加的 CI 上界 ≤ 150 ms，单元增加量 p90 ≤ 300 ms"
+    },
+    "S1_STOP_LAT_IDLE": {
+      "kind": "latency",
+      "latency": "idle",
+      "result": "HP_all.stop_latency",
+      "max_mean_increase_s": 0.15,
+      "max_p90_increase_s": 0.3,
+      "text": "同上，在空载 Omni（route 固定 260 ms）下判定；这是延迟代价的保守口径"
+    },
+    "S2_STOP_SUCCESS": {
+      "kind": "noninferior",
+      "result": "HP_all.stop_cancelled",
+      "max_point_drop": 0.01,
+      "text": "stop_only 条目最终停播的比例不下降（点估计 ≤ 1 个百分点且 CI 上界 ≥ 0）"
+    },
+    "S3_PAIRS": {
+      "kind": "noninferior",
+      "result": "Q.behavior_ok",
+      "max_point_drop": 0.02,
+      "text": "真实停顿（0.3/0.45/0.6 s）隔开的两段话（附和+问题、附和+附和、停+问题、停+附和、附和+第三方）行为正确率：下降 ≤ 2 个百分点且 CI 上界 ≥ 0"
+    },
+    "S3_PAIR_FLIPS": {
+      "kind": "flips",
+      "result": "Q.net_flips",
+      "max_net_worse_per_category": 1,
+      "text": "Q 每个类别中多数结果由对变错的净条目数 ≤ 1（附和被并入后续话语、两句被错误合并的直接计数）"
+    },
+    "S4_NOHOLE": {
+      "kind": "noninferior",
+      "result": "H_nohole.clean_success",
+      "max_point_drop": 0.01,
+      "text": "未挖洞的同一批播放期条目 clean_success 不下降（≤ 1 个百分点且 CI 上界 ≥ 0）"
+    },
+    "S4_PAUSE": {
+      "kind": "noninferior",
+      "result": "P.clean_success",
+      "max_point_drop": 0.01,
+      "text": "HumDial 自然停顿（1.5～3 s）条目 clean_success 不下降（≤ 1 个百分点且 CI 上界 ≥ 0）"
+    },
+    "S5_RESP_LAT_POOL": {
+      "kind": "latency",
+      "result": "HP_all.response_latency",
+      "max_mean_increase_s": 0.15,
+      "max_p90_increase_s": 0.3,
+      "text": "yield_ready 由决定触发回复的延迟：平均增加 CI 上界 ≤ 150 ms，p90 ≤ 300 ms（生产延迟池）"
+    },
+    "S5_RESP_LAT_IDLE": {
+      "kind": "latency",
+      "latency": "idle",
+      "result": "HP_all.response_latency",
+      "max_mean_increase_s": 0.15,
+      "max_p90_increase_s": 0.3,
+      "text": "同上，空载 Omni"
+    },
+    "S6_LISTENING": {
+      "kind": "identity",
+      "result": "L.identity",
+      "min_rate": 1.0,
+      "text": "听取期（无播放）条目的决定序列与 W0 逐项相同率 = 100%"
+    },
+    "S7_RELIABILITY": {
+      "kind": "noninferior_bad",
+      "result": "HP_all.timeout_or_fallback",
+      "max_point_rise": 0.005,
+      "text": "超时或回退的单元比例增加 ≤ 0.5 个百分点且 CI 下界 ≤ 0"
+    },
+    "S8_ENGINE_ERRORS": {
+      "kind": "zero",
+      "result": "engine_errors",
+      "text": "speech_error/engine_error 事件数 = 0"
+    }
+  },
+  "overall": "PRIMARY、A1、A2、B1 与 S1～S8 全部通过才算通过；任一不通过则不建议开启。",
+  "arm_selection_rule": "W400_pool 为主臂。W500_pool 只在 W400_pool 的 PRIMARY 不通过、而 W500_pool 全部通过（97.5% CI）时才考虑。已知算术：判定在 Silero 结束（说完后约 100 ms）时派发，生效被推迟到结束后 (窗口 − 100 ms)，所以额外延迟 = max(0, 窗口 − 100 ms − 判定延迟)。空载（route 260 ms）时 W400 约 +40 ms（冒烟实测 +48 ms），W500 约 +140 ms，贴近 150 ms 上限；实现者在真实 AEC 会话上测得 W500 平均 +162 ms。即使 W500 全部通过，是否接受更大的延迟代价改用 500 也交用户拍板，不在本登记内自动采纳。W200/W300 只做剂量-反应消融，不参与判定。",
+  "reported_not_judged": [
+    "各窗口值（0/200/300/400/500）在两种延迟模型下所有指标的剂量-反应曲线",
+    "按类别 × 洞长拆分的 clean_success（Q 为 behavior_ok）",
+    "W0 自身 3 次重复的不一致率（items_disagree、pairwise_disagree），作为抖动底线",
+    "每单元 input_route 调用数变化（Omni 负载；该实现推迟生效而不压住派发，预期不减少）",
+    "合并（input_vad_end_merged）与推迟（input_decision_deferred）的发生率",
+    "decision_latency 全体分布"
+  ],
+  "exclusions": "harness 错误（status 非 ok 或 Omni 传输重试 3 次仍失败）的单元在续跑后仍失败才排除，并逐条列出；生产口径的超时/回退不排除，按生产行为计分。",
+  "scope_limits": [
+    "麦克风是合成的：已录或自造的用户语音按 −24 dBFS 放入，加 −63 dBFS 粉噪底；AEC 洞为 −60 dB、5 ms 斜坡；不加回声残留（干净的回声副本即使 −66 dBFS 也会触发 Silero，而浏览器 AEC 开启时实测只剩底噪），参考轨仍接入以运行生产回声门。",
+    "助手播放是静音 PCM，播放进度按音频时钟每 48 ms 确认一次；用户在第一句完整句播完 0.3 s 后开口。",
+    "模型延迟在音频时钟上模拟（生产延迟池或固定 260/80 ms），Omni 真实调用只在到期时发出，作废/取消的调用不发；生产 2 s 决策预算在音频时钟上执行。",
+    "lead-in 请求的“上一轮用户音频”是两帧底噪而非真实提问音频，会作为 recent_replied_user_audio 上下文块进入 route payload；对各臂相同，但会影响绝对正确率。",
+    "真实世界的收益 = 本实验的挖洞集增益 × 线上播放期出现 AEC 洞的比例；后者见 problem_size（AEC 开启的真实会话只有 22 个）。demo.js 现在默认关闭浏览器 AEC。"
+  ]
+}

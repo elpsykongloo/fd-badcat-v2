@@ -1,0 +1,41 @@
+{
+  "version": "f1-wait-prereg-v1",
+  "frozen_utc": "2026-10-10",
+  "comparison": {
+    "control": "off",
+    "treatment": "on_max1",
+    "reps": 2,
+    "unit": "(trial_id, rep) paired across arms",
+    "ci": "item-cluster bootstrap, B=10000, seed 0, two-sided 95%"
+  },
+  "primary": {
+    "metric": "M1 dead silence: among P_timeout+P_error trials where an admitted span closed as keep (uay>0), no assistant playback start within 6.0 s after that span's VAD end",
+    "min_improvement": 0.5,
+    "min_ci_low": 0.0,
+    "max_treatment_dead_rate": 0.05,
+    "min_valid_units": 30,
+    "validity_guard": "uay validity rate >= 0.6 in both arms and |difference| <= 0.15, otherwise no claim (harness/item problem)"
+  },
+  "side_effects": {
+    "S1_false_recovery_max": 0,
+    "S1_scope": "N1_resume, N2a_third_natural, N3_stop_fault, N4_echo_fault, N5_question_natural, N5_backchannel_natural, N5_wait_natural (treatment arm, all reps)",
+    "S2_max_pooled_increase": 0.02,
+    "S2_rule": "pooled paired bad-outcome difference (T-C) 95% CI must include 0 and point estimate <= +0.02; no single negative scenario may have a CI lower bound > 0",
+    "S2_jitter_rule": "cross-arm signature disagreement on negatives must not exceed control within-arm rep disagreement by more than 0.05 (descriptive guard)",
+    "S3_latency_ci_high_ms": 150,
+    "S3_scope": "test VAD end -> first answer playback on N5_question_natural, N1_resume, N5_wait_natural",
+    "S4_rule": "trials with speech_error/engine_error/page errors: treatment <= control",
+    "S5_rule": "N1_resume (user resumes 0.8/1.6 s after the cut, before the 2.0 s release): zero recovery playbacks",
+    "followup_max_drop": 0.05
+  },
+  "descriptive_not_gating": [
+    "recovery latency (span end -> recovery playback)",
+    "follow-up stale-context carry (context_source)",
+    "D_resume_late (resume at 3.0 s, after release): collision rate",
+    "N2b_third_fault: recovery rate conditional on interim admission of third-party speech",
+    "S_double_cut: on_max1 vs on_max2 recovery counts",
+    "release ablation on_max1_rel3/off_rel3"
+  ],
+  "exclusions": "status != ok (harness error, budget_cut) are excluded and reported; a trial is retried at most once",
+  "decision": "ship default-on only if M1 and every S-criterion pass; otherwise keep default off and report which criterion failed"
+}

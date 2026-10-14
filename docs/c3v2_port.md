@@ -1,0 +1,13 @@
+# cheap3 新主线移植
+
+起点1601c983，独立分支c3v2，全部新增功能默认关。保留hold分档0.40/0.48/0.64秒、起播300ms、客户端本地暂停、FP8及生产2秒路由预算。
+
+f1等待原因统一经策略表：awaiting_user在input_wait_release_s后回答已接纳音频；uncertain_after_yield只在input_wait_uncertain_recover开启且无可用内容、未请求STOP、未达input_recover_max时，经过同一宽限后播固定重说句。两者按等待原因互斥，不能同时触发；新输入优先，播放开始才计恢复次数，正常回答播放清零。固定句无用户/助手回答历史。
+
+f2保留旧决策延迟机制，旧input_vad_end_ms_playing默认0；非0时主线input_vad_silence_ms和_playing必须100。诊断vad_decision_end_ms_playing报旧f2窗口，vad_silence_ms_playing继续报真实Silero值。Silero100实际END是160ms；旧W400在此之后延迟300ms，再按16ms引擎帧生效；主线Silero320实际END352ms，机制与路由起点不同。
+
+f3 input_reply_partial_heard_s默认0；0.5/1.0秒等显式值让复核看到完整已听窗口后正在播单元的保守分句前缀。input_reply_partial_heard_history默认false；必须f3实际得到部分前缀且最终决定yield_ready才写历史。使用同一SpeechReference和输入起点快照，完整历史前缀不受复核最后3句窗口限制；截掉未听完整句，把该前缀钉在取消记录上，迟到ACK不撤掉或补入未来文本。音频时长比例/未结束单元的保守字符时长界不是词级对齐；此变体尚无正式GPU衔接效果结论。
+
+AGC：engine.browser_auto_gain_control默认true，保留原前端显式true；?agc=0关闭，?agc=1开启，其他值用服务端默认。/api/demo/info同名字段报默认；input_settings遥测报浏览器实际设置。AEC仍默认关闭，?aec=1开启，互不影响。
+
+实施及下一步实验入口：exp/web_demo/c3v2_20261015/README.md。当前pytest1048通过、Node2文件通过；纯Actor回放6场景×基线/默认/显式全关共18次快照相同。生产路径文本控制87/89通过（confirm的zh_quote_then_request、en_already_answered误判），路由子集2/2和全开私有后端浏览器单轮通过；这些仅为冒烟，不代表零退化。没有修改冻结控制集、没有部署、没有push。

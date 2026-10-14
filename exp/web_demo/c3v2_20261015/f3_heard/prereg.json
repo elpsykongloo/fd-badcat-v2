@@ -1,0 +1,81 @@
+{
+  "title": "f3_heard 预先登记：input_reply 复核看到正在播放句子的已听前缀",
+  "registered_before_inference": true,
+  "feature": "engine.input_reply_partial_heard_s（默认 0 关闭）",
+  "primary_arm": "on050",
+  "baseline_arm": "off",
+  "ablation_arms": [
+    "on100",
+    "cf_trueprefix",
+    "cf_fullsent"
+  ],
+  "repeats": 3,
+  "unit_of_analysis": "条目（manifest 一行）；每条在每个臂上跑 3 次，条目得分 = 3 次中 review_label == yield_ready 的比例；多数标签 = 3 次中至少 2 次的标签",
+  "bootstrap": {
+    "type": "按 scenario 聚类重抽样（D1 为 scenario，D2/D3 为 group.case）",
+    "B": 10000,
+    "seed": 20261010,
+    "ci": 0.95
+  },
+  "measured_label": "复核标签 review_label（生产中 yield_ready 会把 keep/stop_only 提升为 yield_ready；超时/回退按生产口径记为 keep，并单独计数）",
+  "metrics": {
+    "primary_yield_target": "D1 中 target_generic ∪ target_specific（P1/P2/P3）的 yield_ready 率；配对差 on050 − off",
+    "secondary_specific": "D1 target_specific 的 yield_ready 率差（只报告）",
+    "secondary_answer": "D1 answer_in_partial 的 yield_ready 率差（只报告）",
+    "side_d1_false_yield": "D1 全部 control_* 类别（含 P0、Pcut 的对照）的 yield_ready 率（误放行率）差",
+    "side_d2_identity": "D2 结构化文本复核情境与控制脚本一致的比例；多数标签准确率另报",
+    "side_d2_accuracy": "D2 各组多数标签准确率差",
+    "side_d3_false_yield": "D3 frozen_late_keep 的误放行率差",
+    "secondary_d3_yield": "D3 frozen_late_yield_ready 的 yield_ready 率差（只报告）",
+    "invariant_route": "同一条目各臂的角色及文本情境一致比例（不含编码音频）",
+    "invariant_review_called": "各臂是否调用复核的集合相同的比例",
+    "review_reliability": "复核超时率 + 回退率；复核耗时 p95",
+    "jitter": "每臂 3 次重复不一致的条目比例；off 臂重复间成对不一致率",
+    "treatment_rate": "on 臂中 partial_chars > 0 的条目比例（按位置拆分）",
+    "ambiguous": "ambiguous_cut_question 的 yield_ready 率（只报告，交用户拍板，不计分）"
+  },
+  "criteria": {
+    "PRIMARY": {
+      "metric": "primary_yield_target",
+      "min_point_gain": 0.03,
+      "ci_lower_gt": 0.0,
+      "each_repeat_gain_gt": 0.0,
+      "text": "on050 − off 的点估计 ≥ +3 个百分点，聚类 bootstrap 95% CI 下界 > 0，且 3 次重复各自的差都 > 0"
+    },
+    "S1_D1_CONTROLS": {
+      "metric": "side_d1_false_yield",
+      "max_point_increase": 0.01,
+      "ci_lower_le": 0.0,
+      "max_net_flips_per_category": 1,
+      "text": "误放行率增加的点估计 ≤ +1 个百分点；95% CI 下界 ≤ 0（统计上检测不到退化）；任一 control 类别中多数标签 keep→yield_ready 的净翻转条目 ≤ 1"
+    },
+    "S2_D2_FROZEN": {
+      "metric": "side_d2_identity",
+      "min_identity": 1.0,
+      "min_check_script_match": 1.0,
+      "text": "D2 复核 payload 与 off 及 check_input_reply.py 逐字节相同率 = 100%；多数标签与 off 不同的条目数 ≤ off 自身 3 次重复不一致的条目数"
+    },
+    "S3_D3_KEEP": {
+      "metric": "side_d3_false_yield",
+      "max_point_increase": 0.01,
+      "ci_lower_le": 0.0,
+      "text": "D3 keep 组误放行率增加 ≤ +1 个百分点（约等于 0 条净翻转）且 95% CI 下界 ≤ 0"
+    },
+    "S4_INVARIANTS": {
+      "route_identity": 1.0,
+      "review_called_identity": 1.0,
+      "max_timeout_fallback_increase": 0.005,
+      "max_p95_latency_increase_ms": 15,
+      "text": "路由请求逐字节相同率 = 100%；复核调用集合相同率 = 100%；超时+回退率增加 ≤ 0.5 个百分点；复核 p95 耗时增加 ≤ 15 ms"
+    },
+    "OVERALL": "PRIMARY 且 S1、S2、S3、S4 全部通过才算通过；任一不通过则不建议开启"
+  },
+  "threshold_rule": "on050 为主臂。只有当 on050 因 S1/S3 不通过、而 on100 全部通过时，才考虑 on100，此时 on100 的 PRIMARY 改用 97.5% CI（两次检验的 Bonferroni 校正）。cf_* 为不可部署的反事实臂，只用于解释（估计保守时长上界损失了多少增益、整句口径带来多少副作用），不参与判定。",
+  "exclusions": "harness_error 的行在 --retry-errors 重跑后仍失败才排除，并逐条列出；超时/回退不排除（按生产口径计 keep）。",
+  "scope_limits": [
+    "只测复核这一层：input_route 用条目给定的转写与基础标签（keep/stop_only）打桩，因为它的请求在开/关两侧逐字节相同（由 invariant_route 验证），不测音频转写与 VAD。",
+    "端到端增益 = 复核层增益 × 生产中这些输入被音频路由判为 keep/stop_only 且起点已有完整句、且当前句已播 ≥ 阈值的比例；后者见 problem_size.json，很小。",
+    "播放时间轴用 demo TTS 中位语速（中文 0.200 s/字、英文 0.065 s/字）和 600 ms 客户端信用（sent = played + 0.6 s）模拟。"
+  ],
+  "port_note": "c3v2 迁移：保留旧阈值及场景；请求一致性仅比较结构化文本情境，不计算完整性哈希、不比较编码音频；history 臂为新增描述性变体。"
+}

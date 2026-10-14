@@ -1,0 +1,39 @@
+{
+  "off": {
+    "engine": {},
+    "note": "baseline: key absent (production today)"
+  },
+  "on050": {
+    "engine": {
+      "input_reply_partial_heard_s": 0.5
+    },
+    "note": "primary arm"
+  },
+  "on100": {
+    "engine": {
+      "input_reply_partial_heard_s": 1.0
+    },
+    "note": "threshold ablation"
+  },
+  "cf_trueprefix": {
+    "engine": {
+      "input_reply_partial_heard_s": 0.5
+    },
+    "cf": "true_prefix",
+    "note": "counterfactual, not deployable: exact heard characters instead of the conservative estimate"
+  },
+  "cf_fullsent": {
+    "engine": {
+      "input_reply_partial_heard_s": 0.5
+    },
+    "cf": "full_sentence",
+    "note": "counterfactual, not deployable: whole playing sentence incl. unheard tail (heard_window wording)"
+  },
+  "on050_history": {
+    "engine": {
+      "input_reply_partial_heard_s": 0.5,
+      "input_reply_partial_heard_history": true
+    },
+    "note": "deployable partial history variant"
+  }
+}
