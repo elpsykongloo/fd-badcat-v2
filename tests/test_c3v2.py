@@ -126,3 +126,19 @@ async def test_questions_only_keeps_only_question_prefix(text, has_partial):
         await pump(e,lambda:span.decided)
         assert e._assistants_by_turn[turn]==STORY_BASE+(text[:8] if has_partial else '')
     finally: await cleanup(e)
+
+
+@pytest.mark.parametrize('aec_only,settings,held', [
+    (False, None, True), (True, None, False),
+    (True, {'echoCancellation': False}, False), (True, {'echoCancellation': True}, True)])
+async def test_f2_aec_only_lengthens_end_only_with_browser_aec(aec_only, settings, held):
+    e,m,_=await prepare(input_vad_end_ms_playing=400, input_vad_end_ms_playing_aec_only=aec_only)
+    try:
+        if settings is not None:
+            await e._process_event(ControlMsg('input_settings', settings))
+        record=e._guard_outputs[e._speech.sid];start=record['sentences'][-1][0]
+        span=await onset_after(e,start+48000)
+        await frame(e,1.1,{'end':1.1},.2)
+        assert (span.hold_until is not None) is held
+        assert span.end_silence_ms == (400 if held else e.input_timing['vad_silence_ms'])
+    finally: await cleanup(e)

@@ -122,7 +122,7 @@ def build_manifest(*, session_id, repository_root, profile, engine_cfg, delay,
         "input_wait_uncertain_recover", "input_recover_max",
         "input_reply_partial_heard_s", "input_reply_partial_heard_history",
         "input_reply_partial_heard_questions_only",
-        "input_vad_end_ms_playing", "browser_auto_gain_control",
+        "input_vad_end_ms_playing", "input_vad_end_ms_playing_aec_only", "browser_auto_gain_control",
     )
     llm_keys = ("model", "decision_timeout_s", "audio_block")
     asr_keys = ("backend", "provider", "num_threads")

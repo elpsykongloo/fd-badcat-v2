@@ -275,6 +275,11 @@ class GuardedTurns:
         # Legacy f2 delays decisions; do not also lengthen Silero itself.
         legacy_ms = self.engine_cfg.get("input_vad_end_ms_playing", 0) if self.GUARDED_TURNS else 0
         self._guard_end_hold = (legacy_ms - 100) / 1000 if legacy_ms else 0.
+        # Optionally lengthen only when the browser reports AEC on (AEC carves the holes).
+        self._guard_end_hold_aec_only = self.engine_cfg.get("input_vad_end_ms_playing_aec_only", False)
+        if type(self._guard_end_hold_aec_only) is not bool:
+            raise ValueError("input_vad_end_ms_playing_aec_only must be a boolean")
+        self._guard_browser_aec = None
         self._guard_wait_audio = []
         self._guard_wait_end = None
         self.CONTINUATION_CONTEXT = bool(self.GUARDED_TURNS and self.engine_cfg.get("input_continuation_context", False))
@@ -624,6 +629,8 @@ class GuardedTurns:
                     # Chosen once, here: only audible assistant audio (browser AEC
                     # can carve holes into speech) lengthens the effective end.
                     playing = self._speech is not None and self._speech_started
+                    if self._guard_end_hold_aec_only and self._guard_browser_aec is not True:
+                        playing = False
                     span.hold_until = t + self._guard_end_hold if playing else None
                     span.end_silence_ms = (self.engine_cfg["input_vad_end_ms_playing"]
                                            if playing else self.input_timing["vad_silence_ms"])
@@ -1191,6 +1198,8 @@ class GuardedTurns:
             safe = {k: v for k, v in data.items() if k in {"echoCancellation", "noiseSuppression", "autoGainControl", "sampleRate", "channelCount"}
                     and type(v) in (int, bool) and 0 <= v <= 192000}
             self._observe("input_settings", safe)
+            if "echoCancellation" in safe:
+                self._guard_browser_aec = bool(safe["echoCancellation"])
             if self.demo_trace is not None:
                 self.demo_trace.update_manifest("browser_audio", safe)
             if self.demo_capture is not None:
