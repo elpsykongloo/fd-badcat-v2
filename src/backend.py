@@ -520,6 +520,8 @@ def create_app(prompts, delay, llm_cfg=None, engine_cfg=None, asr_cfg=None) -> F
                 info.update(reply_context="completed_sentences_and_heard_clauses_at_input_onset",
                             reply_partial_heard_s=float(engine_cfg["input_reply_partial_heard_s"]))
             info["reply_partial_heard_history"] = bool(engine_cfg.get("input_reply_partial_heard_history", False))
+            info["reply_partial_heard_questions_only"] = bool(
+                engine_cfg.get("input_reply_partial_heard_questions_only", False))
             if engine_cfg.get("input_continuation_context"):
                 info["input_continuation"] = {"version": "pending-user-audio-v1",
                     "audio_grounded": True, "max_gap_s": float(engine_cfg.get("input_context_max_gap_s", 20)),

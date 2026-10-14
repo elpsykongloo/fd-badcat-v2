@@ -92,3 +92,37 @@ async def test_history_variant_cannot_commit_when_no_answer_is_authorized(label)
         await frame(e,1.1,{'end':1.1},.2);await pump(e,lambda:span.decided)
         assert 'partial_history_prefix' not in record
     finally: await cleanup(e)
+
+
+@pytest.mark.parametrize('text,expected', [
+    ('你想听第二章吗？', True), ('红色还是蓝色', True), ('要不要我继续，', True),
+    ('我先讲一下背景，', False), ('好的，', False), ('', False),
+    ('Would you like another one,', True), ('Red or blue', True), ('Is that okay', True),
+    ('Let me explain first,', False), ('Sure,', False)])
+def test_looks_like_question(text, expected):
+    from speech_reference import looks_like_question
+    assert looks_like_question(text) is expected
+
+
+QSTORY = "你想不想听后续，发现了一只小鸟，它摔伤了翅膀。"
+
+
+@pytest.mark.parametrize('text,has_partial', [(STORY, False), (QSTORY, True)])
+async def test_questions_only_keeps_only_question_prefix(text, has_partial):
+    e,m,_=await prepare(input_reply_partial_heard_s=.5,input_reply_partial_heard_history=True,
+                        input_reply_partial_heard_questions_only=True)
+    try:
+        sid=e._speech.sid; record=e._guard_outputs[sid]; turn=record['turn']
+        e._users_by_turn[turn]='讲个故事'
+        start=record['sentences'][-1][0]
+        record['reference'].observe('sentence',{'start_sample':start,'text':text})
+        record['sentences'].append((start+72000,text))
+        e._speech.sent=start+80000
+        span=await onset_after(e,start+48000)
+        await frame(e,1.1,{'end':1.1},.2)
+        if e._guard_end_hold:
+            await pump(e,lambda: bool(span.deferred))
+            await frame(e,1.1+e._guard_end_hold+.001)
+        await pump(e,lambda:span.decided)
+        assert e._assistants_by_turn[turn]==STORY_BASE+(text[:8] if has_partial else '')
+    finally: await cleanup(e)

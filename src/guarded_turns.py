@@ -19,7 +19,7 @@ from control_labels import (decide_input_route, route_protocol, parse_route, Rou
                             ROUTE_MAX_OUTPUT, REPLY_PROTOCOL)
 from input_audio import EchoEvidence, INPUT_PROTOCOL
 from messages import build_audio_content
-from speech_reference import REFERENCE_CHARS, SpeechReference, completed_context
+from speech_reference import REFERENCE_CHARS, SpeechReference, completed_context, looks_like_question
 
 
 VAD_WINDOW_MS = 32  # Silero 16 kHz window: 512 samples per VADIterator call
@@ -306,6 +306,11 @@ class GuardedTurns:
         self._guard_partial_history = self.engine_cfg.get("input_reply_partial_heard_history", False)
         if type(self._guard_partial_history) is not bool:
             raise ValueError("input_reply_partial_heard_history must be a boolean")
+        # Only admit the heard prefix when it reads as a question to the user, so an
+        # announcement or explanation in progress does not invite a stop.
+        self._guard_partial_questions = self.engine_cfg.get("input_reply_partial_heard_questions_only", False)
+        if type(self._guard_partial_questions) is not bool:
+            raise ValueError("input_reply_partial_heard_questions_only must be a boolean")
         self._guard_wait_parent = None
         self._guard_outputs = {}
         self._guard_echo = EchoEvidence()
@@ -550,6 +555,8 @@ class GuardedTurns:
                                     ends=[end for end, _ in record.get("sentences", [])],
                                     min_heard=int(rate * self._guard_partial_heard), rate=rate,
                                     limit=REFERENCE_CHARS - len(span.reply_context))
+                                if partial and self._guard_partial_questions and not looks_like_question(partial):
+                                    partial = ""
                                 if partial:
                                     span.reply_history_prefix = "".join(
                                         text for end, text in record.get("sentences", [])

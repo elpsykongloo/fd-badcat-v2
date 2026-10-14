@@ -3,6 +3,7 @@
 Sentence boundaries are synthesized PCM offsets, not word alignment or proof
 of physical audibility. Only the actor feeds published, current-utterance events.
 """
+import re
 from collections import deque
 
 REFERENCE_CHARS = 512
@@ -13,6 +14,27 @@ UNIT_MAX_S_PER_CHAR = (0.1, 0.3)
 # A heard partial ends at a clause mark; ASCII marks only before a space or the end.
 CLAUSE_MARKS = "，。？！；：…"
 ASCII_CLAUSE_MARKS = ",.?!;:"
+
+
+QUESTION_CUES_ZH = ("？", "吗", "呢", "还是", "是否", "要不要", "想不想", "能不能", "可不可以",
+                    "是不是", "好不好", "对不对", "行不行", "有没有", "什么", "怎么", "哪", "多少")
+QUESTION_LEADS_EN = ("would", "do", "does", "did", "shall", "should", "can", "could", "will",
+                     "are", "is", "what", "which", "how", "why", "when", "where", "who")
+
+
+def looks_like_question(text):
+    """Cheap lexical test: does a heard fragment read as a question to the user?"""
+    text = (text or "").strip()
+    if not text:
+        return False
+    if any(cue in text for cue in QUESTION_CUES_ZH) or "?" in text:
+        return True
+    lowered = text.lower()
+    for clause in re.split(r"[,.;:!]+", lowered):
+        words = clause.split()
+        if words and words[0] in QUESTION_LEADS_EN:
+            return True
+    return " or " in f" {lowered} "
 
 
 def completed_context(sentences, played):
