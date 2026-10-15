@@ -40,7 +40,7 @@ train/dev 用于选 prompt；wr0 是无关措辞扰动，作噪声基准。
 
 - `pytest`：1065 passed（wr3 配置）。
 - `scripts/check_guarded_turns.py`：rc=0。
-- 首响基准（`lat_bench/report.md`，40 ms 单程注入，与 c3_combo 同参数）：LATENCY_LINE
+- 首响基准（`lat_bench/report.md`，40 ms 单程注入，与 c3_combo 同参数）停嘴→开播 P50：short 1091 对 1099、long 1273 对 1253、real 1260 对 1266、real_first 1146 对 1122 ms，持平。cont 的 R P90（569 对 223）与 history（n=4，1418 对 1116）变慢，这段合成用例跑在 08:56～09:06 UTC，正好有两场线上会话同时占用 Omni，按并发干扰处理。第一次跑因上线脚本重启 Omni 被打断，作废（`r2_wr3.run2.log`）。
 
 ## 文件
 

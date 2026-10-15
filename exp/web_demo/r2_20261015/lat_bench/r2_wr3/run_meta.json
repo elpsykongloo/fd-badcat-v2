@@ -1,0 +1,209 @@
+{
+ "profile": "r2_wr3",
+ "backend_root": "/root/autodl-tmp/fd-badcat-r2",
+ "backend_rev": "47ca02b586cb8b6e0e3a903aeaa53b8ae3c75b48",
+ "backend_dirty": "",
+ "overrides": {
+  "engine.case_capture_dir": "exp/web_demo/r2_20261015/lat_bench/demo_cases",
+  "engine.input_route_prefill": false,
+  "engine.input_route_early_close": false,
+  "engine.input_vad_silence_ms": 100,
+  "engine.input_vad_silence_ms_playing": 100,
+  "engine.stream_startup_ms": 300,
+  "engine.stream_resume_lead_ms": 80,
+  "engine.client_local_hold": true,
+  "engine.end_hold_tiers": {
+   "low": 0.4,
+   "default": 0.48,
+   "keep": 0.64
+  },
+  "engine.hold_tier_rules": true,
+  "engine.hold_tier_shadow": false,
+  "engine.hold_min_rtt_ms": 50,
+  "engine.hold_low_max_s": 2.2,
+  "engine.hold_not_chinese_tier": "default",
+  "engine.diagnostics_retention_days": null
+ },
+ "end_hold_frame": 0.64,
+ "stream_startup_ms": 300,
+ "net_delay_ms": 40.0,
+ "local_pause": false,
+ "release_lead_ms": null,
+ "port": 18011,
+ "reply_stop_s": 4.0,
+ "reply_stop_mode": "drain",
+ "suites": [
+  "synthetic",
+  "real"
+ ],
+ "repeats": 2,
+ "argv": [
+  "scripts/bench_guarded_latency.py",
+  "run",
+  "--profile",
+  "r2_wr3",
+  "--backend-root",
+  "/root/autodl-tmp/fd-badcat-r2",
+  "--fixtures",
+  "/root/autodl-tmp/fd-badcat-lat/exp/lat5/bench/fixtures",
+  "--episodes",
+  "/root/autodl-tmp/fd-badcat-lat/exp/lat5/bench/real_episodes/episodes.json",
+  "--out",
+  "/root/autodl-tmp/fd-badcat-r2/exp/web_demo/r2_20261015/lat_bench",
+  "--port",
+  "18011",
+  "--net-delay-ms",
+  "40",
+  "--reply-stop-s",
+  "4",
+  "--repeats",
+  "2",
+  "--suites",
+  "synthetic",
+  "real",
+  "--set",
+  "engine.case_capture_dir=exp/web_demo/r2_20261015/lat_bench/demo_cases",
+  "--set",
+  "engine.input_route_prefill=false",
+  "--set",
+  "engine.input_route_early_close=false",
+  "--set",
+  "engine.input_vad_silence_ms=100",
+  "--set",
+  "engine.input_vad_silence_ms_playing=100",
+  "--set",
+  "engine.stream_startup_ms=300",
+  "--set",
+  "engine.stream_resume_lead_ms=80",
+  "--set",
+  "engine.client_local_hold=true",
+  "--set",
+  "engine.end_hold_tiers={low: 0.40, default: 0.48, keep: 0.64}",
+  "--set",
+  "engine.hold_tier_rules=true",
+  "--set",
+  "engine.hold_tier_shadow=false",
+  "--set",
+  "engine.hold_min_rtt_ms=50",
+  "--set",
+  "engine.hold_low_max_s=2.2",
+  "--set",
+  "engine.hold_not_chinese_tier=default"
+ ],
+ "timings": {
+  "backend_start_s": 3.0,
+  "synthetic_s": 708.7,
+  "real_s": 1568.3,
+  "total_s": 2280.2
+ },
+ "backend_info": {
+  "protocol": "pcm16.v1",
+  "streaming": true,
+  "browser_auto_gain_control": true,
+  "tts_voice_control": {
+   "speaker": "chelsie",
+   "seed": 42
+  },
+  "inference": {
+   "mode": "direct",
+   "text_endpoint": "http://127.0.0.1:10003/v1/chat/completions",
+   "tts_endpoint": "http://127.0.0.1:10003/v1/chat/completions"
+  },
+  "speech_text": "spoken-text-v1",
+  "tts_recovery": {
+   "version": "tts-recovery-v1",
+   "max_retries": 1,
+   "before_pcm_only": true
+  },
+  "speech_scheduling": {
+   "version": "demo-continuity-v1",
+   "startup_ms": 300,
+   "prefetch_ms": 2000,
+   "buffer_ms": 600,
+   "diagnostics": true
+  },
+  "client_hold": {
+   "version": "client-hold-v1",
+   "resume_lead_ms": 80,
+   "local_hold": "on",
+   "params": {}
+  },
+  "response_completion": {
+   "version": "response-completion-v2",
+   "max_tokens": 512,
+   "max_continuations": 3,
+   "audio_grounded": true,
+   "max_promise_repairs": 1
+  },
+  "input_protocol": "pcm16.ref.v1",
+  "guarded_turns": true,
+  "route_protocol": "transcript-first-v1",
+  "route_reference_text": false,
+  "route_compact_prompt": false,
+  "route_early_close": false,
+  "reply_protocol": "played-reply-v2",
+  "reply_context": "completed_sentences_and_heard_clauses_at_input_onset",
+  "input_timing": {
+   "vad_threshold": 0.5,
+   "vad_silence_ms": 100,
+   "preroll_ms": 320,
+   "vad_end_windows": 4,
+   "vad_effective_end_ms": 160,
+   "vad_silence_ms_playing": 100,
+   "vad_end_windows_playing": 4,
+   "vad_effective_end_ms_playing": 160
+  },
+  "route_penalties": {
+   "presence": 0.0,
+   "frequency": 0.0
+  },
+  "reply_partial_heard_s": 0.5,
+  "reply_partial_heard_history": true,
+  "reply_partial_heard_questions_only": true,
+  "input_continuation": {
+   "version": "pending-user-audio-v1",
+   "audio_grounded": true,
+   "max_gap_s": 20.0,
+   "max_input_seconds": 20.0
+  },
+  "case_capture": {
+   "version": "demo-case-v2",
+   "saved": 0,
+   "dropped": 0,
+   "queued": 0,
+   "error": null,
+   "used_bytes": 76921237,
+   "max_bytes": 4294967296,
+   "max_cases": 20000,
+   "used_by_kind": {
+    "input_route": 21726153,
+    "response": 4706196,
+    "tts": 50488888
+   },
+   "kind_limits": {
+    "tts": 1932735283,
+    "input_route": 1202590842,
+    "response": 644245094,
+    "shift": 257698037,
+    "input_reply": 171798691,
+    "shift_s": 85899345
+   },
+   "dropped_by_reason": {},
+   "success_sample_rate": 1.0,
+   "retention_days": null
+  },
+  "diagnostics": {
+   "version": "demo-diagnostics-v1",
+   "review": true,
+   "review_url": "/demo/diagnostics.html",
+   "audio_capture_allowed": true,
+   "audio_capture_default": true
+  }
+ },
+ "client_hold": {
+  "version": "client-hold-v1",
+  "resume_lead_ms": 80,
+  "local_hold": "on",
+  "params": {}
+ }
+}
