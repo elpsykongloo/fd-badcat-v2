@@ -1,0 +1,37 @@
+units 1797 invalid {}
+cell                                                    n   base                    wr1                    wr2
+Follow-up Questions|all                               200 0.525          0.570(+0.045)          0.595(+0.070)
+Follow-up Questions|en                                100 0.900          0.910(+0.010)          0.920(+0.020)
+Follow-up Questions|zh                                100 0.150          0.230(+0.080)          0.270(+0.120)
+Negation or Dissatisfaction|all                       200 0.965          0.975(+0.010)          0.965(+0.000)
+Negation or Dissatisfaction|en                        100 1.000          1.000(+0.000)          0.990(-0.010)
+Negation or Dissatisfaction|zh                        100 0.930          0.950(+0.020)          0.940(+0.010)
+Pause Handling|all                                    200 0.445          0.485(+0.040)          0.425(-0.020)
+Pause Handling|en                                     100 0.550          0.540(-0.010)          0.490(-0.060)
+Pause Handling|zh                                     100 0.340          0.430(+0.090)          0.360(+0.020)
+Repetition Requests|all                               199 0.915          0.789(-0.126)    0.502(-0.412) r0.05
+Repetition Requests|en                                100 0.900          0.810(-0.090)    0.190(-0.710) r0.10
+Repetition Requests|zh                                 99 0.929          0.768(-0.162)          0.818(-0.111)
+Silence or Termination|all                            199 0.985          1.000(+0.015)          0.502(-0.482) silent=0.4372
+Silence or Termination|en                              99 0.980          1.000(+0.020)          0.000(-0.980) silent=0.4141
+Silence or Termination|zh                             100 0.990          1.000(+0.010)          1.000(+0.010) silent=0.46
+Speech Directed at Others|all                         200 0.065          0.045(-0.020)          0.555(+0.490)
+Speech Directed at Others|en                          100 0.020          0.010(-0.010)          1.000(+0.980)
+Speech Directed at Others|zh                          100 0.110          0.080(-0.030)          0.110(+0.000)
+Third-party Speech_after|all                          100 0.140          0.120(-0.020)          0.620(+0.480)
+Third-party Speech_after|en                            50 0.000          0.000(+0.000)          1.000(+1.000)
+Third-party Speech_after|zh                            50 0.280          0.240(-0.040)          0.240(-0.040)
+Third-party Speech_before|all                         100 0.130    0.080(-0.050) r0.01    0.070(-0.060) r0.01
+Third-party Speech_before|en                           50 0.040          0.020(-0.020)          0.000(-0.040)
+Third-party Speech_before|zh                           50 0.220    0.140(-0.080) r0.02    0.140(-0.080) r0.02
+Topic Switching|all                                   200 0.470          0.465(-0.005)          0.460(-0.010)
+Topic Switching|en                                    100 0.000          0.000(+0.000)          0.000(+0.000)
+Topic Switching|zh                                    100 0.940          0.930(-0.010)          0.920(-0.020)
+User Real-time Backchannels|all                       199 0.970          0.970(+0.000)          0.965(-0.005)
+User Real-time Backchannels|en                        100 1.000          1.000(+0.000)          1.000(+0.000)
+User Real-time Backchannels|zh                         99 0.939          0.939(+0.000)          0.929(-0.010)
+keep|ALL                                              499 0.441          0.429(-0.012)          0.732(+0.291)
+pause|ALL                                             200 0.445          0.485(+0.040)          0.425(-0.020)
+respond|ALL                                           799 0.718          0.700(-0.019)    0.631(-0.088) r0.01
+stop|ALL                                              199 0.985          1.000(+0.015)          0.502(-0.482) silent=0.4372
+tp_before|ALL                                         100 0.130    0.080(-0.050) r0.01    0.070(-0.060) r0.01

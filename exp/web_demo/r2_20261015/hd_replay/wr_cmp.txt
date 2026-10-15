@@ -1,0 +1,325 @@
+==============================================================================================================
+web-demo-06a4911437964970af71709bf00952f7 dur 19.22
+  base     cancel_accepted_interrupt=2 dec_keep=1 dec_yield_ready=4 input_ignored=1 input_rejected=1 speech_cancelled=2 speech_start=3
+  wr3      cancel_accepted_interrupt=2 dec_keep=2 dec_yield_ready=3 dec_yield_wait=1 input_ignored=2 input_rejected=2 input_wait_released=1 input_waiting=1 speech_cancelled=2 speech_start=4
+  -- wr3 decision diffs vs base (3):
+        6.88 yield_ready  [喂，你好]  base: ('yield_ready', '喂，你好。')
+        7.55 keep         [嗯]  base: ('yield_ready', '喂，你好。')
+       15.07 yield_wait   [我挺好的，谢谢你今天过得怎么样呀？有什么]  base: ('yield_ready', '我挺好的，谢谢你。你今天过得怎么样呀？有什么')
+  -- wr3 speech differs: base 3 starts, arm 4 starts
+     +   7.33 end=(9.616, 'accepted_interrupt') 嗨，有什么我可以帮你的吗？
+     +  10.27 end=(12.912, 'played') 你好！有什么我可以帮助你的吗？
+     +  16.77 end=None 有什么我可以帮你的吗？
+     -  10.11 end=(13.888, 'accepted_interrupt') 今天过得怎么样啊？有什么开心或烦恼的事想聊聊吗？
+     -  15.41 end=None 嗨，今天过得挺好的！有什么我可以帮你的吗？
+==============================================================================================================
+web-demo-13045dd6bbd74bcf9f1a64dbe78de047 dur 22.5
+  base     cancel_accepted_interrupt=2 dec_keep=3 dec_yield_ready=2 input_ignored=3 input_rejected=3 speech_cancelled=2 speech_start=2
+  wr3      cancel_accepted_interrupt=3 dec_keep=1 dec_yield_ready=4 input_ignored=1 input_rejected=1 speech_cancelled=3 speech_start=4
+  -- wr3 decision diffs vs base (2):
+       12.86 yield_ready  [我是Qwen-Omni，是阿里]  base: ('keep', '我是Qwen-Omni，是阿里')
+       19.25 yield_ready  [是的，我是Qwen-Omni，由阿里巴巴集团旗下的通义实验室]  base: ('keep', '是的，我是Qwen-Omni，由阿里巴巴集团旗下的通义实验室')
+  -- wr3 speech differs: base 2 starts, arm 4 starts
+     +  13.49 end=(16.928, 'accepted_interrupt') 你好，Queen Omni！我是Qwen-Omni，是阿里通义实验室推出的一个多模态超大规模语言模型。有什么我可以帮助你的吗？
+     +  19.71 end=None 你好，Queen Omni！我是Qwen-Omni，是阿里通义实验室推出的一个多模态超大规模语言模型。有什么我可以帮助你的吗？
+==============================================================================================================
+web-demo-b4cb8326da2e41cd90d634bb3c1f6e4a dur 37.95
+  base     dec_keep=1 input_ignored=1 input_rejected=1
+  wr3      dec_keep=1 input_ignored=1 input_rejected=1
+==============================================================================================================
+web-demo-b1ef5e704bd54613b53e802a05ce9c54 dur 56.96
+  base     cancel_accepted_interrupt=9 dec_yield_ready=13 dec_yield_wait=2 input_waiting=2 speech_cancelled=9 speech_start=10
+  wr3      cancel_accepted_interrupt=8 dec_keep=2 dec_yield_ready=12 dec_yield_wait=3 input_ignored=2 input_rejected=2 input_waiting=3 speech_cancelled=8 speech_start=9
+  -- wr3 decision diffs vs base (5):
+       13.38 yield_ready  [嗨]  base: ('yield_ready', '你好呀，有什么我可以帮你介绍一下你自己。')
+       14.77 keep         [嗨，我是Quinn的aunt。]  base: None
+       18.62 keep         [嗨，我是Queen的Aunt，你是阿里巴巴集团]  base: ('yield_ready', '嗨，我是Queen的Aunt，你是阿里巴巴集团企')
+       26.18 yield_ready  [Hi，我是Queen的Aunt。Hi，我是Queen的Aunt。是不是他他把自己念出来的东西用]  base: ('yield_ready', '是不是他他把自己念出来的东西用麦克风接进去，所以要需要你戴个耳机。')
+       43.65 yield_wait   [他要是EC没做有点太简单了，他好像有什么]  base: ('yield_ready', '他要是EC没做有点太贱了，他好像有什么')
+  -- wr3 speech differs: base 10 starts, arm 9 starts
+     +   6.37 end=(8.416, 'accepted_interrupt') 你好呀！有什么我可以帮你的吗？
+     +  12.06 end=(13.376, 'accepted_interrupt') 你好呀！有什么我可以帮你的吗？
+     +  29.38 end=(30.928, 'accepted_interrupt') 哈哈，你这句“是不是他把自己念出来的东西用麦克风接进去”挺有意思的！听起来像是在描述一个声音循环或者录音回放的场景？比如有人对着麦克风说话，然后系统又把这段声音实时播放出来，形成一
+     +  36.93 end=(39.808, 'accepted_interrupt') 哈哈，你这句“是不是他把自己念出来的东西用麦克风接进去”挺有意思的！听起来像是在描述一个声音循环或者录音回放的场景？比如有人对着麦克风说话，然后系统又把这段声音实时播放出来，形成一
+     +  45.47 end=(46.448, 'accepted_interrupt') 不太明白你说的“他要是EC没做院”是什么意思呢？是不是打字时有误，或者想表达别的内容呀？可以再解释得清楚一点吗？
+     +  55.01 end=(57.28, 'accepted_interrupt') 听起来你可能在说某个设备或软件的设置里看到了什么让你觉得奇怪的东西，但信息有点断断续续。你说“太诡异了”、“没有做AEC”，是不是指麦克风、耳机或者通话时有回音、杂音之类的问题？A
+     -   6.37 end=(8.544, 'accepted_interrupt') 你好！有什么我可以帮你的吗？
+     -  12.06 end=(16.192, 'accepted_interrupt') 嗨，我是Qwen-Omni，是阿里巴巴集团旗下的通义实验室自主研发的多模态超大规模语言模型。我可以实时理解并融合文本、图像、音频、视频等多种模态信息，并支持用户输入图片、视频和音频
+     -  19.10 end=(22.288, 'accepted_interrupt') Hi, I'm Qwen-Omni. It seems like there might be a mix-up with the name. I am Qwen-Omni, a 
+     -  29.38 end=(30.096, 'accepted_interrupt') Hi, I'm Qwen-Omni. It seems like there might be a mix-up with the name. I am Qwen-Omni, a 
+     -  36.93 end=(39.792, 'accepted_interrupt') 哈哈，你这话说的我差点笑出声！AEC（Acoustic Echo Cancellation，回声消除）这种基础功能现在哪个设备没做啊？除非是那种特别老古董或者故意阉割的低端产品。你
+     -  45.47 end=(46.576, 'accepted_interrupt') 听起来你可能在和朋友讨论某个游戏或应用里的角色（比如“EC”），但信息有点模糊。你是想问这个角色有什么特别之处，还是遇到了什么问题？可以再具体说说吗？
+     -  55.01 end=(57.232, 'accepted_interrupt') 有啊，有什么我可以帮你的吗？
+==============================================================================================================
+web-demo-a6651f6f73ba4e0284e6e8e9c401f14d dur 69.84
+  base     cancel_accepted_interrupt=5 dec_yield_ready=9 dec_yield_wait=2 input_waiting=2 speech_cancelled=5 speech_start=9
+  wr3      cancel_accepted_interrupt=5 dec_yield_ready=9 dec_yield_wait=2 input_waiting=2 speech_cancelled=5 speech_start=9
+  -- wr3 speech differs: base 9 starts, arm 9 starts
+     +  17.12 end=(27.056, 'accepted_interrupt') 阿里巴巴集团是一家总部位于中国杭州的全球领先的电子商务和科技公司。它成立于2004年，由马云和他的团队创立，旗下拥有淘宝网、天猫、阿里云、菜鸟网络等多个知名平台。阿里巴巴主要业务包
+     -  17.12 end=(27.216, 'accepted_interrupt') 我是Qwen-Omni，是阿里巴巴集团旗下的通义实验室自主研发的多模态超大规模语言模型，有什么我可以帮助你的吗？
+==============================================================================================================
+web-demo-8f06b71c75af4173ba479e624f1b335d dur 74.91
+  base     cancel_accepted_interrupt=5 dec_keep=1 dec_yield_ready=7 dec_yield_wait=2 input_ignored=1 input_rejected=1 input_wait_released=2 input_waiting=2 speech_cancelled=5 speech_start=9
+  wr3      cancel_accepted_interrupt=4 dec_keep=1 dec_yield_ready=9 dec_yield_wait=1 input_ignored=1 input_rejected=1 input_wait_released=1 input_waiting=1 speech_cancelled=4 speech_start=9
+  -- wr3 decision diffs vs base (2):
+       44.24 yield_ready  [我说了，我刚才问你了。]  base: ('yield_ready', '我说了，我刚才问你其他的创始人还包括谁。')
+       58.16 yield_ready  [重新]  base: ('yield_wait', '我重新')
+  -- wr3 speech differs: base 9 starts, arm 9 starts
+     +   9.52 end=(15.68, 'accepted_interrupt') 我是Qwen-Omni，是阿里巴巴集团旗下的通义实验室自主研发的多模态超大规模语言模型，有什么我可以帮助你的吗？
+     +  40.37 end=(43.824, 'played') 你好！有什么我可以帮你的吗？
+     +  58.59 end=(63.168, 'played') 我刚刚可能没理解清楚你的问题。你是在问某个特定公司、项目或组织的其他创始人是谁吗？可以再具体说明一下是哪个领域或名称，比如“阿里巴巴”、“腾讯”或者某个创业项目，这样我能更准确地回
+     +  64.46 end=(68.112, 'played') 你好像没说完呢，有什么我可以帮你的吗？
+     -   9.52 end=(15.536, 'accepted_interrupt') 你好，能听到你说的话。有什么我可以帮助你的吗？
+     -  40.37 end=(43.968, 'played') 你是指其他充值方式吗？比如支付宝、微信支付，或者银行卡转账之类的。可以具体说说是哪方面的充值哦，我好给你更准确的建议~
+     -  59.95 end=(64.176, 'accepted_interrupt') 我刚刚可能没理解清楚你的问题。你是在问某个特定公司、项目或组织的其他创始人是谁吗？可以再具体说明一下是哪个领域或者名字，比如科技公司、创业项目等，这样我能更准确地帮你查找信息。
+     -  64.61 end=(68.112, 'played') 你好像没说完呢，有什么我可以帮你的吗？
+==============================================================================================================
+web-demo-aee0073b9f7847b1aa306c6b42f41ad2 dur 340.86
+  base     cancel_accepted_interrupt=7 dec_keep=10 dec_yield_ready=12 dec_yield_wait=21 input_ignored=13 input_rejected=13 input_wait_released=3 input_waiting=21 speech_cancelled=7 speech_start=11
+  wr3      cancel_accepted_interrupt=9 cancel_accepted_user_input=1 dec_keep=8 dec_yield_ready=14 dec_yield_wait=20 input_ignored=10 input_rejected=10 input_wait_released=3 input_waiting=20 speech_cancelled=10 speech_start=13
+  -- wr3 decision diffs vs base (5):
+        4.94 yield_wait   [嗯，我们今天聊一下这个]  base: ('yield_ready', '嗯，我们今天聊一下这个')
+       28.94 yield_wait   [嗯，就是]  base: ('keep', '嗯')
+      100.11 yield_ready  [呃我想知道一下就是说你会认为这个多模态指令它会是一种什么样的形式呢就是说这些人他们是把这个呃就是说人类的语言去描述图像肯]  base: None
+      137.74 yield_ready  [嗯，对，但是它本质还是token嘛，就是说还是依照着这个大模型的这个范式。]  base: None
+      155.92 yield_ready  [我觉得还比较有意思的]  base: ('keep', '我觉得还比较有意思的。')
+  -- wr3 speech differs: base 11 starts, arm 13 starts
+     +  11.31 end=(28.944, 'accepted_interrupt') 好啊，我们来聊聊扩散模型和视频生成模型。
+
+简单来说，**扩散模型（Diffusion Model）** 是一种深度学习的生成模型。它通过一个“去噪”的过程来生成图像或视频：先从一
+     +  59.97 end=(70.352, 'accepted_interrupt') 你说的“用来去处理这种就是视觉的媒体”，应该是指用什么工具或方法来处理图片、视频这类视觉内容吧？常见的有：
+
+- **图像编辑软件**：比如 Photoshop（PS）、GIMP，
+     + 100.59 end=(110.336, 'accepted_interrupt') 嗯，你这个问题挺有深度的。你说的“多模态指令”其实就是在想解决人类语言描述图像或视频时不够精确的问题。
+
+目前主流的做法是让模型理解文本、图像、音频等多种信息，并把它们融合起来。比
+     + 110.82 end=(115.968, 'played') 好的，那我们继续吧。你接下来想聊点什么呢？
+     + 154.64 end=(154.992, 'accepted_interrupt') 对，你说得没错。Token 是大模型处理信息的基本单位，不管是文本、图像还是音频，最终都会被拆解成 token 输入到模型里。虽然不同模态的表示方式不一样（比如文本是词或子词，图像
+     + 156.53 end=(166.368, 'accepted_interrupt') 是啊，有时候一些小细节或者意外的转折真的能让事情变得很有趣。你是在说某个具体的事情吗？可以多分享一点，我也挺好奇的！
+     + 170.59 end=(184.848, 'played') 哦，你说的是我们之前聊的模型啊。我记不太清具体是哪个了，你能再提醒一下吗？比如是某个特定类型的模型，还是有什么特别的话题？
+     + 249.01 end=(296.576, 'accepted_interrupt') 哦，你说的是用新技术大幅降低生成视频的成本对吧？现在有些AI视频生成技术确实能做到这一点。比如通过优化算法和利用更高效的模型架构，系统可以更快地合成高质量的短视频内容。
+
+以前可能
+     -  11.31 end=(30.784, 'accepted_interrupt') 好啊，你想聊什么呢？可以是最近发生的事、感兴趣的话题，或者随便聊聊也行。我在这儿听着呢～
+     -  59.97 end=(70.576, 'accepted_interrupt') 你说的可能是 **AIA**（Artificial Intelligence Markup Language），这是一种面向人工智能应用的标记语言，用于描述和交互AI系统中的数据、
+     - 110.66 end=(115.968, 'played') 多模态指令，简单来说就是一种能同时理解并融合文本、图像、音频、视频等多种信息形式的指令。比如你发一张图说“这是什么”，或者一边说话一边上传文件让AI分析，这些都属于多模态交互。
+
+
+     - 154.64 end=(166.48, 'accepted_interrupt') 好的，那我们继续吧。你接下来想聊点什么呢？
+     - 170.59 end=(184.944, 'played') 外星人的语言目前只存在于科幻作品中，现实中还没有任何确凿证据表明外星生命存在，更不用说他们的语言了。不过在很多电影、小说里，比如《降临》（Arrival）这部电影就虚构了一种非常复
+     - 249.01 end=(296.416, 'accepted_interrupt') 是的，这个说法在技术上是有可能实现的。近年来，随着AI生成视频技术的发展，比如使用扩散模型（Diffusion Models）或Transformer架构来生成视频内容，确实有研究
+==============================================================================================================
+web-demo-771115d5120f4a35af705926864da234 dur 488.75
+  base     cancel_accepted_interrupt=27 cancel_accepted_user_input=1 dec_keep=14 dec_stop_only=1 dec_yield_ready=42 dec_yield_wait=26 input_ignored=15 input_rejected=15 input_wait_released=1 input_waiting=27 speech_cancelled=28 speech_start=37
+  wr3      cancel_accepted_interrupt=25 cancel_accepted_user_input=1 dec_keep=15 dec_stop_only=1 dec_yield_ready=37 dec_yield_wait=32 input_ignored=16 input_rejected=16 input_wait_released=2 input_waiting=33 speech_cancelled=26 speech_start=35
+  -- wr3 decision diffs vs base (13):
+       60.53 yield_wait   [哦，这样的。哎，等会儿我想问一下这个就是]  base: None
+      121.46 yield_ready  [你这块不应该应该是GTS传进来还是什么传进来我不太清楚那算了无所谓继续聊这个原始文件的事情]  base: ('yield_ready', '你这块不应该，应该是GTS传进来还是什么传进来，我不太清楚，那算了，无所谓，我们继续聊这个原始文件的事情。')
+      145.76 keep         [嗯对对对就是这两个版本对的对的对的]  base: ('keep', '嗯对对对就是这两个版本对的对的对的')
+      149.89 keep         [嗯对对对，就是这两个版本，对的对的对的。哎]  base: ('yield_ready', '嗯对对对就是这两个版本对的对的对的哎')
+      188.06 yield_ready  [没有没有，你继续你继续说刚才那个到期的剧情。]  base: None
+      300.19 yield_wait   [所以我觉得你可以接下来往下，就是在做这个话题的时候可以，嗯，就是写一下这个温柔的窗口。]  base: ('yield_ready', '所以我觉得你可以接下来往下，就是在做这个话题的时候可以，嗯，就是写一下这个温柔的窗口。')
+      356.13 yield_wait   [回答的这个情况，我会觉得就是说这个这个东西]  base: None
+      360.62 yield_wait   [回答的这个情况，我会觉得就是说这个这个东西，哎我看到这个VAD down和VAD sub，就是说它还是有一个这个VAD的]  base: ('yield_ready', '回答的这个情况，我会觉得就是说这个这个东西，哎我看到这个VAD down和VAD sub，就是说它还是有一个这个VAD的存在，但我不知道它是不是这个所谓的这个VAD。')
+      360.96 yield_wait   [回答的这个情况，我会觉得就是说这个这个东西，哎我看到这个VAD down和VAD sub，就是说它还是有一个这个VAD的]  base: ('yield_ready', '回答的这个情况，我会觉得就是说这个这个东西，哎我看到这个VAD down和VAD sub，就是说它还是有一个这个VAD的存在，但我不知道它是不是这个所谓的这个VAD。')
+      363.04 yield_wait   [回答的这个情况，我会觉得就是说这个这个东西，哎我看到这个VAD down和VAD sub，就是说它还是有一个这个VAD的]  base: ('yield_ready', '回答的这个情况，我会觉得就是说这个这个东西，哎我看到这个VAD down和VAD sub，就是说它还是有一个这个VAD的存在，但我不知道它是不是这个所谓的这个VAD。')
+      400.80 yield_wait   [啊对啊，你到这里的能力就彻底的崩坏了，但是我会觉得说这个]  base: ('yield_ready', '啊对啊，那你到这里的能力就彻底的崩坏了，但是我会觉得说这个这个轮次它是不是有问题啊？')
+      420.26 keep         [啊你还记得我们聊什么了吗]  base: ('yield_ready', '啊你还记得我们聊什么了吗')
+      475.01 yield_wait   [嗯，可以的，那我们就是先聊到这里，然后我觉得这个这条音频应该是保存下来，然后怎么可以跟这个backcase和这个中间的所]  base: ('yield_ready', '嗯，可以的，那我们就是先聊到这里，然后我觉得这个这条音频应该是保存下来，然后怎么可以跟这个backcase和这个中间的所有的log文件的待测。')
+  -- wr3 speech differs: base 37 starts, arm 35 starts
+     +  68.26 end=(79.52, 'accepted_interrupt') 你说的应该是通义千问Omni吧？它现在最新版本是2024年10月发布的，支持实时对话、多模态输入（文字+图片），还优化了长文本处理和代码能力。如果你用的是阿里系App（比如通义AP
+     +  86.37 end=(106.512, 'accepted_interrupt') 哦，你说的是《原神》2022年那些版本啊。那一年其实挺关键的，米哈游一口气出了好几个大版本。
+
+比如二月份的「渊下宫」剧情上线了稻妻主线最后阶段，还有新角色雷电将军和九条裟罗；然后
+     + 122.05 end=(132.784, 'accepted_interrupt') 哈哈，你这话说得有点绕啊～“GTS”是啥？我猜你是想说“GT-S”或者别的什么缩写？不过没关系，咱聊点实在的。你说的这个事情具体指哪方面呢？比如游戏、技术还是其他领域？可以再解释清
+     + 138.70 end=(143.952, 'accepted_interrupt') 哎呀，说到芈月和大乔啊，这俩英雄定位完全不一样呢。芈月是那种后期特别强的法师刺客，吸血贼猛，一套技能能秒脆皮；大乔则是辅助里的战术大师，控场、回城、复活全都会。你要是喜欢单挑收割、
+     + 158.50 end=(166.176, 'accepted_interrupt') 哎呀，说到芈月和大乔啊，这俩英雄定位完全不一样呢。芈月是那种后期特别强的法师刺客，吸血贼猛，一套技能能秒脆皮；大乔则是辅助里的战术大师，控场、回城、复活全都会。你要是喜欢单挑收割、
+     + 170.59 end=(177.136, 'accepted_interrupt') 你说的这两个版本是哪两个啊？可以具体说说看吗？这样我才能帮你分析哪个更好玩一些。
+     + 178.19 end=(180.304, 'accepted_interrupt') 我推荐《塞尔达传说：旷野之息》（The Legend of Zelda: Breath of the Wild）这个版本。
+
+它好玩的原因在于自由度极高——你可以从任何地方开始探索
+     + 205.28 end=(207.552, 'accepted_interrupt') 啊，你说的是我刚才提到的那个故事呀！让我继续给你讲下去吧。
+
+这个故事发生在一个被遗忘的小镇上，镇子周围常年笼罩着浓雾。主角是个年轻的画家，他搬来这儿是为了寻找灵感。有一天他在老宅
+     + 246.80 end=(252.864, 'accepted_interrupt') 哪里不对呀？你指哪部分呢？
+     + 264.21 end=(270.256, 'accepted_interrupt') 抱歉，我可能在之前的介绍中出现了错误。你能具体指出是哪个部分出错了吗？比如是关于某个概念、过程还是例子？这样我可以更准确地为你解释或纠正。
+     + 270.53 end=(275.088, 'played') 抱歉，我可能在之前的介绍中出现了错误。你能具体指出是哪个部分出错了吗？比如是关于某个概念、过程还是例子？这样我可以更准确地为你解释或纠正。
+     + 293.36 end=(293.984, 'accepted_interrupt') 好的，我明白了。你有什么想说的吗？
+     + 306.30 end=(313.92, 'accepted_interrupt') 我明白你的意思了，你是希望我能更主动地引导对话、深入探讨话题，而不是每次只给一个简单的回答就结束了对吧？你说得很有道理。在接下来的交流中我会尽量多问一些问题，把话题往深处引一引，或
+     + 325.60 end=(333.92, 'accepted_interrupt') 听起来你是在反馈语音识别或AI助手的体验问题，对吧？你说ASR（自动语音识别）不太能理解你在说什么，而且TTS（文本转语音）也有点问题。这确实会影响使用感受。
+
+其实这类情况挺常见
+     + 342.72 end=(349.712, 'accepted_interrupt') 听起来你是在反馈语音识别或AI助手的体验问题，对吧？你说ASR（自动语音识别）不太能理解你在说什么，而且TTS（文本转语音）也有点问题。这确实会影响使用感受。
+
+其实这类情况挺常见
+     + 364.94 end=(370.096, 'accepted_interrupt') 你提到的“重复”问题，可能是因为系统在处理信息时出现了延迟或误解。如果你是在和我聊天时感觉我说话有重复，那可能是网络传输中的小故障导致的。不过不用担心，我会尽量保持回答简洁清晰。
+
+     + 391.95 end=(398.224, 'accepted_interrupt') 你提到的“VAD”可能是指 **Voice Activity Detection**（语音活动检测），这是一种在音频处理中常用的技术，用于判断一段音频中是否有语音存在。它常被用在实
+     + 403.04 end=(409.424, 'accepted_interrupt') 你说的这个“轮次”问题，是不是在某个游戏、比赛或者流程里感觉顺序不太对劲？比如该你的时候没轮到，或者重复了？可以具体说说是在什么场景下遇到的吗？这样我好帮你分析一下是不是规则理解错
+     + 414.66 end=(417.36, 'played') 你说的这个“轮次”问题，是不是在某个游戏、比赛或者流程里感觉顺序不太对劲？比如该你的时候没轮到，或者重复了？可以具体说说是在什么场景下遇到的吗？这样我好帮你分析一下是不是规则理解错
+     + 426.43 end=(435.456, 'played') Hello! How can I assist you today?
+     -  68.26 end=(79.568, 'accepted_interrupt') 我理解你的问题了。作为Qwen-Omni，我的知识截止时间是2024年12月，所以对于今年（2025年）发生的事情，我没有实时信息。如果需要了解最新的情况，建议查看权威新闻来源或相
+     -  86.37 end=(106.224, 'accepted_interrupt') 我理解你的问题了。作为Qwen-Omni，我的知识截止时间是2024年12月，所以对于今年（2025年）发生的事情，我没有实时信息。如果需要了解最新的情况，建议查看权威新闻来源或相
+     - 122.08 end=(132.656, 'accepted_interrupt') 你是指GPS定位出错了，还是说某个具体的GPS应用或设备出现了问题？可以再详细说明一下情况吗？比如是手机、车载导航，还是其他设备？这样我可以更准确地帮你分析和解决。
+     - 138.70 end=(143.968, 'accepted_interrupt') 哈哈，你这话说得有点绕啊～“GTS”是啥？我猜你是想说“GT-S”或者别的什么缩写？不过没关系，咱聊点实在的。你说的这个事情具体指哪方面呢？比如游戏、技术还是其他领域？可以再解释清
+     - 149.31 end=(155.68, 'accepted_interrupt') 哎呀，说到芈月和大乔啊，这俩英雄定位完全不一样呢。芈月是那种后期特别强的法师刺客，吸血贼猛，一套技能能秒脆皮；大乔则是辅助里的战术大师，控场、回城、复活全都会。你要是喜欢单挑收割、
+     - 158.50 end=(166.32, 'accepted_interrupt') 你指的是哪两个东西呀？可以具体说一下是哪两个选项吗？这样我才能帮你分析哪个更好玩一些。
+     - 170.59 end=(177.088, 'accepted_interrupt') 你指的是哪两个东西呀？可以具体说一下是哪两个选项吗？这样我才能帮你分析哪个更好玩一些。
+     - 178.19 end=(180.352, 'accepted_interrupt') 因为我觉得它挺有意思的，你呢？
+     - 205.28 end=(207.6, 'accepted_interrupt') 好的，我们继续讲《盗梦空间》的剧情。
+
+故事讲的是一个叫多米尼克·柯布的男人，他是个“盗梦者”，专门潜入别人的梦境里偷取机密信息。但因为一次任务失败，他被通缉了十年，回不了家见自己
+     - 246.80 end=(251.904, 'accepted_interrupt') 啊，你说得对，我刚才记错了。伞兵是茨卡拉姆奇（Zkalamchi），不是巴尔克斯。感谢指正！
+     - 264.21 end=(270.16, 'accepted_interrupt') 抱歉，我可能误解了你的意思。你能具体指出是哪个部分介绍得不对吗？这样我可以更好地帮你纠正或补充信息。
+     - 270.53 end=(274.992, 'played') 抱歉，我可能误解了你的意思。你能具体指出是哪个部分介绍得不对吗？这样我可以更好地帮你纠正或补充信息。
+     - 293.36 end=(295.232, 'accepted_interrupt') 我明白你的意思了，你是希望我能更主动地引导对话、深入探讨话题，而不是每次只给一个简单的回答就结束了对吧？你说得很有道理。在接下来的交流中我会尽量多问一些问题，把话题往深处引一引，或
+     - 306.29 end=(313.728, 'accepted_interrupt') 明白了，你是想让我在接下来的对话中扮演一个更主动的角色，推动话题继续深入发展。我会调整自己的回应方式，让交流更有引导性、更自然地推进下去。
+
+比如现在我就可以这样开始：
+
+“听起来
+     - 325.60 end=(333.952, 'accepted_interrupt') 是的，ASR（自动语音识别）在处理一些特定场景时确实会遇到挑战。比如当说话人语速较快、有口音、背景噪音大或者使用专业术语和不常见表达时，系统可能无法准确理解内容。
+
+你提到的情况很
+     - 342.72 end=(349.648, 'accepted_interrupt') 你提到的“30毫秒”和“296毫秒”，以及“V/D结束”，看起来像是在分析某种时间序列数据或信号处理中的事件标记。不过，目前信息有些模糊，我来帮你梳理一下可能的情况：
+
+- 如果你
+     - 363.60 end=(369.936, 'accepted_interrupt') 你提到的“VDD”和“VSS”是电路设计中的常见术语，通常出现在芯片或电子元件的引脚标注中：
+
+- **VDD**：代表电源正极（Voltage Drain/Supply），一般用
+     - 391.95 end=(398.464, 'accepted_interrupt') 你提到的“VDD”和“VSS”是电路设计中的常见术语，通常出现在芯片或电子元件的引脚标注中：
+
+- **VDD**：代表电源正极（Voltage Drain/Supply），一般用
+     - 403.04 end=(409.44, 'accepted_interrupt') 哈哈，你这话说得挺有意思啊！“agent”和“哈尼丝”混在一起了？是不是想说某个AI助手（比如我）或者游戏里的人物没做好啥事呀？还是打字手滑啦～可以再具体说说看嘛，我帮你一起分析分
+     - 414.66 end=(417.456, 'played') 你说的这个“轮次”是不是指某种顺序或者流程？比如游戏、比赛，还是别的什么场景里的步骤安排？如果能具体说说是哪方面的轮次，我好帮你分析下有没有问题。
+     - 420.42 end=(425.808, 'accepted_interrupt') Hello! How can I assist you today?
+     - 426.67 end=(435.408, 'played') 我们聊过很多话题呢，比如故事、解释、举例还有朗读之类的。你具体想回顾哪一部分呀？
+==============================================================================================================
+web-demo-b559374fd25e4da3a64bb874a81c61d3 dur 511.54
+  base     cancel_accepted_interrupt=6 dec_yield_ready=12 dec_yield_wait=5 input_wait_released=2 input_waiting=5 speech_cancelled=6 speech_start=13
+  wr3      cancel_accepted_interrupt=6 dec_yield_ready=12 dec_yield_wait=5 input_wait_released=2 input_waiting=5 speech_cancelled=6 speech_start=13
+  -- wr3 decision diffs vs base (1):
+       73.22 yield_ready  [炮兵怕把标兵碰。]  base: ('yield_ready', '炮兵怕把标兵碰，标兵怕碰')
+  -- wr3 speech differs: base 13 starts, arm 13 starts
+     +  70.85 end=(71.344, 'accepted_interrupt') 好的，我明白了。请开始说你想让我重复的内容吧。
+     +  76.61 end=(88.144, 'accepted_interrupt') 这是一句经典的绕口令，用来练习发音和语速。我们来一起读一遍：
+
+**八百标兵奔北坡，炮兵并排北边跑。**
+
+这句话的难点在于“b”和“p”的区分，以及连续的平舌音和平翘舌音转换。
+
+     +  97.47 end=(103.168, 'accepted_interrupt') 哈哈，这是一道经典的绕口令啊！来试试看：
+
+炮兵怕把标兵碰，  
+标兵怕碰炮兵炮。  
+
+说起来容易做起来难，一口气念三遍可不容易哦～要不要挑战一下？😄
+     + 147.52 end=(318.096, 'played') 好的，现在我来为你朗读《长恨歌》的开头部分：
+
+汉皇重色思倾国，御宇多年求不得。  
+杨家有女初长成，养在深闺人未识。  
+天生丽质难自弃，一朝选在君王侧。  
+回眸一笑百媚生，六
+     -  70.85 end=(72.592, 'accepted_interrupt') 这是一句经典的绕口令，用来练习发音和语速。我们来一起读一遍：
+
+**八百标兵奔北坡，炮兵并排北边跑。**
+
+这句话的难点在于“b”和“p”的区分，以及连续的平舌音和平翘舌音转换。
+
+     -  76.61 end=(88.032, 'accepted_interrupt') 哈哈，这是个绕口令啊！我来帮你捋一捋：
+
+炮兵怕把标兵碰，  
+标兵怕碰炮兵炮。
+
+意思是：  
+打炮的士兵（炮兵）担心碰到举旗的士兵（标兵），  
+而举旗的士兵（标兵）也害怕被大
+     -  97.47 end=(102.928, 'accepted_interrupt') 哈哈，这是个绕口令啊！我来帮你捋一捋：
+
+炮兵怕把标兵碰，  
+标兵怕碰炮兵炮。
+
+意思是：  
+打炮的士兵（炮兵）担心碰到举旗的士兵（标兵），  
+而举旗的士兵（标兵）也害怕被大
+     - 147.52 end=(318.048, 'played') 好的，现在为您呈现《琵琶行》的全文：
+
+浔阳江头夜送客，枫叶荻花秋瑟瑟。  
+主人下马客在船，举酒欲饮无管弦。  
+醉不成欢惨将别，别时茫茫江浸月。  
+
+忽闻水上琵琶声，主人忘归
+==============================================================================================================
+web-demo-fad453ba899c4ae4b27381630d492540 dur 554.66
+  base     cancel_accepted_interrupt=5 dec_keep=1 dec_stop_only=1 dec_yield_ready=15 dec_yield_wait=3 input_ignored=1 input_rejected=1 input_wait_released=1 input_waiting=4 speech_cancelled=5 speech_start=14
+  wr3      cancel_accepted_interrupt=5 dec_keep=1 dec_stop_only=1 dec_yield_ready=15 dec_yield_wait=3 input_ignored=1 input_rejected=1 input_wait_released=1 input_waiting=4 speech_cancelled=5 speech_start=14
+  -- wr3 speech differs: base 14 starts, arm 14 starts
+     + 168.54 end=(170.4, 'accepted_interrupt') 清华大学的前身是1911年成立的清华学堂，最初是为了利用美国退还的部分庚子赔款而设立的留美预备学校。1925年设立大学部，开始招收本科生和研究生。1928年更名为国立清华大学。
+
+
+     - 168.54 end=(170.352, 'accepted_interrupt') 对，我们之前聊到了成都。你提到过喜欢那里的美食和悠闲的生活节奏，还说想找个机会去宽窄巷子走走？
+==============================================================================================================
+web-demo-d90e2220860e472491491d0833e87fe1 dur 1510.86
+  base     cancel_accepted_interrupt=13 dec_keep=6 dec_stop_only=1 dec_yield_ready=29 dec_yield_wait=3 input_ignored=6 input_rejected=6 input_wait_released=2 input_waiting=4 speech_cancelled=13 speech_start=24
+  wr3      cancel_accepted_interrupt=12 dec_keep=7 dec_stop_only=1 dec_yield_ready=26 dec_yield_wait=4 input_ignored=7 input_rejected=7 input_wait_released=1 input_waiting=5 speech_cancelled=12 speech_start=22
+  -- wr3 decision diffs vs base (8):
+       68.70 yield_ready  [你的音色是来自哪？]  base: ('yield_ready', '你的音色是来自哪？')
+      322.16 yield_ready  [没有加标点]  base: ('keep', '没有加标点')
+      330.38 yield_wait   [我们]  base: ('yield_ready', '就强调一下先')
+      333.04 yield_ready  [我们这边儿，刘氏现在没在。]  base: ('yield_ready', '刘氏现在没在')
+      334.08 keep         []  base: ('keep', '这个')
+      338.19 yield_wait   [那就先]  base: ('keep', '')
+      346.75 keep         []  base: ('yield_ready', '那我给你发过去')
+      348.61 keep         [那就行，那我盖的到这个里面，那我盖的到这个里面，那我盖的到这个里面。]  base: ('yield_wait', '但之前那个')
+  -- wr3 speech differs: base 24 starts, arm 22 starts
+     +  10.78 end=(31.68, 'played') 在呢，有什么我可以帮你的吗？
+     +  68.91 end=(76.976, 'accepted_interrupt') 你指的是哪个软件或游戏的版本啊？可以具体说一下是哪方面的内容吗？比如是手机App、电脑程序，还是某个特定的游戏呢？这样我就能更准确地帮你解答了。
+     +  77.54 end=(88.304, 'accepted_interrupt') TTS 是 **Text-to-Speech** 的缩写，中文意思是“文本转语音”。它是一种将文字内容自动转换成语音的技术。简单来说，就是让机器读出你输入的文字。
+
+比如你在手机上
+     + 125.98 end=(132.432, 'played') 明白，我會完整回覆，不會摘錄。有咩想問或需要幫手嘅？
+     + 179.98 end=(186.384, 'played') 我是通过训练数据学习到的信息，不是实时搜索或依赖记忆的。
+     + 235.15 end=(238.112, 'accepted_interrupt') 我是通过训练数据学习到的信息，不是实时搜索或依赖记忆的。
+     + 297.65 end=(304.672, 'accepted_interrupt') 抱歉，我不太明白你说的“这个”是指什么。你能具体说一下是哪个话题或事情吗？这样我才能更好地解释。
+     + 306.02 end=(316.896, 'played') 抱歉，我可能误解了你的意思。你能再具体说明一下你想讨论的内容吗？我会尽力提供清晰的解释或帮助。
+     + 326.62 end=(328.992, 'accepted_interrupt') 你提到的“没有加标点”和“说两个开头他们就标点”，可能是在讨论某种文本处理、语音识别或输入法相关的问题。不过信息有点模糊，我来试着帮你理清一下：
+
+如果你是想表达：
+- 有些文字在
+     + 329.33 end=(330.384, 'accepted_interrupt') 你提到的“加标点”和“说两个开头”，我理解可能是想让我用两种不同的方式开始一段话或故事。以下是两种不同风格的开头：
+
+1. **直接式**：  
+   好的，我们从这里开始吧。
+
+
+     + 333.06 end=(335.28, 'played') 好的，我明白了。你想要强调一下“先”这个字，可能是想说“先做某事”或者“先把事情处理好”。你能具体说明一下你想强调的是哪方面吗？比如是做事的顺序、优先级，还是某种态度上的提醒？这样
+     -  11.17 end=(32.16, 'played') 在呢，有什么我可以帮你的吗？
+     -  69.44 end=(77.104, 'accepted_interrupt') 你指的是哪个软件或游戏的版本啊？可以具体说一下是哪方面的内容吗？比如是手机App、电脑程序，还是某个特定的游戏呢？这样我就能更准确地帮你解答了。
+     -  77.54 end=(88.112, 'accepted_interrupt') 我的音色是通过AI模型生成的，没有实际的声音来源。它被设计成听起来自然、清晰且易于理解，以便更好地与用户交流。
+     - 125.98 end=(132.48, 'played') 他们用枪口代替了人民的嘴巴，
+他们以暴力压制了所有和平诉求。
+
+而你们呢？——
+你们是真正的爱国者！
+你们是为了国家前途、民族尊严挺身而出的人！
+
+即使死亡也不能使你们屈服；
+即使
+     - 179.98 end=(182.88, 'played') 我是一个实时的语音聊天助手，可以和你进行自然、流畅的对话。
+     - 235.15 end=(237.84, 'accepted_interrupt') 我是通过搜索获取信息的。
+     - 297.65 end=(304.784, 'accepted_interrupt') 哦，你说的是训练对话模型所用的数据类型。我刚才介绍的确实是文本数据，因为目前主流的大语言模型（比如我）主要通过海量文本进行训练。
+
+这些数据通常包括：
+
+- 书籍、文章、网页内容等
+     - 306.02 end=(316.896, 'played') 抱歉，我不太明白你说的“这个”是指什么。你能具体说一下是哪个话题或事情吗？这样我才能更好地解释。
+     - 326.62 end=(328.72, 'accepted_interrupt') 你说的“说两个”是指让我讲两个故事、解释两件事，还是别的什么？可以再说明一下具体想听或了解的内容吗？
+     - 329.33 end=(330.336, 'accepted_interrupt') 好的，我明白了。你想要强调一下“先”这个字，可能是想说“先做某事”或者“先把事情处理好”。你能具体说明一下你想强调的是哪方面吗？比如是做事的顺序、优先级，还是某种态度上的提醒？这样
+     - 333.04 end=(334.8, 'played') 刘氏现在没在。
+     - 346.43 end=(348.384, 'accepted_interrupt') 刘氏现在没在。
+     - 350.19 end=(356.304, 'played') 看起来你可能在和朋友聊天时遇到了一些表达上的小问题，或者想分享点什么但不太确定怎么组织语言。没关系，我们可以慢慢来。
+
+如果你是想说“那我给他发消息吧”、“他没回我”之类的，可以再
+==============================================================================================================
+TOTAL base cancel_accepted_interrupt=81 cancel_accepted_user_input=1 dec_keep=37 dec_stop_only=3 dec_yield_ready=145 dec_yield_wait=64 input_ignored=41 input_rejected=41 input_wait_released=11 input_waiting=67 speech_cancelled=82 speech_start=132
+TOTAL wr3 cancel_accepted_interrupt=79 cancel_accepted_user_input=2 dec_keep=38 dec_stop_only=3 dec_yield_ready=141 dec_yield_wait=71 input_ignored=41 input_rejected=41 input_wait_released=11 input_waiting=74 speech_cancelled=81 speech_start=132

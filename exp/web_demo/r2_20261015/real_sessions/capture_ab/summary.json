@@ -1,0 +1,31 @@
+{
+ "cases": 744,
+ "errors": 0,
+ "transitions": {
+  "yield_ready->yield_ready": 323,
+  "yield_wait->yield_wait": 196,
+  "keep->keep": 162,
+  "yield_ready->yield_wait": 29,
+  "yield_ready->keep": 11,
+  "yield_wait->yield_ready": 10,
+  "stop_only->stop_only": 5,
+  "keep->yield_ready": 3,
+  "yield_wait->keep": 2,
+  "stop_only->yield_wait": 1,
+  "keep->yield_wait": 1,
+  "stop_only->yield_ready": 1
+ },
+ "labels_base": {
+  "keep": 166,
+  "yield_ready": 363,
+  "yield_wait": 208,
+  "stop_only": 7
+ },
+ "labels_wr3": {
+  "keep": 175,
+  "yield_ready": 337,
+  "yield_wait": 227,
+  "stop_only": 5
+ },
+ "flips": 58
+}

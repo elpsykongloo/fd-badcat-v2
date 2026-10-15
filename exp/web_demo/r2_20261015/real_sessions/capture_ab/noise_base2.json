@@ -1,0 +1,13 @@
+{
+ "pairs": 744,
+ "flips": 36,
+ "transitions": {
+  "yield_ready->keep": 12,
+  "yield_wait->yield_ready": 12,
+  "yield_ready->yield_wait": 5,
+  "keep->yield_ready": 3,
+  "yield_wait->keep": 2,
+  "stop_only->yield_wait": 1,
+  "yield_ready->stop_only": 1
+ }
+}
