@@ -35,5 +35,20 @@
       "input_reply_partial_heard_history": true
     },
     "note": "deployable partial history variant"
+  },
+  "on050_q": {
+    "engine": {
+      "input_reply_partial_heard_s": 0.5,
+      "input_reply_partial_heard_questions_only": true
+    },
+    "note": "partial prefix only when it reads as a question"
+  },
+  "on050_q_history": {
+    "engine": {
+      "input_reply_partial_heard_s": 0.5,
+      "input_reply_partial_heard_history": true,
+      "input_reply_partial_heard_questions_only": true
+    },
+    "note": "questions-only gate + history"
   }
 }

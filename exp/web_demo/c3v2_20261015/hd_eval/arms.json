@@ -1,0 +1,8 @@
+{
+ "base":    {"engine": {}, "latency": "pool", "note": "1601c983 production"},
+ "f1":      {"engine": {"input_wait_uncertain_recover": true, "input_recover_max": 1}, "latency": "pool"},
+ "f3qh":    {"engine": {"input_reply_partial_heard_s": 0.5, "input_reply_partial_heard_history": true, "input_reply_partial_heard_questions_only": true}, "latency": "pool"},
+ "W400":    {"engine": {"input_vad_end_ms_playing": 400}, "latency": "pool", "note": "f2 unconditional (= AEC-on sessions under aec_only)"},
+ "combo":   {"engine": {"input_wait_uncertain_recover": true, "input_recover_max": 1, "input_reply_partial_heard_s": 0.5, "input_reply_partial_heard_history": true, "input_reply_partial_heard_questions_only": true, "input_vad_end_ms_playing": 400, "input_vad_end_ms_playing_aec_only": true}, "latency": "pool", "note": "deployable combo; AEC off in harness so f2 inactive"},
+ "combo_W": {"engine": {"input_wait_uncertain_recover": true, "input_recover_max": 1, "input_reply_partial_heard_s": 0.5, "input_reply_partial_heard_history": true, "input_reply_partial_heard_questions_only": true, "input_vad_end_ms_playing": 400}, "latency": "pool", "note": "combo as seen by an AEC-on session"}
+}

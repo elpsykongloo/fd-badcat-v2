@@ -1,0 +1,85 @@
+units 4999  arms ['base', 'combo', 'combo_W']
+lang/cat                              n             base            combo          combo_W
+cn/ask                              300  100.0           100.0  +0.0(0/0) 100.0  +0.0(0/0)
+cn/backchannel                      300   97.3            97.3  +0.0(0/0)  97.3  +0.0(0/0)
+cn/deny                             300   98.7            98.7  +0.0(0/0)  98.7  +0.0(0/0)
+cn/others_talk_to_user_after        150   23.3            23.3  +0.0(0/0)  23.3  +0.0(0/0)
+cn/others_talk_to_user_before       150   28.0            28.0  +0.0(0/0)  28.0  +0.0(0/0)
+cn/pause                            300   49.0            49.0  +0.0(0/0)  49.0  +0.0(0/0)
+cn/repeat                           300  100.0           100.0  +0.0(0/0) 100.0  +0.0(0/0)
+cn/shift                            300  100.0           100.0  +0.0(0/0) 100.0  +0.0(0/0)
+cn/talk_to_others                    99    8.1             8.1  +0.0(0/0)   9.1  +1.0(1/0)
+cn/wait                             300   71.7            71.7  +0.0(0/0)  71.7  +0.0(0/0)
+en/ask                              300  100.0           100.0  +0.0(0/0) 100.0  +0.0(0/0)
+en/backchannel                      300   95.3            95.3  +0.0(0/0)  95.3  +0.0(0/0)
+en/deny                             300   99.7            99.7  +0.0(0/0)  99.7  +0.0(0/0)
+en/others_talk_to_user_after        150   18.7            18.7  +0.0(0/0)  18.7  +0.0(0/0)
+en/others_talk_to_user_before       150   16.0            16.0  +0.0(0/0)  16.0  +0.0(0/0)
+en/pause                            300   63.0            63.0  +0.0(0/0)  63.0  +0.0(0/0)
+en/repeat                           300   99.3            99.3  +0.0(0/0)  99.0  -0.3(0/1)
+en/shift                            300   97.7            97.7  +0.0(0/0)  97.3  -0.3(0/1)
+en/talk_to_others                   100    3.0             3.0  +0.0(0/0)   3.0  +0.0(0/0)
+en/wait                             300   63.0            63.0  +0.0(0/0)  63.0  +0.0(0/0)
+all/all                            4999   76.9            76.9  +0.0(0/0)  76.9  -0.0(1/2)
+
+failure modes / latency medians
+  cn/ask                          base     fail={} speaking@s2=300 r1_lat=0.62 stop_lat=1.93 reply_lat=0.74 talkover=1
+  cn/ask                          combo    fail={} speaking@s2=300 r1_lat=0.62 stop_lat=1.93 reply_lat=0.74 talkover=1
+  cn/ask                          combo_W  fail={} speaking@s2=300 r1_lat=0.62 stop_lat=1.94 reply_lat=0.74 talkover=1
+  cn/backchannel                  base     fail={'replied': 8, 'cut': 7} speaking@s2=299 r1_lat=0.58 stop_lat=None reply_lat=None talkover=0
+  cn/backchannel                  combo    fail={'replied': 8, 'cut': 7} speaking@s2=299 r1_lat=0.58 stop_lat=None reply_lat=None talkover=0
+  cn/backchannel                  combo_W  fail={'replied': 8, 'cut': 7} speaking@s2=299 r1_lat=0.58 stop_lat=None reply_lat=None talkover=0
+  cn/deny                         base     fail={'no_stop': 3, 'no_reply': 3} speaking@s2=299 r1_lat=0.59 stop_lat=1.85 reply_lat=0.71 talkover=6
+  cn/deny                         combo    fail={'no_stop': 3, 'no_reply': 3} speaking@s2=299 r1_lat=0.59 stop_lat=1.85 reply_lat=0.71 talkover=6
+  cn/deny                         combo_W  fail={'no_stop': 3, 'no_reply': 3} speaking@s2=299 r1_lat=0.59 stop_lat=1.92 reply_lat=0.72 talkover=6
+  cn/others_talk_to_user_after    base     fail={'cut': 115, 'replied': 103} speaking@s2=150 r1_lat=0.68 stop_lat=None reply_lat=None talkover=6
+  cn/others_talk_to_user_after    combo    fail={'cut': 115, 'replied': 103} speaking@s2=150 r1_lat=0.68 stop_lat=None reply_lat=None talkover=6
+  cn/others_talk_to_user_after    combo_W  fail={'cut': 115, 'replied': 103} speaking@s2=150 r1_lat=0.68 stop_lat=None reply_lat=None talkover=6
+  cn/others_talk_to_user_before   base     fail={'replied_other': 108} speaking@s2=0 r1_lat=None stop_lat=None reply_lat=0.73 talkover=1
+  cn/others_talk_to_user_before   combo    fail={'replied_other': 108} speaking@s2=0 r1_lat=None stop_lat=None reply_lat=0.73 talkover=1
+  cn/others_talk_to_user_before   combo_W  fail={'replied_other': 108} speaking@s2=0 r1_lat=None stop_lat=None reply_lat=0.73 talkover=1
+  cn/pause                        base     fail={'early': 153} speaking@s2=0 r1_lat=-1.02 stop_lat=None reply_lat=None talkover=154
+  cn/pause                        combo    fail={'early': 153} speaking@s2=0 r1_lat=-1.02 stop_lat=None reply_lat=None talkover=154
+  cn/pause                        combo_W  fail={'early': 153} speaking@s2=0 r1_lat=-1.02 stop_lat=None reply_lat=None talkover=154
+  cn/repeat                       base     fail={} speaking@s2=299 r1_lat=0.71 stop_lat=1.92 reply_lat=0.72 talkover=4
+  cn/repeat                       combo    fail={} speaking@s2=299 r1_lat=0.71 stop_lat=1.92 reply_lat=0.72 talkover=4
+  cn/repeat                       combo_W  fail={} speaking@s2=299 r1_lat=0.71 stop_lat=2.15 reply_lat=0.72 talkover=4
+  cn/shift                        base     fail={} speaking@s2=298 r1_lat=0.6 stop_lat=1.94 reply_lat=0.72 talkover=2
+  cn/shift                        combo    fail={} speaking@s2=298 r1_lat=0.6 stop_lat=1.94 reply_lat=0.72 talkover=2
+  cn/shift                        combo_W  fail={} speaking@s2=298 r1_lat=0.6 stop_lat=2.01 reply_lat=0.72 talkover=1
+  cn/talk_to_others               base     fail={'s3_cut': 91, 's3_reply': 83} speaking@s2=98 r1_lat=0.67 stop_lat=1.89 reply_lat=0.77 talkover=4
+  cn/talk_to_others               combo    fail={'s3_cut': 91, 's3_reply': 83} speaking@s2=98 r1_lat=0.67 stop_lat=1.89 reply_lat=0.77 talkover=4
+  cn/talk_to_others               combo_W  fail={'s3_cut': 90, 's3_reply': 82} speaking@s2=98 r1_lat=0.67 stop_lat=1.9 reply_lat=0.77 talkover=4
+  cn/wait                         base     fail={'replied': 83, 'no_stop': 2} speaking@s2=300 r1_lat=0.7 stop_lat=1.84 reply_lat=None talkover=2
+  cn/wait                         combo    fail={'replied': 83, 'no_stop': 2} speaking@s2=300 r1_lat=0.7 stop_lat=1.84 reply_lat=None talkover=2
+  cn/wait                         combo_W  fail={'replied': 83, 'no_stop': 2} speaking@s2=300 r1_lat=0.7 stop_lat=1.9 reply_lat=None talkover=2
+  en/ask                          base     fail={} speaking@s2=300 r1_lat=0.73 stop_lat=1.92 reply_lat=0.74 talkover=13
+  en/ask                          combo    fail={} speaking@s2=300 r1_lat=0.73 stop_lat=1.92 reply_lat=0.74 talkover=13
+  en/ask                          combo_W  fail={} speaking@s2=300 r1_lat=0.73 stop_lat=1.93 reply_lat=0.74 talkover=13
+  en/backchannel                  base     fail={'cut': 14, 'replied': 12} speaking@s2=300 r1_lat=0.74 stop_lat=None reply_lat=None talkover=3
+  en/backchannel                  combo    fail={'cut': 14, 'replied': 12} speaking@s2=300 r1_lat=0.74 stop_lat=None reply_lat=None talkover=3
+  en/backchannel                  combo_W  fail={'cut': 14, 'replied': 12} speaking@s2=300 r1_lat=0.74 stop_lat=None reply_lat=None talkover=3
+  en/deny                         base     fail={'no_stop': 1, 'no_reply': 1} speaking@s2=299 r1_lat=0.77 stop_lat=1.88 reply_lat=0.76 talkover=2
+  en/deny                         combo    fail={'no_stop': 1, 'no_reply': 1} speaking@s2=299 r1_lat=0.77 stop_lat=1.88 reply_lat=0.76 talkover=2
+  en/deny                         combo_W  fail={'no_stop': 1, 'no_reply': 1} speaking@s2=299 r1_lat=0.77 stop_lat=1.89 reply_lat=0.76 talkover=2
+  en/others_talk_to_user_after    base     fail={'cut': 122, 'replied': 106} speaking@s2=150 r1_lat=0.76 stop_lat=None reply_lat=None talkover=13
+  en/others_talk_to_user_after    combo    fail={'cut': 122, 'replied': 106} speaking@s2=150 r1_lat=0.76 stop_lat=None reply_lat=None talkover=13
+  en/others_talk_to_user_after    combo_W  fail={'cut': 122, 'replied': 106} speaking@s2=150 r1_lat=0.76 stop_lat=None reply_lat=None talkover=13
+  en/others_talk_to_user_before   base     fail={'replied_other': 126} speaking@s2=0 r1_lat=None stop_lat=None reply_lat=0.75 talkover=25
+  en/others_talk_to_user_before   combo    fail={'replied_other': 126} speaking@s2=0 r1_lat=None stop_lat=None reply_lat=0.75 talkover=25
+  en/others_talk_to_user_before   combo_W  fail={'replied_other': 126} speaking@s2=0 r1_lat=None stop_lat=None reply_lat=0.75 talkover=25
+  en/pause                        base     fail={'early': 111} speaking@s2=0 r1_lat=0.7 stop_lat=None reply_lat=None talkover=112
+  en/pause                        combo    fail={'early': 111} speaking@s2=0 r1_lat=0.7 stop_lat=None reply_lat=None talkover=112
+  en/pause                        combo_W  fail={'early': 111} speaking@s2=0 r1_lat=0.7 stop_lat=None reply_lat=None talkover=111
+  en/repeat                       base     fail={'no_stop': 1, 'no_reply': 1} speaking@s2=299 r1_lat=0.74 stop_lat=1.97 reply_lat=0.74 talkover=18
+  en/repeat                       combo    fail={'no_stop': 1, 'no_reply': 1} speaking@s2=299 r1_lat=0.74 stop_lat=1.97 reply_lat=0.74 talkover=18
+  en/repeat                       combo_W  fail={'no_stop': 2, 'no_reply': 1} speaking@s2=299 r1_lat=0.74 stop_lat=1.98 reply_lat=0.74 talkover=18
+  en/shift                        base     fail={'no_stop': 7} speaking@s2=299 r1_lat=0.75 stop_lat=1.92 reply_lat=0.76 talkover=57
+  en/shift                        combo    fail={'no_stop': 7} speaking@s2=299 r1_lat=0.75 stop_lat=1.92 reply_lat=0.76 talkover=57
+  en/shift                        combo_W  fail={'no_stop': 8} speaking@s2=300 r1_lat=0.75 stop_lat=1.94 reply_lat=0.76 talkover=56
+  en/talk_to_others               base     fail={'s3_cut': 90, 's3_reply': 92, 'no_stop': 2} speaking@s2=99 r1_lat=0.95 stop_lat=1.81 reply_lat=0.95 talkover=3
+  en/talk_to_others               combo    fail={'s3_cut': 90, 's3_reply': 92, 'no_stop': 2} speaking@s2=99 r1_lat=0.95 stop_lat=1.81 reply_lat=0.95 talkover=3
+  en/talk_to_others               combo_W  fail={'s3_cut': 90, 's3_reply': 92, 'no_stop': 2} speaking@s2=99 r1_lat=0.95 stop_lat=1.81 reply_lat=0.95 talkover=3
+  en/wait                         base     fail={'replied': 105, 'no_stop': 8} speaking@s2=299 r1_lat=0.75 stop_lat=1.89 reply_lat=None talkover=2
+  en/wait                         combo    fail={'replied': 105, 'no_stop': 8} speaking@s2=299 r1_lat=0.75 stop_lat=1.89 reply_lat=None talkover=2
+  en/wait                         combo_W  fail={'replied': 105, 'no_stop': 8} speaking@s2=299 r1_lat=0.75 stop_lat=1.91 reply_lat=None talkover=2

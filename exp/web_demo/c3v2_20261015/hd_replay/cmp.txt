@@ -1,0 +1,103 @@
+==============================================================================================================
+web-demo-06a4911437964970af71709bf00952f7 dur 19.22
+  base     cancel_accepted_interrupt=2 dec_keep=1 dec_yield_ready=4 input_ignored=1 input_rejected=1 speech_cancelled=2 speech_start=3
+  combo    cancel_accepted_interrupt=2 dec_keep=1 dec_yield_ready=4 input_ignored=1 input_rejected=1 speech_cancelled=2 speech_start=3
+  combo_W  cancel_accepted_interrupt=1 dec_keep=1 dec_yield_ready=2 dec_yield_wait=1 input_ignored=1 input_rejected=1 input_wait_released=1 input_waiting=1 speech_cancelled=1 speech_start=3
+  -- combo_W decision diffs vs base (1):
+       14.96 yield_wait   [我挺好的，谢谢你。你今天过得怎么样呀？有什么]  base: ('yield_ready', '我挺好的，谢谢你。你今天过得怎么样呀？有什么')
+  -- combo_W speech differs: base 3 starts, arm 3 starts
+     +  10.27 end=(13.712, 'accepted_interrupt') 嗨，今天过得挺好的！有什么我可以帮你的吗？
+     +  16.77 end=None 嗨，今天过得挺好的！有什么我可以帮你的吗？
+     -  10.11 end=(13.888, 'accepted_interrupt') 今天过得怎么样啊？有什么开心或烦恼的事想聊聊吗？
+     -  15.41 end=None 嗨，今天过得挺好的！有什么我可以帮你的吗？
+==============================================================================================================
+web-demo-13045dd6bbd74bcf9f1a64dbe78de047 dur 22.5
+  base     cancel_accepted_interrupt=2 dec_keep=3 dec_yield_ready=2 input_ignored=3 input_rejected=3 speech_cancelled=2 speech_start=2
+  combo    cancel_accepted_interrupt=2 dec_keep=3 dec_yield_ready=2 input_ignored=3 input_rejected=3 speech_cancelled=2 speech_start=2
+  combo_W  cancel_accepted_interrupt=2 dec_keep=3 dec_yield_ready=2 input_ignored=3 input_rejected=3 speech_cancelled=2 speech_start=2
+==============================================================================================================
+web-demo-b4cb8326da2e41cd90d634bb3c1f6e4a dur 37.95
+  base     dec_keep=1 input_ignored=1 input_rejected=1
+  combo    dec_keep=1 input_ignored=1 input_rejected=1
+  combo_W  dec_keep=1 input_ignored=1 input_rejected=1
+==============================================================================================================
+web-demo-b1ef5e704bd54613b53e802a05ce9c54 dur 56.96
+  base     cancel_accepted_interrupt=9 dec_yield_ready=13 dec_yield_wait=2 input_waiting=2 speech_cancelled=9 speech_start=10
+  combo    cancel_accepted_interrupt=9 dec_yield_ready=13 dec_yield_wait=2 input_waiting=2 speech_cancelled=9 speech_start=10
+  combo_W  cancel_accepted_interrupt=9 dec_yield_ready=13 dec_yield_wait=2 input_waiting=2 speech_cancelled=9 speech_start=10
+  -- combo_W speech differs: base 10 starts, arm 10 starts
+     +  57.76 end=None 听起来你可能在说某个设备或软件的设置里看到了什么让你觉得奇怪的东西，但信息有点断断续续。你说“太诡异了”、“没有做AEC”，是不是指麦克风、耳机或者通话时有回音、杂音之类的问题？A
+     -  57.76 end=None 你是指哪方面不太明白呀？可以具体说说看，我帮你解释清楚~
+==============================================================================================================
+web-demo-a6651f6f73ba4e0284e6e8e9c401f14d dur 69.84
+  base     cancel_accepted_interrupt=5 dec_yield_ready=9 dec_yield_wait=2 input_waiting=2 speech_cancelled=5 speech_start=9
+  combo    cancel_accepted_interrupt=5 dec_yield_ready=9 dec_yield_wait=2 input_waiting=2 speech_cancelled=5 speech_start=9
+  combo_W  cancel_accepted_interrupt=5 dec_yield_ready=9 dec_yield_wait=1 input_waiting=1 speech_cancelled=5 speech_start=9
+  -- combo_W speech differs: base 9 starts, arm 9 starts
+     +  40.24 end=(47.024, 'accepted_interrupt') 当然有啦！阿里巴巴集团的创始人其实不止马云一个人，还有“十八罗汉”这个说法。他们是一群在1999年一起创业的早期核心成员。
+
+比如：
+
+- 蔡崇信（Joe Tsai）：是阿里最早的
+     +  47.36 end=(52.368, 'played') 蔡崇信是阿里巴巴集团的联合创始人之一，现任阿里巴巴集团董事局副主席。他目前主要负责公司的战略投资、并购以及国际业务拓展等事务。
+
+在2023年及之后的时间里，他继续担任阿里系多个重
+     -  40.08 end=(46.704, 'accepted_interrupt') 当然有啦！阿里巴巴集团的创始人其实不止马云一个人，还有“十八罗汉”这个说法。他们是一群在1999年一起创业的早期核心成员。
+
+比如：
+
+- 蔡崇信（Joe Tsai）：是阿里最早的
+     -  47.36 end=(52.224, 'played') 听到了，你说的是：“你听到我刚才说什么了吗？”
+==============================================================================================================
+web-demo-8f06b71c75af4173ba479e624f1b335d dur 74.91
+  base     cancel_accepted_interrupt=5 dec_keep=1 dec_yield_ready=7 dec_yield_wait=2 input_ignored=1 input_rejected=1 input_wait_released=2 input_waiting=2 speech_cancelled=5 speech_start=9
+  combo    cancel_accepted_interrupt=5 dec_keep=1 dec_yield_ready=7 dec_yield_wait=2 input_ignored=1 input_rejected=1 input_wait_released=2 input_waiting=2 speech_cancelled=5 speech_start=9
+  combo_W  cancel_accepted_interrupt=5 dec_keep=1 dec_yield_ready=7 dec_yield_wait=2 input_ignored=1 input_rejected=1 input_wait_released=2 input_waiting=2 speech_cancelled=5 speech_start=9
+==============================================================================================================
+web-demo-aee0073b9f7847b1aa306c6b42f41ad2 dur 340.86
+  base     cancel_accepted_interrupt=7 dec_keep=10 dec_yield_ready=12 dec_yield_wait=21 input_ignored=13 input_rejected=13 input_wait_released=3 input_waiting=21 speech_cancelled=7 speech_start=11
+  combo    cancel_accepted_interrupt=7 dec_keep=10 dec_yield_ready=12 dec_yield_wait=21 input_ignored=13 input_rejected=13 input_wait_released=3 input_waiting=21 speech_cancelled=7 speech_start=11
+  combo_W  cancel_accepted_interrupt=7 dec_keep=10 dec_yield_ready=12 dec_yield_wait=21 input_ignored=13 input_rejected=13 input_wait_released=3 input_waiting=21 speech_cancelled=7 speech_start=11
+==============================================================================================================
+web-demo-771115d5120f4a35af705926864da234 dur 488.75
+  base     cancel_accepted_interrupt=27 cancel_accepted_user_input=1 dec_keep=14 dec_stop_only=1 dec_yield_ready=42 dec_yield_wait=26 input_ignored=15 input_rejected=15 input_wait_released=1 input_waiting=27 speech_cancelled=28 speech_start=37
+  combo    cancel_accepted_interrupt=27 cancel_accepted_user_input=1 dec_keep=14 dec_stop_only=1 dec_yield_ready=42 dec_yield_wait=26 input_ignored=15 input_rejected=15 input_wait_released=1 input_waiting=27 speech_cancelled=28 speech_start=37
+  combo_W  cancel_accepted_interrupt=27 cancel_accepted_user_input=1 dec_keep=13 dec_stop_only=1 dec_yield_ready=42 dec_yield_wait=25 input_ignored=14 input_rejected=14 input_wait_released=1 input_waiting=26 speech_cancelled=28 speech_start=37
+  -- combo_W speech differs: base 37 starts, arm 37 starts
+     +  86.37 end=(106.304, 'accepted_interrupt') 好啊，那咱们就聊聊早期的事情吧。你具体想了解哪方面的早期呢？比如是某个故事的开头、一段历史、还是我们之前聊到的某个话题的起因呀？可以再明确一点，我好给你讲得更清楚~
+     + 106.98 end=(115.888, 'accepted_interrupt') 你是指GPS定位出错了，还是说某个具体的GPS应用或设备出现了问题？可以再详细说明一下情况吗？比如是手机、车载导航，还是其他设备？这样我可以更准确地帮你分析和解决。
+     + 208.08 end=(211.872, 'played') 啊，你说的是我刚才提到的那个故事呀！让我继续给你讲下去吧。
+
+这个故事发生在一个被遗忘的小镇上，镇子周围常年笼罩着浓雾。主角是个年轻的画家，他搬来这儿是为了寻找灵感。有一天他在老宅
+     -  86.37 end=(106.224, 'accepted_interrupt') 我理解你的问题了。作为Qwen-Omni，我的知识截止时间是2024年12月，所以对于今年（2025年）发生的事情，我没有实时信息。如果需要了解最新的情况，建议查看权威新闻来源或相
+     - 106.98 end=(115.888, 'accepted_interrupt') 哦，你说的是《原神》2022年那些版本啊。那一年其实挺关键的，米哈游一口气出了好几个大版本。
+
+比如二月份的「渊下宫」剧情上线了稻妻主线最后阶段，还有新角色雷电将军和九条裟罗；然后
+     - 208.08 end=(211.728, 'played') 你好！有什么我可以帮助你的吗？
+==============================================================================================================
+web-demo-b559374fd25e4da3a64bb874a81c61d3 dur 511.54
+  base     cancel_accepted_interrupt=6 dec_yield_ready=12 dec_yield_wait=5 input_wait_released=2 input_waiting=5 speech_cancelled=6 speech_start=13
+  combo    cancel_accepted_interrupt=6 dec_yield_ready=12 dec_yield_wait=5 input_wait_released=2 input_waiting=5 speech_cancelled=6 speech_start=13
+  combo_W  cancel_accepted_interrupt=6 dec_yield_ready=12 dec_yield_wait=4 input_wait_released=2 input_waiting=4 speech_cancelled=6 speech_start=13
+  -- combo_W speech differs: base 13 starts, arm 13 starts
+     + 119.46 end=(146.496, 'accepted_interrupt') 抱歉，我不太明白你说的“现在我打断你行”是什么意思。你是想打断我正在做的事情吗？还是有其他事情要告诉我？可以再解释得清楚一点吗？
+     - 119.30 end=(146.592, 'accepted_interrupt') 抱歉，我不太明白你说的“现在我打断你行”是什么意思。你是想打断我正在做的事情吗？还是有其他事情要告诉我？可以再解释得清楚一点吗？
+==============================================================================================================
+web-demo-fad453ba899c4ae4b27381630d492540 dur 554.66
+  base     cancel_accepted_interrupt=5 dec_keep=1 dec_stop_only=1 dec_yield_ready=15 dec_yield_wait=3 input_ignored=1 input_rejected=1 input_wait_released=1 input_waiting=4 speech_cancelled=5 speech_start=14
+  combo    cancel_accepted_interrupt=5 dec_keep=1 dec_stop_only=1 dec_yield_ready=15 dec_yield_wait=3 input_ignored=1 input_rejected=1 input_wait_released=1 input_waiting=4 speech_cancelled=5 speech_start=14
+  combo_W  cancel_accepted_interrupt=5 dec_keep=1 dec_stop_only=1 dec_yield_ready=15 dec_yield_wait=3 input_ignored=1 input_rejected=1 input_wait_released=1 input_waiting=4 speech_cancelled=5 speech_start=14
+==============================================================================================================
+web-demo-d90e2220860e472491491d0833e87fe1 dur 1510.86
+  base     cancel_accepted_interrupt=13 dec_keep=6 dec_stop_only=1 dec_yield_ready=29 dec_yield_wait=3 input_ignored=6 input_rejected=6 input_wait_released=2 input_waiting=4 speech_cancelled=13 speech_start=24
+  combo    cancel_accepted_interrupt=13 dec_keep=6 dec_stop_only=1 dec_yield_ready=29 dec_yield_wait=3 input_ignored=6 input_rejected=6 input_wait_released=2 input_waiting=4 speech_cancelled=13 speech_start=24
+  combo_W  cancel_accepted_interrupt=13 dec_keep=6 dec_stop_only=1 dec_yield_ready=28 dec_yield_wait=4 input_ignored=6 input_rejected=6 input_wait_released=2 input_waiting=5 speech_cancelled=13 speech_start=24
+  -- combo_W decision diffs vs base (1):
+      330.48 yield_wait   [我们]  base: ('yield_ready', '就强调一下先')
+  -- combo_W speech differs: base 24 starts, arm 24 starts
+     + 329.33 end=(330.48, 'accepted_interrupt') 你说的“说两个”是指让我讲两个故事、解释两件事，还是别的什么？可以再说明一下具体想听或了解的内容吗？
+     - 329.33 end=(330.336, 'accepted_interrupt') 好的，我明白了。你想要强调一下“先”这个字，可能是想说“先做某事”或者“先把事情处理好”。你能具体说明一下你想强调的是哪方面吗？比如是做事的顺序、优先级，还是某种态度上的提醒？这样
+==============================================================================================================
+TOTAL base cancel_accepted_interrupt=81 cancel_accepted_user_input=1 dec_keep=37 dec_stop_only=3 dec_yield_ready=145 dec_yield_wait=64 input_ignored=41 input_rejected=41 input_wait_released=11 input_waiting=67 speech_cancelled=82 speech_start=132
+TOTAL combo cancel_accepted_interrupt=81 cancel_accepted_user_input=1 dec_keep=37 dec_stop_only=3 dec_yield_ready=145 dec_yield_wait=64 input_ignored=41 input_rejected=41 input_wait_released=11 input_waiting=67 speech_cancelled=82 speech_start=132
+TOTAL combo_W cancel_accepted_interrupt=80 cancel_accepted_user_input=1 dec_keep=36 dec_stop_only=3 dec_yield_ready=142 dec_yield_wait=63 input_ignored=40 input_rejected=40 input_wait_released=12 input_waiting=66 speech_cancelled=81 speech_start=132

@@ -1,0 +1,488 @@
+{
+ "control": "off",
+ "treatment": "on_max1",
+ "rows": 540,
+ "ok_rows": 540,
+ "harness_errors": {},
+ "criteria": {
+  "M1_validity_guard": true,
+  "M1": true,
+  "S1": false,
+  "S2": false,
+  "S2_per_scenario": true,
+  "S2_jitter": true,
+  "S3": true,
+  "S4": true,
+  "S5": true,
+  "followup": false,
+  "no_data": [],
+  "failed": [
+   "S1",
+   "S2",
+   "followup"
+  ],
+  "PASS": false
+ },
+ "exclusions_by_arm": {},
+ "retries": 0,
+ "units_over_two_attempts": [],
+ "ok_units_by_arm": {
+  "off": 270,
+  "on_max1": 270
+ },
+ "M1_dead_silence": {
+  "control_rate": [
+   40,
+   46
+  ],
+  "treatment_rate": [
+   0,
+   45
+  ],
+  "paired_items": 12,
+  "paired_units": 43,
+  "improvement": 0.8958333333333334,
+  "ci95": [
+   0.7708333333333334,
+   1.0
+  ],
+  "validity_rate": {
+   "off": [
+    46,
+    48
+   ],
+   "on_max1": [
+    45,
+    48
+   ]
+  },
+  "itt_improvement": [
+   0.8333333333333334,
+   0.6875,
+   0.9583333333333334
+  ]
+ },
+ "M1_by_scenario": {
+  "P_timeout": {
+   "control": [
+    23,
+    23
+   ],
+   "treatment": [
+    0,
+    23
+   ]
+  },
+  "P_error": {
+   "control": [
+    17,
+    23
+   ],
+   "treatment": [
+    0,
+    22
+   ]
+  }
+ },
+ "recovery_latency_ms": {
+  "n": 39,
+  "median": 2479.5,
+  "p90": 2479.72
+ },
+ "followup_answered": {
+  "control": [
+   22,
+   23
+  ],
+  "treatment": [
+   21,
+   23
+  ],
+  "paired_diff": 0.0,
+  "ci95": [
+   -0.25,
+   0.25
+  ]
+ },
+ "followup_latency_diff_ms": {
+  "mean": -228.12999999999988,
+  "ci95": [
+   -583.5449999999998,
+   -28.553874999999902
+  ]
+ },
+ "S1_false_recovery": {
+  "off": {
+   "k": 0,
+   "n": 144,
+   "upper95": 0.0205887922994959
+  },
+  "on_max1": {
+   "k": 4,
+   "n": 144,
+   "upper95": 0.0624352689582825
+  },
+  "by_scenario": {
+   "N1_resume": [
+    0,
+    48
+   ],
+   "N2a_third_natural": [
+    0,
+    30
+   ],
+   "N3_stop_fault": [
+    4,
+    12
+   ],
+   "N4_echo_fault": [
+    0,
+    8
+   ],
+   "N5_question_natural": [
+    0,
+    16
+   ],
+   "N5_backchannel_natural": [
+    0,
+    12
+   ],
+   "N5_wait_natural": [
+    0,
+    18
+   ]
+  }
+ },
+ "S2_bad_outcome": {
+  "N1_resume": {
+   "control": [
+    0,
+    48
+   ],
+   "treatment": [
+    0,
+    48
+   ],
+   "paired_diff": 0.0,
+   "ci95": [
+    0.0,
+    0.0
+   ]
+  },
+  "N2a_third_natural": {
+   "control": [
+    25,
+    30
+   ],
+   "treatment": [
+    24,
+    30
+   ],
+   "paired_diff": -0.03333333333333333,
+   "ci95": [
+    -0.1,
+    0.0
+   ]
+  },
+  "N3_stop_fault": {
+   "control": [
+    4,
+    12
+   ],
+   "treatment": [
+    8,
+    12
+   ],
+   "paired_diff": 0.3333333333333333,
+   "ci95": [
+    0.0,
+    0.6666666666666666
+   ]
+  },
+  "N4_echo_fault": {
+   "control": [
+    0,
+    8
+   ],
+   "treatment": [
+    0,
+    8
+   ],
+   "paired_diff": 0.0,
+   "ci95": [
+    0.0,
+    0.0
+   ]
+  },
+  "N5_question_natural": {
+   "control": [
+    0,
+    16
+   ],
+   "treatment": [
+    0,
+    16
+   ],
+   "paired_diff": 0.0,
+   "ci95": [
+    0.0,
+    0.0
+   ]
+  },
+  "N5_backchannel_natural": {
+   "control": [
+    0,
+    12
+   ],
+   "treatment": [
+    0,
+    12
+   ],
+   "paired_diff": 0.0,
+   "ci95": [
+    0.0,
+    0.0
+   ]
+  },
+  "N5_wait_natural": {
+   "control": [
+    0,
+    18
+   ],
+   "treatment": [
+    0,
+    18
+   ],
+   "paired_diff": 0.0,
+   "ci95": [
+    0.0,
+    0.0
+   ]
+  },
+  "pooled": {
+   "paired_diff": 0.025,
+   "ci95": [
+    -0.016666666666666666,
+    0.08333333333333333
+   ],
+   "items": 60
+  }
+ },
+ "S2_signature_jitter": {
+  "within_arm": {
+   "off": {
+    "disagree": 4,
+    "pairs": 72
+   },
+   "on_max1": {
+    "disagree": 3,
+    "pairs": 72
+   }
+  },
+  "cross_arm": {
+   "disagree": 11,
+   "pairs": 144
+  }
+ },
+ "S3_latency_diff_ms": {
+  "mean": -31.692241379310335,
+  "ci95": [
+   -94.84280172413791,
+   2.7412931034482675
+  ],
+  "items": 29
+ },
+ "S4_errors": {
+  "off": [
+   0,
+   270
+  ],
+  "on_max1": [
+   0,
+   270
+  ]
+ },
+ "S5_resume_collision": {
+  "off": [
+   0,
+   48
+  ],
+  "on_max1": [
+   0,
+   48
+  ]
+ },
+ "S5_resume_recovery_events": {
+  "off": [
+   0,
+   48
+  ],
+  "on_max1": [
+   0,
+   48
+  ]
+ },
+ "R_third_fault_conditional": {
+  "off": {
+   "admitted": [
+    22,
+    30
+   ],
+   "recovered_given_admitted": [
+    0,
+    22
+   ]
+  },
+  "on_max1": {
+   "admitted": [
+    22,
+    30
+   ],
+   "recovered_given_admitted": [
+    20,
+    22
+   ]
+  }
+ },
+ "D_resume_late": {
+  "off": {
+   "recovered": [
+    0,
+    24
+   ],
+   "resume_answered": [
+    24,
+    24
+   ]
+  },
+  "on_max1": {
+   "recovered": [
+    22,
+    24
+   ],
+   "resume_answered": [
+    24,
+    24
+   ]
+  }
+ },
+ "S_double_cut": {
+  "off": {
+   "recover_playbacks": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "on_max1": {
+   "recover_playbacks": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ]
+  }
+ },
+ "requests": {
+  "off": {
+   "omni": 4134,
+   "decision_timeouts": 118,
+   "decision_fallbacks": 141,
+   "injected": 246
+  },
+  "on_max1": {
+   "omni": 4362,
+   "decision_timeouts": 121,
+   "decision_fallbacks": 143,
+   "injected": 252
+  }
+ },
+ "criteria_n": {
+  "M1_validity_guard": {
+   "control_P": 48,
+   "treatment_P": 48
+  },
+  "M1": {
+   "paired_units": 43,
+   "paired_items": 12,
+   "treatment_valid_trials": 45
+  },
+  "S1": {
+   "n": 144,
+   "missing_scenarios": []
+  },
+  "S2": {
+   "pooled_units": 144,
+   "pooled_items": 60
+  },
+  "S2_per_scenario": {
+   "N1_resume": 48,
+   "N2a_third_natural": 30,
+   "N3_stop_fault": 12,
+   "N4_echo_fault": 8,
+   "N5_question_natural": 16,
+   "N5_backchannel_natural": 12,
+   "N5_wait_natural": 18
+  },
+  "S2_jitter": {
+   "within_pairs": 72,
+   "cross_pairs": 144
+  },
+  "S3": {
+   "paired_units": 82,
+   "items": 29
+  },
+  "S4": {
+   "off": 270,
+   "on_max1": 270
+  },
+  "S5": {
+   "n": 48
+  },
+  "followup": {
+   "paired_units": 22,
+   "items": 12
+  }
+ }
+}
