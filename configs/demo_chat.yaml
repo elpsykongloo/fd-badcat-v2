@@ -1,8 +1,10 @@
 # Overlay on src/config.yaml. Only the laptop demo launcher selects this profile.
 engine:
-  input_reply_partial_heard_s: 0
-  input_reply_partial_heard_history: false
-  input_reply_partial_heard_questions_only: false
+  # f3 (c3v2 eval 2026-10-15): review also sees heard clauses of the unit still playing,
+  # only when they read as a question, and they enter reply history. Rollback: 0 / false / false.
+  input_reply_partial_heard_s: 0.5
+  input_reply_partial_heard_history: true
+  input_reply_partial_heard_questions_only: true
   input_vad_end_ms_playing_aec_only: false
   browser_auto_gain_control: true
   chat_demo: true
@@ -72,10 +74,10 @@ engine:
   input_context_max_gap_s: 20
   # After yield_wait, answer the held input once the user is silent this long.
   input_wait_release_s: 2.0
-  # Opt-in (default false): once playback was cut and the kept input carried nothing
+  # f1, on since 2026-10-15 (rollback: false): once playback was cut and the kept input carried nothing
   # usable, ask the user to repeat after the same silence, at most input_recover_max
   # times in a row (reset by a played answer). Fixed sentence, no model call.
-  input_wait_uncertain_recover: false
+  input_wait_uncertain_recover: true
   input_recover_max: 1
   # Retain actual pre-trigger audio; does not wait another 160ms to dispatch.
   # VAD threshold stays 0.5. End silence is keyed per actor state since 2026-10-13
