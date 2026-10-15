@@ -61,7 +61,20 @@
 
 ## 首响复测
 
-（待填）
+`bench_guarded_latency.py`，口径同 10-13 `lat_final`（网络单程 40 ms，合成 × 2 遍加真人 85 段），`c3_base` 为 c3v2 默认、`c3_combo` 为 f1+f3+f2（AEC 限定）。报告见 `lat_bench/report.md`。
+
+| 组 | `c3_base` 停嘴→playAt P50 | `c3_combo` P50 | 10-13 `lat_final` P50 |
+|---|---|---|---|
+| 合成短问 | 1098.8 ms。 | 1098.8 ms。 | 1091.0 ms。 |
+| 合成长问 | 1253.3 ms。 | 1253.0 ms。 | 1253.4 ms。 |
+| 真人 | 1258.6 ms。 | 1266.2 ms。 | 1261.7 ms。 |
+| 真人首轮 | 1124.2 ms。 | 1122.4 ms。 | 1131.8 ms。 |
+
+各组 P50 差异在 10 ms 内，抢话、闪现计数相同；c3v2 主线与 10-13 上线版本延迟一致。真人 P90 的差别（2826 对 1906 ms）来自少数长尾单元，三次运行之间本来就会波动。
+
+## 上线
+
+2026-10-15 12:00（北京时间）起 f1 与 f3 默认开启（`1376ebd9`），f2 未开。回退：把 `configs/demo_chat.yaml` 中 `input_reply_partial_heard_s`、`input_reply_partial_heard_history`、`input_reply_partial_heard_questions_only`、`input_wait_uncertain_recover` 改回 0/false 并重启 `lat-live`。
 
 ## 基线缺陷
 
@@ -79,4 +92,4 @@
 
 - 虚拟时钟评测台里 `send_pcm` 回执等待和读文本、TTS 超时按真实时钟计，卡在真实 Omni 调用时会误报 `stream_error`；已在评测台去掉门控期间的真实时钟超时，旧 f2 结果按 `engine_errors` 成对剔除。
 - 依赖真实时延的臂不能和批量评测同时跑：Omni 第 0 阶段生产配置 `max_num_seqs: 4`，拥堵会让复核超出 2 s 预算。
-- 本轮评测曾用 `omni_eval_seqs32.yaml` 重启 Omni（19:56Z），21:03Z 已恢复生产配置。
+- 本轮评测曾用 `omni_eval_seqs32.yaml` 重启 Omni（10-15 03:56，北京时间），05:03 已恢复生产配置。
